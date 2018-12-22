@@ -33,6 +33,9 @@ const styles = {
 };
 
 export default function LoginForm(props: Props) {
+  const hasInput = !!props.email && !!props.password;
+  const hasValidInput = props.isValidEmail && props.isValidPassword;
+  const submitDisabled = !hasInput || !hasValidInput;
   return (
     <View style={styles.container}>
       <FormField
@@ -65,6 +68,7 @@ export default function LoginForm(props: Props) {
         style={styles.submitButton}
         text="Login"
         onPress={props.onShouldSubmit}
+        disabled={submitDisabled}
       />
     </View>
   );
