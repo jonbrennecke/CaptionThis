@@ -48,7 +48,7 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 // $FlowFixMe
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
-class LoginModal extends Component<Props, State> {
+export default class LoginModal extends Component<Props, State> {
   state: State = {
     email: null,
     password: null,
@@ -79,5 +79,3 @@ class LoginModal extends Component<Props, State> {
     );
   }
 }
-
-export default LoginModal;
