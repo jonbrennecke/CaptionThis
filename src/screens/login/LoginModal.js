@@ -1,9 +1,10 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 
+import LoginForm from '../../components/forms/login-form/LoginForm';
 import { UI_COLORS } from '../../constants';
 
 type OwnProps = {};
@@ -14,12 +15,16 @@ type DispatchProps = {};
 
 type Props = OwnProps & StateProps & DispatchProps;
 
+type State = {
+  email: ?string,
+  password: ?string,
+};
+
 const styles = {
   container: {
     flex: 1,
     backgroundColor: UI_COLORS.OFF_WHITE,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
   },
 };
 
@@ -34,11 +39,21 @@ function mapDispatchToProps(): DispatchProps {
 // $FlowFixMe
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
-class LoginModal extends Component<Props> {
+class LoginModal extends Component<Props, State> {
+  state: State = {
+    email: null,
+    password: null,
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>Login Modal</Text>
+        <LoginForm
+          email={this.state.email}
+          onShouldChangeEmail={email => this.setState({ email })}
+          password={this.state.password}
+          onShouldChangePassword={password => this.setState({ password })}
+        />
       </View>
     );
   }

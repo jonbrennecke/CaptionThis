@@ -24,6 +24,8 @@ export const UI_COLORS = {
   WHITE: '#FFF',
   OFF_WHITE: '#F6F6FD',
   DARK_GREY: '#3B3E6F',
+  LIGHT_GREY: '#B7BAE1',
+  EXTRA_LIGHT_GREY: '#B7BAE1',
 };
 
 export const FONTS = {
@@ -36,6 +38,11 @@ export const FONTS = {
     ios: 'PT Sans',
     android: 'PT_Sans-Web-Bold',
   }),
+};
+
+export const FONT_SIZES = {
+  LABEL: 15,
+  INPUT: 17,
 };
 
 export const SCREENS = {
@@ -71,7 +78,7 @@ export const SCREEN_PARAMS = {
                 },
               },
               overlay: {
-                interceptTouchOutside: true
+                interceptTouchOutside: true,
               },
               layout: {
                 orientation: ['portrait'],

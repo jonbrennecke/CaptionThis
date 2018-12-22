@@ -2,3 +2,5 @@
 import type { Element, ChildrenArray } from 'react';
 
 export type Children = ChildrenArray<?Element<*>> | string;
+
+export type Style = {};

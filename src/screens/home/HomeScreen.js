@@ -52,22 +52,16 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 class HomeScreen extends Component<Props> {
   async componentDidMount() {
     if (!this.props.isLoggedIn) {
-      Screens.showLoginModal();
+      await Screens.showLoginModal();
     }
     await this.props.loadAuth();
   }
 
-  componentDidUpdate(prevProps: Props) {
+  async componentDidUpdate(prevProps: Props) {
     if (this.props.isLoggedIn && !prevProps.isLoggedIn) {
-      // TODO dismiss loginModal
-      // this.setState({
-      //   showLoginModal: false,
-      // });
+      await Screens.dismissLoginModal();
     } else if (!this.props.isLoggedIn && prevProps.isLoggedIn) {
-      Screens.showLoginModal();
-      // this.setState({
-      //   showLoginModal: true,
-      // });
+      await Screens.showLoginModal();
     }
   }
 

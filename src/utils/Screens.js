@@ -3,9 +3,13 @@ import { Navigation } from 'react-native-navigation';
 
 import { SCREEN_PARAMS, SCREENS } from '../constants';
 
-export function showLoginModal() {
-  Navigation.showModal(SCREEN_PARAMS[SCREENS.LOGIN_MODAL]);
-}
+export const showLoginModal = async () => {
+  await Navigation.showModal(SCREEN_PARAMS[SCREENS.LOGIN_MODAL]);
+};
+
+export const dismissLoginModal = async () => {
+  await Navigation.dismissModal(SCREENS.LOGIN_MODAL);
+};
 
 export function setRoot() {
   Navigation.setRoot({
