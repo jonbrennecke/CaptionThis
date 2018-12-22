@@ -5,6 +5,13 @@ export const APP_BUNDLE_ID = 'com.jonbrennecke.loginApp'; // TODO use DeviceInfo
 
 export const API_BASE_URL = 'https://reqres.in/api';
 
+export const LOADING_STATE = {
+  NOT_LOADED: 'NOT_LOADED',
+  IS_LOADING: 'IS_LOADING',
+  WAS_LOADED_SUCCESSFULLY: 'WAS_LOADED_SUCCESSFULLY',
+  WAS_LOADED_UNSUCCESSFULLY: 'WAS_LOADED_UNSUCCESSFULLY',
+};
+
 export const TEXT_COLORS = {
   LIGHT_GREY: '#B7BAE1',
   MEDIUM_GREY: '#50548E',
@@ -51,7 +58,7 @@ export const SCREEN_STYLES = {
 
 export const SINGLE_SCREEN_NAVIGATOR_PARAMS = {
   screen: {
-    screen: 'loginapp.HomeScreen',
+    screen: SCREENS.HOME_SCREEN,
     title: 'Home',
     navigatorStyle: {
       navBarHidden: true,
@@ -62,5 +69,27 @@ export const SINGLE_SCREEN_NAVIGATOR_PARAMS = {
   appStyle: {
     orientation: 'portrait',
     keepStyleAcrossPush: false,
+  },
+};
+
+export const SCREEN_PARAMS = {
+  [SCREENS.LOGIN_MODAL]: {
+    stack: {
+      children: [
+        {
+          component: {
+            name: SCREENS.LOGIN_MODAL,
+            passProps: {},
+            options: {
+              topBar: {
+                title: {
+                  text: 'Login',
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
   },
 };

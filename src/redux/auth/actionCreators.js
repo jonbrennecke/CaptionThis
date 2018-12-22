@@ -5,7 +5,7 @@ import * as Debug from '../../utils/Debug';
 import { ACTION_TYPES } from './constants';
 import { APP_BUNDLE_ID } from '../../constants';
 
-import type { Dispatch } from '../../types';
+import type { Dispatch } from '../../types/redux';
 
 export const login = (email: string, password: string) => {
   return async (dispatch: Dispatch) => {
@@ -20,6 +20,7 @@ export const login = (email: string, password: string) => {
       });
     } catch (error) {
       await Debug.logError(error);
+      dispatch({ type: ACTION_TYPES.RECEIVE_UNSUCCESSFUL_LOGIN });
     }
   };
 };
@@ -31,7 +32,7 @@ export const loadAuth = () => {
       const token = await AsyncStorage.getItem(`${APP_BUNDLE_ID}.auth.token`);
       if (token !== null) {
         dispatch({
-          type: ACTION_TYPES.RECEIVE_AUTH_TOKEN,
+          type: ACTION_TYPES.RECEIVE_SUCCESSFUL_AUTH,
           payload: {
             token,
           },
@@ -40,5 +41,6 @@ export const loadAuth = () => {
     } catch (error) {
       await Debug.logError(error);
     }
+    dispatch({ type: ACTION_TYPES.RECEIVE_UNSUCCESSFUL_AUTH });
   };
 };

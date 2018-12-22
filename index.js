@@ -7,7 +7,7 @@ import store from './src/redux/store';
 import { registerScreens } from './src/screens';
 import { SCREENS } from './src/constants';
 
-// YellowBox.ignoreWarnings(['Require cycle:']);
+YellowBox.ignoreWarnings(['Require cycle:']); // TODO: this hides a warning from the 'core-decorators' package
 
 registerScreens(store, Provider);
 

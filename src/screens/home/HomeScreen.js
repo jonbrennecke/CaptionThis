@@ -7,8 +7,9 @@ import { connect } from 'react-redux';
 import { UI_COLORS } from '../../constants';
 import { isLoggedIn } from '../../redux/auth/selectors';
 import { loadAuth } from '../../redux/auth/actionCreators';
+import * as Screens from '../../utils/Screens';
 
-import type { Dispatch, AppState } from '../../types';
+import type { Dispatch, AppState } from '../../types/redux';
 
 type OwnProps = {
   navigator: Navigator,
@@ -24,12 +25,12 @@ type DispatchProps = {
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-type State = {};
-
 const styles = {
   container: {
     flex: 1,
     backgroundColor: UI_COLORS.OFF_WHITE,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 };
 
@@ -39,7 +40,7 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
     loadAuth: () => dispatch(loadAuth()),
   };
@@ -48,17 +49,32 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 // $FlowFixMe
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
-class HomeScreen extends Component<Props, State> {
-  state: State = {};
-
+class HomeScreen extends Component<Props> {
   async componentDidMount() {
+    if (!this.props.isLoggedIn) {
+      Screens.showLoginModal();
+    }
     await this.props.loadAuth();
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.isLoggedIn && !prevProps.isLoggedIn) {
+      // TODO dismiss loginModal
+      // this.setState({
+      //   showLoginModal: false,
+      // });
+    } else if (!this.props.isLoggedIn && prevProps.isLoggedIn) {
+      Screens.showLoginModal();
+      // this.setState({
+      //   showLoginModal: true,
+      // });
+    }
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Hello</Text>
+        <Text>Home Screen</Text>
       </View>
     );
   }
