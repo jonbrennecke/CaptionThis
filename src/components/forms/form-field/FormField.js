@@ -21,9 +21,9 @@ const styles = {
     flex: 1,
     borderWidth: 1,
     backgroundColor: UI_COLORS.EXTRA_LIGHT_GREY,
-    borderColor: UI_COLORS.DARK_GREY,
+    borderColor: 'transparent',
     borderStyle: 'solid',
-    borderRadius: 5,
+    borderRadius: 7,
     paddingHorizontal: 20,
   },
   label: {

@@ -10,7 +10,7 @@ type Props = {
   value: ?string,
   onShouldChangeValue: (text: string) => void,
   style?: ?Style,
-};
+}; // TODO: union with TextInput props
 
 const styles = {
   textInput: {
@@ -23,12 +23,14 @@ export default function FormTextInput({
   style,
   value,
   onShouldChangeValue,
+  ...etc
 }: Props) {
   return (
     <TextInput
       style={[styles.textInput, style]}
       value={value}
       onChangeText={onShouldChangeValue}
+      {...etc}
     />
   );
 }

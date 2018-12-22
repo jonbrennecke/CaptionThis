@@ -26,7 +26,7 @@ const styles = {
     backgroundColor: UI_COLORS.DARK_GREY,
     paddingHorizontal: size === 'small' ? 37 : 45,
     paddingVertical: size === 'small' ? 7 : 12,
-    borderRadius: 5,
+    borderRadius: 7,
   }),
   buttonShadow: (shadowStyle: ButtonShadowStyle) => ({
     elevation: getShadowElevation(shadowStyle),

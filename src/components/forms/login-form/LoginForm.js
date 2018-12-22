@@ -35,12 +35,18 @@ export default function LoginForm(props: Props) {
     <View style={styles.container}>
       <FormField labelText="Email" style={styles.formField}>
         <FormTextInput
+          autoCapitalize="none"
+          autoCorrect={false}
           value={props.email}
+          keyboardType="email-address"
           onShouldChangeValue={props.onShouldChangeEmail}
         />
       </FormField>
       <FormField labelText="Password" style={styles.formField}>
         <FormTextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          secureTextEntry
           value={props.password}
           onShouldChangeValue={props.onShouldChangePassword}
         />

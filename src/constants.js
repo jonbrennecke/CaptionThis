@@ -49,12 +49,16 @@ export const FONT_STYLES = {
   FORM_LABEL_DEFAULT_STYLES: {
     color: TEXT_COLORS.DARK_GREY,
     fontFamily: FONTS.PT_SANS_REGULAR,
-    fontSize: 13,
+    fontSize: 11,
+    textTransform: 'uppercase',
+    letterSpacing: 1.8,
   },
   BUTTON_DEFAULT_STYLES: {
     color: TEXT_COLORS.WHITE,
     fontFamily: FONTS.PT_SANS_REGULAR,
-    fontSize: 17,
+    fontSize: 15,
+    textTransform: 'uppercase',
+    letterSpacing: 1.8,
   },
   HEADING_DEFAULT_STYLES: {
     color: TEXT_COLORS.MEDIUM_GREY,
@@ -90,19 +94,6 @@ export const SCREENS = {
   LOGIN_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
 };
 
-export const SCREEN_STYLES = {
-  NAVBAR: {
-    navBarBackgroundColor: UI_COLORS.WHITE,
-    navBarTextColor: TEXT_COLORS.DARK_GREY,
-    navBarTextFontSize: 22,
-    navBarTextFontFamily: FONTS.PT_SANS_REGULAR,
-    navBarTitleTextCentered: true,
-    navBarHeight: 70,
-    navBarButtonColor: UI_COLORS.DARK_GREY,
-    statusBarTextColorScheme: 'light',
-  },
-};
-
 export const SCREEN_PARAMS = {
   [SCREENS.LOGIN_MODAL]: {
     stack: {
@@ -115,6 +106,10 @@ export const SCREEN_PARAMS = {
               topBar: {
                 title: {
                   text: 'Login',
+                  color: TEXT_COLORS.DARK_GREY,
+                  fontFamily: FONTS.PT_SANS_REGULAR,
+                  fontWeight: 'bold',
+                  fontSize: 15,
                 },
               },
               overlay: {
@@ -140,6 +135,10 @@ export const SCREEN_PARAMS = {
               topBar: {
                 title: {
                   text: 'Home',
+                  color: TEXT_COLORS.DARK_GREY,
+                  fontFamily: FONTS.PT_SANS_REGULAR,
+                  fontWeight: 'bold',
+                  fontSize: 15,
                 },
               },
               layout: {
