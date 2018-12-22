@@ -8,6 +8,7 @@ import { UI_COLORS } from '../../constants';
 import { isLoggedIn } from '../../redux/auth/selectors';
 import { loadAuth } from '../../redux/auth/actionCreators';
 import * as Screens from '../../utils/Screens';
+import * as Fonts from '../../utils/Fonts';
 
 import type { Dispatch, AppState } from '../../types/redux';
 
@@ -32,6 +33,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  text: Fonts.getFontStyle('heading'),
 };
 
 function mapStateToProps(state: AppState): StateProps {
@@ -68,7 +70,7 @@ class HomeScreen extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Home Screen</Text>
+        <Text style={styles.text}>Welcome back!</Text>
       </View>
     );
   }
