@@ -29,6 +29,8 @@ type Props = OwnProps & StateProps & DispatchProps;
 type State = {
   email: ?string,
   password: ?string,
+  isValidEmail: boolean,
+  isValidPassword: boolean,
 };
 
 const styles = {
@@ -73,16 +75,28 @@ export default class LoginModal extends Component<Props, State> {
   state: State = {
     email: null,
     password: null,
+    isValidEmail: true,
+    isValidPassword: true,
   };
 
   async validateAndSubmitLogin() {
     const { email, password } = this.state;
-    if (!email || !password) {
+    const emailIsInvalid = !email || !Validate.isValidEmail(email);
+    const passwordIsInvalid = !password || !Validate.isValidPassword(password);
+    if (emailIsInvalid) {
+      this.setState({
+        isValidEmail: false,
+      });
+    }
+    if (passwordIsInvalid) {
+      this.setState({
+        isValidPassword: false,
+      });
+    }
+    if (emailIsInvalid || passwordIsInvalid) {
       return;
     }
-    if (!Validate.isValidEmail(email) || !Validate.isValidPassword(password)) {
-      return;
-    }
+    // $FlowFixMe
     await this.props.login(email, password);
   }
 
@@ -91,9 +105,15 @@ export default class LoginModal extends Component<Props, State> {
       <View style={styles.container}>
         <LoginForm
           email={this.state.email}
-          onShouldChangeEmail={email => this.setState({ email })}
+          isValidEmail={this.state.isValidEmail}
+          isValidPassword={this.state.isValidPassword}
+          onShouldChangeEmail={email =>
+            this.setState({ email, isValidEmail: true })
+          }
           password={this.state.password}
-          onShouldChangePassword={password => this.setState({ password })}
+          onShouldChangePassword={password =>
+            this.setState({ password, isValidPassword: true })
+          }
           onShouldSubmit={() => {
             this.validateAndSubmitLogin();
           }}

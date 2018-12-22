@@ -12,6 +12,8 @@ type Props = {
   onShouldChangeEmail: (email: string) => void,
   onShouldChangePassword: (password: string) => void,
   onShouldSubmit: () => void,
+  isValidEmail: boolean,
+  isValidPassword: boolean,
 };
 
 const styles = {
@@ -33,7 +35,11 @@ const styles = {
 export default function LoginForm(props: Props) {
   return (
     <View style={styles.container}>
-      <FormField labelText="Email" style={styles.formField}>
+      <FormField
+        labelText="Email"
+        style={styles.formField}
+        isValid={props.isValidEmail}
+      >
         <FormTextInput
           autoCapitalize="none"
           autoCorrect={false}
@@ -42,7 +48,11 @@ export default function LoginForm(props: Props) {
           onShouldChangeValue={props.onShouldChangeEmail}
         />
       </FormField>
-      <FormField labelText="Password" style={styles.formField}>
+      <FormField
+        labelText="Password"
+        style={styles.formField}
+        isValid={props.isValidPassword}
+      >
         <FormTextInput
           autoCapitalize="none"
           autoCorrect={false}

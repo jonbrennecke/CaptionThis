@@ -26,6 +26,7 @@ export const UI_COLORS = {
   DARK_GREY: '#3B3E6F',
   LIGHT_GREY: '#B7BAE1',
   EXTRA_LIGHT_GREY: '#B7BAE1',
+  MEDIUM_RED: '#f4a09c',
 };
 
 export const FONTS = {
