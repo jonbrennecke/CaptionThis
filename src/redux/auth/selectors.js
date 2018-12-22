@@ -10,8 +10,7 @@ export function getToken(state: AppState): ?string {
 export function isLoggedIn(state: AppState): boolean {
   const wasLoaded =
     state.auth.authLoadingState == LOADING_STATE.WAS_LOADED_SUCCESSFULLY;
-  const hasToken = !!getToken(state);
-  return wasLoaded && hasToken;
+  return wasLoaded;
 }
 
 export function isLoadingAuth(state: AppState): boolean {

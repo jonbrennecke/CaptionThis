@@ -8,7 +8,7 @@ export const showLoginModal = async () => {
 };
 
 export const dismissLoginModal = async () => {
-  await Navigation.dismissModal(SCREENS.LOGIN_MODAL);
+  await Navigation.dismissAllModals();
 };
 
 export function setRoot() {
