@@ -16,6 +16,7 @@
   "dependencies": {
     "bluebird": "^3.5.3",
     "core-decorators": "0.20.0",
+    "hex2rgb": "2.2.0",
     "isomorphic-fetch": "^2.2.1",
     "querystring": "0.2.0",
     "react": "16.6.3",

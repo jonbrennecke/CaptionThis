@@ -8,14 +8,11 @@ import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
 import { requireLoggedInUser } from '../../utils/Auth';
 
-type OwnProps = {
-};
+type OwnProps = {};
 
-type StateProps = {
-};
+type StateProps = {};
 
-type DispatchProps = {
-};
+type DispatchProps = {};
 
 type Props = OwnProps & StateProps & DispatchProps;
 

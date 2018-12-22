@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import * as Validate from '../../utils/Validate';
 import * as Fonts from '../../utils/Fonts';
+import { hexToRgbaString } from '../../utils/Color';
 import LoginForm from '../../components/forms/login-form/LoginForm';
 import { UI_COLORS } from '../../constants';
 import { login } from '../../redux/auth/actionCreators';
@@ -42,7 +43,9 @@ const styles = {
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: isLoadingAuth ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.0)', // TODO: use Color util
+    backgroundColor: isLoadingAuth
+      ? hexToRgbaString(UI_COLORS.DARK_GREY, 0.5)
+      : 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
@@ -91,9 +94,14 @@ export default class LoginModal extends Component<Props, State> {
           onShouldChangeEmail={email => this.setState({ email })}
           password={this.state.password}
           onShouldChangePassword={password => this.setState({ password })}
-          onShouldSubmit={() => { this.validateAndSubmitLogin(); }}
+          onShouldSubmit={() => {
+            this.validateAndSubmitLogin();
+          }}
         />
-        <View style={styles.loadingOverlay(this.props.isLoadingAuth)} pointerEvents="none">
+        <View
+          style={styles.loadingOverlay(this.props.isLoadingAuth)}
+          pointerEvents="none"
+        >
           <Text style={styles.text}>Loading...</Text>
         </View>
       </View>

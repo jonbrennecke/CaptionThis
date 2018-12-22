@@ -35,7 +35,6 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 export function requireLoggedInUser<P, S>(
   WrappedComponent: Class<Component<P & Props, S>>
 ): Class<Component<P, S>> {
-  
   class RequireAuth extends Component<Props> {
     async componentDidMount() {
       if (!this.props.isLoggedIn) {
