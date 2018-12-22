@@ -5,18 +5,12 @@ import { Navigation } from 'react-native-navigation';
 
 import store from './src/redux/store';
 import { registerScreens } from './src/screens';
-import { SCREENS } from './src/constants';
+import * as Screens from './src/utils/Screens';
 
-YellowBox.ignoreWarnings(['Require cycle:']); // TODO: this hides a warning from the 'core-decorators' package
+YellowBox.ignoreWarnings(['Require cycle:']); // NOTE: this hides a warning from the 'core-decorators' package
 
 registerScreens(store, Provider);
 
 Navigation.events().registerAppLaunchedListener(() => {
-  Navigation.setRoot({
-    root: {
-      component: {
-        name: SCREENS.HOME_SCREEN,
-      }
-    }
-  });
+  Screens.setRoot();
 });

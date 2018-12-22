@@ -56,22 +56,6 @@ export const SCREEN_STYLES = {
   },
 };
 
-export const SINGLE_SCREEN_NAVIGATOR_PARAMS = {
-  screen: {
-    screen: SCREENS.HOME_SCREEN,
-    title: 'Home',
-    navigatorStyle: {
-      navBarHidden: true,
-      ...SCREEN_STYLES.NAVBAR,
-    },
-    navigatorButtons: {},
-  },
-  appStyle: {
-    orientation: 'portrait',
-    keepStyleAcrossPush: false,
-  },
-};
-
 export const SCREEN_PARAMS = {
   [SCREENS.LOGIN_MODAL]: {
     stack: {
@@ -85,6 +69,34 @@ export const SCREEN_PARAMS = {
                 title: {
                   text: 'Login',
                 },
+              },
+              overlay: {
+                interceptTouchOutside: true
+              },
+              layout: {
+                orientation: ['portrait'],
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
+  [SCREENS.HOME_SCREEN]: {
+    stack: {
+      children: [
+        {
+          component: {
+            name: SCREENS.HOME_SCREEN,
+            passProps: {},
+            options: {
+              topBar: {
+                title: {
+                  text: 'Home',
+                },
+              },
+              layout: {
+                orientation: ['portrait'],
               },
             },
           },
