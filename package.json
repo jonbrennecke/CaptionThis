@@ -7,6 +7,7 @@
     "test": "jest",
     "check": "./scripts/check.sh",
     "flow": "flow",
+    "flow-typed": "flow-typed",
     "format": "prettier --trailing-comma es5 --single-quote --write \"src/**/*.js\"",
     "ios": "react-native run-ios",
     "android": "react-native run-android",

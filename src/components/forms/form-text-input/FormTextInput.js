@@ -2,7 +2,7 @@
 import React from 'react';
 import { TextInput } from 'react-native';
 
-import { TEXT_COLORS, FONTS, FONT_SIZES } from '../../../constants';
+import * as Fonts from '../../../utils/Fonts';
 
 import type { Style } from '../../../types/react';
 
@@ -15,13 +15,15 @@ type Props = {
 const styles = {
   textInput: {
     flex: 1,
-    color: TEXT_COLORS.DARK_GREY,
-    fontFamily: FONTS.PASSION_ONE,
-    fontSize: FONT_SIZES.INPUT,
+    ...Fonts.getFontStyle('form-input'),
   },
 };
 
-export default function FormTextInput({ style, value, onShouldChangeValue }: Props) {
+export default function FormTextInput({
+  style,
+  value,
+  onShouldChangeValue,
+}: Props) {
   return (
     <TextInput
       style={[styles.textInput, style]}

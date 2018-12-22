@@ -53,6 +53,9 @@ class LoginModal extends Component<Props, State> {
           onShouldChangeEmail={email => this.setState({ email })}
           password={this.state.password}
           onShouldChangePassword={password => this.setState({ password })}
+          onShouldSubmit={() => {
+            // TODO
+          }}
         />
       </View>
     );

@@ -40,9 +40,49 @@ export const FONTS = {
   }),
 };
 
-export const FONT_SIZES = {
-  LABEL: 15,
-  INPUT: 17,
+export const FONT_STYLES = {
+  FORM_INPUT_DEFAULT_STYLES: {
+    color: TEXT_COLORS.DARK_GREY,
+    fontFamily: FONTS.PT_SANS_REGULAR,
+    fontSize: 17,
+  },
+  FORM_LABEL_DEFAULT_STYLES: {
+    color: TEXT_COLORS.DARK_GREY,
+    fontFamily: FONTS.PT_SANS_REGULAR,
+    fontSize: 13,
+  },
+  BUTTON_DEFAULT_STYLES: {
+    color: TEXT_COLORS.WHITE,
+    fontFamily: FONTS.PT_SANS_REGULAR,
+    fontSize: 17,
+  },
+  HEADING_DEFAULT_STYLES: {
+    color: TEXT_COLORS.MEDIUM_GREY,
+    fontFamily: FONTS.PT_SANS_REGULAR,
+    fontSize: 17,
+  },
+  HEADING_LIGHT_CONTENT_STYLES: {
+    color: TEXT_COLORS.WHITE,
+  },
+  HEADING_SMALL_FONT_SIZE_STYLES: {
+    fontSize: 13,
+  },
+  HEADING_LARGE_FONT_SIZE_STYLES: {
+    fontSize: 23,
+  },
+  CALL_TO_ACTION_FONT_STYLES: {
+    color: TEXT_COLORS.MEDIUM_GREY,
+    fontFamily: FONTS.PT_SANS_REGULAR,
+    fontSize: 23,
+    textAlign: 'center',
+  },
+  TITLE_FONT_STYLES: {
+    color: TEXT_COLORS.MEDIUM_GREY,
+    fontFamily: FONTS.PT_SANS_REGULAR,
+    fontSize: 23,
+    fontWeight: 'bold',
+    letterSpacing: 1.2,
+  },
 };
 
 export const SCREENS = {

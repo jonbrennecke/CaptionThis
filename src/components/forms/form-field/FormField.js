@@ -2,7 +2,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import { UI_COLORS, TEXT_COLORS, FONTS, FONT_SIZES } from '../../../constants';
+import { UI_COLORS } from '../../../constants';
+import * as Fonts from '../../../utils/Fonts';
 
 import type { Children, Style } from '../../../types/react';
 
@@ -26,9 +27,8 @@ const styles = {
     paddingHorizontal: 20,
   },
   label: {
-    color: TEXT_COLORS.DARK_GREY,
-    fontFamily: FONTS.PASSION_ONE,
-    fontSize: FONT_SIZES.LABEL,
+    ...Fonts.getFontStyle('form-label'),
+    marginBottom: 7,
   },
 };
 
