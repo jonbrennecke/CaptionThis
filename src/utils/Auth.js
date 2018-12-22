@@ -32,7 +32,7 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   };
 }
 
-export function requireAuth<P, S>(
+export function requireLoggedInUser<P, S>(
   WrappedComponent: Class<Component<P & Props, S>>
 ): Class<Component<P, S>> {
   

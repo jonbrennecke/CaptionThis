@@ -13,3 +13,7 @@ export function isLoggedIn(state: AppState): boolean {
   const hasToken = !!getToken(state);
   return wasLoaded && hasToken;
 }
+
+export function isLoadingAuth(state: AppState): boolean {
+  return state.auth.authLoadingState === LOADING_STATE.IS_LOADING;
+}

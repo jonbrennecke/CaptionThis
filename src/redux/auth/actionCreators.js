@@ -11,7 +11,7 @@ export const login = (email: string, password: string) => {
   return async (dispatch: Dispatch) => {
     dispatch({ type: ACTION_TYPES.START_LOGIN });
     try {
-      const token = actions.login(email, password);
+      const token = await actions.login(email, password);
       dispatch({
         type: ACTION_TYPES.RECEIVE_SUCCESSFUL_LOGIN,
         payload: {

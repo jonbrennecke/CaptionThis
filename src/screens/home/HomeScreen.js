@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
-import { requireAuth } from '../../utils/Auth';
+import { requireLoggedInUser } from '../../utils/Auth';
 
 type OwnProps = {
 };
@@ -38,7 +38,7 @@ function mapDispatchToProps(): DispatchProps {
 }
 
 // $FlowFixMe
-@requireAuth
+@requireLoggedInUser
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class HomeScreen extends Component<Props> {
