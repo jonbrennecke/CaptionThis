@@ -12,6 +12,7 @@ type ButtonShadowStyle = 'flat' | 'thin' | 'large';
 
 type Props = {
   style?: Style | Style[],
+  textStyle?: Style | Style[],
   size: ButtonSize,
   shadowStyle: ButtonShadowStyle,
   disabled?: boolean,
@@ -34,7 +35,7 @@ const styles = {
   disabled: {
     opacity: 0.5,
   },
-  contextButtonText: Fonts.getFontStyle('button'),
+  buttonText: Fonts.getFontStyle('button'),
 };
 
 export default class Button extends Component<Props, {}> {
@@ -55,7 +56,10 @@ export default class Button extends Component<Props, {}> {
         disabled={this.props.disabled}
         onPress={this.props.onPress}
       >
-        <Text numberOfLines={1} style={styles.contextButtonText}>
+        <Text
+          numberOfLines={1}
+          style={[styles.buttonText, this.props.textStyle]}
+        >
           {this.props.text}
         </Text>
       </TouchableOpacity>

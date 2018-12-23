@@ -11,6 +11,7 @@ import LoginForm from '../../components/forms/login-form/LoginForm';
 import { UI_COLORS } from '../../constants';
 import { login } from '../../redux/auth/actionCreators';
 import { isLoadingAuth } from '../../redux/auth/selectors';
+import Button from '../../components/button/Button';
 
 import type { AppState, Dispatch } from '../../types/redux';
 
@@ -52,7 +53,19 @@ const styles = {
     justifyContent: 'center',
     flex: 1,
   }),
-  text: Fonts.getFontStyle('heading', { contentStyle: 'light-content' }),
+  register: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  registerButtonText: Fonts.getFontStyle('button', { size: 'small' }),
+  registerText: {
+    ...Fonts.getFontStyle('default'),
+    marginBottom: 7,
+  },
+  loadingOverlayText: Fonts.getFontStyle('heading', {
+    contentStyle: 'light-content',
+  }),
 };
 
 function mapStateToProps(state: AppState): StateProps {
@@ -98,6 +111,10 @@ export default class LoginModal extends Component<Props, State> {
     }
     // $FlowFixMe
     await this.props.login(email, password);
+  } 
+
+  presentRegisterForm() {
+    
   }
 
   render() {
@@ -118,11 +135,20 @@ export default class LoginModal extends Component<Props, State> {
             this.validateAndSubmitLogin();
           }}
         />
+        <View style={styles.register}>
+          <Text style={styles.registerText}>{"Don't have an account?"}</Text>
+          <Button
+            textStyle={styles.registerButtonText}
+            size="small"
+            text="Sign up now"
+            onPress={this.presentRegisterForm}
+          />
+        </View>
         <View
           style={styles.loadingOverlay(this.props.isLoadingAuth)}
           pointerEvents="none"
         >
-          <Text style={styles.text}>Loading...</Text>
+          <Text style={styles.loadingOverlayText}>Loading...</Text>
         </View>
       </View>
     );

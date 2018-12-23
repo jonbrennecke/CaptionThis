@@ -42,6 +42,11 @@ export const FONTS = {
 };
 
 export const FONT_STYLES = {
+  DEFAULT_FONT_STYLES: {
+    color: TEXT_COLORS.DARK_GREY,
+    fontFamily: FONTS.PT_SANS_REGULAR,
+    fontSize: 13,
+  },
   FORM_INPUT_DEFAULT_STYLES: {
     color: TEXT_COLORS.DARK_GREY,
     fontFamily: FONTS.PT_SANS_REGULAR,
@@ -60,6 +65,9 @@ export const FONT_STYLES = {
     fontSize: 15,
     textTransform: 'uppercase',
     letterSpacing: 1.8,
+  },
+  BUTTON_SMALL_FONT_SIZE_STYLES: {
+    fontSize: 11,
   },
   HEADING_DEFAULT_STYLES: {
     color: TEXT_COLORS.MEDIUM_GREY,
