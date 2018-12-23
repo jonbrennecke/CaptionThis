@@ -14,13 +14,15 @@
       "plugin:react/recommended",
       "plugin:flowtype/recommended",
       "plugin:import/errors",
-      "plugin:import/warnings"
+      "plugin:import/warnings",
+      "plugin:jest/recommended"
     ],
     "plugins": [
       "import",
       "flowtype",
       "prettier",
-      "react"
+      "react",
+      "jest"
     ],
     "parserOptions": {
       "ecmaVersion": 7,

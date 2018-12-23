@@ -111,11 +111,9 @@ export default class LoginModal extends Component<Props, State> {
     }
     // $FlowFixMe
     await this.props.login(email, password);
-  } 
-
-  presentRegisterForm() {
-    
   }
+
+  presentRegisterForm() {}
 
   render() {
     return (
