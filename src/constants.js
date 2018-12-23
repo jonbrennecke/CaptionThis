@@ -102,6 +102,7 @@ export const SCREEN_PARAMS = {
         {
           component: {
             name: SCREENS.LOGIN_MODAL,
+            id: SCREENS.LOGIN_MODAL,
             passProps: {},
             options: {
               topBar: {
@@ -131,6 +132,7 @@ export const SCREEN_PARAMS = {
         {
           component: {
             name: SCREENS.HOME_SCREEN,
+            id: SCREENS.HOME_SCREEN,
             passProps: {},
             options: {
               topBar: {
