@@ -2,7 +2,7 @@
 import qs from 'querystring';
 import extend from 'lodash/extend';
 import Promise from 'bluebird';
-// import fetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch'; // TODO: only include isomorphic fetch in jest tests
 
 export function getRequest({ ...rest }: any) {
   return request({ method: 'GET', ...rest });

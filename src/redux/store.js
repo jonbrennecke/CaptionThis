@@ -18,4 +18,6 @@ const middleware = isProduction
   ? applyMiddleware(thunkMiddleware)
   : applyMiddleware(thunkMiddleware, loggerMiddleware);
 
-export default createStore(rootReducer, middleware);
+export default () => {
+  return createStore(rootReducer, middleware);
+};
