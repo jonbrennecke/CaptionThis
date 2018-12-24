@@ -39,7 +39,7 @@ export default function LoginForm(props: Props) {
   return (
     <View style={styles.container}>
       <FormField
-        labelText="Email"
+        labelText="EMAIL"
         style={styles.formField}
         isValid={props.isValidEmail}
       >
@@ -52,7 +52,7 @@ export default function LoginForm(props: Props) {
         />
       </FormField>
       <FormField
-        labelText="Password"
+        labelText="PASSWORD"
         style={styles.formField}
         isValid={props.isValidPassword}
       >
@@ -66,7 +66,7 @@ export default function LoginForm(props: Props) {
       </FormField>
       <Button
         style={styles.submitButton}
-        text="Login"
+        text="LOGIN"
         onPress={props.onShouldSubmit}
         disabled={submitDisabled}
       />

@@ -56,14 +56,12 @@ export const FONT_STYLES = {
     color: TEXT_COLORS.DARK_GREY,
     fontFamily: FONTS.PT_SANS_REGULAR,
     fontSize: 11,
-    textTransform: 'uppercase',
     letterSpacing: 1.8,
   },
   BUTTON_DEFAULT_STYLES: {
     color: TEXT_COLORS.WHITE,
     fontFamily: FONTS.PT_SANS_REGULAR,
     fontSize: 15,
-    textTransform: 'uppercase',
     letterSpacing: 1.8,
   },
   BUTTON_SMALL_FONT_SIZE_STYLES: {

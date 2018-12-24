@@ -30,11 +30,10 @@ exports[`renders as expected 1`] = `
           "fontSize": 11,
           "letterSpacing": 1.8,
           "marginBottom": 7,
-          "textTransform": "uppercase",
         }
       }
     >
-      Email
+      EMAIL
     </Text>
     <View
       style={
@@ -93,11 +92,10 @@ exports[`renders as expected 1`] = `
           "fontSize": 11,
           "letterSpacing": 1.8,
           "marginBottom": 7,
-          "textTransform": "uppercase",
         }
       }
     >
-      Password
+      PASSWORD
     </Text>
     <View
       style={
@@ -168,13 +166,12 @@ exports[`renders as expected 1`] = `
             "fontFamily": "PT Sans",
             "fontSize": 15,
             "letterSpacing": 1.8,
-            "textTransform": "uppercase",
           },
           undefined,
         ]
       }
     >
-      Login
+      LOGIN
     </Text>
   </View>
 </View>

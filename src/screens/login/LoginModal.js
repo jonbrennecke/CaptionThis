@@ -138,7 +138,7 @@ export default class LoginModal extends Component<Props, State> {
           <Button
             textStyle={styles.registerButtonText}
             size="small"
-            text="Sign up now"
+            text="SIGN UP"
             onPress={this.presentRegisterForm}
           />
         </View>
