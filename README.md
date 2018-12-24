@@ -1,5 +1,5 @@
 ## React Native Login App
-_____
+
 #### Description:
 
 A simple React Native app demonstrating industry-standard concepts like Flow type-checking, Redux, Eslint and Prettier. 
