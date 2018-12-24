@@ -2,6 +2,10 @@
 import createStore from '../../store';
 import { login } from '../actionCreators';
 import { isLoggedIn } from '../selectors';
+import fetch from 'isomorphic-fetch';
+
+// eslint-disable-next-line no-undef
+global.fetch = fetch;
 
 test('login attempt with correct credentials works', async () => {
   const store = createStore();
