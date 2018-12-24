@@ -17,6 +17,7 @@ type Props = {
 const styles = {
   container: {
     flex: 1,
+    minHeight: 75,
   },
   inside: (isValid: boolean) => ({
     flex: 1,

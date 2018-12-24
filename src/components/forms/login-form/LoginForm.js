@@ -6,7 +6,10 @@ import FormTextInput from '../form-text-input/FormTextInput';
 import FormField from '../form-field/FormField';
 import Button from '../../button/Button';
 
+import type { Style } from '../../../types/react';
+
 type Props = {
+  style?: Style,
   email: ?string,
   password: ?string,
   onShouldChangeEmail: (email: string) => void,
@@ -37,13 +40,14 @@ export default function LoginForm(props: Props) {
   const hasValidInput = props.isValidEmail && props.isValidPassword;
   const submitDisabled = !hasInput || !hasValidInput;
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, props.style]}>
       <FormField
-        labelText="Email"
+        labelText="EMAIL"
         style={styles.formField}
         isValid={props.isValidEmail}
       >
         <FormTextInput
+          autoFocus
           autoCapitalize="none"
           autoCorrect={false}
           value={props.email}
@@ -52,7 +56,7 @@ export default function LoginForm(props: Props) {
         />
       </FormField>
       <FormField
-        labelText="Password"
+        labelText="PASSWORD"
         style={styles.formField}
         isValid={props.isValidPassword}
       >
@@ -66,7 +70,7 @@ export default function LoginForm(props: Props) {
       </FormField>
       <Button
         style={styles.submitButton}
-        text="Login"
+        text="LOGIN"
         onPress={props.onShouldSubmit}
         disabled={submitDisabled}
       />

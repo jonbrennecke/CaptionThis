@@ -5,12 +5,13 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
+    "update-snapshot": "jest --updateSnapshot",
     "check": "./scripts/check.sh",
     "flow": "flow",
     "flow-typed": "flow-typed",
     "format": "prettier --trailing-comma es5 --single-quote --write \"src/**/*.js\"",
     "ios": "react-native run-ios",
-    "android": "react-native run-android",
+    "android": "cd ./android && ./gradlew app:assembleDebug && ./gradlew installDebug",
     "link": "react-native link"
   },
   "dependencies": {
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.2.3",
     "@babel/plugin-proposal-decorators": "7.2.3",
+    "@babel/plugin-transform-flow-strip-types": "7.2.3",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "23.6.0",
     "eslint": "4.19.1",
