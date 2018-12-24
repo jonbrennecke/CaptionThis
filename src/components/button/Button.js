@@ -20,6 +20,8 @@ type Props = {
   onPress: () => void,
 };
 
+const buttonFontStyle = Fonts.getFontStyle('button');
+
 const styles = {
   button: (size: ButtonSize) => ({
     alignItems: 'center',
@@ -28,6 +30,7 @@ const styles = {
     paddingHorizontal: size === 'small' ? 37 : 45,
     paddingVertical: size === 'small' ? 7 : 12,
     borderRadius: 7,
+    minHeight: buttonFontStyle.fontSize * 1.8 + (size === 'small' ? 7 : 12),
   }),
   buttonShadow: (shadowStyle: ButtonShadowStyle) => ({
     elevation: getShadowElevation(shadowStyle),
@@ -35,7 +38,7 @@ const styles = {
   disabled: {
     opacity: 0.5,
   },
-  buttonText: Fonts.getFontStyle('button'),
+  buttonText: buttonFontStyle,
 };
 
 export default class Button extends Component<Props, {}> {

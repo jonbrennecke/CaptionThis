@@ -1,6 +1,10 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+} from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 
@@ -12,6 +16,7 @@ import { UI_COLORS } from '../../constants';
 import { login } from '../../redux/auth/actionCreators';
 import { isLoadingAuth } from '../../redux/auth/selectors';
 import Button from '../../components/button/Button';
+import KeyboardAvoidingView from '../../components/keyboard-avoiding-view/KeyboardAvoidingView';
 
 import type { AppState, Dispatch } from '../../types/redux';
 
@@ -38,6 +43,15 @@ const styles = {
   container: {
     flex: 1,
     backgroundColor: UI_COLORS.OFF_WHITE,
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollViewContents: {
+    flex: 1,
     padding: 20,
   },
   loadingOverlay: (isLoadingAuth: boolean) => ({
@@ -49,12 +63,16 @@ const styles = {
     backgroundColor: isLoadingAuth
       ? hexToRgbaString(UI_COLORS.DARK_GREY, 0.5)
       : 'transparent',
+    opacity: isLoadingAuth ? 1 : 0,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
   }),
+  loginForm: {
+    flexGrow: 1,
+  },
   register: {
-    flex: 1,
+    marginVertical: 25,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -118,30 +136,42 @@ export default class LoginModal extends Component<Props, State> {
   render() {
     return (
       <View style={styles.container}>
-        <LoginForm
-          email={this.state.email}
-          isValidEmail={this.state.isValidEmail}
-          isValidPassword={this.state.isValidPassword}
-          onShouldChangeEmail={email =>
-            this.setState({ email, isValidEmail: true })
-          }
-          password={this.state.password}
-          onShouldChangePassword={password =>
-            this.setState({ password, isValidPassword: true })
-          }
-          onShouldSubmit={() => {
-            this.validateAndSubmitLogin();
-          }}
-        />
-        <View style={styles.register}>
-          <Text style={styles.registerText}>{"Don't have an account?"}</Text>
-          <Button
-            textStyle={styles.registerButtonText}
-            size="small"
-            text="SIGN UP"
-            onPress={this.presentRegisterForm}
+        <KeyboardAvoidingView style={styles.keyboardAvoidingView}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollViewContents}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
+          alwaysBounceVertical
+          overScrollMode="always"
+        >
+          <LoginForm
+            style={styles.loginForm}
+            email={this.state.email}
+            isValidEmail={this.state.isValidEmail}
+            isValidPassword={this.state.isValidPassword}
+            onShouldChangeEmail={email =>
+              this.setState({ email, isValidEmail: true })
+            }
+            password={this.state.password}
+            onShouldChangePassword={password =>
+              this.setState({ password, isValidPassword: true })
+            }
+            onShouldSubmit={() => {
+              this.validateAndSubmitLogin();
+            }}
           />
-        </View>
+          <View style={styles.register}>
+            <Text style={styles.registerText}>{"Don't have an account?"}</Text>
+            <Button
+              textStyle={styles.registerButtonText}
+              size="small"
+              text="SIGN UP"
+              onPress={this.presentRegisterForm}
+            />
+          </View>
+        </ScrollView>
+        </KeyboardAvoidingView>
         <View
           style={styles.loadingOverlay(this.props.isLoadingAuth)}
           pointerEvents="none"
