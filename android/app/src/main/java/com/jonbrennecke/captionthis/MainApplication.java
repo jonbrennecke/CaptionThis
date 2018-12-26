@@ -1,4 +1,4 @@
-package com.templateapp;
+package com.jonbrennecke.captionthis;
 
 import android.app.Application;
 

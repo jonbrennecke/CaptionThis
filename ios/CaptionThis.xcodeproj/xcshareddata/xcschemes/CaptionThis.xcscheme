@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "TemplateApp.app"
-               BlueprintName = "TemplateApp"
-               ReferencedContainer = "container:TemplateApp.xcodeproj">
+               BuildableName = "CaptionThis.app"
+               BlueprintName = "CaptionThis"
+               ReferencedContainer = "container:CaptionThis.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "TemplateAppTests.xctest"
-               BlueprintName = "TemplateAppTests"
-               ReferencedContainer = "container:TemplateApp.xcodeproj">
+               BuildableName = "CaptionThisTests.xctest"
+               BlueprintName = "CaptionThisTests"
+               ReferencedContainer = "container:CaptionThis.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "TemplateAppTests.xctest"
-               BlueprintName = "TemplateAppTests"
-               ReferencedContainer = "container:TemplateApp.xcodeproj">
+               BuildableName = "CaptionThisTests.xctest"
+               BlueprintName = "CaptionThisTests"
+               ReferencedContainer = "container:CaptionThis.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "TemplateApp.app"
-            BlueprintName = "TemplateApp"
-            ReferencedContainer = "container:TemplateApp.xcodeproj">
+            BuildableName = "CaptionThis.app"
+            BlueprintName = "CaptionThis"
+            ReferencedContainer = "container:CaptionThis.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "TemplateApp.app"
-            BlueprintName = "TemplateApp"
-            ReferencedContainer = "container:TemplateApp.xcodeproj">
+            BuildableName = "CaptionThis.app"
+            BlueprintName = "CaptionThis"
+            ReferencedContainer = "container:CaptionThis.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "TemplateApp.app"
-            BlueprintName = "TemplateApp"
-            ReferencedContainer = "container:TemplateApp.xcodeproj">
+            BuildableName = "CaptionThis.app"
+            BlueprintName = "CaptionThis"
+            ReferencedContainer = "container:CaptionThis.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
