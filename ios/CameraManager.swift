@@ -18,7 +18,7 @@ class CameraManager: NSObject {
   private var captureDeviceInput: AVCaptureDeviceInput?
   private var synchronizer: AVCaptureDataOutputSynchronizer?
   public var delegate: CameraManagerDelegate?
-  public var previewLayer: AVCaptureVideoPreviewLayer
+  @objc public var previewLayer: AVCaptureVideoPreviewLayer
   
   override init() {
     captureSession = AVCaptureSession()
@@ -108,14 +108,15 @@ class CameraManager: NSObject {
   }
   
   public func isAuthorized() -> Bool {
-    if case .authorized = AVCaptureDevice.authorizationStatus(for: .video) {
+    if case .authorized = AVCaptureDevice.authorizationStatus(for: .video),
+      case .authorized = AVCaptureDevice.authorizationStatus(for: .audio) {
       return true
     }
     return false
   }
   
+  @objc
   public func startPreview() {
-    // TODO if capture session is not configured, call self.setupCaptureSession()
     if case .authorized = AVCaptureDevice.authorizationStatus(for: .video) {
       guard captureSession.isRunning else {
         Debug.log(message: "Starting camera capture session.")
@@ -128,10 +129,12 @@ class CameraManager: NSObject {
     Debug.log(message: "Cannot start camera capture, camera use has not been authorized.")
   }
   
+  @objc
   public func startCapture() {
     saveVideoFileOutput()
   }
   
+  @objc
   public func stopCapture() {
     if captureSession.isRunning {
       Debug.log(message: "Stopping camera capture session.")
@@ -162,9 +165,10 @@ class CameraManager: NSObject {
     photoOutput.capturePhoto(with: settings, delegate: self)
   }
   
+  @objc
   public func setupCameraCaptureSession() {
     guard let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) else {
-      Debug.log(message: "Built in dual camera is not available.")
+      Debug.log(message: "Built in wide angle camera is not available.")
       return
     }
     captureSession.beginConfiguration()

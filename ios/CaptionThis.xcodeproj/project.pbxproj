@@ -47,6 +47,9 @@
 		FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81321D45266007C3B3E /* SpeechManager.swift */; };
 		FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81521D45340007C3B3E /* PermissionsManager.swift */; };
 		FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */; };
+		FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */; };
+		FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9021D49E8900856037 /* CameraBridgeModule.m */; };
+		FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9621D4A4B000856037 /* CameraPreviewView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -379,6 +382,12 @@
 		FC6EA81521D45340007C3B3E /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
 		FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PermissionsBridgeModule.m; sourceTree = "<group>"; };
 		FC6EA81921D45730007C3B3E /* PermissionsBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PermissionsBridgeModule.h; sourceTree = "<group>"; };
+		FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraPreviewViewManager.m; sourceTree = "<group>"; };
+		FC880D7F21D49A5100856037 /* CameraPreviewViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraPreviewViewManager.h; sourceTree = "<group>"; };
+		FC880D9021D49E8900856037 /* CameraBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraBridgeModule.m; sourceTree = "<group>"; };
+		FC880D9221D49E9B00856037 /* CameraBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraBridgeModule.h; sourceTree = "<group>"; };
+		FC880D9521D4A4B000856037 /* CameraPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraPreviewView.h; sourceTree = "<group>"; };
+		FC880D9621D4A4B000856037 /* CameraPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraPreviewView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -531,8 +540,10 @@
 				FC6EA7E821D4508D007C3B3E /* CameraManager.swift */,
 				FC6EA81321D45266007C3B3E /* SpeechManager.swift */,
 				FC6EA81521D45340007C3B3E /* PermissionsManager.swift */,
-				FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */,
-				FC6EA81921D45730007C3B3E /* PermissionsBridgeModule.h */,
+				FC880D9421D4A48E00856037 /* CameraPreviewView */,
+				FC880D9321D49EA900856037 /* CameraBridgeModule */,
+				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
+				FC880D8E21D49AD400856037 /* CameraPreviewViewManager */,
 			);
 			name = CaptionThis;
 			sourceTree = "<group>";
@@ -669,6 +680,42 @@
 			name = fonts;
 			sourceTree = "<group>";
 		};
+		FC880D8E21D49AD400856037 /* CameraPreviewViewManager */ = {
+			isa = PBXGroup;
+			children = (
+				FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */,
+				FC880D7F21D49A5100856037 /* CameraPreviewViewManager.h */,
+			);
+			name = CameraPreviewViewManager;
+			sourceTree = "<group>";
+		};
+		FC880D8F21D49AE000856037 /* PermissionsBridgeModule */ = {
+			isa = PBXGroup;
+			children = (
+				FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */,
+				FC6EA81921D45730007C3B3E /* PermissionsBridgeModule.h */,
+			);
+			name = PermissionsBridgeModule;
+			sourceTree = "<group>";
+		};
+		FC880D9321D49EA900856037 /* CameraBridgeModule */ = {
+			isa = PBXGroup;
+			children = (
+				FC880D9021D49E8900856037 /* CameraBridgeModule.m */,
+				FC880D9221D49E9B00856037 /* CameraBridgeModule.h */,
+			);
+			name = CameraBridgeModule;
+			sourceTree = "<group>";
+		};
+		FC880D9421D4A48E00856037 /* CameraPreviewView */ = {
+			isa = PBXGroup;
+			children = (
+				FC880D9521D4A4B000856037 /* CameraPreviewView.h */,
+				FC880D9621D4A4B000856037 /* CameraPreviewView.m */,
+			);
+			name = CameraPreviewView;
+			sourceTree = "<group>";
+		};
 		FC983DD021CDAF6800063476 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -764,9 +811,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 6DUV3UU8M8;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 6DUV3UU8M8;
 						LastSwiftMigration = 1010;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -1216,7 +1265,10 @@
 				FC6EA81221D45123007C3B3E /* Debug.swift in Sources */,
 				FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */,
 				FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */,
+				FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */,
 				FC6EA7E921D4508D007C3B3E /* CameraManager.swift in Sources */,
+				FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */,
+				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */,
 			);
@@ -1272,6 +1324,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 6DUV3UU8M8;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1306,6 +1359,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 6DUV3UU8M8;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-navigation/lib/ios/**",
@@ -1337,6 +1391,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = 6DUV3UU8M8;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-navigation/lib/ios/**",
@@ -1365,6 +1420,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6DUV3UU8M8;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-navigation/lib/ios/**",

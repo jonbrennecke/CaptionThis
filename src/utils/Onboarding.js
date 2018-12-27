@@ -35,7 +35,7 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 export function requireOnboardedUser<P, S>(
   WrappedComponent: Class<Component<P & Props, S>>
 ): Class<Component<P, S>> {
-  class RequireAuth extends Component<Props> {
+  class RequireOnboardedUser extends Component<Props> {
     async componentDidMount() {
       if (!this.props.arePermissionsGranted) {
         await Screens.showOnboardingModal();
@@ -63,5 +63,5 @@ export function requireOnboardedUser<P, S>(
     }
   }
 
-  return connect(mapStateToProps, mapDispatchToProps)(RequireAuth);
+  return connect(mapStateToProps, mapDispatchToProps)(RequireOnboardedUser);
 }
