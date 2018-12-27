@@ -99,7 +99,10 @@ export const FONT_STYLES = {
 export const SCREENS = {
   HOME_SCREEN: `${APP_BUNDLE_ID}.HomeScreen`,
   LOGIN_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
+  ONBOARDING_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
 };
+
+export const APP_ORIENTATIONS = ['portrait'];
 
 export const SCREEN_PARAMS = {
   [SCREENS.LOGIN_MODAL]: {
@@ -124,7 +127,7 @@ export const SCREEN_PARAMS = {
                 interceptTouchOutside: true,
               },
               layout: {
-                orientation: ['portrait'],
+                orientation: APP_ORIENTATIONS,
               },
             },
           },
@@ -151,7 +154,30 @@ export const SCREEN_PARAMS = {
                 },
               },
               layout: {
-                orientation: ['portrait'],
+                orientation: APP_ORIENTATIONS,
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
+  [SCREENS.ONBOARDING_MODAL]: {
+    stack: {
+      children: [
+        {
+          component: {
+            name: SCREENS.ONBOARDING_MODAL,
+            id: SCREENS.ONBOARDING_MODAL,
+            passProps: {},
+            options: {
+              modalPresentationStyle: 'overFullScreen',
+              topBar: {
+                visible: false,
+                animate: false
+              },
+              layout: {
+                orientation: APP_ORIENTATIONS,
               },
             },
           },

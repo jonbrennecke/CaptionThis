@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
-import { requireOnboardedUser } from '../../utils/Onboarding';
 
 type OwnProps = {};
 
@@ -35,14 +34,13 @@ function mapDispatchToProps(): DispatchProps {
 }
 
 // $FlowFixMe
-@requireOnboardedUser
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
-export default class HomeScreen extends Component<Props> {
+export default class OnboardingModal extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>camera preview goes here</Text>
+        <Text style={styles.text}>Onboarding Modal</Text>
       </View>
     );
   }
