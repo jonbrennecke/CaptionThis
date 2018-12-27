@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView, SafeAreaView, Dimensions, Text } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 
@@ -12,6 +12,8 @@ import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 
 import type { AppState } from '../../types/redux';
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 type OwnProps = {};
 
@@ -26,18 +28,31 @@ type Props = OwnProps & StateProps & DispatchProps;
 const styles = {
   container: {
     flex: 1,
-    backgroundColor: UI_COLORS.OFF_WHITE,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: UI_COLORS.BLACK,
   },
-  text: Fonts.getFontStyle('heading'),
   cameraPreview: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    flex: 1,
+    borderRadius: 10,
+    maxHeight: SCREEN_HEIGHT - 125,
+    overflow: 'hidden',
   },
+  scrollView: {
+    flex: 1,
+  },
+  scrollViewContents: {
+    flex: 1,
+  },
+  safeArea: {
+    flex: 1,
+  },
+  safeAreaContents: {
+    flex: 1,
+  },
+  mediaWrap: {
+    alignItems: 'center',
+    paddingTop: 5,
+  },
+  mediaText: Fonts.getFontStyle('title', { contentStyle: 'lightContent' }),
 };
 
 function mapStateToProps(state: AppState): StateProps {
@@ -71,7 +86,23 @@ export default class HomeScreen extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <CameraPreviewView style={styles.cameraPreview} />
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollViewContents}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
+          contentInsetAdjustmentBehavior="automatic"
+          overScrollMode="always"
+          alwaysBounceVertical>
+          <SafeAreaView style={styles.safeArea}>
+            <View style={styles.safeAreaContents}>
+              <CameraPreviewView style={styles.cameraPreview} />
+              <View style={styles.mediaWrap}>
+                <Text style={styles.mediaText}>VIDEOS</Text>
+              </View>
+            </View>
+          </SafeAreaView>
+        </ScrollView>
       </View>
     );
   }

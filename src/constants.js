@@ -26,6 +26,7 @@ export const UI_COLORS = {
   WHITE: '#FFF',
   OFF_WHITE: '#F6F6FD',
   DARK_GREY: '#3B3E6F',
+  BLACK: '#000',
   LIGHT_GREY: '#B7BAE1',
   EXTRA_LIGHT_GREY: '#B7BAE1',
   MEDIUM_RED: '#f4a09c',
@@ -121,9 +122,9 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   },
   title: {
     style: {
-      color: TEXT_COLORS.MEDIUM_GREY,
+      color: TEXT_COLORS.OFF_WHITE,
       fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
-      fontSize: 23,
+      fontSize: 14,
       fontWeight: 'bold',
       letterSpacing: 1.2,
     },
@@ -178,6 +179,9 @@ export const SCREEN_PARAMS = {
             id: SCREENS.HOME_SCREEN,
             passProps: {},
             options: {
+              statusBar: {
+                style: 'light',
+              },
               topBar: {
                 visible: false,
                 animate: false,
@@ -200,6 +204,9 @@ export const SCREEN_PARAMS = {
             id: SCREENS.ONBOARDING_MODAL,
             passProps: {},
             options: {
+              statusBar: {
+                style: 'light',
+              },
               modalPresentationStyle: 'overFullScreen',
               topBar: {
                 visible: false,
