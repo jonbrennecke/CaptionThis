@@ -58,18 +58,14 @@ export default class HomeScreen extends Component<Props> {
 
   componentDidMount() {
     if (this.props.arePermissionsGranted) {
-      this.startCameraPreview();
+      Camera.startPreview();
     }
   }
 
   componentDidUpdate(prevProps: Props) {
     if (!prevProps.arePermissionsGranted && this.props.arePermissionsGranted) {
-      this.startCameraPreview();
+      Camera.startPreview();
     }
-  }
-
-  startCameraPreview() {
-    Camera.startPreview();
   }
 
   render() {
