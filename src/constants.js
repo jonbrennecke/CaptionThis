@@ -179,13 +179,8 @@ export const SCREEN_PARAMS = {
             passProps: {},
             options: {
               topBar: {
-                title: {
-                  text: 'Home',
-                  color: TEXT_COLORS.DARK_GREY,
-                  fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
-                  fontWeight: 'bold',
-                  fontSize: 15,
-                },
+                visible: false,
+                animate: false,
               },
               layout: {
                 orientation: APP_ORIENTATIONS,
