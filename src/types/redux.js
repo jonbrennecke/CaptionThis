@@ -1,8 +1,6 @@
 /* @flow */
 import typeof { LOADING_STATE } from '../constants';
 
-export type State = {};
-
 export type Action<T> = {
   type: string,
   payload?: T,
@@ -10,15 +8,16 @@ export type Action<T> = {
 
 export type Dispatch = any => any;
 
-export type GetState = () => State;
+export type AppState = {
+  auth: AuthState,
+  onboarding: OnboardingState,
+};
+
+export type GetState = () => AppState;
 
 export type AuthState = {
   token: ?string,
   authLoadingState: $Keys<LOADING_STATE>,
-};
-
-export type AppState = {
-  auth: AuthState,
 };
 
 export type ReceiveLoginPayload = {
@@ -26,3 +25,12 @@ export type ReceiveLoginPayload = {
 };
 
 export type ReceiveAuthPayload = ReceiveLoginPayload;
+
+export type OnboardingState = {
+  arePermissionsGranted: ?boolean,
+  permissionsLoadingState: $Keys<LOADING_STATE>,
+};
+
+export type ReceivePermissionsPayload = {
+  arePermissionsGranted: boolean,
+};

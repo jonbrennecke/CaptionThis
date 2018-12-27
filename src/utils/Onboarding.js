@@ -2,8 +2,8 @@
 import { createElement, Component } from 'react';
 import { connect } from 'react-redux';
 
-import { isLoggedIn } from '../redux/auth/selectors';
-import { loadAuth } from '../redux/auth/actionCreators';
+import { arePermissionsGranted } from '../redux/onboarding/selectors';
+import { loadAppPermissions } from '../redux/onboarding/actionCreators';
 import * as Screens from '../utils/Screens';
 
 import type { Dispatch, AppState } from '../types/redux';
@@ -11,24 +11,24 @@ import type { Dispatch, AppState } from '../types/redux';
 type OwnProps = {};
 
 type StateProps = {
-  isLoggedIn: boolean,
+  arePermissionsGranted: boolean,
 };
 
 type DispatchProps = {
-  loadAuth: () => Promise<any>,
+  loadAppPermissions: () => Promise<any>,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    isLoggedIn: isLoggedIn(state),
+    arePermissionsGranted: arePermissionsGranted(state),
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
-    loadAuth: () => dispatch(loadAuth()),
+    loadAppPermissions: () => dispatch(loadAppPermissions()),
   };
 }
 
@@ -37,16 +37,22 @@ export function requireOnboardedUser<P, S>(
 ): Class<Component<P, S>> {
   class RequireAuth extends Component<Props> {
     async componentDidMount() {
-      if (!this.props.isLoggedIn) {
+      if (!this.props.arePermissionsGranted) {
         await Screens.showOnboardingModal();
       }
-      await this.props.loadAuth();
+      await this.props.loadAppPermissions();
     }
 
     async componentDidUpdate(prevProps: Props) {
-      if (this.props.isLoggedIn && !prevProps.isLoggedIn) {
+      if (
+        this.props.arePermissionsGranted &&
+        !prevProps.arePermissionsGranted
+      ) {
         await Screens.dismissOnboardingModal();
-      } else if (!this.props.isLoggedIn && prevProps.isLoggedIn) {
+      } else if (
+        !this.props.arePermissionsGranted &&
+        prevProps.arePermissionsGranted
+      ) {
         await Screens.showOnboardingModal();
       }
     }

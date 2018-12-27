@@ -15,7 +15,7 @@ type Props = {
 const styles = {
   textInput: {
     flex: 1,
-    ...Fonts.getFontStyle('form-input'),
+    ...Fonts.getFontStyle('formInput'),
   },
 };
 

@@ -35,7 +35,7 @@ const styles = {
         }),
   }),
   label: {
-    ...Fonts.getFontStyle('form-label'),
+    ...Fonts.getFontStyle('formLabel'),
     marginBottom: 7,
   },
 };

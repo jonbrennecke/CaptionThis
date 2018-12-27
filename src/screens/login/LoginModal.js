@@ -1,10 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 
@@ -82,7 +78,7 @@ const styles = {
     marginBottom: 7,
   },
   loadingOverlayText: Fonts.getFontStyle('heading', {
-    contentStyle: 'light-content',
+    contentStyle: 'lightContent',
   }),
 };
 
@@ -137,40 +133,42 @@ export default class LoginModal extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.keyboardAvoidingView}>
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollViewContents}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="always"
-          alwaysBounceVertical
-          overScrollMode="always"
-        >
-          <LoginForm
-            style={styles.loginForm}
-            email={this.state.email}
-            isValidEmail={this.state.isValidEmail}
-            isValidPassword={this.state.isValidPassword}
-            onShouldChangeEmail={email =>
-              this.setState({ email, isValidEmail: true })
-            }
-            password={this.state.password}
-            onShouldChangePassword={password =>
-              this.setState({ password, isValidPassword: true })
-            }
-            onShouldSubmit={() => {
-              this.validateAndSubmitLogin();
-            }}
-          />
-          <View style={styles.register}>
-            <Text style={styles.registerText}>{"Don't have an account?"}</Text>
-            <Button
-              textStyle={styles.registerButtonText}
-              size="small"
-              text="SIGN UP"
-              onPress={this.presentRegisterForm}
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollViewContents}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="always"
+            alwaysBounceVertical
+            overScrollMode="always"
+          >
+            <LoginForm
+              style={styles.loginForm}
+              email={this.state.email}
+              isValidEmail={this.state.isValidEmail}
+              isValidPassword={this.state.isValidPassword}
+              onShouldChangeEmail={email =>
+                this.setState({ email, isValidEmail: true })
+              }
+              password={this.state.password}
+              onShouldChangePassword={password =>
+                this.setState({ password, isValidPassword: true })
+              }
+              onShouldSubmit={() => {
+                this.validateAndSubmitLogin();
+              }}
             />
-          </View>
-        </ScrollView>
+            <View style={styles.register}>
+              <Text style={styles.registerText}>
+                {"Don't have an account?"}
+              </Text>
+              <Button
+                textStyle={styles.registerButtonText}
+                size="small"
+                text="SIGN UP"
+                onPress={this.presentRegisterForm}
+              />
+            </View>
+          </ScrollView>
         </KeyboardAvoidingView>
         <View
           style={styles.loadingOverlay(this.props.isLoadingAuth)}

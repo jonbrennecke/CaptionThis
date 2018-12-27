@@ -1,6 +1,8 @@
 // @flow
 import { Platform } from 'react-native';
 
+import type { FontRole, FontStyle } from './types/fonts';
+
 export const APP_BUNDLE_ID = 'com.jonbrennecke.loginApp'; // TODO use DeviceInfo
 
 export const API_BASE_URL = 'https://reqres.in/api';
@@ -29,7 +31,7 @@ export const UI_COLORS = {
   MEDIUM_RED: '#f4a09c',
 };
 
-export const FONTS = {
+export const FONT_FAMILIES = {
   PASSION_ONE: 'PassionOne-Regular',
   PT_SANS_REGULAR: Platform.select({
     ios: 'PT Sans',
@@ -41,58 +43,90 @@ export const FONTS = {
   }),
 };
 
-export const FONT_STYLES = {
-  DEFAULT_FONT_STYLES: {
-    color: TEXT_COLORS.DARK_GREY,
-    fontFamily: FONTS.PT_SANS_REGULAR,
-    fontSize: 13,
+export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
+  default: {
+    style: {
+      color: TEXT_COLORS.DARK_GREY,
+      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontSize: 13,
+    },
+    modifiers: [
+      {
+        name: 'lightContent',
+        style: {
+          color: TEXT_COLORS.OFF_WHITE,
+        },
+      },
+    ],
   },
-  FORM_INPUT_DEFAULT_STYLES: {
-    color: TEXT_COLORS.DARK_GREY,
-    fontFamily: FONTS.PT_SANS_REGULAR,
-    fontSize: 17,
+  formInput: {
+    style: {
+      color: TEXT_COLORS.DARK_GREY,
+      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontSize: 17,
+    },
   },
-  FORM_LABEL_DEFAULT_STYLES: {
-    color: TEXT_COLORS.DARK_GREY,
-    fontFamily: FONTS.PT_SANS_REGULAR,
-    fontSize: 11,
-    letterSpacing: 1.8,
+  formLabel: {
+    style: {
+      color: TEXT_COLORS.DARK_GREY,
+      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontSize: 11,
+      letterSpacing: 1.8,
+    },
   },
-  BUTTON_DEFAULT_STYLES: {
-    color: TEXT_COLORS.WHITE,
-    fontFamily: FONTS.PT_SANS_REGULAR,
-    fontSize: 15,
-    letterSpacing: 1.8,
+  button: {
+    style: {
+      color: TEXT_COLORS.WHITE,
+      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontSize: 15,
+      letterSpacing: 1.8,
+    },
+    modifiers: [
+      {
+        name: 'small',
+        style: {
+          fontSize: 11,
+        },
+      },
+    ],
   },
-  BUTTON_SMALL_FONT_SIZE_STYLES: {
-    fontSize: 11,
+  heading: {
+    style: {
+      color: TEXT_COLORS.MEDIUM_GREY,
+      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontSize: 23,
+    },
+    modifiers: [
+      {
+        name: 'lightContent',
+        style: {
+          color: TEXT_COLORS.WHITE,
+        },
+      },
+      {
+        name: 'small',
+        style: {
+          fontSize: 13,
+        },
+      },
+    ],
   },
-  HEADING_DEFAULT_STYLES: {
-    color: TEXT_COLORS.MEDIUM_GREY,
-    fontFamily: FONTS.PT_SANS_REGULAR,
-    fontSize: 17,
+  callToAction: {
+    style: {
+      color: TEXT_COLORS.MEDIUM_GREY,
+      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontSize: 23,
+      textAlign: 'center',
+    },
   },
-  HEADING_LIGHT_CONTENT_STYLES: {
-    color: TEXT_COLORS.WHITE,
-  },
-  HEADING_SMALL_FONT_SIZE_STYLES: {
-    fontSize: 13,
-  },
-  HEADING_LARGE_FONT_SIZE_STYLES: {
-    fontSize: 23,
-  },
-  CALL_TO_ACTION_FONT_STYLES: {
-    color: TEXT_COLORS.MEDIUM_GREY,
-    fontFamily: FONTS.PT_SANS_REGULAR,
-    fontSize: 23,
-    textAlign: 'center',
-  },
-  TITLE_FONT_STYLES: {
-    color: TEXT_COLORS.MEDIUM_GREY,
-    fontFamily: FONTS.PT_SANS_REGULAR,
-    fontSize: 23,
-    fontWeight: 'bold',
-    letterSpacing: 1.2,
+  title: {
+    style: {
+      color: TEXT_COLORS.MEDIUM_GREY,
+      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontSize: 23,
+      fontWeight: 'bold',
+      letterSpacing: 1.2,
+    },
   },
 };
 
@@ -118,7 +152,7 @@ export const SCREEN_PARAMS = {
                 title: {
                   text: 'Login',
                   color: TEXT_COLORS.DARK_GREY,
-                  fontFamily: FONTS.PT_SANS_REGULAR,
+                  fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
                   fontWeight: 'bold',
                   fontSize: 15,
                 },
@@ -148,7 +182,7 @@ export const SCREEN_PARAMS = {
                 title: {
                   text: 'Home',
                   color: TEXT_COLORS.DARK_GREY,
-                  fontFamily: FONTS.PT_SANS_REGULAR,
+                  fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
                   fontWeight: 'bold',
                   fontSize: 15,
                 },
@@ -174,7 +208,7 @@ export const SCREEN_PARAMS = {
               modalPresentationStyle: 'overFullScreen',
               topBar: {
                 visible: false,
-                animate: false
+                animate: false,
               },
               layout: {
                 orientation: APP_ORIENTATIONS,

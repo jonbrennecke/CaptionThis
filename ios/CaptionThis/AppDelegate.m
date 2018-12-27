@@ -10,8 +10,46 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
+#import "CaptionThis-Swift.h"
 
 @implementation AppDelegate
+
+static CameraManager* _sharedCameraManager;
+static SpeechManager* _sharedSpeechManager;
+static PermissionsManager* _sharedPermissionsManager;
+
++ (CameraManager*)sharedCameraManager {
+  if (_sharedCameraManager == nil) {
+    _sharedCameraManager = [[CameraManager alloc] init];
+  }
+  return _sharedCameraManager;
+}
+
++ (SpeechManager*)sharedSpeechManager {
+  if (_sharedSpeechManager == nil) {
+    _sharedSpeechManager = [[SpeechManager alloc] init];
+  }
+  return _sharedSpeechManager;
+}
+
++ (PermissionsManager*)sharedPermissionsManager {
+  if (_sharedPermissionsManager == nil) {
+    _sharedPermissionsManager = [[PermissionsManager alloc] init];
+  }
+  return _sharedPermissionsManager;
+}
+
++ (void)setSharedCameraManager:(CameraManager *)sharedCameraManager {
+  _sharedCameraManager = sharedCameraManager;
+}
+
++ (void)setSharedSpeechManager:(SpeechManager *)sharedSpeechManager {
+  _sharedSpeechManager = sharedSpeechManager;
+}
+
++ (void)setSharedPermissionsManager:(PermissionsManager *)sharedPermissionsManager {
+  _sharedPermissionsManager = sharedPermissionsManager;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

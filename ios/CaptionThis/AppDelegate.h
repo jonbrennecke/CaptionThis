@@ -7,8 +7,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class CameraManager;
+@class SpeechManager;
+@class PermissionsManager;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
+
+@property (class) CameraManager *sharedCameraManager;
+@property (class) SpeechManager *sharedSpeechManager;
+@property (class) PermissionsManager *sharedPermissionsManager;
 
 @end
