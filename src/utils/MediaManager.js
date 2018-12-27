@@ -17,13 +17,15 @@ export default class MediaManager {
   static sharedSubscription: ?EmitterSubscription = null;
 
   static requestVideoThumbails(targetSize: Size) {
-    MediaLibrary.requestVideoThumbailsForTargetSize(targetSize);
-    MediaManager.sharedSubscription = MediaLibraryEmitter.addListener(
-      'mediaLibraryDidOutputThumbnail',
-      (...args) => {
-        console.log('MediaLibraryDidOutputThumbnail', args);
-      }
-    );
+    MediaLibrary.requestVideoThumbails(targetSize, (...args) => {
+      console.log(args);
+    });
+    // MediaManager.sharedSubscription = MediaLibraryEmitter.addListener(
+    //   'mediaLibraryDidOutputThumbnail',
+    //   (...args) => {
+    //     console.log('MediaLibraryDidOutputThumbnail', args);
+    //   }
+    // );
   }
 
   static removeVideoThumbnailListener() {

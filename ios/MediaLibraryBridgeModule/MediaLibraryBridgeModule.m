@@ -1,3 +1,4 @@
+#import <Photos/PHAsset.h>
 #import <React/RCTConvert.h>
 #import "MediaLibraryBridgeModule.h"
 #import "AppDelegate.h"
@@ -47,8 +48,17 @@
 
 RCT_EXPORT_MODULE(MediaLibrary)
 
-RCT_EXPORT_METHOD(requestVideoThumbailsForTargetSize:(CGSize)size) {
-  [AppDelegate.sharedMediaLibraryManager requestVideoThumbnailsForTargetSize:size];
+RCT_EXPORT_METHOD(requestVideoThumbails:(CGSize)size withCallback:(RCTResponseSenderBlock)callback) {
+  NSArray<PHAsset*>* assets = [AppDelegate.sharedMediaLibraryManager requestVideoThumbnailsForTargetSize:size];
+  NSMutableArray<NSString*>* localIdentifiers = [[NSMutableArray alloc] initWithCapacity:assets.count];
+  [assets enumerateObjectsUsingBlock:^(PHAsset * _Nonnull asset, NSUInteger idx, BOOL * _Nonnull stop) {
+    if (asset == nil) {
+      return;
+    }
+    NSString* localIdentifier = asset.localIdentifier;
+    [localIdentifiers insertObject:localIdentifier atIndex:idx];
+  }];
+  callback(@[[NSNull null], localIdentifiers]);
 }
 
 @end

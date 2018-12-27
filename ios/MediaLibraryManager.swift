@@ -12,17 +12,14 @@ class MediaLibraryManager: NSObject {
   public var delegate: MediaLibraryManagerDelegate?
   
   @objc
-  public func requestVideoThumbnails(forTargetSize size: CGSize) {
+  public func requestVideoThumbnails(forTargetSize size: CGSize) -> [PHAsset] {
     let fetchOptions = PHFetchOptions()
     let videoAssets = PHAsset.fetchAssets(with: .video, options: fetchOptions)
+    var videoAssetArray = Array<PHAsset>()
     for i in 0..<videoAssets.count {
       let videoAsset = videoAssets.object(at: i)
-      PHImageManager.default().requestImage(for: videoAsset, targetSize: size, contentMode: .aspectFill, options: nil) { (image, _) in
-        guard let image = image else {
-          return
-        }
-        self.delegate?.mediaLibraryManagerDidOutputThumbnail(image, forTargetSize: size)
-      }
+      videoAssetArray.append(videoAsset)
     }
+    return videoAssetArray
   }
 }
