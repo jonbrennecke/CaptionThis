@@ -10,6 +10,7 @@
 @class CameraManager;
 @class SpeechManager;
 @class PermissionsManager;
+@class MediaLibraryManager;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -18,5 +19,6 @@
 @property (class) CameraManager *sharedCameraManager;
 @property (class) SpeechManager *sharedSpeechManager;
 @property (class) PermissionsManager *sharedPermissionsManager;
+@property (class) MediaLibraryManager *sharedMediaLibraryManager;
 
 @end

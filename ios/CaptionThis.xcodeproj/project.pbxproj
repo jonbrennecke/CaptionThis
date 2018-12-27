@@ -51,6 +51,8 @@
 		FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */; };
 		FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9021D49E8900856037 /* CameraBridgeModule.m */; };
 		FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9621D4A4B000856037 /* CameraPreviewView.m */; };
+		FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */; };
+		FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */; };
 		FCB3D2BF68D740C581A23323 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */; };
 /* End PBXBuildFile section */
 
@@ -407,6 +409,9 @@
 		FC880D9221D49E9B00856037 /* CameraBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraBridgeModule.h; sourceTree = "<group>"; };
 		FC880D9521D4A4B000856037 /* CameraPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraPreviewView.h; sourceTree = "<group>"; };
 		FC880D9621D4A4B000856037 /* CameraPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraPreviewView.m; sourceTree = "<group>"; };
+		FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryManager.swift; sourceTree = "<group>"; };
+		FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaLibraryBridgeModule.m; sourceTree = "<group>"; };
+		FC880DFF21D54B3A00856037 /* MediaLibraryBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaLibraryBridgeModule.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -560,11 +565,13 @@
 				FC6EA81121D45123007C3B3E /* Debug.swift */,
 				FC6EA7E821D4508D007C3B3E /* CameraManager.swift */,
 				FC6EA81321D45266007C3B3E /* SpeechManager.swift */,
+				FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */,
 				FC6EA81521D45340007C3B3E /* PermissionsManager.swift */,
 				FC880D9421D4A48E00856037 /* CameraPreviewView */,
 				FC880D9321D49EA900856037 /* CameraBridgeModule */,
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
 				FC880D8E21D49AD400856037 /* CameraPreviewViewManager */,
+				FC880E0021D54B3F00856037 /* MediaLibraryBridgeModule */,
 			);
 			name = CaptionThis;
 			sourceTree = "<group>";
@@ -747,6 +754,15 @@
 				FC880DFA21D4C7D300856037 /* libRNDeviceInfo-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FC880E0021D54B3F00856037 /* MediaLibraryBridgeModule */ = {
+			isa = PBXGroup;
+			children = (
+				FC880DFF21D54B3A00856037 /* MediaLibraryBridgeModule.h */,
+				FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */,
+			);
+			path = MediaLibraryBridgeModule;
 			sourceTree = "<group>";
 		};
 		FC983DD021CDAF6800063476 /* Products */ = {
@@ -1314,12 +1330,14 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				FC6EA81221D45123007C3B3E /* Debug.swift in Sources */,
+				FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */,
 				FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */,
 				FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */,
 				FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */,
 				FC6EA7E921D4508D007C3B3E /* CameraManager.swift in Sources */,
 				FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */,
 				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
+				FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */,
 			);

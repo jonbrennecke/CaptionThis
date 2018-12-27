@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
 import * as Camera from '../../utils/Camera';
+import MediaManager from '../../utils/MediaManager';
 import { requireOnboardedUser } from '../../utils/Onboarding';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
@@ -70,17 +71,25 @@ function mapDispatchToProps(): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class HomeScreen extends Component<Props> {
-
   componentDidMount() {
     if (this.props.arePermissionsGranted) {
-      Camera.startPreview();
+      this.setupAfterOnboarding();
     }
   }
 
   componentDidUpdate(prevProps: Props) {
     if (!prevProps.arePermissionsGranted && this.props.arePermissionsGranted) {
-      Camera.startPreview();
+      this.setupAfterOnboarding();
     }
+  }
+
+  componentWillUnmount() {
+    MediaManager.removeVideoThumbnailListener();
+  }
+
+  setupAfterOnboarding() {
+    Camera.startPreview();
+    MediaManager.requestVideoThumbails({ width: 300, height: 300 });
   }
 
   render() {
@@ -93,7 +102,8 @@ export default class HomeScreen extends Component<Props> {
           keyboardShouldPersistTaps="always"
           contentInsetAdjustmentBehavior="automatic"
           overScrollMode="always"
-          alwaysBounceVertical>
+          alwaysBounceVertical
+        >
           <SafeAreaView style={styles.safeArea}>
             <View style={styles.safeAreaContents}>
               <CameraPreviewView style={styles.cameraPreview} />

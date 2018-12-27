@@ -14,9 +14,10 @@
 
 @implementation AppDelegate
 
-static CameraManager* _sharedCameraManager;
-static SpeechManager* _sharedSpeechManager;
-static PermissionsManager* _sharedPermissionsManager;
+static CameraManager *_sharedCameraManager;
+static SpeechManager *_sharedSpeechManager;
+static PermissionsManager *_sharedPermissionsManager;
+static MediaLibraryManager *_sharedMediaLibraryManager;
 
 + (CameraManager*)sharedCameraManager {
   if (_sharedCameraManager == nil) {
@@ -39,6 +40,13 @@ static PermissionsManager* _sharedPermissionsManager;
   return _sharedPermissionsManager;
 }
 
++ (MediaLibraryManager*)sharedMediaLibraryManager {
+  if (_sharedMediaLibraryManager == nil) {
+    _sharedMediaLibraryManager = [[MediaLibraryManager alloc] init];
+  }
+  return _sharedMediaLibraryManager;
+}
+
 + (void)setSharedCameraManager:(CameraManager *)sharedCameraManager {
   _sharedCameraManager = sharedCameraManager;
 }
@@ -49,6 +57,10 @@ static PermissionsManager* _sharedPermissionsManager;
 
 + (void)setSharedPermissionsManager:(PermissionsManager *)sharedPermissionsManager {
   _sharedPermissionsManager = sharedPermissionsManager;
+}
+
++ (void)setSharedMediaLibraryManager:(MediaLibraryManager *)sharedMediaLibraryManager {
+  _sharedMediaLibraryManager = sharedMediaLibraryManager;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

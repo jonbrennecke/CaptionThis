@@ -101,7 +101,7 @@ class SpeechManager : NSObject {
 
 extension SpeechManager : SFSpeechRecognizerDelegate {
   func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
-    Debug.log(format: "Speech recognizer availability changed. Available == @%", available)
+    Debug.log(format: "Speech recognizer availability changed. Available == %@", available)
     if available {
       delegate?.speechManagerDidBecomeAvailable()
     }
@@ -113,7 +113,7 @@ extension SpeechManager : SFSpeechRecognizerDelegate {
 
 extension SpeechManager : SFSpeechRecognitionTaskDelegate {
   func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didFinishSuccessfully successfully: Bool) {
-    Debug.log(format: "Speech recognizer finished task. Success == @%", successfully)
+    Debug.log(format: "Speech recognizer finished task. Success == %@", successfully)
   }
 }
 
