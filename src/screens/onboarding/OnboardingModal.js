@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 
@@ -27,10 +27,10 @@ const styles = {
     backgroundColor: UI_COLORS.DARK_GREY,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 40,
+    paddingHorizontal: 65,
   },
   nextButton: {
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     borderStyle: 'solid',
     borderColor: UI_COLORS.OFF_WHITE,
     marginTop: 25,
@@ -69,8 +69,7 @@ export default class OnboardingModal extends Component<Props> {
       <View style={styles.container}>
         <Text style={styles.heading}>Welcome</Text>
         <Text style={styles.paragraph}>
-          {`To get started, we need your permission to use your phone's
-          camera and microphone.`}
+          {`To get started, we need your permission to use your phone's camera and microphone.`}
         </Text>
         <Button
           style={styles.nextButton}
