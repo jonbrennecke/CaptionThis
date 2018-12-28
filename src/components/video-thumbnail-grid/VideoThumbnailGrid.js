@@ -24,7 +24,7 @@ const styles = {
   thumbnail: {
     width: SCREEN_WIDTH / 3,
     height: SCREEN_WIDTH / 3 * (4 / 3),
-    padding: 5,
+    padding: 1,
   },
 };
 
@@ -34,14 +34,13 @@ export default function VideoThumbnailGrid({
 }: Props) {
   return (
     <View style={[styles.container, style]}>
-      {videoAssetIdentifiers
-        .map(id => (
-          <VideoThumbnailView
-            key={id}
-            style={styles.thumbnail}
-            videoAssetIdentifier={id}
-          />
-        ))}
+      {videoAssetIdentifiers.map(id => (
+        <VideoThumbnailView
+          key={id}
+          style={styles.thumbnail}
+          videoAssetIdentifier={id}
+        />
+      ))}
     </View>
   );
 }

@@ -17,7 +17,7 @@ import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumb
 import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
 type OwnProps = {};
 
@@ -38,15 +38,12 @@ const styles = {
     backgroundColor: UI_COLORS.BLACK,
   },
   cameraPreview: {
-    flex: 1,
     borderRadius: 10,
-    maxHeight: SCREEN_HEIGHT - 125,
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT - 125,
     overflow: 'hidden',
   },
   scrollView: {
-    flex: 1,
-  },
-  scrollViewContents: {
     flex: 1,
   },
   safeArea: {
@@ -108,7 +105,6 @@ export default class HomeScreen extends Component<Props> {
       <View style={styles.container}>
         <ScrollView
           style={styles.scrollView}
-          contentContainerStyle={styles.scrollViewContents}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="always"
           contentInsetAdjustmentBehavior="automatic"
@@ -116,18 +112,18 @@ export default class HomeScreen extends Component<Props> {
           alwaysBounceVertical
         >
           <SafeAreaView style={styles.safeArea}>
-            {/* <View style={styles.safeAreaContents}> */}
-            {/* <CameraPreviewView style={styles.cameraPreview} /> */}
-            <View style={styles.mediaWrap}>
-              <View style={styles.mediaHeader}>
-                <Text style={styles.mediaText}>VIDEOS</Text>
+            <View style={styles.safeAreaContents}>
+              <CameraPreviewView style={styles.cameraPreview} />
+              <View style={styles.mediaWrap}>
+                <View style={styles.mediaHeader}>
+                  <Text style={styles.mediaText}>VIDEOS</Text>
+                </View>
+                <VideoThumbnailGrid
+                  style={styles.thumbnailGrid}
+                  videoAssetIdentifiers={this.props.videoAssetIdentifiers}
+                />
               </View>
-              <VideoThumbnailGrid
-                style={styles.thumbnailGrid}
-                videoAssetIdentifiers={this.props.videoAssetIdentifiers}
-              />
             </View>
-            {/* </View> */}
           </SafeAreaView>
         </ScrollView>
       </View>
