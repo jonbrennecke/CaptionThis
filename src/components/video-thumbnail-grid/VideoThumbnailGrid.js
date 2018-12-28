@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, TouchableOpacity } from 'react-native';
 
 import VideoThumbnailView from '../video-thumbnail-view/VideoThumbnailView';
 
@@ -10,6 +10,7 @@ import type { VideoAssetIdentifier } from '../../types/media';
 type Props = {
   style?: ?Style,
   videoAssetIdentifiers: VideoAssetIdentifier[],
+  onPressThumbnail: (identifier: VideoAssetIdentifier) => void,
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -31,15 +32,17 @@ const styles = {
 export default function VideoThumbnailGrid({
   style,
   videoAssetIdentifiers,
+  onPressThumbnail,
 }: Props) {
   return (
     <View style={[styles.container, style]}>
       {videoAssetIdentifiers.map(id => (
-        <VideoThumbnailView
-          key={id}
-          style={styles.thumbnail}
-          videoAssetIdentifier={id}
-        />
+        <TouchableOpacity key={id} onPress={() => onPressThumbnail(id)}>
+          <VideoThumbnailView
+            style={styles.thumbnail}
+            videoAssetIdentifier={id}
+          />
+        </TouchableOpacity>
       ))}
     </View>
   );

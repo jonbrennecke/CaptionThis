@@ -3,28 +3,30 @@ import React, { Component } from 'react';
 import { View, ScrollView, SafeAreaView, Dimensions, Text } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
 import * as Camera from '../../utils/Camera';
-import * as Color from '../../utils/Color';
+import * as Screens from '../../utils/Screens';
 import { requireOnboardedUser } from '../../utils/Onboarding';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import { loadVideoAssets } from '../../redux/media/actionCreators';
 import { getVideoAssetIdentifiers } from '../../redux/media/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
+import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 
 import type { Dispatch, AppState } from '../../types/redux';
-import type { Return } from '../../types/util';
+import type { VideoAssetIdentifier } from '../../types/media';
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
-type OwnProps = {};
+type OwnProps = {
+  componentId: string,
+};
 
 type StateProps = {
-  videoAssetIdentifiers: Return<typeof getVideoAssetIdentifiers>,
+  videoAssetIdentifiers: VideoAssetIdentifier[],
   arePermissionsGranted: boolean,
 };
 
@@ -65,22 +67,6 @@ const styles = {
   thumbnailGrid: {
     flex: 1,
   },
-  topGradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 100,
-    zIndex: 1,
-  },
-  bottomGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 100,
-    zIndex: 1,
-  },
 };
 
 function mapStateToProps(state: AppState): StateProps {
@@ -118,23 +104,14 @@ export default class HomeScreen extends Component<Props> {
     await this.props.loadVideoAssets();
   }
 
+  async onDidPressVideoThumbnail(identifier: VideoAssetIdentifier) {
+    await Screens.pushEditScreen(this.props.componentId, identifier);
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <LinearGradient
-          colors={[
-            Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
-            Color.hexToRgbaString(UI_COLORS.BLACK, 0),
-          ]}
-          style={styles.topGradient}
-        />
-        <LinearGradient
-          colors={[
-            Color.hexToRgbaString(UI_COLORS.BLACK, 0),
-            Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
-          ]}
-          style={styles.bottomGradient}
-        />
+        <ScreenGradients />
         <ScrollView
           style={styles.scrollView}
           showsVerticalScrollIndicator={false}
@@ -153,6 +130,9 @@ export default class HomeScreen extends Component<Props> {
                 <VideoThumbnailGrid
                   style={styles.thumbnailGrid}
                   videoAssetIdentifiers={this.props.videoAssetIdentifiers}
+                  onPressThumbnail={(...args) => {
+                    this.onDidPressVideoThumbnail(...args);
+                  }}
                 />
               </View>
             </View>

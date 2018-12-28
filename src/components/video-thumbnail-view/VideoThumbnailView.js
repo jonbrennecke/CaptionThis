@@ -16,6 +16,7 @@ const styles = {
   container: {},
   nativeView: {
     flex: 1,
+    borderRadius: 3,
     overflow: 'hidden',
   },
 };
