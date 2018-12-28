@@ -8,9 +8,8 @@
 RCT_EXPORT_MODULE(VideoPlayerViewManager)
 
 - (UIView*)view {
-  UIImageView *imageView = [[UIImageView alloc] init];
-  imageView.contentMode = UIViewContentModeScaleAspectFill;
-  return (UIView*)imageView;
+  VideoPlayerView *playerView = [[VideoPlayerView alloc] init];
+  return (UIView*)playerView;
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
@@ -20,18 +19,14 @@ RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
   if (asset == nil) {
     return;
   }
-  CGSize size = CGSizeMake(100, 100 * 4/3);
-  PHImageRequestOptions* requestOptions = [[PHImageRequestOptions alloc] init];
-  requestOptions.synchronous = NO;
+  PHVideoRequestOptions* requestOptions = [[PHVideoRequestOptions alloc] init];
   requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
   [PHImageManager.defaultManager
-   requestImageForAsset:asset
-   targetSize:size
-   contentMode:PHImageContentModeAspectFill
+   requestAVAssetForVideo:asset
    options:requestOptions
-   resultHandler:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
-     UIImageView* imageView = (UIImageView*)view;
-     imageView.image = image;
+   resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+     VideoPlayerView *playerView = (VideoPlayerView*)view;
+     playerView.asset = asset;
    }];
 }
 

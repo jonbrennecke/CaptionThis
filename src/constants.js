@@ -1,9 +1,10 @@
 // @flow
 import { Platform } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import type { FontRole, FontStyle } from './types/fonts';
 
-export const APP_BUNDLE_ID = 'com.jonbrennecke.loginApp'; // TODO use DeviceInfo
+export const APP_BUNDLE_ID = DeviceInfo.getBundleId();
 
 export const API_BASE_URL = 'https://reqres.in/api';
 
