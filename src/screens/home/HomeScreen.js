@@ -56,10 +56,16 @@ const styles = {
     flex: 1,
   },
   mediaWrap: {
+    flex: 1,
+  },
+  mediaHeader: {
+    paddingVertical: 5,
     alignItems: 'center',
-    paddingTop: 5,
   },
   mediaText: Fonts.getFontStyle('title', { contentStyle: 'lightContent' }),
+  thumbnailGrid: {
+    flex: 1,
+  },
 };
 
 function mapStateToProps(state: AppState): StateProps {
@@ -110,15 +116,18 @@ export default class HomeScreen extends Component<Props> {
           alwaysBounceVertical
         >
           <SafeAreaView style={styles.safeArea}>
-            <View style={styles.safeAreaContents}>
-              <CameraPreviewView style={styles.cameraPreview} />
-              <View style={styles.mediaWrap}>
+            {/* <View style={styles.safeAreaContents}> */}
+            {/* <CameraPreviewView style={styles.cameraPreview} /> */}
+            <View style={styles.mediaWrap}>
+              <View style={styles.mediaHeader}>
                 <Text style={styles.mediaText}>VIDEOS</Text>
-                <VideoThumbnailGrid
-                  videoAssetIdentifiers={this.props.videoAssetIdentifiers}
-                />
               </View>
+              <VideoThumbnailGrid
+                style={styles.thumbnailGrid}
+                videoAssetIdentifiers={this.props.videoAssetIdentifiers}
+              />
             </View>
+            {/* </View> */}
           </SafeAreaView>
         </ScrollView>
       </View>

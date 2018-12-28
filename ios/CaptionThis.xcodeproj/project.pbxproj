@@ -53,6 +53,7 @@
 		FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9621D4A4B000856037 /* CameraPreviewView.m */; };
 		FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */; };
 		FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */; };
+		FC880E0321D5DC4100856037 /* VideoThumbnailViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */; };
 		FCB3D2BF68D740C581A23323 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */; };
 /* End PBXBuildFile section */
 
@@ -412,6 +413,8 @@
 		FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryManager.swift; sourceTree = "<group>"; };
 		FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaLibraryBridgeModule.m; sourceTree = "<group>"; };
 		FC880DFF21D54B3A00856037 /* MediaLibraryBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaLibraryBridgeModule.h; sourceTree = "<group>"; };
+		FC880E0121D5DC3500856037 /* VideoThumbnailViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoThumbnailViewManager.h; sourceTree = "<group>"; };
+		FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoThumbnailViewManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -572,6 +575,7 @@
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
 				FC880D8E21D49AD400856037 /* CameraPreviewViewManager */,
 				FC880E0021D54B3F00856037 /* MediaLibraryBridgeModule */,
+				FC880E0421D5DC4600856037 /* VideoThumbnailViewManager */,
 			);
 			name = CaptionThis;
 			sourceTree = "<group>";
@@ -763,6 +767,15 @@
 				FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */,
 			);
 			path = MediaLibraryBridgeModule;
+			sourceTree = "<group>";
+		};
+		FC880E0421D5DC4600856037 /* VideoThumbnailViewManager */ = {
+			isa = PBXGroup;
+			children = (
+				FC880E0121D5DC3500856037 /* VideoThumbnailViewManager.h */,
+				FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */,
+			);
+			name = VideoThumbnailViewManager;
 			sourceTree = "<group>";
 		};
 		FC983DD021CDAF6800063476 /* Products */ = {
@@ -1339,6 +1352,7 @@
 				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
 				FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				FC880E0321D5DC4100856037 /* VideoThumbnailViewManager.m in Sources */,
 				FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,9 +1,11 @@
 // @flow
 import React from 'react';
-import { View } from 'react-native';
+import { View, requireNativeComponent } from 'react-native';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
+
+const NativeVideoThumbnailView = requireNativeComponent('VideoThumbnailView');
 
 type Props = {
   style?: ?Style,
@@ -11,8 +13,10 @@ type Props = {
 };
 
 const styles = {
-  container: {
+  container: {},
+  nativeView: {
     flex: 1,
+    overflow: 'hidden',
   },
 };
 
@@ -22,7 +26,10 @@ export default function VideoThumbnailView({
 }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <View />
+      <NativeVideoThumbnailView
+        style={styles.nativeView}
+        localIdentifier={videoAssetIdentifier}
+      />
     </View>
   );
 }

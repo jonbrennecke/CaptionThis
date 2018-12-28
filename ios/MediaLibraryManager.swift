@@ -1,5 +1,7 @@
 import Photos
 
+let FETCH_LIMIT = 100
+
 @objc
 protocol MediaLibraryManagerDelegate {
   func mediaLibraryManagerDidOutputThumbnail(_ thumbnail: UIImage, forTargetSize size: CGSize)
@@ -14,6 +16,8 @@ class MediaLibraryManager: NSObject {
   @objc
   public func getVideoAssetsFromLibrary() -> [PHAsset] {
     let fetchOptions = PHFetchOptions()
+    fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+    fetchOptions.fetchLimit = FETCH_LIMIT
     let videoAssets = PHAsset.fetchAssets(with: .video, options: fetchOptions)
     var videoAssetArray = Array<PHAsset>()
     for i in 0..<videoAssets.count {
@@ -22,4 +26,6 @@ class MediaLibraryManager: NSObject {
     }
     return videoAssetArray
   }
+  
+  
 }
