@@ -10,6 +10,7 @@ import type {
 } from '../../types/redux';
 
 const initialState: MediaState = {
+  videoAssetIdentifiers: [],
   mediaLoadingState: LOADING_STATE.NOT_LOADED,
 };
 
@@ -35,6 +36,7 @@ function didSuccessfullyLoadVideoAssets(
   }
   return {
     ...state,
+    videoAssetIdentifiers: payload.videoAssetIdentifiers,
     mediaLoadingState: LOADING_STATE.WAS_LOADED_SUCCESSFULLY,
   };
 }

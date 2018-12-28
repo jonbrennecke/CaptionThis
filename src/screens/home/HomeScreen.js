@@ -10,15 +10,19 @@ import * as Camera from '../../utils/Camera';
 import { requireOnboardedUser } from '../../utils/Onboarding';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import { loadVideoAssets } from '../../redux/media/actionCreators';
+import { getVideoAssetIdentifiers } from '../../redux/media/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
+import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
 
 import type { Dispatch, AppState } from '../../types/redux';
+import type { Return } from '../../types/util';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 type OwnProps = {};
 
 type StateProps = {
+  videoAssetIdentifiers: Return<typeof getVideoAssetIdentifiers>,
   arePermissionsGranted: boolean,
 };
 
@@ -60,6 +64,7 @@ const styles = {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
+    videoAssetIdentifiers: getVideoAssetIdentifiers(state),
     arePermissionsGranted: arePermissionsGranted(state),
   };
 }
@@ -109,6 +114,9 @@ export default class HomeScreen extends Component<Props> {
               <CameraPreviewView style={styles.cameraPreview} />
               <View style={styles.mediaWrap}>
                 <Text style={styles.mediaText}>VIDEOS</Text>
+                <VideoThumbnailGrid
+                  videoAssetIdentifiers={this.props.videoAssetIdentifiers}
+                />
               </View>
             </View>
           </SafeAreaView>

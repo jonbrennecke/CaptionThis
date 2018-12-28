@@ -38,6 +38,7 @@ export type ReceivePermissionsPayload = {
 };
 
 export type MediaState = {
+  videoAssetIdentifiers: VideoAssetIdentifier[],
   mediaLoadingState: $Keys<LOADING_STATE>,
 };
 
