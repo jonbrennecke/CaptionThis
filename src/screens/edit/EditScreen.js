@@ -1,11 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import { View, SafeAreaView } from 'react-native';
+import { View, SafeAreaView, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
+import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
 
 import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
@@ -19,6 +20,8 @@ type StateProps = {};
 type DispatchProps = {};
 
 type Props = OwnProps & StateProps & DispatchProps;
+
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const styles = {
   container: {
@@ -44,6 +47,16 @@ const styles = {
     height: 100,
     zIndex: 1,
   },
+  videoWrap: {
+    borderRadius: 10,
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT - 125,
+    overflow: 'hidden',
+    backgroundColor: UI_COLORS.DARK_GREY,
+  },
+  videoPlayer: {
+    flex: 1,
+  },
 };
 
 function mapStateToProps(state: AppState): StateProps {
@@ -59,10 +72,18 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 @autobind
 export default class EditScreen extends Component<Props> {
   render() {
+    console.log(this.props)
     return (
       <View style={styles.container}>
         <ScreenGradients />
-        <SafeAreaView style={styles.safeArea}>{/* TODO */}</SafeAreaView>
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.videoWrap}>
+            <VideoPlayerView
+              style={styles.videoPlayer}
+              videoAssetIdentifier={this.props.videoAssetIdentifier}
+            />
+          </View>
+        </SafeAreaView>
       </View>
     );
   }

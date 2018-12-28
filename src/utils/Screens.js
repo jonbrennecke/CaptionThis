@@ -34,13 +34,13 @@ export const dismissOnboardingModal = async () => {
 
 export const pushEditScreen = async (
   currentComponentId: string,
-  videoIdentifier: VideoAssetIdentifier
+  videoAssetIdentifier: VideoAssetIdentifier
 ) => {
   await Navigation.push(
     currentComponentId,
     merge(
       { ...SCREEN_PARAMS[SCREENS.EDIT_SCREEN] },
-      passPropsComponentMergeParams({ videoIdentifier })
+      passPropsComponentMergeParams({ videoAssetIdentifier })
     )
   );
 };

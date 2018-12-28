@@ -172,9 +172,15 @@ class CameraManager: NSObject {
       return
     }
     captureSession.beginConfiguration()
-    captureSession.addOutput(videoOutput)
-    captureSession.addOutput(photoOutput)
-    captureSession.addOutput(videoFileOutput)
+    if (captureSession.canAddOutput(videoOutput)) {
+      captureSession.addOutput(videoOutput)
+    }
+    if (captureSession.canAddOutput(photoOutput)) {
+      captureSession.addOutput(photoOutput)
+    }
+    if (captureSession.canAddOutput(videoFileOutput)) {
+      captureSession.addOutput(videoFileOutput)
+    }
     captureSession.sessionPreset = .photo
     guard let captureDeviceInput = try? AVCaptureDeviceInput(device: captureDevice) else {
       Debug.log(message: "Camera capture device could not be used as an input.")
@@ -184,7 +190,9 @@ class CameraManager: NSObject {
       Debug.log(message: "Camera input could not be added to capture session.")
       return
     }
-    captureSession.addInput(captureDeviceInput)
+    if (captureSession.canAddInput(captureDeviceInput)) {
+      captureSession.addInput(captureDeviceInput)
+    }
     videoOutput.alwaysDiscardsLateVideoFrames = true
     photoOutput.isDepthDataDeliveryEnabled = false
     let queue = DispatchQueue(label: "com.jonbrennecke.VoicePost.camera")
