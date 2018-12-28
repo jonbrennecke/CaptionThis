@@ -12,7 +12,7 @@ class MediaLibraryManager: NSObject {
   public var delegate: MediaLibraryManagerDelegate?
   
   @objc
-  public func requestVideoThumbnails(forTargetSize size: CGSize) -> [PHAsset] {
+  public func getVideoAssetsFromLibrary() -> [PHAsset] {
     let fetchOptions = PHFetchOptions()
     let videoAssets = PHAsset.fetchAssets(with: .video, options: fetchOptions)
     var videoAssetArray = Array<PHAsset>()

@@ -1,34 +1,14 @@
 // @flow
-import { NativeModules, NativeEventEmitter } from 'react-native';
+import Promise from 'bluebird';
+import { NativeModules } from 'react-native';
 
-import type { Return } from '../types/util';
+import type { VideoAssetIdentifier } from '../types/media';
 
-const { MediaLibrary } = NativeModules;
-const MediaLibraryEmitter = new NativeEventEmitter(MediaLibrary);
-
-type EmitterSubscription = Return<typeof MediaLibraryEmitter.addListener>;
-
-type Size = {
-  width: number,
-  height: number,
-};
+const { MediaLibrary: _MediaLibrary } = NativeModules;
+const MediaLibrary = Promise.promisifyAll(_MediaLibrary);
 
 export default class MediaManager {
-  static sharedSubscription: ?EmitterSubscription = null;
-
-  static requestVideoThumbails(targetSize: Size) {
-    MediaLibrary.requestVideoThumbails(targetSize, (...args) => {
-      console.log(args);
-    });
-    // MediaManager.sharedSubscription = MediaLibraryEmitter.addListener(
-    //   'mediaLibraryDidOutputThumbnail',
-    //   (...args) => {
-    //     console.log('MediaLibraryDidOutputThumbnail', args);
-    //   }
-    // );
-  }
-
-  static removeVideoThumbnailListener() {
-    MediaLibrary.sharedSubscription.remove();
+  static async getVideoAssets(): Promise<VideoAssetIdentifier[]> {
+    return await MediaLibrary.getVideoAssetsAsync();
   }
 }

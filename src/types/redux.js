@@ -1,5 +1,6 @@
 /* @flow */
 import typeof { LOADING_STATE } from '../constants';
+import type { VideoAssetIdentifier } from './media';
 
 export type Action<T> = {
   type: string,
@@ -11,6 +12,7 @@ export type Dispatch = any => any;
 export type AppState = {
   auth: AuthState,
   onboarding: OnboardingState,
+  media: MediaState,
 };
 
 export type GetState = () => AppState;
@@ -33,4 +35,12 @@ export type OnboardingState = {
 
 export type ReceivePermissionsPayload = {
   arePermissionsGranted: boolean,
+};
+
+export type MediaState = {
+  mediaLoadingState: $Keys<LOADING_STATE>,
+};
+
+export type ReceiveVideoAssetsPayload = {
+  videoAssetIdentifiers: VideoAssetIdentifier[],
 };

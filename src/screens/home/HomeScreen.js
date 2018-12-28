@@ -7,12 +7,12 @@ import { connect } from 'react-redux';
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
 import * as Camera from '../../utils/Camera';
-import MediaManager from '../../utils/MediaManager';
 import { requireOnboardedUser } from '../../utils/Onboarding';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
+import { loadVideoAssets } from '../../redux/media/actionCreators';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 
-import type { AppState } from '../../types/redux';
+import type { Dispatch, AppState } from '../../types/redux';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -22,7 +22,9 @@ type StateProps = {
   arePermissionsGranted: boolean,
 };
 
-type DispatchProps = {};
+type DispatchProps = {
+  loadVideoAssets: () => Promise<any>,
+};
 
 type Props = OwnProps & StateProps & DispatchProps;
 
@@ -62,8 +64,10 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-function mapDispatchToProps(): DispatchProps {
-  return {};
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+  return {
+    loadVideoAssets: () => dispatch(loadVideoAssets()),
+  };
 }
 
 // $FlowFixMe
@@ -83,13 +87,9 @@ export default class HomeScreen extends Component<Props> {
     }
   }
 
-  componentWillUnmount() {
-    MediaManager.removeVideoThumbnailListener();
-  }
-
-  setupAfterOnboarding() {
+  async setupAfterOnboarding() {
     Camera.startPreview();
-    MediaManager.requestVideoThumbails({ width: 300, height: 300 });
+    await this.props.loadVideoAssets();
   }
 
   render() {

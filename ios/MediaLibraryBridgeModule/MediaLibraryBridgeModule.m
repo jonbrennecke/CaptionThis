@@ -48,8 +48,8 @@
 
 RCT_EXPORT_MODULE(MediaLibrary)
 
-RCT_EXPORT_METHOD(requestVideoThumbails:(CGSize)size withCallback:(RCTResponseSenderBlock)callback) {
-  NSArray<PHAsset*>* assets = [AppDelegate.sharedMediaLibraryManager requestVideoThumbnailsForTargetSize:size];
+RCT_EXPORT_METHOD(getVideoAssets:(RCTResponseSenderBlock)callback) {
+  NSArray<PHAsset*>* assets = [AppDelegate.sharedMediaLibraryManager getVideoAssetsFromLibrary];
   NSMutableArray<NSString*>* localIdentifiers = [[NSMutableArray alloc] initWithCapacity:assets.count];
   [assets enumerateObjectsUsingBlock:^(PHAsset * _Nonnull asset, NSUInteger idx, BOOL * _Nonnull stop) {
     if (asset == nil) {
