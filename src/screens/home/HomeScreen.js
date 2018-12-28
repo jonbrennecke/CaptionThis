@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import { View, ScrollView, SafeAreaView, Dimensions, Text } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
 import * as Camera from '../../utils/Camera';
+import * as Color from '../../utils/Color';
 import { requireOnboardedUser } from '../../utils/Onboarding';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import { loadVideoAssets } from '../../redux/media/actionCreators';
@@ -63,6 +65,22 @@ const styles = {
   thumbnailGrid: {
     flex: 1,
   },
+  topGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 100,
+    zIndex: 1,
+  },
+  bottomGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 100,
+    zIndex: 1,
+  },
 };
 
 function mapStateToProps(state: AppState): StateProps {
@@ -103,6 +121,20 @@ export default class HomeScreen extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
+        <LinearGradient
+          colors={[
+            Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
+            Color.hexToRgbaString(UI_COLORS.BLACK, 0),
+          ]}
+          style={styles.topGradient}
+        />
+        <LinearGradient
+          colors={[
+            Color.hexToRgbaString(UI_COLORS.BLACK, 0),
+            Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
+          ]}
+          style={styles.bottomGradient}
+        />
         <ScrollView
           style={styles.scrollView}
           showsVerticalScrollIndicator={false}
