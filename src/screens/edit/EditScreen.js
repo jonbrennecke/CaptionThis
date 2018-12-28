@@ -8,7 +8,6 @@ import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
 
-import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
 
 type OwnProps = {
@@ -59,11 +58,11 @@ const styles = {
   },
 };
 
-function mapStateToProps(state: AppState): StateProps {
+function mapStateToProps(): StateProps {
   return {};
 }
 
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(): DispatchProps {
   return {};
 }
 
@@ -72,7 +71,6 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 @autobind
 export default class EditScreen extends Component<Props> {
   render() {
-    console.log(this.props)
     return (
       <View style={styles.container}>
         <ScreenGradients />
