@@ -2,7 +2,16 @@ import AVFoundation
 import UIKit
 
 @objc
+protocol VideoPlayerViewDelegate {
+  func videoPlayerDidBecomeReadyToPlay()
+  func videoPlayerDidFailToLoad()
+}
+
+@objc
 class VideoPlayerView: UIView {
+  
+  @objc
+  public var delegate: VideoPlayerViewDelegate?
   
   private var item: AVPlayerItem?
   
@@ -91,9 +100,11 @@ class VideoPlayerView: UIView {
   
   private func onVideoDidBecomeReadyToPlay() {
     Debug.log(message: "Video is ready to play")
+    delegate?.videoPlayerDidBecomeReadyToPlay()
   }
   
   private func onVideoDidFailToLoad() {
     Debug.log(message: "Video failed to load")
+    delegate?.videoPlayerDidFailToLoad()
   }
 }

@@ -7,8 +7,10 @@ import { connect } from 'react-redux';
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
+import { beginSpeechTranscriptionWithVideoAsset } from '../../redux/media/actionCreators';
 
 import type { VideoAssetIdentifier } from '../../types/media';
+import type { Dispatch } from '../../types/redux';
 
 type OwnProps = {
   videoAssetIdentifier: VideoAssetIdentifier,
@@ -16,7 +18,11 @@ type OwnProps = {
 
 type StateProps = {};
 
-type DispatchProps = {};
+type DispatchProps = {
+  beginSpeechTranscriptionWithVideoAsset: (
+    videoAssetIdentifier: VideoAssetIdentifier
+  ) => Promise<void>,
+};
 
 type Props = OwnProps & StateProps & DispatchProps;
 
@@ -62,14 +68,25 @@ function mapStateToProps(): StateProps {
   return {};
 }
 
-function mapDispatchToProps(): DispatchProps {
-  return {};
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+  return {
+    beginSpeechTranscriptionWithVideoAsset: (id: VideoAssetIdentifier) =>
+      dispatch(beginSpeechTranscriptionWithVideoAsset(id)),
+  };
 }
 
 // $FlowFixMe
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class EditScreen extends Component<Props> {
+  videoDidFailToLoad() {}
+
+  async videoDidBecomeReadyToPlay() {
+    await this.props.beginSpeechTranscriptionWithVideoAsset(
+      this.props.videoAssetIdentifier
+    );
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -79,6 +96,12 @@ export default class EditScreen extends Component<Props> {
             <VideoPlayerView
               style={styles.videoPlayer}
               videoAssetIdentifier={this.props.videoAssetIdentifier}
+              onVideoDidBecomeReadyToPlay={() => {
+                this.videoDidBecomeReadyToPlay();
+              }}
+              onVideoDidFailToLoad={() => {
+                this.videoDidFailToLoad();
+              }}
             />
           </View>
         </SafeAreaView>

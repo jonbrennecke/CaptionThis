@@ -3,14 +3,48 @@
 #import "VideoPlayerViewManager.h"
 #import "CaptionThis-Swift.h"
 
+@implementation VideoPlayerViewWrap
+@synthesize playerView;
+
+- (instancetype)init
+{
+  self = [super init];
+  if (self) {
+    playerView = [[VideoPlayerView alloc] init];
+    playerView.delegate = self;
+    [self addSubview:playerView];
+  }
+  return self;
+}
+
+- (void)layoutSubviews {
+  playerView.frame = self.bounds;
+}
+
+#pragma mark - VideoPlayerViewDelegate
+
+- (void)videoPlayerDidFailToLoad {
+  if (!self.onVideoDidFailToLoad) {
+    return;
+  }
+  self.onVideoDidFailToLoad(@{});
+}
+
+- (void)videoPlayerDidBecomeReadyToPlay {
+  if (!self.onVideoDidBecomeReadyToPlay) {
+    return;
+  }
+  self.onVideoDidBecomeReadyToPlay(@{});
+}
+
+@end
+
 @implementation VideoPlayerViewManager
 
-RCT_EXPORT_MODULE(VideoPlayerViewManager)
+RCT_EXPORT_MODULE()
 
-- (UIView*)view {
-  VideoPlayerView *playerView = [[VideoPlayerView alloc] init];
-  return (UIView*)playerView;
-}
+RCT_EXPORT_VIEW_PROPERTY(onVideoDidBecomeReadyToPlay, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onVideoDidFailToLoad, RCTBubblingEventBlock)
 
 RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
   NSString* localIdentifier = [RCTConvert NSString:json];
@@ -25,9 +59,14 @@ RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
    requestAVAssetForVideo:asset
    options:requestOptions
    resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
-     VideoPlayerView *playerView = (VideoPlayerView*)view;
-     playerView.asset = asset;
+     VideoPlayerViewWrap *playerViewWrap = (VideoPlayerViewWrap*)view;
+     playerViewWrap.playerView.asset = asset;
    }];
+}
+
+- (UIView*)view {
+  VideoPlayerViewWrap *view = [[VideoPlayerViewWrap alloc] init];
+  return view;
 }
 
 @end
