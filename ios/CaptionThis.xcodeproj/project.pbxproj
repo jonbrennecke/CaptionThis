@@ -60,6 +60,8 @@
 		FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */; };
 		FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */; };
 		FCD5F75821D73CA3001F2068 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75721D73CA2001F2068 /* Debug.m */; };
+		FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */; };
+		FCD5F7A821D8225C001F2068 /* VideoSeekbarPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -443,6 +445,10 @@
 		FCD5F75421D6EA68001F2068 /* SpeechBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpeechBridgeModule.h; sourceTree = "<group>"; };
 		FCD5F75521D73C8C001F2068 /* Debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
 		FCD5F75721D73CA2001F2068 /* Debug.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Debug.m; sourceTree = "<group>"; };
+		FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoSeekbarPreviewViewManager.m; sourceTree = "<group>"; };
+		FCD5F7A421D8110C001F2068 /* VideoSeekbarPreviewViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewViewManager.h; sourceTree = "<group>"; };
+		FCD5F7A621D82250001F2068 /* VideoSeekbarPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewView.h; sourceTree = "<group>"; };
+		FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoSeekbarPreviewView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -607,6 +613,7 @@
 				FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */,
 				FCD5F75321D6EA55001F2068 /* SpeechBridgeModule */,
 				FCD5F75621D73C97001F2068 /* Debug */,
+				FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */,
 			);
 			name = CaptionThis;
 			sourceTree = "<group>";
@@ -856,6 +863,17 @@
 				FCD5F75721D73CA2001F2068 /* Debug.m */,
 			);
 			name = Debug;
+			sourceTree = "<group>";
+		};
+		FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */ = {
+			isa = PBXGroup;
+			children = (
+				FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */,
+				FCD5F7A421D8110C001F2068 /* VideoSeekbarPreviewViewManager.h */,
+				FCD5F7A621D82250001F2068 /* VideoSeekbarPreviewView.h */,
+				FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */,
+			);
+			name = VideoSeekbarPreviewViewManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1439,9 +1457,11 @@
 				FC6EA7E921D4508D007C3B3E /* CameraManager.swift in Sources */,
 				FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */,
 				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
+				FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */,
 				FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */,
 				FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				FCD5F7A821D8225C001F2068 /* VideoSeekbarPreviewView.m in Sources */,
 				FC880E0321D5DC4100856037 /* VideoThumbnailViewManager.m in Sources */,
 				FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */,
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,

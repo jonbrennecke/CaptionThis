@@ -18,8 +18,7 @@ type Props = {
 const styles = {
   container: {
     backgroundColor: UI_COLORS.DARK_GREY,
-    flex: 1,
-    height: 20,
+    height: 45,
     borderRadius: 10,
   },
   seekPositionHandle: {
@@ -27,7 +26,7 @@ const styles = {
     top: -5,
     bottom: -5,
     width: 7,
-    backgroundColor: UI_COLORS.LIGHT_GREY,
+    backgroundColor: UI_COLORS.OFF_WHITE,
     borderRadius: 3,
     shadowOpacity: 0.5,
     shadowOffset: {
