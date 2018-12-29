@@ -1,6 +1,7 @@
 /* @flow */
 import typeof { LOADING_STATE } from '../constants';
 import type { VideoAssetIdentifier } from './media';
+import type { SpeechTranscription } from './speech';
 
 export type Action<T> = {
   type: string,
@@ -22,26 +23,32 @@ export type AuthState = {
   authLoadingState: $Keys<LOADING_STATE>,
 };
 
+export type OnboardingState = {
+  arePermissionsGranted: ?boolean,
+  permissionsLoadingState: $Keys<LOADING_STATE>,
+};
+
+export type MediaState = {
+  speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
+  videoAssetIdentifiers: VideoAssetIdentifier[],
+  mediaLoadingState: $Keys<LOADING_STATE>,
+};
+
 export type ReceiveLoginPayload = {
   token: string,
 };
 
 export type ReceiveAuthPayload = ReceiveLoginPayload;
 
-export type OnboardingState = {
-  arePermissionsGranted: ?boolean,
-  permissionsLoadingState: $Keys<LOADING_STATE>,
-};
-
 export type ReceivePermissionsPayload = {
   arePermissionsGranted: boolean,
 };
 
-export type MediaState = {
-  videoAssetIdentifiers: VideoAssetIdentifier[],
-  mediaLoadingState: $Keys<LOADING_STATE>,
-};
-
 export type ReceiveVideoAssetsPayload = {
   videoAssetIdentifiers: VideoAssetIdentifier[],
+};
+
+export type ReceiveSpeechTranscriptionPayload = {
+  videoAssetIdentifier: VideoAssetIdentifier,
+  transcription: SpeechTranscription,
 };

@@ -53,20 +53,24 @@ export const beginSpeechTranscriptionWithVideoAsset = (
 };
 
 export const receiveSpeechTranscriptionSuccess = (
+  videoAssetIdentifier: VideoAssetIdentifier,
   transcription: SpeechTranscription
 ) => {
   return (dispatch: Dispatch) => {
     dispatch({
       type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION,
-      payload: { transcription },
+      payload: { videoAssetIdentifier, transcription },
     });
   };
 };
 
-export const receiveSpeechTranscriptionFailure = () => {
+export const receiveSpeechTranscriptionFailure = (
+  videoAssetIdentifier: VideoAssetIdentifier
+) => {
   return (dispatch: Dispatch) => {
     dispatch({
       type: ACTION_TYPES.DID_UNSUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION,
+      payload: { videoAssetIdentifier },
     });
   };
 };

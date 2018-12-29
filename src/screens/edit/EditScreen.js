@@ -14,9 +14,10 @@ import {
   receiveSpeechTranscriptionSuccess,
   receiveSpeechTranscriptionFailure,
 } from '../../redux/media/actionCreators';
+import { getSpeechTranscriptions } from '../../redux/media/selectors';
 
 import type { VideoAssetIdentifier } from '../../types/media';
-import type { Dispatch } from '../../types/redux';
+import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
 
@@ -24,12 +25,14 @@ type OwnProps = {
   videoAssetIdentifier: VideoAssetIdentifier,
 };
 
-type StateProps = {};
+type StateProps = {
+  speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
+};
 
 type DispatchProps = {
-  beginSpeechTranscriptionWithVideoAsset: VideoAssetIdentifier => Promise<void>,
-  receiveSpeechTranscriptionSuccess: SpeechTranscription => Promise<void>,
-  receiveSpeechTranscriptionFailure: () => Promise<void>,
+  beginSpeechTranscriptionWithVideoAsset: typeof beginSpeechTranscriptionWithVideoAsset,
+  receiveSpeechTranscriptionSuccess: typeof receiveSpeechTranscriptionSuccess,
+  receiveSpeechTranscriptionFailure: typeof receiveSpeechTranscriptionFailure,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -78,18 +81,22 @@ const styles = {
   },
 };
 
-function mapStateToProps(): StateProps {
-  return {};
+function mapStateToProps(appState: AppState): StateProps {
+  return {
+    speechTranscriptions: getSpeechTranscriptions(appState),
+  };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
     beginSpeechTranscriptionWithVideoAsset: (id: VideoAssetIdentifier) =>
       dispatch(beginSpeechTranscriptionWithVideoAsset(id)),
-    receiveSpeechTranscriptionSuccess: (transcription: SpeechTranscription) =>
-      dispatch(receiveSpeechTranscriptionSuccess(transcription)),
-    receiveSpeechTranscriptionFailure: () =>
-      dispatch(receiveSpeechTranscriptionFailure()),
+    receiveSpeechTranscriptionSuccess: (
+      id: VideoAssetIdentifier,
+      transcription: SpeechTranscription
+    ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
+    receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
+      dispatch(receiveSpeechTranscriptionFailure(id)),
   };
 }
 
@@ -128,10 +135,15 @@ export default class EditScreen extends Component<Props> {
     transcription: SpeechTranscription
   ) {
     if (!transcription) {
-      this.props.receiveSpeechTranscriptionFailure();
+      this.props.receiveSpeechTranscriptionFailure(
+        this.props.videoAssetIdentifier
+      );
       return;
     }
-    this.props.receiveSpeechTranscriptionSuccess(transcription);
+    this.props.receiveSpeechTranscriptionSuccess(
+      this.props.videoAssetIdentifier,
+      transcription
+    );
   }
 
   render() {
@@ -152,11 +164,19 @@ export default class EditScreen extends Component<Props> {
             />
             <TranscriptionView
               style={styles.transcription}
-              text="Lorem ipsum"
+              text={this.getSpeechTranscriptionDisplayText()}
             />
           </View>
         </SafeAreaView>
       </View>
     );
+  }
+
+  getSpeechTranscriptionDisplayText() {
+    const { speechTranscriptions, videoAssetIdentifier: key } = this.props;
+    if (!speechTranscriptions.has(key)) {
+      return '';
+    }
+    return speechTranscriptions.get(key)?.formattedString || '';
   }
 }
