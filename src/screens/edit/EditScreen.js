@@ -30,9 +30,12 @@ type StateProps = {
 };
 
 type DispatchProps = {
-  beginSpeechTranscriptionWithVideoAsset: typeof beginSpeechTranscriptionWithVideoAsset,
-  receiveSpeechTranscriptionSuccess: typeof receiveSpeechTranscriptionSuccess,
-  receiveSpeechTranscriptionFailure: typeof receiveSpeechTranscriptionFailure,
+  beginSpeechTranscriptionWithVideoAsset: VideoAssetIdentifier => Promise<void>,
+  receiveSpeechTranscriptionSuccess: (
+    VideoAssetIdentifier,
+    SpeechTranscription
+  ) => void,
+  receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
