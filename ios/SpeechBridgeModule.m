@@ -2,7 +2,6 @@
 #import <React/RCTConvert.h>
 #import "SpeechBridgeModule.h"
 #import "AppDelegate.h"
-#import "Debug.h"
 
 @implementation SpeechBridgeModule
 {
@@ -20,16 +19,30 @@
 #pragma mark - SpeechManagerDelegate
 
 -(void)speechManagerDidBecomeAvailable {
-  
+  [self sendEventWithName:@"speechManagerDidBecomeAvailable" body:@{}];
 }
 
 -(void)speechManagerDidBecomeUnavailable {
-  
+  [self sendEventWithName:@"speechManagerDidBecomeUnavailable" body:@{}];
 }
 
 - (void)speechManagerDidReceiveSpeechTranscription:(SFTranscription * _Nonnull)transcription {
-  NSString* str = transcription.formattedString;
-  [Debug logWithFormat:@"Transcription = %@", str, nil];
+  NSString* formattedString = transcription.formattedString;
+  NSMutableArray<NSDictionary*>* segments = [[NSMutableArray alloc] initWithCapacity:transcription.segments.count];
+  for (SFTranscriptionSegment *segment in transcription.segments) {
+    [segments addObject:@{
+      @"duration": @(segment.duration),
+      @"timestamp": @(segment.timestamp),
+      @"confidence": @(segment.confidence),
+      @"substring": segment.substring,
+      @"alternativeSubstrings": segment.alternativeSubstrings
+    }];
+  }
+  NSDictionary *body = @{
+   @"formattedString": formattedString,
+   @"segments": segments
+  };
+  [self sendEventWithName:@"speechManagerDidReceiveSpeechTranscription" body:body];
 }
 
 
@@ -50,10 +63,10 @@
 - (NSArray<NSString *> *)supportedEvents
 {
   return @[
-           @"speechManagerDidReceiveSpeechTranscription",
-           @"speechManagerDidBecomeAvailable",
-           @"speechManagerDidBecomeUnavailable"
-           ];
+   @"speechManagerDidReceiveSpeechTranscription",
+   @"speechManagerDidBecomeAvailable",
+   @"speechManagerDidBecomeUnavailable"
+  ];
 }
 
 RCT_EXPORT_MODULE(SpeechManager)

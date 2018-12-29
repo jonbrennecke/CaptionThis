@@ -8,9 +8,12 @@ import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
 import { beginSpeechTranscriptionWithVideoAsset } from '../../redux/media/actionCreators';
+import SpeechManager from '../../utils/SpeechManager';
 
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { Dispatch } from '../../types/redux';
+import type { Return } from '../../types/util';
+import type { SpeechTranscription } from '../../types/speech';
 
 type OwnProps = {
   videoAssetIdentifier: VideoAssetIdentifier,
@@ -79,12 +82,37 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class EditScreen extends Component<Props> {
-  videoDidFailToLoad() {}
+  // eslint-disable-next-line flowtype/generic-spacing
+  speechTranscriptionSubscription: ?Return<
+    typeof SpeechManager.addSpeechTranscriptionListener
+  >;
+
+  componentDidMount() {
+    SpeechManager.addSpeechTranscriptionListener(
+      this.speechManagerDidReceiveSpeechTranscription
+    );
+  }
+
+  componentWillUnmount() {
+    if (this.speechTranscriptionSubscription) {
+      SpeechManager.removeListener(this.speechTranscriptionSubscription);
+    }
+  }
+
+  videoDidFailToLoad() {
+    // TODO
+  }
 
   async videoDidBecomeReadyToPlay() {
     await this.props.beginSpeechTranscriptionWithVideoAsset(
       this.props.videoAssetIdentifier
     );
+  }
+
+  speechManagerDidReceiveSpeechTranscription(
+    transcription: SpeechTranscription
+  ) {
+    console.log(transcription);
   }
 
   render() {
