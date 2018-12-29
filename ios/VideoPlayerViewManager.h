@@ -9,7 +9,7 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoDidBecomeReadyToPlay;
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoDidFailToLoad;
 - (void)videoPlayerDidFailToLoad;
-- (void)videoPlayerDidBecomeReadyToPlay;
+- (void)videoPlayerDidBecomeReadyToPlayAsset:(AVAsset*)asset;
 @end
 
 @class VideoPlayerViewManager;

@@ -3,7 +3,7 @@ import UIKit
 
 @objc
 protocol VideoPlayerViewDelegate {
-  func videoPlayerDidBecomeReadyToPlay()
+  func videoPlayerDidBecomeReadyToPlayAsset(_ asset: AVAsset)
   func videoPlayerDidFailToLoad()
 }
 
@@ -91,16 +91,41 @@ class VideoPlayerView: UIView {
   public func play() {
     DispatchQueue.main.async {
       guard let player = self.player else {
-        Debug.log(message: "VideoPlayerView.play requested, but AVPlayer is not set")
+        Debug.log(message: "Playback requested, but AVPlayer is not set")
         return
       }
       player.play()
     }
   }
   
+  @objc
+  public func pause() {
+    DispatchQueue.main.async {
+      guard let player = self.player else {
+        Debug.log(message: "Pause requested, but AVPlayer is not set")
+        return
+      }
+      player.pause()
+    }
+  }
+  
+  @objc
+  public func seek(to time: CMTime, completionHandler: @escaping (Bool) -> ()) {
+    DispatchQueue.main.async {
+      guard let player = self.player else {
+        Debug.log(message: "Seek requested, but AVPlayer is not set")
+        return
+      }
+      player.seek(to: time, completionHandler: completionHandler)
+    }
+  }
+  
   private func onVideoDidBecomeReadyToPlay() {
+    guard let asset = player?.currentItem?.asset else {
+      return
+    }
     Debug.log(message: "Video is ready to play")
-    delegate?.videoPlayerDidBecomeReadyToPlay()
+    delegate?.videoPlayerDidBecomeReadyToPlayAsset(asset)
   }
   
   private func onVideoDidFailToLoad() {

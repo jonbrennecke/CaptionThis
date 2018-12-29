@@ -7,11 +7,18 @@ import type { VideoAssetIdentifier } from '../../types/media';
 
 const NativeVideoPlayerView = requireNativeComponent('VideoPlayerView');
 
+type VideoDidBecomeReadyToPlayParams = {
+  duration: number,
+};
+
 type Props = {
   style?: ?Style,
+  startPosition: number,
   videoAssetIdentifier: VideoAssetIdentifier,
   onVideoDidFailToLoad: () => void,
-  onVideoDidBecomeReadyToPlay: () => void,
+  onVideoDidBecomeReadyToPlay: (
+    params: VideoDidBecomeReadyToPlayParams
+  ) => void,
 };
 
 const styles = {
@@ -25,6 +32,7 @@ const styles = {
 
 export default function VideoPlayerView({
   style,
+  startPosition,
   videoAssetIdentifier,
   onVideoDidBecomeReadyToPlay,
   onVideoDidFailToLoad,
@@ -33,8 +41,9 @@ export default function VideoPlayerView({
     <View style={[styles.container, style]}>
       <NativeVideoPlayerView
         style={styles.nativeView}
+        startPosition={startPosition}
         localIdentifier={videoAssetIdentifier}
-        onVideoDidBecomeReadyToPlay={onVideoDidBecomeReadyToPlay}
+        onVideoDidBecomeReadyToPlay={({ nativeEvent }) => onVideoDidBecomeReadyToPlay(nativeEvent)}
         onVideoDidFailToLoad={onVideoDidFailToLoad}
       />
     </View>

@@ -10,7 +10,9 @@ type Props = {
   videoAssetIdentifier: VideoAssetIdentifier,
 };
 
-const NativeVideoSeekbarPreviewView = requireNativeComponent('VideoSeekbarPreviewView');
+const NativeVideoSeekbarPreviewView = requireNativeComponent(
+  'VideoSeekbarPreviewView'
+);
 
 const styles = {
   container: {

@@ -22,6 +22,15 @@ import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
 
+type VideoDidBecomeReadyToPlayParams = {
+  duration: number,
+};
+
+type State = {
+  durationSeconds: number,
+  startPositionSeconds: number,
+};
+
 type OwnProps = {
   videoAssetIdentifier: VideoAssetIdentifier,
 };
@@ -111,7 +120,12 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 // $FlowFixMe
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
-export default class EditScreen extends Component<Props> {
+export default class EditScreen extends Component<Props, State> {
+  state: State = {
+    durationSeconds: 0,
+    startPositionSeconds: 0,
+  };
+
   // eslint-disable-next-line flowtype/generic-spacing
   speechTranscriptionSubscription: ?Return<
     typeof SpeechManager.addSpeechTranscriptionListener
@@ -133,7 +147,10 @@ export default class EditScreen extends Component<Props> {
     // TODO: display error message
   }
 
-  async videoDidBecomeReadyToPlay() {
+  async videoDidBecomeReadyToPlay({
+    duration
+  }: VideoDidBecomeReadyToPlayParams) {
+    this.setState({ durationSeconds: duration });
     await this.props.beginSpeechTranscriptionWithVideoAsset(
       this.props.videoAssetIdentifier
     );
@@ -154,6 +171,13 @@ export default class EditScreen extends Component<Props> {
     );
   }
 
+  seekBarDidSeekToPercent(percent: number) {
+    console.log(percent, this.state.durationSeconds * percent);
+    this.setState({
+      startPositionSeconds: this.state.durationSeconds * percent,
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -162,9 +186,12 @@ export default class EditScreen extends Component<Props> {
           <View style={styles.videoWrap}>
             <VideoPlayerView
               style={styles.videoPlayer}
+              startPosition={this.state.startPositionSeconds}
               videoAssetIdentifier={this.props.videoAssetIdentifier}
-              onVideoDidBecomeReadyToPlay={() => {
-                this.videoDidBecomeReadyToPlay();
+              onVideoDidBecomeReadyToPlay={(
+                params: VideoDidBecomeReadyToPlayParams
+              ) => {
+                this.videoDidBecomeReadyToPlay(params);
               }}
               onVideoDidFailToLoad={() => {
                 this.videoDidFailToLoad();
@@ -178,6 +205,7 @@ export default class EditScreen extends Component<Props> {
           <View style={styles.editControls}>
             <VideoSeekbar
               videoAssetIdentifier={this.props.videoAssetIdentifier}
+              onSeekToPercent={this.seekBarDidSeekToPercent}
             />
           </View>
         </SafeAreaView>

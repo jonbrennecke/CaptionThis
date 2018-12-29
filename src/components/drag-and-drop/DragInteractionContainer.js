@@ -12,6 +12,7 @@ import type {
 } from '../../types/react';
 
 type Props = {
+  itemsShouldReturnToOriginalPosition?: boolean,
   canDrag?: boolean,
   vertical?: boolean,
   horizontal?: boolean,
@@ -46,6 +47,7 @@ export default class DragInteractionContainer extends Component<Props, State> {
   panResponder: PanResponder;
 
   static defaultProps = {
+    itemsShouldReturnToOriginalPosition: true,
     horizontal: true,
     vertical: true,
   };
@@ -84,10 +86,10 @@ export default class DragInteractionContainer extends Component<Props, State> {
       extend(
         {},
         this.props.horizontal && {
-          dx: this.state.pan.x,
+          moveX: this.state.pan.x,
         },
         this.props.vertical && {
-          dy: this.state.pan.y,
+          moveY: this.state.pan.y,
         }
       ),
     ])(event, gesture);
@@ -122,9 +124,11 @@ export default class DragInteractionContainer extends Component<Props, State> {
   }
 
   animateRelease() {
-    Animated.spring(this.state.pan, {
-      toValue: { x: 0, y: 0 },
-    }).start();
+    if (this.props.itemsShouldReturnToOriginalPosition) {
+      Animated.spring(this.state.pan, {
+        toValue: { x: 0, y: 0 },
+      }).start();
+    }
     Animated.spring(this.state.bounce, {
       toValue: 1,
       friction: 5,

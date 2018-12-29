@@ -30,11 +30,13 @@
   self.onVideoDidFailToLoad(@{});
 }
 
-- (void)videoPlayerDidBecomeReadyToPlay {
+- (void)videoPlayerDidBecomeReadyToPlayAsset:(AVAsset*)asset {
   if (!self.onVideoDidBecomeReadyToPlay) {
     return;
   }
-  self.onVideoDidBecomeReadyToPlay(@{});
+  Float64 durationF64 = CMTimeGetSeconds(asset.duration);
+  NSNumber* duration = [NSNumber numberWithFloat:durationF64];
+  self.onVideoDidBecomeReadyToPlay(@{ @"duration": duration });
 }
 
 @end
@@ -62,6 +64,14 @@ RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
      VideoPlayerViewWrap *playerViewWrap = (VideoPlayerViewWrap*)view;
      playerViewWrap.playerView.asset = asset;
    }];
+}
+
+RCT_CUSTOM_VIEW_PROPERTY(startPosition, NSNumber, VideoPlayerViewWrap) {
+  NSNumber* startPosition = [RCTConvert NSNumber:json];
+  CMTime time = CMTimeMakeWithSeconds([startPosition floatValue], 1);
+  [view.playerView seekTo:time completionHandler:^(BOOL success) {
+    [view.playerView play];
+  }];
 }
 
 - (UIView*)view {

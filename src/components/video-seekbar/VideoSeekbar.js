@@ -8,11 +8,16 @@ import DragInteractionContainer from '../drag-and-drop/DragInteractionContainer'
 import VideoSeekbarPreviewView from './VideoSeekbarPreviewView';
 
 import type { VideoAssetIdentifier } from '../../types/media';
-import type { Style } from '../../types/react';
+import type { Style, Gesture } from '../../types/react';
 
 type Props = {
   style?: ?Style,
   videoAssetIdentifier: VideoAssetIdentifier,
+  onSeekToPercent: (percent: number) => void,
+};
+
+type State = {
+  viewWidth: number,
 };
 
 const styles = {
@@ -46,16 +51,42 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class VideoSeekbar extends Component<Props> {
+export default class VideoSeekbar extends Component<Props, State> {
+  state: State = {
+    viewWidth: 0,
+  };
+  view: ?View;
+
   dragDidStart() {}
 
   dragDidEnd() {}
 
-  dragDidMove() {}
+  dragDidMove(e: Event, { moveX }: Gesture) {
+    if (!this.state.viewWidth) {
+      return;
+    }
+    const percentOfWidth = moveX / this.state.viewWidth;
+    this.props.onSeekToPercent(percentOfWidth);
+  }
+
+  viewDidLayout() {
+    if (!this.view) {
+      return;
+    }
+    this.view.measure((fx, fy, width) => {
+      this.setState({ viewWidth: width });
+    });
+  }
 
   render() {
     return (
-      <View style={[styles.container, this.props.style]}>
+      <View
+        style={[styles.container, this.props.style]}
+        ref={ref => {
+          this.view = ref;
+        }}
+        onLayout={this.viewDidLayout}
+      >
         <VideoSeekbarPreviewView
           style={styles.preview}
           videoAssetIdentifier={this.props.videoAssetIdentifier}
@@ -63,6 +94,7 @@ export default class VideoSeekbar extends Component<Props> {
         <DragInteractionContainer
           style={styles.dragContainer}
           vertical={false}
+          itemsShouldReturnToOriginalPosition={false}
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}
           onDragMove={this.dragDidMove}
