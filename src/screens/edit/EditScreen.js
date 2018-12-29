@@ -176,7 +176,9 @@ export default class EditScreen extends Component<Props> {
             />
           </View>
           <View style={styles.editControls}>
-            <VideoSeekbar />
+            <VideoSeekbar
+              videoAssetIdentifier={this.props.videoAssetIdentifier}
+            />
           </View>
         </SafeAreaView>
       </View>

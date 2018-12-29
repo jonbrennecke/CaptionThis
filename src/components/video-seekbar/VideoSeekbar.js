@@ -5,8 +5,15 @@ import { autobind } from 'core-decorators';
 
 import { UI_COLORS } from '../../constants';
 import DragInteractionContainer from '../drag-and-drop/DragInteractionContainer';
+import VideoSeekbarPreviewView from './VideoSeekbarPreviewView';
 
-type Props = {};
+import type { VideoAssetIdentifier } from '../../types/media';
+import type { Style } from '../../types/react';
+
+type Props = {
+  style?: ?Style,
+  videoAssetIdentifier: VideoAssetIdentifier,
+};
 
 const styles = {
   container: {
@@ -33,6 +40,9 @@ const styles = {
   dragContainer: {
     flex: 1,
   },
+  preview: {
+    borderRadius: 10,
+  },
 };
 
 // $FlowFixMe
@@ -46,7 +56,11 @@ export default class VideoSeekbar extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.style]}>
+        <VideoSeekbarPreviewView
+          style={styles.preview}
+          videoAssetIdentifier={this.props.videoAssetIdentifier}
+        />
         <DragInteractionContainer
           style={styles.dragContainer}
           vertical={false}
