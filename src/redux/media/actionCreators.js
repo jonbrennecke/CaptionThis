@@ -5,6 +5,7 @@ import { ACTION_TYPES } from './constants';
 
 import type { Dispatch } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
+import type { SpeechTranscription } from '../../types/speech';
 
 export const loadVideoAssets = () => {
   return async (dispatch: Dispatch) => {
@@ -48,5 +49,24 @@ export const beginSpeechTranscriptionWithVideoAsset = (
         type: ACTION_TYPES.DID_UNSUCCESSFULLY_START_SPEECH_TRANSCRIPTION,
       });
     }
+  };
+};
+
+export const receiveSpeechTranscriptionSuccess = (
+  transcription: SpeechTranscription
+) => {
+  return (dispatch: Dispatch) => {
+    dispatch({
+      type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION,
+      payload: { transcription },
+    });
+  };
+};
+
+export const receiveSpeechTranscriptionFailure = () => {
+  return (dispatch: Dispatch) => {
+    dispatch({
+      type: ACTION_TYPES.DID_UNSUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION,
+    });
   };
 };

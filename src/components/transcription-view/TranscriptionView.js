@@ -20,7 +20,10 @@ const styles = {
     paddingVertical: 5,
     paddingHorizontal: 15,
   },
-  text: Fonts.getFontStyle('heading', { contentStyle: 'lightContent', size: 'large' }),
+  text: Fonts.getFontStyle('heading', {
+    contentStyle: 'lightContent',
+    size: 'large',
+  }),
 };
 
 export default function TranscriptionView({ style, text }: Props) {
