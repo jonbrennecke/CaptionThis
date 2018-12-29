@@ -28,6 +28,7 @@ export default function ScreenGradients() {
   return (
     <Fragment>
       <LinearGradient
+        pointerEvents="none"
         colors={[
           Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
           Color.hexToRgbaString(UI_COLORS.BLACK, 0),
@@ -35,6 +36,7 @@ export default function ScreenGradients() {
         style={styles.topGradient}
       />
       <LinearGradient
+        pointerEvents="none"
         colors={[
           Color.hexToRgbaString(UI_COLORS.BLACK, 0),
           Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),

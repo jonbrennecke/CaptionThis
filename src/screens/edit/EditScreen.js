@@ -8,6 +8,7 @@ import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
 import TranscriptionView from '../../components/transcription-view/TranscriptionView';
+import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import SpeechManager from '../../utils/SpeechManager';
 import {
   beginSpeechTranscriptionWithVideoAsset,
@@ -81,6 +82,10 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 100,
+  },
+  editControls: {
+    flex: 1,
+    paddingVertical: 10,
   },
 };
 
@@ -169,6 +174,9 @@ export default class EditScreen extends Component<Props> {
               style={styles.transcription}
               text={this.getSpeechTranscriptionDisplayText()}
             />
+          </View>
+          <View style={styles.editControls}>
+            <VideoSeekbar />
           </View>
         </SafeAreaView>
       </View>
