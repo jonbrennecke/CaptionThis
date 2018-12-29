@@ -5,7 +5,7 @@
 #import "CaptionThis-Swift.h"
 
 @interface SpeechBridgeModule : RCTEventEmitter<RCTBridgeModule, SpeechManagerDelegate>
--(void)speechManagerDidReceiveSpeechTranscriptionOutputWithTranscription:(SFTranscription *)transcription;
+-(void)speechManagerDidReceiveSpeechTranscription:(SFTranscription *)transcription;
 -(void)speechManagerDidBecomeAvailable;
 -(void)speechManagerDidBecomeUnavailable;
 @end

@@ -2,6 +2,7 @@
 #import <React/RCTConvert.h>
 #import "SpeechBridgeModule.h"
 #import "AppDelegate.h"
+#import "Debug.h"
 
 @implementation SpeechBridgeModule
 {
@@ -27,7 +28,8 @@
 }
 
 - (void)speechManagerDidReceiveSpeechTranscription:(SFTranscription * _Nonnull)transcription {
-  
+  NSString* str = transcription.formattedString;
+  [Debug logWithFormat:@"Transcription = %@", str, nil];
 }
 
 

@@ -1,15 +1,23 @@
 import Foundation
 
-class Debug {
-  static func log(message: String) {
+@objc
+class Debug : NSObject {
+  
+  @objc
+  public static func log(message: String) {
     print(message)
   }
-  
-  static func log(format: String, _ arguments: CVarArg...) {
-    print(String(format: format, arguments: arguments))
+
+  public static func log(format: String, _ args: CVarArg...) {
+    print(String(format: format, arguments: args))
   }
   
+  @objc
+  public static func log(format: String, arguments args: [Any]) {
+    print(String(format: format, arguments: args as! [CVarArg]))
+  }
   
+  @objc
   static func log(error: Error) {
     print(error)
   }

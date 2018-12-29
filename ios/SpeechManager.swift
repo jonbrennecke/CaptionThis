@@ -57,19 +57,14 @@ class SpeechManager : NSObject {
   
   public func startCaptureForAudioSession(callback: (Error?, SFSpeechAudioBufferRecognitionRequest?) -> ()) {
     do {
-      let request = try startCaptureForAudioSessionOrThrow()
+      let request = try createRecognitionRequestForAudioSessionOrThrow()
+      startTranscription(withRequest: request)
       callback(nil, request)
     }
     catch let error {
       Debug.log(error: error)
       callback(error, nil)
     }
-  }
-  
-  private func startCaptureForAudioSessionOrThrow() throws -> SFSpeechAudioBufferRecognitionRequest {
-    let request = try createRecognitionRequestForAudioSessionOrThrow()
-    startTranscription(withRequest: request)
-    return request
   }
   
   private func createRecognitionRequestForAudioSessionOrThrow() throws -> SFSpeechAudioBufferRecognitionRequest {
@@ -92,7 +87,11 @@ class SpeechManager : NSObject {
   @objc
   public func startCaptureForAsset(_ asset: AVAsset, callback: (Error?, SFSpeechAudioBufferRecognitionRequest?) -> ()) {
     do {
-      let request = try createRecognitionRequestForAssetOrThrow(asset)
+      guard let request = try createRecognitionRequestForAssetOrThrow(asset) else {
+        callback(nil, nil)
+        return
+      }
+      startTranscription(withRequest: request)
       callback(nil, request)
     }
     catch let error {
@@ -111,14 +110,15 @@ class SpeechManager : NSObject {
     let outputSettings = [AVFormatIDKey: kAudioFormatLinearPCM]
     let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: outputSettings)
     assetReader.add(assetReaderOutput)
-    assetReader.startReading()
-    guard let sampleBuffer = assetReaderOutput.copyNextSampleBuffer() else {
-      Debug.log(message: "Failed to create recognition request. Failed to get sample buffer.")
-      return nil
-    }
     let request = SFSpeechAudioBufferRecognitionRequest()
     request.shouldReportPartialResults = true
-    request.appendAudioSampleBuffer(sampleBuffer)
+    assetReader.startReading()
+    while (true) {
+      guard let sampleBuffer = assetReaderOutput.copyNextSampleBuffer() else {
+        break
+      }
+      request.appendAudioSampleBuffer(sampleBuffer)
+    }
     return request
   }
   
@@ -133,7 +133,11 @@ class SpeechManager : NSObject {
   }
   
   private func startTranscription(withRequest request: SFSpeechAudioBufferRecognitionRequest) {
-    recognizer.recognitionTask(with: request) { (result, _) in
+    recognizer.recognitionTask(with: request) { (result, error) in
+      if let error = error {
+        Debug.log(error: error)
+        return
+      }
       guard let transcription = result?.bestTranscription, let delegate = self.delegate else {
         return
       }
