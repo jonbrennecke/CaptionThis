@@ -111,6 +111,12 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
           fontSize: 13,
         },
       },
+      {
+        name: 'large',
+        style: {
+          fontSize: 26,
+        },
+      },
     ],
   },
   callToAction: {

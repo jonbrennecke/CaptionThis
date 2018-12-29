@@ -45,7 +45,6 @@
   [self sendEventWithName:@"speechManagerDidReceiveSpeechTranscription" body:body];
 }
 
-
 #pragma mark - React Native module
 
 -(void)startObserving {

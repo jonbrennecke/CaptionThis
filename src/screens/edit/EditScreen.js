@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
+import TranscriptionView from '../../components/transcription-view/TranscriptionView';
 import { beginSpeechTranscriptionWithVideoAsset } from '../../redux/media/actionCreators';
 import SpeechManager from '../../utils/SpeechManager';
 
@@ -65,6 +66,12 @@ const styles = {
   videoPlayer: {
     flex: 1,
   },
+  transcription: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 100,
+  }
 };
 
 function mapStateToProps(): StateProps {
@@ -131,6 +138,7 @@ export default class EditScreen extends Component<Props> {
                 this.videoDidFailToLoad();
               }}
             />
+            <TranscriptionView style={styles.transcription} text="Lorem ipsum" />
           </View>
         </SafeAreaView>
       </View>
