@@ -5,7 +5,8 @@
 
 RCT_EXPORT_MODULE()
 
-RCT_CUSTOM_VIEW_PROPERTY(color, NSString, UIView) {
+RCT_CUSTOM_VIEW_PROPERTY(hue, NSString, UIView) {
+  // TODO:
 }
 
 - (UIView*)view {

@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { autobind } from 'core-decorators';
 
 import SaturationAndBrightnessGradientView from './SaturationAndBrightnessGradientView';
+import HueGradientView from './HueGradientView';
 
 import type { Style } from '../../types/react';
 
@@ -23,6 +24,14 @@ const styles = {
     width,
     height: width,
     borderRadius: 10,
+    overflow: 'hidden',
+    backgroundColor: 'transparent',
+  }),
+  huePicker: (width: number) => ({
+    width,
+    height: 45,
+    borderRadius: 10,
+    marginTop: 35,
     overflow: 'hidden',
     backgroundColor: 'transparent',
   }),
@@ -54,11 +63,10 @@ export default class ColorPicker extends Component<Props, State> {
         }}
         onLayout={this.viewDidLayout}
       >
-        <View style={styles.colorPicker(this.state.viewWidth)}>
-          <SaturationAndBrightnessGradientView style={styles.flex} />
-        </View>
-        {/* <HueGradientView
-        /> */}
+        <SaturationAndBrightnessGradientView style={styles.colorPicker(this.state.viewWidth)} />
+        <HueGradientView
+          style={styles.huePicker(this.state.viewWidth)}
+        />
       </View>
     );
   }
