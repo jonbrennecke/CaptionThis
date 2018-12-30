@@ -148,7 +148,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   async videoDidBecomeReadyToPlay({
-    duration
+    duration,
   }: VideoDidBecomeReadyToPlayParams) {
     this.setState({ durationSeconds: duration });
     await this.props.beginSpeechTranscriptionWithVideoAsset(
@@ -172,7 +172,6 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   seekBarDidSeekToPercent(percent: number) {
-    console.log(percent, this.state.durationSeconds * percent);
     this.setState({
       startPositionSeconds: this.state.durationSeconds * percent,
     });

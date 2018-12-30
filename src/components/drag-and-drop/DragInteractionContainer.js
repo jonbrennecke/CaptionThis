@@ -74,10 +74,10 @@ export default class DragInteractionContainer extends Component<Props, State> {
       extend(
         {},
         this.props.horizontal && {
-          moveX: this.state.pan.x
+          moveX: this.state.pan.x,
         },
         this.props.vertical && {
-          moveY: this.state.pan.y
+          moveY: this.state.pan.y,
         }
       ),
     ])(event, gesture);

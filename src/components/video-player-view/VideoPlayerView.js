@@ -43,7 +43,9 @@ export default function VideoPlayerView({
         style={styles.nativeView}
         startPosition={startPosition}
         localIdentifier={videoAssetIdentifier}
-        onVideoDidBecomeReadyToPlay={({ nativeEvent }) => onVideoDidBecomeReadyToPlay(nativeEvent)}
+        onVideoDidBecomeReadyToPlay={({ nativeEvent }) =>
+          onVideoDidBecomeReadyToPlay(nativeEvent)
+        }
         onVideoDidFailToLoad={onVideoDidFailToLoad}
       />
     </View>
