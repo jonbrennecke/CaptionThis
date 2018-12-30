@@ -55,6 +55,8 @@
 		FC7A0F5E21D87E3B00751DBE /* Lobster-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7A0F5921D87E3B00751DBE /* Lobster-Regular.ttf */; };
 		FC7A0F5F21D87E3B00751DBE /* Staatliches-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7A0F5A21D87E3B00751DBE /* Staatliches-Regular.ttf */; };
 		FC7A0F6021D87E3B00751DBE /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7A0F5B21D87E3B00751DBE /* SourceSansPro-Regular.ttf */; };
+		FC7A0F6321D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0F6221D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m */; };
+		FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0F6521D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift */; };
 		FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */; };
 		FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9021D49E8900856037 /* CameraBridgeModule.m */; };
 		FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9621D4A4B000856037 /* CameraPreviewView.m */; };
@@ -454,6 +456,9 @@
 		FC7A0F5921D87E3B00751DBE /* Lobster-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lobster-Regular.ttf"; path = "../assets/fonts/Lobster-Regular.ttf"; sourceTree = "<group>"; };
 		FC7A0F5A21D87E3B00751DBE /* Staatliches-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Staatliches-Regular.ttf"; path = "../assets/fonts/Staatliches-Regular.ttf"; sourceTree = "<group>"; };
 		FC7A0F5B21D87E3B00751DBE /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-Regular.ttf"; path = "../assets/fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
+		FC7A0F6221D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaturationAndBrightnessGradientViewManager.m; sourceTree = "<group>"; };
+		FC7A0F6421D89D5900751DBE /* SaturationAndBrightnessGradientViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaturationAndBrightnessGradientViewManager.h; sourceTree = "<group>"; };
+		FC7A0F6521D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaturationAndBrightnessGradientView.swift; sourceTree = "<group>"; };
 		FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraPreviewViewManager.m; sourceTree = "<group>"; };
 		FC880D7F21D49A5100856037 /* CameraPreviewViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraPreviewViewManager.h; sourceTree = "<group>"; };
 		FC880D9021D49E8900856037 /* CameraBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraBridgeModule.m; sourceTree = "<group>"; };
@@ -641,6 +646,7 @@
 				FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */,
 				FCD5F75321D6EA55001F2068 /* SpeechBridgeModule */,
 				FCD5F75621D73C97001F2068 /* Debug */,
+				FC7A0F6121D89CCC00751DBE /* SaturationAndBrightnessGradientViewManager */,
 				FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */,
 			);
 			name = CaptionThis;
@@ -806,6 +812,16 @@
 				FC7A0F5621D876E500751DBE /* libRNBlur.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FC7A0F6121D89CCC00751DBE /* SaturationAndBrightnessGradientViewManager */ = {
+			isa = PBXGroup;
+			children = (
+				FC7A0F6221D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m */,
+				FC7A0F6421D89D5900751DBE /* SaturationAndBrightnessGradientViewManager.h */,
+				FC7A0F6521D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift */,
+			);
+			name = SaturationAndBrightnessGradientViewManager;
 			sourceTree = "<group>";
 		};
 		FC880D8E21D49AD400856037 /* CameraPreviewViewManager */ = {
@@ -1524,6 +1540,7 @@
 				FC6EA7E921D4508D007C3B3E /* CameraManager.swift in Sources */,
 				FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */,
 				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
+				FC7A0F6321D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m in Sources */,
 				FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */,
 				FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */,
 				FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */,
@@ -1534,6 +1551,7 @@
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,
 				FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */,
 				FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */,
+				FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

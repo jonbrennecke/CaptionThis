@@ -44,6 +44,18 @@ export const dismissFontModal = async () => {
   await Navigation.dismissModal(SCREENS.FONT_MODAL);
 };
 
+export const showColorModal = async () => {
+  await Navigation.showModal({
+    stack: {
+      children: [SCREEN_PARAMS[SCREENS.COLOR_MODAL]],
+    },
+  });
+};
+
+export const dismissColorModal = async () => {
+  await Navigation.dismissModal(SCREENS.COLOR_MODAL);
+};
+
 export const pushEditScreen = async (
   currentComponentId: string,
   videoAssetIdentifier: VideoAssetIdentifier

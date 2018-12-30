@@ -186,6 +186,7 @@ export const SCREENS = {
   LOGIN_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
   ONBOARDING_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
   FONT_MODAL: `${APP_BUNDLE_ID}.FontModal`,
+  COLOR_MODAL: `${APP_BUNDLE_ID}.ColorModal`,
 };
 
 export const APP_ORIENTATIONS = ['portrait'];
@@ -258,6 +259,27 @@ export const SCREEN_PARAMS = {
     component: {
       name: SCREENS.FONT_MODAL,
       id: SCREENS.FONT_MODAL,
+      passProps: {},
+      options: {
+        statusBar: {
+          style: 'light',
+        },
+        modalPresentationStyle: 'overFullScreen',
+        topBar: {
+          visible: false,
+          animate: false,
+        },
+        layout: {
+          backgroundColor: 'transparent',
+          orientation: APP_ORIENTATIONS,
+        },
+      },
+    },
+  },
+  [SCREENS.COLOR_MODAL]: {
+    component: {
+      name: SCREENS.COLOR_MODAL,
+      id: SCREENS.COLOR_MODAL,
       passProps: {},
       options: {
         statusBar: {

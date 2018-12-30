@@ -99,6 +99,9 @@ const styles = {
   scrollView: {
     flex: 1,
   },
+  seekbar: {
+    marginBottom: 15,
+  },
 };
 
 function mapStateToProps(appState: AppState): StateProps {
@@ -224,13 +227,14 @@ export default class EditScreen extends Component<Props, State> {
             </View>
             <View style={styles.editControls}>
               <VideoSeekbar
+                style={styles.seekbar}
                 videoAssetIdentifier={this.props.videoAssetIdentifier}
                 onSeekToPercent={this.seekBarDidSeekToPercent}
               />
+              <EditScreenFontControls fontFamily={this.props.fontFamily} />
+              <EditScreenBackgroundColorControls />
+              <EditScreenFontColorControls />
             </View>
-            <EditScreenFontControls fontFamily={this.props.fontFamily} />
-            <EditScreenBackgroundColorControls />
-            <EditScreenFontColorControls />
           </SafeAreaView>
         </ScrollView>
       </View>

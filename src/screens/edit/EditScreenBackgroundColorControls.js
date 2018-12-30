@@ -31,11 +31,11 @@ const styles = {
 export default function EditScreenBackgroundColorControls({ style }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity onPress={() => Screens.showFontModal()}>
-        <Text numberOfLines={1} style={styles.labelText}>
-          {'BACKGROUND COLOR'}
-        </Text>
-        <View style={styles.backgroundColor}/>
+      <Text numberOfLines={1} style={styles.labelText}>
+        {'BACKGROUND COLOR'}
+      </Text>
+      <TouchableOpacity onPress={() => Screens.showColorModal()}>
+        <View style={styles.backgroundColor} />
       </TouchableOpacity>
     </View>
   );

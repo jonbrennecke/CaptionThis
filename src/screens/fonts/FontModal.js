@@ -107,7 +107,7 @@ export default class FontModal extends Component<Props> {
             alwaysBounceVertical
           >
             <FontModalNavControls onBackButtonPress={this.onBackButtonPress} />
-            <Text style={styles.title}>FONT</Text>
+            <Text style={styles.title}>CHOOSE A FONT</Text>
             <View style={styles.fonts}>
               {FONTS.map(({ displayName, fontFamily }) => (
                 <TouchableOpacity
