@@ -18,7 +18,13 @@
 }
 
 - (void)layoutSubviews {
+  [super layoutSubviews];
   playerView.frame = self.bounds;
+}
+
+- (void)removeFromSuperview {
+  [super removeFromSuperview];
+  [playerView stop];
 }
 
 #pragma mark - VideoPlayerViewDelegate

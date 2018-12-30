@@ -120,6 +120,15 @@ class VideoPlayerView: UIView {
     }
   }
   
+  @objc
+  public func stop() {
+    guard let player = player else {
+      return;
+    }
+    player.pause()
+    player.replaceCurrentItem(with: nil)
+  }
+  
   private func onVideoDidBecomeReadyToPlay() {
     guard let asset = player?.currentItem?.asset else {
       return
