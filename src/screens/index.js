@@ -5,6 +5,7 @@ import HomeScreen from './home/HomeScreen';
 import LoginModal from './login/LoginModal';
 import OnboardingModal from './onboarding/OnboardingModal';
 import EditScreen from './edit/EditScreen';
+import FontModal from './fonts/FontModal';
 import { SCREENS } from '../constants';
 
 import type { Element } from 'react';
@@ -16,6 +17,7 @@ export function registerScreens(reduxStore: any, ReduxProvider: Element<*>) {
     [SCREENS.LOGIN_MODAL, () => LoginModal],
     [SCREENS.ONBOARDING_MODAL, () => OnboardingModal],
     [SCREENS.EDIT_SCREEN, () => EditScreen],
+    [SCREENS.FONT_MODAL, () => FontModal],
   ].forEach(([screen, fn]) =>
     Navigation.registerComponentWithRedux(screen, fn, ReduxProvider, reduxStore)
   );

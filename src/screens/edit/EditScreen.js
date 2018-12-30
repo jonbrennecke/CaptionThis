@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, SafeAreaView, Dimensions } from 'react-native';
+import { View, SafeAreaView, Dimensions, ScrollView } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -11,6 +11,7 @@ import VideoPlayerView from '../../components/video-player-view/VideoPlayerView'
 import TranscriptionView from '../../components/transcription-view/TranscriptionView';
 import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
+import EditScreenFontControls from './EditScreenFontControls';
 import SpeechManager from '../../utils/SpeechManager';
 import {
   beginSpeechTranscriptionWithVideoAsset,
@@ -88,7 +89,10 @@ const styles = {
     top: 0,
     left: 0,
     right: 0,
-  }
+  },
+  scrollView: {
+    flex: 1,
+  },
 };
 
 function mapStateToProps(appState: AppState): StateProps {
@@ -178,37 +182,47 @@ export default class EditScreen extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <ScreenGradients />
-        <SafeAreaView style={styles.safeArea}>
-          <View style={styles.videoWrap}>
-            <VideoPlayerView
-              style={styles.videoPlayer}
-              startPosition={this.state.startPositionSeconds}
-              videoAssetIdentifier={this.props.videoAssetIdentifier}
-              onVideoDidBecomeReadyToPlay={(
-                params: VideoDidBecomeReadyToPlayParams
-              ) => {
-                this.videoDidBecomeReadyToPlay(params);
-              }}
-              onVideoDidFailToLoad={() => {
-                this.videoDidFailToLoad();
-              }}
-            />
-            <EditScreenTopControls
-              style={styles.editTopControls}
-              onBackButtonPress={this.onBackButtonPress}
-            />
-            <TranscriptionView
-              style={styles.transcription}
-              text={this.getSpeechTranscriptionDisplayText()}
-            />
-          </View>
-          <View style={styles.editControls}>
-            <VideoSeekbar
-              videoAssetIdentifier={this.props.videoAssetIdentifier}
-              onSeekToPercent={this.seekBarDidSeekToPercent}
-            />
-          </View>
-        </SafeAreaView>
+        <ScrollView
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
+          contentInsetAdjustmentBehavior="automatic"
+          overScrollMode="always"
+          alwaysBounceVertical
+        >
+          <SafeAreaView style={styles.safeArea}>
+            <View style={styles.videoWrap}>
+              <VideoPlayerView
+                style={styles.videoPlayer}
+                startPosition={this.state.startPositionSeconds}
+                videoAssetIdentifier={this.props.videoAssetIdentifier}
+                onVideoDidBecomeReadyToPlay={(
+                  params: VideoDidBecomeReadyToPlayParams
+                ) => {
+                  this.videoDidBecomeReadyToPlay(params);
+                }}
+                onVideoDidFailToLoad={() => {
+                  this.videoDidFailToLoad();
+                }}
+              />
+              <EditScreenTopControls
+                style={styles.editTopControls}
+                onBackButtonPress={this.onBackButtonPress}
+              />
+              <TranscriptionView
+                style={styles.transcription}
+                text={this.getSpeechTranscriptionDisplayText()}
+              />
+            </View>
+            <View style={styles.editControls}>
+              <VideoSeekbar
+                videoAssetIdentifier={this.props.videoAssetIdentifier}
+                onSeekToPercent={this.seekBarDidSeekToPercent}
+              />
+            </View>
+            <EditScreenFontControls />
+          </SafeAreaView>
+        </ScrollView>
       </View>
     );
   }

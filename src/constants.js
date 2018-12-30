@@ -75,6 +75,14 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
       fontSize: 11,
       letterSpacing: 1.8,
     },
+    modifiers: [
+      {
+        name: 'lightContent',
+        style: {
+          color: TEXT_COLORS.LIGHT_GREY,
+        },
+      },
+    ],
   },
   button: {
     style: {
@@ -88,6 +96,12 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
         name: 'small',
         style: {
           fontSize: 11,
+        },
+      },
+      {
+        name: 'large',
+        style: {
+          fontSize: 27,
         },
       },
     ],
@@ -143,6 +157,7 @@ export const SCREENS = {
   EDIT_SCREEN: `${APP_BUNDLE_ID}.EditScreen`,
   LOGIN_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
   ONBOARDING_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
+  FONT_MODAL: `${APP_BUNDLE_ID}.FontModal`,
 };
 
 export const APP_ORIENTATIONS = ['portrait'];
@@ -206,6 +221,27 @@ export const SCREEN_PARAMS = {
           animate: false,
         },
         layout: {
+          orientation: APP_ORIENTATIONS,
+        },
+      },
+    },
+  },
+  [SCREENS.FONT_MODAL]: {
+    component: {
+      name: SCREENS.FONT_MODAL,
+      id: SCREENS.FONT_MODAL,
+      passProps: {},
+      options: {
+        statusBar: {
+          style: 'light',
+        },
+        modalPresentationStyle: 'overFullScreen',
+        topBar: {
+          visible: false,
+          animate: false,
+        },
+        layout: {
+          backgroundColor: 'transparent',
           orientation: APP_ORIENTATIONS,
         },
       },
