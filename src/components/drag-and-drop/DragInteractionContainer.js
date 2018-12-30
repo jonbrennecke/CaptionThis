@@ -25,18 +25,7 @@ type Props = {
 
 type State = {
   pan: Animated.ValueXY,
-  bounce: Animated.Value,
   isDragging: boolean,
-};
-
-const styles = {
-  transform: scale => ({
-    transform: [
-      {
-        scale: scale,
-      },
-    ],
-  }),
 };
 
 // $FlowFixMe
@@ -56,7 +45,6 @@ export default class DragInteractionContainer extends Component<Props, State> {
     super(props);
     this.state = {
       pan: new Animated.ValueXY(),
-      bounce: new Animated.Value(1),
       isDragging: false,
     };
     this.panResponder = PanResponder.create({
@@ -86,10 +74,10 @@ export default class DragInteractionContainer extends Component<Props, State> {
       extend(
         {},
         this.props.horizontal && {
-          moveX: this.state.pan.x,
+          moveX: this.state.pan.x
         },
         this.props.vertical && {
-          moveY: this.state.pan.y,
+          moveY: this.state.pan.y
         }
       ),
     ])(event, gesture);
@@ -102,7 +90,6 @@ export default class DragInteractionContainer extends Component<Props, State> {
     this.setState({
       isDragging: true,
     });
-    this.animateDragStart();
     this.props.onDragStart(event, gesture);
   }
 
@@ -114,33 +101,18 @@ export default class DragInteractionContainer extends Component<Props, State> {
     this.props.onDragEnd(event, gesture);
   }
 
-  animateDragStart() {
-    Animated.spring(this.state.bounce, {
-      toValue: 0.8,
-      friction: 5,
-      tension: 5,
-      velocity: -3,
-    }).start();
-  }
-
   animateRelease() {
-    if (this.props.itemsShouldReturnToOriginalPosition) {
-      Animated.spring(this.state.pan, {
-        toValue: { x: 0, y: 0 },
-      }).start();
+    if (!this.props.itemsShouldReturnToOriginalPosition) {
+      return;
     }
-    Animated.spring(this.state.bounce, {
-      toValue: 1,
-      friction: 5,
-      tension: 5,
-      velocity: -3,
+    Animated.spring(this.state.pan, {
+      toValue: { x: 0, y: 0 },
     }).start();
   }
 
   render() {
     const dragStyles = [
       this.state.pan.getLayout(),
-      styles.transform(this.state.bounce),
       this.state.isDragging && { zIndex: 1000 },
     ];
     const style = [this.props.style, this.canDrag() ? dragStyles : {}];
