@@ -8,9 +8,7 @@ type Props = {
   style?: ?Style,
 };
 
-const NativeHueGradientView = requireNativeComponent(
-  'HueGradientView'
-);
+const NativeHueGradientView = requireNativeComponent('HueGradientView');
 
 export default function HueGradientView({ style }: Props) {
   return <NativeHueGradientView style={style} />;

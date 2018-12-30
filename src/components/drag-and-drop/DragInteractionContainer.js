@@ -24,7 +24,6 @@ type Props = {
 };
 
 type State = {
-  pan: Animated.ValueXY,
   isDragging: boolean,
 };
 
@@ -34,6 +33,8 @@ export default class DragInteractionContainer extends Component<Props, State> {
   props: Props;
   state: State;
   panResponder: PanResponder;
+  pan: Animated.ValueXY = new Animated.ValueXY();
+  panOffset: { x: number, y: number } = { x: 0, y: 0 };
 
   static defaultProps = {
     itemsShouldReturnToOriginalPosition: true,
@@ -44,9 +45,11 @@ export default class DragInteractionContainer extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      pan: new Animated.ValueXY(),
       isDragging: false,
     };
+    this.pan.addListener((value: { x: number, y: number }) => {
+      this.panOffset = value;
+    });
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => this.canDrag(),
       onPanResponderTerminationRequest: () => false,
@@ -74,10 +77,10 @@ export default class DragInteractionContainer extends Component<Props, State> {
       extend(
         {},
         this.props.horizontal && {
-          moveX: this.state.pan.x,
+          dx: this.pan.x,
         },
         this.props.vertical && {
-          moveY: this.state.pan.y,
+          dy: this.pan.y,
         }
       ),
     ])(event, gesture);
@@ -90,6 +93,8 @@ export default class DragInteractionContainer extends Component<Props, State> {
     this.setState({
       isDragging: true,
     });
+    this.pan.setOffset(this.panOffset);
+    this.pan.setValue({ x: 0, y: 0 });
     this.props.onDragStart(event, gesture);
   }
 
@@ -105,14 +110,14 @@ export default class DragInteractionContainer extends Component<Props, State> {
     if (!this.props.itemsShouldReturnToOriginalPosition) {
       return;
     }
-    Animated.spring(this.state.pan, {
+    Animated.spring(this.pan, {
       toValue: { x: 0, y: 0 },
     }).start();
   }
 
   render() {
     const dragStyles = [
-      this.state.pan.getLayout(),
+      { transform: this.pan.getTranslateTransform() },
       this.state.isDragging && { zIndex: 1000 },
     ];
     const style = [this.props.style, this.canDrag() ? dragStyles : {}];

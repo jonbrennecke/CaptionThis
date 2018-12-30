@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { autobind } from 'core-decorators';
 
-import SaturationAndBrightnessGradientView from './SaturationAndBrightnessGradientView';
 import HueGradientView from './HueGradientView';
+import SaturationAndBrightnessPicker from './SaturationAndBrightnessPicker';
 
 import type { Style } from '../../types/react';
 
@@ -20,7 +20,7 @@ const styles = {
   flex: {
     flex: 1,
   },
-  colorPicker: (width: number) => ({
+  satPicker: (width: number) => ({
     width,
     height: width,
     borderRadius: 10,
@@ -63,10 +63,10 @@ export default class ColorPicker extends Component<Props, State> {
         }}
         onLayout={this.viewDidLayout}
       >
-        <SaturationAndBrightnessGradientView style={styles.colorPicker(this.state.viewWidth)} />
-        <HueGradientView
-          style={styles.huePicker(this.state.viewWidth)}
+        <SaturationAndBrightnessPicker
+          style={styles.satPicker(this.state.viewWidth)}
         />
+        <HueGradientView style={styles.huePicker(this.state.viewWidth)} />
       </View>
     );
   }
