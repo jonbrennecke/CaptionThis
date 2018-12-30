@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { autobind } from 'core-decorators';
 
-import SaturationAndBrightnessGradientView from './SaturationAndBrightnessGradientView';
+import HueGradientView from './HueGradientView';
 import DragInteractionContainer from '../drag-and-drop/DragInteractionContainer';
 import { UI_COLORS } from '../../constants';
 
@@ -27,9 +27,11 @@ const styles = {
     right: 0,
   },
   seekPositionHandle: {
-    height: 15,
-    width: 15,
-    borderRadius: 7.5,
+    position: 'absolute',
+    top: -5,
+    bottom: -5,
+    width: 7,
+    borderRadius: 3,
     backgroundColor: UI_COLORS.OFF_WHITE,
     shadowOpacity: 0.35,
     shadowOffset: {
@@ -37,13 +39,13 @@ const styles = {
       height: 4,
     },
     shadowColor: UI_COLORS.BLACK,
-    shadowRadius: 15,
+    shadowRadius: 10,
   },
 };
 
 // $FlowFixMe
 @autobind
-export default class SaturationAndBrightnessPicker extends Component<Props> {
+export default class HuePicker extends Component<Props> {
   dragDidStart() {}
 
   dragDidEnd() {}
@@ -53,9 +55,10 @@ export default class SaturationAndBrightnessPicker extends Component<Props> {
   render() {
     return (
       <View style={this.props.style}>
-        <SaturationAndBrightnessGradientView style={styles.gradientView} />
+        <HueGradientView style={styles.gradientView} />
         <DragInteractionContainer
           style={styles.draggable}
+          vertical={false}
           itemsShouldReturnToOriginalPosition={false}
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}
