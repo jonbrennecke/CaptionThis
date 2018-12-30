@@ -32,6 +32,7 @@ export type MediaState = {
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
   videoAssetIdentifiers: VideoAssetIdentifier[],
   mediaLoadingState: $Keys<LOADING_STATE>,
+  fontFamily: string,
 };
 
 export type ReceiveLoginPayload = {
@@ -51,4 +52,8 @@ export type ReceiveVideoAssetsPayload = {
 export type ReceiveSpeechTranscriptionPayload = {
   videoAssetIdentifier: VideoAssetIdentifier,
   transcription: SpeechTranscription,
+};
+
+export type ReceiveFontFamilyPayload = {
+  fontFamily: string,
 };

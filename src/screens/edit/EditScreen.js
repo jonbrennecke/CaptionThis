@@ -18,7 +18,10 @@ import {
   receiveSpeechTranscriptionSuccess,
   receiveSpeechTranscriptionFailure,
 } from '../../redux/media/actionCreators';
-import { getSpeechTranscriptions } from '../../redux/media/selectors';
+import {
+  getSpeechTranscriptions,
+  getFontFamily,
+} from '../../redux/media/selectors';
 
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
@@ -41,6 +44,7 @@ type OwnProps = {
 
 type StateProps = {
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
+  fontFamily: string,
 };
 
 type DispatchProps = {
@@ -98,6 +102,7 @@ const styles = {
 function mapStateToProps(appState: AppState): StateProps {
   return {
     speechTranscriptions: getSpeechTranscriptions(appState),
+    fontFamily: getFontFamily(appState),
   };
 }
 
@@ -220,7 +225,7 @@ export default class EditScreen extends Component<Props, State> {
                 onSeekToPercent={this.seekBarDidSeekToPercent}
               />
             </View>
-            <EditScreenFontControls />
+            <EditScreenFontControls fontFamily={this.props.fontFamily} />
           </SafeAreaView>
         </ScrollView>
       </View>

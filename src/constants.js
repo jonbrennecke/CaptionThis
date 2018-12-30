@@ -33,7 +33,6 @@ export const UI_COLORS = {
   MEDIUM_RED: '#f4a09c',
 };
 
-// TODO: rename to UI_FONT_FAMILIES
 export const FONT_FAMILIES = {
   PASSION_ONE: 'PassionOne-Regular',
   PT_SANS_REGULAR: Platform.select({
@@ -45,29 +44,33 @@ export const FONT_FAMILIES = {
     android: 'PT_Sans-Web-Bold',
   }),
   STAATLICHES: 'Staatliches',
+  SOURCE_SERIF_PRO: 'Source Serif Pro',
+  SOURCE_SANS_PRO: 'Source Sans Pro',
+  LOBSTER: 'Lobster',
+  CRETE_ROUND: 'Crete Round',
 };
 
 export const FONTS = [
   {
-    fontFamily: 'Crete Round',
+    fontFamily: FONT_FAMILIES.CRETE_ROUND,
     displayName: 'Crete Round',
   },
   {
-    fontFamily: 'Lobster',
+    fontFamily: FONT_FAMILIES.LOBSTER,
     displayName: 'Lobster',
   },
   {
-    fontFamily: 'Source Sans Pro',
+    fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
     displayName: 'Source Sans Pro',
   },
   {
-    fontFamily: 'Source Serif Pro',
+    fontFamily: FONT_FAMILIES.SOURCE_SERIF_PRO,
     displayName: 'Source Serif Pro',
   },
   {
-    fontFamily: 'Staatliches',
+    fontFamily: FONT_FAMILIES.STAATLICHES,
     displayName: 'Staatliches',
-  }
+  },
 ];
 
 export const FONT_STYLES: { [key: FontRole]: FontStyle } = {

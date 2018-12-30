@@ -10,6 +10,7 @@ import * as Fonts from '../../utils/Fonts';
 
 type Props = {
   style?: ?Style,
+  fontFamily: string,
 };
 
 const styles = {
@@ -24,15 +25,15 @@ const styles = {
   }),
 };
 
-export default function EditScreenFontControls({ style }: Props) {
+export default function EditScreenFontControls({ style, fontFamily }: Props) {
   return (
     <View style={[styles.container, style]}>
       <TouchableOpacity onPress={() => Screens.showFontModal()}>
         <Text numberOfLines={1} style={styles.labelText}>
           {'FONT'}
         </Text>
-        <Text numberOfLines={1} style={styles.buttonText}>
-          {'Proxima Nova'}
+        <Text numberOfLines={1} style={[styles.buttonText, { fontFamily }]}>
+          {fontFamily}
         </Text>
       </TouchableOpacity>
     </View>

@@ -27,3 +27,7 @@ export function getSpeechTranscriptionsWithKey(
 ): ?SpeechTranscription {
   return state.media.speechTranscriptions.get(key);
 }
+
+export function getFontFamily(state: AppState): string {
+  return state.media.fontFamily;
+}

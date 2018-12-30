@@ -74,3 +74,12 @@ export const receiveSpeechTranscriptionFailure = (
     });
   };
 };
+
+export const receiveUserSelectedFontFamily = (fontFamily: string) => {
+  return (dispatch: Dispatch) => {
+    dispatch({
+      type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_FONT_FAMILY,
+      payload: { fontFamily },
+    });
+  };
+};

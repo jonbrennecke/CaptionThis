@@ -1,6 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text, SafeAreaView, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { BlurView } from 'react-native-blur';
@@ -10,12 +16,17 @@ import { UI_COLORS, FONTS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
 import * as Color from '../../utils/Color';
 import * as Screens from '../../utils/Screens';
+import { receiveUserSelectedFontFamily } from '../../redux/media/actionCreators';
+
+import type { Dispatch } from '../../types/redux';
 
 type OwnProps = {};
 
 type StateProps = {};
 
-type DispatchProps = {};
+type DispatchProps = {
+  receiveUserSelectedFontFamily: (fontFamily: string) => Promise<void>,
+};
 
 type Props = OwnProps & StateProps & DispatchProps;
 
@@ -46,9 +57,14 @@ const styles = {
     paddingVertical: 15,
     alignItems: 'flex-start',
   },
-  fontFamilyText: Fonts.getFontStyle('formLabel', { contentStyle: 'lightContent' }),
+  fontFamilyText: Fonts.getFontStyle('formLabel', {
+    contentStyle: 'lightContent',
+  }),
   fontExampleText: {
-    ...Fonts.getFontStyle('button', { contentStyle: 'lightContent', size: 'large' }),
+    ...Fonts.getFontStyle('button', {
+      contentStyle: 'lightContent',
+      size: 'large',
+    }),
     marginBottom: 5,
   },
 };
@@ -57,8 +73,11 @@ function mapStateToProps(): StateProps {
   return {};
 }
 
-function mapDispatchToProps(): DispatchProps {
-  return {};
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+  return {
+    receiveUserSelectedFontFamily: (fontFamily: string) =>
+      dispatch(receiveUserSelectedFontFamily(fontFamily)),
+  };
 }
 
 // $FlowFixMe
@@ -66,6 +85,11 @@ function mapDispatchToProps(): DispatchProps {
 @autobind
 export default class FontModal extends Component<Props> {
   onBackButtonPress() {
+    Screens.dismissFontModal();
+  }
+
+  onSelectFont(fontFamily: string) {
+    this.props.receiveUserSelectedFontFamily(fontFamily);
     Screens.dismissFontModal();
   }
 
@@ -82,16 +106,28 @@ export default class FontModal extends Component<Props> {
             overScrollMode="always"
             alwaysBounceVertical
           >
-            <FontModalNavControls
-              onBackButtonPress={this.onBackButtonPress}
-            />
+            <FontModalNavControls onBackButtonPress={this.onBackButtonPress} />
             <Text style={styles.title}>FONT</Text>
             <View style={styles.fonts}>
               {FONTS.map(({ displayName, fontFamily }) => (
-                <View style={styles.font} key={fontFamily}>
-                  <Text numberOfLines={1} style={[styles.fontExampleText, { fontFamily }]}>{FONT_EXAMPLE_TEXT}</Text>
-                  <Text numberOfLines={1} style={[styles.fontFamilyText, { fontFamily }]}>{displayName}</Text>
-                </View>
+                <TouchableOpacity
+                  onPress={() => this.onSelectFont(fontFamily)}
+                  style={styles.font}
+                  key={fontFamily}
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={[styles.fontExampleText, { fontFamily }]}
+                  >
+                    {FONT_EXAMPLE_TEXT}
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={[styles.fontFamilyText, { fontFamily }]}
+                  >
+                    {displayName}
+                  </Text>
+                </TouchableOpacity>
               ))}
             </View>
           </ScrollView>
