@@ -3,12 +3,14 @@ import React, { Component } from 'react';
 import { View, SafeAreaView, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
 import TranscriptionView from '../../components/transcription-view/TranscriptionView';
 import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
+import EditScreenTopControls from './EditScreenTopControls';
 import SpeechManager from '../../utils/SpeechManager';
 import {
   beginSpeechTranscriptionWithVideoAsset,
@@ -32,6 +34,7 @@ type State = {
 };
 
 type OwnProps = {
+  componentId: string,
   videoAssetIdentifier: VideoAssetIdentifier,
 };
 
@@ -60,22 +63,6 @@ const styles = {
   safeArea: {
     flex: 1,
   },
-  topGradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 100,
-    zIndex: 1,
-  },
-  bottomGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 100,
-    zIndex: 1,
-  },
   videoWrap: {
     borderRadius: 10,
     width: SCREEN_WIDTH,
@@ -96,6 +83,12 @@ const styles = {
     flex: 1,
     paddingVertical: 10,
   },
+  editTopControls: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+  }
 };
 
 function mapStateToProps(appState: AppState): StateProps {
@@ -177,6 +170,10 @@ export default class EditScreen extends Component<Props, State> {
     });
   }
 
+  onBackButtonPress() {
+    Navigation.pop(this.props.componentId);
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -195,6 +192,10 @@ export default class EditScreen extends Component<Props, State> {
               onVideoDidFailToLoad={() => {
                 this.videoDidFailToLoad();
               }}
+            />
+            <EditScreenTopControls
+              style={styles.editTopControls}
+              onBackButtonPress={this.onBackButtonPress}
             />
             <TranscriptionView
               style={styles.transcription}
