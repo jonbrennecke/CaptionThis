@@ -2,7 +2,7 @@
 import { LOADING_STATE } from '../../constants';
 
 import type { AppState } from '../../types/redux';
-import type { VideoAssetIdentifier } from '../../types/media';
+import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 
 export function getVideoAssetIdentifiers(
@@ -30,4 +30,12 @@ export function getSpeechTranscriptionsWithKey(
 
 export function getFontFamily(state: AppState): string {
   return state.media.fontFamily;
+}
+
+export function getBackgroundColor(state: AppState): ColorRGBA {
+  return state.media.backgroundColor;
+}
+
+export function getTextColor(state: AppState): ColorRGBA {
+  return state.media.textColor;
 }

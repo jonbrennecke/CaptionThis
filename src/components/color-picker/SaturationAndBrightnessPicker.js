@@ -8,9 +8,11 @@ import DragInteractionContainer from '../drag-and-drop/DragInteractionContainer'
 import { UI_COLORS } from '../../constants';
 
 import type { Style } from '../../types/react';
+import type { ColorRGBA } from '../../types/media';
 
 type Props = {
   style?: ?Style,
+  color: ColorRGBA,
 };
 
 const styles = {
@@ -53,7 +55,10 @@ export default class SaturationAndBrightnessPicker extends Component<Props> {
   render() {
     return (
       <View style={this.props.style}>
-        <SaturationAndBrightnessGradientView style={styles.gradientView} />
+        <SaturationAndBrightnessGradientView
+          style={styles.gradientView}
+          color={this.props.color}
+        />
         <DragInteractionContainer
           style={styles.draggable}
           itemsShouldReturnToOriginalPosition={false}

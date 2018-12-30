@@ -5,6 +5,28 @@ fileprivate let ELEMENT_SIZE: CGFloat = 1
 @objc
 class SaturationAndBrightnessGradientView : UIView {
   
+  private var _color: UIColor = .blue
+  
+  @objc
+  public var color: UIColor {
+    get {
+      return _color
+    }
+    set {
+      _color = newValue
+      setNeedsDisplay()
+    }
+  }
+  
+  private var hue: CGFloat {
+    var hue: CGFloat = 0
+    var saturation: CGFloat = 0
+    var brightness: CGFloat = 0
+    var alpha: CGFloat = 0
+    _color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+    return hue
+  }
+  
   override func layoutSubviews() {
     super.layoutSubviews()
     setNeedsDisplay()
@@ -15,7 +37,7 @@ class SaturationAndBrightnessGradientView : UIView {
     guard let context = UIGraphicsGetCurrentContext() else {
       return
     }
-    let hue: CGFloat = 0.5
+    let hue = self.hue
     let elementSize = CGSize(width: ELEMENT_SIZE, height: ELEMENT_SIZE)
     for y in stride(from: CGFloat(0.0), to: rect.height, by: ELEMENT_SIZE) {
       let brightness: CGFloat = 1.0 - y / rect.height

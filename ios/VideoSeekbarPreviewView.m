@@ -33,7 +33,6 @@
   if (index >= self.imageViews.count) {
     return;
   }
-//  self.imageViews
   UIImageView* imageView = [self.imageViews objectAtIndex:index];
   if (!imageView) {
     return;

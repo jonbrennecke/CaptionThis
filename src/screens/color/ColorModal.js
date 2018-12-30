@@ -10,12 +10,26 @@ import * as Color from '../../utils/Color';
 import * as Screens from '../../utils/Screens';
 import ColorModalNavControls from './ColorModalNavControls';
 import ColorPicker from '../../components/color-picker/ColorPicker';
+import { getBackgroundColor, getTextColor } from '../../redux/media/selectors';
+import {
+  receiveUserSelectedTextColor,
+  receiveUserSelectedBackgroundColor,
+} from '../../redux/media/actionCreators';
+
+import type { AppState, Dispatch } from '../../types/redux';
+import type { ColorRGBA } from '../../types/media';
 
 type OwnProps = {};
 
-type StateProps = {};
+type StateProps = {
+  backgroundColor: ColorRGBA,
+  textColor: ColorRGBA,
+};
 
-type DispatchProps = {};
+type DispatchProps = {
+  receiveUserSelectedTextColor: ColorRGBA => void,
+  receiveUserSelectedTextColor: ColorRGBA => void,
+};
 
 type Props = OwnProps & StateProps & DispatchProps;
 
@@ -37,12 +51,20 @@ const styles = {
   },
 };
 
-function mapStateToProps(): StateProps {
-  return {};
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    backgroundColor: getBackgroundColor(state),
+    textColor: getTextColor(state),
+  };
 }
 
-function mapDispatchToProps(): DispatchProps {
-  return {};
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+  return {
+    receiveUserSelectedTextColor: (color: ColorRGBA) =>
+      dispatch(receiveUserSelectedTextColor(color)),
+    receiveUserSelectedBackgroundColor: (color: ColorRGBA) =>
+      dispatch(receiveUserSelectedBackgroundColor(color)),
+  };
 }
 
 // $FlowFixMe
@@ -59,7 +81,7 @@ export default class FontModal extends Component<Props> {
         <BlurView style={styles.blurView} blurType="dark" />
         <SafeAreaView style={styles.flex}>
           <ColorModalNavControls onBackButtonPress={this.onBackButtonPress} />
-          <ColorPicker style={styles.flex} />
+          <ColorPicker style={styles.flex} color={this.props.backgroundColor} />
         </SafeAreaView>
       </View>
     );

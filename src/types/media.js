@@ -6,3 +6,10 @@ export type Size = {
 };
 
 export type VideoAssetIdentifier = string;
+
+export type ColorRGBA = {
+  red: number,
+  green: number,
+  blue: number,
+  alpha: number,
+};

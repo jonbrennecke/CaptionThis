@@ -4,12 +4,15 @@ import { View, TouchableOpacity, Text } from 'react-native';
 
 import * as Screens from '../../utils/Screens';
 import * as Fonts from '../../utils/Fonts';
+import * as Color from '../../utils/Color';
 import { UI_COLORS } from '../../constants';
 
 import type { Style } from '../../types/react';
+import type { ColorRGBA } from '../../types/media';
 
 type Props = {
   style?: ?Style,
+  color: ColorRGBA,
 };
 
 const styles = {
@@ -28,14 +31,22 @@ const styles = {
   },
 };
 
-export default function EditScreenBackgroundColorControls({ style }: Props) {
+export default function EditScreenBackgroundColorControls({
+  style,
+  color,
+}: Props) {
   return (
     <View style={[styles.container, style]}>
       <Text numberOfLines={1} style={styles.labelText}>
         {'BACKGROUND COLOR'}
       </Text>
       <TouchableOpacity onPress={() => Screens.showColorModal()}>
-        <View style={styles.backgroundColor} />
+        <View
+          style={[
+            styles.backgroundColor,
+            { backgroundColor: Color.rgbaObjectToRgbaString(color) },
+          ]}
+        />
       </TouchableOpacity>
     </View>
   );

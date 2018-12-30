@@ -1,6 +1,6 @@
 /* @flow */
 import typeof { LOADING_STATE } from '../constants';
-import type { VideoAssetIdentifier } from './media';
+import type { VideoAssetIdentifier, ColorRGBA } from './media';
 import type { SpeechTranscription } from './speech';
 
 export type Action<T> = {
@@ -33,6 +33,8 @@ export type MediaState = {
   videoAssetIdentifiers: VideoAssetIdentifier[],
   mediaLoadingState: $Keys<LOADING_STATE>,
   fontFamily: string,
+  backgroundColor: ColorRGBA,
+  textColor: ColorRGBA,
 };
 
 export type ReceiveLoginPayload = {
@@ -56,4 +58,12 @@ export type ReceiveSpeechTranscriptionPayload = {
 
 export type ReceiveFontFamilyPayload = {
   fontFamily: string,
+};
+
+export type ReceiveBackgroundColorPayload = {
+  backgroundColor: ColorRGBA,
+};
+
+export type ReceiveTextColorPayload = {
+  textColor: ColorRGBA,
 };

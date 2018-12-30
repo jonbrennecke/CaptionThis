@@ -24,8 +24,9 @@ import {
   getSpeechTranscriptions,
   getFontFamily,
 } from '../../redux/media/selectors';
+import { getBackgroundColor, getTextColor } from '../../redux/media/selectors';
 
-import type { VideoAssetIdentifier } from '../../types/media';
+import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
@@ -47,6 +48,8 @@ type OwnProps = {
 type StateProps = {
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
   fontFamily: string,
+  backgroundColor: ColorRGBA,
+  textColor: ColorRGBA,
 };
 
 type DispatchProps = {
@@ -104,10 +107,12 @@ const styles = {
   },
 };
 
-function mapStateToProps(appState: AppState): StateProps {
+function mapStateToProps(state: AppState): StateProps {
   return {
-    speechTranscriptions: getSpeechTranscriptions(appState),
-    fontFamily: getFontFamily(appState),
+    speechTranscriptions: getSpeechTranscriptions(state),
+    fontFamily: getFontFamily(state),
+    backgroundColor: getBackgroundColor(state),
+    textColor: getTextColor(state),
   };
 }
 
@@ -232,8 +237,10 @@ export default class EditScreen extends Component<Props, State> {
                 onSeekToPercent={this.seekBarDidSeekToPercent}
               />
               <EditScreenFontControls fontFamily={this.props.fontFamily} />
-              <EditScreenBackgroundColorControls />
-              <EditScreenFontColorControls />
+              <EditScreenBackgroundColorControls
+                color={this.props.backgroundColor}
+              />
+              <EditScreenFontColorControls color={this.props.textColor} />
             </View>
           </SafeAreaView>
         </ScrollView>

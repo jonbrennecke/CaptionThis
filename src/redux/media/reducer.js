@@ -1,7 +1,13 @@
 // @flow
 import { handleActions } from 'redux-actions';
 import { ACTION_TYPES } from './constants';
-import { LOADING_STATE, FONT_FAMILIES } from '../../constants';
+import {
+  LOADING_STATE,
+  FONT_FAMILIES,
+  UI_COLORS,
+  TEXT_COLORS,
+} from '../../constants';
+import * as Color from '../../utils/Color';
 
 import type {
   Action,
@@ -9,15 +15,21 @@ import type {
   ReceiveVideoAssetsPayload,
   ReceiveSpeechTranscriptionPayload,
   ReceiveFontFamilyPayload,
+  ReceiveBackgroundColorPayload,
+  ReceiveTextColorPayload,
 } from '../../types/redux';
 
 const DEFAULT_FONT_FAMILY = FONT_FAMILIES.SOURCE_SANS_PRO;
+const DEFAULT_BACKGROUND_COLOR = UI_COLORS.MEDIUM_RED;
+const DEFAULT_TEXT_COLOR = TEXT_COLORS.OFF_WHITE;
 
 const initialState: MediaState = {
   speechTranscriptions: new Map(),
   videoAssetIdentifiers: [],
   mediaLoadingState: LOADING_STATE.NOT_LOADED,
   fontFamily: DEFAULT_FONT_FAMILY,
+  backgroundColor: Color.hexToRgbaObject(DEFAULT_BACKGROUND_COLOR),
+  textColor: Color.hexToRgbaObject(DEFAULT_TEXT_COLOR),
 };
 
 const actions = {
@@ -26,6 +38,8 @@ const actions = {
   [ACTION_TYPES.DID_UNSUCCESSFULLY_LOAD_VIDEO_ASSETS]: didUnsuccessfullyLoadVideoAssets,
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION]: didSuccessfullyReceiveSpeechTranscription,
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_FONT_FAMILY]: didSuccessfullyReceiveFontFamily,
+  [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_BACKGROUND_COLOR]: didSuccessfullyReceiveBackgroundColor,
+  [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_TEXT_COLOR]: didSuccessfullyReceiveTextColor,
 };
 
 function didStartLoadingVideoAssets(state: MediaState): MediaState {
@@ -81,6 +95,32 @@ function didSuccessfullyReceiveFontFamily(
   return {
     ...state,
     fontFamily: payload.fontFamily,
+  };
+}
+
+function didSuccessfullyReceiveBackgroundColor(
+  state: MediaState,
+  { payload }: Action<ReceiveBackgroundColorPayload>
+): MediaState {
+  if (!payload) {
+    return state;
+  }
+  return {
+    ...state,
+    backgroundColor: payload.backgroundColor,
+  };
+}
+
+function didSuccessfullyReceiveTextColor(
+  state: MediaState,
+  { payload }: Action<ReceiveTextColorPayload>
+): MediaState {
+  if (!payload) {
+    return state;
+  }
+  return {
+    ...state,
+    textColor: payload.textColor,
   };
 }
 

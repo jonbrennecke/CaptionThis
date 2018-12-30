@@ -7,9 +7,11 @@ import HuePicker from './HuePicker';
 import SaturationAndBrightnessPicker from './SaturationAndBrightnessPicker';
 
 import type { Style } from '../../types/react';
+import type { ColorRGBA } from '../../types/media';
 
 type Props = {
   style?: ?Style,
+  color: ColorRGBA,
 };
 
 type State = {
@@ -63,6 +65,7 @@ export default class ColorPicker extends Component<Props, State> {
       >
         <SaturationAndBrightnessPicker
           style={styles.satPicker(this.state.viewWidth)}
+          color={this.props.color}
         />
         <HuePicker style={styles.huePicker(this.state.viewWidth)} />
       </View>

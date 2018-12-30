@@ -4,7 +4,7 @@ import * as Debug from '../../utils/Debug';
 import { ACTION_TYPES } from './constants';
 
 import type { Dispatch } from '../../types/redux';
-import type { VideoAssetIdentifier } from '../../types/media';
+import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 
 export const loadVideoAssets = () => {
@@ -80,6 +80,26 @@ export const receiveUserSelectedFontFamily = (fontFamily: string) => {
     dispatch({
       type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_FONT_FAMILY,
       payload: { fontFamily },
+    });
+  };
+};
+
+export const receiveUserSelectedBackgroundColor = (
+  backgroundColor: ColorRGBA
+) => {
+  return (dispatch: Dispatch) => {
+    dispatch({
+      type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_BACKGROUND_COLOR,
+      payload: { backgroundColor },
+    });
+  };
+};
+
+export const receiveUserSelectedTextColor = (textColor: ColorRGBA) => {
+  return (dispatch: Dispatch) => {
+    dispatch({
+      type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_TEXT_COLOR,
+      payload: { textColor },
     });
   };
 };

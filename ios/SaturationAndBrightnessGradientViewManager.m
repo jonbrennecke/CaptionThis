@@ -5,8 +5,9 @@
 
 RCT_EXPORT_MODULE()
 
-RCT_CUSTOM_VIEW_PROPERTY(hue, NSString, UIView) {
-  // TODO:
+RCT_CUSTOM_VIEW_PROPERTY(color, UIColor*, SaturationAndBrightnessGradientView) {
+  UIColor* color = [RCTConvert UIColor:json];
+  view.color = color;
 }
 
 - (UIView*)view {
