@@ -4,12 +4,12 @@ import { View, TouchableOpacity, Text } from 'react-native';
 
 import * as Screens from '../../utils/Screens';
 import * as Fonts from '../../utils/Fonts';
+import { UI_COLORS } from '../../constants';
 
 import type { Style } from '../../types/react';
 
 type Props = {
   style?: ?Style,
-  fontFamily: string,
 };
 
 const styles = {
@@ -21,22 +21,21 @@ const styles = {
     ...Fonts.getFontStyle('formLabel', { contentStyle: 'lightContent' }),
     marginBottom: 4,
   },
-  buttonText: Fonts.getFontStyle('button', {
-    contentStyle: 'lightContent',
-    size: 'large',
-  }),
+  backgroundColor: {
+    backgroundColor: UI_COLORS.DARK_GREY,
+    height: 45,
+    borderRadius: 10,
+  },
 };
 
-export default function EditScreenFontControls({ style, fontFamily }: Props) {
+export default function EditScreenFontColorControls({ style }: Props) {
   return (
     <View style={[styles.container, style]}>
       <TouchableOpacity onPress={() => Screens.showFontModal()}>
         <Text numberOfLines={1} style={styles.labelText}>
-          {'FONT'}
+          {'TEXT COLOR'}
         </Text>
-        <Text numberOfLines={1} style={[styles.buttonText, { fontFamily }]}>
-          {fontFamily}
-        </Text>
+        <View style={styles.backgroundColor}/>
       </TouchableOpacity>
     </View>
   );

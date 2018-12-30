@@ -12,6 +12,8 @@ import TranscriptionView from '../../components/transcription-view/Transcription
 import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
 import EditScreenFontControls from './EditScreenFontControls';
+import EditScreenBackgroundColorControls from './EditScreenBackgroundColorControls';
+import EditScreenFontColorControls from './EditScreenFontColorControls';
 import SpeechManager from '../../utils/SpeechManager';
 import {
   beginSpeechTranscriptionWithVideoAsset,
@@ -227,6 +229,8 @@ export default class EditScreen extends Component<Props, State> {
               />
             </View>
             <EditScreenFontControls fontFamily={this.props.fontFamily} />
+            <EditScreenBackgroundColorControls />
+            <EditScreenFontColorControls />
           </SafeAreaView>
         </ScrollView>
       </View>
