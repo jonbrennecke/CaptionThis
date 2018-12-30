@@ -10,6 +10,7 @@ import type { Style } from '../../types/react';
 type Props = {
   style: ?Style,
   text: string,
+  fontFamily: string,
 };
 
 const styles = {
@@ -26,10 +27,10 @@ const styles = {
   }),
 };
 
-export default function TranscriptionView({ style, text }: Props) {
+export default function TranscriptionView({ style, text, fontFamily }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.text}>{text}</Text>
+      <Text style={[styles.text, { fontFamily }]}>{text}</Text>
     </View>
   );
 }

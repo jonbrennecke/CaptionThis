@@ -216,6 +216,7 @@ export default class EditScreen extends Component<Props, State> {
               />
               <TranscriptionView
                 style={styles.transcription}
+                fontFamily={this.props.fontFamily}
                 text={this.getSpeechTranscriptionDisplayText()}
               />
             </View>
