@@ -33,6 +33,7 @@ export const UI_COLORS = {
   MEDIUM_RED: '#f4a09c',
 };
 
+// TODO: rename to UI_FONT_FAMILIES
 export const FONT_FAMILIES = {
   PASSION_ONE: 'PassionOne-Regular',
   PT_SANS_REGULAR: Platform.select({
@@ -43,7 +44,31 @@ export const FONT_FAMILIES = {
     ios: 'PT Sans',
     android: 'PT_Sans-Web-Bold',
   }),
+  STAATLICHES: 'Staatliches',
 };
+
+export const FONTS = [
+  {
+    fontFamily: 'Crete Round',
+    displayName: 'Crete Round',
+  },
+  {
+    fontFamily: 'Lobster',
+    displayName: 'Lobster',
+  },
+  {
+    fontFamily: 'Source Sans Pro',
+    displayName: 'Source Sans Pro',
+  },
+  {
+    fontFamily: 'Source Serif Pro',
+    displayName: 'Source Serif Pro',
+  },
+  {
+    fontFamily: 'Staatliches',
+    displayName: 'Staatliches',
+  }
+];
 
 export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   default: {
@@ -87,7 +112,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   button: {
     style: {
       color: TEXT_COLORS.WHITE,
-      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontFamily: FONT_FAMILIES.STAATLICHES,
       fontSize: 15,
       letterSpacing: 1.8,
     },
@@ -144,7 +169,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   title: {
     style: {
       color: TEXT_COLORS.OFF_WHITE,
-      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontFamily: FONT_FAMILIES.STAATLICHES,
       fontSize: 14,
       fontWeight: 'bold',
       letterSpacing: 1.2,

@@ -54,6 +54,11 @@
 		<string>PassionOne-Regular.ttf</string>
 		<string>PT_Sans-Web-Regular.ttf</string>
 		<string>PT_Sans-Web-Bold.ttf</string>
+		<string>CreteRound-Regular.ttf</string>
+		<string>Lobster-Regular.ttf</string>
+		<string>SourceSansPro-Regular.ttf</string>
+		<string>SourceSerifPro-Regular.ttf</string>
+		<string>Staatliches-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
