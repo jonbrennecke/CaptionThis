@@ -32,7 +32,9 @@ export type MediaState = {
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
   videoAssetIdentifiers: VideoAssetIdentifier[],
   mediaLoadingState: $Keys<LOADING_STATE>,
-  isCameraRecording: boolean,
+  cameraRecordingState: ?{
+    videoAssetIdentifier: VideoAssetIdentifier,
+  },
   fontFamily: string,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,

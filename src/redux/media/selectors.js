@@ -39,3 +39,13 @@ export function getBackgroundColor(state: AppState): ColorRGBA {
 export function getTextColor(state: AppState): ColorRGBA {
   return state.media.textColor;
 }
+
+export function isCameraRecording(state: AppState): boolean {
+  return !!state.media.cameraRecordingState;
+}
+
+export function getCameraRecordingState(
+  state: AppState
+): ?{ videoAssetIdentifier: VideoAssetIdentifier } {
+  return state.media.cameraRecordingState;
+}

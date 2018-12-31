@@ -8,6 +8,7 @@ import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
 import * as Screens from '../../utils/Screens';
 import * as Camera from '../../utils/Camera';
+import * as Debug from '../../utils/Debug';
 import SpeechManager from '../../utils/SpeechManager';
 import { requireOnboardedUser } from '../../utils/Onboarding';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
@@ -20,7 +21,11 @@ import {
   beginCameraCapture,
   endCameraCapture,
 } from '../../redux/media/actionCreators';
-import { getVideoAssetIdentifiers } from '../../redux/media/selectors';
+import {
+  getVideoAssetIdentifiers,
+  isCameraRecording,
+  getCameraRecordingState,
+} from '../../redux/media/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
@@ -40,6 +45,8 @@ type OwnProps = {
 type StateProps = {
   videoAssetIdentifiers: VideoAssetIdentifier[],
   arePermissionsGranted: boolean,
+  isCameraRecording: boolean,
+  cameraRecordingState: ?{ videoAssetIdentifier: VideoAssetIdentifier },
 };
 
 type DispatchProps = {
@@ -88,6 +95,8 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     videoAssetIdentifiers: getVideoAssetIdentifiers(state),
     arePermissionsGranted: arePermissionsGranted(state),
+    isCameraRecording: isCameraRecording(state),
+    cameraRecordingState: getCameraRecordingState(state),
   };
 }
 
@@ -171,12 +180,21 @@ export default class HomeScreen extends Component<Props> {
   speechManagerDidReceiveSpeechTranscription(
     transcription: SpeechTranscription
   ) {
-    // TODO: check if this.props.isCameraRecording then use videoAssetIdentifier
-    if (!transcription) {
-      this.props.receiveSpeechTranscriptionFailure('test');
+    if (!this.props.cameraRecordingState) {
+      Debug.logErrorMessage(
+        'Received a speech transcription, but camera is not recording.'
+      );
       return;
     }
-    this.props.receiveSpeechTranscriptionSuccess('test', transcription);
+    const { videoAssetIdentifier } = this.props.cameraRecordingState;
+    if (!transcription) {
+      this.props.receiveSpeechTranscriptionFailure(videoAssetIdentifier);
+      return;
+    }
+    this.props.receiveSpeechTranscriptionSuccess(
+      videoAssetIdentifier,
+      transcription
+    );
   }
 
   render() {

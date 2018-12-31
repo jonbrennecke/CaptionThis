@@ -25,7 +25,7 @@ const DEFAULT_BACKGROUND_COLOR = UI_COLORS.MEDIUM_RED;
 const DEFAULT_TEXT_COLOR = TEXT_COLORS.OFF_WHITE;
 
 const initialState: MediaState = {
-  isCameraRecording: false,
+  cameraRecordingState: null,
   speechTranscriptions: new Map(),
   videoAssetIdentifiers: [],
   mediaLoadingState: LOADING_STATE.NOT_LOADED,
@@ -137,7 +137,9 @@ function didSuccessfullyStartCameraCapture(
   }
   return {
     ...state,
-    isCameraRecording: true,
+    cameraRecordingState: {
+      videoAssetIdentifier: payload.videoAssetIdentifier,
+    },
     videoAssetIdentifiers: [
       ...state.videoAssetIdentifiers,
       payload.videoAssetIdentifier,
@@ -154,7 +156,7 @@ function didSuccessfullyStopCameraCapture(
   }
   return {
     ...state,
-    isCameraRecording: false,
+    cameraAssetIdentifier: null,
   };
 }
 
