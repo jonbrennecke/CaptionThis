@@ -11,7 +11,7 @@ import type { Style } from '../../types/react';
 const NativeCameraPreviewView = requireNativeComponent('CameraPreview');
 
 type Props = {
-  style: ?Style,
+  style?: ?Style,
 };
 
 const styles = {
