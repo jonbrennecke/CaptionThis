@@ -104,11 +104,11 @@ export default class HomeScreen extends Component<Props> {
   }
 
   captureButtonDidRequestBeginCapture() {
-    // TODO:
+    Camera.startCapture();
   }
 
   captureButtonDidRequestEndCapture() {
-    // TODO:
+    Camera.stopCapture();
   }
 
   render() {
