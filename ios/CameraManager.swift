@@ -145,9 +145,16 @@ class CameraManager: NSObject {
   
   @objc
   public func stopCapture() {
+    if videoFileOutput.isRecording {
+      Debug.log(message: "Stopping video file output.")
+      videoFileOutput.stopRecording()
+    }
+  }
+  
+  @objc
+  public func stopPreview() {
     if captureSession.isRunning {
       Debug.log(message: "Stopping camera capture session.")
-      videoFileOutput.stopRecording()
       captureSession.stopRunning()
     }
   }
