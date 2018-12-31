@@ -8,12 +8,15 @@ import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
 import * as Camera from '../../utils/Camera';
 import * as Screens from '../../utils/Screens';
+import SpeechManager from '../../utils/SpeechManager';
 import { requireOnboardedUser } from '../../utils/Onboarding';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import {
   loadVideoAssets,
   beginSpeechTranscriptionWithAudioSession,
   endSpeechTranscriptionWithAudioSession,
+  receiveSpeechTranscriptionFailure,
+  receiveSpeechTranscriptionSuccess,
 } from '../../redux/media/actionCreators';
 import { getVideoAssetIdentifiers } from '../../redux/media/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
@@ -23,6 +26,8 @@ import HomeScreenCaptureControls from './HomeScreenCaptureControls';
 
 import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
+import type { SpeechTranscription } from '../../types/speech';
+import type { Return } from '../../types/util';
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -39,6 +44,11 @@ type DispatchProps = {
   loadVideoAssets: () => Promise<void>,
   beginSpeechTranscriptionWithAudioSession: () => Promise<void>,
   endSpeechTranscriptionWithAudioSession: () => Promise<void>,
+  receiveSpeechTranscriptionSuccess: (
+    VideoAssetIdentifier,
+    SpeechTranscription
+  ) => void,
+  receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -84,6 +94,12 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
       dispatch(beginSpeechTranscriptionWithAudioSession()),
     endSpeechTranscriptionWithAudioSession: () =>
       dispatch(endSpeechTranscriptionWithAudioSession()),
+    receiveSpeechTranscriptionSuccess: (
+      id: VideoAssetIdentifier,
+      transcription: SpeechTranscription
+    ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
+    receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
+      dispatch(receiveSpeechTranscriptionFailure(id)),
   };
 }
 
@@ -92,10 +108,19 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class HomeScreen extends Component<Props> {
+  // eslint-disable-next-line flowtype/generic-spacing
+  speechTranscriptionSubscription: ?Return<
+    typeof SpeechManager.addSpeechTranscriptionListener
+  >;
+
   componentDidMount() {
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
     }
+  }
+
+  async componentWillUnmount() {
+    await this.stopCapture();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -114,13 +139,37 @@ export default class HomeScreen extends Component<Props> {
   }
 
   async captureButtonDidRequestBeginCapture() {
-    await Camera.startCapture();
-    await this.props.beginSpeechTranscriptionWithAudioSession();
+    await this.startCapture();
   }
 
   async captureButtonDidRequestEndCapture() {
+    await this.stopCapture();
+  }
+
+  async startCapture() {
+    await Camera.startCapture();
+    SpeechManager.addSpeechTranscriptionListener(
+      this.speechManagerDidReceiveSpeechTranscription
+    );
+    await this.props.beginSpeechTranscriptionWithAudioSession();
+  }
+
+  async stopCapture() {
     await this.props.endSpeechTranscriptionWithAudioSession();
+    if (this.speechTranscriptionSubscription) {
+      SpeechManager.removeListener(this.speechTranscriptionSubscription);
+    }
     await Camera.stopCapture();
+  }
+
+  speechManagerDidReceiveSpeechTranscription(
+    transcription: SpeechTranscription
+  ) {
+    if (!transcription) {
+      this.props.receiveSpeechTranscriptionFailure('test');
+      return;
+    }
+    this.props.receiveSpeechTranscriptionSuccess('test', transcription);
   }
 
   render() {
