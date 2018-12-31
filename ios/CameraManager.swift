@@ -139,8 +139,23 @@ class CameraManager: NSObject {
   }
   
   @objc
-  public func startCapture() {
-    saveVideoFileOutput()
+  public func startCapture(completionHandler: @escaping (Error?, PHObjectPlaceholder?) -> ()) {
+    sessionQueue.async {
+      do {
+        let outputURL = try self.saveVideoFileOutputOrThrow()
+        self.videoFileOutput.startRecording(to: outputURL, recordingDelegate: self)
+        self.createNewAsset(forURL: outputURL) { error, assetPlaceholder in
+          if let error = error {
+            completionHandler(error, nil)
+            return
+          }
+          completionHandler(nil, assetPlaceholder)
+        }
+      }
+      catch let error {
+        completionHandler(error, nil)
+      }
+    }
   }
   
   @objc
@@ -159,20 +174,13 @@ class CameraManager: NSObject {
     }
   }
   
-  private func saveVideoFileOutput() {
-    DispatchQueue.global(qos: .background).async {
-      do {
-        let outputURL = try FileManager.default
-          .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-          .appendingPathComponent("output")
-          .appendingPathExtension("mov")
-        try? FileManager.default.removeItem(at: outputURL)
-        self.videoFileOutput.startRecording(to: outputURL, recordingDelegate: self)
-      }
-      catch let error {
-        Debug.log(error: error)
-      }
-    }
+  private func saveVideoFileOutputOrThrow() throws -> URL {
+    let outputURL = try FileManager.default
+      .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+      .appendingPathComponent("output")
+      .appendingPathExtension("mov")
+    try? FileManager.default.removeItem(at: outputURL)
+    return outputURL
   }
   
   @objc
@@ -258,6 +266,24 @@ class CameraManager: NSObject {
     }
     return .success
   }
+  
+  private func createNewAsset(forURL url: URL, callback: @escaping (Error?, PHObjectPlaceholder?) -> ()) {
+    PHPhotoLibrary.shared().performChanges({
+      if #available(iOS 9.0, *) {
+        let assetRequest = PHAssetCreationRequest.creationRequestForAssetFromVideo(atFileURL: url)
+        guard let asset = assetRequest?.placeholderForCreatedAsset else {
+          Debug.log(format: "Placeholder asset could not be created. URL = %@", url.path)
+          return
+        }
+        callback(nil, asset)
+      }
+      else {
+        fatalError("This app only supports iOS 9.0 or above.")
+      }
+    }) { success, error in
+      
+      }
+  }
 }
 
 extension CameraManager : AVCaptureVideoDataOutputSampleBufferDelegate {
@@ -291,9 +317,6 @@ extension CameraManager: AVCaptureFileOutputRecordingDelegate {
     if let error = error {
       Debug.log(error: error)
       return
-    }
-    if error == nil {
-      UISaveVideoAtPathToSavedPhotosAlbum(fileURL.path, nil, nil, nil)
     }
     Debug.log(format: "Finished output to file. URL = %@", fileURL.absoluteString)
     delegate?.cameraManagerDidFinishFileOutput(toFileURL: fileURL)

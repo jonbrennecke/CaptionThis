@@ -1,3 +1,4 @@
+#import <Photos/Photos.h>
 #import "CameraBridgeModule.h"
 #import "AppDelegate.h"
 #import "CaptionThis-Swift.h"
@@ -12,8 +13,16 @@ RCT_EXPORT_METHOD(startCameraPreview) {
   [cameraManager startPreview];
 }
 
-RCT_EXPORT_METHOD(startCameraCapture) {
-  [[AppDelegate sharedCameraManager] startCapture];
+RCT_EXPORT_METHOD(startCameraCapture:(RCTResponseSenderBlock)callback) {
+  [[AppDelegate sharedCameraManager] startCaptureWithCompletionHandler:
+   ^(NSError *error, PHObjectPlaceholder *placeholder) {
+     if (error != nil) {
+       callback(@[error, [NSNull null]]);
+       return;
+     }
+     NSString *localIdentifier = placeholder.localIdentifier;
+     callback(@[[NSNull null], localIdentifier]);
+  }];
 }
 
 RCT_EXPORT_METHOD(stopCameraCapture) {
