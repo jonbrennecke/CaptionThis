@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
-import * as Camera from '../../utils/Camera';
 import * as Screens from '../../utils/Screens';
+import * as Camera from '../../utils/Camera';
 import SpeechManager from '../../utils/SpeechManager';
 import { requireOnboardedUser } from '../../utils/Onboarding';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
@@ -17,6 +17,8 @@ import {
   endSpeechTranscriptionWithAudioSession,
   receiveSpeechTranscriptionFailure,
   receiveSpeechTranscriptionSuccess,
+  beginCameraCapture,
+  endCameraCapture,
 } from '../../redux/media/actionCreators';
 import { getVideoAssetIdentifiers } from '../../redux/media/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
@@ -42,6 +44,8 @@ type StateProps = {
 
 type DispatchProps = {
   loadVideoAssets: () => Promise<void>,
+  beginCameraCapture: () => Promise<void>,
+  endCameraCapture: () => Promise<void>,
   beginSpeechTranscriptionWithAudioSession: () => Promise<void>,
   endSpeechTranscriptionWithAudioSession: () => Promise<void>,
   receiveSpeechTranscriptionSuccess: (
@@ -90,6 +94,8 @@ function mapStateToProps(state: AppState): StateProps {
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
     loadVideoAssets: () => dispatch(loadVideoAssets()),
+    beginCameraCapture: () => dispatch(beginCameraCapture()),
+    endCameraCapture: () => dispatch(endCameraCapture()),
     beginSpeechTranscriptionWithAudioSession: () =>
       dispatch(beginSpeechTranscriptionWithAudioSession()),
     endSpeechTranscriptionWithAudioSession: () =>
@@ -147,7 +153,7 @@ export default class HomeScreen extends Component<Props> {
   }
 
   async startCapture() {
-    await Camera.startCapture();
+    await this.props.beginCameraCapture();
     SpeechManager.addSpeechTranscriptionListener(
       this.speechManagerDidReceiveSpeechTranscription
     );
@@ -159,12 +165,13 @@ export default class HomeScreen extends Component<Props> {
     if (this.speechTranscriptionSubscription) {
       SpeechManager.removeListener(this.speechTranscriptionSubscription);
     }
-    await Camera.stopCapture();
+    await this.props.endCameraCapture();
   }
 
   speechManagerDidReceiveSpeechTranscription(
     transcription: SpeechTranscription
   ) {
+    // TODO: check if this.props.isCameraRecording then use videoAssetIdentifier
     if (!transcription) {
       this.props.receiveSpeechTranscriptionFailure('test');
       return;

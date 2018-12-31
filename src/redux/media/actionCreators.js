@@ -3,6 +3,7 @@ import * as Debug from '../../utils/Debug';
 import { ACTION_TYPES } from './constants';
 import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
+import * as Camera from '../../utils/Camera';
 
 import type { Dispatch } from '../../types/redux';
 import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
@@ -86,6 +87,43 @@ export const endSpeechTranscriptionWithAudioSession = () => {
       await Debug.logError(error);
       dispatch({
         type: ACTION_TYPES.DID_UNSUCCESSFULLY_END_SPEECH_TRANSCRIPTION,
+      });
+    }
+  };
+};
+
+export const beginCameraCapture = () => {
+  return async (dispatch: Dispatch) => {
+    dispatch({ type: ACTION_TYPES.DID_START_CAMERA_CAPTURE });
+    try {
+      const videoAssetIdentifier = await Camera.startCapture();
+      dispatch({
+        type: ACTION_TYPES.DID_SUCCESSFULLY_START_CAMERA_CAPTURE,
+        payload: {
+          videoAssetIdentifier
+        },
+      });
+    } catch (error) {
+      await Debug.logError(error);
+      dispatch({
+        type: ACTION_TYPES.DID_UNSUCCESSFULLY_START_CAMERA_CAPTURE,
+      });
+    }
+  };
+};
+
+export const endCameraCapture = () => {
+  return async (dispatch: Dispatch) => {
+    dispatch({ type: ACTION_TYPES.DID_STOP_CAMERA_CAPTURE });
+    try {
+      Camera.stopCapture();
+      dispatch({
+        type: ACTION_TYPES.DID_SUCCESSFULLY_STOP_CAMERA_CAPTURE
+      });
+    } catch (error) {
+      await Debug.logError(error);
+      dispatch({
+        type: ACTION_TYPES.DID_UNSUCCESSFULLY_STOP_CAMERA_CAPTURE,
       });
     }
   };
