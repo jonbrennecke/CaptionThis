@@ -174,6 +174,14 @@ export default class HomeScreen extends Component<Props> {
     if (this.speechTranscriptionSubscription) {
       SpeechManager.removeListener(this.speechTranscriptionSubscription);
     }
+    if (!this.props.cameraRecordingState) {
+      Debug.logErrorMessage(
+        'Received a speech transcription, but camera is not recording.'
+      );
+      return;
+    }
+    const { videoAssetIdentifier: id } = this.props.cameraRecordingState;
+    await Screens.pushEditScreen(this.props.componentId, id);
     await this.props.endCameraCapture();
   }
 

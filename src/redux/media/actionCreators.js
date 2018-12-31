@@ -96,7 +96,13 @@ export const beginCameraCapture = () => {
   return async (dispatch: Dispatch) => {
     dispatch({ type: ACTION_TYPES.DID_START_CAMERA_CAPTURE });
     try {
-      const videoAssetIdentifier = await Camera.startCapture();
+      const { success, videoAssetIdentifier } = await Camera.startCapture();
+      if (!success) {
+        dispatch({
+          type: ACTION_TYPES.DID_UNSUCCESSFULLY_START_CAMERA_CAPTURE,
+        });
+        return;
+      }
       dispatch({
         type: ACTION_TYPES.DID_SUCCESSFULLY_START_CAMERA_CAPTURE,
         payload: {

@@ -15,13 +15,17 @@ RCT_EXPORT_METHOD(startCameraPreview) {
 
 RCT_EXPORT_METHOD(startCameraCapture:(RCTResponseSenderBlock)callback) {
   [[AppDelegate sharedCameraManager] startCaptureWithCompletionHandler:
-   ^(NSError *error, PHObjectPlaceholder *placeholder) {
+   ^(NSError *error, BOOL success, PHObjectPlaceholder *placeholder) {
      if (error != nil) {
-       callback(@[error, [NSNull null]]);
+       callback(@[error, @(success), [NSNull null]]);
+       return;
+     }
+     if (!placeholder) {
+       callback(@[[NSNull null], @(NO), [NSNull null]]);
        return;
      }
      NSString *localIdentifier = placeholder.localIdentifier;
-     callback(@[[NSNull null], localIdentifier]);
+     callback(@[[NSNull null], @(YES), localIdentifier]);
   }];
 }
 
