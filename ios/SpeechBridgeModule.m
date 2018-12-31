@@ -19,14 +19,23 @@
 #pragma mark - SpeechManagerDelegate
 
 -(void)speechManagerDidBecomeAvailable {
+  if (!hasListeners) {
+    return;
+  }
   [self sendEventWithName:@"speechManagerDidBecomeAvailable" body:@{}];
 }
 
 -(void)speechManagerDidBecomeUnavailable {
+  if (!hasListeners) {
+    return;
+  }
   [self sendEventWithName:@"speechManagerDidBecomeUnavailable" body:@{}];
 }
 
 - (void)speechManagerDidReceiveSpeechTranscription:(SFTranscription * _Nonnull)transcription {
+  if (!hasListeners) {
+    return;
+  }
   NSString* formattedString = transcription.formattedString;
   NSMutableArray<NSDictionary*>* segments = [[NSMutableArray alloc] initWithCapacity:transcription.segments.count];
   for (SFTranscriptionSegment *segment in transcription.segments) {
