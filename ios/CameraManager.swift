@@ -7,25 +7,34 @@ protocol CameraManagerDelegate {
   func cameraManagerDidFinishFileOutput(toFileURL fileURL: URL)
 }
 
+fileprivate enum CameraSetupResult {
+  case success
+  case failure
+}
+
 @objc
 class CameraManager: NSObject {
   
   private var captureSession: AVCaptureSession
   private var videoOutput: AVCaptureVideoDataOutput
-  private var photoOutput: AVCapturePhotoOutput
   private var videoFileOutput: AVCaptureMovieFileOutput = AVCaptureMovieFileOutput()
-  private var captureDevice: AVCaptureDevice?
-  private var captureDeviceInput: AVCaptureDeviceInput?
+  private var videoCaptureDevice: AVCaptureDevice?
+  private var videoCaptureDeviceInput: AVCaptureDeviceInput?
+  private var audioCaptureDevice: AVCaptureDevice?
+  private var audioCaptureDeviceInput: AVCaptureDeviceInput?
   private var synchronizer: AVCaptureDataOutputSynchronizer?
+  private let sessionQueue = DispatchQueue(label: "session queue")
+  
   public var delegate: CameraManagerDelegate?
+  
   @objc public var previewLayer: AVCaptureVideoPreviewLayer
+  
   
   override init() {
     captureSession = AVCaptureSession()
     previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
     previewLayer.videoGravity = .resizeAspectFill
     videoOutput = AVCaptureVideoDataOutput()
-    photoOutput = AVCapturePhotoOutput()
     super.init()
   }
   
@@ -159,55 +168,88 @@ class CameraManager: NSObject {
     }
   }
   
-  public func capturePhoto() {
-    let settings = AVCapturePhotoSettings()
-    settings.isDepthDataDeliveryEnabled = true
-    photoOutput.capturePhoto(with: settings, delegate: self)
-  }
-  
   @objc
   public func setupCameraCaptureSession() {
-    guard let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) else {
-      Debug.log(message: "Built in wide angle camera is not available.")
-      return
-    }
     captureSession.beginConfiguration()
-    if (captureSession.canAddOutput(videoOutput)) {
-      captureSession.addOutput(videoOutput)
+    if case .success = attemptToSetupCameraCaptureSession() {
+      Debug.log(message: "Failed to setup camera capture session")
     }
-    if (captureSession.canAddOutput(photoOutput)) {
-      captureSession.addOutput(photoOutput)
-    }
-    if (captureSession.canAddOutput(videoFileOutput)) {
-      captureSession.addOutput(videoFileOutput)
-    }
+    captureSession.commitConfiguration()
+  }
+    
+  private func attemptToSetupCameraCaptureSession() -> CameraSetupResult {
     captureSession.sessionPreset = .photo
-    guard let captureDeviceInput = try? AVCaptureDeviceInput(device: captureDevice) else {
+    
+    // setup videoCaptureDevice
+    videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
+    guard let videoCaptureDevice = videoCaptureDevice else {
+      Debug.log(message: "Built in wide angle camera is not available.")
+      return .failure
+    }
+    
+    // setup videoCaptureDeviceInput
+    videoCaptureDeviceInput = try? AVCaptureDeviceInput(device: videoCaptureDevice)
+    guard let videoCaptureDeviceInput = videoCaptureDeviceInput else {
       Debug.log(message: "Camera capture device could not be used as an input.")
-      return
+      return .failure
     }
-    guard captureSession.canAddInput(captureDeviceInput) else {
+    if (captureSession.canAddInput(videoCaptureDeviceInput)) {
+      captureSession.addInput(videoCaptureDeviceInput)
+    }
+    else {
       Debug.log(message: "Camera input could not be added to capture session.")
-      return
+      return .failure
     }
-    if (captureSession.canAddInput(captureDeviceInput)) {
-      captureSession.addInput(captureDeviceInput)
+    
+    // setup audioCaptureDevice
+    audioCaptureDevice = AVCaptureDevice.default(for: .audio)
+    guard let audioCaptureDevice = audioCaptureDevice else {
+      Debug.log(message: "Audio device is not available.")
+      return .failure
     }
+    
+    // setup audioCaptureDeviceInput
+    audioCaptureDeviceInput = try? AVCaptureDeviceInput(device: audioCaptureDevice)
+    guard let audioCaptureDeviceInput = audioCaptureDeviceInput else {
+      Debug.log(message: "Audio device could not be used as an input.")
+      return .failure
+    }
+    if captureSession.canAddInput(audioCaptureDeviceInput) {
+      captureSession.addInput(audioCaptureDeviceInput)
+    }
+    else {
+      Debug.log(message: "Audio input could not be added to the capture session.")
+      return .failure
+    }
+    
+    // setup videoOutput
     videoOutput.alwaysDiscardsLateVideoFrames = true
-    photoOutput.isDepthDataDeliveryEnabled = false
-    let queue = DispatchQueue(label: "com.jonbrennecke.VoicePost.camera")
-    videoOutput.setSampleBufferDelegate(self, queue: queue)
+    videoOutput.setSampleBufferDelegate(self, queue: sessionQueue)
     if let connection = videoOutput.connection(with: .video) {
-      if (connection.isVideoStabilizationSupported) {
+      if connection.isVideoStabilizationSupported {
         connection.preferredVideoStabilizationMode = .auto
       }
-      if (connection.isVideoOrientationSupported) {
+      if connection.isVideoOrientationSupported {
         connection.videoOrientation = .portrait
       }
     }
-    captureSession.commitConfiguration()
-    self.captureDevice = captureDevice
-    self.captureDeviceInput = captureDeviceInput
+    if captureSession.canAddOutput(videoOutput) {
+      captureSession.addOutput(videoOutput)
+    }
+    else {
+      Debug.log(message: "Video output could not be added to the capture session.")
+      return .failure
+    }
+    
+    // setup videoFileOutput
+    if captureSession.canAddOutput(videoFileOutput) {
+      captureSession.addOutput(videoFileOutput)
+    }
+    else {
+      Debug.log(message: "Video file output could not be added to the capture session.")
+      return .failure
+    }
+    return .success
   }
 }
 
@@ -229,12 +271,6 @@ extension CameraManager: AVCaptureDataOutputSynchronizerDelegate {
         return
     }
     delegate.cameraManagerDidReceiveCameraDataOutput(videoData: videoData.sampleBuffer)
-  }
-}
-
-extension CameraManager: AVCapturePhotoCaptureDelegate {
-  func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-    // TODO
   }
 }
 
