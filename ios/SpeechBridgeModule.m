@@ -95,4 +95,19 @@ RCT_EXPORT_METHOD(beginSpeechTranscriptionWithLocalIdentifier:(NSString*)localId
    }];
 }
 
+RCT_EXPORT_METHOD(beginSpeechTranscriptionWithAudioSession:(RCTResponseSenderBlock)callback) {
+  [AppDelegate.sharedSpeechManager startCaptureForAudioSessionWithCallback:^(NSError * error, SFSpeechAudioBufferRecognitionRequest * request) {
+    if (error != nil) {
+      callback(@[error, @(NO)]);
+      return;
+    }
+    callback(@[[NSNull null], @(YES)]);
+  }];
+}
+
+RCT_EXPORT_METHOD(endSpeechTranscriptionWithAudioSession:(RCTResponseSenderBlock)callback) {
+  [AppDelegate.sharedSpeechManager stopCaptureForAudioSession];
+  callback(@[[NSNull null], @(YES)]);
+}
+
 @end

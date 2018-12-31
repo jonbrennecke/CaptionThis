@@ -10,7 +10,11 @@ import * as Camera from '../../utils/Camera';
 import * as Screens from '../../utils/Screens';
 import { requireOnboardedUser } from '../../utils/Onboarding';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
-import { loadVideoAssets } from '../../redux/media/actionCreators';
+import {
+  loadVideoAssets,
+  beginSpeechTranscriptionWithAudioSession,
+  endSpeechTranscriptionWithAudioSession,
+} from '../../redux/media/actionCreators';
 import { getVideoAssetIdentifiers } from '../../redux/media/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
@@ -32,7 +36,9 @@ type StateProps = {
 };
 
 type DispatchProps = {
-  loadVideoAssets: () => Promise<any>,
+  loadVideoAssets: () => Promise<void>,
+  beginSpeechTranscriptionWithAudioSession: () => Promise<void>,
+  endSpeechTranscriptionWithAudioSession: () => Promise<void>,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -74,6 +80,10 @@ function mapStateToProps(state: AppState): StateProps {
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
     loadVideoAssets: () => dispatch(loadVideoAssets()),
+    beginSpeechTranscriptionWithAudioSession: () =>
+      dispatch(beginSpeechTranscriptionWithAudioSession()),
+    endSpeechTranscriptionWithAudioSession: () =>
+      dispatch(endSpeechTranscriptionWithAudioSession()),
   };
 }
 
@@ -103,12 +113,14 @@ export default class HomeScreen extends Component<Props> {
     await Screens.pushEditScreen(this.props.componentId, identifier);
   }
 
-  captureButtonDidRequestBeginCapture() {
-    Camera.startCapture();
+  async captureButtonDidRequestBeginCapture() {
+    await Camera.startCapture();
+    await this.props.beginSpeechTranscriptionWithAudioSession();
   }
 
-  captureButtonDidRequestEndCapture() {
-    Camera.stopCapture();
+  async captureButtonDidRequestEndCapture() {
+    await this.props.endSpeechTranscriptionWithAudioSession();
+    await Camera.stopCapture();
   }
 
   render() {
@@ -129,10 +141,12 @@ export default class HomeScreen extends Component<Props> {
                 <CameraPreviewView style={styles.flex} />
                 <HomeScreenCaptureControls
                   style={styles.captureControls}
-                  onRequestBeginCapture={
-                    this.captureButtonDidRequestBeginCapture
-                  }
-                  onRequestEndCapture={this.captureButtonDidRequestEndCapture}
+                  onRequestBeginCapture={() => {
+                    this.captureButtonDidRequestBeginCapture();
+                  }}
+                  onRequestEndCapture={() => {
+                    this.captureButtonDidRequestEndCapture();
+                  }}
                 />
               </View>
               <View style={styles.flex}>

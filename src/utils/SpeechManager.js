@@ -41,4 +41,12 @@ export default class SpeechManager {
       videoAssetIdentifier
     );
   }
+
+  static async beginSpeechTranscriptionWithAudioSession(): Promise<boolean> {
+    return await NativeSpeechManager.beginSpeechTranscriptionWithAudioSessionAsync();
+  }
+
+  static async endSpeechTranscriptionWithAudioSession(): Promise<boolean> {
+    return await NativeSpeechManager.endSpeechTranscriptionWithAudioSessionAsync();
+  }
 }

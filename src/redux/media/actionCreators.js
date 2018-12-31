@@ -1,7 +1,8 @@
 // @flow
-import * as actions from './actions';
 import * as Debug from '../../utils/Debug';
 import { ACTION_TYPES } from './constants';
+import MediaManager from '../../utils/MediaManager';
+import SpeechManager from '../../utils/SpeechManager';
 
 import type { Dispatch } from '../../types/redux';
 import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
@@ -11,7 +12,7 @@ export const loadVideoAssets = () => {
   return async (dispatch: Dispatch) => {
     dispatch({ type: ACTION_TYPES.DID_START_LOADING_VIDEO_ASSETS });
     try {
-      const ids = await actions.loadVideoAssets();
+      const ids = await MediaManager.getVideoAssets();
       dispatch({
         type: ACTION_TYPES.DID_SUCCESSFULLY_LOAD_VIDEO_ASSETS,
         payload: {
@@ -31,7 +32,7 @@ export const beginSpeechTranscriptionWithVideoAsset = (
   return async (dispatch: Dispatch) => {
     dispatch({ type: ACTION_TYPES.DID_START_SPEECH_TRANSCRIPTION });
     try {
-      const success = await actions.beginSpeechTranscriptionWithVideoAsset(
+      const success = await SpeechManager.beginSpeechTranscriptionWithVideoAsset(
         videoAssetIdentifier
       );
       if (!success) {
@@ -47,6 +48,44 @@ export const beginSpeechTranscriptionWithVideoAsset = (
       await Debug.logError(error);
       dispatch({
         type: ACTION_TYPES.DID_UNSUCCESSFULLY_START_SPEECH_TRANSCRIPTION,
+      });
+    }
+  };
+};
+
+export const beginSpeechTranscriptionWithAudioSession = () => {
+  return async (dispatch: Dispatch) => {
+    dispatch({ type: ACTION_TYPES.DID_START_SPEECH_TRANSCRIPTION });
+    try {
+      const success = await SpeechManager.beginSpeechTranscriptionWithAudioSession();
+      dispatch({
+        type: success
+          ? ACTION_TYPES.DID_SUCCESSFULLY_START_SPEECH_TRANSCRIPTION
+          : ACTION_TYPES.DID_UNSUCCESSFULLY_START_SPEECH_TRANSCRIPTION,
+      });
+    } catch (error) {
+      await Debug.logError(error);
+      dispatch({
+        type: ACTION_TYPES.DID_UNSUCCESSFULLY_START_SPEECH_TRANSCRIPTION,
+      });
+    }
+  };
+};
+
+export const endSpeechTranscriptionWithAudioSession = () => {
+  return async (dispatch: Dispatch) => {
+    dispatch({ type: ACTION_TYPES.DID_START_ENDING_SPEECH_TRANSCRIPTION });
+    try {
+      const success = await SpeechManager.endSpeechTranscriptionWithAudioSession();
+      dispatch({
+        type: success
+          ? ACTION_TYPES.DID_SUCCESSFULLY_END_SPEECH_TRANSCRIPTION
+          : ACTION_TYPES.DID_UNSUCCESSFULLY_END_SPEECH_TRANSCRIPTION,
+      });
+    } catch (error) {
+      await Debug.logError(error);
+      dispatch({
+        type: ACTION_TYPES.DID_UNSUCCESSFULLY_END_SPEECH_TRANSCRIPTION,
       });
     }
   };

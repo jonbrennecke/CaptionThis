@@ -55,6 +55,7 @@ class SpeechManager : NSObject {
     return audioEngine.isRunning
   }
   
+  @objc
   public func startCaptureForAudioSession(callback: (Error?, SFSpeechAudioBufferRecognitionRequest?) -> ()) {
     do {
       let request = try createRecognitionRequestForAudioSessionOrThrow()
@@ -68,10 +69,6 @@ class SpeechManager : NSObject {
   }
   
   private func createRecognitionRequestForAudioSessionOrThrow() throws -> SFSpeechAudioBufferRecognitionRequest {
-    //        TODO use shared audio session
-    //        let audioSession = AVAudioSession.sharedInstance()
-    //        try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
-    //        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
     let node = audioEngine.inputNode
     let format = node.outputFormat(forBus: 0)
     let request = SFSpeechAudioBufferRecognitionRequest()
@@ -122,16 +119,6 @@ class SpeechManager : NSObject {
     return request
   }
   
-  public func stopCapture() {
-    guard audioEngine.isRunning else {
-      Debug.log(message: "Cannot stop speech recognition capture. Audio engine is not running.")
-      return
-    }
-    audioEngine.stop()
-    let node = audioEngine.inputNode
-    node.removeTap(onBus: 0)
-  }
-  
   private func startTranscription(withRequest request: SFSpeechAudioBufferRecognitionRequest) {
     recognizer.recognitionTask(with: request) { (result, error) in
       if let error = error {
@@ -143,6 +130,17 @@ class SpeechManager : NSObject {
       }
       delegate.speechManagerDidReceiveSpeechTranscription(transcription)
     }
+  }
+  
+  @objc
+  public func stopCaptureForAudioSession() {
+    guard audioEngine.isRunning else {
+      Debug.log(message: "Cannot stop speech recognition capture. Audio engine is not running.")
+      return
+    }
+    audioEngine.stop()
+    let node = audioEngine.inputNode
+    node.removeTap(onBus: 0)
   }
 }
 
