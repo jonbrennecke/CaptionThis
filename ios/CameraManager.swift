@@ -171,7 +171,7 @@ class CameraManager: NSObject {
   @objc
   public func setupCameraCaptureSession() {
     captureSession.beginConfiguration()
-    if case .success = attemptToSetupCameraCaptureSession() {
+    if case .failure = attemptToSetupCameraCaptureSession() {
       Debug.log(message: "Failed to setup camera capture session")
     }
     captureSession.commitConfiguration()
@@ -225,16 +225,16 @@ class CameraManager: NSObject {
     // setup videoOutput
     videoOutput.alwaysDiscardsLateVideoFrames = true
     videoOutput.setSampleBufferDelegate(self, queue: sessionQueue)
-    if let connection = videoOutput.connection(with: .video) {
-      if connection.isVideoStabilizationSupported {
-        connection.preferredVideoStabilizationMode = .auto
-      }
-      if connection.isVideoOrientationSupported {
-        connection.videoOrientation = .portrait
-      }
-    }
     if captureSession.canAddOutput(videoOutput) {
       captureSession.addOutput(videoOutput)
+      if let connection = videoOutput.connection(with: .video) {
+        if connection.isVideoStabilizationSupported {
+          connection.preferredVideoStabilizationMode = .auto
+        }
+        if connection.isVideoOrientationSupported {
+          connection.videoOrientation = .portrait
+        }
+      }
     }
     else {
       Debug.log(message: "Video output could not be added to the capture session.")
