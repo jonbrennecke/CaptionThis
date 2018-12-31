@@ -21,10 +21,11 @@ import {
   receiveSpeechTranscriptionFailure,
 } from '../../redux/media/actionCreators';
 import {
+  getBackgroundColor,
+  getTextColor,
   getSpeechTranscriptions,
   getFontFamily,
 } from '../../redux/media/selectors';
-import { getBackgroundColor, getTextColor } from '../../redux/media/selectors';
 
 import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';

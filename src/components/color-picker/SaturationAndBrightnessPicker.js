@@ -7,12 +7,20 @@ import SaturationAndBrightnessGradientView from './SaturationAndBrightnessGradie
 import DragInteractionContainer from '../drag-and-drop/DragInteractionContainer';
 import { UI_COLORS } from '../../constants';
 
-import type { Style } from '../../types/react';
+import type { Style, Gesture } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 
 type Props = {
   style?: ?Style,
   color: ColorRGBA,
+  onDidUpdateColor: ColorRGBA => void,
+};
+
+type State = {
+  offset: {
+    x: number,
+    y: number,
+  },
 };
 
 const styles = {
@@ -45,12 +53,29 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class SaturationAndBrightnessPicker extends Component<Props> {
+export default class SaturationAndBrightnessPicker extends Component<
+  Props,
+  State
+> {
+  state = {
+    offset: {
+      x: 0,
+      y: 0,
+    },
+  };
+
   dragDidStart() {}
 
   dragDidEnd() {}
 
-  dragDidMove(e: Event, { moveX }: Gesture) {}
+  dragDidMove(e: Event, { moveX, moveY }: Gesture) {
+    this.setState({
+      offset: {
+        x: moveX,
+        y: moveY,
+      },
+    });
+  }
 
   render() {
     return (
@@ -58,6 +83,8 @@ export default class SaturationAndBrightnessPicker extends Component<Props> {
         <SaturationAndBrightnessGradientView
           style={styles.gradientView}
           color={this.props.color}
+          offset={this.state.offset}
+          onDidUpdateColor={this.props.onDidUpdateColor}
         />
         <DragInteractionContainer
           style={styles.draggable}

@@ -8,6 +8,8 @@ import type { ColorRGBA } from '../../types/media';
 type Props = {
   style?: ?Style,
   color: ColorRGBA,
+  offset: { x: number, y: number },
+  onDidUpdateColor: ColorRGBA => void,
 };
 
 const NativeSaturationAndBrightnessGradientView = requireNativeComponent(
@@ -17,6 +19,8 @@ const NativeSaturationAndBrightnessGradientView = requireNativeComponent(
 export default function SaturationAndBrightnessGradientView({
   style,
   color,
+  offset,
+  onDidUpdateColor,
 }: Props) {
   return (
     <NativeSaturationAndBrightnessGradientView
@@ -27,6 +31,19 @@ export default function SaturationAndBrightnessGradientView({
         color.blue / 255,
         color.alpha,
       ]}
+      offset={offset}
+      onDidUpdateColorAtOffset={({ nativeEvent }: any) => {
+        if (!nativeEvent) {
+          return;
+        }
+        const { red, green, blue, alpha } = nativeEvent;
+        onDidUpdateColor({
+          red: red * 255,
+          green: green * 255,
+          blue: blue * 255,
+          alpha,
+        });
+      }}
     />
   );
 }

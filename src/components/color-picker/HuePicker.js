@@ -7,10 +7,19 @@ import HueGradientView from './HueGradientView';
 import DragInteractionContainer from '../drag-and-drop/DragInteractionContainer';
 import { UI_COLORS } from '../../constants';
 
-import type { Style } from '../../types/react';
+import type { Style, Gesture } from '../../types/react';
+import type { ColorRGBA } from '../../types/media';
 
 type Props = {
   style?: ?Style,
+  color: ColorRGBA,
+  onDidUpdateColor: ColorRGBA => void,
+};
+
+type State = {
+  position: {
+    x: number,
+  },
 };
 
 const styles = {
@@ -45,17 +54,34 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class HuePicker extends Component<Props> {
+export default class HuePicker extends Component<Props, State> {
+  state = {
+    position: {
+      x: 0,
+    },
+  };
+
   dragDidStart() {}
 
   dragDidEnd() {}
 
-  dragDidMove(e: Event, { moveX }: Gesture) {}
+  dragDidMove(e: Event, { moveX }: Gesture) {
+    this.setState({
+      position: {
+        x: moveX,
+      },
+    });
+  }
 
   render() {
     return (
       <View style={this.props.style}>
-        <HueGradientView style={styles.gradientView} />
+        <HueGradientView
+          style={styles.gradientView}
+          color={this.props.color}
+          offset={this.state.position}
+          onDidUpdateColor={this.props.onDidUpdateColor}
+        />
         <DragInteractionContainer
           style={styles.draggable}
           vertical={false}

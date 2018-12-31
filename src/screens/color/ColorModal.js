@@ -4,12 +4,14 @@ import { View, SafeAreaView } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { BlurView } from 'react-native-blur';
+import throttle from 'lodash/throttle';
 
 import { UI_COLORS } from '../../constants';
 import * as Color from '../../utils/Color';
 import * as Screens from '../../utils/Screens';
 import ColorModalNavControls from './ColorModalNavControls';
 import ColorPicker from '../../components/color-picker/ColorPicker';
+import Button from '../../components/button/Button';
 import { getBackgroundColor, getTextColor } from '../../redux/media/selectors';
 import {
   receiveUserSelectedTextColor,
@@ -19,6 +21,10 @@ import {
 import type { AppState, Dispatch } from '../../types/redux';
 import type { ColorRGBA } from '../../types/media';
 
+type State = {
+  color: ColorRGBA,
+};
+
 type OwnProps = {};
 
 type StateProps = {
@@ -27,7 +33,7 @@ type StateProps = {
 };
 
 type DispatchProps = {
-  receiveUserSelectedTextColor: ColorRGBA => void,
+  receiveUserSelectedBackgroundColor: ColorRGBA => void,
   receiveUserSelectedTextColor: ColorRGBA => void,
 };
 
@@ -46,9 +52,13 @@ const styles = {
     right: 0,
     bottom: 0,
   },
-  flex: {
+  safeArea: {
     flex: 1,
   },
+  saveButton: (color: ColorRGBA) => ({
+    backgroundColor: Color.rgbaObjectToRgbaString(color),
+  }),
+  colorPicker: {},
 };
 
 function mapStateToProps(state: AppState): StateProps {
@@ -70,18 +80,52 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 // $FlowFixMe
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
-export default class FontModal extends Component<Props> {
+export default class FontModal extends Component<Props, State> {
+  state = {
+    color: Color.hexToRgbaObject(UI_COLORS.DARK_GREY),
+  };
+
+  componentDidMount() {
+    // TODO: set state.color with background or text color
+  }
+
   onBackButtonPress() {
     Screens.dismissColorModal();
+  }
+
+  colorPickerDidUpdateColor(color: ColorRGBA) {
+    this.setState({
+      color,
+    });
+  }
+
+  colorPickerDidUpdateColorThrottled = throttle(
+    this.colorPickerDidUpdateColor,
+    100,
+    { leading: true }
+  );
+
+  saveButtonWasPressed() {
+    // TODO
   }
 
   render() {
     return (
       <View style={styles.container}>
         <BlurView style={styles.blurView} blurType="dark" />
-        <SafeAreaView style={styles.flex}>
+        <SafeAreaView style={styles.safeArea}>
           <ColorModalNavControls onBackButtonPress={this.onBackButtonPress} />
-          <ColorPicker style={styles.flex} color={this.props.backgroundColor} />
+          <ColorPicker
+            style={styles.colorPicker}
+            color={this.state.color}
+            onDidUpdateColor={this.colorPickerDidUpdateColorThrottled}
+          />
+          <Button
+            size="large"
+            text="SAVE"
+            style={styles.saveButton(this.state.color)}
+            onPress={this.saveButtonWasPressed}
+          />
         </SafeAreaView>
       </View>
     );

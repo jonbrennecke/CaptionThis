@@ -40,9 +40,9 @@ class SaturationAndBrightnessGradientView : UIView {
     let hue = self.hue
     let elementSize = CGSize(width: ELEMENT_SIZE, height: ELEMENT_SIZE)
     for y in stride(from: CGFloat(0.0), to: rect.height, by: ELEMENT_SIZE) {
-      let brightness: CGFloat = 1.0 - y / rect.height
+      let brightness = 1.0 - y / rect.height
       for x in stride(from: CGFloat(0.0), to: rect.width, by: ELEMENT_SIZE) {
-        let saturation: CGFloat = x / rect.width
+        let saturation = x / rect.width
         let color = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1.0)
         context.setFillColor(color.cgColor)
         let point = CGPoint(x: x, y: y)
@@ -50,5 +50,14 @@ class SaturationAndBrightnessGradientView : UIView {
         context.fill(rect)
       }
     }
+  }
+  
+  @objc
+  public func color(atOffset offset: CGPoint) -> UIColor {
+    let rect = self.frame;
+    let hue = self.hue
+    let brightness = 1.0 - offset.y / rect.height
+    let saturation = offset.x / rect.width
+    return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
   }
 }

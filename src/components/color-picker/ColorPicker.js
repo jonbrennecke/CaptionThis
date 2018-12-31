@@ -12,6 +12,7 @@ import type { ColorRGBA } from '../../types/media';
 type Props = {
   style?: ?Style,
   color: ColorRGBA,
+  onDidUpdateColor: ColorRGBA => void,
 };
 
 type State = {
@@ -19,9 +20,6 @@ type State = {
 };
 
 const styles = {
-  flex: {
-    flex: 1,
-  },
   satPicker: (width: number) => ({
     width,
     height: width,
@@ -31,8 +29,7 @@ const styles = {
     width,
     height: 45,
     borderRadius: 10,
-    marginTop: 35,
-
+    marginVertical: 35,
     backgroundColor: 'transparent',
   }),
 };
@@ -57,7 +54,7 @@ export default class ColorPicker extends Component<Props, State> {
   render() {
     return (
       <View
-        style={[styles.flex, this.props.style]}
+        style={this.props.style}
         ref={ref => {
           this.view = ref;
         }}
@@ -66,8 +63,13 @@ export default class ColorPicker extends Component<Props, State> {
         <SaturationAndBrightnessPicker
           style={styles.satPicker(this.state.viewWidth)}
           color={this.props.color}
+          onDidUpdateColor={this.props.onDidUpdateColor}
         />
-        <HuePicker style={styles.huePicker(this.state.viewWidth)} />
+        <HuePicker
+          style={styles.huePicker(this.state.viewWidth)}
+          color={this.props.color}
+          onDidUpdateColor={this.props.onDidUpdateColor}
+        />
       </View>
     );
   }
