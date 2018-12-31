@@ -32,6 +32,7 @@ export type MediaState = {
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
   videoAssetIdentifiers: VideoAssetIdentifier[],
   mediaLoadingState: $Keys<LOADING_STATE>,
+  isCameraRecording: boolean,
   fontFamily: string,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
@@ -49,6 +50,10 @@ export type ReceivePermissionsPayload = {
 
 export type ReceiveVideoAssetsPayload = {
   videoAssetIdentifiers: VideoAssetIdentifier[],
+};
+
+export type ReceiveVideoAssetPayload = {
+  videoAssetIdentifier: VideoAssetIdentifier,
 };
 
 export type ReceiveSpeechTranscriptionPayload = {

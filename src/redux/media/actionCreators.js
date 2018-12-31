@@ -100,7 +100,7 @@ export const beginCameraCapture = () => {
       dispatch({
         type: ACTION_TYPES.DID_SUCCESSFULLY_START_CAMERA_CAPTURE,
         payload: {
-          videoAssetIdentifier
+          videoAssetIdentifier,
         },
       });
     } catch (error) {
@@ -118,7 +118,7 @@ export const endCameraCapture = () => {
     try {
       Camera.stopCapture();
       dispatch({
-        type: ACTION_TYPES.DID_SUCCESSFULLY_STOP_CAMERA_CAPTURE
+        type: ACTION_TYPES.DID_SUCCESSFULLY_STOP_CAMERA_CAPTURE,
       });
     } catch (error) {
       await Debug.logError(error);

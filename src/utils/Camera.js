@@ -11,9 +11,9 @@ export function startPreview() {
   NativeCameraModule.startCameraPreview();
 }
 
-export const startCapture = async (): Promise<VideoAssetIdentifier>  => {
+export const startCapture = async (): Promise<VideoAssetIdentifier> => {
   return await NativeCameraModule.startCameraCaptureAsync();
-}
+};
 
 export function stopCapture() {
   NativeCameraModule.stopCameraCapture();

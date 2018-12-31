@@ -17,6 +17,7 @@ import type {
   ReceiveFontFamilyPayload,
   ReceiveBackgroundColorPayload,
   ReceiveTextColorPayload,
+  ReceiveVideoAssetPayload,
 } from '../../types/redux';
 
 const DEFAULT_FONT_FAMILY = FONT_FAMILIES.SOURCE_SANS_PRO;
@@ -24,6 +25,7 @@ const DEFAULT_BACKGROUND_COLOR = UI_COLORS.MEDIUM_RED;
 const DEFAULT_TEXT_COLOR = TEXT_COLORS.OFF_WHITE;
 
 const initialState: MediaState = {
+  isCameraRecording: false,
   speechTranscriptions: new Map(),
   videoAssetIdentifiers: [],
   mediaLoadingState: LOADING_STATE.NOT_LOADED,
@@ -40,6 +42,8 @@ const actions = {
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_FONT_FAMILY]: didSuccessfullyReceiveFontFamily,
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_BACKGROUND_COLOR]: didSuccessfullyReceiveBackgroundColor,
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_TEXT_COLOR]: didSuccessfullyReceiveTextColor,
+  [ACTION_TYPES.DID_SUCCESSFULLY_START_CAMERA_CAPTURE]: didSuccessfullyStartCameraCapture,
+  [ACTION_TYPES.DID_SUCCESSFULLY_STOP_CAMERA_CAPTURE]: didSuccessfullyStopCameraCapture,
 };
 
 function didStartLoadingVideoAssets(state: MediaState): MediaState {
@@ -121,6 +125,36 @@ function didSuccessfullyReceiveTextColor(
   return {
     ...state,
     textColor: payload.textColor,
+  };
+}
+
+function didSuccessfullyStartCameraCapture(
+  state: MediaState,
+  { payload }: Action<ReceiveVideoAssetPayload>
+): MediaState {
+  if (!payload) {
+    return state;
+  }
+  return {
+    ...state,
+    isCameraRecording: true,
+    videoAssetIdentifiers: [
+      ...state.videoAssetIdentifiers,
+      payload.videoAssetIdentifier,
+    ],
+  };
+}
+
+function didSuccessfullyStopCameraCapture(
+  state: MediaState,
+  { payload }: Action<ReceiveVideoAssetPayload>
+): MediaState {
+  if (!payload) {
+    return state;
+  }
+  return {
+    ...state,
+    isCameraRecording: false,
   };
 }
 
