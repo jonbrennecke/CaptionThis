@@ -205,6 +205,7 @@ export default class EditScreen extends Component<Props, State> {
           contentInsetAdjustmentBehavior="automatic"
           overScrollMode="always"
           alwaysBounceVertical
+          pagingEnabled
         >
           <SafeAreaView style={styles.safeArea}>
             <View style={styles.videoWrap}>
