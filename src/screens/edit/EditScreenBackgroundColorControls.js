@@ -5,7 +5,7 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import * as Screens from '../../utils/Screens';
 import * as Fonts from '../../utils/Fonts';
 import * as Color from '../../utils/Color';
-import { UI_COLORS } from '../../constants';
+import { UI_COLORS, USER_EDITABLE_COLORS } from '../../constants';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
@@ -40,7 +40,11 @@ export default function EditScreenBackgroundColorControls({
       <Text numberOfLines={1} style={styles.labelText}>
         {'BACKGROUND COLOR'}
       </Text>
-      <TouchableOpacity onPress={() => Screens.showColorModal()}>
+      <TouchableOpacity
+        onPress={() =>
+          Screens.showColorModal(USER_EDITABLE_COLORS.BACKGROUND_COLOR)
+        }
+      >
         <View
           style={[
             styles.backgroundColor,

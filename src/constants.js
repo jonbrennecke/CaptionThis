@@ -33,6 +33,11 @@ export const UI_COLORS = {
   MEDIUM_RED: '#f4a09c',
 };
 
+export const USER_EDITABLE_COLORS = {
+  BACKGROUND_COLOR: 'BACKGROUND_COLOR',
+  TEXT_COLOR: 'TEXT_COLOR',
+};
+
 export const FONT_FAMILIES = {
   PASSION_ONE: 'PassionOne-Regular',
   PT_SANS_REGULAR: Platform.select({
