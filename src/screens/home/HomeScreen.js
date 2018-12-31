@@ -103,6 +103,14 @@ export default class HomeScreen extends Component<Props> {
     await Screens.pushEditScreen(this.props.componentId, identifier);
   }
 
+  captureButtonDidRequestBeginCapture() {
+    // TODO:
+  }
+
+  captureButtonDidRequestEndCapture() {
+    // TODO:
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -119,7 +127,13 @@ export default class HomeScreen extends Component<Props> {
             <View style={styles.flex}>
               <View style={styles.cameraPreview}>
                 <CameraPreviewView style={styles.flex} />
-                <HomeScreenCaptureControls style={styles.captureControls} />
+                <HomeScreenCaptureControls
+                  style={styles.captureControls}
+                  onRequestBeginCapture={
+                    this.captureButtonDidRequestBeginCapture
+                  }
+                  onRequestEndCapture={this.captureButtonDidRequestEndCapture}
+                />
               </View>
               <View style={styles.flex}>
                 <View style={styles.mediaHeader}>

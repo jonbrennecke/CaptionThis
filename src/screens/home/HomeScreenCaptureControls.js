@@ -8,6 +8,8 @@ import type { Style } from '../../types/react';
 
 type Props = {
   style?: ?Style,
+  onRequestBeginCapture: () => void,
+  onRequestEndCapture: () => void,
 };
 
 const styles = {
@@ -18,10 +20,17 @@ const styles = {
   },
 };
 
-export default function HomeScreenCaptureControls(props: Props) {
+export default function HomeScreenCaptureControls({
+  style,
+  onRequestBeginCapture,
+  onRequestEndCapture,
+}: Props) {
   return (
-    <View style={[styles.container, props.style]}>
-      <CaptureButton />
+    <View style={[styles.container, style]}>
+      <CaptureButton
+        onRequestBeginCapture={onRequestBeginCapture}
+        onRequestEndCapture={onRequestEndCapture}
+      />
     </View>
   );
 }

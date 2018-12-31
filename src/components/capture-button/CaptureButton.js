@@ -10,6 +10,8 @@ import type { Style } from '../../types/react';
 
 type Props = {
   style?: ?Style,
+  onRequestBeginCapture: () => void,
+  onRequestEndCapture: () => void,
 };
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
@@ -49,6 +51,7 @@ export default class ColorPicker extends Component<Props> {
         duration: 350,
       }),
     ]).start();
+    this.props.onRequestBeginCapture();
   }
 
   touchableOnPressOut() {
@@ -62,6 +65,7 @@ export default class ColorPicker extends Component<Props> {
         duration: 350,
       }),
     ]).start();
+    this.props.onRequestEndCapture();
   }
 
   render() {
