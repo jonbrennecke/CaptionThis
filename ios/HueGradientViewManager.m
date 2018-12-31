@@ -39,23 +39,20 @@ RCT_CUSTOM_VIEW_PROPERTY(offset, NSDictionary*, HueGradientViewWrappingView) {
     return;
   }
   UIColor* color = [view.hueGradientView colorAtHorizontalOffset:[offset floatValue]];
-  CGFloat red = 0;
-  CGFloat green = 0;
-  CGFloat blue = 0;
-  CGFloat alpha = 0;
-  BOOL success = [color getRed:&red green:&green blue:&blue alpha:&alpha];
+  CGFloat rgba[4];
+  BOOL success = [color getRed:&rgba[0] green:&rgba[1] blue:&rgba[2] alpha:&rgba[3]];
   if (!success) {
     return;
   }
-  red = [self normalize:red];
-  green = [self normalize:green];
-  blue = [self normalize:blue];
-  alpha = [self normalize:alpha];
+  rgba[0] = [self normalize:rgba[0]];
+  rgba[1] = [self normalize:rgba[1]];
+  rgba[2] = [self normalize:rgba[2]];
+  rgba[3] = [self normalize:rgba[3]];
   view.onDidUpdateColorAtOffset(@{
-    @"red": [NSNumber numberWithFloat:red],
-    @"green": [NSNumber numberWithFloat:green],
-    @"blue": [NSNumber numberWithFloat:blue],
-    @"alpha": [NSNumber numberWithFloat:alpha]
+    @"red": [NSNumber numberWithFloat:rgba[0]],
+    @"green": [NSNumber numberWithFloat:rgba[1]],
+    @"blue": [NSNumber numberWithFloat:rgba[2]],
+    @"alpha": [NSNumber numberWithFloat:rgba[3]]
   });
 }
 

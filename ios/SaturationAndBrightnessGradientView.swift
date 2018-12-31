@@ -1,6 +1,6 @@
 import UIKit
 
-fileprivate let ELEMENT_SIZE: CGFloat = 1
+fileprivate let ELEMENT_SIZE: CGFloat = 3
 
 @objc
 class SaturationAndBrightnessGradientView : UIView {
