@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Animated, TouchableWithoutFeedback } from 'react-native';
+import { View, Animated, TouchableWithoutFeedback } from 'react-native';
 import { autobind } from 'core-decorators';
 import { BlurView } from 'react-native-blur';
 
@@ -18,9 +18,9 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 const styles = {
   blurView: {
-    height: 67,
-    width: 67,
-    borderRadius: 33.5,
+    // height: 67,
+    // width: 67,
+    // borderRadius: 33.5,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -32,8 +32,6 @@ const styles = {
     width: 75,
     borderRadius: 37.5,
     transform: [{ scale: anim }],
-    borderWidth: 4,
-    borderColor: UI_COLORS.OFF_WHITE,
     shadowColor: UI_COLORS.BLACK,
     shadowOpacity: 0.25,
     shadowOffset: {
@@ -44,6 +42,20 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   }),
+  blurViewContainer: {
+    height: 75,
+    width: 75,
+    borderRadius: 37.5,
+    overflow: 'hidden',
+  },
+  border: {
+    height: 75,
+    width: 75,
+    borderRadius: 37.5,
+    borderWidth: 4,
+    borderColor: UI_COLORS.OFF_WHITE,
+    position: 'absolute',
+  }
 };
 
 // $FlowFixMe
@@ -78,10 +90,13 @@ export default class ColorPicker extends Component<Props> {
         onPressOut={this.touchableOnPressOut}
       >
         <Animated.View style={styles.outerViewAnim(this.outerViewAnim)}>
-          <AnimatedBlurView
-            style={[styles.blurView, this.props.style]}
-            blurType="light"
-          />
+          <View style={styles.blurViewContainer}>
+            <AnimatedBlurView
+              style={[styles.blurView, this.props.style]}
+              blurType="light"
+            />
+          </View>
+          <View style={styles.border}/>
         </Animated.View>
       </TouchableWithoutFeedback>
     );
