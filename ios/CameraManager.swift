@@ -198,7 +198,7 @@ class CameraManager: NSObject {
     // setup videoCaptureDevice
     videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
     guard let videoCaptureDevice = videoCaptureDevice else {
-      Debug.log(message: "Built in wide angle camera is not available.")
+      Debug.log(message: "Built in wide angle camera (front) is not available.")
       return .failure
     }
     
@@ -262,6 +262,39 @@ class CameraManager: NSObject {
     }
     else {
       Debug.log(message: "Video file output could not be added to the capture session.")
+      return .failure
+    }
+    return .success
+  }
+  
+  @objc
+  public func switchToBackCamera() {
+    captureSession.beginConfiguration()
+    if case .failure = attemptToSwitchToBackCamera() {
+      Debug.log(message: "Failed to switch to back camera.")
+    }
+    captureSession.commitConfiguration()
+  }
+  
+  private func attemptToSwitchToBackCamera() -> CameraSetupResult {
+    videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
+    guard let videoCaptureDevice = videoCaptureDevice else {
+      Debug.log(message: "Built in wide angle camera (back) is not available.")
+      return .failure
+    }
+    if let videoCaptureDeviceInput = videoCaptureDeviceInput {
+      captureSession.removeInput(videoCaptureDeviceInput)
+    }
+    videoCaptureDeviceInput = try? AVCaptureDeviceInput(device: videoCaptureDevice)
+    guard let videoCaptureDeviceInput = videoCaptureDeviceInput else {
+      Debug.log(message: "Camera capture device could not be used as an input.")
+      return .failure
+    }
+    if (captureSession.canAddInput(videoCaptureDeviceInput)) {
+      captureSession.addInput(videoCaptureDeviceInput)
+    }
+    else {
+      Debug.log(message: "Camera input could not be added to capture session.")
       return .failure
     }
     return .success

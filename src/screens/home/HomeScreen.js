@@ -284,7 +284,7 @@ export default class HomeScreen extends Component<Props> {
                     this.scrollToCameraRoll();
                   }}
                   onRequestSwitchCamera={() => {
-                    // TODO
+                    Camera.switchToBackCamera();
                   }}
                   videoAssetIdentifier={this.props.videoAssetIdentifiers[0]}
                 />

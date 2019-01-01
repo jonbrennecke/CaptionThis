@@ -56,3 +56,7 @@ export const startCapture = async (): Promise<boolean> => {
 export function stopCapture() {
   NativeCameraModule.stopCameraCapture();
 }
+
+export function switchToBackCamera() {
+  NativeCameraModule.switchToBackCamera();
+}
