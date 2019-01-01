@@ -17,37 +17,44 @@ type Props = {
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 const styles = {
-  blurView: (anim: Animated.Value) => ({
-    height: 100,
-    width: 100,
-    borderRadius: 50,
+  blurView: {
+    height: 67,
+    width: 67,
+    borderRadius: 33.5,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0, 
+  },
+  outerViewAnim: (anim: Animated.Value) => ({
+    height: 75,
+    width: 75,
+    borderRadius: 37.5,
+    transform: [{ scale: anim }],
+    borderWidth: 4,
+    borderColor: UI_COLORS.OFF_WHITE,
+    shadowColor: UI_COLORS.BLACK,
+    shadowOpacity: 0.25,
+    shadowOffset: {
+      width: 1,
+      height: 4,
+    },
+    shadowRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    transform: [{ scale: anim }],
-  }),
-  innerView: (anim: Animated.Value) => ({
-    backgroundColor: UI_COLORS.WHITE,
-    height: 57,
-    width: 57,
-    borderRadius: 28.5,
-    transform: [{ scale: anim }],
   }),
 };
 
 // $FlowFixMe
 @autobind
 export default class ColorPicker extends Component<Props> {
-  innerViewAnim: Animated.Value = new Animated.Value(1.0);
-  blurViewAnim: Animated.Value = new Animated.Value(1.0);
+  outerViewAnim: Animated.Value = new Animated.Value(1.0);
 
   touchableOnPressIn() {
     Animated.parallel([
-      Animated.spring(this.innerViewAnim, {
-        toValue: 1.5,
-        duration: 350,
-      }),
-      Animated.spring(this.blurViewAnim, {
-        toValue: 1.25,
+      Animated.spring(this.outerViewAnim, {
+        toValue: 1.35,
         duration: 350,
       }),
     ]).start();
@@ -56,11 +63,7 @@ export default class ColorPicker extends Component<Props> {
 
   touchableOnPressOut() {
     Animated.parallel([
-      Animated.spring(this.innerViewAnim, {
-        toValue: 1.0,
-        duration: 350,
-      }),
-      Animated.spring(this.blurViewAnim, {
+      Animated.spring(this.outerViewAnim, {
         toValue: 1.0,
         duration: 350,
       }),
@@ -74,12 +77,12 @@ export default class ColorPicker extends Component<Props> {
         onPressIn={this.touchableOnPressIn}
         onPressOut={this.touchableOnPressOut}
       >
-        <AnimatedBlurView
-          style={[styles.blurView(this.blurViewAnim), this.props.style]}
-          blurType="light"
-        >
-          <Animated.View style={styles.innerView(this.innerViewAnim)} />
-        </AnimatedBlurView>
+        <Animated.View style={styles.outerViewAnim(this.outerViewAnim)}>
+          <AnimatedBlurView
+            style={[styles.blurView, this.props.style]}
+            blurType="light"
+          />
+        </Animated.View>
       </TouchableWithoutFeedback>
     );
   }

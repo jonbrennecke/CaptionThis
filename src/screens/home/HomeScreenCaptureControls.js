@@ -30,7 +30,7 @@ const styles = {
     height: 37,
     width: 37,
     borderRadius: 5,
-    borderWidth: 2,
+    borderWidth: 2.5,
     borderColor: UI_COLORS.OFF_WHITE,
     shadowColor: UI_COLORS.BLACK,
     shadowOpacity: 0.25,
