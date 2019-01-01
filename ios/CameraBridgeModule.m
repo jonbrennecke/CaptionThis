@@ -43,8 +43,8 @@ RCT_EXPORT_METHOD(stopCameraCapture) {
   [[AppDelegate sharedCameraManager] stopCapture];
 }
 
-RCT_EXPORT_METHOD(switchToBackCamera) {
-  [[AppDelegate sharedCameraManager] switchToBackCamera];
+RCT_EXPORT_METHOD(switchToOppositeCamera) {
+  [[AppDelegate sharedCameraManager] switchToOppositeCamera];
 }
 
 -(void)startObserving {

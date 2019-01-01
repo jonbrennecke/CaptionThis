@@ -57,6 +57,6 @@ export function stopCapture() {
   NativeCameraModule.stopCameraCapture();
 }
 
-export function switchToBackCamera() {
-  NativeCameraModule.switchToBackCamera();
+export function switchToOppositeCamera() {
+  NativeCameraModule.switchToOppositeCamera();
 }

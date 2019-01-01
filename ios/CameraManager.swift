@@ -268,18 +268,30 @@ class CameraManager: NSObject {
   }
   
   @objc
-  public func switchToBackCamera() {
+  public func switchToOppositeCamera() {
     captureSession.beginConfiguration()
-    if case .failure = attemptToSwitchToBackCamera() {
-      Debug.log(message: "Failed to switch to back camera.")
+    if case .failure = attemptToSwitchToOppositeCamera() {
+      Debug.log(message: "Failed to switch to opposite camera.")
     }
     captureSession.commitConfiguration()
   }
   
-  private func attemptToSwitchToBackCamera() -> CameraSetupResult {
-    videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
+  private func getOppositeCameraPosition() -> AVCaptureDevice.Position {
+    switch videoCaptureDevice?.position {
+    case .some(.back):
+        return .front
+    case .some(.front):
+      return .back
+    default:
+      return .front // default to front camera
+    }
+  }
+  
+  private func attemptToSwitchToOppositeCamera() -> CameraSetupResult {
+    let cameraPosition = getOppositeCameraPosition()
+    videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: cameraPosition)
     guard let videoCaptureDevice = videoCaptureDevice else {
-      Debug.log(message: "Built in wide angle camera (back) is not available.")
+      Debug.log(format: "Built in wide angle camera is not available. Position = %@", cameraPosition == .back ? "back" : "front")
       return .failure
     }
     if let videoCaptureDeviceInput = videoCaptureDeviceInput {
