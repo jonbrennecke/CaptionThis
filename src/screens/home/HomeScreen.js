@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, SafeAreaView, Dimensions, Text } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
@@ -80,7 +81,8 @@ const styles = {
   },
   mediaHeader: {
     paddingVertical: 5,
-    alignItems: 'center',
+    paddingHorizontal: 7,
+    alignItems: 'flex-start',
   },
   mediaText: Fonts.getFontStyle('title', { contentStyle: 'lightContent' }),
   flex: {
@@ -94,7 +96,7 @@ const styles = {
   },
   fill: {
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+    height: SCREEN_HEIGHT - 50,
   },
   fill2: {
     width: SCREEN_WIDTH,
@@ -140,6 +142,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class HomeScreen extends Component<Props> {
+  scrollView: ?ScrollView;
+
   // eslint-disable-next-line flowtype/generic-spacing
   speechTranscriptionSubscription: ?Return<
     typeof SpeechManager.addSpeechTranscriptionListener
@@ -237,12 +241,26 @@ export default class HomeScreen extends Component<Props> {
     this.props.receiveFinishedVideo(videoAssetIdentifier);
   }
 
+  async scrollToCameraRoll() {
+    const constants = await Navigation.constants();
+    const { topBarHeight, statusBarHeight } = constants;
+    if (!this.scrollView) {
+      return;
+    }
+    this.scrollView.scrollTo({
+      y: SCREEN_HEIGHT - topBarHeight - statusBarHeight,
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <ScreenGradients />
         <SafeAreaView style={styles.flex}>
           <ScrollView
+            ref={ref => {
+              this.scrollView = ref;
+            }}
             style={styles.scrollView}
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="always"
@@ -262,13 +280,20 @@ export default class HomeScreen extends Component<Props> {
                   onRequestEndCapture={() => {
                     this.captureButtonDidRequestEndCapture();
                   }}
+                  onRequestOpenCameraRoll={() => {
+                    this.scrollToCameraRoll();
+                  }}
+                  onRequestSwitchCamera={() => {
+                    // TODO
+                  }}
+                  videoAssetIdentifier={this.props.videoAssetIdentifiers[0]}
                 />
-              </View>
-              <View style={styles.mediaHeader}>
-                <Text style={styles.mediaText}>VIDEOS</Text>
               </View>
             </View>
             <View style={styles.fill2}>
+              <View style={styles.mediaHeader}>
+                <Text style={styles.mediaText}>CAMERA ROLL</Text>
+              </View>
               <ScrollView
                 style={styles.flex}
                 showsVerticalScrollIndicator={false}

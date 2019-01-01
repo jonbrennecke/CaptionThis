@@ -178,7 +178,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
     style: {
       color: TEXT_COLORS.OFF_WHITE,
       fontFamily: FONT_FAMILIES.STAATLICHES,
-      fontSize: 14,
+      fontSize: 23,
       fontWeight: 'bold',
       letterSpacing: 1.2,
     },
