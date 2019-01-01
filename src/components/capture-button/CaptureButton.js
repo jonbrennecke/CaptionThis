@@ -25,7 +25,7 @@ const styles = {
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0, 
+    bottom: 0,
   },
   outerViewAnim: (anim: Animated.Value) => ({
     height: 75,
@@ -55,7 +55,7 @@ const styles = {
     borderWidth: 4,
     borderColor: UI_COLORS.OFF_WHITE,
     position: 'absolute',
-  }
+  },
 };
 
 // $FlowFixMe
@@ -96,7 +96,7 @@ export default class ColorPicker extends Component<Props> {
               blurType="light"
             />
           </View>
-          <View style={styles.border}/>
+          <View style={styles.border} />
         </Animated.View>
       </TouchableWithoutFeedback>
     );

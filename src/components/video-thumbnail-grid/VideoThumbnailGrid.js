@@ -31,7 +31,7 @@ const styles = {
     flex: 1,
     borderRadius: 3,
     overflow: 'hidden',
-  }
+  },
 };
 
 export default function VideoThumbnailGrid({

@@ -4,6 +4,7 @@ import { View, TouchableOpacity } from 'react-native';
 
 import CaptureButton from '../../components/capture-button/CaptureButton';
 import VideoThumbnailView from '../../components/video-thumbnail-view/VideoThumbnailView';
+import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
 import { UI_COLORS } from '../../constants';
 
 import type { Style } from '../../types/react';
@@ -48,10 +49,6 @@ const styles = {
   switchCameraButton: {
     height: 37,
     width: 37,
-    borderRadius: 3,
-    borderWidth: 2,
-    borderColor: UI_COLORS.OFF_WHITE,
-    backgroundColor: UI_COLORS.DARK_GREY,
   },
   flex: {
     flex: 1,
@@ -85,12 +82,10 @@ export default function HomeScreenCaptureControls({
         onRequestBeginCapture={onRequestBeginCapture}
         onRequestEndCapture={onRequestEndCapture}
       />
-      <TouchableOpacity
-        onPress={onRequestSwitchCamera}
+      <SwitchCameraButton
         style={styles.switchCameraButton}
-      >
-        <View />
-      </TouchableOpacity>
+        onRequestSwitchCamera={onRequestSwitchCamera}
+      />
     </View>
   );
 }
