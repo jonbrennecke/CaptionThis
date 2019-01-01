@@ -44,8 +44,6 @@ export function isCameraRecording(state: AppState): boolean {
   return state.media.cameraRecordingState.isRecording;
 }
 
-export function getCurrentVideo(
-  state: AppState
-): ?VideoAssetIdentifier {
+export function getCurrentVideo(state: AppState): ?VideoAssetIdentifier {
   return state.media.cameraRecordingState.videoAssetIdentifier;
 }

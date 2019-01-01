@@ -76,6 +76,7 @@ const styles = {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT - 125,
     overflow: 'hidden',
+    backgroundColor: 'red',
   },
   mediaHeader: {
     paddingVertical: 5,
@@ -90,6 +91,18 @@ const styles = {
     bottom: 0,
     left: 0,
     right: 0,
+  },
+  fill: {
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
+  },
+  fill2: {
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
+  },
+  scrollView: {
+    flex: 1,
+    overflow: 'visible',
   },
 };
 
@@ -217,10 +230,7 @@ export default class HomeScreen extends Component<Props> {
       // TODO: this.props.receiveSpeechTranscriptionFailure();
       return;
     }
-    this.props.receiveSpeechTranscriptionSuccess(
-      currentVideo,
-      transcription
-    );
+    this.props.receiveSpeechTranscriptionSuccess(currentVideo, transcription);
   }
 
   cameraManagerDidFinishFileOutput(videoAssetIdentifier: VideoAssetIdentifier) {
@@ -231,16 +241,17 @@ export default class HomeScreen extends Component<Props> {
     return (
       <View style={styles.container}>
         <ScreenGradients />
-        <ScrollView
-          style={styles.flex}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="always"
-          contentInsetAdjustmentBehavior="automatic"
-          overScrollMode="always"
-          alwaysBounceVertical
-        >
-          <SafeAreaView style={styles.flex}>
-            <View style={styles.flex}>
+        <SafeAreaView style={styles.flex}>
+          <ScrollView
+            style={styles.scrollView}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="always"
+            contentInsetAdjustmentBehavior="automatic"
+            overScrollMode="always"
+            alwaysBounceVertical
+            pagingEnabled
+          >
+            <View style={styles.fill}>
               <View style={styles.cameraPreview}>
                 <CameraPreviewView style={styles.flex} />
                 <HomeScreenCaptureControls
@@ -253,10 +264,19 @@ export default class HomeScreen extends Component<Props> {
                   }}
                 />
               </View>
-              <View style={styles.flex}>
-                <View style={styles.mediaHeader}>
-                  <Text style={styles.mediaText}>VIDEOS</Text>
-                </View>
+              <View style={styles.mediaHeader}>
+                <Text style={styles.mediaText}>VIDEOS</Text>
+              </View>
+            </View>
+            <View style={styles.fill2}>
+              <ScrollView
+                style={styles.flex}
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="always"
+                contentInsetAdjustmentBehavior="automatic"
+                overScrollMode="always"
+                alwaysBounceVertical
+              >
                 <VideoThumbnailGrid
                   style={styles.flex}
                   videoAssetIdentifiers={this.props.videoAssetIdentifiers}
@@ -264,10 +284,10 @@ export default class HomeScreen extends Component<Props> {
                     this.onDidPressVideoThumbnail(...args);
                   }}
                 />
-              </View>
+              </ScrollView>
             </View>
-          </SafeAreaView>
-        </ScrollView>
+          </ScrollView>
+        </SafeAreaView>
       </View>
     );
   }

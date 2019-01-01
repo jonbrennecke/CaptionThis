@@ -142,14 +142,12 @@ function didSuccessfullyStartCameraCapture(state: MediaState): MediaState {
   };
 }
 
-function didSuccessfullyStopCameraCapture(
-  state: MediaState,
-): MediaState {
+function didSuccessfullyStopCameraCapture(state: MediaState): MediaState {
   return {
     ...state,
     cameraRecordingState: {
       isRecording: false,
-      videoAssetIdentifier: null
+      videoAssetIdentifier: null,
     },
   };
 }
