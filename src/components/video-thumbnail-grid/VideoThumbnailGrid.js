@@ -22,11 +22,16 @@ const styles = {
     flexWrap: 'wrap',
     alignItems: 'flex-start',
   },
-  thumbnail: {
+  thumbnailWrap: {
     width: SCREEN_WIDTH / 3,
     height: SCREEN_WIDTH / 3 * (4 / 3),
     padding: 1,
   },
+  thumbnail: {
+    flex: 1,
+    borderRadius: 3,
+    overflow: 'hidden',
+  }
 };
 
 export default function VideoThumbnailGrid({
@@ -38,10 +43,12 @@ export default function VideoThumbnailGrid({
     <View style={[styles.container, style]}>
       {videoAssetIdentifiers.map(id => (
         <TouchableOpacity key={id} onPress={() => onPressThumbnail(id)}>
-          <VideoThumbnailView
-            style={styles.thumbnail}
-            videoAssetIdentifier={id}
-          />
+          <View style={styles.thumbnailWrap}>
+            <VideoThumbnailView
+              style={styles.thumbnail}
+              videoAssetIdentifier={id}
+            />
+          </View>
         </TouchableOpacity>
       ))}
     </View>
