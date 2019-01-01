@@ -50,7 +50,7 @@ function mapStateToProps(): StateProps {
   return {};
 }
 
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
   return {
     requestAppPermissions: () => dispatch(requestAppPermissions()),
   };

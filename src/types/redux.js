@@ -4,11 +4,17 @@ import type { VideoAssetIdentifier, ColorRGBA } from './media';
 import type { SpeechTranscription } from './speech';
 
 export type Action<T> = {
-  type: string,
+  +type: string,
   payload?: T,
 };
 
-export type Dispatch = any => any;
+export type ThunkAction<T> = (dispatch: Dispatch<T>, getState: GetState) => any;
+
+export type PromiseAction<T> = Promise<Action<T>>;
+
+export type Dispatch<T> = (
+  action: Action<T> | ThunkAction<T> | PromiseAction<T> | Array<Action<T>>
+) => any;
 
 export type AppState = {
   auth: AuthState,
@@ -32,45 +38,57 @@ export type MediaState = {
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
   videoAssetIdentifiers: VideoAssetIdentifier[],
   mediaLoadingState: $Keys<LOADING_STATE>,
-  cameraRecordingState: ?{
-    videoAssetIdentifier: VideoAssetIdentifier,
+  cameraRecordingState: {
+    isRecording: boolean,
+    videoAssetIdentifier: ?VideoAssetIdentifier,
   },
   fontFamily: string,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
 };
 
-export type ReceiveLoginPayload = {
+export type Payload =
+  | ReceiveLoginPayload
+  | ReceiveAuthPayload
+  | ReceivePermissionsPayload
+  | ReceiveVideoAssetsPayload
+  | ReceiveVideoAssetPayload
+  | ReceiveSpeechTranscriptionPayload
+  | ReceiveFontFamilyPayload
+  | ReceiveBackgroundColorPayload
+  | ReceiveTextColorPayload;
+
+export type ReceiveLoginPayload = {|
   token: string,
-};
+|};
 
 export type ReceiveAuthPayload = ReceiveLoginPayload;
 
-export type ReceivePermissionsPayload = {
+export type ReceivePermissionsPayload = {|
   arePermissionsGranted: boolean,
-};
+|};
 
-export type ReceiveVideoAssetsPayload = {
+export type ReceiveVideoAssetsPayload = {|
   videoAssetIdentifiers: VideoAssetIdentifier[],
-};
+|};
 
-export type ReceiveVideoAssetPayload = {
+export type ReceiveVideoAssetPayload = {|
   videoAssetIdentifier: VideoAssetIdentifier,
-};
+|};
 
-export type ReceiveSpeechTranscriptionPayload = {
+export type ReceiveSpeechTranscriptionPayload = {|
   videoAssetIdentifier: VideoAssetIdentifier,
   transcription: SpeechTranscription,
-};
+|};
 
-export type ReceiveFontFamilyPayload = {
+export type ReceiveFontFamilyPayload = {|
   fontFamily: string,
-};
+|};
 
-export type ReceiveBackgroundColorPayload = {
+export type ReceiveBackgroundColorPayload = {|
   backgroundColor: ColorRGBA,
-};
+|};
 
-export type ReceiveTextColorPayload = {
+export type ReceiveTextColorPayload = {|
   textColor: ColorRGBA,
-};
+|};

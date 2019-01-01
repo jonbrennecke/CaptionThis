@@ -5,10 +5,10 @@ import * as Debug from '../../utils/Debug';
 import { ACTION_TYPES } from './constants';
 import { APP_BUNDLE_ID } from '../../constants';
 
-import type { Dispatch } from '../../types/redux';
+import type { Dispatch, ReceiveAuthPayload } from '../../types/redux';
 
 export const login = (email: string, password: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<ReceiveAuthPayload>) => {
     dispatch({ type: ACTION_TYPES.START_LOGIN });
     try {
       const token = await actions.login(email, password);
@@ -26,7 +26,7 @@ export const login = (email: string, password: string) => {
 };
 
 export const loadAuth = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<ReceiveAuthPayload>) => {
     dispatch({ type: ACTION_TYPES.LOAD_AUTH });
     try {
       const token = await AsyncStorage.getItem(`${APP_BUNDLE_ID}.auth.token`);

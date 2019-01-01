@@ -20,11 +20,12 @@ import {
   receiveSpeechTranscriptionSuccess,
   beginCameraCapture,
   endCameraCapture,
+  receiveFinishedVideo,
 } from '../../redux/media/actionCreators';
 import {
   getVideoAssetIdentifiers,
   isCameraRecording,
-  getCameraRecordingState,
+  getCurrentVideo,
 } from '../../redux/media/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
@@ -46,7 +47,7 @@ type StateProps = {
   videoAssetIdentifiers: VideoAssetIdentifier[],
   arePermissionsGranted: boolean,
   isCameraRecording: boolean,
-  cameraRecordingState: ?{ videoAssetIdentifier: VideoAssetIdentifier },
+  currentVideo: ?VideoAssetIdentifier,
 };
 
 type DispatchProps = {
@@ -60,6 +61,7 @@ type DispatchProps = {
     SpeechTranscription
   ) => void,
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
+  receiveFinishedVideo: VideoAssetIdentifier => void,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -96,11 +98,11 @@ function mapStateToProps(state: AppState): StateProps {
     videoAssetIdentifiers: getVideoAssetIdentifiers(state),
     arePermissionsGranted: arePermissionsGranted(state),
     isCameraRecording: isCameraRecording(state),
-    cameraRecordingState: getCameraRecordingState(state),
+    currentVideo: getCurrentVideo(state),
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
     loadVideoAssets: () => dispatch(loadVideoAssets()),
     beginCameraCapture: () => dispatch(beginCameraCapture()),
@@ -115,6 +117,8 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
     ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
     receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
+    receiveFinishedVideo: (id: VideoAssetIdentifier) =>
+      dispatch(receiveFinishedVideo(id)),
   };
 }
 
@@ -128,6 +132,11 @@ export default class HomeScreen extends Component<Props> {
     typeof SpeechManager.addSpeechTranscriptionListener
   >;
 
+  // eslint-disable-next-line flowtype/generic-spacing
+  cameraManagerDidFinishFileOutputListener: ?Return<
+    typeof Camera.addDidFinishFileOutputListener
+  >;
+
   componentDidMount() {
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
@@ -135,12 +144,25 @@ export default class HomeScreen extends Component<Props> {
   }
 
   async componentWillUnmount() {
-    await this.stopCapture();
+    await this.props.endCameraCapture();
+    if (this.cameraManagerDidFinishFileOutputListener) {
+      this.cameraManagerDidFinishFileOutputListener.remove();
+    }
+    if (this.speechTranscriptionSubscription) {
+      this.speechTranscriptionSubscription.remove();
+    }
   }
 
-  componentDidUpdate(prevProps: Props) {
+  async componentDidUpdate(prevProps: Props) {
     if (!prevProps.arePermissionsGranted && this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
+    }
+
+    if (!prevProps.currentVideo && this.props.currentVideo) {
+      const currentVideo = this.props.currentVideo;
+      if (currentVideo) {
+        await Screens.pushEditScreen(this.props.componentId, currentVideo);
+      }
     }
   }
 
@@ -162,47 +184,47 @@ export default class HomeScreen extends Component<Props> {
   }
 
   async startCapture() {
+    this.cameraManagerDidFinishFileOutputListener = Camera.addDidFinishFileOutputListener(
+      this.cameraManagerDidFinishFileOutput
+    );
     await this.props.beginCameraCapture();
-    SpeechManager.addSpeechTranscriptionListener(
+    this.speechTranscriptionSubscription = SpeechManager.addSpeechTranscriptionListener(
       this.speechManagerDidReceiveSpeechTranscription
     );
     await this.props.beginSpeechTranscriptionWithAudioSession();
   }
 
   async stopCapture() {
-    await this.props.endSpeechTranscriptionWithAudioSession();
-    if (this.speechTranscriptionSubscription) {
-      SpeechManager.removeListener(this.speechTranscriptionSubscription);
-    }
-    if (!this.props.cameraRecordingState) {
-      Debug.logErrorMessage(
-        'Received a speech transcription, but camera is not recording.'
-      );
+    if (!this.props.isCameraRecording) {
+      Debug.logErrorMessage('Failed to stop capture, camera is not recording.');
       return;
     }
-    const { videoAssetIdentifier: id } = this.props.cameraRecordingState;
-    await Screens.pushEditScreen(this.props.componentId, id);
+    await this.props.endSpeechTranscriptionWithAudioSession();
     await this.props.endCameraCapture();
   }
 
   speechManagerDidReceiveSpeechTranscription(
     transcription: SpeechTranscription
   ) {
-    if (!this.props.cameraRecordingState) {
-      Debug.logErrorMessage(
+    if (!this.props.isCameraRecording) {
+      Debug.logWarningMessage(
         'Received a speech transcription, but camera is not recording.'
       );
       return;
     }
-    const { videoAssetIdentifier } = this.props.cameraRecordingState;
-    if (!transcription) {
-      this.props.receiveSpeechTranscriptionFailure(videoAssetIdentifier);
+    const currentVideo = this.props.currentVideo;
+    if (!currentVideo) {
+      // TODO: this.props.receiveSpeechTranscriptionFailure();
       return;
     }
     this.props.receiveSpeechTranscriptionSuccess(
-      videoAssetIdentifier,
+      currentVideo,
       transcription
     );
+  }
+
+  cameraManagerDidFinishFileOutput(videoAssetIdentifier: VideoAssetIdentifier) {
+    this.props.receiveFinishedVideo(videoAssetIdentifier);
   }
 
   render() {

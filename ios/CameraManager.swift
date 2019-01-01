@@ -1,10 +1,11 @@
 import AVFoundation
 import Photos
 
+@objc
 protocol CameraManagerDelegate {
   func cameraManagerDidReceiveCameraDataOutput(videoData: CMSampleBuffer)
   func cameraManagerDidBeginFileOutput(toFileURL fileURL: URL)
-  func cameraManagerDidFinishFileOutput(toFileURL fileURL: URL)
+  func cameraManagerDidFinishFileOutput(toFileURL fileURL: URL, asset: PHObjectPlaceholder?, error: Error?)
 }
 
 fileprivate enum CameraSetupResult {
@@ -27,9 +28,11 @@ class CameraManager: NSObject {
   private var synchronizer: AVCaptureDataOutputSynchronizer?
   private let sessionQueue = DispatchQueue(label: "session queue")
   
+  @objc
   public var delegate: CameraManagerDelegate?
   
-  @objc public var previewLayer: AVCaptureVideoPreviewLayer
+  @objc
+  public var previewLayer: AVCaptureVideoPreviewLayer
   
   
   override init() {
@@ -141,17 +144,16 @@ class CameraManager: NSObject {
   }
   
   @objc
-  public func startCapture(completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> ()) {
+  public func startCapture(completionHandler: @escaping (Error?, Bool) -> ()) {
     sessionQueue.async {
       do {
         let outputURL = try self.saveVideoFileOutputOrThrow()
+        self.videoFileOutput.stopRecording()
         self.videoFileOutput.startRecording(to: outputURL, recordingDelegate: self)
-        self.createNewAsset(forURL: outputURL) { error, success, assetPlaceholder in
-          completionHandler(error, success, assetPlaceholder)
-        }
+        completionHandler(nil, true)
       }
       catch let error {
-        completionHandler(error, false, nil)
+        completionHandler(error, false)
       }
     }
   }
@@ -265,59 +267,70 @@ class CameraManager: NSObject {
     return .success
   }
   
-  private func createNewAsset(forURL url: URL, callback: @escaping (Error?, Bool, PHObjectPlaceholder?) -> ()) {
-    self.withAlbum() { error, success, albumPlaceholder in
-      guard let albumPlaceholder = albumPlaceholder else {
-        // TODO:
+  private func createVideoAsset(forURL url: URL, completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> ()) {
+    self.withAlbum() { error, success, album in
+      guard let album = album else {
+        Debug.log(format: "Failed to find album. Success = %@", success ? "true" : "false")
+        completionHandler(nil, false, nil)
         return
       }
+      var assetPlaceholder: PHObjectPlaceholder?
       PHPhotoLibrary.shared().performChanges({
         if #available(iOS 9.0, *) {
           let assetRequest = PHAssetCreationRequest.creationRequestForAssetFromVideo(atFileURL: url)
-          guard let assetPlaceholder = assetRequest?.placeholderForCreatedAsset else {
+          guard let placeholder = assetRequest?.placeholderForCreatedAsset else {
             Debug.log(format: "Asset placeholder could not be created. URL = %@", url.path)
-            callback(nil, false, nil)
-            return
-          }
-          let albumFetchResult = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [albumPlaceholder.localIdentifier], options: nil)
-          guard let album = albumFetchResult.firstObject else {
-            // TODO:
             return
           }
           guard let albumChangeRequest = PHAssetCollectionChangeRequest(for: album) else {
             Debug.log(format: "Asset placeholder could not be created. URL = %@", url.path)
-            callback(nil, false, nil)
             return
           }
-          albumChangeRequest.addAssets([assetPlaceholder] as NSArray)
-          callback(nil, true, assetPlaceholder)
+          albumChangeRequest.addAssets([placeholder] as NSArray)
+          assetPlaceholder = placeholder
         }
         else {
           fatalError("This app only supports iOS 9.0 or above.")
         }
-      }) { success, _ in
+      }) { success, error in
         Debug.log(format: "Finished creating asset for video. Success = %@", success ? "true" : "false")
+        if let error = error {
+          Debug.log(error: error)
+          completionHandler(error, false, nil)
+          return
+        }
+        guard success, let assetPlaceholder = assetPlaceholder else {
+          completionHandler(error, success, nil)
+          return
+        }
+        completionHandler(nil, success, assetPlaceholder)
       }
     }
   }
   
-  private func withAlbum(_ completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> ()) {
-    //      TODO fetch album by name
-//    let fetchOptions = PHFetchOptions()
-//    fetchOptions.predicate = NSPredicate(format: "title = %@", CameraManager.albumTitle)
-//    let collection = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .Any, options: fetchOptions)
-    
+  private func withAlbum(_ completionHandler: @escaping (Error?, Bool, PHAssetCollection?) -> ()) {
+    let fetchOptions = PHFetchOptions()
+    fetchOptions.predicate = NSPredicate(format: "title = %@", CameraManager.albumTitle)
+    let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: fetchOptions)
+    if let album = collection.firstObject {
+      completionHandler(nil, true, album)
+      return
+    }
     var albumPlaceholder: PHObjectPlaceholder?
     PHPhotoLibrary.shared().performChanges({
       let assetCollectionRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: CameraManager.albumTitle)
       albumPlaceholder = assetCollectionRequest.placeholderForCreatedAssetCollection
     }) { success, error in
-      Debug.log(format: "Finished creating photos album. Success = %@", success ? "true" : "false")
-      if success, let albumPlaceholder = albumPlaceholder {
-        completionHandler(nil, success, albumPlaceholder)
+      guard success, let albumPlaceholder = albumPlaceholder else {
+        completionHandler(error, success, nil)
         return
       }
-      completionHandler(error, success, nil)
+      let albumFetchResult = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [albumPlaceholder.localIdentifier], options: nil)
+      guard let album = albumFetchResult.firstObject else {
+        completionHandler(nil, false, nil)
+        return
+      }
+      completionHandler(nil, true, album)
     }
   }
 }
@@ -354,7 +367,9 @@ extension CameraManager: AVCaptureFileOutputRecordingDelegate {
       Debug.log(error: error)
       return
     }
-    Debug.log(format: "Finished output to file. URL = %@", fileURL.absoluteString)
-    delegate?.cameraManagerDidFinishFileOutput(toFileURL: fileURL)
+    createVideoAsset(forURL: fileURL) { error, success, assetPlaceholder in
+      Debug.log(format: "Finished output to file. URL = %@", fileURL.absoluteString)
+      self.delegate?.cameraManagerDidFinishFileOutput(toFileURL: fileURL, asset: assetPlaceholder, error: error)
+    }
   }
 }

@@ -6,7 +6,7 @@ import { ACTION_TYPES } from './constants';
 import type { Dispatch } from '../../types/redux';
 
 export const loadAppPermissions = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<*>) => {
     dispatch({ type: ACTION_TYPES.STARTED_LOADING_APP_PERMISSIONS });
     try {
       const granted = await actions.arePermissionsGranted();
@@ -26,7 +26,7 @@ export const loadAppPermissions = () => {
 };
 
 export const requestAppPermissions = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<*>) => {
     dispatch({ type: ACTION_TYPES.STARTED_LOADING_APP_PERMISSIONS });
     try {
       const granted = await actions.requestAppPermissions();

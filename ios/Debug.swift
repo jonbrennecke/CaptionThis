@@ -19,6 +19,6 @@ class Debug : NSObject {
   
   @objc
   static func log(error: Error) {
-    print(error)
+    print(error.localizedDescription)
   }
 }

@@ -25,7 +25,10 @@ const DEFAULT_BACKGROUND_COLOR = UI_COLORS.MEDIUM_RED;
 const DEFAULT_TEXT_COLOR = TEXT_COLORS.OFF_WHITE;
 
 const initialState: MediaState = {
-  cameraRecordingState: null,
+  cameraRecordingState: {
+    isRecording: false,
+    videoAssetIdentifier: null,
+  },
   speechTranscriptions: new Map(),
   videoAssetIdentifiers: [],
   mediaLoadingState: LOADING_STATE.NOT_LOADED,
@@ -44,6 +47,7 @@ const actions = {
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_TEXT_COLOR]: didSuccessfullyReceiveTextColor,
   [ACTION_TYPES.DID_SUCCESSFULLY_START_CAMERA_CAPTURE]: didSuccessfullyStartCameraCapture,
   [ACTION_TYPES.DID_SUCCESSFULLY_STOP_CAMERA_CAPTURE]: didSuccessfullyStopCameraCapture,
+  [ACTION_TYPES.DID_RECEIVE_FINISHED_VIDEO]: didReceiveFinishedVideo,
 };
 
 function didStartLoadingVideoAssets(state: MediaState): MediaState {
@@ -128,7 +132,29 @@ function didSuccessfullyReceiveTextColor(
   };
 }
 
-function didSuccessfullyStartCameraCapture(
+function didSuccessfullyStartCameraCapture(state: MediaState): MediaState {
+  return {
+    ...state,
+    cameraRecordingState: {
+      isRecording: true,
+      videoAssetIdentifier: null,
+    },
+  };
+}
+
+function didSuccessfullyStopCameraCapture(
+  state: MediaState,
+): MediaState {
+  return {
+    ...state,
+    cameraRecordingState: {
+      isRecording: false,
+      videoAssetIdentifier: null
+    },
+  };
+}
+
+function didReceiveFinishedVideo(
   state: MediaState,
   { payload }: Action<ReceiveVideoAssetPayload>
 ): MediaState {
@@ -138,25 +164,9 @@ function didSuccessfullyStartCameraCapture(
   return {
     ...state,
     cameraRecordingState: {
+      isRecording: false,
       videoAssetIdentifier: payload.videoAssetIdentifier,
     },
-    videoAssetIdentifiers: [
-      ...state.videoAssetIdentifiers,
-      payload.videoAssetIdentifier,
-    ],
-  };
-}
-
-function didSuccessfullyStopCameraCapture(
-  state: MediaState,
-  { payload }: Action<ReceiveVideoAssetPayload>
-): MediaState {
-  if (!payload) {
-    return state;
-  }
-  return {
-    ...state,
-    cameraAssetIdentifier: null,
   };
 }
 

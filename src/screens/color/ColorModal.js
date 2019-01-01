@@ -70,7 +70,7 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
     receiveUserSelectedTextColor: (color: ColorRGBA) =>
       dispatch(receiveUserSelectedTextColor(color)),

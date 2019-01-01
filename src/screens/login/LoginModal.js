@@ -88,7 +88,7 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
   return {
     login: (email: string, password: string) =>
       dispatch(login(email, password)),

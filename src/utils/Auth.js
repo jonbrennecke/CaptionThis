@@ -26,7 +26,7 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
   return {
     loadAuth: () => dispatch(loadAuth()),
   };

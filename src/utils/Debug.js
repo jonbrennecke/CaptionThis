@@ -16,3 +16,8 @@ export const logErrorMessage = async (errorMessage: string) => {
   // eslint-disable-next-line
   console.error(errorMessage);
 };
+
+export const logWarningMessage = async (warningMessage: string) => {
+  // eslint-disable-next-line
+  console.warn(warningMessage);
+};

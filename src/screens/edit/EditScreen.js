@@ -117,7 +117,7 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
     beginSpeechTranscriptionWithVideoAsset: (id: VideoAssetIdentifier) =>
       dispatch(beginSpeechTranscriptionWithVideoAsset(id)),
@@ -145,14 +145,14 @@ export default class EditScreen extends Component<Props, State> {
   >;
 
   componentDidMount() {
-    SpeechManager.addSpeechTranscriptionListener(
+    this.speechTranscriptionSubscription = SpeechManager.addSpeechTranscriptionListener(
       this.speechManagerDidReceiveSpeechTranscription
     );
   }
 
   componentWillUnmount() {
     if (this.speechTranscriptionSubscription) {
-      SpeechManager.removeListener(this.speechTranscriptionSubscription);
+      this.speechTranscriptionSubscription.remove();
     }
   }
 
@@ -205,7 +205,6 @@ export default class EditScreen extends Component<Props, State> {
           contentInsetAdjustmentBehavior="automatic"
           overScrollMode="always"
           alwaysBounceVertical
-          pagingEnabled
         >
           <SafeAreaView style={styles.safeArea}>
             <View style={styles.videoWrap}>

@@ -73,7 +73,7 @@ function mapStateToProps(): StateProps {
   return {};
 }
 
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
   return {
     receiveUserSelectedFontFamily: (fontFamily: string) =>
       dispatch(receiveUserSelectedFontFamily(fontFamily)),

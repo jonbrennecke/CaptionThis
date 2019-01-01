@@ -5,12 +5,20 @@ import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
 import * as Camera from '../../utils/Camera';
 
-import type { Dispatch } from '../../types/redux';
+import type {
+  Dispatch,
+  ReceiveVideoAssetsPayload,
+  ReceiveVideoAssetPayload,
+  ReceiveSpeechTranscriptionPayload,
+  ReceiveTextColorPayload,
+  ReceiveBackgroundColorPayload,
+  ReceiveFontFamilyPayload,
+} from '../../types/redux';
 import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 
 export const loadVideoAssets = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<ReceiveVideoAssetsPayload>) => {
     dispatch({ type: ACTION_TYPES.DID_START_LOADING_VIDEO_ASSETS });
     try {
       const ids = await MediaManager.getVideoAssets();
@@ -30,7 +38,7 @@ export const loadVideoAssets = () => {
 export const beginSpeechTranscriptionWithVideoAsset = (
   videoAssetIdentifier: VideoAssetIdentifier
 ) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<ReceiveVideoAssetPayload>) => {
     dispatch({ type: ACTION_TYPES.DID_START_SPEECH_TRANSCRIPTION });
     try {
       const success = await SpeechManager.beginSpeechTranscriptionWithVideoAsset(
@@ -55,7 +63,7 @@ export const beginSpeechTranscriptionWithVideoAsset = (
 };
 
 export const beginSpeechTranscriptionWithAudioSession = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<*>) => {
     dispatch({ type: ACTION_TYPES.DID_START_SPEECH_TRANSCRIPTION });
     try {
       const success = await SpeechManager.beginSpeechTranscriptionWithAudioSession();
@@ -74,7 +82,7 @@ export const beginSpeechTranscriptionWithAudioSession = () => {
 };
 
 export const endSpeechTranscriptionWithAudioSession = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<*>) => {
     dispatch({ type: ACTION_TYPES.DID_START_ENDING_SPEECH_TRANSCRIPTION });
     try {
       const success = await SpeechManager.endSpeechTranscriptionWithAudioSession();
@@ -93,10 +101,10 @@ export const endSpeechTranscriptionWithAudioSession = () => {
 };
 
 export const beginCameraCapture = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<*>) => {
     dispatch({ type: ACTION_TYPES.DID_START_CAMERA_CAPTURE });
     try {
-      const { success, videoAssetIdentifier } = await Camera.startCapture();
+      const success = await Camera.startCapture();
       if (!success) {
         dispatch({
           type: ACTION_TYPES.DID_UNSUCCESSFULLY_START_CAMERA_CAPTURE,
@@ -105,9 +113,6 @@ export const beginCameraCapture = () => {
       }
       dispatch({
         type: ACTION_TYPES.DID_SUCCESSFULLY_START_CAMERA_CAPTURE,
-        payload: {
-          videoAssetIdentifier,
-        },
       });
     } catch (error) {
       await Debug.logError(error);
@@ -119,7 +124,7 @@ export const beginCameraCapture = () => {
 };
 
 export const endCameraCapture = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<*>) => {
     dispatch({ type: ACTION_TYPES.DID_STOP_CAMERA_CAPTURE });
     try {
       Camera.stopCapture();
@@ -135,11 +140,22 @@ export const endCameraCapture = () => {
   };
 };
 
+export const receiveFinishedVideo = (
+  videoAssetIdentifier: VideoAssetIdentifier
+) => {
+  return (dispatch: Dispatch<ReceiveVideoAssetPayload>) => {
+    dispatch({
+      type: ACTION_TYPES.DID_RECEIVE_FINISHED_VIDEO,
+      payload: { videoAssetIdentifier },
+    });
+  };
+};
+
 export const receiveSpeechTranscriptionSuccess = (
   videoAssetIdentifier: VideoAssetIdentifier,
   transcription: SpeechTranscription
 ) => {
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch<ReceiveSpeechTranscriptionPayload>) => {
     dispatch({
       type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION,
       payload: { videoAssetIdentifier, transcription },
@@ -150,7 +166,7 @@ export const receiveSpeechTranscriptionSuccess = (
 export const receiveSpeechTranscriptionFailure = (
   videoAssetIdentifier: VideoAssetIdentifier
 ) => {
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch<ReceiveVideoAssetPayload>) => {
     dispatch({
       type: ACTION_TYPES.DID_UNSUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION,
       payload: { videoAssetIdentifier },
@@ -159,7 +175,7 @@ export const receiveSpeechTranscriptionFailure = (
 };
 
 export const receiveUserSelectedFontFamily = (fontFamily: string) => {
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch<ReceiveFontFamilyPayload>) => {
     dispatch({
       type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_FONT_FAMILY,
       payload: { fontFamily },
@@ -170,7 +186,7 @@ export const receiveUserSelectedFontFamily = (fontFamily: string) => {
 export const receiveUserSelectedBackgroundColor = (
   backgroundColor: ColorRGBA
 ) => {
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch<ReceiveBackgroundColorPayload>) => {
     dispatch({
       type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_BACKGROUND_COLOR,
       payload: { backgroundColor },
@@ -179,7 +195,7 @@ export const receiveUserSelectedBackgroundColor = (
 };
 
 export const receiveUserSelectedTextColor = (textColor: ColorRGBA) => {
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch<ReceiveTextColorPayload>) => {
     dispatch({
       type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_TEXT_COLOR,
       payload: { textColor },
