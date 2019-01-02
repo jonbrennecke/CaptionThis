@@ -7,7 +7,7 @@ class VideoAnimation {
   private let mixComposition = AVMutableComposition()
   private let videoAsset: AVAsset
   private let videoTrack: AVAssetTrack
-  //    private var audioTrack: AVAssetTrack
+  private let audioTrack: AVAssetTrack
   private let effectLayer: CALayer
   private let videoLayer: CALayer
   private let parentLayer: CALayer
@@ -19,11 +19,11 @@ class VideoAnimation {
       return nil
     }
     self.videoTrack = videoTrack
-    //        guard let audioTrack = videoAsset.tracks(withMediaType: .audio).first else {
-    //            Debug.log(format: "Audio track could not be found at url = %@", videoFileURL.absoluteString)
-    //            return nil
-    //        }
-    //        self.audioTrack = audioTrack
+    guard let audioTrack = videoAsset.tracks(withMediaType: .audio).first else {
+        Debug.log(message: "Asset has no audio track.")
+        return nil
+    }
+    self.audioTrack = audioTrack
     let originalSize = videoTrack.naturalSize
     let size = CGSize(width: originalSize.height, height: originalSize.width)
     let frame = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
@@ -117,11 +117,11 @@ class VideoAnimation {
   }
   
   private func applyAnimationToVideo() throws {
-    //        guard let mixCompositionAudioTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) else {
-    //            Debug.log(message: "Unable to add audio track.")
-    //            return
-    //        }
-    //        try mixCompositionAudioTrack.insertTimeRange(timeRange, of: audioTrack, at: CMTime.zero)
+    guard let mixCompositionAudioTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) else {
+        Debug.log(message: "Unable to add audio track.")
+        return
+    }
+    try mixCompositionAudioTrack.insertTimeRange(audioTrack.timeRange, of: audioTrack, at: CMTime.zero)
     guard let mixCompositionVideoTrack = mixComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else {
       Debug.log(message: "Unable to add video track.")
       return
