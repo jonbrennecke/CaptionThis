@@ -25,9 +25,9 @@ class VideoExportManager : NSObject {
         completionHandler(nil, false)
         return
       }
-//      for params in paramsArray {
-//        animation.addTextOverlay(withParams: params)
-//      }
+      for params in paramsArray {
+        animation.addTextOverlay(withParams: params)
+      }
       animation.exportVideo() { error, success, url in
         if let error = error {
           completionHandler(error, false)
