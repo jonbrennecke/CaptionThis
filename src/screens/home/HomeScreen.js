@@ -1,9 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { View, ScrollView, SafeAreaView, Dimensions, Text } from 'react-native';
+import { View, ScrollView, Dimensions, Text } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+import { withSafeArea } from 'react-native-safe-area';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
@@ -38,8 +38,6 @@ import type { VideoAssetIdentifier } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 import type { Return } from '../../types/util';
 
-const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
-
 type OwnProps = {
   componentId: string,
 };
@@ -67,6 +65,10 @@ type DispatchProps = {
 
 type Props = OwnProps & StateProps & DispatchProps;
 
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
+
+const SafeAreaView = withSafeArea(View, 'padding', 'vertical');
+
 const styles = {
   container: {
     flex: 1,
@@ -74,10 +76,8 @@ const styles = {
   },
   cameraPreview: {
     borderRadius: 10,
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT - 125,
+    flex: 1,
     overflow: 'hidden',
-    backgroundColor: 'red',
   },
   mediaHeader: {
     paddingVertical: 5,
@@ -95,16 +95,18 @@ const styles = {
     right: 0,
   },
   fill: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT - 50,
+    flex: 1,
   },
   fill2: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+    flex: 1,
   },
   scrollView: {
     flex: 1,
     overflow: 'visible',
+  },
+  scrollViewContent: {
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT * 2,
   },
 };
 
@@ -241,35 +243,29 @@ export default class HomeScreen extends Component<Props> {
     this.props.receiveFinishedVideo(videoAssetIdentifier);
   }
 
-  async scrollToCameraRoll() {
-    const constants = await Navigation.constants();
-    const { topBarHeight, statusBarHeight } = constants;
-    if (!this.scrollView) {
-      return;
-    }
-    this.scrollView.scrollTo({
-      y: SCREEN_HEIGHT - topBarHeight - statusBarHeight,
-    });
+  scrollToCameraRoll() {
+    this.scrollView.scrollTo({ y: SCREEN_HEIGHT });
   }
 
   render() {
     return (
       <View style={styles.container}>
         <ScreenGradients />
-        <SafeAreaView style={styles.flex}>
+        <View style={styles.flex}>
           <ScrollView
             ref={ref => {
               this.scrollView = ref;
             }}
             style={styles.scrollView}
+            contentContainerStyle={styles.scrollViewContent}
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="always"
-            contentInsetAdjustmentBehavior="automatic"
             overScrollMode="always"
             alwaysBounceVertical
             pagingEnabled
+            contentInsetAdjustmentBehavior="never"
           >
-            <View style={styles.fill}>
+            <SafeAreaView style={styles.fill}>
               <View style={styles.cameraPreview}>
                 <CameraPreviewView style={styles.flex} />
                 <HomeScreenCaptureControls
@@ -280,15 +276,13 @@ export default class HomeScreen extends Component<Props> {
                   onRequestEndCapture={() => {
                     this.captureButtonDidRequestEndCapture();
                   }}
-                  onRequestOpenCameraRoll={() => {
-                    this.scrollToCameraRoll();
-                  }}
+                  onRequestOpenCameraRoll={this.scrollToCameraRoll}
                   onRequestSwitchCamera={Camera.switchToOppositeCamera}
                   videoAssetIdentifier={this.props.videoAssetIdentifiers[0]}
                 />
               </View>
-            </View>
-            <View style={styles.fill2}>
+            </SafeAreaView>
+            <SafeAreaView style={styles.fill2}>
               <View style={styles.mediaHeader}>
                 <Text style={styles.mediaText}>CAMERA ROLL</Text>
               </View>
@@ -296,7 +290,7 @@ export default class HomeScreen extends Component<Props> {
                 style={styles.flex}
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="always"
-                contentInsetAdjustmentBehavior="automatic"
+                contentInsetAdjustmentBehavior="never"
                 overScrollMode="always"
                 alwaysBounceVertical
               >
@@ -308,9 +302,9 @@ export default class HomeScreen extends Component<Props> {
                   }}
                 />
               </ScrollView>
-            </View>
+            </SafeAreaView>
           </ScrollView>
-        </SafeAreaView>
+        </View>
       </View>
     );
   }
