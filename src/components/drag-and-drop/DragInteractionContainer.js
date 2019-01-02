@@ -20,7 +20,7 @@ type Props = {
   children: ChildrenType,
   onDragStart: (event: Event, gesture: Gesture) => void,
   onDragEnd: (event: Event, gesture: Gesture) => void,
-  onDragMove: (event: Event, gesture: Gesture) => void,
+  onDragMove: ({ x: number, y: number }) => void,
 };
 
 type State = {
@@ -49,6 +49,7 @@ export default class DragInteractionContainer extends Component<Props, State> {
     };
     this.pan.addListener((value: { x: number, y: number }) => {
       this.panOffset = value;
+      this.props.onDragMove(value);
     });
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => this.canDrag(),
@@ -71,7 +72,6 @@ export default class DragInteractionContainer extends Component<Props, State> {
     if (!this.canDrag()) {
       return;
     }
-    this.props.onDragMove(event, gesture);
     return Animated.event([
       null,
       extend(
@@ -117,7 +117,7 @@ export default class DragInteractionContainer extends Component<Props, State> {
 
   render() {
     const dragStyles = [
-      { transform: this.pan.getTranslateTransform() },
+      // { transform: this.pan.getTranslateTransform() },
       this.state.isDragging && { zIndex: 1000 },
     ];
     const style = [this.props.style, this.canDrag() ? dragStyles : {}];

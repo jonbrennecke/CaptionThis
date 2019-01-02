@@ -38,6 +38,7 @@ type State = {
   durationSeconds: number,
   playbackTimeSeconds: number,
   isVideoPlaying: boolean,
+  isDraggingSeekbar: boolean,
 };
 
 type OwnProps = {
@@ -147,6 +148,7 @@ export default class EditScreen extends Component<Props, State> {
     playbackTimeSeconds: 0,
     durationSeconds: 0,
     isVideoPlaying: false,
+    isDraggingSeekbar: false,
   };
 
   // eslint-disable-next-line flowtype/generic-spacing
@@ -182,6 +184,9 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   videoPlayerDidUpdatePlaybackTime(playbackTime: number, duration: number) {
+    if (this.state.isDraggingSeekbar) {
+      return;
+    }
     this.setState({
       playbackTimeSeconds: playbackTime,
       durationSeconds: duration,
@@ -269,6 +274,8 @@ export default class EditScreen extends Component<Props, State> {
                   playbackTime={this.state.playbackTimeSeconds}
                   videoAssetIdentifier={this.props.videoAssetIdentifier}
                   onSeekToTime={this.seekBarDidSeekToTime}
+                  onDidBeginDrag={() => this.setState({ isDraggingSeekbar: true })}
+                  onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
                 />
               </View>
               <EditScreenFontControls fontFamily={this.props.fontFamily} />

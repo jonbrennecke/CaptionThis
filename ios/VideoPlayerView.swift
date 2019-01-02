@@ -56,7 +56,7 @@ class VideoPlayerView: UIView {
           self.player = AVPlayer(playerItem: self.item)
         }
         let timeScale = CMTimeScale(NSEC_PER_SEC)
-        let time = CMTime(seconds: 0.1, preferredTimescale: timeScale)
+        let time = CMTime(seconds: 0.05, preferredTimescale: timeScale)
         self.timeObserverToken = self.player?.addPeriodicTimeObserver(forInterval: time, queue: .main) {
           [weak self] time in
           self?.delegate?.videoPlayerDidUpdatePlaybackTime(time, duration: asset.duration)
