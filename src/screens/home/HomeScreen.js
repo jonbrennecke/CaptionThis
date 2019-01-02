@@ -28,11 +28,13 @@ import {
   getVideoAssetIdentifiers,
   isCameraRecording,
   getCurrentVideo,
+  getFontFamily,
 } from '../../redux/media/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCaptureControls from './HomeScreenCaptureControls';
+import TranscriptionView from '../../components/transcription-view/TranscriptionView';
 
 import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
@@ -48,6 +50,7 @@ type StateProps = {
   arePermissionsGranted: boolean,
   isCameraRecording: boolean,
   currentVideo: ?VideoAssetIdentifier,
+  fontFamily: string,
 };
 
 type DispatchProps = {
@@ -95,12 +98,6 @@ const styles = {
     left: 0,
     right: 0,
   },
-  fill: {
-    flex: 1,
-  },
-  fill2: {
-    flex: 1,
-  },
   scrollView: {
     flex: 1,
     overflow: 'visible',
@@ -108,6 +105,12 @@ const styles = {
   scrollViewContent: {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT * 2,
+  },
+  transcript: {
+    position: 'absolute',
+    bottom: 125,
+    left: 0,
+    right: 0,
   },
 };
 
@@ -117,6 +120,7 @@ function mapStateToProps(state: AppState): StateProps {
     arePermissionsGranted: arePermissionsGranted(state),
     isCameraRecording: isCameraRecording(state),
     currentVideo: getCurrentVideo(state),
+    fontFamily: getFontFamily(state),
   };
 }
 
@@ -269,9 +273,14 @@ export default class HomeScreen extends Component<Props> {
             pagingEnabled
             contentInsetAdjustmentBehavior="never"
           >
-            <SafeAreaView style={styles.fill}>
+            <SafeAreaView style={styles.flex}>
               <View style={styles.cameraPreview}>
                 <CameraPreviewView style={styles.flex} />
+                <TranscriptionView
+                  style={styles.transcript}
+                  fontFamily={this.props.fontFamily}
+                  text={'Lorem ipsum dolor sit amet'}
+                />
                 <HomeScreenCaptureControls
                   style={styles.captureControls}
                   onRequestBeginCapture={() => {
@@ -286,7 +295,7 @@ export default class HomeScreen extends Component<Props> {
                 />
               </View>
             </SafeAreaView>
-            <SafeAreaView style={styles.fill2}>
+            <SafeAreaView style={styles.flex}>
               <View style={styles.mediaHeader}>
                 <Text style={styles.mediaText}>CAMERA ROLL</Text>
               </View>
