@@ -17,14 +17,14 @@ const styles = {
   },
 };
 
-// SVG copied from https://fontawesome.com/icons/pause?style=solid
+// SVG copied from https://ionicons.com/ionicons/svg/ios-pause.svg
 export default function VideoPauseIcon({ style }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <Svg style={styles.flex} viewBox="0 0 448 512">
+      <Svg style={styles.flex} viewBox="0 0 512 512">
         <Path
           fill="#ffffff"
-          d="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"
+          d="M199.9 416h-63.8c-4.5 0-8.1-3.6-8.1-8V104c0-4.4 3.6-8 8.1-8h63.8c4.5 0 8.1 3.6 8.1 8v304c0 4.4-3.6 8-8.1 8zM375.9 416h-63.8c-4.5 0-8.1-3.6-8.1-8V104c0-4.4 3.6-8 8.1-8h63.8c4.5 0 8.1 3.6 8.1 8v304c0 4.4-3.6 8-8.1 8z"
         />
       </Svg>
     </View>

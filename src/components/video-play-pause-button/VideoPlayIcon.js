@@ -17,14 +17,14 @@ const styles = {
   },
 };
 
-// SVG copied from https://fontawesome.com/icons/play?style=solid
+// SVG copied from https://ionicons.com/ionicons/svg/ios-play.svg
 export default function VideoPlayIcon({ style }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <Svg style={styles.flex} viewBox="0 0 448 512">
+      <Svg style={styles.flex} viewBox="0 0 512 512">
         <Path
           fill="#ffffff"
-          d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"
+          d="M128 104.3v303.4c0 6.4 6.5 10.4 11.7 7.2l240.5-151.7c5.1-3.2 5.1-11.1 0-14.3L139.7 97.2c-5.2-3.3-11.7.7-11.7 7.1z"
         />
       </Svg>
     </View>
