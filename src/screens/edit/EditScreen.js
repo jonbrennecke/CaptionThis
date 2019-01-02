@@ -14,22 +14,24 @@ import EditScreenTopControls from './EditScreenTopControls';
 import EditScreenFontControls from './EditScreenFontControls';
 import EditScreenBackgroundColorControls from './EditScreenBackgroundColorControls';
 import EditScreenFontColorControls from './EditScreenFontColorControls';
+import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import SpeechManager from '../../utils/SpeechManager';
 import VideoPlayPauseButton from '../../components/video-play-pause-button/VideoPlayPauseButton';
 import {
   beginSpeechTranscriptionWithVideoAsset,
   receiveSpeechTranscriptionSuccess,
   receiveSpeechTranscriptionFailure,
+  exportVideo,
 } from '../../redux/media/actionCreators';
 import {
   getBackgroundColor,
   getTextColor,
   getSpeechTranscriptions,
   getFontFamily,
+  isExportingVideo,
 } from '../../redux/media/selectors';
-import * as VideoExportManager from '../../utils/VideoExportManager';
 
-import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
+import type { VideoAssetIdentifier, ColorRGBA, TextOverlayParams } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
@@ -52,6 +54,7 @@ type StateProps = {
   fontFamily: string,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
+  isExportingVideo: boolean,
 };
 
 type DispatchProps = {
@@ -61,6 +64,7 @@ type DispatchProps = {
     SpeechTranscription
   ) => void,
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
+  exportVideo: (video: VideoAssetIdentifier, textParamsArray: TextOverlayParams[]) => Promise<void>,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -124,6 +128,7 @@ function mapStateToProps(state: AppState): StateProps {
     fontFamily: getFontFamily(state),
     backgroundColor: getBackgroundColor(state),
     textColor: getTextColor(state),
+    isExportingVideo: isExportingVideo(state),
   };
 }
 
@@ -137,6 +142,7 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
     ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
     receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
+    exportVideo: (video: VideoAssetIdentifier, textParamsArray: TextOverlayParams[]) => dispatch(exportVideo(video, textParamsArray)),
   };
 }
 
@@ -225,7 +231,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   async exportVideo() {
-    await VideoExportManager.exportVideo(
+    await this.props.exportVideo(
       this.props.videoAssetIdentifier,
       this.textOverlayParams(),
     );
@@ -323,6 +329,7 @@ export default class EditScreen extends Component<Props, State> {
             </View>
           </SafeAreaView>
         </ScrollView>
+        <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
       </View>
     );
   }

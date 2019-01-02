@@ -38,6 +38,7 @@ export type MediaState = {
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
   videoAssetIdentifiers: VideoAssetIdentifier[],
   mediaLoadingState: $Keys<LOADING_STATE>,
+  videoExportState: $Keys<LOADING_STATE>,
   cameraRecordingState: {
     isRecording: boolean,
     videoAssetIdentifier: ?VideoAssetIdentifier,

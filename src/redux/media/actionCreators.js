@@ -4,6 +4,7 @@ import { ACTION_TYPES } from './constants';
 import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
 import * as Camera from '../../utils/Camera';
+import * as VideoExportManager from '../../utils/VideoExportManager';
 
 import type {
   Dispatch,
@@ -14,7 +15,7 @@ import type {
   ReceiveBackgroundColorPayload,
   ReceiveFontFamilyPayload,
 } from '../../types/redux';
-import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
+import type { VideoAssetIdentifier, ColorRGBA, TextOverlayParams } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 
 export const loadVideoAssets = () => {
@@ -200,5 +201,22 @@ export const receiveUserSelectedTextColor = (textColor: ColorRGBA) => {
       type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_TEXT_COLOR,
       payload: { textColor },
     });
+  };
+};
+
+export const exportVideo = (video: VideoAssetIdentifier, textParamsArray: TextOverlayParams[]) => {
+  return async (dispatch: Dispatch<*>) => {
+    dispatch({ type: ACTION_TYPES.WILL_EXPORT_VIDEO });
+    try {
+      await VideoExportManager.exportVideo(video, textParamsArray)
+      dispatch({
+        type: ACTION_TYPES.DID_SUCCESSFULLY_EXPORT_VIDEO,
+      });
+    } catch (error) {
+      await Debug.logError(error);
+      dispatch({
+        type: ACTION_TYPES.DID_NOT_SUCCESSFULLY_EXPORT_VIDEO,
+      });
+    }
   };
 };

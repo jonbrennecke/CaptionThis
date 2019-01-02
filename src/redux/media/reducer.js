@@ -32,6 +32,7 @@ const initialState: MediaState = {
   speechTranscriptions: new Map(),
   videoAssetIdentifiers: [],
   mediaLoadingState: LOADING_STATE.NOT_LOADED,
+  videoExportState: LOADING_STATE.NOT_LOADED,
   fontFamily: DEFAULT_FONT_FAMILY,
   backgroundColor: Color.hexToRgbaObject(DEFAULT_BACKGROUND_COLOR),
   textColor: Color.hexToRgbaObject(DEFAULT_TEXT_COLOR),
@@ -48,6 +49,9 @@ const actions = {
   [ACTION_TYPES.DID_SUCCESSFULLY_START_CAMERA_CAPTURE]: didSuccessfullyStartCameraCapture,
   [ACTION_TYPES.DID_SUCCESSFULLY_STOP_CAMERA_CAPTURE]: didSuccessfullyStopCameraCapture,
   [ACTION_TYPES.DID_RECEIVE_FINISHED_VIDEO]: didReceiveFinishedVideo,
+  [ACTION_TYPES.WILL_EXPORT_VIDEO]: willExportVideo,
+  [ACTION_TYPES.DID_SUCCESSFULLY_EXPORT_VIDEO]: didSuccessfullyExportVideo,
+  [ACTION_TYPES.DID_NOT_SUCCESSFULLY_EXPORT_VIDEO]: didNotSuccessfullyExportVideo,
 };
 
 function didStartLoadingVideoAssets(state: MediaState): MediaState {
@@ -165,6 +169,27 @@ function didReceiveFinishedVideo(
       isRecording: false,
       videoAssetIdentifier: payload.videoAssetIdentifier,
     },
+  };
+}
+
+function willExportVideo(state: MediaState) {
+  return {
+    ...state,
+    videoExportState: LOADING_STATE.IS_LOADING,
+  };
+}
+
+function didSuccessfullyExportVideo(state: MediaState) {
+  return {
+    ...state,
+    videoExportState: LOADING_STATE.WAS_LOADED_SUCCESSFULLY,
+  };
+}
+
+function didNotSuccessfullyExportVideo(state: MediaState) {
+  return {
+    ...state,
+    videoExportState: LOADING_STATE.WAS_LOADED_UNSUCCESSFULLY,
   };
 }
 

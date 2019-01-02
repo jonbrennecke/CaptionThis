@@ -13,3 +13,9 @@ export type ColorRGBA = {
   blue: number,
   alpha: number,
 };
+
+export type TextOverlayParams = {
+  duration: number,
+  timestamp: number,
+  text: string,
+};
