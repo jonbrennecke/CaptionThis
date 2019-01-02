@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { View } from 'react-native';
+// eslint-disable-next-line import/no-named-as-default
 import Svg, { Path } from 'react-native-svg';
 
 import type { Style } from '../../types/react';

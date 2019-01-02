@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Dimensions, Text } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
+// $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 
 import { UI_COLORS } from '../../constants';
@@ -244,6 +245,9 @@ export default class HomeScreen extends Component<Props> {
   }
 
   scrollToCameraRoll() {
+    if (!this.scrollView) {
+      return;
+    }
     this.scrollView.scrollTo({ y: SCREEN_HEIGHT });
   }
 
