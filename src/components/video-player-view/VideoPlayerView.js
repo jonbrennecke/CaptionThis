@@ -7,17 +7,16 @@ import type { VideoAssetIdentifier } from '../../types/media';
 
 const NativeVideoPlayerView = requireNativeComponent('VideoPlayerView');
 
-type VideoDidBecomeReadyToPlayParams = {
-  duration: number,
-};
-
 type Props = {
   style?: ?Style,
   startPosition: number,
   videoAssetIdentifier: VideoAssetIdentifier,
   onVideoDidFailToLoad: () => void,
-  onVideoDidBecomeReadyToPlay: (
-    params: VideoDidBecomeReadyToPlayParams
+  onVideoDidBecomeReadyToPlay: (duration: number) => void,
+  onVideoDidPause: () => void,
+  onVideoDidUpdatePlaybackTime: (
+    playbackTime: number,
+    duration: number
   ) => void,
 };
 
@@ -36,6 +35,8 @@ export default function VideoPlayerView({
   videoAssetIdentifier,
   onVideoDidBecomeReadyToPlay,
   onVideoDidFailToLoad,
+  onVideoDidPause,
+  onVideoDidUpdatePlaybackTime,
 }: Props) {
   return (
     <View style={[styles.container, style]}>
@@ -43,10 +44,21 @@ export default function VideoPlayerView({
         style={styles.nativeView}
         startPosition={startPosition}
         localIdentifier={videoAssetIdentifier}
-        onVideoDidBecomeReadyToPlay={({ nativeEvent }) =>
-          onVideoDidBecomeReadyToPlay(nativeEvent)
-        }
+        onVideoDidBecomeReadyToPlay={({ nativeEvent }) => {
+          if (!nativeEvent) {
+            return;
+          }
+          onVideoDidBecomeReadyToPlay(nativeEvent.duration);
+        }}
         onVideoDidFailToLoad={onVideoDidFailToLoad}
+        onVideoDidPause={onVideoDidPause}
+        onVideoDidUpdatePlaybackTime={({ nativeEvent }) => {
+          if (!nativeEvent) {
+            return;
+          }
+          const { playbackTime, duration } = nativeEvent;
+          onVideoDidUpdatePlaybackTime(playbackTime, duration);
+        }}
       />
     </View>
   );

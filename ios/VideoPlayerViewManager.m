@@ -40,9 +40,29 @@
   if (!self.onVideoDidBecomeReadyToPlay) {
     return;
   }
-  Float64 durationF64 = CMTimeGetSeconds(asset.duration);
-  NSNumber* duration = [NSNumber numberWithFloat:durationF64];
+  NSNumber* duration = [NSNumber numberWithFloat:CMTimeGetSeconds(asset.duration)];
   self.onVideoDidBecomeReadyToPlay(@{ @"duration": duration });
+}
+
+- (void)videoPlayerDidPause {
+  if (!self.onVideoDidPause) {
+    return;
+  }
+  NSDictionary* body = @{};
+  self.onVideoDidPause(body);
+}
+
+- (void)videoPlayerDidUpdatePlaybackTime:(CMTime)time duration:(CMTime)duration {
+  if (!self.onVideoDidUpdatePlaybackTime) {
+    return;
+  }
+  NSNumber* durationNumber = [NSNumber numberWithFloat:CMTimeGetSeconds(duration)];
+  NSNumber* playbackTimeNumber = [NSNumber numberWithFloat:CMTimeGetSeconds(time)];
+  NSDictionary* body = @{
+    @"duration": durationNumber,
+    @"playbackTime": playbackTimeNumber
+  };
+  self.onVideoDidUpdatePlaybackTime(body);
 }
 
 @end
@@ -53,6 +73,8 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidBecomeReadyToPlay, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidFailToLoad, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onVideoDidPause, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onVideoDidUpdatePlaybackTime, RCTBubblingEventBlock)
 
 RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
   NSString* localIdentifier = [RCTConvert NSString:json];

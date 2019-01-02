@@ -15,6 +15,7 @@ import EditScreenFontControls from './EditScreenFontControls';
 import EditScreenBackgroundColorControls from './EditScreenBackgroundColorControls';
 import EditScreenFontColorControls from './EditScreenFontColorControls';
 import SpeechManager from '../../utils/SpeechManager';
+import VideoPlayPauseButton from '../../components/video-play-pause-button/VideoPlayPauseButton';
 import {
   beginSpeechTranscriptionWithVideoAsset,
   receiveSpeechTranscriptionSuccess,
@@ -32,13 +33,11 @@ import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
 
-type VideoDidBecomeReadyToPlayParams = {
-  duration: number,
-};
-
 type State = {
+  startTimeSeconds: number,
   durationSeconds: number,
-  startPositionSeconds: number,
+  playbackTimeSeconds: number,
+  isVideoPlaying: boolean,
 };
 
 type OwnProps = {
@@ -105,6 +104,15 @@ const styles = {
   },
   seekbar: {
     marginBottom: 15,
+    flexGrow: 1,
+  },
+  seekbarWrap: {
+    flexDirection: 'row',
+  },
+  pauseButton: {
+    width: 45,
+    height: 45,
+    marginRight: 10,
   },
 };
 
@@ -135,8 +143,10 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 @autobind
 export default class EditScreen extends Component<Props, State> {
   state: State = {
+    startTimeSeconds: 0,
+    playbackTimeSeconds: 0,
     durationSeconds: 0,
-    startPositionSeconds: 0,
+    isVideoPlaying: false,
   };
 
   // eslint-disable-next-line flowtype/generic-spacing
@@ -156,17 +166,26 @@ export default class EditScreen extends Component<Props, State> {
     }
   }
 
-  videoDidFailToLoad() {
-    // TODO: display error message
-  }
-
-  async videoDidBecomeReadyToPlay({
-    duration,
-  }: VideoDidBecomeReadyToPlayParams) {
-    this.setState({ durationSeconds: duration });
-    await this.props.beginSpeechTranscriptionWithVideoAsset(
+  videoPlayerDidBecomeReadyToPlay(duration: number) {
+    this.setState({ durationSeconds: duration, isVideoPlaying: true });
+    this.props.beginSpeechTranscriptionWithVideoAsset(
       this.props.videoAssetIdentifier
     );
+  }
+
+  videoPlayerDidFailToLoad() {
+    this.setState({ isVideoPlaying: false });
+  }
+
+  videoPlayerDidPause() {
+    this.setState({ isVideoPlaying: false });
+  }
+
+  videoPlayerDidUpdatePlaybackTime(playbackTime: number, duration: number) {
+    this.setState({
+      playbackTimeSeconds: playbackTime,
+      durationSeconds: duration,
+    });
   }
 
   speechManagerDidReceiveSpeechTranscription(
@@ -186,7 +205,8 @@ export default class EditScreen extends Component<Props, State> {
 
   seekBarDidSeekToPercent(percent: number) {
     this.setState({
-      startPositionSeconds: this.state.durationSeconds * percent,
+      playbackTimeSeconds: this.state.durationSeconds * percent,
+      startTimeSeconds: this.state.durationSeconds * percent,
     });
   }
 
@@ -210,16 +230,16 @@ export default class EditScreen extends Component<Props, State> {
             <View style={styles.videoWrap}>
               <VideoPlayerView
                 style={styles.videoPlayer}
-                startPosition={this.state.startPositionSeconds}
+                startPosition={this.state.startTimeSeconds}
                 videoAssetIdentifier={this.props.videoAssetIdentifier}
-                onVideoDidBecomeReadyToPlay={(
-                  params: VideoDidBecomeReadyToPlayParams
-                ) => {
-                  this.videoDidBecomeReadyToPlay(params);
-                }}
-                onVideoDidFailToLoad={() => {
-                  this.videoDidFailToLoad();
-                }}
+                onVideoDidBecomeReadyToPlay={
+                  this.videoPlayerDidBecomeReadyToPlay
+                }
+                onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
+                onVideoDidPause={this.videoPlayerDidPause}
+                onVideoDidUpdatePlaybackTime={
+                  this.videoPlayerDidUpdatePlaybackTime
+                }
               />
               <EditScreenTopControls
                 style={styles.editTopControls}
@@ -232,11 +252,20 @@ export default class EditScreen extends Component<Props, State> {
               />
             </View>
             <View style={styles.editControls}>
-              <VideoSeekbar
-                style={styles.seekbar}
-                videoAssetIdentifier={this.props.videoAssetIdentifier}
-                onSeekToPercent={this.seekBarDidSeekToPercent}
-              />
+              <View style={styles.seekbarWrap}>
+                <VideoPlayPauseButton
+                  style={styles.pauseButton}
+                  isPlaying={this.state.isVideoPlaying}
+                  onPress={() => {
+                    // TODO
+                  }}
+                />
+                <VideoSeekbar
+                  style={styles.seekbar}
+                  videoAssetIdentifier={this.props.videoAssetIdentifier}
+                  onSeekToPercent={this.seekBarDidSeekToPercent}
+                />
+              </View>
               <EditScreenFontControls fontFamily={this.props.fontFamily} />
               <EditScreenBackgroundColorControls
                 color={this.props.backgroundColor}

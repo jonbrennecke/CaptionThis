@@ -5,6 +5,8 @@ import UIKit
 protocol VideoPlayerViewDelegate {
   func videoPlayerDidBecomeReadyToPlayAsset(_ asset: AVAsset)
   func videoPlayerDidFailToLoad()
+  func videoPlayerDidPause()
+  func videoPlayerDidUpdatePlaybackTime(_ time: CMTime, duration: CMTime)
 }
 
 @objc
@@ -36,6 +38,8 @@ class VideoPlayerView: UIView {
     }
   }
   
+  private var timeObserverToken: Any?
+  
   @objc
   public var asset: AVAsset? {
     didSet {
@@ -50,6 +54,12 @@ class VideoPlayerView: UIView {
         }
         else {
           self.player = AVPlayer(playerItem: self.item)
+        }
+        let timeScale = CMTimeScale(NSEC_PER_SEC)
+        let time = CMTime(seconds: 0.1, preferredTimescale: timeScale)
+        self.timeObserverToken = self.player?.addPeriodicTimeObserver(forInterval: time, queue: .main) {
+          [weak self] time in
+          self?.delegate?.videoPlayerDidUpdatePlaybackTime(time, duration: asset.duration)
         }
         self.play()
       }
@@ -127,6 +137,10 @@ class VideoPlayerView: UIView {
     }
     player.pause()
     player.replaceCurrentItem(with: nil)
+    if let timeObserverToken = timeObserverToken {
+      player.removeTimeObserver(timeObserverToken)
+      self.timeObserverToken = nil
+    }
   }
   
   private func onVideoDidBecomeReadyToPlay() {
