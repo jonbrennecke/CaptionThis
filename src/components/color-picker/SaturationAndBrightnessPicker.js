@@ -7,7 +7,7 @@ import SaturationAndBrightnessGradientView from './SaturationAndBrightnessGradie
 import DragInteractionContainer from '../drag-and-drop/DragInteractionContainer';
 import { UI_COLORS } from '../../constants';
 
-import type { Style, Gesture } from '../../types/react';
+import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 
 type Props = {
@@ -68,12 +68,9 @@ export default class SaturationAndBrightnessPicker extends Component<
 
   dragDidEnd() {}
 
-  dragDidMove(e: Event, { moveX, moveY }: Gesture) {
+  dragDidMove(offset: { x: number, y: number }) {
     this.setState({
-      offset: {
-        x: moveX,
-        y: moveY,
-      },
+      offset,
     });
   }
 

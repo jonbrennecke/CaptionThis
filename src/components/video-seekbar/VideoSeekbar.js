@@ -106,6 +106,7 @@ export default class VideoSeekbar extends Component<Props, State> {
         <DragInteractionContainer
           style={styles.dragContainer}
           vertical={false}
+          applyTransformStyles={false}
           itemsShouldReturnToOriginalPosition={false}
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}

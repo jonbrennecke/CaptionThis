@@ -16,6 +16,7 @@ type Props = {
   canDrag?: boolean,
   vertical?: boolean,
   horizontal?: boolean,
+  applyTransformStyles?: boolean,
   style?: Style,
   children: ChildrenType,
   onDragStart: (event: Event, gesture: Gesture) => void,
@@ -40,6 +41,7 @@ export default class DragInteractionContainer extends Component<Props, State> {
     itemsShouldReturnToOriginalPosition: true,
     horizontal: true,
     vertical: true,
+    applyTransformStyles: true,
   };
 
   constructor(props: Props) {
@@ -117,7 +119,7 @@ export default class DragInteractionContainer extends Component<Props, State> {
 
   render() {
     const dragStyles = [
-      // { transform: this.pan.getTranslateTransform() },
+      this.props.applyTransformStyles && { transform: this.pan.getTranslateTransform() },
       this.state.isDragging && { zIndex: 1000 },
     ];
     const style = [this.props.style, this.canDrag() ? dragStyles : {}];

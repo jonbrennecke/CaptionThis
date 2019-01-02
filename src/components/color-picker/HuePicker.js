@@ -7,7 +7,7 @@ import HueGradientView from './HueGradientView';
 import DragInteractionContainer from '../drag-and-drop/DragInteractionContainer';
 import { UI_COLORS } from '../../constants';
 
-import type { Style, Gesture } from '../../types/react';
+import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 
 type Props = {
@@ -65,11 +65,9 @@ export default class HuePicker extends Component<Props, State> {
 
   dragDidEnd() {}
 
-  dragDidMove(e: Event, { moveX }: Gesture) {
+  dragDidMove({ x }: { x: number, y: number }) {
     this.setState({
-      position: {
-        x: moveX,
-      },
+      position: { x },
     });
   }
 
