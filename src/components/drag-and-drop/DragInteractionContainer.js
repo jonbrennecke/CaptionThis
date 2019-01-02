@@ -119,7 +119,9 @@ export default class DragInteractionContainer extends Component<Props, State> {
 
   render() {
     const dragStyles = [
-      this.props.applyTransformStyles && { transform: this.pan.getTranslateTransform() },
+      this.props.applyTransformStyles && {
+        transform: this.pan.getTranslateTransform(),
+      },
       this.state.isDragging && { zIndex: 1000 },
     ];
     const style = [this.props.style, this.canDrag() ? dragStyles : {}];

@@ -27,6 +27,7 @@ import {
   getSpeechTranscriptions,
   getFontFamily,
 } from '../../redux/media/selectors';
+import * as VideoExportManager from '../../utils/VideoExportManager';
 
 import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
@@ -215,8 +216,39 @@ export default class EditScreen extends Component<Props, State> {
     });
   }
 
-  onBackButtonPress() {
+  onDidPressBackButton() {
     Navigation.pop(this.props.componentId);
+  }
+
+  onDidPressExportButton() {
+    this.exportVideo();
+  }
+
+  async exportVideo() {
+    await VideoExportManager.exportVideo(
+      this.props.videoAssetIdentifier,
+      this.textOverlayParams(),
+    );
+  }
+
+  textOverlayParams() {
+    const speechTranscription = this.getSpeechTranscription();
+    if (!speechTranscription) {
+      return [];
+    }
+    return speechTranscription.segments.map(segment => ({
+      duration: segment.duration,
+      timestamp: segment.timestamp,
+      text: segment.substring,
+    }));
+  }
+
+  getSpeechTranscription(): ?SpeechTranscription {
+    const { speechTranscriptions, videoAssetIdentifier: key } = this.props;
+    if (!speechTranscriptions.has(key)) {
+      return null;
+    }
+    return speechTranscriptions.get(key);
   }
 
   render() {
@@ -249,7 +281,8 @@ export default class EditScreen extends Component<Props, State> {
               />
               <EditScreenTopControls
                 style={styles.editTopControls}
-                onBackButtonPress={this.onBackButtonPress}
+                onBackButtonPress={this.onDidPressBackButton}
+                onExportButtonPress={this.onDidPressExportButton}
               />
               <RecordingTranscriptionView
                 style={styles.transcription}
@@ -274,8 +307,12 @@ export default class EditScreen extends Component<Props, State> {
                   playbackTime={this.state.playbackTimeSeconds}
                   videoAssetIdentifier={this.props.videoAssetIdentifier}
                   onSeekToTime={this.seekBarDidSeekToTime}
-                  onDidBeginDrag={() => this.setState({ isDraggingSeekbar: true })}
-                  onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
+                  onDidBeginDrag={() =>
+                    this.setState({ isDraggingSeekbar: true })
+                  }
+                  onDidEndDrag={() =>
+                    this.setState({ isDraggingSeekbar: false })
+                  }
                 />
               </View>
               <EditScreenFontControls fontFamily={this.props.fontFamily} />
@@ -288,13 +325,5 @@ export default class EditScreen extends Component<Props, State> {
         </ScrollView>
       </View>
     );
-  }
-
-  getSpeechTranscription(): ?SpeechTranscription {
-    const { speechTranscriptions, videoAssetIdentifier: key } = this.props;
-    if (!speechTranscriptions.has(key)) {
-      return null;
-    }
-    return speechTranscriptions.get(key);
   }
 }

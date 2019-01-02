@@ -16,8 +16,6 @@ fileprivate enum CameraSetupResult {
 @objc
 class CameraManager: NSObject {
   
-  private static let albumTitle = "Caption This"
-  
   private var captureSession: AVCaptureSession
   private var videoOutput: AVCaptureVideoDataOutput
   private var videoFileOutput: AVCaptureMovieFileOutput = AVCaptureMovieFileOutput()
@@ -312,7 +310,7 @@ class CameraManager: NSObject {
     return .success
   }
   
-  private func createVideoAsset(forURL url: URL, completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> ()) {
+  public func createVideoAsset(forURL url: URL, completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> ()) {
     self.withAlbum() { error, success, album in
       guard let album = album else {
         Debug.log(format: "Failed to find album. Success = %@", success ? "true" : "false")
@@ -353,9 +351,9 @@ class CameraManager: NSObject {
     }
   }
   
-  private func withAlbum(_ completionHandler: @escaping (Error?, Bool, PHAssetCollection?) -> ()) {
+  public func withAlbum(_ completionHandler: @escaping (Error?, Bool, PHAssetCollection?) -> ()) {
     let fetchOptions = PHFetchOptions()
-    fetchOptions.predicate = NSPredicate(format: "title = %@", CameraManager.albumTitle)
+    fetchOptions.predicate = NSPredicate(format: "title = %@", PhotosAlbum.albumTitle)
     let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: fetchOptions)
     if let album = collection.firstObject {
       completionHandler(nil, true, album)
@@ -363,7 +361,7 @@ class CameraManager: NSObject {
     }
     var albumPlaceholder: PHObjectPlaceholder?
     PHPhotoLibrary.shared().performChanges({
-      let assetCollectionRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: CameraManager.albumTitle)
+      let assetCollectionRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: PhotosAlbum.albumTitle)
       albumPlaceholder = assetCollectionRequest.placeholderForCreatedAssetCollection
     }) { success, error in
       guard success, let albumPlaceholder = albumPlaceholder else {

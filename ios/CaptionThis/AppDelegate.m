@@ -18,6 +18,7 @@ static CameraManager *_sharedCameraManager;
 static SpeechManager *_sharedSpeechManager;
 static PermissionsManager *_sharedPermissionsManager;
 static MediaLibraryManager *_sharedMediaLibraryManager;
+static VideoExportManager *_sharedVideoExportManager;
 
 + (CameraManager*)sharedCameraManager {
   if (_sharedCameraManager == nil) {
@@ -47,6 +48,13 @@ static MediaLibraryManager *_sharedMediaLibraryManager;
   return _sharedMediaLibraryManager;
 }
 
++ (VideoExportManager*)sharedVideoExportManager {
+  if (_sharedVideoExportManager == nil) {
+    _sharedVideoExportManager = [[VideoExportManager alloc] init];
+  }
+  return _sharedVideoExportManager;
+}
+
 + (void)setSharedCameraManager:(CameraManager *)sharedCameraManager {
   _sharedCameraManager = sharedCameraManager;
 }
@@ -61,6 +69,10 @@ static MediaLibraryManager *_sharedMediaLibraryManager;
 
 + (void)setSharedMediaLibraryManager:(MediaLibraryManager *)sharedMediaLibraryManager {
   _sharedMediaLibraryManager = sharedMediaLibraryManager;
+}
+
++ (void)setSharedVideoExportManager:(VideoExportManager *)sharedVideoExportManager {
+  _sharedVideoExportManager = sharedVideoExportManager;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

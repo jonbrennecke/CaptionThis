@@ -11,12 +11,15 @@ import type { Style } from '../../types/react';
 type Props = {
   style?: ?Style,
   onBackButtonPress: () => void,
+  onExportButtonPress: () => void,
 };
 
 const styles = {
   container: {
     paddingVertical: 10,
     paddingHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   buttonText: {
     ...Fonts.getFontStyle('button', { contentStyle: 'lightContent' }),
@@ -29,12 +32,18 @@ const styles = {
 export default function EditScreenTopControls({
   style,
   onBackButtonPress,
+  onExportButtonPress,
 }: Props) {
   return (
     <View style={[styles.container, style]}>
       <TouchableOpacity onPress={onBackButtonPress}>
         <Text numberOfLines={1} style={styles.buttonText}>
           {'< BACK'}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onExportButtonPress}>
+        <Text numberOfLines={1} style={styles.buttonText}>
+          {'EXPORT >'}
         </Text>
       </TouchableOpacity>
     </View>

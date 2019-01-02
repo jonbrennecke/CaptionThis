@@ -11,6 +11,7 @@
 @class SpeechManager;
 @class PermissionsManager;
 @class MediaLibraryManager;
+@class VideoExportManager;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -20,5 +21,6 @@
 @property (class) SpeechManager *sharedSpeechManager;
 @property (class) PermissionsManager *sharedPermissionsManager;
 @property (class) MediaLibraryManager *sharedMediaLibraryManager;
+@property (class) VideoExportManager *sharedVideoExportManager;
 
 @end
