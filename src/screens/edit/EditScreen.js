@@ -203,10 +203,10 @@ export default class EditScreen extends Component<Props, State> {
     );
   }
 
-  seekBarDidSeekToPercent(percent: number) {
+  seekBarDidSeekToTime(timeSeconds: number) {
     this.setState({
-      playbackTimeSeconds: this.state.durationSeconds * percent,
-      startTimeSeconds: this.state.durationSeconds * percent,
+      playbackTimeSeconds: timeSeconds,
+      startTimeSeconds: timeSeconds,
     });
   }
 
@@ -265,8 +265,10 @@ export default class EditScreen extends Component<Props, State> {
                 />
                 <VideoSeekbar
                   style={styles.seekbar}
+                  duration={this.state.durationSeconds}
+                  playbackTime={this.state.playbackTimeSeconds}
                   videoAssetIdentifier={this.props.videoAssetIdentifier}
-                  onSeekToPercent={this.seekBarDidSeekToPercent}
+                  onSeekToTime={this.seekBarDidSeekToTime}
                 />
               </View>
               <EditScreenFontControls fontFamily={this.props.fontFamily} />

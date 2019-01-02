@@ -13,7 +13,9 @@ import type { Style, Gesture } from '../../types/react';
 type Props = {
   style?: ?Style,
   videoAssetIdentifier: VideoAssetIdentifier,
-  onSeekToPercent: (percent: number) => void,
+  duration: number,
+  playbackTime: number,
+  onSeekToTime: (time: number) => void,
 };
 
 type State = {
@@ -66,7 +68,8 @@ export default class VideoSeekbar extends Component<Props, State> {
       return;
     }
     const percentOfWidth = moveX / this.state.viewWidth;
-    this.props.onSeekToPercent(percentOfWidth);
+    const time = this.props.duration * percentOfWidth;
+    this.props.onSeekToTime(time);
   }
 
   viewDidLayout() {
