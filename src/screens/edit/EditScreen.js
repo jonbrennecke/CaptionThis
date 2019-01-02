@@ -8,7 +8,7 @@ import { Navigation } from 'react-native-navigation';
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
-import TranscriptionView from '../../components/transcription-view/TranscriptionView';
+import RecordingTranscriptionView from '../../components/recording-transcription-view/RecordingTranscriptionView';
 import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
 import EditScreenFontControls from './EditScreenFontControls';
@@ -225,10 +225,10 @@ export default class EditScreen extends Component<Props, State> {
                 style={styles.editTopControls}
                 onBackButtonPress={this.onBackButtonPress}
               />
-              <TranscriptionView
+              <RecordingTranscriptionView
                 style={styles.transcription}
                 fontFamily={this.props.fontFamily}
-                text={this.getSpeechTranscriptionDisplayText()}
+                speechTranscription={this.getSpeechTranscription()}
               />
             </View>
             <View style={styles.editControls}>
@@ -249,11 +249,11 @@ export default class EditScreen extends Component<Props, State> {
     );
   }
 
-  getSpeechTranscriptionDisplayText() {
+  getSpeechTranscription(): ?SpeechTranscription {
     const { speechTranscriptions, videoAssetIdentifier: key } = this.props;
     if (!speechTranscriptions.has(key)) {
-      return '';
+      return null;
     }
-    return speechTranscriptions.get(key)?.formattedString || '';
+    return speechTranscriptions.get(key);
   }
 }

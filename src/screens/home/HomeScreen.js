@@ -5,6 +5,7 @@ import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
+import uuid from 'uuid';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
@@ -29,17 +30,22 @@ import {
   isCameraRecording,
   getCurrentVideo,
   getFontFamily,
+  getSpeechTranscriptions,
 } from '../../redux/media/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCaptureControls from './HomeScreenCaptureControls';
-import TranscriptionView from '../../components/transcription-view/TranscriptionView';
+import LiveTranscriptionView from '../../components/live-transcription-view/LiveTranscriptionView';
 
 import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 import type { Return } from '../../types/util';
+
+type State = {
+  currentVideoIdentifier: ?VideoAssetIdentifier,
+};
 
 type OwnProps = {
   componentId: string,
@@ -51,6 +57,7 @@ type StateProps = {
   isCameraRecording: boolean,
   currentVideo: ?VideoAssetIdentifier,
   fontFamily: string,
+  speechTranscriptions: Return<typeof getSpeechTranscriptions>,
 };
 
 type DispatchProps = {
@@ -121,6 +128,7 @@ function mapStateToProps(state: AppState): StateProps {
     isCameraRecording: isCameraRecording(state),
     currentVideo: getCurrentVideo(state),
     fontFamily: getFontFamily(state),
+    speechTranscriptions: getSpeechTranscriptions(state),
   };
 }
 
@@ -148,7 +156,10 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 @requireOnboardedUser
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
-export default class HomeScreen extends Component<Props> {
+export default class HomeScreen extends Component<Props, State> {
+  state = {
+    currentVideoIdentifier: null,
+  };
   scrollView: ?ScrollView;
 
   // eslint-disable-next-line flowtype/generic-spacing
@@ -208,6 +219,7 @@ export default class HomeScreen extends Component<Props> {
   }
 
   async startCapture() {
+    this.setState({ currentVideoIdentifier: uuid.v4() });
     this.cameraManagerDidFinishFileOutputListener = Camera.addDidFinishFileOutputListener(
       this.cameraManagerDidFinishFileOutput
     );
@@ -231,17 +243,21 @@ export default class HomeScreen extends Component<Props> {
     transcription: SpeechTranscription
   ) {
     if (!this.props.isCameraRecording) {
-      Debug.logWarningMessage(
-        'Received a speech transcription, but camera is not recording.'
-      );
+      // Debug.logWarningMessage(
+      //   'Received a speech transcription, but camera is not recording.'
+      // );
       return;
     }
-    const currentVideo = this.props.currentVideo;
-    if (!currentVideo) {
-      // TODO: this.props.receiveSpeechTranscriptionFailure();
+    if (!this.state.currentVideoIdentifier) {
+      // Debug.logWarningMessage(
+      //   'Received a speech transcription, but do not have an id for the current video.'
+      // );
       return;
     }
-    this.props.receiveSpeechTranscriptionSuccess(currentVideo, transcription);
+    this.props.receiveSpeechTranscriptionSuccess(
+      this.state.currentVideoIdentifier,
+      transcription
+    );
   }
 
   cameraManagerDidFinishFileOutput(videoAssetIdentifier: VideoAssetIdentifier) {
@@ -276,10 +292,16 @@ export default class HomeScreen extends Component<Props> {
             <SafeAreaView style={styles.flex}>
               <View style={styles.cameraPreview}>
                 <CameraPreviewView style={styles.flex} />
-                <TranscriptionView
+                <LiveTranscriptionView
                   style={styles.transcript}
                   fontFamily={this.props.fontFamily}
-                  text={'Lorem ipsum dolor sit amet'}
+                  speechTranscription={
+                    this.state.currentVideoIdentifier
+                      ? this.props.speechTranscriptions.get(
+                          this.state.currentVideoIdentifier
+                        )
+                      : null
+                  }
                 />
                 <HomeScreenCaptureControls
                   style={styles.captureControls}
