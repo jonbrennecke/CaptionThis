@@ -102,6 +102,17 @@ RCT_CUSTOM_VIEW_PROPERTY(startPosition, NSNumber, VideoPlayerViewWrap) {
   }];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(isPlaying, BOOL, VideoPlayerViewWrap) {
+  BOOL isPlaying = [RCTConvert BOOL:json];
+  if (isPlaying) {
+    [view.playerView play];
+    return;
+  }
+  else {
+    [view.playerView pause];
+  }
+}
+
 - (UIView*)view {
   VideoPlayerViewWrap *view = [[VideoPlayerViewWrap alloc] init];
   return view;

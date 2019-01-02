@@ -230,6 +230,7 @@ export default class EditScreen extends Component<Props, State> {
             <View style={styles.videoWrap}>
               <VideoPlayerView
                 style={styles.videoPlayer}
+                isPlaying={this.state.isVideoPlaying}
                 startPosition={this.state.startTimeSeconds}
                 videoAssetIdentifier={this.props.videoAssetIdentifier}
                 onVideoDidBecomeReadyToPlay={
@@ -257,7 +258,9 @@ export default class EditScreen extends Component<Props, State> {
                   style={styles.pauseButton}
                   isPlaying={this.state.isVideoPlaying}
                   onPress={() => {
-                    // TODO
+                    this.setState({
+                      isVideoPlaying: !this.state.isVideoPlaying,
+                    });
                   }}
                 />
                 <VideoSeekbar
