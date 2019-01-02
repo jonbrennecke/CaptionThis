@@ -15,7 +15,11 @@ import type {
   ReceiveBackgroundColorPayload,
   ReceiveFontFamilyPayload,
 } from '../../types/redux';
-import type { VideoAssetIdentifier, ColorRGBA, TextOverlayParams } from '../../types/media';
+import type {
+  VideoAssetIdentifier,
+  ColorRGBA,
+  TextOverlayParams,
+} from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 
 export const loadVideoAssets = () => {
@@ -204,11 +208,14 @@ export const receiveUserSelectedTextColor = (textColor: ColorRGBA) => {
   };
 };
 
-export const exportVideo = (video: VideoAssetIdentifier, textParamsArray: TextOverlayParams[]) => {
+export const exportVideo = (
+  video: VideoAssetIdentifier,
+  textParamsArray: TextOverlayParams[]
+) => {
   return async (dispatch: Dispatch<*>) => {
     dispatch({ type: ACTION_TYPES.WILL_EXPORT_VIDEO });
     try {
-      await VideoExportManager.exportVideo(video, textParamsArray)
+      await VideoExportManager.exportVideo(video, textParamsArray);
       dispatch({
         type: ACTION_TYPES.DID_SUCCESSFULLY_EXPORT_VIDEO,
       });

@@ -31,7 +31,11 @@ import {
   isExportingVideo,
 } from '../../redux/media/selectors';
 
-import type { VideoAssetIdentifier, ColorRGBA, TextOverlayParams } from '../../types/media';
+import type {
+  VideoAssetIdentifier,
+  ColorRGBA,
+  TextOverlayParams,
+} from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
@@ -64,7 +68,10 @@ type DispatchProps = {
     SpeechTranscription
   ) => void,
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
-  exportVideo: (video: VideoAssetIdentifier, textParamsArray: TextOverlayParams[]) => Promise<void>,
+  exportVideo: (
+    video: VideoAssetIdentifier,
+    textParamsArray: TextOverlayParams[]
+  ) => Promise<void>,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -142,7 +149,10 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
     ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
     receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
-    exportVideo: (video: VideoAssetIdentifier, textParamsArray: TextOverlayParams[]) => dispatch(exportVideo(video, textParamsArray)),
+    exportVideo: (
+      video: VideoAssetIdentifier,
+      textParamsArray: TextOverlayParams[]
+    ) => dispatch(exportVideo(video, textParamsArray)),
   };
 }
 
@@ -233,7 +243,7 @@ export default class EditScreen extends Component<Props, State> {
   async exportVideo() {
     await this.props.exportVideo(
       this.props.videoAssetIdentifier,
-      this.textOverlayParams(),
+      this.textOverlayParams()
     );
   }
 

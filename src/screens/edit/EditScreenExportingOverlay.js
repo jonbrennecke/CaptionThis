@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text, SafeAreaView, Animated } from 'react-native';
+import { Text, SafeAreaView, Animated } from 'react-native';
 import { BlurView } from 'react-native-blur';
 
 import * as Fonts from '../../utils/Fonts';
@@ -9,7 +9,7 @@ import type { Style } from '../../types/react';
 
 type Props = {
   style?: ?Style,
-  isVisible: boolean
+  isVisible: boolean,
 };
 
 const styles = {
@@ -19,7 +19,7 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    opacity: anim
+    opacity: anim,
   }),
   flexCenter: {
     flex: 1,
@@ -37,7 +37,6 @@ const styles = {
 };
 
 export default class EditScreenExportingOverlay extends Component<Props> {
-
   anim: Animated.Value = new Animated.Value(0);
 
   componentDidUpdate(prevProps: Props) {
@@ -46,8 +45,7 @@ export default class EditScreenExportingOverlay extends Component<Props> {
         toValue: 1,
         duration: 300,
       }).start();
-    }
-    else if (!this.props.isVisible && prevProps.isVisible) {
+    } else if (!this.props.isVisible && prevProps.isVisible) {
       Animated.timing(this.anim, {
         toValue: 0,
         duration: 300,
@@ -57,7 +55,10 @@ export default class EditScreenExportingOverlay extends Component<Props> {
 
   render() {
     return (
-      <Animated.View style={[styles.container(this.anim), this.props.style]} pointerEvents="none">
+      <Animated.View
+        style={[styles.container(this.anim), this.props.style]}
+        pointerEvents="none"
+      >
         <BlurView style={styles.blurView} blurType="dark" />
         <SafeAreaView style={styles.flexCenter}>
           <Text style={styles.title}>Saving your video...</Text>
