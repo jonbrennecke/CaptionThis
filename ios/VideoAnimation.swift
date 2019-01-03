@@ -8,9 +8,20 @@ class VideoAnimation {
   private let videoAsset: AVAsset
   private let videoTrack: AVAssetTrack
   private let audioTrack: AVAssetTrack
-  private let effectLayer: CALayer
-  private let videoLayer: CALayer
-  private let parentLayer: CALayer
+  private let effectLayer = CALayer()
+  private let videoLayer = CALayer()
+  private let parentLayer = CALayer()
+  private let textContainerLayer = CALayer()
+  private let containerOffsetFromBottom: CGFloat = 100
+  private let containerHeight: CGFloat = 100
+  private let paddingHorizontal: CGFloat = 20
+
+  private var videoSize: CGSize {
+    get {
+      let originalSize = videoTrack.naturalSize
+      return CGSize(width: originalSize.height, height: originalSize.width)
+    }
+  }
   
   init?(withAsset asset: AVAsset) {
     videoAsset = asset
@@ -27,13 +38,12 @@ class VideoAnimation {
     let originalSize = videoTrack.naturalSize
     let size = CGSize(width: originalSize.height, height: originalSize.width)
     let frame = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
-    parentLayer = CALayer()
     parentLayer.frame = frame
-    effectLayer = CALayer()
     effectLayer.frame = frame
-    videoLayer = CALayer()
     videoLayer.frame = frame
+    textContainerLayer.frame = CGRect(x: 0, y: containerOffsetFromBottom, width: videoSize.width, height: containerHeight)
     parentLayer.addSublayer(videoLayer)
+    effectLayer.addSublayer(textContainerLayer)
     parentLayer.addSublayer(effectLayer)
   }
   
@@ -43,22 +53,36 @@ class VideoAnimation {
   }
   
   public func addTextOverlay(withParams params: TextOverlayParams) {
-    let textContainerLayer = CALayer()
-    let containerOffset: CGFloat = 100
-    let containerHeight: CGFloat = 100
     let fontSize: CGFloat = 60
-    let size = videoSize()
-    textContainerLayer.frame = CGRect(x: 0, y: containerOffset, width: size.width, height: containerHeight)
-    textContainerLayer.backgroundColor = ThemeColors.white.cgColor
     let textLayer = CATextLayer()
     let textOffset = -((containerHeight - fontSize) / 2 - fontSize / 10)
-    textLayer.frame = CGRect(x: 0, y: textOffset, width: size.width, height: containerHeight)
+    textLayer.opacity = 0.0
+    textContainerLayer.backgroundColor = UIColor.white.cgColor
+    textLayer.frame = CGRect(x: paddingHorizontal, y: textOffset, width: videoSize.width - paddingHorizontal, height: containerHeight)
     textLayer.string = params.text
-    textLayer.foregroundColor = ThemeColors.darkPurple.cgColor
-    textLayer.alignmentMode = .center
+    textLayer.foregroundColor = UIColor.black.cgColor
+    textLayer.alignmentMode = .left
     textLayer.fontSize = fontSize
+    textLayer.truncationMode = .start
+    let animationIn = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
+    animationIn.fromValue = 0.0
+    animationIn.toValue = 1.0
+    animationIn.fillMode = .forwards
+    animationIn.isRemovedOnCompletion = false
+    animationIn.beginTime = AVCoreAnimationBeginTimeAtZero + Double(params.timestamp)
+    animationIn.duration = 0.1
+    textLayer.add(animationIn, forKey: nil)
+    let animationOut = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
+    animationOut.fromValue = 1.0
+    animationOut.toValue = 0.0
+    animationOut.fillMode = .forwards
+    animationOut.isRemovedOnCompletion = false
+    animationOut.beginTime = AVCoreAnimationBeginTimeAtZero + Double(params.timestamp) + Double(params.duration)
+    animationOut.duration = 0.1
+    textLayer.add(animationOut, forKey: nil)
     textContainerLayer.addSublayer(textLayer)
-    effectLayer.addSublayer(textContainerLayer)
+    textLayer.displayIfNeeded()
+    textLayer.layoutIfNeeded()
   }
   
   public func exportVideo(_ completionHandler: @escaping (Error?, Bool, URL?) -> ()) {
@@ -111,11 +135,6 @@ class VideoAnimation {
     }
   }
   
-  private func videoSize() -> CGSize {
-    let originalSize = videoTrack.naturalSize
-    return CGSize(width: originalSize.height, height: originalSize.width)
-  }
-  
   private func applyAnimationToVideo() throws {
     guard let mixCompositionAudioTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) else {
         Debug.log(message: "Unable to add audio track.")
@@ -140,10 +159,11 @@ class VideoAnimation {
     }
     let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: mixVideoTrack)
     layerInstruction.setTransform(videoTrack.preferredTransform, at: CMTime.zero)
+//    layerInstruction.setOpacityRamp(fromStartOpacity: 0, toEndOpacity: 1, timeRange: CMTimeRange(start: CMTime.zero, end: CMTime.zero + CMTime(seconds: 0.1, preferredTimescale: 30)))
     instruction.layerInstructions = [layerInstruction]
     videoComposition.instructions = [instruction]
     videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30) // TODO check video fps
-    videoComposition.renderSize = videoSize()
-    videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
+    videoComposition.renderSize = videoSize
+    videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayers: [videoLayer, effectLayer], in: parentLayer)
   }
 }

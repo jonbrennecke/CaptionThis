@@ -12,7 +12,7 @@ protocol SpeechManagerDelegate {
 class SpeechManager : NSObject {
   
   typealias SpeechTask = SFSpeechAudioBufferRecognitionRequest
-  typealias SpeechTranscription = SFTranscription
+  typealias SpeechTranscription = SFSpeechRecognitionResult
   
   private var recognizer: SFSpeechRecognizer
   private var audioEngine: AVAudioEngine
@@ -22,6 +22,7 @@ class SpeechManager : NSObject {
   
   override init() {
     recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))! // FIXME
+    recognizer.defaultTaskHint = .dictation
     audioEngine = AVAudioEngine()
     super.init()
     recognizer.delegate = self
@@ -116,6 +117,7 @@ class SpeechManager : NSObject {
       }
       request.appendAudioSampleBuffer(sampleBuffer)
     }
+    request.endAudio()
     return request
   }
   
@@ -125,10 +127,10 @@ class SpeechManager : NSObject {
         Debug.log(error: error)
         return
       }
-      guard let transcription = result?.bestTranscription, let delegate = self.delegate else {
+      guard let result = result, let delegate = self.delegate else {
         return
       }
-      delegate.speechManagerDidReceiveSpeechTranscription(transcription)
+      delegate.speechManagerDidReceiveSpeechTranscription(result)
     }
   }
   
