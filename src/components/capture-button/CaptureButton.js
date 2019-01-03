@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Animated, TouchableWithoutFeedback } from 'react-native';
+import { View, Animated, TouchableWithoutFeedback, MaskedViewIOS } from 'react-native';
 import { autobind } from 'core-decorators';
 import { BlurView } from 'react-native-blur';
 import LinearGradient from 'react-native-linear-gradient';
@@ -61,6 +61,20 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  borderMask: {
+    height: 75,
+    width: 75,
+    borderRadius: 37.5,
+    position: 'absolute',
+  },
+  linearGradientInner: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: Color.hexToRgbaString('white', 0.25),
   }
 };
 
@@ -106,12 +120,28 @@ export default class ColorPicker extends Component<Props> {
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
               colors={[
                 Color.hexToRgbaString(UI_COLORS.LIGHT_BLUE, 0.25),
-                Color.hexToRgbaString(UI_COLORS.LIGHT_GREEN, 0.5),
+                Color.hexToRgbaString(UI_COLORS.LIGHT_GREEN, 0.25),
               ]}
               style={styles.gradient}
             />
           </View>
-          <View style={styles.border} />
+          <MaskedViewIOS
+            style={styles.borderMask}
+            maskElement={<View style={styles.border} />}
+          >
+            <LinearGradient
+              pointerEvents="none"
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+              colors={[
+                Color.hexToRgbaString(UI_COLORS.LIGHT_BLUE, 1),
+                Color.hexToRgbaString(UI_COLORS.LIGHT_GREEN, 1),
+              ]}
+              style={styles.gradient}
+            >
+              <View style={styles.linearGradientInner}/>
+            </LinearGradient>
+          </MaskedViewIOS>
+          
         </Animated.View>
       </TouchableWithoutFeedback>
     );
