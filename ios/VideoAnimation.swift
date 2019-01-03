@@ -1,7 +1,7 @@
 import AVFoundation
 import UIKit
 
-let MAX_CHARACTERS_PER_LINE: Int = 25
+let MAX_CHARACTERS_PER_LINE: Int = 40
 
 class VideoAnimation {
   
@@ -101,7 +101,8 @@ class VideoAnimation {
         let fadeOutAnimation = animateFadeOut(atTime: Double(segment.timestamp), withDuration: 0)
         bottomTextLayer.add(fadeOutAnimation, forKey: nil)
         let textLayer = addTextLayer(withParams: params, text: segment.text)
-        textLayer.position.y = textLayers.count > 1 ? inFrameBottomY : inFrameMiddleY
+        let isMiddle = abs(bottomTextLayer.position.y - inFrameMiddleY) < CGFloat.ulpOfOne
+        textLayer.position.y = isMiddle ? inFrameMiddleY : inFrameBottomY
         textLayer.string = newString
         textLayer.opacity = 0
         let fadeInAnimation = animateFadeIn(atTime: Double(segment.timestamp), withDuration: 0)
@@ -155,7 +156,6 @@ class VideoAnimation {
     withDuration duration: CFTimeInterval = 0.25
   ) -> CABasicAnimation {
     let slideUpAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.position))
-    slideUpAnimation.fromValue = position
     slideUpAnimation.toValue = CGPoint(x: position.x, y: value)
     slideUpAnimation.fillMode = .forwards
     slideUpAnimation.isRemovedOnCompletion = false
