@@ -56,8 +56,8 @@ class VideoAnimation {
     textContainerLayer.backgroundColor = params.backgroundColor.cgColor
     params.textSegments.forEach { segment in
       let textLayer = self.animateText(withParams: segment)
-//      textLayer.font
-//      textLayer.foregroundColor
+      textLayer.font = params.fontFamily as CFTypeRef
+      textLayer.foregroundColor = params.textColor.cgColor
       self.textContainerLayer.addSublayer(textLayer)
       textLayer.displayIfNeeded()
       textLayer.layoutIfNeeded()
@@ -71,10 +71,10 @@ class VideoAnimation {
     textLayer.opacity = 0.0
     textLayer.frame = CGRect(x: paddingHorizontal, y: textOffset, width: videoSize.width - paddingHorizontal, height: containerHeight)
     textLayer.string = params.text
-    textLayer.foregroundColor = UIColor.black.cgColor
     textLayer.alignmentMode = .left
     textLayer.fontSize = fontSize
     textLayer.truncationMode = .start
+    textLayer.contentsScale = UIScreen.main.scale
     let animationIn = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
     animationIn.fromValue = 0.0
     animationIn.toValue = 1.0
