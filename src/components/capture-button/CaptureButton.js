@@ -74,7 +74,7 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: Color.hexToRgbaString('white', 0.5),
+    backgroundColor: Color.hexToRgbaString('white', 0.1),
   }
 };
 
@@ -122,7 +122,7 @@ export default class ColorPicker extends Component<Props> {
               angleCenter={{ x: 0.5, y: 0.5 }}
               colors={[
                 Color.hexToRgbaString(UI_COLORS.LIGHT_GREEN, 0.25),
-                Color.hexToRgbaString(UI_COLORS.LIGHT_BLUE, 0.25),
+                Color.hexToRgbaString(UI_COLORS.MEDIUM_GREEN, 0.25),
               ]}
               style={styles.gradient}
             />
@@ -137,8 +137,8 @@ export default class ColorPicker extends Component<Props> {
               angle={-45}
               angleCenter={{ x: 0.5, y: 0.5 }}
               colors={[
-                Color.hexToRgbaString(UI_COLORS.LIGHT_GREEN, 1),
-                Color.hexToRgbaString(UI_COLORS.LIGHT_BLUE, 1),
+                UI_COLORS.LIGHT_GREEN,
+                UI_COLORS.MEDIUM_GREEN
               ]}
               style={styles.gradient}
             >

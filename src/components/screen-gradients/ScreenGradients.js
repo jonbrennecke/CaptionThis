@@ -11,7 +11,7 @@ const styles = {
     top: 0,
     left: 0,
     right: 0,
-    height: 100,
+    height: 150,
     zIndex: 1,
   },
   bottomGradient: {
@@ -19,7 +19,7 @@ const styles = {
     bottom: 0,
     left: 0,
     right: 0,
-    height: 100,
+    height: 150,
     zIndex: 1,
   },
 };
@@ -29,17 +29,21 @@ export default function ScreenGradients() {
     <Fragment>
       <LinearGradient
         pointerEvents="none"
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
         colors={[
-          Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
-          Color.hexToRgbaString(UI_COLORS.BLACK, 0),
+          Color.hexToRgbaString(UI_COLORS.BLACK, 0.25),
+          Color.hexToRgbaString(UI_COLORS.BLACK, 0.0),
         ]}
         style={styles.topGradient}
       />
       <LinearGradient
         pointerEvents="none"
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
         colors={[
-          Color.hexToRgbaString(UI_COLORS.BLACK, 0),
-          Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
+          Color.hexToRgbaString(UI_COLORS.BLACK, 0.0),
+          Color.hexToRgbaString(UI_COLORS.BLACK, 0.25),
         ]}
         style={styles.bottomGradient}
       />
