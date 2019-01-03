@@ -31,11 +31,7 @@ import {
   isExportingVideo,
 } from '../../redux/media/selectors';
 
-import type {
-  VideoAssetIdentifier,
-  ColorRGBA,
-  TextOverlayParams,
-} from '../../types/media';
+import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';

@@ -1,5 +1,5 @@
 // @flow
-import { NativeModules, processColor } from 'react-native';
+import { NativeModules } from 'react-native';
 import Promise from 'bluebird';
 
 import * as Debug from './Debug';
@@ -53,11 +53,8 @@ export const exportVideo = async ({
   await NativeVideoExportModule.exportVideoAsync(exportParams);
 };
 
-function convertColorForNativeBridge(color: ColorRGBA): [number, number, number, number] {
-  return [
-    color.red / 255,
-    color.green / 255,
-    color.blue / 255,
-    color.alpha
-  ];
+function convertColorForNativeBridge(
+  color: ColorRGBA
+): [number, number, number, number] {
+  return [color.red / 255, color.green / 255, color.blue / 255, color.alpha];
 }
