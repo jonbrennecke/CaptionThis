@@ -31,6 +31,8 @@ export const UI_COLORS = {
   LIGHT_GREY: '#B7BAE1',
   EXTRA_LIGHT_GREY: '#B7BAE1',
   MEDIUM_RED: '#f4a09c',
+  LIGHT_BLUE: '#8CD4D2',
+  LIGHT_GREEN: '#C0ECCC',
 };
 
 export const USER_EDITABLE_COLORS = {

@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 import { View, Animated, TouchableWithoutFeedback } from 'react-native';
 import { autobind } from 'core-decorators';
 import { BlurView } from 'react-native-blur';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { UI_COLORS } from '../../constants';
+import * as Color from '../../utils/Color';
 
 import type { Style } from '../../types/react';
 
@@ -18,9 +20,6 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 const styles = {
   blurView: {
-    // height: 67,
-    // width: 67,
-    // borderRadius: 33.5,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -56,6 +55,13 @@ const styles = {
     borderColor: UI_COLORS.OFF_WHITE,
     position: 'absolute',
   },
+  gradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  }
 };
 
 // $FlowFixMe
@@ -94,6 +100,15 @@ export default class ColorPicker extends Component<Props> {
             <AnimatedBlurView
               style={[styles.blurView, this.props.style]}
               blurType="light"
+            />
+            <LinearGradient
+              pointerEvents="none"
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+              colors={[
+                Color.hexToRgbaString(UI_COLORS.LIGHT_BLUE, 0.25),
+                Color.hexToRgbaString(UI_COLORS.LIGHT_GREEN, 0.5),
+              ]}
+              style={styles.gradient}
             />
           </View>
           <View style={styles.border} />
