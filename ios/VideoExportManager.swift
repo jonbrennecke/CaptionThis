@@ -5,7 +5,7 @@ import AVFoundation
 class VideoExportManager : NSObject {
   @objc
   public func exportVideo(withLocalIdentifier localIdentifier: String,
-                          paramsArray: [TextOverlayParams],
+                          animationParams: VideoAnimationParams,
                           completionHandler: @escaping (Error?, Bool) -> ())
   {
     let options = PHFetchOptions()
@@ -25,9 +25,7 @@ class VideoExportManager : NSObject {
         completionHandler(nil, false)
         return
       }
-      for params in paramsArray {
-        animation.addTextOverlay(withParams: params)
-      }
+      animation.animate(withParams: animationParams)
       animation.exportVideo() { error, success, url in
         if let error = error {
           completionHandler(error, false)

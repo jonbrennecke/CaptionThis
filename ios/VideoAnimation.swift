@@ -52,12 +52,23 @@ class VideoAnimation {
     self.init(withAsset: videoAsset)
   }
   
-  public func addTextOverlay(withParams params: TextOverlayParams) {
+  public func animate(withParams params: VideoAnimationParams) {
+    textContainerLayer.backgroundColor = params.backgroundColor.cgColor
+    params.textSegments.forEach { segment in
+      let textLayer = self.animateText(withParams: segment)
+//      textLayer.font
+//      textLayer.foregroundColor
+      self.textContainerLayer.addSublayer(textLayer)
+      textLayer.displayIfNeeded()
+      textLayer.layoutIfNeeded()
+    }
+  }
+  
+  private func animateText(withParams params: TextSegmentParams) -> CATextLayer {
     let fontSize: CGFloat = 60
     let textLayer = CATextLayer()
     let textOffset = -((containerHeight - fontSize) / 2 - fontSize / 10)
     textLayer.opacity = 0.0
-    textContainerLayer.backgroundColor = UIColor.white.cgColor
     textLayer.frame = CGRect(x: paddingHorizontal, y: textOffset, width: videoSize.width - paddingHorizontal, height: containerHeight)
     textLayer.string = params.text
     textLayer.foregroundColor = UIColor.black.cgColor
@@ -80,9 +91,7 @@ class VideoAnimation {
     animationOut.beginTime = AVCoreAnimationBeginTimeAtZero + Double(params.timestamp) + Double(params.duration)
     animationOut.duration = 0.1
     textLayer.add(animationOut, forKey: nil)
-    textContainerLayer.addSublayer(textLayer)
-    textLayer.displayIfNeeded()
-    textLayer.layoutIfNeeded()
+    return textLayer
   }
   
   public func exportVideo(_ completionHandler: @escaping (Error?, Bool, URL?) -> ()) {

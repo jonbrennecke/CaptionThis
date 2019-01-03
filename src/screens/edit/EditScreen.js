@@ -39,6 +39,7 @@ import type {
 import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
+import type { ExportParams } from '../../utils/VideoExportManager';
 
 type State = {
   startTimeSeconds: number,
@@ -68,10 +69,7 @@ type DispatchProps = {
     SpeechTranscription
   ) => void,
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
-  exportVideo: (
-    video: VideoAssetIdentifier,
-    textParamsArray: TextOverlayParams[]
-  ) => Promise<void>,
+  exportVideo: ExportParams => Promise<void>,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -149,10 +147,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
     ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
     receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
-    exportVideo: (
-      video: VideoAssetIdentifier,
-      textParamsArray: TextOverlayParams[]
-    ) => dispatch(exportVideo(video, textParamsArray)),
+    exportVideo: (exportParams: ExportParams) =>
+      dispatch(exportVideo(exportParams)),
   };
 }
 
@@ -241,10 +237,13 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   async exportVideo() {
-    await this.props.exportVideo(
-      this.props.videoAssetIdentifier,
-      this.textOverlayParams()
-    );
+    await this.props.exportVideo({
+      video: this.props.videoAssetIdentifier,
+      textSegments: this.textOverlayParams(),
+      textColor: this.props.textColor,
+      backgroundColor: this.props.backgroundColor,
+      fontFamily: this.props.fontFamily,
+    });
   }
 
   textOverlayParams() {

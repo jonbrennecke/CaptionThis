@@ -72,7 +72,7 @@
 		FCA3971621DC937C00347CAB /* VideoAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971521DC937C00347CAB /* VideoAnimation.swift */; };
 		FCA3971821DC93AF00347CAB /* constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971721DC93AF00347CAB /* constants.swift */; };
 		FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971921DC968E00347CAB /* VideoExportBridgeModule.m */; };
-		FCA3971E21DCB3B500347CAB /* TextOverlayParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971D21DCB3B500347CAB /* TextOverlayParams.swift */; };
+		FCA3971E21DCB3B500347CAB /* VideoAnimationParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971D21DCB3B500347CAB /* VideoAnimationParams.swift */; };
 		FCB3D2BF68D740C581A23323 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */; };
 		FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */; };
 		FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */; };
@@ -514,7 +514,7 @@
 		FCA3971721DC93AF00347CAB /* constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constants.swift; sourceTree = "<group>"; };
 		FCA3971921DC968E00347CAB /* VideoExportBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoExportBridgeModule.m; sourceTree = "<group>"; };
 		FCA3971B21DC969D00347CAB /* VideoExportBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoExportBridgeModule.h; sourceTree = "<group>"; };
-		FCA3971D21DCB3B500347CAB /* TextOverlayParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextOverlayParams.swift; sourceTree = "<group>"; };
+		FCA3971D21DCB3B500347CAB /* VideoAnimationParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationParams.swift; sourceTree = "<group>"; };
 		FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewManager.m; sourceTree = "<group>"; };
 		FCD5F74C21D6BA25001F2068 /* VideoPlayerViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewManager.h; sourceTree = "<group>"; };
 		FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
@@ -700,7 +700,7 @@
 				FCA3971721DC93AF00347CAB /* constants.swift */,
 				FCA3971521DC937C00347CAB /* VideoAnimation.swift */,
 				FCA3971321DC933D00347CAB /* VideoExportManager.swift */,
-				FCA3971D21DCB3B500347CAB /* TextOverlayParams.swift */,
+				FCA3971D21DCB3B500347CAB /* VideoAnimationParams.swift */,
 				FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */,
 			);
 			name = CaptionThis;
@@ -1680,7 +1680,7 @@
 				FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */,
 				FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */,
 				FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */,
-				FCA3971E21DCB3B500347CAB /* TextOverlayParams.swift in Sources */,
+				FCA3971E21DCB3B500347CAB /* VideoAnimationParams.swift in Sources */,
 				FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */,
 				FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */,
 			);

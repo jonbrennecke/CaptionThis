@@ -1,4 +1,5 @@
 #import <Speech/Speech.h>
+#import <React/RCTConvert.h>
 #import "VideoExportBridgeModule.h"
 #import "AppDelegate.h"
 #import "CaptionThis-Swift.h"
@@ -7,21 +8,30 @@
 
 RCT_EXPORT_MODULE(VideoExport)
 
-RCT_EXPORT_METHOD(exportVideo:(NSString*)localIdentifier
-                  withTextOverlayParams:(NSArray<NSDictionary*>*)jsonParamsArray
-                  withCallback:(RCTResponseSenderBlock)callback) {
-  NSMutableArray<TextOverlayParams*>* paramsArray = [[NSMutableArray alloc] initWithCapacity:jsonParamsArray.count];
-  for (NSDictionary* jsonParams in jsonParamsArray) {
-    NSString* text = [jsonParams objectForKey:@"text"];
-    NSNumber* duration = [jsonParams objectForKey:@"duration"];
-    NSNumber* timestamp = [jsonParams objectForKey:@"timestamp"];
-    // TODO: check text, duration and timestamp for nil or [NSNull null] values
-    TextOverlayParams* params = [[TextOverlayParams alloc] initWithText:text duration:[duration floatValue] timestamp:[timestamp floatValue]];
-    [paramsArray addObject:params];
+RCT_EXPORT_METHOD(exportVideo:(NSDictionary<NSString*, id>*)params withCallback:(RCTResponseSenderBlock)callback) {
+  NSString *localIdentifier = [params objectForKey:@"video"];
+  NSArray<NSDictionary*> *textSegmentsJson = [params objectForKey:@"textSegments"];
+  NSDictionary<NSString*, id> *textColorJson = [params objectForKey:@"textColor"];
+  UIColor *textColor = [RCTConvert UIColor:textColorJson];
+  NSDictionary<NSString*, id> *backgroundColorJson = [params objectForKey:@"backgroundColor"];
+  UIColor *backgroundColor = [RCTConvert UIColor:backgroundColorJson];
+  NSString *fontFamily = [params objectForKey:@"fontFamily"];
+  NSMutableArray<TextSegmentParams*>* textSegments = [[NSMutableArray alloc] initWithCapacity:textSegmentsJson.count];
+  for (NSDictionary* json in textSegmentsJson) {
+    NSString* text = [json objectForKey:@"text"];
+    NSNumber* duration = [json objectForKey:@"duration"];
+    NSNumber* timestamp = [json objectForKey:@"timestamp"];
+    TextSegmentParams* params = [[TextSegmentParams alloc] initWithText:text duration:[duration floatValue] timestamp:[timestamp floatValue]];
+    [textSegments addObject:params];
   }
+  VideoAnimationParams *animationParams = [[VideoAnimationParams alloc]
+                                           initWithTextSegments:textSegments
+                                           fontFamily:fontFamily
+                                           backgroundColor:backgroundColor
+                                           textColor:textColor];
   [AppDelegate.sharedVideoExportManager
    exportVideoWithLocalIdentifier:localIdentifier
-   paramsArray:paramsArray
+   animationParams:animationParams
    completionHandler:^(NSError * _Nullable error, BOOL success) {
      if (error != nil) {
        callback(@[error, @(NO)]);
