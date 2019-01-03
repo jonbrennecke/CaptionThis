@@ -74,7 +74,7 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: Color.hexToRgbaString('white', 0.25),
+    backgroundColor: Color.hexToRgbaString('white', 0.5),
   }
 };
 
@@ -117,10 +117,12 @@ export default class ColorPicker extends Component<Props> {
             />
             <LinearGradient
               pointerEvents="none"
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+              useAngle
+              angle={-45}
+              angleCenter={{ x: 0.5, y: 0.5 }}
               colors={[
-                Color.hexToRgbaString(UI_COLORS.LIGHT_BLUE, 0.25),
                 Color.hexToRgbaString(UI_COLORS.LIGHT_GREEN, 0.25),
+                Color.hexToRgbaString(UI_COLORS.LIGHT_BLUE, 0.25),
               ]}
               style={styles.gradient}
             />
@@ -131,10 +133,12 @@ export default class ColorPicker extends Component<Props> {
           >
             <LinearGradient
               pointerEvents="none"
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+              useAngle
+              angle={-45}
+              angleCenter={{ x: 0.5, y: 0.5 }}
               colors={[
-                Color.hexToRgbaString(UI_COLORS.LIGHT_BLUE, 1),
                 Color.hexToRgbaString(UI_COLORS.LIGHT_GREEN, 1),
+                Color.hexToRgbaString(UI_COLORS.LIGHT_BLUE, 1),
               ]}
               style={styles.gradient}
             >
