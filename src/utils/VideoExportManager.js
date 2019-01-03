@@ -10,8 +10,6 @@ import type {
   ColorRGBA,
 } from '../types/media';
 
-const MAX_CHARACTERS_PER_LINE = 25;
-
 const { VideoExport: _NativeVideoExportModule } = NativeModules;
 const NativeVideoExportModule = Promise.promisifyAll(_NativeVideoExportModule);
 
@@ -29,25 +27,11 @@ export const exportVideo = async ({
   backgroundColor,
   ...etcParams
 }: ExportParams) => {
-  const exportSegments: TextOverlayParams[] = [];
-  textSegments.forEach(segment => {
-    if (!exportSegments.length) {
-      exportSegments.push(segment);
-      return;
-    }
-    const lastExportParams = exportSegments[exportSegments.length - 1];
-    if (lastExportParams.text.length < MAX_CHARACTERS_PER_LINE) {
-      lastExportParams.text += ` ${segment.text}`;
-      lastExportParams.duration += segment.duration;
-      return;
-    }
-    exportSegments.push(segment);
-  });
   const exportParams = {
     ...etcParams,
+    textSegments,
     textColor: convertColorForNativeBridge(textColor),
     backgroundColor: convertColorForNativeBridge(backgroundColor),
-    textSegments: exportSegments,
   };
   Debug.log(`Exporting video. Params = ${JSON.stringify(exportParams)}`);
   await NativeVideoExportModule.exportVideoAsync(exportParams);
