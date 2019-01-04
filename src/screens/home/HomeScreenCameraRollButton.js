@@ -34,13 +34,6 @@ const styles = {
   flex: {
     flex: 1,
   },
-  borderMask: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-  },
   border: {
     position: 'absolute',
     top: 0,
@@ -51,14 +44,7 @@ const styles = {
     borderWidth: 2.5,
     borderColor: UI_COLORS.OFF_WHITE,
   },
-  gradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  linearGradientInner: {
+  absoluteFill: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -83,7 +69,7 @@ export default function HomeScreenCameraRollButton({
         )}
       </View>
       <MaskedViewIOS
-        style={styles.borderMask}
+        style={styles.absoluteFill}
         maskElement={<View style={styles.border} />}
       >
         <LinearGradient
@@ -92,10 +78,8 @@ export default function HomeScreenCameraRollButton({
           angle={-45}
           angleCenter={{ x: 0.5, y: 0.5 }}
           colors={[UI_COLORS.LIGHT_GREEN, UI_COLORS.MEDIUM_GREEN]}
-          style={styles.gradient}
-        >
-          <View style={styles.linearGradientInner} />
-        </LinearGradient>
+          style={styles.absoluteFill}
+        />
       </MaskedViewIOS>
     </TouchableOpacity>
   );
