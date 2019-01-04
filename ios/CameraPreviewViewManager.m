@@ -1,7 +1,7 @@
-#import <AVFoundation/AVFoundation.h>
 #import "CameraPreviewViewManager.h"
 #import "AppDelegate.h"
 #import "CaptionThis-Swift.h"
+#import <AVFoundation/AVFoundation.h>
 
 @implementation CameraPreviewViewManager
 
@@ -9,13 +9,13 @@
 
 RCT_EXPORT_MODULE(CameraPreviewManager)
 
-- (UIView*)view {
+- (UIView *)view {
   previewView = [[CameraPreviewView alloc] init];
   dispatch_async(dispatch_get_main_queue(), ^{
     CameraManager *cameraManager = [AppDelegate sharedCameraManager];
     self.previewView.previewLayer = cameraManager.previewLayer;
   });
-  return (UIView*)previewView;
+  return (UIView *)previewView;
 }
 
 @end

@@ -7,10 +7,10 @@
 
 #import "AppDelegate.h"
 
+#import "CaptionThis-Swift.h"
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
-#import "CaptionThis-Swift.h"
 
 @implementation AppDelegate
 
@@ -20,35 +20,35 @@ static PermissionsManager *_sharedPermissionsManager;
 static MediaLibraryManager *_sharedMediaLibraryManager;
 static VideoExportManager *_sharedVideoExportManager;
 
-+ (CameraManager*)sharedCameraManager {
++ (CameraManager *)sharedCameraManager {
   if (_sharedCameraManager == nil) {
     _sharedCameraManager = [[CameraManager alloc] init];
   }
   return _sharedCameraManager;
 }
 
-+ (SpeechManager*)sharedSpeechManager {
++ (SpeechManager *)sharedSpeechManager {
   if (_sharedSpeechManager == nil) {
     _sharedSpeechManager = [[SpeechManager alloc] init];
   }
   return _sharedSpeechManager;
 }
 
-+ (PermissionsManager*)sharedPermissionsManager {
++ (PermissionsManager *)sharedPermissionsManager {
   if (_sharedPermissionsManager == nil) {
     _sharedPermissionsManager = [[PermissionsManager alloc] init];
   }
   return _sharedPermissionsManager;
 }
 
-+ (MediaLibraryManager*)sharedMediaLibraryManager {
++ (MediaLibraryManager *)sharedMediaLibraryManager {
   if (_sharedMediaLibraryManager == nil) {
     _sharedMediaLibraryManager = [[MediaLibraryManager alloc] init];
   }
   return _sharedMediaLibraryManager;
 }
 
-+ (VideoExportManager*)sharedVideoExportManager {
++ (VideoExportManager *)sharedVideoExportManager {
   if (_sharedVideoExportManager == nil) {
     _sharedVideoExportManager = [[VideoExportManager alloc] init];
   }
@@ -63,28 +63,34 @@ static VideoExportManager *_sharedVideoExportManager;
   _sharedSpeechManager = sharedSpeechManager;
 }
 
-+ (void)setSharedPermissionsManager:(PermissionsManager *)sharedPermissionsManager {
++ (void)setSharedPermissionsManager:
+    (PermissionsManager *)sharedPermissionsManager {
   _sharedPermissionsManager = sharedPermissionsManager;
 }
 
-+ (void)setSharedMediaLibraryManager:(MediaLibraryManager *)sharedMediaLibraryManager {
++ (void)setSharedMediaLibraryManager:
+    (MediaLibraryManager *)sharedMediaLibraryManager {
   _sharedMediaLibraryManager = sharedMediaLibraryManager;
 }
 
-+ (void)setSharedVideoExportManager:(VideoExportManager *)sharedVideoExportManager {
++ (void)setSharedVideoExportManager:
+    (VideoExportManager *)sharedVideoExportManager {
   _sharedVideoExportManager = sharedVideoExportManager;
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application
+    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   NSURL *jsCodeLocation;
 
-  #ifdef DEBUG
-    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  #else
-    jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-  #endif
-  
+#ifdef DEBUG
+  jsCodeLocation =
+      [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"
+                                                     fallbackResource:nil];
+#else
+  jsCodeLocation =
+      [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#endif
+
   [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
   return YES;
 }

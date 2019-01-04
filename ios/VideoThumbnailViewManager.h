@@ -3,5 +3,5 @@
 #import <React/RCTViewManager.h>
 
 @class VideoThumbnailViewManager;
-@interface VideoThumbnailViewManager: RCTViewManager
+@interface VideoThumbnailViewManager : RCTViewManager
 @end

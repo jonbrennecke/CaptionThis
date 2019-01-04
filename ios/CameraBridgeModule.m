@@ -1,17 +1,15 @@
-#import <Photos/Photos.h>
-#import <React/RCTUtils.h>
 #import "CameraBridgeModule.h"
 #import "AppDelegate.h"
-#import "Debug.h"
 #import "CaptionThis-Swift.h"
+#import "Debug.h"
+#import <Photos/Photos.h>
+#import <React/RCTUtils.h>
 
-@implementation CameraBridgeModule
-{
+@implementation CameraBridgeModule {
   bool hasListeners;
 }
 
-- (instancetype)init
-{
+- (instancetype)init {
   self = [super init];
   if (self) {
     CameraManager *cameraManager = [AppDelegate sharedCameraManager];
@@ -28,15 +26,15 @@ RCT_EXPORT_METHOD(startCameraPreview) {
   [cameraManager startPreview];
 }
 
-RCT_EXPORT_METHOD(startCameraCapture:(RCTResponseSenderBlock)callback) {
-  [[AppDelegate sharedCameraManager] startCaptureWithCompletionHandler:
-   ^(NSError *error, BOOL success) {
-     if (error != nil) {
-       callback(@[error, @(NO)]);
-       return;
-     }
-     callback(@[[NSNull null], @(YES)]);
-  }];
+RCT_EXPORT_METHOD(startCameraCapture : (RCTResponseSenderBlock)callback) {
+  [[AppDelegate sharedCameraManager]
+      startCaptureWithCompletionHandler:^(NSError *error, BOOL success) {
+        if (error != nil) {
+          callback(@[ error, @(NO) ]);
+          return;
+        }
+        callback(@[ [NSNull null], @(YES) ]);
+      }];
 }
 
 RCT_EXPORT_METHOD(stopCameraCapture) {
@@ -47,11 +45,11 @@ RCT_EXPORT_METHOD(switchToOppositeCamera) {
   [[AppDelegate sharedCameraManager] switchToOppositeCamera];
 }
 
--(void)startObserving {
+- (void)startObserving {
   hasListeners = YES;
 }
 
--(void)stopObserving {
+- (void)stopObserving {
   hasListeners = NO;
 }
 
@@ -59,11 +57,12 @@ RCT_EXPORT_METHOD(switchToOppositeCamera) {
   return NO;
 }
 
-- (NSArray<NSString *>*)supportedEvents
-{
-  return @[@"cameraManagerDidFinishFileOutput", @"cameraManagerDidFinishFileOutputWithError"];
+- (NSArray<NSString *> *)supportedEvents {
+  return @[
+    @"cameraManagerDidFinishFileOutput",
+    @"cameraManagerDidFinishFileOutputWithError"
+  ];
 }
-
 
 #pragma mark - CameraManagerDelegate
 
@@ -71,26 +70,31 @@ RCT_EXPORT_METHOD(switchToOppositeCamera) {
   // unimplemented
 }
 
-- (void)cameraManagerDidFinishFileOutputToFileURL:(NSURL *)fileURL asset:(PHObjectPlaceholder *)asset error:(NSError *)error {
+- (void)cameraManagerDidFinishFileOutputToFileURL:(NSURL *)fileURL
+                                            asset:(PHObjectPlaceholder *)asset
+                                            error:(NSError *)error {
   if (!hasListeners) {
     return;
   }
   if (error) {
     [Debug logWithError:error];
-    NSString* description = error.localizedDescription;
-    NSDictionary<NSString*, id>* error = RCTMakeError(description, @{}, nil);
-    [self sendEventWithName:@"cameraManagerDidFinishFileOutputWithError" body:error];
+    NSString *description = error.localizedDescription;
+    NSDictionary<NSString *, id> *error = RCTMakeError(description, @{}, nil);
+    [self sendEventWithName:@"cameraManagerDidFinishFileOutputWithError"
+                       body:error];
     return;
   }
   if (!asset) {
-    [Debug logWithMessage:@"CameraManager failed to create file asset in Photos library."];
+    [Debug logWithMessage:
+               @"CameraManager failed to create file asset in Photos library."];
     return;
   }
-  NSDictionary *body = @{ @"localIdentifier": asset.localIdentifier };
+  NSDictionary *body = @{@"localIdentifier" : asset.localIdentifier};
   [self sendEventWithName:@"cameraManagerDidFinishFileOutput" body:body];
 }
 
-- (void)cameraManagerDidReceiveCameraDataOutputWithVideoData:(CMSampleBufferRef)videoData {
+- (void)cameraManagerDidReceiveCameraDataOutputWithVideoData:
+    (CMSampleBufferRef)videoData {
   // unimplemented
 }
 

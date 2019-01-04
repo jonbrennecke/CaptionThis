@@ -15,12 +15,12 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (nonatomic, strong) UIWindow *window;
+@property(nonatomic, strong) UIWindow *window;
 
-@property (class) CameraManager *sharedCameraManager;
-@property (class) SpeechManager *sharedSpeechManager;
-@property (class) PermissionsManager *sharedPermissionsManager;
-@property (class) MediaLibraryManager *sharedMediaLibraryManager;
-@property (class) VideoExportManager *sharedVideoExportManager;
+@property(class) CameraManager *sharedCameraManager;
+@property(class) SpeechManager *sharedSpeechManager;
+@property(class) PermissionsManager *sharedPermissionsManager;
+@property(class) MediaLibraryManager *sharedMediaLibraryManager;
+@property(class) VideoExportManager *sharedVideoExportManager;
 
 @end

@@ -1,10 +1,11 @@
 #pragma once
 
+#import "VideoSeekbarPreviewView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <React/RCTViewManager.h>
-#import "VideoSeekbarPreviewView.h"
 
 @class VideoSeekbarPreviewViewManager;
 @interface VideoSeekbarPreviewViewManager : RCTViewManager
-- (void)generateImagesWithAsset:(AVAsset *)asset withView:(VideoSeekbarPreviewView*)view;
+- (void)generateImagesWithAsset:(AVAsset *)asset
+                       withView:(VideoSeekbarPreviewView *)view;
 @end

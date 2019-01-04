@@ -2,13 +2,13 @@
 
 @implementation VideoSeekbarPreviewView
 
-- (instancetype)init
-{
+- (instancetype)init {
   self = [super init];
   if (self) {
-    NSMutableArray<UIImageView*>* imageViews = [[NSMutableArray alloc] initWithCapacity:SEEKBAR_NUMBER_OF_PREVIEW_FRAMES];
+    NSMutableArray<UIImageView *> *imageViews = [[NSMutableArray alloc]
+        initWithCapacity:SEEKBAR_NUMBER_OF_PREVIEW_FRAMES];
     for (size_t i = 0; i < SEEKBAR_NUMBER_OF_PREVIEW_FRAMES; i++) {
-      UIImageView* imageView = [[UIImageView alloc] init];
+      UIImageView *imageView = [[UIImageView alloc] init];
       imageView.contentMode = UIViewContentModeScaleAspectFill;
       imageView.layer.masksToBounds = YES;
       [imageViews addObject:imageView];
@@ -24,16 +24,16 @@
   CGFloat width = self.bounds.size.width / self.imageViews.count;
   CGFloat height = self.bounds.size.height;
   for (size_t i = 0; i < self.imageViews.count; i++) {
-    UIImageView* imageView = [self.imageViews objectAtIndex:i];
+    UIImageView *imageView = [self.imageViews objectAtIndex:i];
     imageView.frame = CGRectMake(width * i, 0, width, height);
   }
 }
 
--(void)setImage:(UIImage*)image atIndex:(NSUInteger)index {
+- (void)setImage:(UIImage *)image atIndex:(NSUInteger)index {
   if (index >= self.imageViews.count) {
     return;
   }
-  UIImageView* imageView = [self.imageViews objectAtIndex:index];
+  UIImageView *imageView = [self.imageViews objectAtIndex:index];
   if (!imageView) {
     return;
   }
@@ -43,4 +43,3 @@
 }
 
 @end
-

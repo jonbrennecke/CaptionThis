@@ -1,13 +1,12 @@
-#import <AVFoundation/AVFoundation.h>
-#import <Photos/Photos.h>
 #import "VideoPlayerViewManager.h"
 #import "CaptionThis-Swift.h"
+#import <AVFoundation/AVFoundation.h>
+#import <Photos/Photos.h>
 
 @implementation VideoPlayerViewWrap
 @synthesize playerView;
 
-- (instancetype)init
-{
+- (instancetype)init {
   self = [super init];
   if (self) {
     playerView = [[VideoPlayerView alloc] init];
@@ -36,32 +35,34 @@
   self.onVideoDidFailToLoad(@{});
 }
 
-- (void)videoPlayerDidBecomeReadyToPlayAsset:(AVAsset*)asset {
+- (void)videoPlayerDidBecomeReadyToPlayAsset:(AVAsset *)asset {
   if (!self.onVideoDidBecomeReadyToPlay) {
     return;
   }
-  NSNumber* duration = [NSNumber numberWithFloat:CMTimeGetSeconds(asset.duration)];
-  self.onVideoDidBecomeReadyToPlay(@{ @"duration": duration });
+  NSNumber *duration =
+      [NSNumber numberWithFloat:CMTimeGetSeconds(asset.duration)];
+  self.onVideoDidBecomeReadyToPlay(@{@"duration" : duration});
 }
 
 - (void)videoPlayerDidPause {
   if (!self.onVideoDidPause) {
     return;
   }
-  NSDictionary* body = @{};
+  NSDictionary *body = @{};
   self.onVideoDidPause(body);
 }
 
-- (void)videoPlayerDidUpdatePlaybackTime:(CMTime)time duration:(CMTime)duration {
+- (void)videoPlayerDidUpdatePlaybackTime:(CMTime)time
+                                duration:(CMTime)duration {
   if (!self.onVideoDidUpdatePlaybackTime) {
     return;
   }
-  NSNumber* durationNumber = [NSNumber numberWithFloat:CMTimeGetSeconds(duration)];
-  NSNumber* playbackTimeNumber = [NSNumber numberWithFloat:CMTimeGetSeconds(time)];
-  NSDictionary* body = @{
-    @"duration": durationNumber,
-    @"playbackTime": playbackTimeNumber
-  };
+  NSNumber *durationNumber =
+      [NSNumber numberWithFloat:CMTimeGetSeconds(duration)];
+  NSNumber *playbackTimeNumber =
+      [NSNumber numberWithFloat:CMTimeGetSeconds(time)];
+  NSDictionary *body =
+      @{@"duration" : durationNumber, @"playbackTime" : playbackTimeNumber};
   self.onVideoDidUpdatePlaybackTime(body);
 }
 
@@ -77,29 +78,36 @@ RCT_EXPORT_VIEW_PROPERTY(onVideoDidPause, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidUpdatePlaybackTime, RCTBubblingEventBlock)
 
 RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
-  NSString* localIdentifier = [RCTConvert NSString:json];
-  PHFetchResult<PHAsset*> *fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[localIdentifier] options:nil];
+  NSString *localIdentifier = [RCTConvert NSString:json];
+  PHFetchResult<PHAsset *> *fetchResult =
+      [PHAsset fetchAssetsWithLocalIdentifiers:@[ localIdentifier ]
+                                       options:nil];
   PHAsset *asset = fetchResult.firstObject;
   if (asset == nil) {
     return;
   }
-  PHVideoRequestOptions* requestOptions = [[PHVideoRequestOptions alloc] init];
-  requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+  PHVideoRequestOptions *requestOptions = [[PHVideoRequestOptions alloc] init];
+  requestOptions.deliveryMode =
+      PHImageRequestOptionsDeliveryModeHighQualityFormat;
   [PHImageManager.defaultManager
-   requestAVAssetForVideo:asset
-   options:requestOptions
-   resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
-     VideoPlayerViewWrap *playerViewWrap = (VideoPlayerViewWrap*)view;
-     playerViewWrap.playerView.asset = asset;
-   }];
+      requestAVAssetForVideo:asset
+                     options:requestOptions
+               resultHandler:^(AVAsset *_Nullable asset,
+                               AVAudioMix *_Nullable audioMix,
+                               NSDictionary *_Nullable info) {
+                 VideoPlayerViewWrap *playerViewWrap =
+                     (VideoPlayerViewWrap *)view;
+                 playerViewWrap.playerView.asset = asset;
+               }];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(startPosition, NSNumber, VideoPlayerViewWrap) {
-  NSNumber* startPosition = [RCTConvert NSNumber:json];
+  NSNumber *startPosition = [RCTConvert NSNumber:json];
   CMTime time = CMTimeMakeWithSeconds([startPosition floatValue], 1);
-  [view.playerView seekTo:time completionHandler:^(BOOL success) {
-    [view.playerView play];
-  }];
+  [view.playerView seekTo:time
+        completionHandler:^(BOOL success) {
+          [view.playerView play];
+        }];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(isPlaying, BOOL, VideoPlayerViewWrap) {
@@ -107,13 +115,12 @@ RCT_CUSTOM_VIEW_PROPERTY(isPlaying, BOOL, VideoPlayerViewWrap) {
   if (isPlaying) {
     [view.playerView play];
     return;
-  }
-  else {
+  } else {
     [view.playerView pause];
   }
 }
 
-- (UIView*)view {
+- (UIView *)view {
   VideoPlayerViewWrap *view = [[VideoPlayerViewWrap alloc] init];
   return view;
 }

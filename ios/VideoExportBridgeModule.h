@@ -2,5 +2,5 @@
 
 #import <React/RCTBridgeModule.h>
 
-@interface VideoExportBridgeModule : NSObject<RCTBridgeModule>
+@interface VideoExportBridgeModule : NSObject <RCTBridgeModule>
 @end
