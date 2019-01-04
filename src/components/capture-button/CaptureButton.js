@@ -1,6 +1,11 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Animated, TouchableWithoutFeedback, MaskedViewIOS } from 'react-native';
+import {
+  View,
+  Animated,
+  TouchableWithoutFeedback,
+  MaskedViewIOS,
+} from 'react-native';
 import { autobind } from 'core-decorators';
 import { BlurView } from 'react-native-blur';
 import LinearGradient from 'react-native-linear-gradient';
@@ -75,7 +80,7 @@ const styles = {
     right: 0,
     bottom: 0,
     backgroundColor: Color.hexToRgbaString('white', 0.1),
-  }
+  },
 };
 
 // $FlowFixMe
@@ -136,16 +141,12 @@ export default class ColorPicker extends Component<Props> {
               useAngle
               angle={-45}
               angleCenter={{ x: 0.5, y: 0.5 }}
-              colors={[
-                UI_COLORS.LIGHT_GREEN,
-                UI_COLORS.MEDIUM_GREEN
-              ]}
+              colors={[UI_COLORS.LIGHT_GREEN, UI_COLORS.MEDIUM_GREEN]}
               style={styles.gradient}
             >
-              <View style={styles.linearGradientInner}/>
+              <View style={styles.linearGradientInner} />
             </LinearGradient>
           </MaskedViewIOS>
-          
         </Animated.View>
       </TouchableWithoutFeedback>
     );

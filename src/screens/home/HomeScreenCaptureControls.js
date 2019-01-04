@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 
 import CaptureButton from '../../components/capture-button/CaptureButton';
-import VideoThumbnailView from '../../components/video-thumbnail-view/VideoThumbnailView';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
+import HomeScreenCameraRollButton from './HomeScreenCameraRollButton';
 import { UI_COLORS } from '../../constants';
 
 import type { Style } from '../../types/react';
@@ -65,19 +65,11 @@ export default function HomeScreenCaptureControls({
 }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity
+      <HomeScreenCameraRollButton
+        videoAssetIdentifier={videoAssetIdentifier}
         onPress={onRequestOpenCameraRoll}
         style={styles.cameraRollButton}
-      >
-        <View style={styles.buttonInside}>
-          {videoAssetIdentifier && (
-            <VideoThumbnailView
-              style={styles.flex}
-              videoAssetIdentifier={videoAssetIdentifier}
-            />
-          )}
-        </View>
-      </TouchableOpacity>
+      />
       <CaptureButton
         onRequestBeginCapture={onRequestBeginCapture}
         onRequestEndCapture={onRequestEndCapture}
