@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, MaskedViewIOS, TouchableOpacity } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 import VideoThumbnailView from '../../components/video-thumbnail-view/VideoThumbnailView';
 import { UI_COLORS } from '../../constants';
@@ -15,12 +16,7 @@ type Props = {
 };
 
 const styles = {
-  cameraRollButton: {
-    height: 37,
-    width: 37,
-    borderRadius: 5,
-    borderWidth: 2.5,
-    borderColor: UI_COLORS.OFF_WHITE,
+  container: {
     shadowColor: UI_COLORS.BLACK,
     shadowOpacity: 0.25,
     shadowOffset: {
@@ -31,11 +27,43 @@ const styles = {
   },
   buttonInside: {
     flex: 1,
-    borderRadius: 3,
+    borderRadius: 5,
     overflow: 'hidden',
+    backgroundColor: UI_COLORS.MEDIUM_GREEN,
   },
   flex: {
     flex: 1,
+  },
+  borderMask: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+  border: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    borderRadius: 5,
+    borderWidth: 2.5,
+    borderColor: UI_COLORS.OFF_WHITE,
+  },
+  gradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  linearGradientInner: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 };
 
@@ -45,10 +73,7 @@ export default function HomeScreenCameraRollButton({
   videoAssetIdentifier,
 }: Props) {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[styles.cameraRollButton, style]}
-    >
+    <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <View style={styles.buttonInside}>
         {videoAssetIdentifier && (
           <VideoThumbnailView
@@ -57,6 +82,21 @@ export default function HomeScreenCameraRollButton({
           />
         )}
       </View>
+      <MaskedViewIOS
+        style={styles.borderMask}
+        maskElement={<View style={styles.border} />}
+      >
+        <LinearGradient
+          pointerEvents="none"
+          useAngle
+          angle={-45}
+          angleCenter={{ x: 0.5, y: 0.5 }}
+          colors={[UI_COLORS.LIGHT_GREEN, UI_COLORS.MEDIUM_GREEN]}
+          style={styles.gradient}
+        >
+          <View style={styles.linearGradientInner} />
+        </LinearGradient>
+      </MaskedViewIOS>
     </TouchableOpacity>
   );
 }

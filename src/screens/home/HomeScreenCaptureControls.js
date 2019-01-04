@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import CaptureButton from '../../components/capture-button/CaptureButton';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
 import HomeScreenCameraRollButton from './HomeScreenCameraRollButton';
-import { UI_COLORS } from '../../constants';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
@@ -30,16 +29,6 @@ const styles = {
   cameraRollButton: {
     height: 37,
     width: 37,
-    borderRadius: 5,
-    borderWidth: 2.5,
-    borderColor: UI_COLORS.OFF_WHITE,
-    shadowColor: UI_COLORS.BLACK,
-    shadowOpacity: 0.25,
-    shadowOffset: {
-      width: 1,
-      height: 4,
-    },
-    shadowRadius: 5,
   },
   buttonInside: {
     flex: 1,
