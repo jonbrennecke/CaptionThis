@@ -1,0 +1,45 @@
+lane :beta do |options|
+  Fastlane::LaneManager.cruise_lane("android", "beta", options)
+  Fastlane::LaneManager.cruise_lane("ios", "beta", options)
+end
+
+lane :build do |options|
+  Fastlane::LaneManager.cruise_lane("android", "build", options)
+  Fastlane::LaneManager.cruise_lane("ios", "build", options)
+end
+
+platform :ios do |options|
+  lane :build do |options|
+    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+    team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
+    match(
+      type: 'adhoc',
+      team_id: team_id,
+      app_identifier: app_identifier
+    )
+    gym(
+      project: './ios/CaptionThis.xcodeproj',
+      scheme: "CaptionThis",
+      export_method: "ad-hoc"
+    )
+  end
+
+  lane :deploy_beta do |options|
+    crashlytics_tester_groups = ['beta']
+    crashlytics_api_token = ENV['CRASHLYTICS_API_TOKEN']
+    crashlytics_build_secret = ENV['CRASHLYTICS_BUILD_SECRET']
+    File.write("changelog.txt", changelog_from_git_commits)
+    crashlytics(
+      api_token: crashlytics_api_token,
+      build_secret: crashlytics_build_secret,
+      groups: crashlytics_tester_groups,
+      notes_path: "fastlane/changelog.txt",
+      notifications: true
+    )
+  end
+
+  lane :beta do |options|
+    build
+    deploy_beta
+  end
+end

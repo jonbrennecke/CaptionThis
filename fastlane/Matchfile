@@ -1,0 +1,7 @@
+git_url("git@gitlab.com:jonbrennecke/caption-this-certs.git")
+
+type("development")
+
+app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+
+username("jpbrennecke@gmail.com")
