@@ -69,7 +69,6 @@
 		FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */; };
 		FC880E0321D5DC4100856037 /* VideoThumbnailViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */; };
 		FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */; };
-		FC9374E221DEED2E00FD2700 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374E121DEED2E00FD2700 /* TranscriptView.swift */; };
 		FC9374E421DEED4D00FD2700 /* TranscriptViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */; };
 		FC9374E821DEF02C00FD2700 /* VideoAnimationComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */; };
 		FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971321DC933D00347CAB /* VideoExportManager.swift */; };
@@ -514,7 +513,6 @@
 		FC880E0121D5DC3500856037 /* VideoThumbnailViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoThumbnailViewManager.h; sourceTree = "<group>"; };
 		FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoThumbnailViewManager.m; sourceTree = "<group>"; };
 		FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredTextLayer.swift; sourceTree = "<group>"; };
-		FC9374E121DEED2E00FD2700 /* TranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
 		FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TranscriptViewManager.m; sourceTree = "<group>"; };
 		FC9374E521DEED5800FD2700 /* TranscriptViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TranscriptViewManager.h; sourceTree = "<group>"; };
 		FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationComposition.swift; sourceTree = "<group>"; };
@@ -973,7 +971,6 @@
 			children = (
 				FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */,
 				FC9374E521DEED5800FD2700 /* TranscriptViewManager.h */,
-				FC9374E121DEED2E00FD2700 /* TranscriptView.swift */,
 			);
 			path = TranscriptViewManager;
 			sourceTree = "<group>";
@@ -1687,7 +1684,6 @@
 				FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */,
 				FCA3971621DC937C00347CAB /* VideoAnimationLayer.swift in Sources */,
 				FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */,
-				FC9374E221DEED2E00FD2700 /* TranscriptView.swift in Sources */,
 				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
 				FC7A0F6321D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m in Sources */,
 				FC9374E421DEED4D00FD2700 /* TranscriptViewManager.m in Sources */,

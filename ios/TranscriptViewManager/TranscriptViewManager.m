@@ -5,9 +5,32 @@
 
 @implementation TranscriptViewManager
 
+@synthesize animationParams;
+
+- (instancetype)init
+{
+  self = [super init];
+  if (self) {
+    animationParams = [[VideoAnimationParams alloc] init];
+  }
+  return self;
+}
+
+- (void)updateAnimationWithView:(UIView*)view {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    VideoAnimationLayer* animationLayer = [[VideoAnimationLayer alloc] initFor:VideoAnimationOutputKindView];
+    animationLayer.frame = CGRectMake(0, 0, view.frame.size.width, view.frame.size.height);
+    [animationLayer animateWithParams:self->animationParams];
+    animationLayer.beginTime = CACurrentMediaTime();
+    [view.layer insertSublayer:animationLayer atIndex:0];
+  });
+}
+
+#pragma MARK - React Native Module
+
 RCT_EXPORT_MODULE()
 
-RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSArray*, TranscriptView) {
+RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSArray*, UIView) {
   NSMutableArray<TextSegmentParams*>* textSegments = [[NSMutableArray alloc] init];
   for (NSDictionary* segment in json) {
     NSString* text = [segment objectForKey:@"text"];
@@ -16,27 +39,31 @@ RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSArray*, TranscriptView) {
     TextSegmentParams* params = [[TextSegmentParams alloc] initWithText:text duration:[duration floatValue] timestamp:[timestamp floatValue]];
     [textSegments addObject:params];
   }
-  view.textSegments = textSegments;
+  animationParams.textSegments = textSegments;
+  [self updateAnimationWithView:view];
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(backgroundColor, UIColor*, TranscriptView) {
+RCT_CUSTOM_VIEW_PROPERTY(backgroundColor, UIColor*, UIView) {
   UIColor* backgroundColor = [RCTConvert UIColor:json];
-  view.backgroundColor = backgroundColor;
+  animationParams.backgroundColor = backgroundColor;
+  [self updateAnimationWithView:view];
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(textColor, UIColor*, TranscriptView) {
+RCT_CUSTOM_VIEW_PROPERTY(textColor, UIColor*, UIView) {
   UIColor* textColor = [RCTConvert UIColor:json];
-  view.textColor = textColor;
+  animationParams.textColor = textColor;
+  [self updateAnimationWithView:view];
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(fontFamily, NSString*, TranscriptView) {
+RCT_CUSTOM_VIEW_PROPERTY(fontFamily, NSString*, UIView) {
   NSString* fontFamily = [RCTConvert NSString:json];
-  view.fontFamily = fontFamily;
+  animationParams.fontFamily = fontFamily;
+  [self updateAnimationWithView:view];
 }
 
 - (UIView*)view {
-  TranscriptView *view = [[TranscriptView alloc] init];
-  return (UIView*)view;
+  UIView *view = [[UIView alloc] init];
+  return view;
 }
 
 @end

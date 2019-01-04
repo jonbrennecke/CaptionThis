@@ -3,11 +3,13 @@ import UIKit
 
 let MAX_CHARACTERS_PER_LINE: Int = 40
 
-enum VideoAnimationOutputKind {
+@objc
+enum VideoAnimationOutputKind : Int {
   case export
   case view
 }
 
+@objc
 class VideoAnimationLayer : CALayer {
 
   private let paddingHorizontal: CGFloat = 20
@@ -18,6 +20,7 @@ class VideoAnimationLayer : CALayer {
     fatalError("init?(coder:) has not been implemented for VideoAnimationLayer")
   }
   
+  @objc
   init(for outputKind: VideoAnimationOutputKind) {
     self.outputKind = outputKind
     super.init()
@@ -26,6 +29,7 @@ class VideoAnimationLayer : CALayer {
     opacity = 0.0
   }
   
+  @objc
   public func animate(withParams params: VideoAnimationParams) {
     backgroundColor = params.backgroundColor?.cgColor
     var textLayers = [CATextLayer]()
