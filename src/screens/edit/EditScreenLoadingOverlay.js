@@ -37,12 +37,7 @@ const styles = {
 };
 
 export default class EditScreenExportingOverlay extends Component<Props> {
-  anim: Animated.Value;
-
-  constructor(props: Props) {
-    super(props);
-    this.anim = new Animated.Value(this.props.isVisible ? 1 : 0);
-  }
+  anim: Animated.Value = new Animated.Value(0);
 
   componentDidMount() {
     if (this.props.isVisible) {
@@ -82,7 +77,7 @@ export default class EditScreenExportingOverlay extends Component<Props> {
       >
         <BlurView style={styles.blurView} blurType="dark" />
         <SafeAreaView style={styles.flexCenter}>
-          <Text style={styles.title}>Saving your video...</Text>
+          <Text style={styles.title}>Loading...</Text>
         </SafeAreaView>
       </Animated.View>
     );

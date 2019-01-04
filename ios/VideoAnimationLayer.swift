@@ -3,28 +3,40 @@ import UIKit
 
 let MAX_CHARACTERS_PER_LINE: Int = 40
 
-class VideoAnimation {
-  
-  private let containerOffsetFromBottom: CGFloat = 120
-  private let containerHeight: CGFloat = 200
+enum VideoAnimationOutputKind {
+  case export
+  case view
+}
+
+class VideoAnimationLayer : CALayer {
+
   private let paddingHorizontal: CGFloat = 20
-  private let fontSize: CGFloat = 60
+  private let fontSize: CGFloat = 17
+  private let outputKind: VideoAnimationOutputKind
   
-  public let containerLayer = CALayer()
-  
-  init() {
-    containerLayer.masksToBounds = true
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init?(coder:) has not been implemented for VideoAnimationLayer")
   }
   
-  public func animate(withParams params: VideoAnimationParams) -> CALayer {
-    containerLayer.backgroundColor = params.backgroundColor?.cgColor
+  init(for outputKind: VideoAnimationOutputKind) {
+    self.outputKind = outputKind
+    super.init()
+    contentsScale = UIScreen.main.scale
+    masksToBounds = true
+    opacity = 0.0
+  }
+  
+  public func animate(withParams params: VideoAnimationParams) {
+    backgroundColor = params.backgroundColor?.cgColor
     var textLayers = [CATextLayer]()
     params.textSegments?.forEach { segment in
-      let outOfFrameTopY = containerLayer.frame.height * 1.25
-      let inFrameTopY = containerLayer.frame.height * 0.75
-      let inFrameMiddleY = containerLayer.frame.height * 0.5
-      let inFrameBottomY = containerLayer.frame.height * 0.25
-      let outOfFrameBottomY = -containerLayer.frame.height * 0.25
+      let multiplier: CGFloat = outputKind == .view ? -1 : 1
+      let offset: CGFloat = outputKind == .view ? frame.height : 0
+      let outOfFrameTopY = frame.height * 1.25 * multiplier + offset
+      let inFrameTopY = frame.height * 0.75 * multiplier + offset
+      let inFrameMiddleY = frame.height * 0.5 * multiplier + offset
+      let inFrameBottomY = frame.height * 0.25 * multiplier + offset
+      let outOfFrameBottomY = -frame.height * 0.25 * multiplier + offset
       guard let bottomTextLayer = textLayers.last else {
         let textLayer = self.addTextLayer(withParams: params, text: segment.text)
         textLayer.position.y = inFrameMiddleY
@@ -73,9 +85,8 @@ class VideoAnimation {
       }
     }
     guard let firstSegment = params.textSegments?.first else {
-      return containerLayer
+      return
     }
-    containerLayer.opacity = 0.0
     let animationIn = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
     animationIn.fromValue = 0.0
     animationIn.toValue = 1.0
@@ -83,9 +94,8 @@ class VideoAnimation {
     animationIn.isRemovedOnCompletion = false
     animationIn.beginTime = AVCoreAnimationBeginTimeAtZero + Double(firstSegment.timestamp)
     animationIn.duration = 0.3
-    containerLayer.add(animationIn, forKey: nil)
+    add(animationIn, forKey: nil)
     // TODO fade out after last segment duration is complete (+delay)
-    return containerLayer
   }
   
   private func animateFadeIn(atTime beginTime: CFTimeInterval, withDuration duration: CFTimeInterval = 0.25) -> CABasicAnimation {
@@ -126,17 +136,18 @@ class VideoAnimation {
   
   private func addTextLayer(withParams params: VideoAnimationParams, text: String) -> CATextLayer {
     let textLayer = CenteredTextLayer()
-    let height = containerLayer.frame.height / 2
-    let width = containerLayer.frame.width - paddingHorizontal
+    textLayer.contentsScale = UIScreen.main.scale
+    let height = frame.height / 2
+    let width = frame.width - paddingHorizontal
     textLayer.frame = CGRect(x: paddingHorizontal, y: 0, width: width, height: height)
     textLayer.alignmentMode = .left
-    textLayer.fontSize = fontSize
+    let fontSizeMultiplier = outputKind == .export ? UIScreen.main.scale : 1
+    textLayer.fontSize = fontSize * fontSizeMultiplier
     textLayer.truncationMode = .start
-    textLayer.contentsScale = UIScreen.main.scale
     textLayer.font = params.fontFamily as CFTypeRef
     textLayer.foregroundColor = params.textColor?.cgColor
     textLayer.string = text
-    containerLayer.addSublayer(textLayer)
+    addSublayer(textLayer)
     return textLayer
   }
 }

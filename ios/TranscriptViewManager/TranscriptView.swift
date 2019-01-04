@@ -4,7 +4,17 @@ import UIKit
 class TranscriptView : UIView {
   
   private var animationParams = VideoAnimationParams()
-  private let animation = VideoAnimation()
+  
+  // FIXME
+  override var backgroundColor: UIColor? {
+    set {
+      animationParams.backgroundColor = newValue
+      updateAnimation()
+    }
+    get {
+      return animationParams.backgroundColor
+    }
+  }
   
   @objc
   public var textSegments: [TextSegmentParams]? {
@@ -31,9 +41,13 @@ class TranscriptView : UIView {
   }
   
   private func updateAnimation() {
-    let animationLayer = animation.animate(withParams: animationParams)
-    layer.addSublayer(animationLayer)
-    animationLayer.frame = bounds
+    DispatchQueue.main.async {
+      let animationLayer = VideoAnimationLayer(for: .view)
+      animationLayer.frame = CGRect(origin: .zero, size: self.frame.size)
+      animationLayer.animate(withParams: self.animationParams)
+      animationLayer.beginTime = CACurrentMediaTime()
+      self.layer.insertSublayer(animationLayer, at: 0)
+    }
   }
   
 }

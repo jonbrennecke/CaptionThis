@@ -11,7 +11,7 @@ class VideoAnimationComposition {
   private let videoLayer = CALayer()
   private let parentLayer = CALayer()
   
-  private var videoSize: CGSize {
+  public var videoSize: CGSize {
     get {
       let originalSize = videoTrack.naturalSize
       return CGSize(width: originalSize.height, height: originalSize.width)
@@ -46,9 +46,7 @@ class VideoAnimationComposition {
   }
   
   public func add(effectLayer layer: CALayer) {
-//    layer.frame = CGRect(x: 0, y: containerOffsetFromBottom, width: videoSize.width, height: containerHeight)
     effectLayer.addSublayer(layer)
-    
   }
   
   public func exportVideo(_ completionHandler: @escaping (Error?, Bool, URL?) -> ()) {

@@ -3,6 +3,10 @@ import AVFoundation
 
 @objc
 class VideoExportManager : NSObject {
+  
+  private let containerOffsetFromBottom: CGFloat = 120
+  private let containerHeight: CGFloat = 200
+  
   @objc
   public func exportVideo(withLocalIdentifier localIdentifier: String,
                           animationParams: VideoAnimationParams,
@@ -25,9 +29,11 @@ class VideoExportManager : NSObject {
         completionHandler(nil, false)
         return
       }
-      let animation = VideoAnimation()
-      animation.animate(withParams: animationParams)
-      composition.add(effectLayer: animation.containerLayer)
+      
+      let animationLayer = VideoAnimationLayer(for: .export)
+      animationLayer.frame = CGRect(x: 0, y: self.containerOffsetFromBottom, width: composition.videoSize.width, height: self.containerHeight)
+      animationLayer.animate(withParams: animationParams)
+      composition.add(effectLayer: animationLayer)
       composition.exportVideo() { error, success, url in
         if let error = error {
           completionHandler(error, false)

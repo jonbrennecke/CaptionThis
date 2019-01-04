@@ -8,6 +8,7 @@ export type SpeechTranscriptionSegment = {
 };
 
 export type SpeechTranscription = {
+  isFinal: boolean,
   formattedString: string,
   segments: SpeechTranscriptionSegment[],
 };
