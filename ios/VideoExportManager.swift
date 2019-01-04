@@ -1,17 +1,15 @@
-import Photos
 import AVFoundation
+import Photos
 
 @objc
-class VideoExportManager : NSObject {
-  
+class VideoExportManager: NSObject {
   private let containerOffsetFromBottom: CGFloat = 120
   private let containerHeight: CGFloat = 200
-  
+
   @objc
   public func exportVideo(withLocalIdentifier localIdentifier: String,
                           animationParams: VideoAnimationParams,
-                          completionHandler: @escaping (Error?, Bool) -> ())
-  {
+                          completionHandler: @escaping (Error?, Bool) -> Void) {
     let options = PHFetchOptions()
     let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: options)
     guard let photosAsset = fetchResult.firstObject else {
@@ -19,7 +17,7 @@ class VideoExportManager : NSObject {
       completionHandler(nil, false)
       return
     }
-    PHImageManager.default().requestAVAsset(forVideo: photosAsset, options: nil) { (asset, _, _) in
+    PHImageManager.default().requestAVAsset(forVideo: photosAsset, options: nil) { asset, _, _ in
       guard let asset = asset else {
         Debug.log(format: "Request for AVAsset failed. Local identifier = %@", localIdentifier)
         completionHandler(nil, false)
@@ -29,12 +27,12 @@ class VideoExportManager : NSObject {
         completionHandler(nil, false)
         return
       }
-      
+
       let animationLayer = VideoAnimationLayer(for: .export)
       animationLayer.frame = CGRect(x: 0, y: self.containerOffsetFromBottom, width: composition.videoSize.width, height: self.containerHeight)
       animationLayer.animate(withParams: animationParams)
       composition.add(effectLayer: animationLayer)
-      composition.exportVideo() { error, success, url in
+      composition.exportVideo { error, success, url in
         if let error = error {
           completionHandler(error, false)
           return
@@ -43,15 +41,15 @@ class VideoExportManager : NSObject {
           completionHandler(nil, false)
           return
         }
-        self.createVideoAsset(forURL: url) { (error, success, object) in
+        self.createVideoAsset(forURL: url) { error, success, _ in
           completionHandler(error, success)
         }
       }
     }
   }
-  
-  private func createVideoAsset(forURL url: URL, _ completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> ()) {
-    self.withAlbum() { error, success, album in
+
+  private func createVideoAsset(forURL url: URL, _ completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> Void) {
+    withAlbum { error, success, album in
       guard let album = album else {
         Debug.log(format: "Failed to find album. Success = %@", success ? "true" : "false")
         completionHandler(nil, false, nil)
@@ -71,8 +69,7 @@ class VideoExportManager : NSObject {
           }
           albumChangeRequest.addAssets([placeholder] as NSArray)
           assetPlaceholder = placeholder
-        }
-        else {
+        } else {
           fatalError("This app only supports iOS 9.0 or above.")
         }
       }) { success, error in
@@ -90,8 +87,8 @@ class VideoExportManager : NSObject {
       }
     }
   }
-  
-  private func withAlbum(_ completionHandler: @escaping (Error?, Bool, PHAssetCollection?) -> ()) {
+
+  private func withAlbum(_ completionHandler: @escaping (Error?, Bool, PHAssetCollection?) -> Void) {
     let fetchOptions = PHFetchOptions()
     fetchOptions.predicate = NSPredicate(format: "title = %@", PhotosAlbum.albumTitle)
     let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: fetchOptions)

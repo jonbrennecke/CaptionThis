@@ -9,10 +9,9 @@ protocol MediaLibraryManagerDelegate {
 
 @objc
 class MediaLibraryManager: NSObject {
-  
   @objc
   public var delegate: MediaLibraryManagerDelegate?
-  
+
   @objc
   public func getVideoAssetsFromLibrary() -> [PHAsset] {
     let fetchOptions = PHFetchOptions()
@@ -20,12 +19,10 @@ class MediaLibraryManager: NSObject {
     fetchOptions.fetchLimit = FETCH_LIMIT
     let videoAssets = PHAsset.fetchAssets(with: .video, options: fetchOptions)
     var videoAssetArray = Array<PHAsset>()
-    for i in 0..<videoAssets.count {
+    for i in 0 ..< videoAssets.count {
       let videoAsset = videoAssets.object(at: i)
       videoAssetArray.append(videoAsset)
     }
     return videoAssetArray
   }
-  
-  
 }
