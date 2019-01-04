@@ -24,11 +24,11 @@ RCT_EXPORT_METHOD(exportVideo:(NSDictionary<NSString*, id>*)params withCallback:
     TextSegmentParams* params = [[TextSegmentParams alloc] initWithText:text duration:[duration floatValue] timestamp:[timestamp floatValue]];
     [textSegments addObject:params];
   }
-  VideoAnimationParams *animationParams = [[VideoAnimationParams alloc]
-                                           initWithTextSegments:textSegments
-                                           fontFamily:fontFamily
-                                           backgroundColor:backgroundColor
-                                           textColor:textColor];
+  VideoAnimationParams *animationParams = [[VideoAnimationParams alloc] init];
+  animationParams.textSegments = textSegments;
+  animationParams.fontFamily = fontFamily;
+  animationParams.backgroundColor = backgroundColor;
+  animationParams.textColor = textColor;
   [AppDelegate.sharedVideoExportManager
    exportVideoWithLocalIdentifier:localIdentifier
    animationParams:animationParams

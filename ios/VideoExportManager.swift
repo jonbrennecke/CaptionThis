@@ -21,12 +21,14 @@ class VideoExportManager : NSObject {
         completionHandler(nil, false)
         return
       }
-      guard let animation = VideoAnimation(withAsset: asset) else {
+      guard let composition = VideoAnimationComposition(withAsset: asset) else {
         completionHandler(nil, false)
         return
       }
+      let animation = VideoAnimation()
       animation.animate(withParams: animationParams)
-      animation.exportVideo() { error, success, url in
+      composition.add(effectLayer: animation.containerLayer)
+      composition.exportVideo() { error, success, url in
         if let error = error {
           completionHandler(error, false)
           return

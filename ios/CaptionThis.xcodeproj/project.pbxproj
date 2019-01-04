@@ -69,6 +69,9 @@
 		FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */; };
 		FC880E0321D5DC4100856037 /* VideoThumbnailViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */; };
 		FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */; };
+		FC9374E221DEED2E00FD2700 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374E121DEED2E00FD2700 /* TranscriptView.swift */; };
+		FC9374E421DEED4D00FD2700 /* TranscriptViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */; };
+		FC9374E821DEF02C00FD2700 /* VideoAnimationComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */; };
 		FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971321DC933D00347CAB /* VideoExportManager.swift */; };
 		FCA3971621DC937C00347CAB /* VideoAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971521DC937C00347CAB /* VideoAnimation.swift */; };
 		FCA3971821DC93AF00347CAB /* constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971721DC93AF00347CAB /* constants.swift */; };
@@ -511,6 +514,10 @@
 		FC880E0121D5DC3500856037 /* VideoThumbnailViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoThumbnailViewManager.h; sourceTree = "<group>"; };
 		FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoThumbnailViewManager.m; sourceTree = "<group>"; };
 		FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredTextLayer.swift; sourceTree = "<group>"; };
+		FC9374E121DEED2E00FD2700 /* TranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
+		FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TranscriptViewManager.m; sourceTree = "<group>"; };
+		FC9374E521DEED5800FD2700 /* TranscriptViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TranscriptViewManager.h; sourceTree = "<group>"; };
+		FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationComposition.swift; sourceTree = "<group>"; };
 		FCA3971321DC933D00347CAB /* VideoExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExportManager.swift; sourceTree = "<group>"; };
 		FCA3971521DC937C00347CAB /* VideoAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimation.swift; sourceTree = "<group>"; };
 		FCA3971721DC93AF00347CAB /* constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constants.swift; sourceTree = "<group>"; };
@@ -687,6 +694,12 @@
 				FC6EA81321D45266007C3B3E /* SpeechManager.swift */,
 				FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */,
 				FC6EA81521D45340007C3B3E /* PermissionsManager.swift */,
+				FCA3971721DC93AF00347CAB /* constants.swift */,
+				FCA3971321DC933D00347CAB /* VideoExportManager.swift */,
+				FCA3971521DC937C00347CAB /* VideoAnimation.swift */,
+				FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */,
+				FCA3971D21DCB3B500347CAB /* VideoAnimationParams.swift */,
+				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
 				FC880D9421D4A48E00856037 /* CameraPreviewView */,
 				FC880D9321D49EA900856037 /* CameraBridgeModule */,
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
@@ -699,12 +712,8 @@
 				FC7A0F8621D8AB5D00751DBE /* HueGradientViewManager */,
 				FC7A0F6121D89CCC00751DBE /* SaturationAndBrightnessGradientViewManager */,
 				FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */,
-				FCA3971721DC93AF00347CAB /* constants.swift */,
-				FCA3971521DC937C00347CAB /* VideoAnimation.swift */,
-				FCA3971321DC933D00347CAB /* VideoExportManager.swift */,
-				FCA3971D21DCB3B500347CAB /* VideoAnimationParams.swift */,
 				FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */,
-				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
+				FC9374E621DEED6700FD2700 /* TranscriptViewManager */,
 			);
 			name = CaptionThis;
 			sourceTree = "<group>";
@@ -957,6 +966,16 @@
 				FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */,
 			);
 			name = VideoThumbnailViewManager;
+			sourceTree = "<group>";
+		};
+		FC9374E621DEED6700FD2700 /* TranscriptViewManager */ = {
+			isa = PBXGroup;
+			children = (
+				FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */,
+				FC9374E521DEED5800FD2700 /* TranscriptViewManager.h */,
+				FC9374E121DEED2E00FD2700 /* TranscriptView.swift */,
+			);
+			path = TranscriptViewManager;
 			sourceTree = "<group>";
 		};
 		FC983DD021CDAF6800063476 /* Products */ = {
@@ -1668,8 +1687,10 @@
 				FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */,
 				FCA3971621DC937C00347CAB /* VideoAnimation.swift in Sources */,
 				FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */,
+				FC9374E221DEED2E00FD2700 /* TranscriptView.swift in Sources */,
 				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
 				FC7A0F6321D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m in Sources */,
+				FC9374E421DEED4D00FD2700 /* TranscriptViewManager.m in Sources */,
 				FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */,
 				FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */,
 				FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */,
@@ -1687,6 +1708,7 @@
 				FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */,
 				FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */,
 				FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */,
+				FC9374E821DEF02C00FD2700 /* VideoAnimationComposition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

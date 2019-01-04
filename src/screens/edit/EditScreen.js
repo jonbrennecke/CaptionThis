@@ -297,6 +297,8 @@ export default class EditScreen extends Component<Props, State> {
               />
               <RecordingTranscriptionView
                 style={styles.transcription}
+                textColor={this.props.textColor}
+                backgroundColor={this.props.backgroundColor}
                 fontFamily={this.props.fontFamily}
                 speechTranscription={this.getSpeechTranscription()}
               />

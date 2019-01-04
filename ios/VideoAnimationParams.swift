@@ -2,18 +2,23 @@ import Foundation
 
 @objc
 class VideoAnimationParams : NSObject {
-  let textSegments: [TextSegmentParams]
-  let fontFamily: String
-  let backgroundColor: UIColor
-  let textColor: UIColor
-  
+
   @objc
-  init(textSegments: [TextSegmentParams], fontFamily: String, backgroundColor: UIColor, textColor: UIColor) {
-    self.textSegments = textSegments
-    self.fontFamily = fontFamily
-    self.backgroundColor = backgroundColor
-    self.textColor = textColor
-  }
+  var textSegments: [TextSegmentParams]?
+  @objc
+  var fontFamily: String?
+  @objc
+  var backgroundColor: UIColor?
+  @objc
+  var textColor: UIColor?
+  
+//  @objc
+//  init(textSegments: [TextSegmentParams], fontFamily: String, backgroundColor: UIColor, textColor: UIColor) {
+//    self.textSegments = textSegments
+//    self.fontFamily = fontFamily
+//    self.backgroundColor = backgroundColor
+//    self.textColor = textColor
+//  }
 }
 
 @objc
