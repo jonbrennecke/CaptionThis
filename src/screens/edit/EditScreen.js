@@ -15,6 +15,7 @@ import EditScreenFontControls from './EditScreenFontControls';
 import EditScreenBackgroundColorControls from './EditScreenBackgroundColorControls';
 import EditScreenFontColorControls from './EditScreenFontColorControls';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
+import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import SpeechManager from '../../utils/SpeechManager';
 import VideoPlayPauseButton from '../../components/video-play-pause-button/VideoPlayPauseButton';
 import {
@@ -178,7 +179,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   videoPlayerDidBecomeReadyToPlay(duration: number) {
-    this.setState({ durationSeconds: duration, isVideoPlaying: true });
+    this.setState({ durationSeconds: duration, isVideoPlaying: false });
     this.props.beginSpeechTranscriptionWithVideoAsset(
       this.props.videoAssetIdentifier
     );
@@ -263,6 +264,9 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   render() {
+    const speechTranscription = this.getSpeechTranscription();
+    const hasFinalTranscription =
+      speechTranscription && speechTranscription.isFinal;
     return (
       <View style={styles.container}>
         <ScreenGradients />
@@ -295,11 +299,15 @@ export default class EditScreen extends Component<Props, State> {
                 onBackButtonPress={this.onDidPressBackButton}
                 onExportButtonPress={this.onDidPressExportButton}
               />
-              <RecordingTranscriptionView
-                style={styles.transcription}
-                fontFamily={this.props.fontFamily}
-                speechTranscription={this.getSpeechTranscription()}
-              />
+              {hasFinalTranscription && (
+                <RecordingTranscriptionView
+                  style={styles.transcription}
+                  textColor={this.props.textColor}
+                  backgroundColor={this.props.backgroundColor}
+                  fontFamily={this.props.fontFamily}
+                  speechTranscription={this.getSpeechTranscription()}
+                />
+              )}
             </View>
             <View style={styles.editControls}>
               <View style={styles.seekbarWrap}>
@@ -334,6 +342,7 @@ export default class EditScreen extends Component<Props, State> {
             </View>
           </SafeAreaView>
         </ScrollView>
+        <EditScreenLoadingOverlay isVisible={!hasFinalTranscription} />
         <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
       </View>
     );

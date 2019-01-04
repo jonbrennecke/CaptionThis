@@ -21,6 +21,9 @@
 
 .*/node_modules/react-native-safe-area/.*
 
+; Ignore ruby
+.*/vendor/bundle/.*
+
 [include]
 
 [libs]

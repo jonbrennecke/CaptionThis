@@ -61,7 +61,8 @@ class VideoPlayerView: UIView {
           [weak self] time in
           self?.delegate?.videoPlayerDidUpdatePlaybackTime(time, duration: asset.duration)
         }
-        self.play()
+        self.player?.play()
+        self.player?.pause()
       }
     }
   }

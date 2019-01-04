@@ -1,73 +1,63 @@
 // @flow
 import React from 'react';
-import { View, Text } from 'react-native';
-
-import { UI_COLORS } from '../../constants';
-import * as Fonts from '../../utils/Fonts';
-import * as Color from '../../utils/Color';
+import { View, requireNativeComponent } from 'react-native';
 
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
+import type { ColorRGBA } from '../../types/media';
 
 type Props = {
   style: ?Style,
+  backgroundColor: ColorRGBA,
+  textColor: ColorRGBA,
   fontFamily: string,
   speechTranscription: ?SpeechTranscription,
 };
 
-const TEXT_TRUNCATION_LENGTH_CHARACTERS = 70;
+const NativeTranscriptView = requireNativeComponent('TranscriptView');
 
 const styles = {
   container: {
-    justifyContent: 'center',
-    paddingVertical: 5,
-    paddingHorizontal: 15,
+    height: 100,
   },
-  text: {
-    ...Fonts.getFontStyle('heading', {
-      contentStyle: 'lightContent',
-      size: 'large',
-    }),
-    textShadowColor: Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
-    textShadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    textShadowRadius: 2,
-    textAlign: 'left',
+  flex: {
+    flex: 1,
   },
 };
 
 export default function RecordingTranscriptionView({
   style,
-  speechTranscription,
+  textColor,
+  backgroundColor,
   fontFamily,
+  speechTranscription,
 }: Props) {
-  const text = speechTranscription?.formattedString;
-  const formattedText = formatText(text);
+  const textSegments = speechTranscription
+    ? speechTranscription.segments.map(segment => ({
+        duration: segment.duration,
+        timestamp: segment.timestamp,
+        text: segment.substring,
+      }))
+    : [];
   return (
     <View style={[styles.container, style]}>
-      <Text
-        style={[styles.text, { fontFamily }]}
-        ellipsizeMode="head"
-        numberOfLines={1}
-      >
-        {formattedText}
-      </Text>
+      <NativeTranscriptView
+        style={styles.flex}
+        textSegments={textSegments}
+        fontFamily={fontFamily}
+        textColor={[
+          textColor.red / 255,
+          textColor.green / 255,
+          textColor.blue / 255,
+          textColor.alpha,
+        ]}
+        backgroundColor={[
+          backgroundColor.red / 255,
+          backgroundColor.green / 255,
+          backgroundColor.blue / 255,
+          backgroundColor.alpha,
+        ]}
+      />
     </View>
   );
-}
-
-function formatText(text: ?string): string {
-  if (!text) {
-    return '';
-  }
-  if (text.length > TEXT_TRUNCATION_LENGTH_CHARACTERS) {
-    const truncatedText = text.substr(
-      text.length - TEXT_TRUNCATION_LENGTH_CHARACTERS,
-      TEXT_TRUNCATION_LENGTH_CHARACTERS
-    );
-    return truncatedText;
-  }
-  return text;
 }
