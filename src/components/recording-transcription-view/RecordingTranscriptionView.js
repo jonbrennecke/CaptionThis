@@ -4,7 +4,7 @@ import { View, requireNativeComponent } from 'react-native';
 
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
-import type { ColorRGBA  } from '../../types/media';
+import type { ColorRGBA } from '../../types/media';
 
 type Props = {
   style: ?Style,
@@ -22,7 +22,7 @@ const styles = {
   },
   flex: {
     flex: 1,
-  }
+  },
 };
 
 export default function RecordingTranscriptionView({
