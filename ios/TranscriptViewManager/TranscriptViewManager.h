@@ -7,4 +7,5 @@
 @interface TranscriptViewManager : RCTViewManager
 @property(nonatomic, retain) VideoAnimationParams *animationParams;
 - (void)updateAnimationWithView:(UIView *)view;
++ (BOOL)requiresMainQueueSetup;
 @end

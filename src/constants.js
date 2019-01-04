@@ -17,8 +17,8 @@ export const LOADING_STATE = {
 
 export const TEXT_COLORS = {
   LIGHT_GREY: '#B7BAE1',
-  MEDIUM_GREY: '#50548E',
-  DARK_GREY: '#3B3E6F',
+  MEDIUM_GREY: '#817E98',
+  DARK_GREY: '#332A38',
   WHITE: '#FFF',
   OFF_WHITE: '#F6F6FD',
 };
@@ -102,16 +102,17 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   formInput: {
     style: {
       color: TEXT_COLORS.DARK_GREY,
-      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
-      fontSize: 17,
+      fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
+      fontSize: 20,
     },
   },
   formLabel: {
     style: {
-      color: TEXT_COLORS.DARK_GREY,
+      color: TEXT_COLORS.MEDIUM_GREY,
       fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
       fontSize: 11,
       letterSpacing: 1.8,
+      fontWeight: 'bold',
     },
     modifiers: [
       {
@@ -197,6 +198,7 @@ export const SCREENS = {
   ONBOARDING_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
   FONT_MODAL: `${APP_BUNDLE_ID}.FontModal`,
   COLOR_MODAL: `${APP_BUNDLE_ID}.ColorModal`,
+  EDIT_TRANSCRIPTION_MODAL: `${APP_BUNDLE_ID}.EditTranscriptionModal`,
 };
 
 export const APP_ORIENTATIONS = ['portrait'];
@@ -321,6 +323,27 @@ export const SCREEN_PARAMS = {
           animate: false,
         },
         layout: {
+          orientation: APP_ORIENTATIONS,
+        },
+      },
+    },
+  },
+  [SCREENS.EDIT_TRANSCRIPTION_MODAL]: {
+    component: {
+      name: SCREENS.EDIT_TRANSCRIPTION_MODAL,
+      id: SCREENS.EDIT_TRANSCRIPTION_MODAL,
+      passProps: {},
+      options: {
+        statusBar: {
+          style: 'dark',
+        },
+        modalPresentationStyle: 'overFullScreen',
+        topBar: {
+          visible: false,
+          animate: false,
+        },
+        layout: {
+          backgroundColor: 'transparent',
           orientation: APP_ORIENTATIONS,
         },
       },
