@@ -3,10 +3,9 @@ import UIKit
 fileprivate let ELEMENT_SIZE: CGFloat = 3
 
 @objc
-class HueGradientView : UIView {
-  
+class HueGradientView: UIView {
   private var _color: UIColor = .blue
-  
+
   @objc
   public var color: UIColor {
     get {
@@ -17,7 +16,7 @@ class HueGradientView : UIView {
       setNeedsDisplay()
     }
   }
-  
+
   private var saturationAndBrightness: (CGFloat, CGFloat) {
     var hue: CGFloat = 0
     var saturation: CGFloat = 0
@@ -26,13 +25,13 @@ class HueGradientView : UIView {
     _color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
     return (saturation, brightness)
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
     setNeedsDisplay()
     backgroundColor = .white
   }
-  
+
   override func draw(_ rect: CGRect) {
     guard let context = UIGraphicsGetCurrentContext() else {
       return
@@ -50,7 +49,7 @@ class HueGradientView : UIView {
       }
     }
   }
-  
+
   @objc
   public func color(atHorizontalOffset offset: CGFloat) -> UIColor {
     let hue = offset / frame.width

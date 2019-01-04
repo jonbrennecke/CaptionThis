@@ -1,7 +1,6 @@
 import AVFoundation
 
 class VideoAnimationComposition {
-  
   private let videoComposition = AVMutableVideoComposition()
   private let mixComposition = AVMutableComposition()
   private let videoAsset: AVAsset
@@ -10,14 +9,12 @@ class VideoAnimationComposition {
   private let effectLayer = CALayer()
   private let videoLayer = CALayer()
   private let parentLayer = CALayer()
-  
+
   public var videoSize: CGSize {
-    get {
-      let originalSize = videoTrack.naturalSize
-      return CGSize(width: originalSize.height, height: originalSize.width)
-    }
+    let originalSize = videoTrack.naturalSize
+    return CGSize(width: originalSize.height, height: originalSize.width)
   }
-  
+
   init?(withAsset asset: AVAsset) {
     videoAsset = asset
     guard let videoTrack = asset.tracks(withMediaType: .video).first else {
@@ -39,21 +36,20 @@ class VideoAnimationComposition {
     parentLayer.addSublayer(videoLayer)
     parentLayer.addSublayer(effectLayer)
   }
-  
+
   convenience init?(withVideoAtURL videoFileURL: URL) {
     let videoAsset = AVURLAsset(url: videoFileURL, options: nil)
     self.init(withAsset: videoAsset)
   }
-  
+
   public func add(effectLayer layer: CALayer) {
     effectLayer.addSublayer(layer)
   }
-  
-  public func exportVideo(_ completionHandler: @escaping (Error?, Bool, URL?) -> ()) {
+
+  public func exportVideo(_ completionHandler: @escaping (Error?, Bool, URL?) -> Void) {
     do {
       try applyAnimationToVideo()
-    }
-    catch let error {
+    } catch {
       completionHandler(error, false, nil)
       return
     }
@@ -91,14 +87,13 @@ class VideoAnimationComposition {
             return
           }
         }
-      }
-      catch let error {
+      } catch {
         Debug.log(error: error)
         completionHandler(error, false, nil)
       }
     }
   }
-  
+
   private func applyAnimationToVideo() throws {
     guard let mixCompositionAudioTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) else {
       Debug.log(message: "Unable to add audio track.")
@@ -125,7 +120,7 @@ class VideoAnimationComposition {
     layerInstruction.setTransform(videoTrack.preferredTransform, at: CMTime.zero)
     instruction.layerInstructions = [layerInstruction]
     videoComposition.instructions = [instruction]
-    videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30) // TODO check video fps
+    videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30) // TODO: check video fps
     videoComposition.renderSize = videoSize
     videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayers: [videoLayer, effectLayer], in: parentLayer)
   }

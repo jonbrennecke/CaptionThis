@@ -1,12 +1,12 @@
 #pragma once
 
-#import <React/RCTViewManager.h>
 #import "CaptionThis-Swift.h"
+#import <React/RCTViewManager.h>
 
 @class SaturationAndBrightnessGradientWrappingView;
 @interface SaturationAndBrightnessGradientWrappingView : UIView
-@property (nonatomic, retain) SaturationAndBrightnessGradientView* wrappedView;
-@property (nonatomic, copy) RCTBubblingEventBlock onDidUpdateColorAtOffset;
+@property(nonatomic, retain) SaturationAndBrightnessGradientView *wrappedView;
+@property(nonatomic, copy) RCTBubblingEventBlock onDidUpdateColorAtOffset;
 @end
 
 @class SaturationAndBrightnessGradientViewManager;

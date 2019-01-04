@@ -4,22 +4,21 @@ import UIKit
 let MAX_CHARACTERS_PER_LINE: Int = 40
 
 @objc
-enum VideoAnimationOutputKind : Int {
+enum VideoAnimationOutputKind: Int {
   case export
   case view
 }
 
 @objc
-class VideoAnimationLayer : CALayer {
-
+class VideoAnimationLayer: CALayer {
   private let paddingHorizontal: CGFloat = 20
   private let fontSize: CGFloat = 17
   private let outputKind: VideoAnimationOutputKind
-  
-  required init?(coder aDecoder: NSCoder) {
+
+  required init?(coder _: NSCoder) {
     fatalError("init?(coder:) has not been implemented for VideoAnimationLayer")
   }
-  
+
   @objc
   init(for outputKind: VideoAnimationOutputKind) {
     self.outputKind = outputKind
@@ -28,7 +27,7 @@ class VideoAnimationLayer : CALayer {
     masksToBounds = true
     opacity = 0.0
   }
-  
+
   @objc
   public func animate(withParams params: VideoAnimationParams) {
     backgroundColor = params.backgroundColor?.cgColor
@@ -72,8 +71,7 @@ class VideoAnimationLayer : CALayer {
         textLayer.displayIfNeeded()
         textLayer.layoutIfNeeded()
         textLayers.append(textLayer)
-      }
-      else {
+      } else {
         let fadeOutAnimation = animateFadeOut(atTime: Double(segment.timestamp), withDuration: 0)
         bottomTextLayer.add(fadeOutAnimation, forKey: nil)
         let textLayer = addTextLayer(withParams: params, text: segment.text)
@@ -99,9 +97,9 @@ class VideoAnimationLayer : CALayer {
     animationIn.beginTime = AVCoreAnimationBeginTimeAtZero + Double(firstSegment.timestamp)
     animationIn.duration = 0.3
     add(animationIn, forKey: nil)
-    // TODO fade out after last segment duration is complete (+delay)
+    // TODO: fade out after last segment duration is complete (+delay)
   }
-  
+
   private func animateFadeIn(atTime beginTime: CFTimeInterval, withDuration duration: CFTimeInterval = 0.25) -> CABasicAnimation {
     let fadeInAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
     fadeInAnimation.fromValue = 0.0
@@ -112,7 +110,7 @@ class VideoAnimationLayer : CALayer {
     fadeInAnimation.duration = duration
     return fadeInAnimation
   }
-  
+
   private func animateFadeOut(atTime beginTime: CFTimeInterval, withDuration duration: CFTimeInterval = 0.25) -> CABasicAnimation {
     let fadeOutAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
     fadeOutAnimation.toValue = 0.0
@@ -122,7 +120,7 @@ class VideoAnimationLayer : CALayer {
     fadeOutAnimation.duration = duration
     return fadeOutAnimation
   }
-  
+
   private func animateSlideUp(
     fromPosition position: CGPoint,
     atTime beginTime: CFTimeInterval,
@@ -137,7 +135,7 @@ class VideoAnimationLayer : CALayer {
     slideUpAnimation.duration = duration
     return slideUpAnimation
   }
-  
+
   private func addTextLayer(withParams params: VideoAnimationParams, text: String) -> CATextLayer {
     let textLayer = CenteredTextLayer()
     textLayer.contentsScale = UIScreen.main.scale

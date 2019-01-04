@@ -2,7 +2,7 @@
 
 @implementation Debug (ObjC)
 
-+(void)logWithFormat:(NSString*)format, ... {
++ (void)logWithFormat:(NSString *)format, ... {
   NSMutableArray<id> *args = [[NSMutableArray alloc] init];
   va_list varargs;
   va_start(varargs, format);

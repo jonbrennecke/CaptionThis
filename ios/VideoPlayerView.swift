@@ -11,24 +11,19 @@ protocol VideoPlayerViewDelegate {
 
 @objc
 class VideoPlayerView: UIView {
-  
   @objc
   public var delegate: VideoPlayerViewDelegate?
-  
+
   private var item: AVPlayerItem?
-  
+
   override class var layerClass: AnyClass {
-    get {
-      return AVPlayerLayer.self
-    }
+    return AVPlayerLayer.self
   }
-  
+
   private var playerLayer: AVPlayerLayer {
-    get {
-      return self.layer as! AVPlayerLayer
-    }
+    return layer as! AVPlayerLayer
   }
-  
+
   private var player: AVPlayer? {
     get {
       return playerLayer.player
@@ -37,9 +32,9 @@ class VideoPlayerView: UIView {
       playerLayer.player = newValue
     }
   }
-  
+
   private var timeObserverToken: Any?
-  
+
   @objc
   public var asset: AVAsset? {
     didSet {
@@ -51,8 +46,7 @@ class VideoPlayerView: UIView {
         self.item!.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .old, .new], context: nil)
         if let player = self.player {
           player.replaceCurrentItem(with: self.item)
-        }
-        else {
+        } else {
           self.player = AVPlayer(playerItem: self.item)
         }
         let timeScale = CMTimeScale(NSEC_PER_SEC)
@@ -66,21 +60,20 @@ class VideoPlayerView: UIView {
       }
     }
   }
-  
-  override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+
+  override func observeValue(forKeyPath keyPath: String?, of _: Any?, change: [NSKeyValueChangeKey: Any]?, context _: UnsafeMutableRawPointer?) {
     if keyPath == #keyPath(AVPlayerItem.status) {
       var status: AVPlayerItem.Status
       if let statusNumber = change?[.newKey] as? NSNumber {
         if let _status = AVPlayerItem.Status(rawValue: statusNumber.intValue) {
           status = _status
-        }
-        else {
+        } else {
           status = .unknown
         }
       } else {
         status = .unknown
       }
-      switch status  {
+      switch status {
       case .readyToPlay:
         onVideoDidBecomeReadyToPlay()
         return
@@ -92,12 +85,12 @@ class VideoPlayerView: UIView {
       }
     }
   }
-  
+
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     playerLayer.videoGravity = .resizeAspectFill
   }
-  
+
   @objc
   public func play() {
     DispatchQueue.main.async {
@@ -108,7 +101,7 @@ class VideoPlayerView: UIView {
       player.play()
     }
   }
-  
+
   @objc
   public func pause() {
     DispatchQueue.main.async {
@@ -119,9 +112,9 @@ class VideoPlayerView: UIView {
       player.pause()
     }
   }
-  
+
   @objc
-  public func seek(to time: CMTime, completionHandler: @escaping (Bool) -> ()) {
+  public func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void) {
     DispatchQueue.main.async {
       guard let player = self.player else {
         Debug.log(message: "Seek requested, but AVPlayer is not set")
@@ -130,11 +123,11 @@ class VideoPlayerView: UIView {
       player.seek(to: time, completionHandler: completionHandler)
     }
   }
-  
+
   @objc
   public func stop() {
     guard let player = player else {
-      return;
+      return
     }
     player.pause()
     player.replaceCurrentItem(with: nil)
@@ -143,7 +136,7 @@ class VideoPlayerView: UIView {
       self.timeObserverToken = nil
     }
   }
-  
+
   private func onVideoDidBecomeReadyToPlay() {
     guard let asset = player?.currentItem?.asset else {
       return
@@ -151,7 +144,7 @@ class VideoPlayerView: UIView {
     Debug.log(message: "Video is ready to play")
     delegate?.videoPlayerDidBecomeReadyToPlayAsset(asset)
   }
-  
+
   private func onVideoDidFailToLoad() {
     Debug.log(message: "Video failed to load")
     delegate?.videoPlayerDidFailToLoad()

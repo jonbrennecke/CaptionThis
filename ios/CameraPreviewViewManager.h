@@ -1,9 +1,9 @@
 #pragma once
 
-#import <React/RCTViewManager.h>
 #import "CameraPreviewView.h"
+#import <React/RCTViewManager.h>
 
 @class CameraPreviewViewManager;
-@interface CameraPreviewViewManager: RCTViewManager
-@property(nonatomic, strong) CameraPreviewView* previewView;
+@interface CameraPreviewViewManager : RCTViewManager
+@property(nonatomic, strong) CameraPreviewView *previewView;
 @end

@@ -15,7 +15,6 @@ fileprivate enum CameraSetupResult {
 
 @objc
 class CameraManager: NSObject {
-  
   private var captureSession: AVCaptureSession
   private var videoOutput: AVCaptureVideoDataOutput
   private var videoFileOutput: AVCaptureMovieFileOutput = AVCaptureMovieFileOutput()
@@ -25,14 +24,13 @@ class CameraManager: NSObject {
   private var audioCaptureDeviceInput: AVCaptureDeviceInput?
   private var synchronizer: AVCaptureDataOutputSynchronizer?
   private let sessionQueue = DispatchQueue(label: "session queue")
-  
+
   @objc
   public var delegate: CameraManagerDelegate?
-  
+
   @objc
   public var previewLayer: AVCaptureVideoPreviewLayer
-  
-  
+
   override init() {
     captureSession = AVCaptureSession()
     previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -40,14 +38,14 @@ class CameraManager: NSObject {
     videoOutput = AVCaptureVideoDataOutput()
     super.init()
   }
-  
-  public func authorize(_ callback: @escaping (Bool) -> ()) {
-    authorizeCaptureDevice() { success in
+
+  public func authorize(_ callback: @escaping (Bool) -> Void) {
+    authorizeCaptureDevice { success in
       guard success else {
         callback(false)
         return
       }
-      self.authorizeMicrophone() { success in
+      self.authorizeMicrophone { success in
         guard success else {
           callback(false)
           return
@@ -56,8 +54,8 @@ class CameraManager: NSObject {
       }
     }
   }
-  
-  private func authorizeCaptureDevice(_ callback: @escaping (Bool) -> ()) {
+
+  private func authorizeCaptureDevice(_ callback: @escaping (Bool) -> Void) {
     switch AVCaptureDevice.authorizationStatus(for: .video) {
     case .authorized:
       return callback(true)
@@ -65,8 +63,7 @@ class CameraManager: NSObject {
       AVCaptureDevice.requestAccess(for: .video) { granted in
         if granted {
           return callback(true)
-        }
-        else {
+        } else {
           return callback(false)
         }
       }
@@ -78,8 +75,8 @@ class CameraManager: NSObject {
       return callback(false)
     }
   }
-  
-  private func authorizeMediaLibrary(_ callback: @escaping (Bool) -> ()) {
+
+  private func authorizeMediaLibrary(_ callback: @escaping (Bool) -> Void) {
     PHPhotoLibrary.requestAuthorization { status in
       switch status {
       case .authorized:
@@ -96,8 +93,8 @@ class CameraManager: NSObject {
       }
     }
   }
-  
-  private func authorizeMicrophone(_ callback: @escaping (Bool) -> ()) {
+
+  private func authorizeMicrophone(_ callback: @escaping (Bool) -> Void) {
     switch AVCaptureDevice.authorizationStatus(for: .audio) {
     case .authorized:
       return callback(true)
@@ -105,8 +102,7 @@ class CameraManager: NSObject {
       AVCaptureDevice.requestAccess(for: .audio) { granted in
         if granted {
           return callback(true)
-        }
-        else {
+        } else {
           return callback(false)
         }
       }
@@ -118,7 +114,7 @@ class CameraManager: NSObject {
       return callback(false)
     }
   }
-  
+
   public func isAuthorized() -> Bool {
     if case .authorized = AVCaptureDevice.authorizationStatus(for: .video),
       case .authorized = AVCaptureDevice.authorizationStatus(for: .audio) {
@@ -126,7 +122,7 @@ class CameraManager: NSObject {
     }
     return false
   }
-  
+
   @objc
   public func startPreview() {
     if case .authorized = AVCaptureDevice.authorizationStatus(for: .video) {
@@ -140,22 +136,21 @@ class CameraManager: NSObject {
     }
     Debug.log(message: "Cannot start camera capture, camera use has not been authorized.")
   }
-  
+
   @objc
-  public func startCapture(completionHandler: @escaping (Error?, Bool) -> ()) {
+  public func startCapture(completionHandler: @escaping (Error?, Bool) -> Void) {
     sessionQueue.async {
       do {
         let outputURL = try self.saveVideoFileOutputOrThrow()
         self.videoFileOutput.stopRecording()
         self.videoFileOutput.startRecording(to: outputURL, recordingDelegate: self)
         completionHandler(nil, true)
-      }
-      catch let error {
+      } catch {
         completionHandler(error, false)
       }
     }
   }
-  
+
   @objc
   public func stopCapture() {
     if videoFileOutput.isRecording {
@@ -163,7 +158,7 @@ class CameraManager: NSObject {
       videoFileOutput.stopRecording()
     }
   }
-  
+
   @objc
   public func stopPreview() {
     if captureSession.isRunning {
@@ -171,7 +166,7 @@ class CameraManager: NSObject {
       captureSession.stopRunning()
     }
   }
-  
+
   private func saveVideoFileOutputOrThrow() throws -> URL {
     let outputURL = try FileManager.default
       .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
@@ -180,7 +175,7 @@ class CameraManager: NSObject {
     try? FileManager.default.removeItem(at: outputURL)
     return outputURL
   }
-  
+
   @objc
   public func setupCameraCaptureSession() {
     captureSession.beginConfiguration()
@@ -189,38 +184,37 @@ class CameraManager: NSObject {
     }
     captureSession.commitConfiguration()
   }
-    
+
   private func attemptToSetupCameraCaptureSession() -> CameraSetupResult {
     captureSession.sessionPreset = .photo
-    
+
     // setup videoCaptureDevice
     videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
     guard let videoCaptureDevice = videoCaptureDevice else {
       Debug.log(message: "Built in wide angle camera (front) is not available.")
       return .failure
     }
-    
+
     // setup videoCaptureDeviceInput
     videoCaptureDeviceInput = try? AVCaptureDeviceInput(device: videoCaptureDevice)
     guard let videoCaptureDeviceInput = videoCaptureDeviceInput else {
       Debug.log(message: "Camera capture device could not be used as an input.")
       return .failure
     }
-    if (captureSession.canAddInput(videoCaptureDeviceInput)) {
+    if captureSession.canAddInput(videoCaptureDeviceInput) {
       captureSession.addInput(videoCaptureDeviceInput)
-    }
-    else {
+    } else {
       Debug.log(message: "Camera input could not be added to capture session.")
       return .failure
     }
-    
+
     // setup audioCaptureDevice
     audioCaptureDevice = AVCaptureDevice.default(for: .audio)
     guard let audioCaptureDevice = audioCaptureDevice else {
       Debug.log(message: "Audio device is not available.")
       return .failure
     }
-    
+
     // setup audioCaptureDeviceInput
     audioCaptureDeviceInput = try? AVCaptureDeviceInput(device: audioCaptureDevice)
     guard let audioCaptureDeviceInput = audioCaptureDeviceInput else {
@@ -229,12 +223,11 @@ class CameraManager: NSObject {
     }
     if captureSession.canAddInput(audioCaptureDeviceInput) {
       captureSession.addInput(audioCaptureDeviceInput)
-    }
-    else {
+    } else {
       Debug.log(message: "Audio input could not be added to the capture session.")
       return .failure
     }
-    
+
     // setup videoOutput
     videoOutput.alwaysDiscardsLateVideoFrames = true
     videoOutput.setSampleBufferDelegate(self, queue: sessionQueue)
@@ -248,23 +241,21 @@ class CameraManager: NSObject {
           connection.videoOrientation = .portrait
         }
       }
-    }
-    else {
+    } else {
       Debug.log(message: "Video output could not be added to the capture session.")
       return .failure
     }
-    
+
     // setup videoFileOutput
     if captureSession.canAddOutput(videoFileOutput) {
       captureSession.addOutput(videoFileOutput)
-    }
-    else {
+    } else {
       Debug.log(message: "Video file output could not be added to the capture session.")
       return .failure
     }
     return .success
   }
-  
+
   @objc
   public func switchToOppositeCamera() {
     captureSession.beginConfiguration()
@@ -273,18 +264,18 @@ class CameraManager: NSObject {
     }
     captureSession.commitConfiguration()
   }
-  
+
   private func getOppositeCameraPosition() -> AVCaptureDevice.Position {
     switch videoCaptureDevice?.position {
     case .some(.back):
-        return .front
+      return .front
     case .some(.front):
       return .back
     default:
       return .front // default to front camera
     }
   }
-  
+
   private func attemptToSwitchToOppositeCamera() -> CameraSetupResult {
     let cameraPosition = getOppositeCameraPosition()
     videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: cameraPosition)
@@ -300,18 +291,17 @@ class CameraManager: NSObject {
       Debug.log(message: "Camera capture device could not be used as an input.")
       return .failure
     }
-    if (captureSession.canAddInput(videoCaptureDeviceInput)) {
+    if captureSession.canAddInput(videoCaptureDeviceInput) {
       captureSession.addInput(videoCaptureDeviceInput)
-    }
-    else {
+    } else {
       Debug.log(message: "Camera input could not be added to capture session.")
       return .failure
     }
     return .success
   }
-  
-  public func createVideoAsset(forURL url: URL, completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> ()) {
-    self.withAlbum() { error, success, album in
+
+  public func createVideoAsset(forURL url: URL, completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> Void) {
+    withAlbum { error, success, album in
       guard let album = album else {
         Debug.log(format: "Failed to find album. Success = %@", success ? "true" : "false")
         completionHandler(nil, false, nil)
@@ -331,8 +321,7 @@ class CameraManager: NSObject {
           }
           albumChangeRequest.addAssets([placeholder] as NSArray)
           assetPlaceholder = placeholder
-        }
-        else {
+        } else {
           fatalError("This app only supports iOS 9.0 or above.")
         }
       }) { success, error in
@@ -350,8 +339,8 @@ class CameraManager: NSObject {
       }
     }
   }
-  
-  public func withAlbum(_ completionHandler: @escaping (Error?, Bool, PHAssetCollection?) -> ()) {
+
+  public func withAlbum(_ completionHandler: @escaping (Error?, Bool, PHAssetCollection?) -> Void) {
     let fetchOptions = PHFetchOptions()
     fetchOptions.predicate = NSPredicate(format: "title = %@", PhotosAlbum.albumTitle)
     let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: fetchOptions)
@@ -378,8 +367,8 @@ class CameraManager: NSObject {
   }
 }
 
-extension CameraManager : AVCaptureVideoDataOutputSampleBufferDelegate {
-  func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
+  func captureOutput(_: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from _: AVCaptureConnection) {
     guard let delegate = delegate else {
       return
     }
@@ -388,29 +377,29 @@ extension CameraManager : AVCaptureVideoDataOutputSampleBufferDelegate {
 }
 
 extension CameraManager: AVCaptureDataOutputSynchronizerDelegate {
-  func dataOutputSynchronizer(_ synchronizer: AVCaptureDataOutputSynchronizer, didOutput synchronizedDataCollection: AVCaptureSynchronizedDataCollection) {
+  func dataOutputSynchronizer(_: AVCaptureDataOutputSynchronizer, didOutput synchronizedDataCollection: AVCaptureSynchronizedDataCollection) {
     guard
       let delegate = delegate,
       let videoData = synchronizedDataCollection.synchronizedData(for: videoOutput) as? AVCaptureSynchronizedSampleBufferData
-      else {
-        return
+    else {
+      return
     }
     delegate.cameraManagerDidReceiveCameraDataOutput(videoData: videoData.sampleBuffer)
   }
 }
 
 extension CameraManager: AVCaptureFileOutputRecordingDelegate {
-  func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
+  func fileOutput(_: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from _: [AVCaptureConnection]) {
     Debug.log(format: "Started output to file. URL = %@", fileURL.absoluteString)
     delegate?.cameraManagerDidBeginFileOutput(toFileURL: fileURL)
   }
-  
-  func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo fileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+
+  func fileOutput(_: AVCaptureFileOutput, didFinishRecordingTo fileURL: URL, from _: [AVCaptureConnection], error: Error?) {
     if let error = error {
       Debug.log(error: error)
       return
     }
-    createVideoAsset(forURL: fileURL) { error, success, assetPlaceholder in
+    createVideoAsset(forURL: fileURL) { error, _, assetPlaceholder in
       Debug.log(format: "Finished output to file. URL = %@", fileURL.absoluteString)
       self.delegate?.cameraManagerDidFinishFileOutput(toFileURL: fileURL, asset: assetPlaceholder, error: error)
     }

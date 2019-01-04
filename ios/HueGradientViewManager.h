@@ -1,12 +1,12 @@
 #pragma once
 
-#import <React/RCTViewManager.h>
 #import "CaptionThis-Swift.h"
+#import <React/RCTViewManager.h>
 
 @class HueGradientViewManager;
 @interface HueGradientViewWrappingView : UIView
-@property (nonatomic, retain) HueGradientView* hueGradientView;
-@property (nonatomic, copy) RCTBubblingEventBlock onDidUpdateColorAtOffset;
+@property(nonatomic, retain) HueGradientView *hueGradientView;
+@property(nonatomic, copy) RCTBubblingEventBlock onDidUpdateColorAtOffset;
 @end
 
 @class HueGradientViewManager;

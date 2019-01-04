@@ -1,8 +1,7 @@
 import Foundation
 
 @objc
-class VideoAnimationParams : NSObject {
-
+class VideoAnimationParams: NSObject {
   @objc
   var textSegments: [TextSegmentParams]?
   @objc
@@ -11,22 +10,22 @@ class VideoAnimationParams : NSObject {
   var backgroundColor: UIColor?
   @objc
   var textColor: UIColor?
-  
-//  @objc
-//  init(textSegments: [TextSegmentParams], fontFamily: String, backgroundColor: UIColor, textColor: UIColor) {
+
+  //  @objc
+  //  init(textSegments: [TextSegmentParams], fontFamily: String, backgroundColor: UIColor, textColor: UIColor) {
 //    self.textSegments = textSegments
 //    self.fontFamily = fontFamily
 //    self.backgroundColor = backgroundColor
 //    self.textColor = textColor
-//  }
+  //  }
 }
 
 @objc
-class TextSegmentParams : NSObject {
+class TextSegmentParams: NSObject {
   let duration: Float
   let timestamp: Float
   let text: String
-  
+
   @objc
   init(text: String, duration: Float, timestamp: Float) {
     self.duration = duration

@@ -1,14 +1,13 @@
-#import <Photos/Photos.h>
-#import <React/RCTConvert.h>
 #import "SpeechBridgeModule.h"
 #import "AppDelegate.h"
+#import <Photos/Photos.h>
+#import <React/RCTConvert.h>
 
-@implementation SpeechBridgeModule
-{
+@implementation SpeechBridgeModule {
   bool hasListeners;
 }
 
--(instancetype)init {
+- (instancetype)init {
   self = [super init];
   if (self != nil) {
     AppDelegate.sharedSpeechManager.delegate = self;
@@ -18,52 +17,55 @@
 
 #pragma mark - SpeechManagerDelegate
 
--(void)speechManagerDidBecomeAvailable {
+- (void)speechManagerDidBecomeAvailable {
   if (!hasListeners) {
     return;
   }
   [self sendEventWithName:@"speechManagerDidBecomeAvailable" body:@{}];
 }
 
--(void)speechManagerDidBecomeUnavailable {
+- (void)speechManagerDidBecomeUnavailable {
   if (!hasListeners) {
     return;
   }
   [self sendEventWithName:@"speechManagerDidBecomeUnavailable" body:@{}];
 }
 
-- (void)speechManagerDidReceiveSpeechTranscription:(SFSpeechRecognitionResult * _Nonnull)result {
+- (void)speechManagerDidReceiveSpeechTranscription:
+    (SFSpeechRecognitionResult *_Nonnull)result {
   if (!hasListeners) {
     return;
   }
   BOOL isFinal = result.isFinal;
   SFTranscription *transcription = result.bestTranscription;
-  NSString* formattedString = transcription.formattedString;
-  NSMutableArray<NSDictionary*>* segments = [[NSMutableArray alloc] initWithCapacity:transcription.segments.count];
+  NSString *formattedString = transcription.formattedString;
+  NSMutableArray<NSDictionary *> *segments =
+      [[NSMutableArray alloc] initWithCapacity:transcription.segments.count];
   for (SFTranscriptionSegment *segment in transcription.segments) {
     [segments addObject:@{
-      @"duration": @(segment.duration),
-      @"timestamp": @(segment.timestamp),
-      @"confidence": @(segment.confidence),
-      @"substring": segment.substring,
-      @"alternativeSubstrings": segment.alternativeSubstrings
+      @"duration" : @(segment.duration),
+      @"timestamp" : @(segment.timestamp),
+      @"confidence" : @(segment.confidence),
+      @"substring" : segment.substring,
+      @"alternativeSubstrings" : segment.alternativeSubstrings
     }];
   }
   NSDictionary *body = @{
-   @"isFinal": @(isFinal),
-   @"formattedString": formattedString,
-   @"segments": segments
+    @"isFinal" : @(isFinal),
+    @"formattedString" : formattedString,
+    @"segments" : segments
   };
-  [self sendEventWithName:@"speechManagerDidReceiveSpeechTranscription" body:body];
+  [self sendEventWithName:@"speechManagerDidReceiveSpeechTranscription"
+                     body:body];
 }
 
 #pragma mark - React Native module
 
--(void)startObserving {
+- (void)startObserving {
   hasListeners = YES;
 }
 
--(void)stopObserving {
+- (void)stopObserving {
   hasListeners = NO;
 }
 
@@ -71,55 +73,66 @@
   return NO;
 }
 
-- (NSArray<NSString *> *)supportedEvents
-{
+- (NSArray<NSString *> *)supportedEvents {
   return @[
-   @"speechManagerDidReceiveSpeechTranscription",
-   @"speechManagerDidBecomeAvailable",
-   @"speechManagerDidBecomeUnavailable"
+    @"speechManagerDidReceiveSpeechTranscription",
+    @"speechManagerDidBecomeAvailable", @"speechManagerDidBecomeUnavailable"
   ];
 }
 
 RCT_EXPORT_MODULE(SpeechManager)
 
-RCT_EXPORT_METHOD(beginSpeechTranscriptionWithLocalIdentifier:(NSString*)localIdentifier withCallback:(RCTResponseSenderBlock)callback) {
-  PHFetchResult<PHAsset*> *fetchResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[localIdentifier] options:nil];
+RCT_EXPORT_METHOD(beginSpeechTranscriptionWithLocalIdentifier
+                  : (NSString *)localIdentifier withCallback
+                  : (RCTResponseSenderBlock)callback) {
+  PHFetchResult<PHAsset *> *fetchResult =
+      [PHAsset fetchAssetsWithLocalIdentifiers:@[ localIdentifier ]
+                                       options:nil];
   PHAsset *asset = fetchResult.firstObject;
   if (asset == nil) {
-    callback(@[[NSNull null], @(NO)]);
+    callback(@[ [NSNull null], @(NO) ]);
     return;
   }
-  PHVideoRequestOptions* requestOptions = [[PHVideoRequestOptions alloc] init];
-  requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+  PHVideoRequestOptions *requestOptions = [[PHVideoRequestOptions alloc] init];
+  requestOptions.deliveryMode =
+      PHImageRequestOptionsDeliveryModeHighQualityFormat;
   [PHImageManager.defaultManager
-   requestAVAssetForVideo:asset
-   options:requestOptions
-   resultHandler:^(AVAsset *asset, AVAudioMix *audioMix, NSDictionary *info) {
-       [AppDelegate.sharedSpeechManager
-        startCaptureForAsset:asset
-        callback:^(NSError *error, SFSpeechAudioBufferRecognitionRequest *request) {
-          if (error != nil) {
-            callback(@[error, @(NO)]);
-            return;
-          }
-          callback(@[[NSNull null], @(YES)]);
-       }];
-   }];
+      requestAVAssetForVideo:asset
+                     options:requestOptions
+               resultHandler:^(AVAsset *asset, AVAudioMix *audioMix,
+                               NSDictionary *info) {
+                 [AppDelegate.sharedSpeechManager
+                     startCaptureForAsset:asset
+                                 callback:^(
+                                     NSError *error,
+                                     SFSpeechAudioBufferRecognitionRequest
+                                         *request) {
+                                   if (error != nil) {
+                                     callback(@[ error, @(NO) ]);
+                                     return;
+                                   }
+                                   callback(@[ [NSNull null], @(YES) ]);
+                                 }];
+               }];
 }
 
-RCT_EXPORT_METHOD(beginSpeechTranscriptionWithAudioSession:(RCTResponseSenderBlock)callback) {
-  [AppDelegate.sharedSpeechManager startCaptureForAudioSessionWithCallback:^(NSError * error, SFSpeechAudioBufferRecognitionRequest * request) {
-    if (error != nil) {
-      callback(@[error, @(NO)]);
-      return;
-    }
-    callback(@[[NSNull null], @(YES)]);
-  }];
+RCT_EXPORT_METHOD(beginSpeechTranscriptionWithAudioSession
+                  : (RCTResponseSenderBlock)callback) {
+  [AppDelegate.sharedSpeechManager
+      startCaptureForAudioSessionWithCallback:^(
+          NSError *error, SFSpeechAudioBufferRecognitionRequest *request) {
+        if (error != nil) {
+          callback(@[ error, @(NO) ]);
+          return;
+        }
+        callback(@[ [NSNull null], @(YES) ]);
+      }];
 }
 
-RCT_EXPORT_METHOD(endSpeechTranscriptionWithAudioSession:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(endSpeechTranscriptionWithAudioSession
+                  : (RCTResponseSenderBlock)callback) {
   [AppDelegate.sharedSpeechManager stopCaptureForAudioSession];
-  callback(@[[NSNull null], @(YES)]);
+  callback(@[ [NSNull null], @(YES) ]);
 }
 
 @end

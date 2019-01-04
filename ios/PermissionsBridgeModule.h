@@ -2,6 +2,6 @@
 
 #import <React/RCTBridgeModule.h>
 
-@interface PermissionsBridgeModule : NSObject<RCTBridgeModule>
+@interface PermissionsBridgeModule : NSObject <RCTBridgeModule>
 
 @end
