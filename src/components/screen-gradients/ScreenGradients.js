@@ -32,7 +32,7 @@ export default function ScreenGradients() {
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         colors={[
-          Color.hexToRgbaString(UI_COLORS.BLACK, 0.25),
+          Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
           Color.hexToRgbaString(UI_COLORS.BLACK, 0.0),
         ]}
         style={styles.topGradient}
@@ -43,7 +43,7 @@ export default function ScreenGradients() {
         end={{ x: 0, y: 1 }}
         colors={[
           Color.hexToRgbaString(UI_COLORS.BLACK, 0.0),
-          Color.hexToRgbaString(UI_COLORS.BLACK, 0.25),
+          Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
         ]}
         style={styles.bottomGradient}
       />
