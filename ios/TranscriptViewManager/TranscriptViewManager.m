@@ -29,6 +29,10 @@
 
 #pragma MARK - React Native Module
 
++ (BOOL)requiresMainQueueSetup {
+  return NO;
+}
+
 RCT_EXPORT_MODULE()
 
 RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSArray *, UIView) {

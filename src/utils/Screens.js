@@ -68,6 +68,27 @@ export const dismissColorModal = async () => {
   await Navigation.dismissModal(SCREENS.COLOR_MODAL);
 };
 
+export const showEditTranscriptionModal = async (
+  videoAssetIdentifier: VideoAssetIdentifier
+) => {
+  await Navigation.showModal({
+    stack: {
+      children: [
+        merge(
+          { ...SCREEN_PARAMS[SCREENS.EDIT_TRANSCRIPTION_MODAL] },
+          passPropsComponentMergeParams({
+            videoAssetIdentifier,
+          })
+        ),
+      ],
+    },
+  });
+};
+
+export const dismissEditTranscriptionModal = async () => {
+  await Navigation.dismissModal(SCREENS.EDIT_TRANSCRIPTION_MODAL);
+};
+
 export const pushEditScreen = async (
   currentComponentId: string,
   videoAssetIdentifier: VideoAssetIdentifier

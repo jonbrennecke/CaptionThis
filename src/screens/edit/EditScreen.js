@@ -17,6 +17,7 @@ import EditScreenFontColorControls from './EditScreenFontColorControls';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import SpeechManager from '../../utils/SpeechManager';
+import * as Screens from '../../utils/Screens';
 import VideoPlayPauseButton from '../../components/video-play-pause-button/VideoPlayPauseButton';
 import {
   beginSpeechTranscriptionWithVideoAsset,
@@ -263,6 +264,10 @@ export default class EditScreen extends Component<Props, State> {
     return speechTranscriptions.get(key);
   }
 
+  async showEditTranscriptionModal() {
+    await Screens.showEditTranscriptionModal(this.props.videoAssetIdentifier);
+  }
+
   render() {
     const speechTranscription = this.getSpeechTranscription();
     const hasFinalTranscription =
@@ -306,6 +311,9 @@ export default class EditScreen extends Component<Props, State> {
                   backgroundColor={this.props.backgroundColor}
                   fontFamily={this.props.fontFamily}
                   speechTranscription={this.getSpeechTranscription()}
+                  onPress={() => {
+                    this.showEditTranscriptionModal();
+                  }}
                 />
               )}
             </View>

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, requireNativeComponent } from 'react-native';
+import { TouchableOpacity, requireNativeComponent } from 'react-native';
 
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
@@ -12,6 +12,7 @@ type Props = {
   textColor: ColorRGBA,
   fontFamily: string,
   speechTranscription: ?SpeechTranscription,
+  onPress: () => void,
 };
 
 const NativeTranscriptView = requireNativeComponent('TranscriptView');
@@ -31,6 +32,7 @@ export default function RecordingTranscriptionView({
   backgroundColor,
   fontFamily,
   speechTranscription,
+  onPress,
 }: Props) {
   const textSegments = speechTranscription
     ? speechTranscription.segments.map(segment => ({
@@ -40,7 +42,7 @@ export default function RecordingTranscriptionView({
       }))
     : [];
   return (
-    <View style={[styles.container, style]}>
+    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
       <NativeTranscriptView
         style={styles.flex}
         textSegments={textSegments}
@@ -58,6 +60,6 @@ export default function RecordingTranscriptionView({
           backgroundColor.alpha,
         ]}
       />
-    </View>
+    </TouchableOpacity>
   );
 }
