@@ -181,7 +181,7 @@ export default class RichTextEditor extends Component<Props, State> {
       case 'backgroundColor':
         this.colorPickerDidUpdateBackgroundColor(color);
         break;
-      case 'textClolor':
+      case 'textColor':
         this.colorPickerDidUpdateTextColor(color);
         break;
       default:
