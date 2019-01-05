@@ -27,6 +27,12 @@ type Props = {
   backgroundColor: ColorRGBA,
   onRequestLockScroll?: () => void,
   onRequestUnlockScroll?: () => void,
+  onRequestSave: ({
+    fontSize: number,
+    fontFamily: string,
+    textColor: ColorRGBA,
+    backgroundColor: ColorRGBA,
+  }) => void,
 };
 
 type State = {
@@ -240,11 +246,18 @@ export default class RichTextEditor extends Component<Props, State> {
     ]).start();
   }
 
-  save() {}
-
   fontSizeControlDidSelectFontSize(fontSize: number) {
     this.setState({
       fontSize,
+    });
+  }
+  
+  save() {
+    this.props.onRequestSave({
+      fontSize: this.state.fontSize,
+      fontFamily: this.state.fontFamily,
+      textColor: this.state.textColor,
+      backgroundColor: this.state.backgroundColor,
     });
   }
 

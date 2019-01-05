@@ -24,6 +24,12 @@ type Props = {
   fontFamily: string,
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
+  onRequestSave: ({
+    fontSize: number,
+    fontFamily: string,
+    textColor: ColorRGBA,
+    backgroundColor: ColorRGBA,
+  }) => void,
 };
 
 type State = {
@@ -182,6 +188,7 @@ export default class EditScreenRichTextOverlay extends Component<Props, State> {
                   backgroundColor={this.props.backgroundColor}
                   onRequestLockScroll={this.lockScroll}
                   onRequestUnlockScroll={this.unlockScroll}
+                  onRequestSave={this.props.onRequestSave}
                 />
               </View>
             </View>

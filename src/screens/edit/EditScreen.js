@@ -22,6 +22,9 @@ import {
   receiveSpeechTranscriptionSuccess,
   receiveSpeechTranscriptionFailure,
   exportVideo,
+  receiveUserSelectedFontFamily,
+  receiveUserSelectedTextColor,
+  receiveUserSelectedBackgroundColor,
 } from '../../redux/media/actionCreators';
 import {
   getBackgroundColor,
@@ -67,6 +70,9 @@ type DispatchProps = {
   ) => void,
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
   exportVideo: ExportParams => Promise<void>,
+  receiveUserSelectedFontFamily: (fontFamily: string) => void,
+  receiveUserSelectedTextColor: (color: ColorRGBA) => void,
+  receiveUserSelectedBackgroundColor: (color: ColorRGBA) => void,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -152,6 +158,9 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
       dispatch(receiveSpeechTranscriptionFailure(id)),
     exportVideo: (exportParams: ExportParams) =>
       dispatch(exportVideo(exportParams)),
+    receiveUserSelectedFontFamily: (fontFamily: string) => dispatch(receiveUserSelectedFontFamily(fontFamily)),
+    receiveUserSelectedTextColor: (color: ColorRGBA) => dispatch(receiveUserSelectedTextColor(color)),
+    receiveUserSelectedBackgroundColor: (color: ColorRGBA) => dispatch(receiveUserSelectedBackgroundColor(color)),
   };
 }
 
@@ -230,6 +239,18 @@ export default class EditScreen extends Component<Props, State> {
       playbackTimeSeconds: timeSeconds,
       startTimeSeconds: timeSeconds,
     });
+  }
+
+  async richTextEditorDidRequestSave(params: {
+    fontSize: number,
+    fontFamily: string,
+    textColor: ColorRGBA,
+    backgroundColor: ColorRGBA,
+  }) {
+    // TODO save fontSize
+    this.props.receiveUserSelectedFontFamily(params.fontFamily);
+    this.props.receiveUserSelectedTextColor(params.textColor);
+    this.props.receiveUserSelectedBackgroundColor(params.backgroundColor);
   }
 
   onDidPressBackButton() {
@@ -342,6 +363,7 @@ export default class EditScreen extends Component<Props, State> {
           textColor={this.props.textColor}
           backgroundColor={this.props.backgroundColor}
           fontFamily={this.props.fontFamily}
+          onRequestSave={(...etc) => { this.richTextEditorDidRequestSave(...etc); }}
         />
         <EditScreenLoadingOverlay isVisible={!hasFinalTranscription} />
         <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
