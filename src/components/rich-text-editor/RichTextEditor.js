@@ -25,6 +25,8 @@ type Props = {
   fontFamily: string,
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
+  onRequestLockScroll?: () => void,
+  onRequestUnlockScroll?: () => void,
 };
 
 type State = {
@@ -303,6 +305,8 @@ export default class RichTextEditor extends Component<Props, State> {
             }
             onDidUpdateColor={this.colorPickerDidUpdateColorThrottled}
             onRequestHide={this.hideColorPicker}
+            onRequestLockScroll={this.props.onRequestLockScroll}
+            onRequestUnlockScroll={this.props.onRequestUnlockScroll}
           />
         </Animated.View>
       </View>

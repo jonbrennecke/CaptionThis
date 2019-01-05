@@ -82,6 +82,7 @@ const styles = {
 export default class EditScreenRichTextOverlay extends Component<Props, State> {
   anim = new Animated.Value(0);
   scrollViewContentOffsetY = new Animated.Value(0);
+  scrollView: ?ScrollView;
   state = {
     safeAreaHeight: 0,
   };
@@ -136,6 +137,22 @@ export default class EditScreenRichTextOverlay extends Component<Props, State> {
     );
   }
 
+  lockScroll() {
+    if (this.scrollView) {
+      this.scrollView.setNativeProps({
+        scrollEnabled: false
+      });
+    }
+  }
+
+  unlockScroll() {
+    if (this.scrollView) {
+      this.scrollView.setNativeProps({
+        scrollEnabled: true
+      });
+    }
+  }
+
   render() {
     return (
       <Animated.View
@@ -145,6 +162,7 @@ export default class EditScreenRichTextOverlay extends Component<Props, State> {
         <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
         <SafeAreaView style={styles.flex}>
           <ScrollView
+            ref={ref => { this.scrollView = ref; }}
             style={styles.flex}
             showsVerticalScrollIndicator={false}
             overScrollMode="always"
@@ -160,6 +178,8 @@ export default class EditScreenRichTextOverlay extends Component<Props, State> {
                   fontFamily={this.props.fontFamily}
                   textColor={this.props.textColor}
                   backgroundColor={this.props.backgroundColor}
+                  onRequestLockScroll={this.lockScroll}
+                  onRequestUnlockScroll={this.unlockScroll}
                 />
               </View>
             </View>

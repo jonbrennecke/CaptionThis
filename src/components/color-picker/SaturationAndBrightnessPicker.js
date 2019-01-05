@@ -14,6 +14,8 @@ type Props = {
   style?: ?Style,
   color: ColorRGBA,
   onDidUpdateColor: ColorRGBA => void,
+  onDidStartDrag?: () => void,
+  onDidEndDrag?: () => void,
 };
 
 type State = {
@@ -64,9 +66,19 @@ export default class SaturationAndBrightnessPicker extends Component<
     },
   };
 
-  dragDidStart() {}
+  dragDidStart() {
+    if (!this.props.onDidStartDrag) {
+      return;
+    }
+    this.props.onDidStartDrag();
+  }
 
-  dragDidEnd() {}
+  dragDidEnd() {
+    if (!this.props.onDidEndDrag) {
+      return;
+    }
+    this.props.onDidEndDrag();
+  }
 
   dragDidMove(offset: { x: number, y: number }) {
     this.setState({

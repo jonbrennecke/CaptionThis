@@ -15,6 +15,8 @@ type Props = {
   color: ColorRGBA,
   onRequestHide: () => void,
   onDidUpdateColor: ColorRGBA => void,
+  onRequestLockScroll?: () => void,
+  onRequestUnlockScroll?: () => void,
 };
 
 const styles = {
@@ -43,6 +45,8 @@ export default function RichTextEditorColorPicker({
   color,
   onRequestHide,
   onDidUpdateColor,
+  onRequestLockScroll,
+  onRequestUnlockScroll,
 }: Props) {
   return (
     <View style={[styles.container, style]}>
@@ -58,6 +62,8 @@ export default function RichTextEditorColorPicker({
         style={styles.colorPicker}
         color={color}
         onDidUpdateColor={onDidUpdateColor}
+        onRequestLockScroll={onRequestLockScroll}
+        onRequestUnlockScroll={onRequestUnlockScroll}
       />
     </View>
   );

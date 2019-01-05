@@ -13,6 +13,8 @@ type Props = {
   style?: ?Style,
   color: ColorRGBA,
   onDidUpdateColor: ColorRGBA => void,
+  onRequestLockScroll?: () => void,
+  onRequestUnlockScroll?: () => void,
 };
 
 type State = {
@@ -64,6 +66,8 @@ export default class ColorPicker extends Component<Props, State> {
           style={styles.satPicker(this.state.viewWidth)}
           color={this.props.color}
           onDidUpdateColor={this.props.onDidUpdateColor}
+          onDidStartDrag={this.props.onRequestLockScroll}
+          onDidEndDrag={this.props.onRequestUnlockScroll}
         />
         <HuePicker
           style={styles.huePicker(this.state.viewWidth)}
