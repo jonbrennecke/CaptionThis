@@ -7,6 +7,7 @@ import * as Color from '../../utils/Color';
 import * as Fonts from '../../utils/Fonts';
 import ChevronLeftIcon from '../../components/chevron-left-icon/ChevronLeftIcon';
 import WandIcon from '../../components/wand-icon/WandIcon';
+import ExitIcon from '../../components/exit-icon/ExitIcon';
 
 import type { Style } from '../../types/react';
 
@@ -33,8 +34,13 @@ const styles = {
     height: 35,
     width: 35,
   },
-  button: {
+  buttonLeft: {
     width: 75,
+    alignItems: 'flex-start',
+  },
+  buttonRight: {
+    width: 75,
+    alignItems: 'flex-end',
   },
   buttonGroupLeft: {
     flexDirection: 'row',
@@ -59,18 +65,16 @@ export default function EditScreenTopControls({
   return (
     <View style={[styles.container, style]}>
       <View style={styles.buttonGroupLeft}>
-        <TouchableOpacity style={styles.button} onPress={onBackButtonPress}>
+        <TouchableOpacity style={styles.buttonLeft} onPress={onBackButtonPress}>
           <ChevronLeftIcon style={styles.icon} color={white} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={onStylizeButtonPress}>
+        <TouchableOpacity style={styles.buttonLeft} onPress={onStylizeButtonPress}>
           <WandIcon style={styles.icon} color={white} />
         </TouchableOpacity>
       </View>
       <View style={styles.buttonGroupRight}>
-        <TouchableOpacity style={styles.button} onPress={onExportButtonPress}>
-          <Text numberOfLines={1} style={styles.buttonText}>
-            {'EXPORT >'}
-          </Text>
+        <TouchableOpacity style={styles.buttonRight} onPress={onExportButtonPress}>
+          <ExitIcon style={styles.icon} color={white} />
         </TouchableOpacity>
       </View>
     </View>
