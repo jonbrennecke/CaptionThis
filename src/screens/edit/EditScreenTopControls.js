@@ -31,12 +31,12 @@ const styles = {
     textShadowRadius: 5,
   },
   icon: {
-    height: 35,
-    width: 35,
+    height: 30,
+    width: 30,
   },
   checkmarkIcon: {
-    height: 50,
-    width: 50,
+    height: 45,
+    width: 45,
   },
   buttonLeft: {
     width: 75,
