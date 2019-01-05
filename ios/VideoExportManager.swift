@@ -4,7 +4,7 @@ import Photos
 @objc
 class VideoExportManager: NSObject {
   private let containerOffsetFromBottom: CGFloat = 120
-  private let containerHeight: CGFloat = 200
+  private let containerHeight: CGFloat = 160
 
   @objc
   public func exportVideo(withLocalIdentifier localIdentifier: String,

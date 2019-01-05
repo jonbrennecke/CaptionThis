@@ -1,7 +1,7 @@
 import AVFoundation
 import UIKit
 
-let MAX_CHARACTERS_PER_LINE: Int = 40
+let MAX_CHARACTERS_PER_LINE: Int = 25
 
 @objc
 enum VideoAnimationOutputKind: Int {
@@ -11,8 +11,8 @@ enum VideoAnimationOutputKind: Int {
 
 @objc
 class VideoAnimationLayer: CALayer {
-  private let paddingHorizontal: CGFloat = 20
-  private let fontSize: CGFloat = 17
+  private let paddingHorizontal: CGFloat = 40
+  private let fontSize: CGFloat = 23
   private let outputKind: VideoAnimationOutputKind
 
   required init?(coder _: NSCoder) {
@@ -26,6 +26,8 @@ class VideoAnimationLayer: CALayer {
     contentsScale = UIScreen.main.scale
     masksToBounds = true
     opacity = 0.0
+    rasterizationScale = UIScreen.main.scale
+    shouldRasterize = true
   }
 
   @objc
@@ -139,8 +141,9 @@ class VideoAnimationLayer: CALayer {
   private func addTextLayer(withParams params: VideoAnimationParams, text: String) -> CATextLayer {
     let textLayer = CenteredTextLayer()
     textLayer.contentsScale = UIScreen.main.scale
+    textLayer.allowsFontSubpixelQuantization = true
     let height = frame.height / 2
-    let width = frame.width - paddingHorizontal
+    let width = frame.width - paddingHorizontal * 2
     textLayer.frame = CGRect(x: paddingHorizontal, y: 0, width: width, height: height)
     textLayer.alignmentMode = .left
     let fontSizeMultiplier = outputKind == .export ? UIScreen.main.scale : 1
