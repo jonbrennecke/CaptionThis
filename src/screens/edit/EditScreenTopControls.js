@@ -46,7 +46,7 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-  }
+  },
 };
 
 export default function EditScreenTopControls({
@@ -60,10 +60,10 @@ export default function EditScreenTopControls({
     <View style={[styles.container, style]}>
       <View style={styles.buttonGroupLeft}>
         <TouchableOpacity style={styles.button} onPress={onBackButtonPress}>
-          <ChevronLeftIcon style={styles.icon} color={white}/>
+          <ChevronLeftIcon style={styles.icon} color={white} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={onStylizeButtonPress}>
-          <WandIcon style={styles.icon} color={white}/>
+          <WandIcon style={styles.icon} color={white} />
         </TouchableOpacity>
       </View>
       <View style={styles.buttonGroupRight}>

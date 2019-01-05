@@ -12,7 +12,6 @@ import RecordingTranscriptionView from '../../components/recording-transcription
 import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
-import EditScreenEditControls from './EditScreenEditControls';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import SpeechManager from '../../utils/SpeechManager';
