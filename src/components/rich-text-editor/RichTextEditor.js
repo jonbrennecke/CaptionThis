@@ -251,7 +251,7 @@ export default class RichTextEditor extends Component<Props, State> {
       fontSize,
     });
   }
-  
+
   save() {
     this.props.onRequestSave({
       fontSize: this.state.fontSize,

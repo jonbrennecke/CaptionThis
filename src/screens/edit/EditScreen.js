@@ -158,9 +158,12 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
       dispatch(receiveSpeechTranscriptionFailure(id)),
     exportVideo: (exportParams: ExportParams) =>
       dispatch(exportVideo(exportParams)),
-    receiveUserSelectedFontFamily: (fontFamily: string) => dispatch(receiveUserSelectedFontFamily(fontFamily)),
-    receiveUserSelectedTextColor: (color: ColorRGBA) => dispatch(receiveUserSelectedTextColor(color)),
-    receiveUserSelectedBackgroundColor: (color: ColorRGBA) => dispatch(receiveUserSelectedBackgroundColor(color)),
+    receiveUserSelectedFontFamily: (fontFamily: string) =>
+      dispatch(receiveUserSelectedFontFamily(fontFamily)),
+    receiveUserSelectedTextColor: (color: ColorRGBA) =>
+      dispatch(receiveUserSelectedTextColor(color)),
+    receiveUserSelectedBackgroundColor: (color: ColorRGBA) =>
+      dispatch(receiveUserSelectedBackgroundColor(color)),
   };
 }
 
@@ -251,6 +254,9 @@ export default class EditScreen extends Component<Props, State> {
     this.props.receiveUserSelectedFontFamily(params.fontFamily);
     this.props.receiveUserSelectedTextColor(params.textColor);
     this.props.receiveUserSelectedBackgroundColor(params.backgroundColor);
+    this.setState({
+      showRichTextOverlay: false,
+    });
   }
 
   onDidPressBackButton() {
@@ -363,7 +369,9 @@ export default class EditScreen extends Component<Props, State> {
           textColor={this.props.textColor}
           backgroundColor={this.props.backgroundColor}
           fontFamily={this.props.fontFamily}
-          onRequestSave={(...etc) => { this.richTextEditorDidRequestSave(...etc); }}
+          onRequestSave={(...etc) => {
+            this.richTextEditorDidRequestSave(...etc);
+          }}
         />
         <EditScreenLoadingOverlay isVisible={!hasFinalTranscription} />
         <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
