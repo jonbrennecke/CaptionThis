@@ -37,7 +37,6 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const styles = {
   container: {
     flex: 1,
-    overflow: 'hidden',
   },
   flex: {
     flex: 1,
@@ -66,6 +65,7 @@ const styles = {
   }),
   colorPickerWrap: (anim: Animated.Value) => ({
     ...StyleSheet.absoluteFillObject,
+    justifyContent: 'space-between',
     opacity: anim,
     transform: [
       {
@@ -78,6 +78,8 @@ const styles = {
   }),
   mainContents: (anim: Animated.Value) => ({
     ...StyleSheet.absoluteFillObject,
+    justifyContent: 'space-between',
+    paddingBottom: 13,
     opacity: anim.interpolate({
       inputRange: [0, 1],
       outputRange: [1, 0],
@@ -92,8 +94,8 @@ const styles = {
     ],
   }),
   button: {
-    marginHorizontal: 10
-  }
+    marginHorizontal: 10,
+  },
 };
 
 // $FlowFixMe
@@ -130,7 +132,7 @@ export default class RichTextEditor extends Component<Props, State> {
     };
     Animated.parallel([
       Animated.timing(this.mainContentsAnim, config),
-      Animated.timing(this.fontFamilyAnim, config)
+      Animated.timing(this.fontFamilyAnim, config),
     ]).start();
   }
 
@@ -142,7 +144,7 @@ export default class RichTextEditor extends Component<Props, State> {
     };
     Animated.parallel([
       Animated.timing(this.mainContentsAnim, config),
-      Animated.timing(this.fontFamilyAnim, config)
+      Animated.timing(this.fontFamilyAnim, config),
     ]).start();
   }
 
@@ -186,7 +188,7 @@ export default class RichTextEditor extends Component<Props, State> {
     };
     Animated.parallel([
       Animated.timing(this.colorPickerAnim, config),
-      Animated.timing(this.mainContentsAnim, config)
+      Animated.timing(this.mainContentsAnim, config),
     ]).start();
   }
 
@@ -198,7 +200,7 @@ export default class RichTextEditor extends Component<Props, State> {
     };
     Animated.parallel([
       Animated.timing(this.colorPickerAnim, config),
-      Animated.timing(this.mainContentsAnim, config)
+      Animated.timing(this.mainContentsAnim, config),
     ]).start();
   }
 
@@ -222,21 +224,15 @@ export default class RichTextEditor extends Component<Props, State> {
             <RichTextBackgroundColorControl
               color={this.props.backgroundColor}
               style={styles.flex}
+              onDidRequestShowColorPicker={this.showColorPicker}
+              onDidSelectColor={this.colorPickerDidUpdateBackgroundColor}
             />
           </View>
-          <Button
-            style={styles.button}
-            text="Save"
-            onPress={() => {}}
-          />
+          <Button style={styles.button} text="Save" onPress={() => {}} />
         </Animated.View>
         <Animated.View
           style={styles.fontFamilyList(this.fontFamilyAnim)}
-          pointerEvents={
-            this.state.isFontFamilyListVisible
-              ? 'auto'
-              : 'none'
-          }
+          pointerEvents={this.state.isFontFamilyListVisible ? 'auto' : 'none'}
         >
           <RichTextEditorFontFamilyList
             style={styles.flex}
@@ -246,11 +242,7 @@ export default class RichTextEditor extends Component<Props, State> {
         </Animated.View>
         <Animated.View
           style={styles.colorPickerWrap(this.colorPickerAnim)}
-          pointerEvents={
-            this.state.isColorPickerVisible
-              ? 'auto'
-              : 'none'
-          }
+          pointerEvents={this.state.isColorPickerVisible ? 'auto' : 'none'}
         >
           <RichTextEditorColorPicker
             style={styles.flex}

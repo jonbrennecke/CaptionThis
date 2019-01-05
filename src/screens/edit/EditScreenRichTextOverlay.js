@@ -1,8 +1,16 @@
 // @flow
 import React, { Component } from 'react';
-import { View, SafeAreaView, Animated } from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Animated,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import { BlurView } from 'react-native-blur';
 import { autobind } from 'core-decorators';
+// $FlowFixMe
+import SafeArea from 'react-native-safe-area';
 
 import { UI_COLORS } from '../../constants';
 import RichTextEditor from '../../components/rich-text-editor/RichTextEditor';
@@ -17,6 +25,12 @@ type Props = {
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
 };
+
+type State = {
+  safeAreaHeight: number,
+};
+
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const styles = {
   container: (anim: Animated.Value) => ({
@@ -34,16 +48,16 @@ const styles = {
     right: 0,
     bottom: 0,
   },
-  safeAreaContent: {
-    flex: 1,
-    paddingVertical: 125,
+  safeAreaContent: (height: number) => ({
+    width: SCREEN_WIDTH,
+    paddingVertical: 145,
     paddingHorizontal: 23,
-  },
+    height,
+  }),
   insideWrap: {
     backgroundColor: UI_COLORS.WHITE,
     flex: 1,
     paddingHorizontal: 7,
-    paddingVertical: 13,
     borderRadius: 12,
     shadowOpacity: 1,
     shadowOffset: {
@@ -52,10 +66,11 @@ const styles = {
     },
     shadowRadius: 45,
     shadowColor: UI_COLORS.OFF_BLACK,
+    justifyContent: 'center',
   },
   inside: {
-    flex: 1,
     overflow: 'hidden',
+    flex: 1,
   },
   flex: {
     flex: 1,
@@ -64,15 +79,24 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class EditScreenRichTextOverlay extends Component<Props> {
-  anim: Animated.Value = new Animated.Value(0);
+export default class EditScreenRichTextOverlay extends Component<Props, State> {
+  anim = new Animated.Value(0);
+  scrollViewContentOffsetY = new Animated.Value(0);
+  state = {
+    safeAreaHeight: 0,
+  };
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.isVisible) {
       this.animateIn();
     } else if (!this.props.isVisible) {
       this.animateOut();
     }
+    const { safeAreaInsets } = await SafeArea.getSafeAreaInsetsForRootView();
+    this.setState({
+      safeAreaHeight:
+        SCREEN_HEIGHT - safeAreaInsets.top - safeAreaInsets.bottom,
+    });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -97,6 +121,21 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
     }).start();
   }
 
+  scrollViewDidScroll() {
+    return Animated.event(
+      [
+        {
+          nativeEvent: {
+            contentOffset: {
+              y: this.scrollViewContentOffsetY,
+            },
+          },
+        },
+      ],
+      { useNativeDriver: true }
+    );
+  }
+
   render() {
     return (
       <Animated.View
@@ -105,17 +144,25 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
       >
         <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
         <SafeAreaView style={styles.flex}>
-          <View style={styles.safeAreaContent}>
-            <View style={styles.insideWrap}>
-              <RichTextEditor
-                style={styles.inside}
-                isVisible={this.props.isVisible}
-                fontFamily={this.props.fontFamily}
-                textColor={this.props.textColor}
-                backgroundColor={this.props.backgroundColor}
-              />
+          <ScrollView
+            style={styles.flex}
+            showsVerticalScrollIndicator={false}
+            overScrollMode="always"
+            alwaysBounceVertical
+            onScroll={this.scrollViewDidScroll}
+          >
+            <View style={styles.safeAreaContent(this.state.safeAreaHeight)}>
+              <View style={styles.insideWrap}>
+                <RichTextEditor
+                  style={styles.inside}
+                  isVisible={this.props.isVisible}
+                  fontFamily={this.props.fontFamily}
+                  textColor={this.props.textColor}
+                  backgroundColor={this.props.backgroundColor}
+                />
+              </View>
             </View>
-          </View>
+          </ScrollView>
         </SafeAreaView>
       </Animated.View>
     );

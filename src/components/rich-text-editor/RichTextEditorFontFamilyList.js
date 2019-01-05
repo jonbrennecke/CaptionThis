@@ -17,8 +17,10 @@ type Props = {
 
 const styles = {
   container: {},
-  fontFamilyListHeader: {
-    height: 25,
+  header: {
+    height: 35,
+    paddingVertical: 5,
+    justifyContent: 'center',
   },
   flex: {
     flex: 1,
@@ -32,7 +34,7 @@ export default function RichTextEditorFontFamilyList({
 }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <View style={styles.fontFamilyListHeader}>
+      <View style={styles.header}>
         <TouchableOpacity style={styles.flex} onPress={onRequestHide}>
           <ChevronUpIcon
             color={Color.hexToRgbaObject(UI_COLORS.LIGHT_GREY)}

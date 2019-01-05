@@ -18,16 +18,23 @@ type Props = {
 };
 
 const styles = {
-  container: {},
+  container: {
+    paddingBottom: 13,
+  },
   header: {
-    height: 25,
+    height: 35,
+    paddingVertical: 5,
+    justifyContent: 'center',
+  },
+  chevron: {
+    flex: 1,
   },
   flex: {
     flex: 1,
   },
   colorPicker: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
 };
 
@@ -43,7 +50,7 @@ export default function RichTextEditorColorPicker({
         <TouchableOpacity style={styles.flex} onPress={onRequestHide}>
           <ChevronUpIcon
             color={Color.hexToRgbaObject(UI_COLORS.LIGHT_GREY)}
-            style={styles.flex}
+            style={styles.chevron}
           />
         </TouchableOpacity>
       </View>
