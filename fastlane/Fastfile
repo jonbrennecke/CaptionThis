@@ -42,4 +42,12 @@ platform :ios do |options|
     build
     deploy_beta
   end
+
+  lane :icon do
+    appicon(
+      appicon_image_file: 'assets/app/Icon.png',
+      appicon_devices: [:ipad, :iphone],
+      appicon_path: 'ios/CaptionThis/Images.xcassets'
+    )
+  end
 end

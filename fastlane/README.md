@@ -44,6 +44,11 @@ fastlane ios deploy_beta
 fastlane ios beta
 ```
 
+### ios icon
+```
+fastlane ios icon
+```
+
 
 ----
 
