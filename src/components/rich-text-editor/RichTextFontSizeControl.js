@@ -2,7 +2,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 
-import * as Screens from '../../utils/Screens';
 import * as Fonts from '../../utils/Fonts';
 import { FONT_SIZES, TEXT_COLORS } from '../../constants';
 
@@ -11,6 +10,7 @@ import type { Style } from '../../types/react';
 type Props = {
   style?: ?Style,
   fontSize: number,
+  onDidSelectFontSize: number => void,
 };
 
 const styles = {
@@ -35,7 +35,11 @@ const styles = {
   },
 };
 
-export default function RichTextFontSizeControl({ style, fontSize }: Props) {
+export default function RichTextFontSizeControl({
+  style,
+  fontSize,
+  onDidSelectFontSize,
+}: Props) {
   return (
     <View style={[styles.container, style]}>
       <Text numberOfLines={1} style={styles.labelText}>
@@ -43,7 +47,7 @@ export default function RichTextFontSizeControl({ style, fontSize }: Props) {
       </Text>
       <View style={styles.fontSizes}>
         {FONT_SIZES.map((size, index) => (
-          <TouchableOpacity key={size} onPress={() => Screens.showFontModal()}>
+          <TouchableOpacity key={size} onPress={() => onDidSelectFontSize(size)}>
             <Text
               numberOfLines={1}
               style={styles.fontSizeText(size === fontSize, index === 0)}

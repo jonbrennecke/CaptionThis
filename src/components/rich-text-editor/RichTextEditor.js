@@ -165,6 +165,7 @@ export default class RichTextEditor extends Component<Props, State> {
     this.setState({
       fontFamily,
     });
+    this.hideFontFamilyList();
   }
 
   colorPickerDidUpdateColorThrottled = throttle(
@@ -237,31 +238,47 @@ export default class RichTextEditor extends Component<Props, State> {
     ]).start();
   }
 
+  save() {}
+
+  fontSizeControlDidSelectFontSize(fontSize: number) {
+    this.setState({
+      fontSize,
+    });
+  }
+
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
         <Animated.View style={styles.mainContents(this.mainContentsAnim)}>
           <RichTextFontFamilyControl
             style={styles.field}
-            fontFamily={this.props.fontFamily}
+            fontFamily={this.state.fontFamily}
             onRequestShowFontFamilySelection={this.showFontFamilyList}
           />
-          <RichTextFontSizeControl fontSize={16} style={styles.field} />
+          <RichTextFontSizeControl
+            fontSize={this.state.fontSize}
+            style={styles.field}
+            onDidSelectFontSize={this.fontSizeControlDidSelectFontSize}
+          />
           <View style={[styles.row, styles.field]}>
             <RichTextFontColorControl
               color={this.state.textColor}
               style={styles.flex}
-              onDidRequestShowColorPicker={() => this.showColorPicker('textColor')}
+              onDidRequestShowColorPicker={() =>
+                this.showColorPicker('textColor')
+              }
               onDidSelectColor={this.colorPickerDidUpdateTextColor}
             />
             <RichTextBackgroundColorControl
               color={this.state.backgroundColor}
               style={styles.flex}
-              onDidRequestShowColorPicker={() => this.showColorPicker('backgroundColor')}
+              onDidRequestShowColorPicker={() =>
+                this.showColorPicker('backgroundColor')
+              }
               onDidSelectColor={this.colorPickerDidUpdateBackgroundColor}
             />
           </View>
-          <Button style={styles.button} text="Save" onPress={() => {}} />
+          <Button style={styles.button} text="Save" onPress={this.save} />
         </Animated.View>
         <Animated.View
           style={styles.fontFamilyList(this.fontFamilyAnim)}
@@ -269,7 +286,7 @@ export default class RichTextEditor extends Component<Props, State> {
         >
           <RichTextEditorFontFamilyList
             style={styles.flex}
-            onSelectFont={this.fontFamilyListDidSelectFontFamily}
+            onDidSelectFontFamily={this.fontFamilyListDidSelectFontFamily}
             onRequestHide={this.hideFontFamilyList}
           />
         </Animated.View>

@@ -32,11 +32,18 @@ const styles = {
     backgroundColor: Color.rgbaObjectToRgbaString(color),
     borderRadius: 6,
     borderWidth: 4,
-    borderColor: Color.hexToRgbaString(
-      Color.rgbaObjectToRgbaString(color),
-      0.5
-    ),
+    borderColor: isWhite(color)
+      ? Color.hexToRgbaString('#dddddd', 0.5)
+      : Color.hexToRgbaString(Color.rgbaObjectToRgbaString(color), 0.5),
     marginBottom: 3,
+  }),
+  colorInside: (color: ColorRGBA) => ({
+    flex: 1,
+    borderRadius: 6,
+    borderWidth: 4,
+    borderColor: isWhite(color)
+      ? Color.hexToRgbaString('#dddddd', 0.5)
+      : Color.hexToRgbaString(Color.rgbaObjectToRgbaString(color), 0.5),
   }),
   color: {
     height: 30,
@@ -46,21 +53,6 @@ const styles = {
   row: {
     flexDirection: 'row',
   },
-  colorInside: (color: ColorRGBA) => ({
-    flex: 1,
-    borderRadius: 6,
-    borderWidth: 4,
-    ...(isWhite(color)
-      ? {
-          borderColor: Color.hexToRgbaString(
-            Color.rgbaObjectToRgbaString(color),
-            0.5
-          ),
-        }
-      : {
-          borderColor: Color.hexToRgbaString('#ddd', 0.5),
-        }),
-  }),
 };
 
 function isWhite(color: ColorRGBA): boolean {
@@ -93,7 +85,10 @@ export default function RichTextFontColorControl({
               onPress={() => onDidSelectColor(Color.hexToRgbaObject(color))}
             >
               <View
-                style={[styles.colorInside(color), { backgroundColor: color }]}
+                style={[
+                  styles.colorInside(Color.hexToRgbaObject(color)),
+                  { backgroundColor: color },
+                ]}
               />
             </TouchableOpacity>
           ))}

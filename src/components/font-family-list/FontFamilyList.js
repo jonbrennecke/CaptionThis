@@ -9,7 +9,7 @@ import type { Style } from '../../types/react';
 
 type Props = {
   style?: ?Style,
-  onSelectFont: string => void,
+  onDidSelectFontFamily: string => void,
 };
 
 const FONT_EXAMPLE_TEXT = 'The quick brown fox jumps over the lazy dog';
@@ -36,12 +36,12 @@ const styles = {
   },
 };
 
-export default function FontFamilyList({ style, onSelectFont }: Props) {
+export default function FontFamilyList({ style, onDidSelectFontFamily }: Props) {
   return (
     <View style={[styles.container, style]}>
       {FONTS.map(({ displayName, fontFamily }) => (
         <TouchableOpacity
-          onPress={() => onSelectFont(fontFamily)}
+          onPress={() => onDidSelectFontFamily(fontFamily)}
           style={styles.font}
           key={fontFamily}
         >

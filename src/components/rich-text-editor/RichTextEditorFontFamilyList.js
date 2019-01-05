@@ -11,7 +11,7 @@ import type { Style } from '../../types/react';
 
 type Props = {
   style?: ?Style,
-  onSelectFont: string => void,
+  onDidSelectFontFamily: string => void,
   onRequestHide: () => void,
 };
 
@@ -29,7 +29,7 @@ const styles = {
 
 export default function RichTextEditorFontFamilyList({
   style,
-  onSelectFont,
+  onDidSelectFontFamily,
   onRequestHide,
 }: Props) {
   return (
@@ -47,7 +47,7 @@ export default function RichTextEditorFontFamilyList({
         showsVerticalScrollIndicator
         overScrollMode="always"
       >
-        <FontFamilyList onSelectFont={onSelectFont} />
+        <FontFamilyList onDidSelectFontFamily={onDidSelectFontFamily} />
       </ScrollView>
     </View>
   );
