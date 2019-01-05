@@ -57,7 +57,7 @@ export default function RecordingTranscriptionView({
           backgroundColor.red / 255,
           backgroundColor.green / 255,
           backgroundColor.blue / 255,
-          backgroundColor.alpha,
+          0.4, // TODO
         ]}
       />
     </TouchableOpacity>
