@@ -326,6 +326,11 @@ export default class EditScreen extends Component<Props, State> {
               style={styles.editTopControls}
               onBackButtonPress={this.onDidPressBackButton}
               onExportButtonPress={this.onDidPressExportButton}
+              onStylizeButtonPress={() =>
+                this.setState({
+                  showRichTextOverlay: !this.state.showRichTextOverlay,
+                })
+              }
             />
             {hasFinalTranscription && (
               <RecordingTranscriptionView
@@ -339,14 +344,6 @@ export default class EditScreen extends Component<Props, State> {
                 }}
               />
             )}
-            <EditScreenEditControls
-              style={styles.playbackControls}
-              onPressRichTextButton={() =>
-                this.setState({
-                  showRichTextOverlay: !this.state.showRichTextOverlay,
-                })
-              }
-            />
           </View>
           <View style={styles.editControls}>
             <View style={styles.seekbarWrap}>
