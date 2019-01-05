@@ -19,7 +19,7 @@ const NativeTranscriptView = requireNativeComponent('TranscriptView');
 
 const styles = {
   container: {
-    height: 100,
+    height: 75,
   },
   flex: {
     flex: 1,

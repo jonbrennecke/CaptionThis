@@ -186,7 +186,7 @@ class CameraManager: NSObject {
   }
 
   private func attemptToSetupCameraCaptureSession() -> CameraSetupResult {
-    captureSession.sessionPreset = .photo
+    captureSession.sessionPreset = .hd1920x1080
 
     // setup videoCaptureDevice
     videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
