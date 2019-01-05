@@ -71,6 +71,8 @@
 		FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */; };
 		FC9374E421DEED4D00FD2700 /* TranscriptViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */; };
 		FC9374E821DEF02C00FD2700 /* VideoAnimationComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */; };
+		FC93753F21E0681800FD2700 /* SourceSerifPro-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC93750D21E0681700FD2700 /* SourceSerifPro-Semibold.ttf */; };
+		FC93754021E0681800FD2700 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC93753E21E0681800FD2700 /* SourceSansPro-Bold.ttf */; };
 		FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971321DC933D00347CAB /* VideoExportManager.swift */; };
 		FCA3971621DC937C00347CAB /* VideoAnimationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971521DC937C00347CAB /* VideoAnimationLayer.swift */; };
 		FCA3971821DC93AF00347CAB /* constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971721DC93AF00347CAB /* constants.swift */; };
@@ -516,6 +518,8 @@
 		FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TranscriptViewManager.m; sourceTree = "<group>"; };
 		FC9374E521DEED5800FD2700 /* TranscriptViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TranscriptViewManager.h; sourceTree = "<group>"; };
 		FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationComposition.swift; sourceTree = "<group>"; };
+		FC93750D21E0681700FD2700 /* SourceSerifPro-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSerifPro-Semibold.ttf"; path = "../assets/fonts/SourceSerifPro-Semibold.ttf"; sourceTree = "<group>"; };
+		FC93753E21E0681800FD2700 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-Bold.ttf"; path = "../assets/fonts/SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
 		FCA3971321DC933D00347CAB /* VideoExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExportManager.swift; sourceTree = "<group>"; };
 		FCA3971521DC937C00347CAB /* VideoAnimationLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationLayer.swift; sourceTree = "<group>"; };
 		FCA3971721DC93AF00347CAB /* constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constants.swift; sourceTree = "<group>"; };
@@ -862,6 +866,8 @@
 		FC6EA7D921CEA457007C3B3E /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				FC93753E21E0681800FD2700 /* SourceSansPro-Bold.ttf */,
+				FC93750D21E0681700FD2700 /* SourceSerifPro-Semibold.ttf */,
 				FC7A0F5721D87E3B00751DBE /* CreteRound-Regular.ttf */,
 				FC7A0F5921D87E3B00751DBE /* Lobster-Regular.ttf */,
 				FC7A0F5B21D87E3B00751DBE /* SourceSansPro-Regular.ttf */,
@@ -1610,6 +1616,8 @@
 				FC6EA7D821CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf in Resources */,
 				FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				FC93753F21E0681800FD2700 /* SourceSerifPro-Semibold.ttf in Resources */,
+				FC93754021E0681800FD2700 /* SourceSansPro-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

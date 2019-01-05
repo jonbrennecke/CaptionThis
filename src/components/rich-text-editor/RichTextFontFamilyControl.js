@@ -2,7 +2,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 
-import * as Screens from '../../utils/Screens';
 import * as Fonts from '../../utils/Fonts';
 
 import type { Style } from '../../types/react';
@@ -10,6 +9,7 @@ import type { Style } from '../../types/react';
 type Props = {
   style?: ?Style,
   fontFamily: string,
+  onRequestShowFontFamilySelection: () => void,
 };
 
 const styles = {
@@ -18,21 +18,24 @@ const styles = {
     paddingHorizontal: 10,
   },
   labelText: {
-    ...Fonts.getFontStyle('formLabel', { contentStyle: 'lightContent' }),
+    ...Fonts.getFontStyle('formLabel', { contentStyle: 'darkContent' }),
     marginBottom: 4,
   },
-  buttonText: Fonts.getFontStyle('button', {
-    contentStyle: 'lightContent',
-    size: 'large',
+  buttonText: Fonts.getFontStyle('heading', {
+    contentStyle: 'darkContent',
   }),
 };
 
-export default function EditScreenFontControls({ style, fontFamily }: Props) {
+export default function RichTextFontFamilyControl({
+  style,
+  fontFamily,
+  onRequestShowFontFamilySelection,
+}: Props) {
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity onPress={() => Screens.showFontModal()}>
+      <TouchableOpacity onPress={onRequestShowFontFamilySelection}>
         <Text numberOfLines={1} style={styles.labelText}>
-          {'FONT'}
+          {'Font'}
         </Text>
         <Text numberOfLines={1} style={[styles.buttonText, { fontFamily }]}>
           {fontFamily}
