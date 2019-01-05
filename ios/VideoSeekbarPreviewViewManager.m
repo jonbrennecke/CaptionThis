@@ -42,7 +42,7 @@ RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
   Float64 duration = CMTimeGetSeconds(asset.duration);
   Float64 step = duration / SEEKBAR_NUMBER_OF_PREVIEW_FRAMES;
   for (Float64 seconds = 0; seconds < duration; seconds += step) {
-    CMTime time = CMTimeMakeWithSeconds(seconds, 1);
+    CMTime time = CMTimeMakeWithSeconds(seconds, 600);
     NSValue *timeValue = [NSValue valueWithCMTime:time];
     [times addObject:timeValue];
   }
