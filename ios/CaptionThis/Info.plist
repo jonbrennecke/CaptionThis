@@ -2,16 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We use the video library to save your editted videos</string>
-	<key>NSCameraUsageDescription</key>
-	<string>We use the camera to record videos</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>We use the built-in speech recognition system to caption your videos</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We use the microphone to caption your videos</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -47,8 +37,16 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>We use the camera to record videos</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We use the microphone to caption your videos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We use the video library to save your editted videos</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>We use the built-in speech recognition system to caption your videos</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SourceSerifPro-Semibold</string>
@@ -63,8 +61,6 @@
 		<string>Staatliches-Regular.ttf</string>
 		<string>Rubik-Regular.ttf</string>
 	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -72,8 +68,8 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 </dict>
 </plist>
