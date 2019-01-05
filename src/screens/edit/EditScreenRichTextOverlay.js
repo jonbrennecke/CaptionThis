@@ -156,6 +156,7 @@ export default class EditScreenRichTextOverlay extends Component<Props, State> {
                 <RichTextEditor
                   style={styles.inside}
                   isVisible={this.props.isVisible}
+                  fontSize={16}
                   fontFamily={this.props.fontFamily}
                   textColor={this.props.textColor}
                   backgroundColor={this.props.backgroundColor}

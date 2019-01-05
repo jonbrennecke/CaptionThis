@@ -4,9 +4,7 @@ import { View, Animated, Dimensions, Easing, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 import throttle from 'lodash/throttle';
 
-import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
-import * as Color from '../../utils/Color';
 import RichTextFontColorControl from './RichTextFontColorControl';
 import RichTextFontFamilyControl from './RichTextFontFamilyControl';
 import RichTextBackgroundColorControl from './RichTextBackgroundColorControl';
@@ -18,9 +16,12 @@ import Button from '../button/Button';
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 
+type EditingColor = 'textColor' | 'backgroundColor';
+
 type Props = {
   style?: ?Style,
   isVisible: boolean,
+  fontSize: number,
   fontFamily: string,
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
@@ -29,7 +30,11 @@ type Props = {
 type State = {
   isFontFamilyListVisible: boolean,
   isColorPickerVisible: boolean,
-  color: ColorRGBA,
+  editingColor: EditingColor,
+  textColor: ColorRGBA,
+  backgroundColor: ColorRGBA,
+  fontFamily: string,
+  fontSize: number,
 };
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -104,11 +109,19 @@ export default class RichTextEditor extends Component<Props, State> {
   fontFamilyAnim: Animated.Value = new Animated.Value(0);
   colorPickerAnim: Animated.Value = new Animated.Value(0);
   mainContentsAnim: Animated.Value = new Animated.Value(0);
-  state = {
-    isFontFamilyListVisible: false,
-    isColorPickerVisible: false,
-    color: Color.hexToRgbaObject(UI_COLORS.DARK_GREY),
-  };
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      isFontFamilyListVisible: false,
+      isColorPickerVisible: false,
+      editingColor: 'textColor',
+      textColor: props.textColor,
+      backgroundColor: props.backgroundColor,
+      fontFamily: props.fontFamily,
+      fontSize: props.fontSize,
+    };
+  }
 
   showFontFamilyList() {
     this.setState({
@@ -148,7 +161,11 @@ export default class RichTextEditor extends Component<Props, State> {
     ]).start();
   }
 
-  fontFamilyListDidSelectFontFamily(fontFamily: string) {}
+  fontFamilyListDidSelectFontFamily(fontFamily: string) {
+    this.setState({
+      fontFamily,
+    });
+  }
 
   colorPickerDidUpdateColorThrottled = throttle(
     this.colorPickerDidUpdateColor,
@@ -157,17 +174,33 @@ export default class RichTextEditor extends Component<Props, State> {
   );
 
   colorPickerDidUpdateColor(color: ColorRGBA) {
+    switch (this.state.editingColor) {
+      case 'backgroundColor':
+        this.colorPickerDidUpdateBackgroundColor(color);
+        break;
+      case 'textClolor':
+        this.colorPickerDidUpdateTextColor(color);
+        break;
+      default:
+        break;
+    }
+  }
+
+  colorPickerDidUpdateTextColor(textColor: ColorRGBA) {
     this.setState({
-      color,
+      textColor,
     });
   }
 
-  colorPickerDidUpdateFontColor(color: ColorRGBA) {}
-
-  colorPickerDidUpdateBackgroundColor(color: ColorRGBA) {}
-
-  showColorPicker() {
+  colorPickerDidUpdateBackgroundColor(backgroundColor: ColorRGBA) {
     this.setState({
+      backgroundColor,
+    });
+  }
+
+  showColorPicker(editingColor: EditingColor) {
+    this.setState({
+      editingColor,
       isColorPickerVisible: true,
     });
     this.animateInColorPicker();
@@ -216,15 +249,15 @@ export default class RichTextEditor extends Component<Props, State> {
           <RichTextFontSizeControl fontSize={16} style={styles.field} />
           <View style={[styles.row, styles.field]}>
             <RichTextFontColorControl
-              color={this.props.textColor}
+              color={this.state.textColor}
               style={styles.flex}
-              onDidRequestShowColorPicker={this.showColorPicker}
-              onDidSelectColor={this.colorPickerDidUpdateFontColor}
+              onDidRequestShowColorPicker={() => this.showColorPicker('textColor')}
+              onDidSelectColor={this.colorPickerDidUpdateTextColor}
             />
             <RichTextBackgroundColorControl
-              color={this.props.backgroundColor}
+              color={this.state.backgroundColor}
               style={styles.flex}
-              onDidRequestShowColorPicker={this.showColorPicker}
+              onDidRequestShowColorPicker={() => this.showColorPicker('backgroundColor')}
               onDidSelectColor={this.colorPickerDidUpdateBackgroundColor}
             />
           </View>
@@ -246,7 +279,11 @@ export default class RichTextEditor extends Component<Props, State> {
         >
           <RichTextEditorColorPicker
             style={styles.flex}
-            color={this.state.color}
+            color={
+              this.state.editingColor === 'backgroundColor'
+                ? this.state.backgroundColor
+                : this.state.textColor
+            }
             onDidUpdateColor={this.colorPickerDidUpdateColorThrottled}
             onRequestHide={this.hideColorPicker}
           />
