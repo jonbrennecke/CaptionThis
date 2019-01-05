@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
 import { UI_COLORS } from '../../constants';
 import * as Color from '../../utils/Color';
