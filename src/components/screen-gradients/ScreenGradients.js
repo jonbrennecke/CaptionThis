@@ -12,7 +12,6 @@ const styles = {
     left: 0,
     right: 0,
     height: 150,
-    zIndex: 1,
   },
   bottomGradient: {
     position: 'absolute',
@@ -20,7 +19,6 @@ const styles = {
     left: 0,
     right: 0,
     height: 150,
-    zIndex: 1,
   },
 };
 

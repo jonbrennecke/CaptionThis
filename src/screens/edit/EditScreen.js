@@ -307,7 +307,6 @@ export default class EditScreen extends Component<Props, State> {
       speechTranscription && speechTranscription.isFinal;
     return (
       <View style={styles.container}>
-        <ScreenGradients />
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.videoWrap}>
             <VideoPlayerView
@@ -322,6 +321,7 @@ export default class EditScreen extends Component<Props, State> {
                 this.videoPlayerDidUpdatePlaybackTime
               }
             />
+            <ScreenGradients />
             <EditScreenTopControls
               style={styles.editTopControls}
               onBackButtonPress={this.onDidPressBackButton}

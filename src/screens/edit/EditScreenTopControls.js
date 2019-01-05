@@ -5,6 +5,7 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { UI_COLORS } from '../../constants';
 import * as Color from '../../utils/Color';
 import * as Fonts from '../../utils/Fonts';
+import ChevronLeftIcon from '../../components/chevron-left-icon/ChevronLeftIcon';
 
 import type { Style } from '../../types/react';
 
@@ -27,6 +28,10 @@ const styles = {
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 5,
   },
+  icon: {
+    height: 35,
+    width: 35,
+  }
 };
 
 export default function EditScreenTopControls({
@@ -37,9 +42,7 @@ export default function EditScreenTopControls({
   return (
     <View style={[styles.container, style]}>
       <TouchableOpacity onPress={onBackButtonPress}>
-        <Text numberOfLines={1} style={styles.buttonText}>
-          {'< BACK'}
-        </Text>
+        <ChevronLeftIcon style={styles.icon} color={Color.hexToRgbaObject(UI_COLORS.WHITE)}/>
       </TouchableOpacity>
       <TouchableOpacity onPress={onExportButtonPress}>
         <Text numberOfLines={1} style={styles.buttonText}>

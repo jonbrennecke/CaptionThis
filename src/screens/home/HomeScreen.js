@@ -274,7 +274,6 @@ export default class HomeScreen extends Component<Props, State> {
   render() {
     return (
       <View style={styles.container}>
-        <ScreenGradients />
         <View style={styles.flex}>
           <ScrollView
             ref={ref => {
@@ -292,6 +291,7 @@ export default class HomeScreen extends Component<Props, State> {
             <SafeAreaView style={styles.flex}>
               <View style={styles.cameraPreview}>
                 <CameraPreviewView style={styles.flex} />
+                <ScreenGradients />
                 <LiveTranscriptionView
                   style={styles.transcript}
                   fontFamily={this.props.fontFamily}
