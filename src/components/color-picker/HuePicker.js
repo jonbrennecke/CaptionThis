@@ -14,6 +14,8 @@ type Props = {
   style?: ?Style,
   color: ColorRGBA,
   onDidUpdateColor: ColorRGBA => void,
+  onDidStartDrag?: () => void,
+  onDidEndDrag?: () => void,
 };
 
 type State = {
@@ -61,9 +63,19 @@ export default class HuePicker extends Component<Props, State> {
     },
   };
 
-  dragDidStart() {}
+  dragDidStart() {
+    if (!this.props.onDidStartDrag) {
+      return;
+    }
+    this.props.onDidStartDrag();
+  }
 
-  dragDidEnd() {}
+  dragDidEnd() {
+    if (!this.props.onDidEndDrag) {
+      return;
+    }
+    this.props.onDidEndDrag();
+  }
 
   dragDidMove({ x }: { x: number, y: number }) {
     this.setState({

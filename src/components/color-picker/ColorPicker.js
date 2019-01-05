@@ -73,6 +73,8 @@ export default class ColorPicker extends Component<Props, State> {
           style={styles.huePicker(this.state.viewWidth)}
           color={this.props.color}
           onDidUpdateColor={this.props.onDidUpdateColor}
+          onDidStartDrag={this.props.onRequestLockScroll}
+          onDidEndDrag={this.props.onRequestUnlockScroll}
         />
       </View>
     );
