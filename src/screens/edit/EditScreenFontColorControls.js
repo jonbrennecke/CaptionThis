@@ -3,10 +3,9 @@ import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import chunk from 'lodash/chunk';
 
-import * as Screens from '../../utils/Screens';
 import * as Fonts from '../../utils/Fonts';
 import * as Color from '../../utils/Color';
-import { USER_EDITABLE_COLORS, USER_COLOR_CHOICES } from '../../constants';
+import { USER_COLOR_CHOICES } from '../../constants';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
@@ -14,6 +13,8 @@ import type { ColorRGBA } from '../../types/media';
 type Props = {
   style?: ?Style,
   color: ColorRGBA,
+  onDidSelectColor: ColorRGBA => void,
+  onDidRequestShowColorPicker: ColorRGBA => void,
 };
 
 const styles = {
@@ -66,7 +67,12 @@ function isWhite(color: ColorRGBA): boolean {
   return color.red === 255 && color.blue === 255 && color.green === 255;
 }
 
-export default function EditScreenFontColorControls({ style, color }: Props) {
+export default function EditScreenFontColorControls({
+  style,
+  color,
+  onDidSelectColor,
+  onDidRequestShowColorPicker,
+}: Props) {
   return (
     <View style={[styles.container, style]}>
       <Text numberOfLines={1} style={styles.labelText}>
@@ -74,26 +80,24 @@ export default function EditScreenFontColorControls({ style, color }: Props) {
       </Text>
       <TouchableOpacity
         style={styles.row}
-        onPress={() => Screens.showColorModal(USER_EDITABLE_COLORS.TEXT_COLOR)}
+        onPress={onDidRequestShowColorPicker}
       >
         <View style={styles.backgroundColor(color)} />
       </TouchableOpacity>
       {chunk(USER_COLOR_CHOICES, 4).map((colors, index) => (
-        <TouchableOpacity
-          style={styles.row}
-          key={index}
-          onPress={() => {
-            /* TODO */
-          }}
-        >
+        <View style={styles.row} key={index}>
           {colors.map(color => (
-            <View key={color} style={styles.color}>
+            <TouchableOpacity
+              key={color}
+              style={styles.color}
+              onPress={() => onDidSelectColor(Color.hexToRgbaObject(color))}
+            >
               <View
                 style={[styles.colorInside(color), { backgroundColor: color }]}
               />
-            </View>
+            </TouchableOpacity>
           ))}
-        </TouchableOpacity>
+        </View>
       ))}
     </View>
   );

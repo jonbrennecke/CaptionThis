@@ -25,7 +25,7 @@ const styles = {
   },
 };
 
-export default function FontFamilyScrollList({
+export default function RichTextEditorFontFamilyList({
   style,
   onSelectFont,
   onRequestHide,
