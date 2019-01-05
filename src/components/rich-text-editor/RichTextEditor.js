@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Animated, Dimensions, Easing } from 'react-native';
+import { View, Animated, Dimensions, Easing, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 import throttle from 'lodash/throttle';
 
@@ -13,6 +13,7 @@ import RichTextBackgroundColorControl from './RichTextBackgroundColorControl';
 import RichTextFontSizeControl from './RichTextFontSizeControl';
 import RichTextEditorFontFamilyList from './RichTextEditorFontFamilyList';
 import RichTextEditorColorPicker from './RichTextEditorColorPicker';
+import Button from '../button/Button';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
@@ -52,11 +53,7 @@ const styles = {
     paddingVertical: 10,
   },
   fontFamilyList: (anim: Animated.Value) => ({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     opacity: anim,
     transform: [
       {
@@ -68,11 +65,7 @@ const styles = {
     ],
   }),
   colorPickerWrap: (anim: Animated.Value) => ({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     opacity: anim,
     transform: [
       {
@@ -84,11 +77,7 @@ const styles = {
     ],
   }),
   mainContents: (anim: Animated.Value) => ({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     opacity: anim.interpolate({
       inputRange: [0, 1],
       outputRange: [1, 0],
@@ -102,6 +91,9 @@ const styles = {
       },
     ],
   }),
+  button: {
+    marginHorizontal: 10
+  }
 };
 
 // $FlowFixMe
@@ -232,6 +224,11 @@ export default class RichTextEditor extends Component<Props, State> {
               style={styles.flex}
             />
           </View>
+          <Button
+            style={styles.button}
+            text="Save"
+            onPress={() => {}}
+          />
         </Animated.View>
         <Animated.View
           style={styles.fontFamilyList(this.fontFamilyAnim)}

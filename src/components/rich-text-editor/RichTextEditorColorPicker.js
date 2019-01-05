@@ -4,7 +4,7 @@ import { View, TouchableOpacity } from 'react-native';
 
 import { UI_COLORS } from '../../constants';
 import * as Color from '../../utils/Color';
-import ChevronDownIcon from '../chevron-down-icon/ChevronDownIcon';
+import ChevronUpIcon from '../chevron-up-icon/ChevronUpIcon';
 import ColorPicker from '../color-picker/ColorPicker';
 
 import type { Style } from '../../types/react';
@@ -41,7 +41,7 @@ export default function RichTextEditorColorPicker({
     <View style={[styles.container, style]}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.flex} onPress={onRequestHide}>
-          <ChevronDownIcon
+          <ChevronUpIcon
             color={Color.hexToRgbaObject(UI_COLORS.LIGHT_GREY)}
             style={styles.flex}
           />

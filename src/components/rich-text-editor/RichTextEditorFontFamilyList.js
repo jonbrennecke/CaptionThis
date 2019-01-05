@@ -5,7 +5,7 @@ import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { UI_COLORS } from '../../constants';
 import * as Color from '../../utils/Color';
 import FontFamilyList from '../font-family-list/FontFamilyList';
-import ChevronDownIcon from '../chevron-down-icon/ChevronDownIcon';
+import ChevronUpIcon from '../chevron-up-icon/ChevronUpIcon';
 
 import type { Style } from '../../types/react';
 
@@ -34,7 +34,7 @@ export default function RichTextEditorFontFamilyList({
     <View style={[styles.container, style]}>
       <View style={styles.fontFamilyListHeader}>
         <TouchableOpacity style={styles.flex} onPress={onRequestHide}>
-          <ChevronDownIcon
+          <ChevronUpIcon
             color={Color.hexToRgbaObject(UI_COLORS.LIGHT_GREY)}
             style={styles.flex}
           />
