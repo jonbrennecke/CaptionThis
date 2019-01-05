@@ -36,7 +36,10 @@ const styles = {
   },
 };
 
-export default function FontFamilyList({ style, onDidSelectFontFamily }: Props) {
+export default function FontFamilyList({
+  style,
+  onDidSelectFontFamily,
+}: Props) {
   return (
     <View style={[styles.container, style]}>
       {FONTS.map(({ displayName, fontFamily }) => (

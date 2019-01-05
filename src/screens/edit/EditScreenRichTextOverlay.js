@@ -140,7 +140,7 @@ export default class EditScreenRichTextOverlay extends Component<Props, State> {
   lockScroll() {
     if (this.scrollView) {
       this.scrollView.setNativeProps({
-        scrollEnabled: false
+        scrollEnabled: false,
       });
     }
   }
@@ -148,7 +148,7 @@ export default class EditScreenRichTextOverlay extends Component<Props, State> {
   unlockScroll() {
     if (this.scrollView) {
       this.scrollView.setNativeProps({
-        scrollEnabled: true
+        scrollEnabled: true,
       });
     }
   }
@@ -162,7 +162,9 @@ export default class EditScreenRichTextOverlay extends Component<Props, State> {
         <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
         <SafeAreaView style={styles.flex}>
           <ScrollView
-            ref={ref => { this.scrollView = ref; }}
+            ref={ref => {
+              this.scrollView = ref;
+            }}
             style={styles.flex}
             showsVerticalScrollIndicator={false}
             overScrollMode="always"

@@ -47,7 +47,10 @@ export default function RichTextFontSizeControl({
       </Text>
       <View style={styles.fontSizes}>
         {FONT_SIZES.map((size, index) => (
-          <TouchableOpacity key={size} onPress={() => onDidSelectFontSize(size)}>
+          <TouchableOpacity
+            key={size}
+            onPress={() => onDidSelectFontSize(size)}
+          >
             <Text
               numberOfLines={1}
               style={styles.fontSizeText(size === fontSize, index === 0)}
