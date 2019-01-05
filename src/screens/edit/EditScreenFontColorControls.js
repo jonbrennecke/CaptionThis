@@ -6,11 +6,7 @@ import chunk from 'lodash/chunk';
 import * as Screens from '../../utils/Screens';
 import * as Fonts from '../../utils/Fonts';
 import * as Color from '../../utils/Color';
-import {
-  UI_COLORS,
-  USER_EDITABLE_COLORS,
-  USER_COLOR_CHOICES,
-} from '../../constants';
+import { USER_EDITABLE_COLORS, USER_COLOR_CHOICES } from '../../constants';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
