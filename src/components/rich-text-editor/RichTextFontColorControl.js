@@ -67,7 +67,7 @@ function isWhite(color: ColorRGBA): boolean {
   return color.red === 255 && color.blue === 255 && color.green === 255;
 }
 
-export default function EditScreenFontColorControls({
+export default function RichTextFontColorControl({
   style,
   color,
   onDidSelectColor,

@@ -31,7 +31,7 @@ const styles = {
   },
 };
 
-export default function EditScreenBackgroundColorControls({
+export default function RichTextBackgroundColorControl({
   style,
   color,
 }: Props) {

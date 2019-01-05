@@ -26,7 +26,7 @@ const styles = {
   }),
 };
 
-export default function EditScreenFontFamilyControls({
+export default function RichTextFontFamilyControl({
   style,
   fontFamily,
   onRequestShowFontFamilySelection,

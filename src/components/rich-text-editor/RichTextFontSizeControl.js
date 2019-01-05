@@ -35,7 +35,7 @@ const styles = {
   },
 };
 
-export default function EditScreenFontSizeControls({ style, fontSize }: Props) {
+export default function RichTextFontSizeControl({ style, fontSize }: Props) {
   return (
     <View style={[styles.container, style]}>
       <Text numberOfLines={1} style={styles.labelText}>
