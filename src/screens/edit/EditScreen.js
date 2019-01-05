@@ -12,7 +12,6 @@ import RecordingTranscriptionView from '../../components/recording-transcription
 import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
-import EditScreenEditControls from './EditScreenEditControls';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import SpeechManager from '../../utils/SpeechManager';
@@ -307,7 +306,6 @@ export default class EditScreen extends Component<Props, State> {
       speechTranscription && speechTranscription.isFinal;
     return (
       <View style={styles.container}>
-        <ScreenGradients />
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.videoWrap}>
             <VideoPlayerView
@@ -322,10 +320,16 @@ export default class EditScreen extends Component<Props, State> {
                 this.videoPlayerDidUpdatePlaybackTime
               }
             />
+            <ScreenGradients />
             <EditScreenTopControls
               style={styles.editTopControls}
               onBackButtonPress={this.onDidPressBackButton}
               onExportButtonPress={this.onDidPressExportButton}
+              onStylizeButtonPress={() =>
+                this.setState({
+                  showRichTextOverlay: !this.state.showRichTextOverlay,
+                })
+              }
             />
             {hasFinalTranscription && (
               <RecordingTranscriptionView
@@ -339,14 +343,6 @@ export default class EditScreen extends Component<Props, State> {
                 }}
               />
             )}
-            <EditScreenEditControls
-              style={styles.playbackControls}
-              onPressRichTextButton={() =>
-                this.setState({
-                  showRichTextOverlay: !this.state.showRichTextOverlay,
-                })
-              }
-            />
           </View>
           <View style={styles.editControls}>
             <View style={styles.seekbarWrap}>

@@ -26,7 +26,7 @@ export const TEXT_COLORS = {
 };
 
 export const UI_COLORS = {
-  WHITE: '#FFF',
+  WHITE: '#FFFFFF',
   OFF_WHITE: '#F6F6FD',
   DARK_GREY: '#332A38',
   BLACK: '#000',
