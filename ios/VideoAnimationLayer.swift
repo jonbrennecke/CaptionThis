@@ -26,6 +26,8 @@ class VideoAnimationLayer: CALayer {
     contentsScale = UIScreen.main.scale
     masksToBounds = true
     opacity = 0.0
+    rasterizationScale = UIScreen.main.scale
+    shouldRasterize = true
   }
 
   @objc
@@ -139,6 +141,7 @@ class VideoAnimationLayer: CALayer {
   private func addTextLayer(withParams params: VideoAnimationParams, text: String) -> CATextLayer {
     let textLayer = CenteredTextLayer()
     textLayer.contentsScale = UIScreen.main.scale
+    textLayer.allowsFontSubpixelQuantization = true
     let height = frame.height / 2
     let width = frame.width - paddingHorizontal * 2
     textLayer.frame = CGRect(x: paddingHorizontal, y: 0, width: width, height: height)

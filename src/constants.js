@@ -79,6 +79,7 @@ export const FONT_FAMILIES = {
   SOURCE_SANS_PRO: 'Source Sans Pro',
   LOBSTER: 'Lobster',
   CRETE_ROUND: 'Crete Round',
+  RUBIK: 'Rubik',
 };
 
 export const FONTS = [
@@ -102,6 +103,10 @@ export const FONTS = [
     fontFamily: FONT_FAMILIES.STAATLICHES,
     displayName: 'Staatliches',
   },
+  {
+    fontFamily: FONT_FAMILIES.RUBIK,
+    displayName: 'Rubik',
+  }
 ];
 
 export const FONT_STYLES: { [key: FontRole]: FontStyle } = {

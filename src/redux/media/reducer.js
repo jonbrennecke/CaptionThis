@@ -20,9 +20,9 @@ import type {
   ReceiveVideoAssetPayload,
 } from '../../types/redux';
 
-const DEFAULT_FONT_FAMILY = FONT_FAMILIES.SOURCE_SANS_PRO;
-const DEFAULT_BACKGROUND_COLOR = UI_COLORS.MEDIUM_RED;
-const DEFAULT_TEXT_COLOR = TEXT_COLORS.OFF_WHITE;
+const DEFAULT_FONT_FAMILY = FONT_FAMILIES.RUBIK;
+const DEFAULT_BACKGROUND_COLOR = UI_COLORS.WHITE;
+const DEFAULT_TEXT_COLOR = TEXT_COLORS.DARK_GREY;
 
 const initialState: MediaState = {
   cameraRecordingState: {
