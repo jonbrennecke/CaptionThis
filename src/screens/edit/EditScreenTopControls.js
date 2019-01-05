@@ -7,7 +7,7 @@ import * as Color from '../../utils/Color';
 import * as Fonts from '../../utils/Fonts';
 import ChevronLeftIcon from '../../components/chevron-left-icon/ChevronLeftIcon';
 import WandIcon from '../../components/wand-icon/WandIcon';
-import ExitIcon from '../../components/exit-icon/ExitIcon';
+import CheckmarkIcon from '../../components/checkmark-icon/CheckmarkIcon';
 
 import type { Style } from '../../types/react';
 
@@ -33,6 +33,10 @@ const styles = {
   icon: {
     height: 35,
     width: 35,
+  },
+  checkmarkIcon: {
+    height: 50,
+    width: 50,
   },
   buttonLeft: {
     width: 75,
@@ -74,7 +78,7 @@ export default function EditScreenTopControls({
       </View>
       <View style={styles.buttonGroupRight}>
         <TouchableOpacity style={styles.buttonRight} onPress={onExportButtonPress}>
-          <ExitIcon style={styles.icon} color={white} />
+          <CheckmarkIcon style={styles.checkmarkIcon} color={white} />
         </TouchableOpacity>
       </View>
     </View>
