@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View, Animated, Dimensions, Easing } from 'react-native';
 import { autobind } from 'core-decorators';
+import throttle from 'lodash/throttle';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
@@ -66,6 +67,22 @@ const styles = {
       },
     ],
   }),
+  colorPickerWrap: (anim: Animated.Value) => ({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    opacity: anim,
+    transform: [
+      {
+        translateY: anim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [SCREEN_HEIGHT, 0],
+        }),
+      },
+    ],
+  }),
   mainContents: (anim: Animated.Value) => ({
     position: 'absolute',
     top: 0,
@@ -90,7 +107,9 @@ const styles = {
 // $FlowFixMe
 @autobind
 export default class RichTextEditor extends Component<Props, State> {
-  drawerAnim: Animated.Value = new Animated.Value(0);
+  fontFamilyAnim: Animated.Value = new Animated.Value(0);
+  colorPickerAnim: Animated.Value = new Animated.Value(0);
+  mainContentsAnim: Animated.Value = new Animated.Value(0);
   state = {
     isFontFamilyListVisible: false,
     isColorPickerVisible: false,
@@ -101,36 +120,52 @@ export default class RichTextEditor extends Component<Props, State> {
     this.setState({
       isFontFamilyListVisible: true,
     });
-    this.animateInDrawer();
+    this.animateInFontFamilyList();
   }
 
   hideFontFamilyList() {
     this.setState({
       isFontFamilyListVisible: false,
     });
-    this.animateOutDrawer();
+    this.animateOutFontFamilyList();
   }
 
-  animateInDrawer() {
-    Animated.timing(this.drawerAnim, {
+  animateInFontFamilyList() {
+    const config = {
       toValue: 1,
       duration: 300,
       easing: Easing.quad,
-    }).start();
+    };
+    Animated.parallel([
+      Animated.timing(this.mainContentsAnim, config),
+      Animated.timing(this.fontFamilyAnim, config)
+    ]).start();
   }
 
-  animateOutDrawer() {
-    Animated.timing(this.drawerAnim, {
+  animateOutFontFamilyList() {
+    const config = {
       toValue: 0,
       duration: 300,
       easing: Easing.quad,
-    }).start();
+    };
+    Animated.parallel([
+      Animated.timing(this.mainContentsAnim, config),
+      Animated.timing(this.fontFamilyAnim, config)
+    ]).start();
   }
 
   fontFamilyListDidSelectFontFamily(fontFamily: string) {}
 
+  colorPickerDidUpdateColorThrottled = throttle(
+    this.colorPickerDidUpdateColor,
+    100,
+    { leading: true }
+  );
+
   colorPickerDidUpdateColor(color: ColorRGBA) {
-    // TODO: throttle
+    this.setState({
+      color,
+    });
   }
 
   colorPickerDidUpdateFontColor(color: ColorRGBA) {}
@@ -141,20 +176,44 @@ export default class RichTextEditor extends Component<Props, State> {
     this.setState({
       isColorPickerVisible: true,
     });
-    this.animateInDrawer();
+    this.animateInColorPicker();
   }
 
   hideColorPicker() {
     this.setState({
       isColorPickerVisible: false,
     });
-    this.animateOutDrawer();
+    this.animateOutColorPicker();
+  }
+
+  animateInColorPicker() {
+    const config = {
+      toValue: 1,
+      duration: 300,
+      easing: Easing.quad,
+    };
+    Animated.parallel([
+      Animated.timing(this.colorPickerAnim, config),
+      Animated.timing(this.mainContentsAnim, config)
+    ]).start();
+  }
+
+  animateOutColorPicker() {
+    const config = {
+      toValue: 0,
+      duration: 300,
+      easing: Easing.quad,
+    };
+    Animated.parallel([
+      Animated.timing(this.colorPickerAnim, config),
+      Animated.timing(this.mainContentsAnim, config)
+    ]).start();
   }
 
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        <Animated.View style={styles.mainContents(this.drawerAnim)}>
+        <Animated.View style={styles.mainContents(this.mainContentsAnim)}>
           <RichTextFontFamilyControl
             style={styles.field}
             fontFamily={this.props.fontFamily}
@@ -175,22 +234,31 @@ export default class RichTextEditor extends Component<Props, State> {
           </View>
         </Animated.View>
         <Animated.View
-          style={styles.fontFamilyList(this.drawerAnim)}
+          style={styles.fontFamilyList(this.fontFamilyAnim)}
           pointerEvents={
-            this.state.isFontFamilyListVisible ||
+            this.state.isFontFamilyListVisible
+              ? 'auto'
+              : 'none'
+          }
+        >
+          <RichTextEditorFontFamilyList
+            style={styles.flex}
+            onSelectFont={this.fontFamilyListDidSelectFontFamily}
+            onRequestHide={this.hideFontFamilyList}
+          />
+        </Animated.View>
+        <Animated.View
+          style={styles.colorPickerWrap(this.colorPickerAnim)}
+          pointerEvents={
             this.state.isColorPickerVisible
               ? 'auto'
               : 'none'
           }
         >
-          {/* <RichTextEditorFontFamilyList
-            style={styles.flex}
-            onSelectFont={this.fontFamilyListDidSelectFontFamily}
-            onRequestHide={this.hideFontFamilyList}
-            /> */}
           <RichTextEditorColorPicker
+            style={styles.flex}
             color={this.state.color}
-            onDidUpdateColor={this.colorPickerDidUpdateColor}
+            onDidUpdateColor={this.colorPickerDidUpdateColorThrottled}
             onRequestHide={this.hideColorPicker}
           />
         </Animated.View>

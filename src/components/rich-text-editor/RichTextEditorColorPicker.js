@@ -25,6 +25,10 @@ const styles = {
   flex: {
     flex: 1,
   },
+  colorPicker: {
+    flex: 1,
+    justifyContent: 'center',
+  },
 };
 
 export default function RichTextEditorColorPicker({
@@ -44,7 +48,7 @@ export default function RichTextEditorColorPicker({
         </TouchableOpacity>
       </View>
       <ColorPicker
-        style={styles.flex}
+        style={styles.colorPicker}
         color={color}
         onDidUpdateColor={onDidUpdateColor}
       />

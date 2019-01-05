@@ -29,7 +29,7 @@ const styles = {
     width,
     height: 45,
     borderRadius: 10,
-    marginVertical: 35,
+    marginTop: 35,
     backgroundColor: 'transparent',
   }),
 };
