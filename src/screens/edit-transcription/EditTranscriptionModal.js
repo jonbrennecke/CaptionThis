@@ -82,7 +82,10 @@ export default class EditTranscriptionModal extends Component<Props> {
   }
 
   editorDidEditSpeechTranscription(transcription: SpeechTranscription) {
-    this.props.receiveSpeechTranscriptionSuccess(this.props.videoAssetIdentifier, transcription);
+    this.props.receiveSpeechTranscriptionSuccess(
+      this.props.videoAssetIdentifier,
+      transcription
+    );
   }
 
   async didPressDismissButton() {

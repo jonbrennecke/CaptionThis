@@ -21,7 +21,7 @@ const styles = {
     paddingHorizontal: 10,
   },
   labelText: {
-    ...Fonts.getFontStyle('formLabel', { contentStyle: 'lightContent' }),
+    ...Fonts.getFontStyle('formLabel', { contentStyle: 'darkContent' }),
     marginBottom: 4,
   },
   backgroundColor: {
@@ -38,7 +38,7 @@ export default function EditScreenBackgroundColorControls({
   return (
     <View style={[styles.container, style]}>
       <Text numberOfLines={1} style={styles.labelText}>
-        {'BACKGROUND COLOR'}
+        {'Background'}
       </Text>
       <TouchableOpacity
         onPress={() =>

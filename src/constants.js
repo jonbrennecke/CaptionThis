@@ -15,6 +15,8 @@ export const LOADING_STATE = {
   WAS_LOADED_UNSUCCESSFULLY: 'WAS_LOADED_UNSUCCESSFULLY',
 };
 
+export const FONT_SIZES = [12, 14, 16, 18, 22, 30];
+
 export const TEXT_COLORS = {
   LIGHT_GREY: '#B7BAE1',
   MEDIUM_GREY: '#817E98',
@@ -26,9 +28,9 @@ export const TEXT_COLORS = {
 export const UI_COLORS = {
   WHITE: '#FFF',
   OFF_WHITE: '#F6F6FD',
-  DARK_GREY: '#3B3E6F',
+  DARK_GREY: '#332A38',
   BLACK: '#000',
-  LIGHT_GREY: '#B7BAE1',
+  LIGHT_GREY: '#ACABB4',
   EXTRA_LIGHT_GREY: '#B7BAE1',
   MEDIUM_RED: '#f4a09c',
   LIGHT_BLUE: '#8CD4D2',
@@ -37,6 +39,25 @@ export const UI_COLORS = {
   DARK_GREEN: '#314A48',
   OFF_BLACK: '#1A1818',
 };
+
+export const USER_COLOR_CHOICES = [
+  '#D0021B',
+  '#F5A623',
+  '#F8E71C',
+  '#8B572A',
+  '#7ED321',
+  '#417505',
+  '#588C1B',
+  '#0000FF',
+  '#BD10E0',
+  '#9013FE',
+  '#4A90E2',
+  '#50E3C2',
+  '#000000',
+  '#4A4A4A',
+  '#9B9B9B',
+  '#FFFFFF',
+];
 
 export const USER_EDITABLE_COLORS = {
   BACKGROUND_COLOR: 'BACKGROUND_COLOR',
@@ -108,7 +129,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   },
   formLabel: {
     style: {
-      color: TEXT_COLORS.MEDIUM_GREY,
+      color: TEXT_COLORS.LIGHT_GREY,
       fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
       fontSize: 11,
       letterSpacing: 1.8,
@@ -127,7 +148,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
     style: {
       color: TEXT_COLORS.WHITE,
       fontFamily: FONT_FAMILIES.STAATLICHES,
-      fontSize: 15,
+      fontSize: 17,
       letterSpacing: 1.8,
     },
     modifiers: [
@@ -143,13 +164,20 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
           fontSize: 27,
         },
       },
+      {
+        name: 'darkContent',
+        style: {
+          color: TEXT_COLORS.DARK_GREY,
+        },
+      },
     ],
   },
   heading: {
     style: {
-      color: TEXT_COLORS.MEDIUM_GREY,
+      color: TEXT_COLORS.DARK_GREY,
       fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
-      fontSize: 23,
+      fontSize: 19,
+      fontWeight: 'bold',
     },
     modifiers: [
       {

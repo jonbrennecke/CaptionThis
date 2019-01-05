@@ -11,7 +11,7 @@ import type { SpeechTranscription } from '../../types/speech';
 type Props = {
   style?: ?Style,
   speechTranscription: ?SpeechTranscription,
-  onDidEditSpeechTranscription: (SpeechTranscription) => void,
+  onDidEditSpeechTranscription: SpeechTranscription => void,
 };
 
 const styles = {
@@ -62,7 +62,7 @@ export default function SpeechTranscriptionEditor({
                 onDidEditSpeechTranscription({
                   ...speechTranscription,
                   segments,
-                })
+                });
                 speechTranscription.segments[index] = segment;
               }}
             />

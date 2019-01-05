@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, SafeAreaView, Dimensions, ScrollView } from 'react-native';
+import { View, SafeAreaView, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -11,14 +11,12 @@ import VideoPlayerView from '../../components/video-player-view/VideoPlayerView'
 import RecordingTranscriptionView from '../../components/recording-transcription-view/RecordingTranscriptionView';
 import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
-import EditScreenFontControls from './EditScreenFontControls';
-import EditScreenBackgroundColorControls from './EditScreenBackgroundColorControls';
-import EditScreenFontColorControls from './EditScreenFontColorControls';
-import EditScreenExportingOverlay from './EditScreenExportingOverlay';
+import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
+import EditScreenEditControls from './EditScreenEditControls';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
+import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import SpeechManager from '../../utils/SpeechManager';
 import * as Screens from '../../utils/Screens';
-import VideoPlayPauseButton from '../../components/video-play-pause-button/VideoPlayPauseButton';
 import {
   beginSpeechTranscriptionWithVideoAsset,
   receiveSpeechTranscriptionSuccess,
@@ -45,6 +43,7 @@ type State = {
   playbackTimeSeconds: number,
   isVideoPlaying: boolean,
   isDraggingSeekbar: boolean,
+  showRichTextOverlay: boolean,
 };
 
 type OwnProps = {
@@ -97,6 +96,12 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 100,
+  },
+  playbackControls: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   editControls: {
     flex: 1,
@@ -160,6 +165,7 @@ export default class EditScreen extends Component<Props, State> {
     durationSeconds: 0,
     isVideoPlaying: false,
     isDraggingSeekbar: false,
+    showRichTextOverlay: false,
   };
 
   // eslint-disable-next-line flowtype/generic-spacing
@@ -180,7 +186,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   videoPlayerDidBecomeReadyToPlay(duration: number) {
-    this.setState({ durationSeconds: duration, isVideoPlaying: false });
+    this.setState({ durationSeconds: duration, isVideoPlaying: true });
     this.props.beginSpeechTranscriptionWithVideoAsset(
       this.props.videoAssetIdentifier
     );
@@ -275,81 +281,68 @@ export default class EditScreen extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <ScreenGradients />
-        <ScrollView
-          style={styles.scrollView}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="always"
-          contentInsetAdjustmentBehavior="automatic"
-          overScrollMode="always"
-          alwaysBounceVertical
-        >
-          <SafeAreaView style={styles.safeArea}>
-            <View style={styles.videoWrap}>
-              <VideoPlayerView
-                style={styles.videoPlayer}
-                isPlaying={this.state.isVideoPlaying}
-                startPosition={this.state.startTimeSeconds}
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.videoWrap}>
+            <VideoPlayerView
+              style={styles.videoPlayer}
+              isPlaying={this.state.isVideoPlaying}
+              startPosition={this.state.startTimeSeconds}
+              videoAssetIdentifier={this.props.videoAssetIdentifier}
+              onVideoDidBecomeReadyToPlay={this.videoPlayerDidBecomeReadyToPlay}
+              onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
+              onVideoDidPause={this.videoPlayerDidPause}
+              onVideoDidUpdatePlaybackTime={
+                this.videoPlayerDidUpdatePlaybackTime
+              }
+            />
+            <EditScreenTopControls
+              style={styles.editTopControls}
+              onBackButtonPress={this.onDidPressBackButton}
+              onExportButtonPress={this.onDidPressExportButton}
+            />
+            {hasFinalTranscription && (
+              <RecordingTranscriptionView
+                style={styles.transcription}
+                textColor={this.props.textColor}
+                backgroundColor={this.props.backgroundColor}
+                fontFamily={this.props.fontFamily}
+                speechTranscription={this.getSpeechTranscription()}
+                onPress={() => {
+                  this.showEditTranscriptionModal();
+                }}
+              />
+            )}
+            <EditScreenEditControls
+              style={styles.playbackControls}
+              onPressRichTextButton={() =>
+                this.setState({
+                  showRichTextOverlay: !this.state.showRichTextOverlay,
+                })
+              }
+            />
+          </View>
+          <View style={styles.editControls}>
+            <View style={styles.seekbarWrap}>
+              <VideoSeekbar
+                style={styles.seekbar}
+                duration={this.state.durationSeconds}
+                playbackTime={this.state.playbackTimeSeconds}
                 videoAssetIdentifier={this.props.videoAssetIdentifier}
-                onVideoDidBecomeReadyToPlay={
-                  this.videoPlayerDidBecomeReadyToPlay
+                onSeekToTime={this.seekBarDidSeekToTime}
+                onDidBeginDrag={() =>
+                  this.setState({ isDraggingSeekbar: true })
                 }
-                onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
-                onVideoDidPause={this.videoPlayerDidPause}
-                onVideoDidUpdatePlaybackTime={
-                  this.videoPlayerDidUpdatePlaybackTime
-                }
+                onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
               />
-              <EditScreenTopControls
-                style={styles.editTopControls}
-                onBackButtonPress={this.onDidPressBackButton}
-                onExportButtonPress={this.onDidPressExportButton}
-              />
-              {hasFinalTranscription && (
-                <RecordingTranscriptionView
-                  style={styles.transcription}
-                  textColor={this.props.textColor}
-                  backgroundColor={this.props.backgroundColor}
-                  fontFamily={this.props.fontFamily}
-                  speechTranscription={this.getSpeechTranscription()}
-                  onPress={() => {
-                    this.showEditTranscriptionModal();
-                  }}
-                />
-              )}
             </View>
-            <View style={styles.editControls}>
-              <View style={styles.seekbarWrap}>
-                <VideoPlayPauseButton
-                  style={styles.pauseButton}
-                  isPlaying={this.state.isVideoPlaying}
-                  onPress={() => {
-                    this.setState({
-                      isVideoPlaying: !this.state.isVideoPlaying,
-                    });
-                  }}
-                />
-                <VideoSeekbar
-                  style={styles.seekbar}
-                  duration={this.state.durationSeconds}
-                  playbackTime={this.state.playbackTimeSeconds}
-                  videoAssetIdentifier={this.props.videoAssetIdentifier}
-                  onSeekToTime={this.seekBarDidSeekToTime}
-                  onDidBeginDrag={() =>
-                    this.setState({ isDraggingSeekbar: true })
-                  }
-                  onDidEndDrag={() =>
-                    this.setState({ isDraggingSeekbar: false })
-                  }
-                />
-              </View>
-              <EditScreenFontControls fontFamily={this.props.fontFamily} />
-              <EditScreenBackgroundColorControls
-                color={this.props.backgroundColor}
-              />
-              <EditScreenFontColorControls color={this.props.textColor} />
-            </View>
-          </SafeAreaView>
-        </ScrollView>
+          </View>
+        </SafeAreaView>
+        <EditScreenRichTextOverlay
+          isVisible={this.state.showRichTextOverlay}
+          textColor={this.props.textColor}
+          backgroundColor={this.props.backgroundColor}
+          fontFamily={this.props.fontFamily}
+        />
         <EditScreenLoadingOverlay isVisible={!hasFinalTranscription} />
         <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
       </View>

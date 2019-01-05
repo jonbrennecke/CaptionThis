@@ -14,7 +14,7 @@ type Props = {
   style?: ?Style,
   segment: SpeechTranscriptionSegment,
   autoFocus: boolean,
-  onEditSegment: (SpeechTranscriptionSegment) => void,
+  onEditSegment: SpeechTranscriptionSegment => void,
 };
 
 const styles = {

@@ -1,11 +1,16 @@
 // @flow
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
+import chunk from 'lodash/chunk';
 
 import * as Screens from '../../utils/Screens';
 import * as Fonts from '../../utils/Fonts';
 import * as Color from '../../utils/Color';
-import { UI_COLORS, USER_EDITABLE_COLORS } from '../../constants';
+import {
+  UI_COLORS,
+  USER_EDITABLE_COLORS,
+  USER_COLOR_CHOICES,
+} from '../../constants';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
@@ -21,32 +26,79 @@ const styles = {
     paddingHorizontal: 10,
   },
   labelText: {
-    ...Fonts.getFontStyle('formLabel', { contentStyle: 'lightContent' }),
+    ...Fonts.getFontStyle('formLabel', { contentStyle: 'darkContent' }),
     marginBottom: 4,
   },
-  backgroundColor: {
-    backgroundColor: UI_COLORS.DARK_GREY,
+  backgroundColor: (color: ColorRGBA) => ({
     height: 45,
-    borderRadius: 10,
+    width: 30 * 4 - 3,
+    backgroundColor: Color.rgbaObjectToRgbaString(color),
+    borderRadius: 6,
+    borderWidth: 4,
+    borderColor: Color.hexToRgbaString(
+      Color.rgbaObjectToRgbaString(color),
+      0.5
+    ),
+    marginBottom: 3,
+  }),
+  color: {
+    height: 30,
+    width: 30,
+    padding: 3,
   },
+  row: {
+    flexDirection: 'row',
+  },
+  colorInside: (color: ColorRGBA) => ({
+    flex: 1,
+    borderRadius: 6,
+    borderWidth: 4,
+    ...(isWhite(color)
+      ? {
+          borderColor: Color.hexToRgbaString(
+            Color.rgbaObjectToRgbaString(color),
+            0.5
+          ),
+        }
+      : {
+          borderColor: Color.hexToRgbaString('#ddd', 0.5),
+        }),
+  }),
 };
+
+function isWhite(color: ColorRGBA): boolean {
+  return color.red === 255 && color.blue === 255 && color.green === 255;
+}
 
 export default function EditScreenFontColorControls({ style, color }: Props) {
   return (
     <View style={[styles.container, style]}>
       <Text numberOfLines={1} style={styles.labelText}>
-        {'TEXT COLOR'}
+        {'Color'}
       </Text>
       <TouchableOpacity
+        style={styles.row}
         onPress={() => Screens.showColorModal(USER_EDITABLE_COLORS.TEXT_COLOR)}
       >
-        <View
-          style={[
-            styles.backgroundColor,
-            { backgroundColor: Color.rgbaObjectToRgbaString(color) },
-          ]}
-        />
+        <View style={styles.backgroundColor(color)} />
       </TouchableOpacity>
+      {chunk(USER_COLOR_CHOICES, 4).map((colors, index) => (
+        <TouchableOpacity
+          style={styles.row}
+          key={index}
+          onPress={() => {
+            /* TODO */
+          }}
+        >
+          {colors.map(color => (
+            <View key={color} style={styles.color}>
+              <View
+                style={[styles.colorInside(color), { backgroundColor: color }]}
+              />
+            </View>
+          ))}
+        </TouchableOpacity>
+      ))}
     </View>
   );
 }

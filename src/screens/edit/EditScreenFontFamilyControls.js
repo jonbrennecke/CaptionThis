@@ -18,21 +18,23 @@ const styles = {
     paddingHorizontal: 10,
   },
   labelText: {
-    ...Fonts.getFontStyle('formLabel', { contentStyle: 'lightContent' }),
+    ...Fonts.getFontStyle('formLabel', { contentStyle: 'darkContent' }),
     marginBottom: 4,
   },
-  buttonText: Fonts.getFontStyle('button', {
-    contentStyle: 'lightContent',
-    size: 'large',
+  buttonText: Fonts.getFontStyle('heading', {
+    contentStyle: 'darkContent',
   }),
 };
 
-export default function EditScreenFontControls({ style, fontFamily }: Props) {
+export default function EditScreenFontFamilyControls({
+  style,
+  fontFamily,
+}: Props) {
   return (
     <View style={[styles.container, style]}>
       <TouchableOpacity onPress={() => Screens.showFontModal()}>
         <Text numberOfLines={1} style={styles.labelText}>
-          {'FONT'}
+          {'Font'}
         </Text>
         <Text numberOfLines={1} style={[styles.buttonText, { fontFamily }]}>
           {fontFamily}

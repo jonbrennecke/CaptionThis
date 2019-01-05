@@ -51,6 +51,8 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>SourceSerifPro-Semibold</string>
+		<string>SourceSansPro-Bold</string>
 		<string>PassionOne-Regular.ttf</string>
 		<string>PT_Sans-Web-Regular.ttf</string>
 		<string>PT_Sans-Web-Bold.ttf</string>
