@@ -1,7 +1,7 @@
 import AVFoundation
 import UIKit
 
-let MAX_CHARACTERS_PER_LINE: Int = 32
+let MAX_CHARACTERS_PER_LINE: Int = 25
 
 @objc
 enum VideoAnimationOutputKind: Int {
