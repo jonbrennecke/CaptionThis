@@ -49,6 +49,11 @@ fastlane ios beta
 fastlane ios icon
 ```
 
+### ios launch_screen
+```
+fastlane ios launch_screen
+```
+
 
 ----
 
