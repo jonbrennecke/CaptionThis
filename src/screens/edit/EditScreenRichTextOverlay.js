@@ -1,26 +1,16 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  View,
-  SafeAreaView,
-  Animated,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-  Easing,
-} from 'react-native';
+import { View, SafeAreaView, Animated, Dimensions, Easing } from 'react-native';
 import { BlurView } from 'react-native-blur';
 import { autobind } from 'core-decorators';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
-import * as Color from '../../utils/Color';
 import EditScreenFontColorControls from './EditScreenFontColorControls';
 import EditScreenFontFamilyControls from './EditScreenFontFamilyControls';
 import EditScreenBackgroundColorControls from './EditScreenBackgroundColorControls';
 import EditScreenFontSizeControls from './EditScreenFontSizeControls';
-import FontFamilyList from '../../components/font-family-list/FontFamilyList';
-import ChevronDownIcon from '../../components/chevron-down-icon/ChevronDownIcon';
+import FontFamilyScrollList from '../../components/font-family-scroll-list/FontFamilyScrollList';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
@@ -134,9 +124,6 @@ const styles = {
       },
     ],
   }),
-  fontFamilyListHeader: {
-    height: 25,
-  },
 };
 
 // $FlowFixMe
@@ -208,6 +195,8 @@ export default class EditScreenRichTextOverlay extends Component<Props, State> {
     }).start();
   }
 
+  fontFamilyListDidSelectFontFamily(fontFamily: string) {}
+
   render() {
     return (
       <Animated.View
@@ -246,24 +235,11 @@ export default class EditScreenRichTextOverlay extends Component<Props, State> {
                     this.state.isFontFamilyListVisible ? 'auto' : 'none'
                   }
                 >
-                  <View style={styles.fontFamilyListHeader}>
-                    <TouchableOpacity
-                      style={styles.flex}
-                      onPress={this.hideFontFamilyList}
-                    >
-                      <ChevronDownIcon
-                        color={Color.hexToRgbaObject(UI_COLORS.LIGHT_GREY)}
-                        style={styles.flex}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <ScrollView
+                  <FontFamilyScrollList
                     style={styles.flex}
-                    showsVerticalScrollIndicator
-                    overScrollMode="always"
-                  >
-                    <FontFamilyList onSelectFont={fontFamily => {}} />
-                  </ScrollView>
+                    onSelectFont={this.fontFamilyListDidSelectFontFamily}
+                    onRequestHide={this.hideFontFamilyList}
+                  />
                 </Animated.View>
               </View>
             </View>
