@@ -296,6 +296,12 @@ export const SCREEN_PARAMS = {
         },
         layout: {
           orientation: APP_ORIENTATIONS,
+          backgroundColor: 'transparent',
+        },
+        animations: {
+          showModal: {
+            enabled: false,
+          }
         },
       },
     },
