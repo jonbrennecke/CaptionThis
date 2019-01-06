@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { Text, Animated } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 
@@ -11,7 +11,9 @@ import { requestAppPermissions } from '../../redux/onboarding/actionCreators';
 
 import type { Dispatch } from '../../types/redux';
 
-type OwnProps = {};
+type OwnProps = {
+  arePermissionsGranted: boolean,
+};
 
 type StateProps = {};
 
@@ -22,13 +24,14 @@ type DispatchProps = {
 type Props = OwnProps & StateProps & DispatchProps;
 
 const styles = {
-  container: {
+  container: (anim: Animated.Value) => ({
     flex: 1,
     backgroundColor: UI_COLORS.DARK_GREY,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 65,
-  },
+    opacity: anim,
+  }),
   nextButton: {
     borderWidth: 1,
     borderStyle: 'solid',
@@ -60,13 +63,46 @@ function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class OnboardingModal extends Component<Props> {
+  anim = new Animated.Value(1.0);
+
   async requestPermissons() {
     await this.props.requestAppPermissions();
   }
 
+  componentDidMount() {
+    const isVisible = !this.props.arePermissionsGranted
+    if (isVisible) {
+      this.animateIn();
+    } else {
+      this.animateOut();
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.arePermissionsGranted && !prevProps.arePermissionsGranted) {
+      this.animateOut();
+    } else if (!this.props.arePermissionsGranted && prevProps.arePermissionsGranted) {
+      this.animateIn();
+    }
+  }
+
+  animateIn() {
+    Animated.timing(this.anim, {
+      toValue: 1,
+      duration: 300,
+    }).start();
+  }
+
+  animateOut() {
+    Animated.timing(this.anim, {
+      toValue: 0,
+      duration: 300,
+    }).start();
+  }
+
   render() {
     return (
-      <View style={styles.container}>
+      <Animated.View style={styles.container(this.anim)}>
         <Text style={styles.heading}>Welcome</Text>
         <Text style={styles.paragraph}>
           {`To get started, we need your permission to use your phone's camera and microphone.`}
@@ -78,7 +114,7 @@ export default class OnboardingModal extends Component<Props> {
             this.requestPermissons();
           }}
         />
-      </View>
+      </Animated.View>
     );
   }
 }
