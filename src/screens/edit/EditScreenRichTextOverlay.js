@@ -4,6 +4,8 @@ import {
   View,
   SafeAreaView,
   Animated,
+  Easing,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { BlurView } from 'react-native-blur';
 import { autobind } from 'core-decorators';
@@ -26,6 +28,7 @@ type Props = {
     textColor: ColorRGBA,
     backgroundColor: ColorRGBA,
   }) => void,
+  onRequestDismissWithoutSaving: () => void,
 };
 
 const styles = {
@@ -44,13 +47,19 @@ const styles = {
     right: 0,
     bottom: 0,
   },
-  bottomSheet: {
+  bottomSheet: (anim: Animated.Value) => ({
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
     backgroundColor: UI_COLORS.BLACK,
-  },
+    transform: [{
+      translateY: anim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [100, 0],
+      })
+    }]
+  }),
   insideWrap: {
     flex: 1,
     paddingHorizontal: 7,
@@ -76,7 +85,8 @@ const styles = {
 // $FlowFixMe
 @autobind
 export default class EditScreenRichTextOverlay extends Component<Props> {
-  anim = new Animated.Value(0);
+  fadeAnim = new Animated.Value(0);
+  sheetAnim = new Animated.Value(0);
 
   componentDidMount() {
     if (this.props.isVisible) {
@@ -95,41 +105,59 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
   }
 
   animateIn() {
-    Animated.timing(this.anim, {
-      toValue: 1,
-      duration: 300,
-    }).start();
+    Animated.parallel([
+      Animated.timing(this.fadeAnim, {
+        toValue: 1,
+        duration: 200,
+        easing: Easing.quad,
+      }),
+      Animated.timing(this.sheetAnim, {
+        toValue: 1,
+        duration: 150,
+        easing: Easing.bounce,
+      })
+    ]).start();
   }
 
   animateOut() {
-    Animated.timing(this.anim, {
-      toValue: 0,
-      duration: 300,
-    }).start();
+    Animated.parallel([
+      Animated.timing(this.fadeAnim, {
+        toValue: 0,
+        duration: 200,
+        easing: Easing.quad,
+      }),
+      Animated.timing(this.sheetAnim, {
+        toValue: 0,
+        duration: 150,
+        easing: Easing.bounce,
+      })
+    ]).start();
   }
 
   render() {
     return (
       <Animated.View
-        style={[styles.container(this.anim), this.props.style]}
+        style={[styles.container(this.fadeAnim), this.props.style]}
         pointerEvents={this.props.isVisible ? 'auto' : 'none'}
       >
-        <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
-          <View style={styles.bottomSheet}>
-            <SafeAreaView style={styles.flex}>
-              <View style={styles.insideWrap}>
-                <RichTextEditor
-                  style={styles.inside}
-                  isVisible={this.props.isVisible}
-                  fontSize={16}
-                  fontFamily={this.props.fontFamily}
-                  textColor={this.props.textColor}
-                  backgroundColor={this.props.backgroundColor}
-                  onRequestSave={this.props.onRequestSave}
-                />
-              </View>
-            </SafeAreaView>
-          </View>
+        <TouchableWithoutFeedback onPress={this.props.onRequestDismissWithoutSaving}>
+          <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
+        </TouchableWithoutFeedback>
+        <Animated.View style={styles.bottomSheet(this.sheetAnim)}>
+          <SafeAreaView style={styles.flex}>
+            <View style={styles.insideWrap}>
+              <RichTextEditor
+                style={styles.inside}
+                isVisible={this.props.isVisible}
+                fontSize={16}
+                fontFamily={this.props.fontFamily}
+                textColor={this.props.textColor}
+                backgroundColor={this.props.backgroundColor}
+                onRequestSave={this.props.onRequestSave}
+              />
+            </View>
+          </SafeAreaView>
+        </Animated.View>
       </Animated.View>
     );
   }
