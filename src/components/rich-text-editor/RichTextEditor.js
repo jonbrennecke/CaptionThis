@@ -49,7 +49,7 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const styles = {
   container: {
-    flex: 1,
+    
   },
   flex: {
     flex: 1,
@@ -65,7 +65,7 @@ const styles = {
     paddingVertical: 10,
   },
   fontFamilyList: (anim: Animated.Value) => ({
-    ...StyleSheet.absoluteFillObject,
+    // ...StyleSheet.absoluteFillObject,
     opacity: anim,
     transform: [
       {
@@ -77,7 +77,7 @@ const styles = {
     ],
   }),
   colorPickerWrap: (anim: Animated.Value) => ({
-    ...StyleSheet.absoluteFillObject,
+    // ...StyleSheet.absoluteFillObject,
     justifyContent: 'space-between',
     opacity: anim,
     transform: [
@@ -90,7 +90,7 @@ const styles = {
     ],
   }),
   mainContents: (anim: Animated.Value) => ({
-    ...StyleSheet.absoluteFillObject,
+    // ...StyleSheet.absoluteFillObject,
     justifyContent: 'space-between',
     paddingBottom: 13,
     opacity: anim.interpolate({
@@ -295,7 +295,7 @@ export default class RichTextEditor extends Component<Props, State> {
           </View>
           <Button style={styles.button} text="Save" onPress={this.save} />
         </Animated.View>
-        <Animated.View
+        {/* <Animated.View
           style={styles.fontFamilyList(this.fontFamilyAnim)}
           pointerEvents={this.state.isFontFamilyListVisible ? 'auto' : 'none'}
         >
@@ -321,7 +321,7 @@ export default class RichTextEditor extends Component<Props, State> {
             onRequestLockScroll={this.props.onRequestLockScroll}
             onRequestUnlockScroll={this.props.onRequestUnlockScroll}
           />
-        </Animated.View>
+        </Animated.View> */}
       </View>
     );
   }
