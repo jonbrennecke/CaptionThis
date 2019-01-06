@@ -1,67 +1,73 @@
 // @flow
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 
 import * as Fonts from '../../utils/Fonts';
-import { UI_COLORS, FONTS } from '../../constants';
+import { UI_COLORS, TEXT_COLORS, FONTS } from '../../constants';
 
 import type { Style } from '../../types/react';
 
 type Props = {
   style?: ?Style,
+  fontFamily: string,
   onDidSelectFontFamily: string => void,
 };
 
-const FONT_EXAMPLE_TEXT = 'The quick brown fox jumps over the lazy dog';
-
 const styles = {
   container: {
-    paddingVertical: 10,
+    paddingVertical: 4,
     paddingHorizontal: 10,
+    flexDirection: 'row',
   },
-  fontFamilyText: Fonts.getFontStyle('formLabel', {
-    contentStyle: 'darkContent',
-    marginBottom: 5,
-  }),
-  fontExampleText: {
-    ...Fonts.getFontStyle('button', {
+  fontFamilyText: (fontFamily: string, isSelected: boolean) => ({
+    ...Fonts.getFontStyle('default', {
       contentStyle: 'darkContent',
     }),
-  },
+    fontSize: 17,
+    fontFamily,
+    color: isSelected ? TEXT_COLORS.OFF_WHITE : TEXT_COLORS.LIGHT_GREY,
+  }),
+  borderBottom: (isSelected: boolean) => ({
+    position: 'absolute',
+    bottom: 4,
+    left: 7,
+    right: 7,
+    height: 3,
+    backgroundColor: isSelected ? TEXT_COLORS.OFF_WHITE : 'transparent',
+  }),
   font: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: UI_COLORS.LIGHT_GREY,
     paddingVertical: 12,
     alignItems: 'flex-start',
+    paddingHorizontal: 15,
   },
 };
 
 export default function FontFamilyList({
   style,
+  fontFamily: currentFontFamily,
   onDidSelectFontFamily,
 }: Props) {
   return (
     <View style={[styles.container, style]}>
-      {FONTS.map(({ displayName, fontFamily }) => (
-        <TouchableOpacity
-          onPress={() => onDidSelectFontFamily(fontFamily)}
-          style={styles.font}
-          key={fontFamily}
-        >
-          <Text
-            numberOfLines={1}
-            style={[styles.fontFamilyText, { fontFamily }]}
+      {FONTS.sort().map(({ displayName, fontFamily }) => {
+        const isUserSelectedFont = currentFontFamily === fontFamily;
+        return (
+          <TouchableOpacity
+            onPress={() => onDidSelectFontFamily(fontFamily)}
+            style={styles.font}
+            key={fontFamily}
           >
-            {displayName}
-          </Text>
-          <Text
-            numberOfLines={1}
-            style={[styles.fontExampleText, { fontFamily }]}
-          >
-            {FONT_EXAMPLE_TEXT}
-          </Text>
-        </TouchableOpacity>
-      ))}
+            <Text
+              numberOfLines={1}
+              style={[styles.fontFamilyText(fontFamily, isUserSelectedFont)]}
+            >
+              {displayName}
+            </Text>
+            <View style={styles.borderBottom(isUserSelectedFont)} />
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 }

@@ -48,9 +48,7 @@ type State = {
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const styles = {
-  container: {
-    
-  },
+  container: {},
   flex: {
     flex: 1,
   },
@@ -90,7 +88,6 @@ const styles = {
     ],
   }),
   mainContents: (anim: Animated.Value) => ({
-    // ...StyleSheet.absoluteFillObject,
     justifyContent: 'space-between',
     paddingBottom: 13,
     opacity: anim.interpolate({
@@ -269,6 +266,7 @@ export default class RichTextEditor extends Component<Props, State> {
             style={styles.field}
             fontFamily={this.state.fontFamily}
             onRequestShowFontFamilySelection={this.showFontFamilyList}
+            onDidSelectFontFamily={this.fontFamilyListDidSelectFontFamily}
           />
           <RichTextFontSizeControl
             fontSize={this.state.fontSize}

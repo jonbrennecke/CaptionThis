@@ -106,7 +106,7 @@ export const FONTS = [
   {
     fontFamily: FONT_FAMILIES.RUBIK,
     displayName: 'Rubik',
-  }
+  },
 ];
 
 export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
@@ -301,7 +301,7 @@ export const SCREEN_PARAMS = {
         animations: {
           showModal: {
             enabled: false,
-          }
+          },
         },
       },
     },

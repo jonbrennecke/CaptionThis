@@ -72,12 +72,18 @@ export default function EditScreenTopControls({
         <TouchableOpacity style={styles.buttonLeft} onPress={onBackButtonPress}>
           <ChevronLeftIcon style={styles.icon} color={white} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonLeft} onPress={onStylizeButtonPress}>
+        <TouchableOpacity
+          style={styles.buttonLeft}
+          onPress={onStylizeButtonPress}
+        >
           <WandIcon style={styles.icon} color={white} />
         </TouchableOpacity>
       </View>
       <View style={styles.buttonGroupRight}>
-        <TouchableOpacity style={styles.buttonRight} onPress={onExportButtonPress}>
+        <TouchableOpacity
+          style={styles.buttonRight}
+          onPress={onExportButtonPress}
+        >
           <CheckmarkIcon style={styles.checkmarkIcon} color={white} />
         </TouchableOpacity>
       </View>

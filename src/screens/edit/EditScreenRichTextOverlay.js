@@ -53,16 +53,18 @@ const styles = {
     right: 0,
     bottom: 0,
     backgroundColor: UI_COLORS.BLACK,
-    transform: [{
-      translateY: anim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [100, 0],
-      })
-    }]
+    opacity: anim,
+    transform: [
+      {
+        translateY: anim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [300, 0],
+        }),
+      },
+    ],
   }),
   insideWrap: {
     flex: 1,
-    paddingHorizontal: 7,
     paddingVertical: 5,
     shadowOpacity: 1,
     shadowOffset: {
@@ -114,8 +116,8 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
       Animated.timing(this.sheetAnim, {
         toValue: 1,
         duration: 150,
-        easing: Easing.bounce,
-      })
+        delay: 200,
+      }),
     ]).start();
   }
 
@@ -124,13 +126,13 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
       Animated.timing(this.fadeAnim, {
         toValue: 0,
         duration: 200,
+        delay: 200,
         easing: Easing.quad,
       }),
       Animated.timing(this.sheetAnim, {
         toValue: 0,
         duration: 150,
-        easing: Easing.bounce,
-      })
+      }),
     ]).start();
   }
 
@@ -140,7 +142,9 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
         style={[styles.container(this.fadeAnim), this.props.style]}
         pointerEvents={this.props.isVisible ? 'auto' : 'none'}
       >
-        <TouchableWithoutFeedback onPress={this.props.onRequestDismissWithoutSaving}>
+        <TouchableWithoutFeedback
+          onPress={this.props.onRequestDismissWithoutSaving}
+        >
           <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
         </TouchableWithoutFeedback>
         <Animated.View style={styles.bottomSheet(this.sheetAnim)}>

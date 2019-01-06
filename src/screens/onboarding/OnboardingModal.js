@@ -70,7 +70,7 @@ export default class OnboardingModal extends Component<Props> {
   }
 
   componentDidMount() {
-    const isVisible = !this.props.arePermissionsGranted
+    const isVisible = !this.props.arePermissionsGranted;
     if (isVisible) {
       this.animateIn();
     } else {
@@ -81,7 +81,10 @@ export default class OnboardingModal extends Component<Props> {
   componentDidUpdate(prevProps: Props) {
     if (this.props.arePermissionsGranted && !prevProps.arePermissionsGranted) {
       this.animateOut();
-    } else if (!this.props.arePermissionsGranted && prevProps.arePermissionsGranted) {
+    } else if (
+      !this.props.arePermissionsGranted &&
+      prevProps.arePermissionsGranted
+    ) {
       this.animateIn();
     }
   }
