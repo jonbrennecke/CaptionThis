@@ -16,7 +16,6 @@ type Props = {
 const styles = {
   container: {
     paddingVertical: 4,
-    paddingHorizontal: 10,
     flexDirection: 'row',
   },
   fontFamilyText: (fontFamily: string, isSelected: boolean) => ({
@@ -36,7 +35,6 @@ const styles = {
     backgroundColor: isSelected ? TEXT_COLORS.OFF_WHITE : 'transparent',
   }),
   font: {
-    borderColor: UI_COLORS.LIGHT_GREY,
     paddingVertical: 12,
     alignItems: 'flex-start',
     paddingHorizontal: 15,

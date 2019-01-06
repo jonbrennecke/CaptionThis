@@ -60,7 +60,7 @@ const styles = {
     contentStyle: 'lightContent',
   }),
   field: {
-    paddingVertical: 10,
+    paddingVertical: 2,
   },
   fontFamilyList: (anim: Animated.Value) => ({
     // ...StyleSheet.absoluteFillObject,
