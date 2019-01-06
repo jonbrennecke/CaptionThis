@@ -20,7 +20,7 @@ const styles = {
   labelText: {
     ...Fonts.getFontStyle('formLabel', { contentStyle: 'darkContent' }),
     marginBottom: 7,
-    paddingHorizontal: 7,
+    paddingHorizontal: 15,
   },
   fontSize: {
     paddingVertical: 12,

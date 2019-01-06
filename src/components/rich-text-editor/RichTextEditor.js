@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Animated, Dimensions, Easing, StyleSheet } from 'react-native';
+import { View, Animated, Dimensions, Easing } from 'react-native';
 import { autobind } from 'core-decorators';
 import throttle from 'lodash/throttle';
 
@@ -9,8 +9,6 @@ import RichTextFontColorControl from './RichTextFontColorControl';
 import RichTextFontFamilyControl from './RichTextFontFamilyControl';
 import RichTextBackgroundColorControl from './RichTextBackgroundColorControl';
 import RichTextFontSizeControl from './RichTextFontSizeControl';
-import RichTextEditorFontFamilyList from './RichTextEditorFontFamilyList';
-import RichTextEditorColorPicker from './RichTextEditorColorPicker';
 import Button from '../button/Button';
 
 import type { Style } from '../../types/react';
@@ -52,9 +50,6 @@ const styles = {
   flex: {
     flex: 1,
   },
-  row: {
-    flexDirection: 'row',
-  },
   buttonText: Fonts.getFontStyle('button', { contentStyle: 'lightContent' }),
   buttonLabelText: Fonts.getFontStyle('formLabel', {
     contentStyle: 'lightContent',
@@ -62,47 +57,11 @@ const styles = {
   field: {
     paddingVertical: 2,
   },
-  fontFamilyList: (anim: Animated.Value) => ({
-    // ...StyleSheet.absoluteFillObject,
-    opacity: anim,
-    transform: [
-      {
-        translateY: anim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [SCREEN_HEIGHT, 0],
-        }),
-      },
-    ],
-  }),
-  colorPickerWrap: (anim: Animated.Value) => ({
-    // ...StyleSheet.absoluteFillObject,
-    justifyContent: 'space-between',
-    opacity: anim,
-    transform: [
-      {
-        translateY: anim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [SCREEN_HEIGHT, 0],
-        }),
-      },
-    ],
-  }),
-  mainContents: (anim: Animated.Value) => ({
+  mainContents: {
     justifyContent: 'space-between',
     paddingBottom: 13,
-    opacity: anim.interpolate({
-      inputRange: [0, 1],
-      outputRange: [1, 0],
-    }),
-    transform: [
-      {
-        translateY: anim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, -SCREEN_HEIGHT],
-        }),
-      },
-    ],
-  }),
+    paddingTop: 8,
+  },
   button: {
     marginHorizontal: 10,
   },
@@ -113,7 +72,6 @@ const styles = {
 export default class RichTextEditor extends Component<Props, State> {
   fontFamilyAnim: Animated.Value = new Animated.Value(0);
   colorPickerAnim: Animated.Value = new Animated.Value(0);
-  mainContentsAnim: Animated.Value = new Animated.Value(0);
 
   constructor(props: Props) {
     super(props);
@@ -126,20 +84,6 @@ export default class RichTextEditor extends Component<Props, State> {
       fontFamily: props.fontFamily,
       fontSize: props.fontSize,
     };
-  }
-
-  showFontFamilyList() {
-    this.setState({
-      isFontFamilyListVisible: true,
-    });
-    this.animateInFontFamilyList();
-  }
-
-  hideFontFamilyList() {
-    this.setState({
-      isFontFamilyListVisible: false,
-    });
-    this.animateOutFontFamilyList();
   }
 
   animateInFontFamilyList() {
@@ -170,7 +114,6 @@ export default class RichTextEditor extends Component<Props, State> {
     this.setState({
       fontFamily,
     });
-    this.hideFontFamilyList();
   }
 
   colorPickerDidUpdateColorThrottled = throttle(
@@ -261,11 +204,10 @@ export default class RichTextEditor extends Component<Props, State> {
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        <Animated.View style={styles.mainContents(this.mainContentsAnim)}>
+        <View style={styles.mainContents}>
           <RichTextFontFamilyControl
             style={styles.field}
             fontFamily={this.state.fontFamily}
-            onRequestShowFontFamilySelection={this.showFontFamilyList}
             onDidSelectFontFamily={this.fontFamilyListDidSelectFontFamily}
           />
           <RichTextFontSizeControl
@@ -273,53 +215,20 @@ export default class RichTextEditor extends Component<Props, State> {
             style={styles.field}
             onDidSelectFontSize={this.fontSizeControlDidSelectFontSize}
           />
-          <View style={[styles.row, styles.field]}>
-            <RichTextFontColorControl
-              color={this.state.textColor}
-              style={styles.flex}
-              onDidRequestShowColorPicker={() =>
-                this.showColorPicker('textColor')
-              }
-              onDidSelectColor={this.colorPickerDidUpdateTextColor}
-            />
-            <RichTextBackgroundColorControl
-              color={this.state.backgroundColor}
-              style={styles.flex}
-              onDidRequestShowColorPicker={() =>
-                this.showColorPicker('backgroundColor')
-              }
-              onDidSelectColor={this.colorPickerDidUpdateBackgroundColor}
-            />
-          </View>
-          <Button style={styles.button} text="Save" onPress={this.save} />
-        </Animated.View>
-        {/* <Animated.View
-          style={styles.fontFamilyList(this.fontFamilyAnim)}
-          pointerEvents={this.state.isFontFamilyListVisible ? 'auto' : 'none'}
-        >
-          <RichTextEditorFontFamilyList
-            style={styles.flex}
-            onDidSelectFontFamily={this.fontFamilyListDidSelectFontFamily}
-            onRequestHide={this.hideFontFamilyList}
-          />
-        </Animated.View>
-        <Animated.View
-          style={styles.colorPickerWrap(this.colorPickerAnim)}
-          pointerEvents={this.state.isColorPickerVisible ? 'auto' : 'none'}
-        >
-          <RichTextEditorColorPicker
-            style={styles.flex}
-            color={
-              this.state.editingColor === 'backgroundColor'
-                ? this.state.backgroundColor
-                : this.state.textColor
+          {/* <RichTextFontColorControl
+            color={this.state.textColor}
+            style={styles.field}
+            onDidRequestShowColorPicker={() =>
+              this.showColorPicker('textColor')
             }
-            onDidUpdateColor={this.colorPickerDidUpdateColorThrottled}
-            onRequestHide={this.hideColorPicker}
-            onRequestLockScroll={this.props.onRequestLockScroll}
-            onRequestUnlockScroll={this.props.onRequestUnlockScroll}
+            onDidSelectColor={this.colorPickerDidUpdateTextColor}
+          /> */}
+          <RichTextBackgroundColorControl
+            style={styles.field}
+            onDidSelectColor={this.colorPickerDidUpdateBackgroundColor}
           />
-        </Animated.View> */}
+          <Button style={styles.button} text="Save" onPress={this.save} />
+        </View>
       </View>
     );
   }
