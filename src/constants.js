@@ -129,12 +129,12 @@ export const FONTS = [
   },
   {
     fontFamily: FONT_FAMILIES.OPEN_SANS,
-    displayName: 'Open Sans'
+    displayName: 'Open Sans',
   },
   {
     fontFamily: FONT_FAMILIES.ROBOTO,
-    displayName: 'Roboto'
-  }
+    displayName: 'Roboto',
+  },
 ];
 
 export const FONT_STYLES: { [key: FontRole]: FontStyle } = {

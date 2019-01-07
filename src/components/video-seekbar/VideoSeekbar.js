@@ -35,7 +35,7 @@ const styles = {
   seekPositionHandle: (offset: number) => ({
     position: 'absolute',
     top: -5,
-    bottom: -5,
+    height: 55,
     width: 7,
     backgroundColor: UI_COLORS.OFF_WHITE,
     borderRadius: 3,
@@ -111,17 +111,19 @@ export default class VideoSeekbar extends Component<Props, State> {
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}
           onDragMove={this.dragDidMove}
-        >
-          <View
-            style={styles.seekPositionHandle(
-              calculateHandleOffset({
-                viewWidth: this.state.viewWidth,
-                playbackTime: this.props.playbackTime,
-                duration: this.props.duration,
-              })
-            )}
-          />
-        </DragInteractionContainer>
+          renderChildren={props => (
+            <View
+              style={styles.seekPositionHandle(
+                calculateHandleOffset({
+                  viewWidth: this.state.viewWidth,
+                  playbackTime: this.props.playbackTime,
+                  duration: this.props.duration,
+                })
+              )}
+              {...props}
+            />
+          )}
+        />
       </View>
     );
   }

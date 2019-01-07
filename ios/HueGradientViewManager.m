@@ -41,8 +41,7 @@ RCT_CUSTOM_VIEW_PROPERTY(offset, NSDictionary *, HueGradientViewWrappingView) {
   if (offset == nil) {
     return;
   }
-  UIColor *color =
-      [view.hueGradientView colorAtOffset:[offset floatValue]];
+  UIColor *color = [view.hueGradientView colorAtOffset:[offset floatValue]];
   CGFloat rgba[4];
   BOOL success =
       [color getRed:&rgba[0] green:&rgba[1] blue:&rgba[2] alpha:&rgba[3]];

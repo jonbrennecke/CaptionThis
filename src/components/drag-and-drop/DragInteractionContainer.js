@@ -1,15 +1,12 @@
 // @flow
-import React, { cloneElement, Component, Children } from 'react';
-import { PanResponder, Animated } from 'react-native';
+import React, { Component } from 'react';
+import { PanResponder, Animated, View } from 'react-native';
 import { autobind } from 'core-decorators';
 import isNil from 'lodash/isNil';
 import extend from 'lodash/extend';
 
-import type {
-  Gesture,
-  Children as ChildrenType,
-  Style,
-} from '../../types/react';
+import type { Gesture, Style } from '../../types/react';
+import type { Element } from 'react';
 
 type Props = {
   itemsShouldReturnToOriginalPosition?: boolean,
@@ -18,7 +15,7 @@ type Props = {
   horizontal?: boolean,
   applyTransformStyles?: boolean,
   style?: Style,
-  children: ChildrenType,
+  renderChildren: (props: {}) => Element<*>,
   onDragStart: (event: Event, gesture: Gesture) => void,
   onDragEnd: (event: Event, gesture: Gesture) => void,
   onDragMove: ({ x: number, y: number }) => void,
@@ -26,6 +23,8 @@ type Props = {
 
 type State = {
   isDragging: boolean,
+  viewWidth: number,
+  viewHeight: number,
 };
 
 // $FlowFixMe
@@ -33,6 +32,7 @@ type State = {
 export default class DragInteractionContainer extends Component<Props, State> {
   props: Props;
   state: State;
+  view: ?View;
   panResponder: PanResponder;
   pan: Animated.ValueXY = new Animated.ValueXY();
   panOffset: { x: number, y: number } = { x: 0, y: 0 };
@@ -48,11 +48,10 @@ export default class DragInteractionContainer extends Component<Props, State> {
     super(props);
     this.state = {
       isDragging: false,
+      viewWidth: 0,
+      viewHeight: 0,
     };
-    this.pan.addListener((value: { x: number, y: number }) => {
-      this.panOffset = value;
-      this.props.onDragMove(value);
-    });
+    this.pan.addListener(this.panListener);
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => this.canDrag(),
       onPanResponderTerminationRequest: () => false,
@@ -61,6 +60,11 @@ export default class DragInteractionContainer extends Component<Props, State> {
       onPanResponderRelease: this.handleRelease,
       onPanResponderTerminate: this.handleRelease,
     });
+  }
+
+  panListener(value: { x: number, y: number }) {
+    this.panOffset = value;
+    this.props.onDragMove(value);
   }
 
   canDrag(): boolean {
@@ -117,20 +121,51 @@ export default class DragInteractionContainer extends Component<Props, State> {
     }).start();
   }
 
+  viewDidLayout() {
+    if (!this.view) {
+      return;
+    }
+    this.view.measure((fx, fy, width, height) => {
+      this.setState({ viewWidth: width, viewHeight: height });
+    });
+  }
+
   render() {
     const dragStyles = [
       this.props.applyTransformStyles && {
-        transform: this.pan.getTranslateTransform(),
+        transform: [
+          {
+            translateX: Animated.diffClamp(this.pan.x, 0, this.state.viewWidth),
+          },
+          {
+            translateY: Animated.diffClamp(
+              this.pan.y,
+              0,
+              this.state.viewHeight
+            ),
+          },
+        ],
       },
       this.state.isDragging && { zIndex: 1000 },
     ];
-    const style = [this.props.style, this.canDrag() ? dragStyles : {}];
+    const style = this.canDrag() ? dragStyles : {};
     return (
-      <Animated.View {...this.panResponder.panHandlers} style={style}>
-        {cloneElement(Children.only(this.props.children), {
-          isDragging: this.state.isDragging && this.canDrag(),
-        })}
-      </Animated.View>
+      <View
+        style={this.props.style}
+        ref={ref => {
+          this.view = ref;
+        }}
+        onLayout={this.viewDidLayout}
+      >
+        <Animated.View {...this.panResponder.panHandlers} style={style}>
+          {this.props.renderChildren({
+            isDragging: this.state.isDragging && this.canDrag(),
+          })}
+          {/* {cloneElement(Children.only(this.props.children), {
+            isDragging: this.state.isDragging && this.canDrag(),
+          })} */}
+        </Animated.View>
+      </View>
     );
   }
 }
