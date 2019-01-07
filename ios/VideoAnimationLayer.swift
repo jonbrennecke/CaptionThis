@@ -97,7 +97,7 @@ class VideoAnimationLayer: CALayer {
     animationIn.fillMode = .forwards
     animationIn.isRemovedOnCompletion = false
     animationIn.beginTime = AVCoreAnimationBeginTimeAtZero + Double(firstSegment.timestamp)
-    animationIn.duration = 0.3
+    animationIn.duration = 0.1
     add(animationIn, forKey: nil)
 //     TODO: fade out after last segment duration is complete (+delay)
   }
