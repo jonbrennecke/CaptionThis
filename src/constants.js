@@ -15,7 +15,23 @@ export const LOADING_STATE = {
   WAS_LOADED_UNSUCCESSFULLY: 'WAS_LOADED_UNSUCCESSFULLY',
 };
 
-export const FONT_SIZES = [12, 14, 16, 18, 22, 30];
+export const FONT_SIZES = [
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+];
 
 export const TEXT_COLORS = {
   LIGHT_GREY: '#B7BAE1',
@@ -40,7 +56,7 @@ export const UI_COLORS = {
   OFF_BLACK: '#1A1818',
 };
 
-export const USER_COLOR_CHOICES = [
+export const USER_BACKGROUND_COLOR_CHOICES = [
   '#D0021B',
   '#F5A623',
   '#F8E71C',
@@ -58,6 +74,8 @@ export const USER_COLOR_CHOICES = [
   '#9B9B9B',
   '#FFFFFF',
 ];
+
+export const USER_TEXT_COLOR_CHOICES = ['#FFFFFF', '#000000'];
 
 export const USER_EDITABLE_COLORS = {
   BACKGROUND_COLOR: 'BACKGROUND_COLOR',
@@ -106,7 +124,7 @@ export const FONTS = [
   {
     fontFamily: FONT_FAMILIES.RUBIK,
     displayName: 'Rubik',
-  }
+  },
 ];
 
 export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
@@ -301,7 +319,7 @@ export const SCREEN_PARAMS = {
         animations: {
           showModal: {
             enabled: false,
-          }
+          },
         },
       },
     },

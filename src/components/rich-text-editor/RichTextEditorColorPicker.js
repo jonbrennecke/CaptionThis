@@ -6,6 +6,7 @@ import { UI_COLORS } from '../../constants';
 import * as Color from '../../utils/Color';
 import ChevronUpIcon from '../chevron-up-icon/ChevronUpIcon';
 import ColorPicker from '../color-picker/ColorPicker';
+import Button from '../button/Button';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
@@ -22,6 +23,7 @@ type Props = {
 const styles = {
   container: {
     paddingBottom: 13,
+    flex: 1,
   },
   header: {
     height: 35,
@@ -34,9 +36,16 @@ const styles = {
   flex: {
     flex: 1,
   },
+  colorPickerWrap: {
+    flex: 1,
+    paddingHorizontal: 15,
+  },
   colorPicker: {
     flex: 1,
-    justifyContent: 'space-between',
+  },
+  button: {
+    marginHorizontal: 10,
+    marginTop: 7,
   },
 };
 
@@ -58,13 +67,16 @@ export default function RichTextEditorColorPicker({
           />
         </TouchableOpacity>
       </View>
-      <ColorPicker
-        style={styles.colorPicker}
-        color={color}
-        onDidUpdateColor={onDidUpdateColor}
-        onRequestLockScroll={onRequestLockScroll}
-        onRequestUnlockScroll={onRequestUnlockScroll}
-      />
+      <View style={styles.colorPickerWrap}>
+        <ColorPicker
+          style={styles.colorPicker}
+          color={color}
+          onDidUpdateColor={onDidUpdateColor}
+          onRequestLockScroll={onRequestLockScroll}
+          onRequestUnlockScroll={onRequestUnlockScroll}
+        />
+      </View>
+      <Button style={styles.button} text="Choose" onPress={onRequestHide} />
     </View>
   );
 }

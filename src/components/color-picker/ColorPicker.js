@@ -22,18 +22,24 @@ type State = {
 };
 
 const styles = {
+  container: {
+    flexDirection: 'row',
+  },
+  satPickerWrap: {
+    flex: 1,
+  },
+  huePickerWrap: {
+    flex: 0.3,
+  },
   satPicker: (width: number) => ({
     width,
     height: width,
-    backgroundColor: 'transparent',
   }),
-  huePicker: (width: number) => ({
-    width,
-    height: 45,
+  huePicker: {
+    flex: 1,
     borderRadius: 10,
-    marginTop: 35,
-    backgroundColor: 'transparent',
-  }),
+    marginLeft: 5,
+  },
 };
 
 // $FlowFixMe
@@ -55,27 +61,31 @@ export default class ColorPicker extends Component<Props, State> {
 
   render() {
     return (
-      <View
-        style={this.props.style}
-        ref={ref => {
-          this.view = ref;
-        }}
-        onLayout={this.viewDidLayout}
-      >
-        <SaturationAndBrightnessPicker
-          style={styles.satPicker(this.state.viewWidth)}
-          color={this.props.color}
-          onDidUpdateColor={this.props.onDidUpdateColor}
-          onDidStartDrag={this.props.onRequestLockScroll}
-          onDidEndDrag={this.props.onRequestUnlockScroll}
-        />
-        <HuePicker
-          style={styles.huePicker(this.state.viewWidth)}
-          color={this.props.color}
-          onDidUpdateColor={this.props.onDidUpdateColor}
-          onDidStartDrag={this.props.onRequestLockScroll}
-          onDidEndDrag={this.props.onRequestUnlockScroll}
-        />
+      <View style={[styles.container, this.props.style]}>
+        <View
+          style={styles.satPickerWrap}
+          ref={ref => {
+            this.view = ref;
+          }}
+          onLayout={this.viewDidLayout}
+        >
+          <SaturationAndBrightnessPicker
+            style={styles.satPicker(this.state.viewWidth)}
+            color={this.props.color}
+            onDidUpdateColor={this.props.onDidUpdateColor}
+            onDidStartDrag={this.props.onRequestLockScroll}
+            onDidEndDrag={this.props.onRequestUnlockScroll}
+          />
+        </View>
+        <View style={styles.huePickerWrap}>
+          <HuePicker
+            style={styles.huePicker}
+            color={this.props.color}
+            onDidUpdateColor={this.props.onDidUpdateColor}
+            onDidStartDrag={this.props.onRequestLockScroll}
+            onDidEndDrag={this.props.onRequestUnlockScroll}
+          />
+        </View>
       </View>
     );
   }

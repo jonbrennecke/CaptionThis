@@ -360,15 +360,23 @@ export default class EditScreen extends Component<Props, State> {
             </View>
           </View>
         </SafeAreaView>
-        <EditScreenRichTextOverlay
-          isVisible={this.state.showRichTextOverlay}
-          textColor={this.props.textColor}
-          backgroundColor={this.props.backgroundColor}
-          fontFamily={this.props.fontFamily}
-          onRequestSave={(...etc) => {
-            this.richTextEditorDidRequestSave(...etc);
-          }}
-        />
+        {hasFinalTranscription && (
+          <EditScreenRichTextOverlay
+            isVisible={this.state.showRichTextOverlay}
+            textColor={this.props.textColor}
+            backgroundColor={this.props.backgroundColor}
+            fontFamily={this.props.fontFamily}
+            speechTranscription={this.getSpeechTranscription()}
+            onRequestSave={(...etc) => {
+              this.richTextEditorDidRequestSave(...etc);
+            }}
+            onRequestDismissWithoutSaving={() => {
+              this.setState({
+                showRichTextOverlay: false,
+              });
+            }}
+          />
+        )}
         <EditScreenLoadingOverlay isVisible={!hasFinalTranscription} />
         <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
       </View>

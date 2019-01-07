@@ -36,11 +36,12 @@ class HueGradientView: UIView {
     guard let context = UIGraphicsGetCurrentContext() else {
       return
     }
-    let (saturation, brightness) = saturationAndBrightness
+    let saturation: CGFloat = 1.0
+    let brightness: CGFloat = 1.0
     let elementSize = CGSize(width: ELEMENT_SIZE, height: ELEMENT_SIZE)
-    for x in stride(from: CGFloat(0.0), to: rect.width, by: ELEMENT_SIZE) {
-      let hue = x / rect.width
-      for y in stride(from: CGFloat(0.0), to: rect.height, by: ELEMENT_SIZE) {
+    for y in stride(from: CGFloat(0.0), to: rect.height, by: ELEMENT_SIZE) {
+      let hue = y / rect.height
+      for x in stride(from: CGFloat(0.0), to: rect.width, by: ELEMENT_SIZE) {
         let color = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1.0)
         context.setFillColor(color.cgColor)
         let point = CGPoint(x: x, y: y)

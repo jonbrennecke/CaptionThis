@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Text } from 'react-native';
 
 import * as Fonts from '../../utils/Fonts';
 import { FONT_SIZES, TEXT_COLORS } from '../../constants';
@@ -16,22 +16,34 @@ type Props = {
 const styles = {
   container: {
     paddingVertical: 10,
-    paddingHorizontal: 10,
   },
   labelText: {
     ...Fonts.getFontStyle('formLabel', { contentStyle: 'darkContent' }),
-    marginBottom: 4,
+    marginBottom: 7,
+    paddingHorizontal: 15,
   },
-  fontSizeText: (isSelected: boolean, isFirst: boolean) => ({
-    paddingLeft: isFirst ? 0 : 8,
-    paddingRight: 8,
+  fontSize: {
+    paddingVertical: 12,
+    alignItems: 'flex-start',
+    paddingHorizontal: 15,
+  },
+  fontSizeText: (isSelected: boolean) => ({
     ...Fonts.getFontStyle('heading', {
       contentStyle: 'darkContent',
     }),
-    color: isSelected ? TEXT_COLORS.DARK_GREY : TEXT_COLORS.LIGHT_GREY,
+    color: isSelected ? TEXT_COLORS.OFF_WHITE : TEXT_COLORS.LIGHT_GREY,
   }),
-  fontSizes: {
+  borderBottom: (isSelected: boolean) => ({
+    position: 'absolute',
+    bottom: 4,
+    left: 7,
+    right: 7,
+    height: 3,
+    backgroundColor: isSelected ? TEXT_COLORS.OFF_WHITE : 'transparent',
+  }),
+  fontSizeList: {
     flexDirection: 'row',
+    paddingVertical: 4,
   },
 };
 
@@ -45,21 +57,29 @@ export default function RichTextFontSizeControl({
       <Text numberOfLines={1} style={styles.labelText}>
         {'Size'}
       </Text>
-      <View style={styles.fontSizes}>
-        {FONT_SIZES.map((size, index) => (
-          <TouchableOpacity
-            key={size}
-            onPress={() => onDidSelectFontSize(size)}
-          >
-            <Text
-              numberOfLines={1}
-              style={styles.fontSizeText(size === fontSize, index === 0)}
-            >
-              {size}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        overScrollMode="always"
+      >
+        <View style={styles.fontSizeList}>
+          {FONT_SIZES.map(size => {
+            const isSelected = size === fontSize;
+            return (
+              <TouchableOpacity
+                key={size}
+                style={styles.fontSize}
+                onPress={() => onDidSelectFontSize(size)}
+              >
+                <Text numberOfLines={1} style={styles.fontSizeText(isSelected)}>
+                  {size}
+                </Text>
+                <View style={styles.borderBottom(isSelected)} />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </ScrollView>
     </View>
   );
 }

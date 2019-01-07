@@ -39,9 +39,9 @@ const styles = {
   },
   seekPositionHandle: {
     position: 'absolute',
-    top: -5,
-    bottom: -5,
-    width: 7,
+    left: -5,
+    right: -5,
+    height: 7,
     borderRadius: 3,
     backgroundColor: UI_COLORS.OFF_WHITE,
     shadowOpacity: 0.35,
@@ -94,7 +94,7 @@ export default class HuePicker extends Component<Props, State> {
         />
         <DragInteractionContainer
           style={styles.draggable}
-          vertical={false}
+          horizontal={false}
           itemsShouldReturnToOriginalPosition={false}
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}

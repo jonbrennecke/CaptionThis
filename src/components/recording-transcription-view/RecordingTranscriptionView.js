@@ -7,12 +7,12 @@ import type { SpeechTranscription } from '../../types/speech';
 import type { ColorRGBA } from '../../types/media';
 
 type Props = {
-  style: ?Style,
+  style?: ?Style,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
   fontFamily: string,
   speechTranscription: ?SpeechTranscription,
-  onPress: () => void,
+  onPress?: () => void,
 };
 
 const NativeTranscriptView = requireNativeComponent('TranscriptView');
@@ -42,7 +42,11 @@ export default function RecordingTranscriptionView({
       }))
     : [];
   return (
-    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
+    <TouchableOpacity
+      disabled={!onPress}
+      style={[styles.container, style]}
+      onPress={onPress}
+    >
       <NativeTranscriptView
         style={styles.flex}
         textSegments={textSegments}

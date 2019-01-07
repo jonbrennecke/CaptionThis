@@ -4,19 +4,18 @@ import {
   View,
   SafeAreaView,
   Animated,
-  ScrollView,
-  Dimensions,
+  Easing,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { BlurView } from 'react-native-blur';
 import { autobind } from 'core-decorators';
-// $FlowFixMe
-import SafeArea from 'react-native-safe-area';
 
 import { UI_COLORS } from '../../constants';
 import RichTextEditor from '../../components/rich-text-editor/RichTextEditor';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
+import type { SpeechTranscription } from '../../types/speech';
 
 type Props = {
   style?: ?Style,
@@ -24,19 +23,15 @@ type Props = {
   fontFamily: string,
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
+  speechTranscription: ?SpeechTranscription,
   onRequestSave: ({
     fontSize: number,
     fontFamily: string,
     textColor: ColorRGBA,
     backgroundColor: ColorRGBA,
   }) => void,
+  onRequestDismissWithoutSaving: () => void,
 };
-
-type State = {
-  safeAreaHeight: number,
-};
-
-const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const styles = {
   container: (anim: Animated.Value) => ({
@@ -54,17 +49,24 @@ const styles = {
     right: 0,
     bottom: 0,
   },
-  safeAreaContent: (height: number) => ({
-    width: SCREEN_WIDTH,
-    paddingVertical: 145,
-    paddingHorizontal: 23,
-    height,
+  bottomSheet: (anim: Animated.Value) => ({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: UI_COLORS.BLACK,
+    opacity: anim,
+    transform: [
+      {
+        translateY: anim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [300, 0],
+        }),
+      },
+    ],
   }),
   insideWrap: {
-    backgroundColor: UI_COLORS.WHITE,
     flex: 1,
-    paddingHorizontal: 7,
-    borderRadius: 12,
     shadowOpacity: 1,
     shadowOffset: {
       width: 0,
@@ -85,25 +87,16 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class EditScreenRichTextOverlay extends Component<Props, State> {
-  anim = new Animated.Value(0);
-  scrollViewContentOffsetY = new Animated.Value(0);
-  scrollView: ?ScrollView;
-  state = {
-    safeAreaHeight: 0,
-  };
+export default class EditScreenRichTextOverlay extends Component<Props> {
+  fadeAnim = new Animated.Value(0);
+  sheetAnim = new Animated.Value(0);
 
-  async componentDidMount() {
+  componentDidMount() {
     if (this.props.isVisible) {
       this.animateIn();
     } else if (!this.props.isVisible) {
       this.animateOut();
     }
-    const { safeAreaInsets } = await SafeArea.getSafeAreaInsetsForRootView();
-    this.setState({
-      safeAreaHeight:
-        SCREEN_HEIGHT - safeAreaInsets.top - safeAreaInsets.bottom,
-    });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -115,85 +108,62 @@ export default class EditScreenRichTextOverlay extends Component<Props, State> {
   }
 
   animateIn() {
-    Animated.timing(this.anim, {
-      toValue: 1,
-      duration: 300,
-    }).start();
+    Animated.parallel([
+      Animated.timing(this.fadeAnim, {
+        toValue: 1,
+        duration: 200,
+        easing: Easing.quad,
+      }),
+      Animated.timing(this.sheetAnim, {
+        toValue: 1,
+        duration: 150,
+        delay: 200,
+      }),
+    ]).start();
   }
 
   animateOut() {
-    Animated.timing(this.anim, {
-      toValue: 0,
-      duration: 300,
-    }).start();
-  }
-
-  scrollViewDidScroll() {
-    return Animated.event(
-      [
-        {
-          nativeEvent: {
-            contentOffset: {
-              y: this.scrollViewContentOffsetY,
-            },
-          },
-        },
-      ],
-      { useNativeDriver: true }
-    );
-  }
-
-  lockScroll() {
-    if (this.scrollView) {
-      this.scrollView.setNativeProps({
-        scrollEnabled: false,
-      });
-    }
-  }
-
-  unlockScroll() {
-    if (this.scrollView) {
-      this.scrollView.setNativeProps({
-        scrollEnabled: true,
-      });
-    }
+    Animated.parallel([
+      Animated.timing(this.fadeAnim, {
+        toValue: 0,
+        duration: 200,
+        delay: 200,
+        easing: Easing.quad,
+      }),
+      Animated.timing(this.sheetAnim, {
+        toValue: 0,
+        duration: 150,
+      }),
+    ]).start();
   }
 
   render() {
     return (
       <Animated.View
-        style={[styles.container(this.anim), this.props.style]}
+        style={[styles.container(this.fadeAnim), this.props.style]}
         pointerEvents={this.props.isVisible ? 'auto' : 'none'}
       >
-        <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
-        <SafeAreaView style={styles.flex}>
-          <ScrollView
-            ref={ref => {
-              this.scrollView = ref;
-            }}
-            style={styles.flex}
-            showsVerticalScrollIndicator={false}
-            overScrollMode="always"
-            alwaysBounceVertical
-            onScroll={this.scrollViewDidScroll}
-          >
-            <View style={styles.safeAreaContent(this.state.safeAreaHeight)}>
-              <View style={styles.insideWrap}>
-                <RichTextEditor
-                  style={styles.inside}
-                  isVisible={this.props.isVisible}
-                  fontSize={16}
-                  fontFamily={this.props.fontFamily}
-                  textColor={this.props.textColor}
-                  backgroundColor={this.props.backgroundColor}
-                  onRequestLockScroll={this.lockScroll}
-                  onRequestUnlockScroll={this.unlockScroll}
-                  onRequestSave={this.props.onRequestSave}
-                />
-              </View>
+        <TouchableWithoutFeedback
+          onPress={this.props.onRequestDismissWithoutSaving}
+        >
+          <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
+        </TouchableWithoutFeedback>
+        <Animated.View style={styles.bottomSheet(this.sheetAnim)}>
+          <SafeAreaView style={styles.flex}>
+            <View style={styles.insideWrap}>
+              <RichTextEditor
+                style={styles.inside}
+                isVisible={this.props.isVisible}
+                speechTranscription={this.props.speechTranscription}
+                fontSize={16}
+                fontFamily={this.props.fontFamily}
+                textColor={this.props.textColor}
+                backgroundColor={this.props.backgroundColor}
+                onRequestSave={this.props.onRequestSave}
+              />
             </View>
-          </ScrollView>
-        </SafeAreaView>
+          </SafeAreaView>
+        </Animated.View>
       </Animated.View>
     );
   }
