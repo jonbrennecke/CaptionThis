@@ -84,7 +84,7 @@ const styles = {
       },
     ],
   }),
-  transcription: {}
+  transcription: {},
 };
 
 // $FlowFixMe
@@ -196,7 +196,7 @@ export default class RichTextEditor extends Component<Props, State> {
           speechTranscription={this.props.speechTranscription}
         />
         <View style={styles.mainContents}>
-          <View style={styles.mainContentsBackground}/>
+          <View style={styles.mainContentsBackground} />
           <RichTextFontFamilyControl
             style={styles.field}
             fontFamily={this.state.fontFamily}

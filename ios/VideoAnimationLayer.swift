@@ -107,7 +107,7 @@ class VideoAnimationLayer: CALayer {
     add(animationIn, forKey: nil)
 //     TODO: fade out after last segment duration is complete (+delay)
   }
-  
+
   private func setupContainerLayer() {
     containerLayer.contentsScale = UIScreen.main.scale
     let height = frame.height - containerPaddingVertical * 2
