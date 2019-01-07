@@ -1,6 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Keyboard, StatusBar } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Keyboard,
+  StatusBar,
+} from 'react-native';
 import { BlurView } from 'react-native-blur';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
@@ -82,11 +88,6 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class EditTranscriptionModal extends Component<Props> {
-
-  componentWillMount() {
-    StatusBar.setBarStyle('dark-content');
-  }
-
   getSpeechTranscription(): ?SpeechTranscription {
     const { speechTranscriptions, videoAssetIdentifier: key } = this.props;
     if (!speechTranscriptions.has(key)) {
@@ -111,6 +112,7 @@ export default class EditTranscriptionModal extends Component<Props> {
     const speechTranscription = this.getSpeechTranscription();
     return (
       <View style={styles.flex}>
+        <StatusBar barStyle="dark-content" />
         <BlurView style={styles.blurView} blurType="xlight" blurAmount={25} />
         <SafeAreaView style={styles.flex}>
           <View style={styles.nav}>
