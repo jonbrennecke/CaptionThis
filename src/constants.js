@@ -57,22 +57,25 @@ export const UI_COLORS = {
 };
 
 export const USER_BACKGROUND_COLOR_CHOICES = [
-  '#D0021B',
-  '#F5A623',
-  '#F8E71C',
-  '#8B572A',
-  '#7ED321',
-  '#417505',
-  '#588C1B',
-  '#0000FF',
-  '#BD10E0',
-  '#9013FE',
-  '#4A90E2',
-  '#50E3C2',
-  '#000000',
-  '#4A4A4A',
-  '#9B9B9B',
+  '#BCCCDD',
+  '#2F5181',
+  '#71AC9B',
+  '#97C189',
+  '#DCE8D9',
+  '#FAE8BB',
+  '#FDF6CA',
+  '#EEB736',
+  '#DE7A5C',
+  '#AE292A',
+  '#E45858',
+  '#F2D3CE',
+  '#DCD2D0',
+  '#E7DBEE',
+  '#AE9EC3',
   '#FFFFFF',
+  '#9B9B9B',
+  '#4A4A4A',
+  '#000000'
 ];
 
 export const USER_TEXT_COLOR_CHOICES = ['#FFFFFF', '#000000'];
