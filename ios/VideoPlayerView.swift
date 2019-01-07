@@ -43,22 +43,21 @@ class VideoPlayerView: UIView {
         guard let asset = self.asset else {
           return
         }
-        self.item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: ["playable", "hasProtectedContent", "duration"])
-        self.item!.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .old, .new], context: nil)
-        if let player = self.player {
-          player.replaceCurrentItem(with: self.item)
-        } else {
-          self.player = AVQueuePlayer(playerItem: self.item)
-        }
+        let item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: ["playable", "hasProtectedContent", "duration"])
+        item.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .old, .new], context: nil)
+        let player = self.player ?? AVQueuePlayer()
+        player.replaceCurrentItem(with: item)
         let timeScale = CMTimeScale(NSEC_PER_SEC)
         let time = CMTime(seconds: 0.05, preferredTimescale: timeScale)
-        self.timeObserverToken = self.player?.addPeriodicTimeObserver(forInterval: time, queue: .main) {
+        self.timeObserverToken = player.addPeriodicTimeObserver(forInterval: time, queue: .main) {
           [weak self] time in
           self?.delegate?.videoPlayerDidUpdatePlaybackTime(time, duration: asset.duration)
         }
-        self.playerLooper = AVPlayerLooper(player: self.player!, templateItem: self.item!)
-        self.player?.play()
-        self.player?.pause()
+        self.playerLooper = AVPlayerLooper(player: player, templateItem: item)
+        player.play()
+        player.pause()
+        self.item = item
+        self.player = player
       }
     }
   }
