@@ -38,7 +38,7 @@ class VideoAnimationLayer: CALayer {
   @objc
   public func animate(withParams params: VideoAnimationParams) {
     setupContainerLayer()
-    backgroundColor = params.backgroundColor?.cgColor
+    backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
     var textLayers = [CATextLayer]()
     params.textSegments?.forEach { segment in
       let multiplier: CGFloat = outputKind == .view ? -1 : 1
