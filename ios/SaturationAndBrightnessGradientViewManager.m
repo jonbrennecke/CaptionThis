@@ -34,6 +34,10 @@ RCT_CUSTOM_VIEW_PROPERTY(color, UIColor *,
 
 RCT_CUSTOM_VIEW_PROPERTY(offset, NSDictionary *,
                          SaturationAndBrightnessGradientWrappingView) {
+  if (CGRectEqualToRect(view.frame, CGRectZero)) {
+    // Sanity check; don't need to update if the component has not mounted
+    return;
+  }
   NSDictionary *offsetDict = [RCTConvert NSDictionary:json];
   NSNumber *offsetX = [offsetDict objectForKey:@"x"];
   NSNumber *offsetY = [offsetDict objectForKey:@"y"];

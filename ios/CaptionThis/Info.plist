@@ -60,6 +60,8 @@
 		<string>SourceSerifPro-Regular.ttf</string>
 		<string>Staatliches-Regular.ttf</string>
 		<string>Rubik-Regular.ttf</string>
+		<string>OpenSans-Regular.ttf</string>
+		<string>Roboto-Regular.ttf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

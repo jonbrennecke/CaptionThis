@@ -54,7 +54,6 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: UI_COLORS.BLACK,
     opacity: anim,
     transform: [
       {
@@ -77,7 +76,6 @@ const styles = {
     justifyContent: 'center',
   },
   inside: {
-    overflow: 'hidden',
     flex: 1,
   },
   flex: {

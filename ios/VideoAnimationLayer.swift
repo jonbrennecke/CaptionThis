@@ -11,8 +11,13 @@ enum VideoAnimationOutputKind: Int {
 
 @objc
 class VideoAnimationLayer: CALayer {
-  private let paddingHorizontal: CGFloat = 40
-  private let fontSize: CGFloat = 23
+  private let containerLayer = CALayer()
+  private let containerPaddingHorizontal: CGFloat = 15
+  private let containerPaddingVertical: CGFloat = 15
+  private let textPaddingHorizontal: CGFloat = 15
+  private let textPaddingVertical: CGFloat = 10
+  private let extraTextSpaceBottom: CGFloat = 10
+  private let fontSize: CGFloat = 17
   private let outputKind: VideoAnimationOutputKind
 
   required init?(coder _: NSCoder) {
@@ -32,16 +37,17 @@ class VideoAnimationLayer: CALayer {
 
   @objc
   public func animate(withParams params: VideoAnimationParams) {
-    backgroundColor = params.backgroundColor?.cgColor
+    setupContainerLayer()
+    backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
     var textLayers = [CATextLayer]()
     params.textSegments?.forEach { segment in
       let multiplier: CGFloat = outputKind == .view ? -1 : 1
-      let offset: CGFloat = outputKind == .view ? frame.height : 0
-      let outOfFrameTopY = frame.height * 1.25 * multiplier + offset
-      let inFrameTopY = frame.height * 0.75 * multiplier + offset
-      let inFrameMiddleY = frame.height * 0.5 * multiplier + offset
-      let inFrameBottomY = frame.height * 0.25 * multiplier + offset
-      let outOfFrameBottomY = -frame.height * 0.25 * multiplier + offset
+      let offset: CGFloat = outputKind == .view ? containerLayer.frame.height : 0
+      let outOfFrameTopY = containerLayer.frame.height * 1.25 * multiplier + offset
+      let inFrameTopY = containerLayer.frame.height * 0.75 * multiplier + offset
+      let inFrameMiddleY = containerLayer.frame.height * 0.5 * multiplier + offset
+      let inFrameBottomY = containerLayer.frame.height * 0.25 * multiplier + offset
+      let outOfFrameBottomY = -containerLayer.frame.height * 0.25 * multiplier + offset
       guard let bottomTextLayer = textLayers.last else {
         let textLayer = self.addTextLayer(withParams: params, text: segment.text)
         textLayer.position.y = inFrameMiddleY
@@ -101,6 +107,14 @@ class VideoAnimationLayer: CALayer {
     add(animationIn, forKey: nil)
 //     TODO: fade out after last segment duration is complete (+delay)
   }
+  
+  private func setupContainerLayer() {
+    containerLayer.contentsScale = UIScreen.main.scale
+    let height = frame.height - containerPaddingVertical * 2
+    let width = frame.width - containerPaddingHorizontal * 2
+    containerLayer.frame = CGRect(x: containerPaddingHorizontal, y: containerPaddingVertical, width: width, height: height)
+    addSublayer(containerLayer)
+  }
 
   private func animateFadeIn(atTime beginTime: CFTimeInterval, withDuration duration: CFTimeInterval = 0.25) -> CABasicAnimation {
     let fadeInAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
@@ -142,9 +156,9 @@ class VideoAnimationLayer: CALayer {
     let textLayer = CenteredTextLayer()
     textLayer.contentsScale = UIScreen.main.scale
     textLayer.allowsFontSubpixelQuantization = true
-    let height = frame.height / 2
-    let width = frame.width - paddingHorizontal * 2
-    textLayer.frame = CGRect(x: paddingHorizontal, y: 0, width: width, height: height)
+    let height = (containerLayer.frame.height - textPaddingVertical * 2) / 2 + extraTextSpaceBottom
+    let width = containerLayer.frame.width - textPaddingHorizontal * 2
+    textLayer.frame = CGRect(x: textPaddingHorizontal, y: textPaddingVertical, width: width, height: height)
     textLayer.alignmentMode = .left
     let fontSizeMultiplier = outputKind == .export ? UIScreen.main.scale : 1
     textLayer.fontSize = fontSize * fontSizeMultiplier
@@ -152,7 +166,7 @@ class VideoAnimationLayer: CALayer {
     textLayer.font = params.fontFamily as CFTypeRef
     textLayer.foregroundColor = params.textColor?.cgColor
     textLayer.string = text
-    addSublayer(textLayer)
+    containerLayer.addSublayer(textLayer)
     return textLayer
   }
 }

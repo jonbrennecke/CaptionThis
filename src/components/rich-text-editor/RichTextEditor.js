@@ -58,6 +58,14 @@ const styles = {
     paddingBottom: 13,
     paddingTop: 10,
   },
+  mainContentsBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: -200,
+    backgroundColor: UI_COLORS.BLACK,
+  },
   button: {
     marginHorizontal: 10,
     marginTop: 7,
@@ -76,9 +84,7 @@ const styles = {
       },
     ],
   }),
-  transcription: {
-    backgroundColor: 'white'
-  }
+  transcription: {}
 };
 
 // $FlowFixMe
@@ -190,6 +196,7 @@ export default class RichTextEditor extends Component<Props, State> {
           speechTranscription={this.props.speechTranscription}
         />
         <View style={styles.mainContents}>
+          <View style={styles.mainContentsBackground}/>
           <RichTextFontFamilyControl
             style={styles.field}
             fontFamily={this.state.fontFamily}

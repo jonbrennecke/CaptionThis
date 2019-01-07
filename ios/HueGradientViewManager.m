@@ -32,6 +32,10 @@ RCT_CUSTOM_VIEW_PROPERTY(color, UIColor *, HueGradientViewWrappingView) {
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(offset, NSDictionary *, HueGradientViewWrappingView) {
+  if (CGRectEqualToRect(view.frame, CGRectZero)) {
+    // Sanity check; don't need to update if the component has not mounted
+    return;
+  }
   NSDictionary *offsetDict = [RCTConvert NSDictionary:json];
   NSNumber *offset = [offsetDict objectForKey:@"y"];
   if (offset == nil) {

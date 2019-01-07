@@ -31,10 +31,7 @@ export const exportVideo = async ({
     ...etcParams,
     textSegments,
     textColor: convertColorForNativeBridge(textColor),
-    backgroundColor: convertColorForNativeBridge({
-      ...backgroundColor,
-      alpha: 0.8 /* TODO */,
-    }),
+    backgroundColor: convertColorForNativeBridge(backgroundColor),
   };
   Debug.log(`Exporting video. Params = ${JSON.stringify(exportParams)}`);
   await NativeVideoExportModule.exportVideoAsync(exportParams);
