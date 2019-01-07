@@ -98,6 +98,8 @@ export const FONT_FAMILIES = {
   LOBSTER: 'Lobster',
   CRETE_ROUND: 'Crete Round',
   RUBIK: 'Rubik',
+  OPEN_SANS: 'Open Sans',
+  ROBOTO: 'Roboto',
 };
 
 export const FONTS = [
@@ -125,6 +127,14 @@ export const FONTS = [
     fontFamily: FONT_FAMILIES.RUBIK,
     displayName: 'Rubik',
   },
+  {
+    fontFamily: FONT_FAMILIES.OPEN_SANS,
+    displayName: 'Open Sans'
+  },
+  {
+    fontFamily: FONT_FAMILIES.ROBOTO,
+    displayName: 'Roboto'
+  }
 ];
 
 export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
