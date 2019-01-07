@@ -19,16 +19,15 @@ const styles = {
   flex: {
     flex: 1,
   },
-  absoluteFill: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
   scrollViewContent: {
     paddingBottom: 100,
   },
+  list: {
+    paddingTop: 32,
+    flexDirection: 'row',
+    flexWrap: 1,
+    paddingHorizontal: 34,
+  }
 };
 
 export default function SpeechTranscriptionEditor({
@@ -48,25 +47,27 @@ export default function SpeechTranscriptionEditor({
           contentInsetAdjustmentBehavior="automatic"
           contentContainerStyle={styles.scrollViewContent}
         >
-          {(speechTranscription?.segments || []).map((segment, index) => (
-            <SpeechTranscriptionSegmentInput
-              key={`${segment.duration}-${index}`}
-              segment={segment}
-              autoFocus={index === 0}
-              onEditSegment={segment => {
-                if (!speechTranscription) {
-                  return;
-                }
-                const segments = [...speechTranscription?.segments];
-                segments[index] = segment;
-                onDidEditSpeechTranscription({
-                  ...speechTranscription,
-                  segments,
-                });
-                speechTranscription.segments[index] = segment;
-              }}
-            />
-          ))}
+          <View style={styles.list}>
+            {(speechTranscription?.segments || []).map((segment, index) => (
+              <SpeechTranscriptionSegmentInput
+                key={`${segment.duration}-${index}`}
+                segment={segment}
+                autoFocus={index === 0}
+                onEditSegment={segment => {
+                  if (!speechTranscription) {
+                    return;
+                  }
+                  const segments = [...speechTranscription?.segments];
+                  segments[index] = segment;
+                  onDidEditSpeechTranscription({
+                    ...speechTranscription,
+                    segments,
+                  });
+                  speechTranscription.segments[index] = segment;
+                }}
+              />
+            ))}
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </View>
