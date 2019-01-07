@@ -11,8 +11,9 @@ enum VideoAnimationOutputKind: Int {
 
 @objc
 class VideoAnimationLayer: CALayer {
-  private let paddingHorizontal: CGFloat = 40
-  private let fontSize: CGFloat = 23
+  private let paddingHorizontal: CGFloat = 15
+  private let paddingVertical: CGFloat = 13
+  private let fontSize: CGFloat = 20
   private let outputKind: VideoAnimationOutputKind
 
   required init?(coder _: NSCoder) {
@@ -142,9 +143,9 @@ class VideoAnimationLayer: CALayer {
     let textLayer = CenteredTextLayer()
     textLayer.contentsScale = UIScreen.main.scale
     textLayer.allowsFontSubpixelQuantization = true
-    let height = frame.height / 2
+    let height = (frame.height - paddingVertical * 2) / 2
     let width = frame.width - paddingHorizontal * 2
-    textLayer.frame = CGRect(x: paddingHorizontal, y: 0, width: width, height: height)
+    textLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
     textLayer.alignmentMode = .left
     let fontSizeMultiplier = outputKind == .export ? UIScreen.main.scale : 1
     textLayer.fontSize = fontSize * fontSizeMultiplier
