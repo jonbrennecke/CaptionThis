@@ -10,14 +10,6 @@ class VideoAnimationParams: NSObject {
   var backgroundColor: UIColor?
   @objc
   var textColor: UIColor?
-
-  //  @objc
-  //  init(textSegments: [TextSegmentParams], fontFamily: String, backgroundColor: UIColor, textColor: UIColor) {
-//    self.textSegments = textSegments
-//    self.fontFamily = fontFamily
-//    self.backgroundColor = backgroundColor
-//    self.textColor = textColor
-  //  }
 }
 
 @objc

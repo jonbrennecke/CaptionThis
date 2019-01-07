@@ -99,7 +99,7 @@ class VideoAnimationLayer: CALayer {
     animationIn.beginTime = AVCoreAnimationBeginTimeAtZero + Double(firstSegment.timestamp)
     animationIn.duration = 0.3
     add(animationIn, forKey: nil)
-    // TODO: fade out after last segment duration is complete (+delay)
+//     TODO: fade out after last segment duration is complete (+delay)
   }
 
   private func animateFadeIn(atTime beginTime: CFTimeInterval, withDuration duration: CFTimeInterval = 0.25) -> CABasicAnimation {

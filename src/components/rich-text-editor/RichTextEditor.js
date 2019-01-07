@@ -76,6 +76,9 @@ const styles = {
       },
     ],
   }),
+  transcription: {
+    backgroundColor: 'white'
+  }
 };
 
 // $FlowFixMe
@@ -180,6 +183,7 @@ export default class RichTextEditor extends Component<Props, State> {
     return (
       <View style={[styles.container, this.props.style]}>
         <RecordingTranscriptionView
+          style={styles.transcription}
           textColor={this.state.textColor}
           backgroundColor={this.state.backgroundColor}
           fontFamily={this.state.fontFamily}
@@ -206,17 +210,17 @@ export default class RichTextEditor extends Component<Props, State> {
             onRequestShowColorPicker={this.showColorPicker}
           />
           <Button style={styles.button} text="Save" onPress={this.save} />
+          <Animated.View
+            style={styles.colorPickerWrap(this.colorPickerAnim)}
+            pointerEvents={this.state.isColorPickerVisible ? 'auto' : 'none'}
+          >
+            <RichTextEditorColorPicker
+              color={this.state.backgroundColor}
+              onRequestHide={this.hideColorPicker}
+              onDidUpdateColor={this.colorPickerDidUpdateColorThrottled}
+            />
+          </Animated.View>
         </View>
-        <Animated.View
-          style={styles.colorPickerWrap(this.colorPickerAnim)}
-          pointerEvents={this.state.isColorPickerVisible ? 'auto' : 'none'}
-        >
-          <RichTextEditorColorPicker
-            color={this.state.backgroundColor}
-            onRequestHide={this.hideColorPicker}
-            onDidUpdateColor={this.colorPickerDidUpdateColorThrottled}
-          />
-        </Animated.View>
       </View>
     );
   }

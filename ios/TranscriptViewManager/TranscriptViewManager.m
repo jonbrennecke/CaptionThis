@@ -20,9 +20,10 @@
     VideoAnimationLayer *animationLayer =
         [[VideoAnimationLayer alloc] initFor:VideoAnimationOutputKindView];
     animationLayer.frame =
-        CGRectMake(0, 0, view.frame.size.width, view.frame.size.height);
+        CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.height);
     [animationLayer animateWithParams:self->animationParams];
     animationLayer.beginTime = CACurrentMediaTime();
+    view.layer.sublayers = nil;
     [view.layer insertSublayer:animationLayer atIndex:0];
   });
 }
