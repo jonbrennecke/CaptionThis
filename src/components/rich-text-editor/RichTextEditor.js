@@ -10,11 +10,13 @@ import RichTextFontFamilyControl from './RichTextFontFamilyControl';
 import RichTextBackgroundColorControl from './RichTextBackgroundColorControl';
 import RichTextFontSizeControl from './RichTextFontSizeControl';
 import RichTextEditorColorPicker from './RichTextEditorColorPicker';
+import RecordingTranscriptionView from '../../components/recording-transcription-view/RecordingTranscriptionView';
 import Button from '../button/Button';
 import { UI_COLORS } from '../../constants';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
+import type { SpeechTranscription } from '../../types/speech';
 
 type Props = {
   style?: ?Style,
@@ -23,6 +25,7 @@ type Props = {
   fontFamily: string,
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
+  speechTranscription: ?SpeechTranscription,
   onRequestLockScroll?: () => void,
   onRequestUnlockScroll?: () => void,
   onRequestSave: ({
@@ -42,9 +45,7 @@ type State = {
 };
 
 const styles = {
-  container: {
-    paddingTop: 5,
-  },
+  container: {},
   flex: {
     flex: 1,
   },
@@ -55,7 +56,7 @@ const styles = {
   mainContents: {
     justifyContent: 'space-between',
     paddingBottom: 13,
-    paddingTop: 8,
+    paddingTop: 10,
   },
   button: {
     marginHorizontal: 10,
@@ -178,6 +179,12 @@ export default class RichTextEditor extends Component<Props, State> {
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
+        <RecordingTranscriptionView
+          textColor={this.state.textColor}
+          backgroundColor={this.state.backgroundColor}
+          fontFamily={this.state.fontFamily}
+          speechTranscription={this.props.speechTranscription}
+        />
         <View style={styles.mainContents}>
           <RichTextFontFamilyControl
             style={styles.field}

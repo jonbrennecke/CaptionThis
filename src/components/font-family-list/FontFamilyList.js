@@ -3,7 +3,7 @@ import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 
 import * as Fonts from '../../utils/Fonts';
-import { UI_COLORS, TEXT_COLORS, FONTS } from '../../constants';
+import { TEXT_COLORS, FONTS } from '../../constants';
 
 import type { Style } from '../../types/react';
 

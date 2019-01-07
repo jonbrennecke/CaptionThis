@@ -15,6 +15,7 @@ import RichTextEditor from '../../components/rich-text-editor/RichTextEditor';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
+import type { SpeechTranscription } from '../../types/speech';
 
 type Props = {
   style?: ?Style,
@@ -22,6 +23,7 @@ type Props = {
   fontFamily: string,
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
+  speechTranscription: ?SpeechTranscription,
   onRequestSave: ({
     fontSize: number,
     fontFamily: string,
@@ -152,6 +154,7 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
               <RichTextEditor
                 style={styles.inside}
                 isVisible={this.props.isVisible}
+                speechTranscription={this.props.speechTranscription}
                 fontSize={16}
                 fontFamily={this.props.fontFamily}
                 textColor={this.props.textColor}
