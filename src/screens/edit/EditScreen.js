@@ -322,7 +322,7 @@ export default class EditScreen extends Component<Props, State> {
             <ScreenGradients />
             <EditScreenTopControls
               style={styles.editTopControls}
-              isReadyToExport={hasFinalTranscription}
+              isReadyToExport={!!hasFinalTranscription}
               onBackButtonPress={this.onDidPressBackButton}
               onExportButtonPress={this.onDidPressExportButton}
               onStylizeButtonPress={() =>
