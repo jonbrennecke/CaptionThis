@@ -75,7 +75,7 @@ export const USER_BACKGROUND_COLOR_CHOICES = [
   '#FFFFFF',
   '#9B9B9B',
   '#4A4A4A',
-  '#000000'
+  '#000000',
 ];
 
 export const USER_TEXT_COLOR_CHOICES = ['#FFFFFF', '#000000'];

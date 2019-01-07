@@ -15,6 +15,7 @@ class VideoPlayerView: UIView {
   public var delegate: VideoPlayerViewDelegate?
 
   private var item: AVPlayerItem?
+  private var playerLooper: AVPlayerLooper?
 
   override class var layerClass: AnyClass {
     return AVPlayerLayer.self
@@ -24,9 +25,9 @@ class VideoPlayerView: UIView {
     return layer as! AVPlayerLayer
   }
 
-  private var player: AVPlayer? {
+  private var player: AVQueuePlayer? {
     get {
-      return playerLayer.player
+      return playerLayer.player as? AVQueuePlayer
     }
     set {
       playerLayer.player = newValue
@@ -42,21 +43,21 @@ class VideoPlayerView: UIView {
         guard let asset = self.asset else {
           return
         }
-        self.item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: ["playable", "hasProtectedContent"])
-        self.item!.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .old, .new], context: nil)
-        if let player = self.player {
-          player.replaceCurrentItem(with: self.item)
-        } else {
-          self.player = AVPlayer(playerItem: self.item)
-        }
+        let item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: ["playable", "hasProtectedContent", "duration"])
+        item.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .old, .new], context: nil)
+        let player = self.player ?? AVQueuePlayer()
+        player.replaceCurrentItem(with: item)
         let timeScale = CMTimeScale(NSEC_PER_SEC)
         let time = CMTime(seconds: 0.05, preferredTimescale: timeScale)
-        self.timeObserverToken = self.player?.addPeriodicTimeObserver(forInterval: time, queue: .main) {
+        self.timeObserverToken = player.addPeriodicTimeObserver(forInterval: time, queue: .main) {
           [weak self] time in
           self?.delegate?.videoPlayerDidUpdatePlaybackTime(time, duration: asset.duration)
         }
-        self.player?.play()
-        self.player?.pause()
+        self.playerLooper = AVPlayerLooper(player: player, templateItem: item)
+        player.play()
+        player.pause()
+        self.item = item
+        self.player = player
       }
     }
   }
