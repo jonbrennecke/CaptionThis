@@ -20,7 +20,7 @@ type Props = {
 
 type State = {
   position: {
-    x: number,
+    y: number,
   },
 };
 
@@ -59,7 +59,7 @@ const styles = {
 export default class HuePicker extends Component<Props, State> {
   state = {
     position: {
-      x: 0,
+      y: 0,
     },
   };
 
@@ -77,9 +77,9 @@ export default class HuePicker extends Component<Props, State> {
     this.props.onDidEndDrag();
   }
 
-  dragDidMove({ x }: { x: number, y: number }) {
+  dragDidMove({ y }: { x: number, y: number }) {
     this.setState({
-      position: { x },
+      position: { y },
     });
   }
 

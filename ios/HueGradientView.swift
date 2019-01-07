@@ -52,7 +52,7 @@ class HueGradientView: UIView {
   }
 
   @objc
-  public func color(atHorizontalOffset offset: CGFloat) -> UIColor {
+  public func color(atOffset offset: CGFloat) -> UIColor {
     let hue = offset / frame.width
     let (saturation, brightness) = saturationAndBrightness
     return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)

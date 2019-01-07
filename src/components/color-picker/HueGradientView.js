@@ -9,7 +9,7 @@ import type { ColorRGBA } from '../../types/media';
 type Props = {
   style?: ?Style,
   color: ColorRGBA,
-  offset: { x: number },
+  offset: { y: number },
   onDidUpdateColor: ColorRGBA => void,
 };
 
