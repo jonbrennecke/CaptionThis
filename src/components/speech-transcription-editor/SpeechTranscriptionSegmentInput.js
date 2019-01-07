@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text, TextInput, Animated } from 'react-native';
+import { View, TextInput, Animated } from 'react-native';
 import { autobind } from 'core-decorators';
 
 import * as Fonts from '../../utils/Fonts';
@@ -17,22 +17,30 @@ type Props = {
   onEditSegment: SpeechTranscriptionSegment => void,
 };
 
+type State = {
+  isFocused: boolean,
+};
+
 const styles = {
-  container: {
+  container:  (isFocused: boolean) => ({
     paddingVertical: 4,
-    paddingHorizontal: 23,
-  },
-  inputWrap: (anim: Animated.Value) => ({
+    paddingRight: 7,
+    zIndex: isFocused ? 10 : 0,
+  }),
+  inputWrap: {
     flex: 1,
-    marginTop: 2,
-    paddingHorizontal: 7,
-    paddingTop: 4,
-    paddingBottom: 4,
+  },
+  inputFocusWrap: (anim: Animated.Value) => ({
+    position: 'absolute',
+    top: -13,
+    bottom: -9,
+    left: -16,
+    right: -16,
     backgroundColor: anim.interpolate({
       inputRange: [0, 1],
       outputRange: [
         Color.hexToRgbaString(UI_COLORS.WHITE, 0.0),
-        Color.hexToRgbaString(UI_COLORS.WHITE, 0.75),
+        Color.hexToRgbaString(UI_COLORS.WHITE, 1),
       ],
     }),
     borderRadius: 7,
@@ -51,19 +59,38 @@ const styles = {
     ...Fonts.getFontStyle('formInput', { contentStyle: 'darkContent' }),
     textAlign: 'left',
     flex: 1,
+    flexGrow: 1,
   },
-  timestamp: {
+  timestamp: (anim: Animated.Value) => ({
+    position: 'absolute',
+    left: 0,
+    top: -6,
     ...Fonts.getFontStyle('formLabel', { contentStyle: 'darkContent' }),
-    paddingHorizontal: 7,
-  },
+    fontSize: 8,
+    opacity: anim,
+    transform: [
+      { translateY: anim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, -5],
+      })
+      }
+    ],
+    width: 75,
+  }),
 };
 
 // $FlowFixMe
 @autobind
-export default class SpeechTranscriptionSegmentInput extends Component<Props> {
+export default class SpeechTranscriptionSegmentInput extends Component<Props, State> {
   anim: Animated.Value = new Animated.Value(0);
+  state = {
+    isFocused: false,
+  };
 
   textInputDidFocus() {
+    this.setState({
+      isFocused: true,
+    });
     Animated.timing(this.anim, {
       toValue: 1,
       duration: 200,
@@ -71,6 +98,9 @@ export default class SpeechTranscriptionSegmentInput extends Component<Props> {
   }
 
   textInputDidBlur() {
+    this.setState({
+      isFocused: false,
+    });
     Animated.timing(this.anim, {
       toValue: 0,
       duration: 200,
@@ -79,15 +109,17 @@ export default class SpeechTranscriptionSegmentInput extends Component<Props> {
 
   render() {
     return (
-      <View style={[styles.container, this.props.style]}>
-        <Text style={styles.timestamp}>
-          {formatTimestamp(this.props.segment.timestamp)}
-        </Text>
-        <Animated.View style={styles.inputWrap(this.anim)}>
+      <View style={[styles.container(this.state.isFocused), this.props.style]}>
+        <View style={styles.inputWrap}>
+          <Animated.View style={styles.inputFocusWrap(this.anim)}/>
+          <Animated.Text style={styles.timestamp(this.anim)}>
+            {formatTimestamp(this.props.segment.timestamp)}
+          </Animated.Text>
           <TextInput
             style={styles.substring}
             value={this.props.segment.substring}
             autoFocus={this.props.autoFocus}
+            autoCapitalize="sentences"
             onFocus={this.textInputDidFocus}
             onBlur={this.textInputDidBlur}
             onChangeText={value => {
@@ -97,7 +129,7 @@ export default class SpeechTranscriptionSegmentInput extends Component<Props> {
               });
             }}
           />
-        </Animated.View>
+        </View>
       </View>
     );
   }

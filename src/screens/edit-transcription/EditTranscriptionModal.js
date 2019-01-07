@@ -44,7 +44,6 @@ const styles = {
   nav: {
     paddingVertical: 7,
     paddingHorizontal: 10,
-    marginBottom: 12,
   },
   navBackground: {
     position: 'absolute',
