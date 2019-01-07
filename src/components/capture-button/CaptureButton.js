@@ -8,10 +8,8 @@ import {
 } from 'react-native';
 import { autobind } from 'core-decorators';
 import { BlurView } from 'react-native-blur';
-import LinearGradient from 'react-native-linear-gradient';
 
 import { UI_COLORS } from '../../constants';
-import * as Color from '../../utils/Color';
 
 import type { Style } from '../../types/react';
 
@@ -60,26 +58,19 @@ const styles = {
     borderColor: UI_COLORS.OFF_WHITE,
     position: 'absolute',
   },
-  gradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
   borderMask: {
     height: 75,
     width: 75,
     borderRadius: 37.5,
     position: 'absolute',
   },
-  linearGradientInner: {
+  inner: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: Color.hexToRgbaString('white', 0.1),
+    backgroundColor: UI_COLORS.WHITE,
   },
 };
 
@@ -120,32 +111,12 @@ export default class ColorPicker extends Component<Props> {
               style={[styles.blurView, this.props.style]}
               blurType="light"
             />
-            <LinearGradient
-              pointerEvents="none"
-              useAngle
-              angle={-45}
-              angleCenter={{ x: 0.5, y: 0.5 }}
-              colors={[
-                Color.hexToRgbaString(UI_COLORS.LIGHT_GREEN, 0.25),
-                Color.hexToRgbaString(UI_COLORS.MEDIUM_GREEN, 0.25),
-              ]}
-              style={styles.gradient}
-            />
           </View>
           <MaskedViewIOS
             style={styles.borderMask}
             maskElement={<View style={styles.border} />}
           >
-            <LinearGradient
-              pointerEvents="none"
-              useAngle
-              angle={-45}
-              angleCenter={{ x: 0.5, y: 0.5 }}
-              colors={[UI_COLORS.LIGHT_GREEN, UI_COLORS.MEDIUM_GREEN]}
-              style={styles.gradient}
-            >
-              <View style={styles.linearGradientInner} />
-            </LinearGradient>
+            <View style={styles.inner} />
           </MaskedViewIOS>
         </Animated.View>
       </TouchableWithoutFeedback>

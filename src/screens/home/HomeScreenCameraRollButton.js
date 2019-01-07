@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { View, MaskedViewIOS, TouchableOpacity } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 import VideoThumbnailView from '../../components/video-thumbnail-view/VideoThumbnailView';
 import { UI_COLORS } from '../../constants';
@@ -72,13 +71,8 @@ export default function HomeScreenCameraRollButton({
         style={styles.absoluteFill}
         maskElement={<View style={styles.border} />}
       >
-        <LinearGradient
-          pointerEvents="none"
-          useAngle
-          angle={-45}
-          angleCenter={{ x: 0.5, y: 0.5 }}
-          colors={[UI_COLORS.LIGHT_GREEN, UI_COLORS.MEDIUM_GREEN]}
-          style={styles.absoluteFill}
+        <View
+          style={styles.border}
         />
       </MaskedViewIOS>
     </TouchableOpacity>

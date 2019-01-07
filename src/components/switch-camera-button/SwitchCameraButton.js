@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
-import { TouchableOpacity, MaskedViewIOS } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { View, TouchableOpacity, MaskedViewIOS } from 'react-native';
 
 import SwitchCameraIcon from './SwitchCameraIcon';
 import { UI_COLORS } from '../../constants';
@@ -24,6 +23,7 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
+    backgroundColor: UI_COLORS.WHITE,
   },
 };
 
@@ -40,12 +40,7 @@ export default function SwitchCameraButton({
         style={styles.absoluteFill}
         maskElement={<SwitchCameraIcon style={styles.flex} />}
       >
-        <LinearGradient
-          pointerEvents="none"
-          useAngle
-          angle={-45}
-          angleCenter={{ x: 0.5, y: 0.5 }}
-          colors={[UI_COLORS.LIGHT_GREEN, UI_COLORS.MEDIUM_GREEN]}
+        <View
           style={styles.absoluteFill}
         />
       </MaskedViewIOS>
