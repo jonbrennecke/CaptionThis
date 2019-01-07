@@ -40,9 +40,7 @@ export default function SwitchCameraButton({
         style={styles.absoluteFill}
         maskElement={<SwitchCameraIcon style={styles.flex} />}
       >
-        <View
-          style={styles.absoluteFill}
-        />
+        <View style={styles.absoluteFill} />
       </MaskedViewIOS>
     </TouchableOpacity>
   );

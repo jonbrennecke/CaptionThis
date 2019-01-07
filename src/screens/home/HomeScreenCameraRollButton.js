@@ -71,9 +71,7 @@ export default function HomeScreenCameraRollButton({
         style={styles.absoluteFill}
         maskElement={<View style={styles.border} />}
       >
-        <View
-          style={styles.border}
-        />
+        <View style={styles.border} />
       </MaskedViewIOS>
     </TouchableOpacity>
   );
