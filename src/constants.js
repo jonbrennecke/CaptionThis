@@ -56,7 +56,7 @@ export const UI_COLORS = {
   OFF_BLACK: '#1A1818',
 };
 
-export const USER_COLOR_CHOICES = [
+export const USER_BACKGROUND_COLOR_CHOICES = [
   '#D0021B',
   '#F5A623',
   '#F8E71C',
@@ -74,6 +74,8 @@ export const USER_COLOR_CHOICES = [
   '#9B9B9B',
   '#FFFFFF',
 ];
+
+export const USER_TEXT_COLOR_CHOICES = ['#FFFFFF', '#000000'];
 
 export const USER_EDITABLE_COLORS = {
   BACKGROUND_COLOR: 'BACKGROUND_COLOR',

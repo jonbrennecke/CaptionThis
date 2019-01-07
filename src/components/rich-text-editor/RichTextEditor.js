@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Animated, Dimensions, Easing } from 'react-native';
+import { View, Animated, StyleSheet, Easing } from 'react-native';
 import { autobind } from 'core-decorators';
 import throttle from 'lodash/throttle';
 
@@ -9,12 +9,12 @@ import RichTextFontColorControl from './RichTextFontColorControl';
 import RichTextFontFamilyControl from './RichTextFontFamilyControl';
 import RichTextBackgroundColorControl from './RichTextBackgroundColorControl';
 import RichTextFontSizeControl from './RichTextFontSizeControl';
+import RichTextEditorColorPicker from './RichTextEditorColorPicker';
 import Button from '../button/Button';
+import { UI_COLORS } from '../../constants';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
-
-type EditingColor = 'textColor' | 'backgroundColor';
 
 type Props = {
   style?: ?Style,
@@ -34,26 +34,21 @@ type Props = {
 };
 
 type State = {
-  isFontFamilyListVisible: boolean,
   isColorPickerVisible: boolean,
-  editingColor: EditingColor,
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
   fontFamily: string,
   fontSize: number,
 };
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
-
 const styles = {
-  container: {},
+  container: {
+    paddingTop: 5,
+  },
   flex: {
     flex: 1,
   },
   buttonText: Fonts.getFontStyle('button', { contentStyle: 'lightContent' }),
-  buttonLabelText: Fonts.getFontStyle('formLabel', {
-    contentStyle: 'lightContent',
-  }),
   field: {
     paddingVertical: 2,
   },
@@ -64,50 +59,39 @@ const styles = {
   },
   button: {
     marginHorizontal: 10,
+    marginTop: 7,
   },
+  colorPickerWrap: (anim: Animated.Value) => ({
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: UI_COLORS.BLACK,
+    justifyContent: 'space-between',
+    opacity: anim,
+    transform: [
+      {
+        translateY: anim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [200, 0],
+        }),
+      },
+    ],
+  }),
 };
 
 // $FlowFixMe
 @autobind
 export default class RichTextEditor extends Component<Props, State> {
-  fontFamilyAnim: Animated.Value = new Animated.Value(0);
   colorPickerAnim: Animated.Value = new Animated.Value(0);
+  mainContentsAnim: Animated.Value = new Animated.Value(0);
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      isFontFamilyListVisible: false,
       isColorPickerVisible: false,
-      editingColor: 'textColor',
       textColor: props.textColor,
       backgroundColor: props.backgroundColor,
       fontFamily: props.fontFamily,
       fontSize: props.fontSize,
     };
-  }
-
-  animateInFontFamilyList() {
-    const config = {
-      toValue: 1,
-      duration: 300,
-      easing: Easing.quad,
-    };
-    Animated.parallel([
-      Animated.timing(this.mainContentsAnim, config),
-      Animated.timing(this.fontFamilyAnim, config),
-    ]).start();
-  }
-
-  animateOutFontFamilyList() {
-    const config = {
-      toValue: 0,
-      duration: 300,
-      easing: Easing.quad,
-    };
-    Animated.parallel([
-      Animated.timing(this.mainContentsAnim, config),
-      Animated.timing(this.fontFamilyAnim, config),
-    ]).start();
   }
 
   fontFamilyListDidSelectFontFamily(fontFamily: string) {
@@ -123,16 +107,7 @@ export default class RichTextEditor extends Component<Props, State> {
   );
 
   colorPickerDidUpdateColor(color: ColorRGBA) {
-    switch (this.state.editingColor) {
-      case 'backgroundColor':
-        this.colorPickerDidUpdateBackgroundColor(color);
-        break;
-      case 'textColor':
-        this.colorPickerDidUpdateTextColor(color);
-        break;
-      default:
-        break;
-    }
+    this.colorPickerDidUpdateBackgroundColor(color);
   }
 
   colorPickerDidUpdateTextColor(textColor: ColorRGBA) {
@@ -147,9 +122,8 @@ export default class RichTextEditor extends Component<Props, State> {
     });
   }
 
-  showColorPicker(editingColor: EditingColor) {
+  showColorPicker() {
     this.setState({
-      editingColor,
       isColorPickerVisible: true,
     });
     this.animateInColorPicker();
@@ -165,7 +139,7 @@ export default class RichTextEditor extends Component<Props, State> {
   animateInColorPicker() {
     const config = {
       toValue: 1,
-      duration: 300,
+      duration: 200,
       easing: Easing.quad,
     };
     Animated.parallel([
@@ -177,7 +151,7 @@ export default class RichTextEditor extends Component<Props, State> {
   animateOutColorPicker() {
     const config = {
       toValue: 0,
-      duration: 300,
+      duration: 200,
       easing: Easing.quad,
     };
     Animated.parallel([
@@ -215,20 +189,27 @@ export default class RichTextEditor extends Component<Props, State> {
             style={styles.field}
             onDidSelectFontSize={this.fontSizeControlDidSelectFontSize}
           />
-          {/* <RichTextFontColorControl
-            color={this.state.textColor}
+          <RichTextFontColorControl
             style={styles.field}
-            onDidRequestShowColorPicker={() =>
-              this.showColorPicker('textColor')
-            }
             onDidSelectColor={this.colorPickerDidUpdateTextColor}
-          /> */}
+          />
           <RichTextBackgroundColorControl
             style={styles.field}
             onDidSelectColor={this.colorPickerDidUpdateBackgroundColor}
+            onRequestShowColorPicker={this.showColorPicker}
           />
           <Button style={styles.button} text="Save" onPress={this.save} />
         </View>
+        <Animated.View
+          style={styles.colorPickerWrap(this.colorPickerAnim)}
+          pointerEvents={this.state.isColorPickerVisible ? 'auto' : 'none'}
+        >
+          <RichTextEditorColorPicker
+            color={this.state.backgroundColor}
+            onRequestHide={this.hideColorPicker}
+            onDidUpdateColor={this.colorPickerDidUpdateColorThrottled}
+          />
+        </Animated.View>
       </View>
     );
   }

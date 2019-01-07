@@ -65,7 +65,6 @@ const styles = {
   }),
   insideWrap: {
     flex: 1,
-    paddingVertical: 5,
     shadowOpacity: 1,
     shadowOffset: {
       width: 0,

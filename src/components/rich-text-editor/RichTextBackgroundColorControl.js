@@ -4,7 +4,7 @@ import { View, ScrollView, TouchableOpacity, Text } from 'react-native';
 
 import * as Fonts from '../../utils/Fonts';
 import * as Color from '../../utils/Color';
-import { USER_COLOR_CHOICES } from '../../constants';
+import { USER_BACKGROUND_COLOR_CHOICES } from '../../constants';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
@@ -12,6 +12,7 @@ import type { ColorRGBA } from '../../types/media';
 type Props = {
   style?: ?Style,
   onDidSelectColor: ColorRGBA => void,
+  onRequestShowColorPicker: () => void,
 };
 
 const styles = {
@@ -43,6 +44,22 @@ const styles = {
       ? Color.hexToRgbaString('#dddddd', 0.5)
       : Color.hexToRgbaString(Color.rgbaObjectToRgbaString(color), 0.5),
   }),
+  colorPickerButton: {
+    flex: 1,
+    height: 35,
+    width: 35,
+    borderRadius: 17.5,
+    borderWidth: 4,
+    borderColor: '#dddddd',
+    alignItems: 'center',
+  },
+  colorPickerButtonText: {
+    ...Fonts.getFontStyle('formLabel', { contentStyle: 'darkContent' }),
+    fontSize: 20,
+    top: -5,
+    left: 1,
+    textAlign: 'center',
+  },
 };
 
 function isWhite(color: ColorRGBA): boolean {
@@ -52,6 +69,7 @@ function isWhite(color: ColorRGBA): boolean {
 export default function RichTextBackgroundColorControl({
   style,
   onDidSelectColor,
+  onRequestShowColorPicker,
 }: Props) {
   return (
     <View style={[styles.container, style]}>
@@ -64,7 +82,15 @@ export default function RichTextBackgroundColorControl({
         overScrollMode="always"
       >
         <View style={styles.row}>
-          {USER_COLOR_CHOICES.map(color => (
+          <TouchableOpacity
+            style={styles.color}
+            onPress={onRequestShowColorPicker}
+          >
+            <View style={styles.colorPickerButton}>
+              <Text style={styles.colorPickerButtonText}>{'...'}</Text>
+            </View>
+          </TouchableOpacity>
+          {USER_BACKGROUND_COLOR_CHOICES.map(color => (
             <TouchableOpacity
               key={color}
               style={styles.color}
