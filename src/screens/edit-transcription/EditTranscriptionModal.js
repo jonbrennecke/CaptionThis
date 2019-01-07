@@ -42,8 +42,8 @@ const styles = {
     flex: 1,
   },
   nav: {
-    paddingVertical: 7,
-    paddingHorizontal: 10,
+    paddingVertical: 17,
+    paddingHorizontal: 34,
   },
   navBackground: {
     position: 'absolute',
