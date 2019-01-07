@@ -103,6 +103,11 @@ export const FONT_FAMILIES = {
   RUBIK: 'Rubik',
   OPEN_SANS: 'Open Sans',
   ROBOTO: 'Roboto',
+  CUTIVE_MONO: 'Cutive Mono',
+  DANCING_SCRIPT: 'Dancing Script',
+  MONTSERRAT: 'Montserrat',
+  PACIFICO: 'Pacifico',
+  SHADOWS_INTO_LIGHT: 'Shadows Into Light',
 };
 
 export const FONTS = [
@@ -137,6 +142,26 @@ export const FONTS = [
   {
     fontFamily: FONT_FAMILIES.ROBOTO,
     displayName: 'Roboto',
+  },
+  {
+    fontFamily: FONT_FAMILIES.CUTIVE_MONO,
+    displayName: 'Cutive Mono',
+  },
+  {
+    fontFamily: FONT_FAMILIES.DANCING_SCRIPT,
+    displayName: 'Dancing Script',
+  },
+  {
+    fontFamily: FONT_FAMILIES.MONTSERRAT,
+    displayName: 'Montserrat',
+  },
+  {
+    fontFamily: FONT_FAMILIES.PACIFICO,
+    displayName: 'Pacifico',
+  },
+  {
+    fontFamily: FONT_FAMILIES.SHADOWS_INTO_LIGHT,
+    displayName: 'Shadows Into Light',
   },
 ];
 
