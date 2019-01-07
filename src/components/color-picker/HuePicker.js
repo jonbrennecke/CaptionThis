@@ -102,9 +102,7 @@ export default class HuePicker extends Component<Props, State> {
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}
           onDragMove={this.dragDidMove}
-          renderChildren={props => (
-            <View style={styles.handle} {...props} />
-          )}
+          renderChildren={props => <View style={styles.handle} {...props} />}
         />
       </View>
     );

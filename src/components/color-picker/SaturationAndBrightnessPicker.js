@@ -105,9 +105,7 @@ export default class SaturationAndBrightnessPicker extends Component<
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}
           onDragMove={this.dragDidMove}
-          renderChildren={props => (
-            <View style={styles.handle} {...props} />
-          )}
+          renderChildren={props => <View style={styles.handle} {...props} />}
         />
       </View>
     );

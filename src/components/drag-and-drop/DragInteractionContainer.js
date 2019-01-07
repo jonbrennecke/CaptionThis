@@ -63,10 +63,6 @@ export default class DragInteractionContainer extends Component<Props, State> {
   }
 
   panListener(value: { x: number, y: number }) {
-    // const clampedValue = {
-    //   x: clamp(value.x, 0, this.state.viewWidth),
-    //   y: clamp(value.y, 0, this.state.viewHeight)
-    // };
     this.panOffset = value;
     this.props.onDragMove(value);
   }
