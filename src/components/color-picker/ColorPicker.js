@@ -38,7 +38,7 @@ const styles = {
   huePicker: {
     flex: 1,
     borderRadius: 10,
-    marginLeft: 5,
+    marginLeft: 15,
   },
 };
 
