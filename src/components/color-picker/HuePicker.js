@@ -99,9 +99,10 @@ export default class HuePicker extends Component<Props, State> {
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}
           onDragMove={this.dragDidMove}
-        >
-          <View style={styles.seekPositionHandle} />
-        </DragInteractionContainer>
+          renderChildren={props => (
+            <View style={styles.seekPositionHandle} {...props} />
+          )}
+        />
       </View>
     );
   }

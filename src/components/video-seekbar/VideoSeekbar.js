@@ -111,17 +111,19 @@ export default class VideoSeekbar extends Component<Props, State> {
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}
           onDragMove={this.dragDidMove}
-        >
-          <View
-            style={styles.seekPositionHandle(
-              calculateHandleOffset({
-                viewWidth: this.state.viewWidth,
-                playbackTime: this.props.playbackTime,
-                duration: this.props.duration,
-              })
-            )}
-          />
-        </DragInteractionContainer>
+          renderChildren={props => (
+            <View
+              style={styles.seekPositionHandle(
+                calculateHandleOffset({
+                  viewWidth: this.state.viewWidth,
+                  playbackTime: this.props.playbackTime,
+                  duration: this.props.duration,
+                })
+              )}
+              {...props}
+            />
+          )}
+        />
       </View>
     );
   }

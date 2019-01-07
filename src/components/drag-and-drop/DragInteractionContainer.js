@@ -1,15 +1,12 @@
 // @flow
-import React, { cloneElement, Component, Children } from 'react';
+import React, { Component } from 'react';
 import { PanResponder, Animated, View } from 'react-native';
 import { autobind } from 'core-decorators';
 import isNil from 'lodash/isNil';
 import extend from 'lodash/extend';
 
-import type {
-  Gesture,
-  Children as ChildrenType,
-  Style,
-} from '../../types/react';
+import type { Gesture, Style } from '../../types/react';
+import type { Element } from 'react';
 
 type Props = {
   itemsShouldReturnToOriginalPosition?: boolean,
@@ -18,7 +15,7 @@ type Props = {
   horizontal?: boolean,
   applyTransformStyles?: boolean,
   style?: Style,
-  children: ChildrenType,
+  renderChildren: (props: {}) => Element<*>,
   onDragStart: (event: Event, gesture: Gesture) => void,
   onDragEnd: (event: Event, gesture: Gesture) => void,
   onDragMove: ({ x: number, y: number }) => void,
@@ -165,9 +162,12 @@ export default class DragInteractionContainer extends Component<Props, State> {
         onLayout={this.viewDidLayout}
       >
         <Animated.View {...this.panResponder.panHandlers} style={style}>
-          {cloneElement(Children.only(this.props.children), {
+          {this.props.renderChildren({
             isDragging: this.state.isDragging && this.canDrag(),
           })}
+          {/* {cloneElement(Children.only(this.props.children), {
+            isDragging: this.state.isDragging && this.canDrag(),
+          })} */}
         </Animated.View>
       </View>
     );
