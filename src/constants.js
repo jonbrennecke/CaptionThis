@@ -101,8 +101,11 @@ export const FONT_FAMILIES = {
   LOBSTER: 'Lobster',
   CRETE_ROUND: 'Crete Round',
   RUBIK: 'Rubik',
-  OPEN_SANS: 'Open Sans',
   ROBOTO: 'Roboto',
+  CUTIVE_MONO: 'Cutive Mono',
+  DANCING_SCRIPT: 'Dancing Script',
+  MONTSERRAT: 'Montserrat',
+  SHADOWS_INTO_LIGHT: 'Shadows Into Light',
 };
 
 export const FONTS = [
@@ -131,12 +134,24 @@ export const FONTS = [
     displayName: 'Rubik',
   },
   {
-    fontFamily: FONT_FAMILIES.OPEN_SANS,
-    displayName: 'Open Sans',
-  },
-  {
     fontFamily: FONT_FAMILIES.ROBOTO,
     displayName: 'Roboto',
+  },
+  {
+    fontFamily: FONT_FAMILIES.CUTIVE_MONO,
+    displayName: 'Cutive Mono',
+  },
+  {
+    fontFamily: FONT_FAMILIES.DANCING_SCRIPT,
+    displayName: 'Dancing Script',
+  },
+  {
+    fontFamily: FONT_FAMILIES.MONTSERRAT,
+    displayName: 'Montserrat',
+  },
+  {
+    fontFamily: FONT_FAMILIES.SHADOWS_INTO_LIGHT,
+    displayName: 'Shadows Into Light',
   },
 ];
 

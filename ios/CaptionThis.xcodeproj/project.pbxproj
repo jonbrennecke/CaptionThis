@@ -52,6 +52,10 @@
 		FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81321D45266007C3B3E /* SpeechManager.swift */; };
 		FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81521D45340007C3B3E /* PermissionsManager.swift */; };
 		FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */; };
+		FC7822C021E3FCB7007AA9B2 /* CutiveMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC78228B21E3FCB6007AA9B2 /* CutiveMono-Regular.ttf */; };
+		FC7822C121E3FCB7007AA9B2 /* DancingScript-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7822BC21E3FCB6007AA9B2 /* DancingScript-Regular.ttf */; };
+		FC7822C221E3FCB7007AA9B2 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7822BD21E3FCB7007AA9B2 /* Montserrat-Regular.ttf */; };
+		FC7822C421E3FCB7007AA9B2 /* ShadowsIntoLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7822BF21E3FCB7007AA9B2 /* ShadowsIntoLight.ttf */; };
 		FC7A0F5C21D87E3B00751DBE /* CreteRound-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7A0F5721D87E3B00751DBE /* CreteRound-Regular.ttf */; };
 		FC7A0F5D21D87E3B00751DBE /* SourceSerifPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7A0F5821D87E3B00751DBE /* SourceSerifPro-Regular.ttf */; };
 		FC7A0F5E21D87E3B00751DBE /* Lobster-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7A0F5921D87E3B00751DBE /* Lobster-Regular.ttf */; };
@@ -73,7 +77,6 @@
 		FC93753F21E0681800FD2700 /* SourceSerifPro-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC93750D21E0681700FD2700 /* SourceSerifPro-Semibold.ttf */; };
 		FC93754021E0681800FD2700 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC93753E21E0681800FD2700 /* SourceSansPro-Bold.ttf */; };
 		FC93759621E1499A00FD2700 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC93756521E1499900FD2700 /* Rubik-Regular.ttf */; };
-		FC93766521E3172600FD2700 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC93763321E3172500FD2700 /* OpenSans-Regular.ttf */; };
 		FC93766621E3172600FD2700 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC93766421E3172500FD2700 /* Roboto-Regular.ttf */; };
 		FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971321DC933D00347CAB /* VideoExportManager.swift */; };
 		FCA3971621DC937C00347CAB /* VideoAnimationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971521DC937C00347CAB /* VideoAnimationLayer.swift */; };
@@ -493,6 +496,10 @@
 		FC6EA81521D45340007C3B3E /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
 		FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PermissionsBridgeModule.m; sourceTree = "<group>"; };
 		FC6EA81921D45730007C3B3E /* PermissionsBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PermissionsBridgeModule.h; sourceTree = "<group>"; };
+		FC78228B21E3FCB6007AA9B2 /* CutiveMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "CutiveMono-Regular.ttf"; path = "../assets/fonts/CutiveMono-Regular.ttf"; sourceTree = "<group>"; };
+		FC7822BC21E3FCB6007AA9B2 /* DancingScript-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DancingScript-Regular.ttf"; path = "../assets/fonts/DancingScript-Regular.ttf"; sourceTree = "<group>"; };
+		FC7822BD21E3FCB7007AA9B2 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		FC7822BF21E3FCB7007AA9B2 /* ShadowsIntoLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ShadowsIntoLight.ttf; path = ../assets/fonts/ShadowsIntoLight.ttf; sourceTree = "<group>"; };
 		FC7A0F5721D87E3B00751DBE /* CreteRound-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "CreteRound-Regular.ttf"; path = "../assets/fonts/CreteRound-Regular.ttf"; sourceTree = "<group>"; };
 		FC7A0F5821D87E3B00751DBE /* SourceSerifPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSerifPro-Regular.ttf"; path = "../assets/fonts/SourceSerifPro-Regular.ttf"; sourceTree = "<group>"; };
 		FC7A0F5921D87E3B00751DBE /* Lobster-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lobster-Regular.ttf"; path = "../assets/fonts/Lobster-Regular.ttf"; sourceTree = "<group>"; };
@@ -522,7 +529,6 @@
 		FC93750D21E0681700FD2700 /* SourceSerifPro-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSerifPro-Semibold.ttf"; path = "../assets/fonts/SourceSerifPro-Semibold.ttf"; sourceTree = "<group>"; };
 		FC93753E21E0681800FD2700 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-Bold.ttf"; path = "../assets/fonts/SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
 		FC93756521E1499900FD2700 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rubik-Regular.ttf"; path = "../assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
-		FC93763321E3172500FD2700 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		FC93766421E3172500FD2700 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		FCA3971321DC933D00347CAB /* VideoExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExportManager.swift; sourceTree = "<group>"; };
 		FCA3971521DC937C00347CAB /* VideoAnimationLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationLayer.swift; sourceTree = "<group>"; };
@@ -869,7 +875,10 @@
 		FC6EA7D921CEA457007C3B3E /* fonts */ = {
 			isa = PBXGroup;
 			children = (
-				FC93763321E3172500FD2700 /* OpenSans-Regular.ttf */,
+				FC78228B21E3FCB6007AA9B2 /* CutiveMono-Regular.ttf */,
+				FC7822BC21E3FCB6007AA9B2 /* DancingScript-Regular.ttf */,
+				FC7822BD21E3FCB7007AA9B2 /* Montserrat-Regular.ttf */,
+				FC7822BF21E3FCB7007AA9B2 /* ShadowsIntoLight.ttf */,
 				FC93766421E3172500FD2700 /* Roboto-Regular.ttf */,
 				FC93756521E1499900FD2700 /* Rubik-Regular.ttf */,
 				FC93753E21E0681800FD2700 /* SourceSansPro-Bold.ttf */,
@@ -1614,6 +1623,8 @@
 			files = (
 				FC7A0F5F21D87E3B00751DBE /* Staatliches-Regular.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				FC7822C421E3FCB7007AA9B2 /* ShadowsIntoLight.ttf in Resources */,
+				FC7822C221E3FCB7007AA9B2 /* Montserrat-Regular.ttf in Resources */,
 				FC7A0F5E21D87E3B00751DBE /* Lobster-Regular.ttf in Resources */,
 				FC6EA7D721CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf in Resources */,
 				FC7A0F5D21D87E3B00751DBE /* SourceSerifPro-Regular.ttf in Resources */,
@@ -1623,8 +1634,9 @@
 				FC93766621E3172600FD2700 /* Roboto-Regular.ttf in Resources */,
 				FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */,
 				FC93759621E1499A00FD2700 /* Rubik-Regular.ttf in Resources */,
+				FC7822C021E3FCB7007AA9B2 /* CutiveMono-Regular.ttf in Resources */,
 				FC93753F21E0681800FD2700 /* SourceSerifPro-Semibold.ttf in Resources */,
-				FC93766521E3172600FD2700 /* OpenSans-Regular.ttf in Resources */,
+				FC7822C121E3FCB7007AA9B2 /* DancingScript-Regular.ttf in Resources */,
 				FC93754021E0681800FD2700 /* SourceSansPro-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

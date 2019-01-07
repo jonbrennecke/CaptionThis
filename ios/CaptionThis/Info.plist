@@ -62,8 +62,11 @@
 		<string>SourceSerifPro-Regular.ttf</string>
 		<string>Staatliches-Regular.ttf</string>
 		<string>Rubik-Regular.ttf</string>
-		<string>OpenSans-Regular.ttf</string>
 		<string>Roboto-Regular.ttf</string>
+		<string>CutiveMono-Regular.ttf</string>
+		<string>DancingScript-Regular.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
+		<string>ShadowsIntoLight.ttf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
