@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Text } from 'react-native';
+import { View, ScrollView, Dimensions, Text, StatusBar } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 // $FlowFixMe
@@ -173,6 +173,7 @@ export default class HomeScreen extends Component<Props, State> {
   >;
 
   componentDidMount() {
+    StatusBar.setBarStyle('light-content');
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
     }

@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Text, TouchableOpacity, Keyboard, StatusBar } from 'react-native';
 import { BlurView } from 'react-native-blur';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
@@ -12,6 +12,7 @@ import { getSpeechTranscriptions } from '../../redux/media/selectors';
 import { receiveSpeechTranscriptionSuccess } from '../../redux/media/actionCreators';
 import * as Fonts from '../../utils/Fonts';
 import * as Screens from '../../utils/Screens';
+import { UI_COLORS } from '../../constants';
 
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
@@ -43,6 +44,15 @@ const styles = {
   nav: {
     paddingVertical: 7,
     paddingHorizontal: 10,
+    marginBottom: 12,
+  },
+  navBackground: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 200,
+    backgroundColor: UI_COLORS.WHITE,
   },
   saveButtonText: Fonts.getFontStyle('button', { contentStyle: 'darkContent' }),
   blurView: {
@@ -73,6 +83,11 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class EditTranscriptionModal extends Component<Props> {
+
+  componentWillMount() {
+    StatusBar.setBarStyle('dark-content');
+  }
+
   getSpeechTranscription(): ?SpeechTranscription {
     const { speechTranscriptions, videoAssetIdentifier: key } = this.props;
     if (!speechTranscriptions.has(key)) {
@@ -100,6 +115,7 @@ export default class EditTranscriptionModal extends Component<Props> {
         <BlurView style={styles.blurView} blurType="xlight" blurAmount={25} />
         <SafeAreaView style={styles.flex}>
           <View style={styles.nav}>
+            <View style={styles.navBackground} />
             <TouchableOpacity onPress={this.didPressDismissButton}>
               <Text style={styles.saveButtonText}>Close</Text>
             </TouchableOpacity>
