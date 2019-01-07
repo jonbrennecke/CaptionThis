@@ -37,14 +37,17 @@ const styles = {
     bottom: 0,
     right: 0,
   },
-  seekPositionHandle: {
+  handle: {
     position: 'absolute',
     left: -5,
     right: -5,
-    height: 7,
-    borderRadius: 3,
+    height: 15,
+    top: -7.5,
+    borderRadius: 7.5,
+    borderWidth: 2,
+    borderColor: UI_COLORS.DARK_GREY,
     backgroundColor: UI_COLORS.OFF_WHITE,
-    shadowOpacity: 0.35,
+    shadowOpacity: 0.5,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -100,7 +103,7 @@ export default class HuePicker extends Component<Props, State> {
           onDragEnd={this.dragDidEnd}
           onDragMove={this.dragDidMove}
           renderChildren={props => (
-            <View style={styles.seekPositionHandle} {...props} />
+            <View style={styles.handle} {...props} />
           )}
         />
       </View>

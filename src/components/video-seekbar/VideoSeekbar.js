@@ -35,7 +35,7 @@ const styles = {
   seekPositionHandle: (offset: number) => ({
     position: 'absolute',
     top: -5,
-    bottom: -5,
+    height: 55,
     width: 7,
     backgroundColor: UI_COLORS.OFF_WHITE,
     borderRadius: 3,

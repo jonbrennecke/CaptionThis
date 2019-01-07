@@ -38,18 +38,22 @@ const styles = {
     bottom: 0,
     right: 0,
   },
-  seekPositionHandle: {
+  handle: {
     height: 15,
     width: 15,
+    left: -7.5,
+    top: -7.5,
     borderRadius: 7.5,
+    borderWidth: 2,
+    borderColor: UI_COLORS.DARK_GREY,
     backgroundColor: UI_COLORS.OFF_WHITE,
-    shadowOpacity: 0.35,
+    shadowOpacity: 0.5,
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowColor: UI_COLORS.BLACK,
-    shadowRadius: 15,
+    shadowRadius: 14,
   },
 };
 
@@ -102,7 +106,7 @@ export default class SaturationAndBrightnessPicker extends Component<
           onDragEnd={this.dragDidEnd}
           onDragMove={this.dragDidMove}
           renderChildren={props => (
-            <View style={styles.seekPositionHandle} {...props} />
+            <View style={styles.handle} {...props} />
           )}
         />
       </View>
