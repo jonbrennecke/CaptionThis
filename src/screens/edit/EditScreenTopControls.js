@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import { UI_COLORS } from '../../constants';
 import * as Color from '../../utils/Color';
@@ -13,6 +13,7 @@ import type { Style } from '../../types/react';
 
 type Props = {
   style?: ?Style,
+  isReadyToExport: boolean,
   onBackButtonPress: () => void,
   onExportButtonPress: () => void,
   onStylizeButtonPress: () => void,
@@ -42,10 +43,11 @@ const styles = {
     width: 75,
     alignItems: 'flex-start',
   },
-  buttonRight: {
+  buttonRight: (isReadyToExport: boolean) => ({
     width: 75,
     alignItems: 'flex-end',
-  },
+    opacity: isReadyToExport ? 1 : 0.5,
+  }),
   buttonGroupLeft: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -61,6 +63,7 @@ const styles = {
 
 export default function EditScreenTopControls({
   style,
+  isReadyToExport,
   onBackButtonPress,
   onExportButtonPress,
   onStylizeButtonPress,
@@ -81,10 +84,15 @@ export default function EditScreenTopControls({
       </View>
       <View style={styles.buttonGroupRight}>
         <TouchableOpacity
-          style={styles.buttonRight}
+          disabled={!isReadyToExport}
+          style={styles.buttonRight(isReadyToExport)}
           onPress={onExportButtonPress}
         >
-          <CheckmarkIcon style={styles.checkmarkIcon} color={white} />
+          {isReadyToExport ? (
+            <CheckmarkIcon style={styles.checkmarkIcon} color={white} />
+          ) : (
+            <ActivityIndicator style={styles.checkmarkIcon} color="#fff" />
+          )}
         </TouchableOpacity>
       </View>
     </View>
