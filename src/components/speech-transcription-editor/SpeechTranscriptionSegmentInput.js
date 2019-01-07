@@ -22,7 +22,7 @@ type State = {
 };
 
 const styles = {
-  container:  (isFocused: boolean) => ({
+  container: (isFocused: boolean) => ({
     paddingVertical: 4,
     paddingRight: 7,
     zIndex: isFocused ? 10 : 0,
@@ -69,11 +69,12 @@ const styles = {
     fontSize: 8,
     opacity: anim,
     transform: [
-      { translateY: anim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, -5],
-      })
-      }
+      {
+        translateY: anim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, -5],
+        }),
+      },
     ],
     width: 75,
   }),
@@ -81,7 +82,10 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class SpeechTranscriptionSegmentInput extends Component<Props, State> {
+export default class SpeechTranscriptionSegmentInput extends Component<
+  Props,
+  State
+> {
   anim: Animated.Value = new Animated.Value(0);
   state = {
     isFocused: false,
@@ -111,7 +115,7 @@ export default class SpeechTranscriptionSegmentInput extends Component<Props, St
     return (
       <View style={[styles.container(this.state.isFocused), this.props.style]}>
         <View style={styles.inputWrap}>
-          <Animated.View style={styles.inputFocusWrap(this.anim)}/>
+          <Animated.View style={styles.inputFocusWrap(this.anim)} />
           <Animated.Text style={styles.timestamp(this.anim)}>
             {formatTimestamp(this.props.segment.timestamp)}
           </Animated.Text>

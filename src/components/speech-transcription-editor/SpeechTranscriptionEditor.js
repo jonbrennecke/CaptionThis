@@ -27,7 +27,7 @@ const styles = {
     flexDirection: 'row',
     flexWrap: 1,
     paddingHorizontal: 34,
-  }
+  },
 };
 
 export default function SpeechTranscriptionEditor({
