@@ -36,9 +36,8 @@ class VideoPlayerView: UIView {
         return
       }
       backgroundQueue.async {
-        let item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: ["playable", "hasProtectedContent", "duration"])
-        item.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .old, .new], context: nil)
-        self.playerLooper = AVPlayerLooper(player: self.player, templateItem: item)
+        let item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: ["playable", "hasProtectedContent"])
+        item.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.old, .new], context: nil)
         self.item = item
         self.player.replaceCurrentItem(with: item)
         self.play()
@@ -105,11 +104,13 @@ class VideoPlayerView: UIView {
   }
 
   private func onVideoDidBecomeReadyToPlay() {
-    guard let asset = player.currentItem?.asset else {
+    guard let item = player.currentItem, let asset = player.currentItem?.asset else {
       return
     }
+    self.playerLooper = AVPlayerLooper(player: self.player, templateItem: item)
     Debug.log(message: "Video is ready to play")
     delegate?.videoPlayerDidBecomeReadyToPlayAsset(asset)
+    // FIXME: needs to be optimized
     backgroundQueue.async {
       let timeScale = CMTimeScale(NSEC_PER_SEC)
       let time = CMTime(seconds: 0.1, preferredTimescale: timeScale)
