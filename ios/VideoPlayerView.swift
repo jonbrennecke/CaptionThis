@@ -25,39 +25,26 @@ class VideoPlayerView: UIView {
     return layer as! AVPlayerLayer
   }
 
-  private var player: AVQueuePlayer? {
-    get {
-      return playerLayer.player as? AVQueuePlayer
-    }
-    set {
-      playerLayer.player = newValue
-    }
-  }
-
+  private var player = AVQueuePlayer()
   private var timeObserverToken: Any?
+  private var backgroundQueue = DispatchQueue(label: "video player queue")
 
   @objc
   public var asset: AVAsset? {
     didSet {
-      DispatchQueue.main.async {
-        guard let asset = self.asset else {
-          return
-        }
+      guard let asset = self.asset else {
+        return
+      }
+      backgroundQueue.async {
         let item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: ["playable", "hasProtectedContent", "duration"])
         item.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .old, .new], context: nil)
-        let player = self.player ?? AVQueuePlayer()
-        player.replaceCurrentItem(with: item)
-        let timeScale = CMTimeScale(NSEC_PER_SEC)
-        let time = CMTime(seconds: 0.05, preferredTimescale: timeScale)
-        self.timeObserverToken = player.addPeriodicTimeObserver(forInterval: time, queue: .main) {
-          [weak self] time in
-          self?.delegate?.videoPlayerDidUpdatePlaybackTime(time, duration: asset.duration)
-        }
-        self.playerLooper = AVPlayerLooper(player: player, templateItem: item)
-        player.play()
-        player.pause()
+        self.playerLooper = AVPlayerLooper(player: self.player, templateItem: item)
         self.item = item
-        self.player = player
+        self.player.replaceCurrentItem(with: item)
+        self.play()
+        DispatchQueue.main.async {
+          self.playerLayer.player = self.player
+        }
       }
     }
   }
@@ -94,42 +81,21 @@ class VideoPlayerView: UIView {
 
   @objc
   public func play() {
-    DispatchQueue.main.async {
-      guard let player = self.player else {
-        Debug.log(message: "Playback requested, but AVPlayer is not set")
-        return
-      }
-      player.play()
-    }
+    player.play()
   }
 
   @objc
   public func pause() {
-    DispatchQueue.main.async {
-      guard let player = self.player else {
-        Debug.log(message: "Pause requested, but AVPlayer is not set")
-        return
-      }
-      player.pause()
-    }
+    player.pause()
   }
 
   @objc
   public func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void) {
-    DispatchQueue.main.async {
-      guard let player = self.player else {
-        Debug.log(message: "Seek requested, but AVPlayer is not set")
-        return
-      }
-      player.seek(to: time, completionHandler: completionHandler)
-    }
+    player.seek(to: time, completionHandler: completionHandler)
   }
 
   @objc
   public func stop() {
-    guard let player = player else {
-      return
-    }
     player.pause()
     player.replaceCurrentItem(with: nil)
     if let timeObserverToken = timeObserverToken {
@@ -139,11 +105,19 @@ class VideoPlayerView: UIView {
   }
 
   private func onVideoDidBecomeReadyToPlay() {
-    guard let asset = player?.currentItem?.asset else {
+    guard let asset = player.currentItem?.asset else {
       return
     }
     Debug.log(message: "Video is ready to play")
     delegate?.videoPlayerDidBecomeReadyToPlayAsset(asset)
+    backgroundQueue.async {
+      let timeScale = CMTimeScale(NSEC_PER_SEC)
+      let time = CMTime(seconds: 0.1, preferredTimescale: timeScale)
+      self.timeObserverToken = self.player.addPeriodicTimeObserver(forInterval: time, queue: .main) {
+        [weak self] time in
+        self?.delegate?.videoPlayerDidUpdatePlaybackTime(time, duration: asset.duration)
+      }
+    }
   }
 
   private func onVideoDidFailToLoad() {
