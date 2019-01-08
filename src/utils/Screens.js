@@ -26,7 +26,7 @@ export const dismissLoginModal = async () => {
 };
 
 export const showOnboardingModal = async (
-  onUserDidCompleteOnboarding: () => {}
+  onUserDidCompleteOnboarding: () => void
 ) => {
   await Navigation.showModal({
     stack: {
