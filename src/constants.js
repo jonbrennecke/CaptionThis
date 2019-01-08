@@ -268,6 +268,14 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
       fontWeight: 'bold',
       letterSpacing: 1.2,
     },
+    modifiers: [
+      {
+        name: 'darkContent',
+        style: {
+          color: TEXT_COLORS.DARK_GREY,
+        },
+      },
+    ],
   },
 };
 
