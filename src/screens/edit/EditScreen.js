@@ -99,7 +99,7 @@ const styles = {
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: 100,
+    bottom: 60,
   },
   playbackControls: {
     position: 'absolute',
