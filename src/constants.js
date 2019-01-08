@@ -160,7 +160,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   default: {
     style: {
       color: TEXT_COLORS.DARK_GREY,
-      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontFamily: FONT_FAMILIES.ROBOTO,
       fontSize: 13,
     },
     modifiers: [
@@ -175,14 +175,14 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   formInput: {
     style: {
       color: TEXT_COLORS.DARK_GREY,
-      fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
+      fontFamily: FONT_FAMILIES.ROBOTO,
       fontSize: 20,
     },
   },
   formLabel: {
     style: {
       color: TEXT_COLORS.LIGHT_GREY,
-      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontFamily: FONT_FAMILIES.ROBOTO,
       fontSize: 11,
       letterSpacing: 1.8,
       fontWeight: 'bold',
@@ -227,7 +227,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   heading: {
     style: {
       color: TEXT_COLORS.DARK_GREY,
-      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontFamily: FONT_FAMILIES.ROBOTO,
       fontSize: 19,
       fontWeight: 'bold',
     },
@@ -255,7 +255,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   callToAction: {
     style: {
       color: TEXT_COLORS.MEDIUM_GREY,
-      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontFamily: FONT_FAMILIES.ROBOTO,
       fontSize: 23,
       textAlign: 'center',
     },
