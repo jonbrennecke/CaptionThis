@@ -3,8 +3,8 @@ import Photos
 
 @objc
 class VideoExportManager: NSObject {
-  private let containerOffsetFromBottom: CGFloat = 120
-  private let containerHeight: CGFloat = 160
+  private let containerOffsetFromBottom: CGFloat = 300
+  private let containerHeight: CGFloat = 325
 
   @objc
   public func exportVideo(withLocalIdentifier localIdentifier: String,
@@ -27,7 +27,6 @@ class VideoExportManager: NSObject {
         completionHandler(nil, false)
         return
       }
-
       let animationLayer = VideoAnimationLayer(for: .export)
       animationLayer.frame = CGRect(x: 0, y: self.containerOffsetFromBottom, width: composition.videoSize.width, height: self.containerHeight)
       animationLayer.animate(withParams: animationParams)

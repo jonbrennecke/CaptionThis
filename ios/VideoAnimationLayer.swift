@@ -1,7 +1,7 @@
 import AVFoundation
 import UIKit
 
-let MAX_CHARACTERS_PER_LINE: Int = 25
+let MAX_CHARACTERS_PER_LINE: Int = 32
 
 @objc
 enum VideoAnimationOutputKind: Int {
@@ -12,9 +12,9 @@ enum VideoAnimationOutputKind: Int {
 @objc
 class VideoAnimationLayer: CALayer {
   private let containerLayer = CALayer()
-  private let containerPaddingHorizontal: CGFloat = 15
+  private let containerPaddingHorizontal: CGFloat = 25
   private let containerPaddingVertical: CGFloat = 15
-  private let textPaddingHorizontal: CGFloat = 15
+  private let textPaddingHorizontal: CGFloat = 0
   private let textPaddingVertical: CGFloat = 10
   private let extraTextSpaceBottom: CGFloat = 15
   private let fontSize: CGFloat = 17
@@ -110,9 +110,12 @@ class VideoAnimationLayer: CALayer {
 
   private func setupContainerLayer() {
     containerLayer.contentsScale = UIScreen.main.scale
-    let height = frame.height - containerPaddingVertical * 2
-    let width = frame.width - containerPaddingHorizontal * 2
-    containerLayer.frame = CGRect(x: containerPaddingHorizontal, y: containerPaddingVertical, width: width, height: height)
+    let multiplier: CGFloat = outputKind == .export ? 2.6 : 1
+    let paddingHorizontal = containerPaddingHorizontal * multiplier
+    let paddingVertical = containerPaddingVertical * multiplier
+    let height = frame.height - paddingVertical * 2
+    let width = frame.width - paddingHorizontal * 2
+    containerLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
     addSublayer(containerLayer)
   }
 
@@ -156,9 +159,13 @@ class VideoAnimationLayer: CALayer {
     let textLayer = CenteredTextLayer()
     textLayer.contentsScale = UIScreen.main.scale
     textLayer.allowsFontSubpixelQuantization = true
-    let height = (containerLayer.frame.height - textPaddingVertical * 2) / 2 + extraTextSpaceBottom
-    let width = containerLayer.frame.width - textPaddingHorizontal * 2
-    textLayer.frame = CGRect(x: textPaddingHorizontal, y: textPaddingVertical, width: width, height: height)
+    textLayer.allowsEdgeAntialiasing = true
+    let multiplier: CGFloat = outputKind == .export ? 1 : 1
+    let paddingHorizontal = textPaddingHorizontal * multiplier
+    let paddingVertical = textPaddingVertical * multiplier
+    let height = containerLayer.frame.height / 2
+    let width = containerLayer.frame.width
+    textLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
     textLayer.alignmentMode = .left
     let fontSizeMultiplier = outputKind == .export ? UIScreen.main.scale : 1
     textLayer.fontSize = fontSize * fontSizeMultiplier

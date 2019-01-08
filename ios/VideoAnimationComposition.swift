@@ -11,8 +11,12 @@ class VideoAnimationComposition {
   private let parentLayer = CALayer()
 
   public var videoSize: CGSize {
-    let originalSize = videoTrack.naturalSize
-    return CGSize(width: originalSize.height, height: originalSize.width)
+    let size = videoTrack.naturalSize
+    let orientation = VideoAnimationComposition.videoOrientation(withAssetTrack: videoTrack)
+    if orientation == .portrait || orientation == .portraitUpsideDown {
+      return CGSize(width: size.height, height: size.width)
+    }
+    return size
   }
 
   init?(withAsset asset: AVAsset) {
@@ -27,12 +31,13 @@ class VideoAnimationComposition {
       return nil
     }
     self.audioTrack = audioTrack
-    let originalSize = videoTrack.naturalSize
-    let size = CGSize(width: originalSize.height, height: originalSize.width)
-    let frame = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
+    let frame = CGRect(origin: .zero, size: videoSize)
     parentLayer.frame = frame
+    parentLayer.contentsScale = UIScreen.main.scale
     effectLayer.frame = frame
+    effectLayer.contentsScale = UIScreen.main.scale
     videoLayer.frame = frame
+    videoLayer.contentsScale = UIScreen.main.scale
     parentLayer.addSublayer(videoLayer)
     parentLayer.addSublayer(effectLayer)
   }
@@ -123,5 +128,32 @@ class VideoAnimationComposition {
     videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30) // TODO: check video fps
     videoComposition.renderSize = videoSize
     videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayers: [videoLayer, effectLayer], in: parentLayer)
+  }
+  
+  
+  private static func videoOrientation(withAssetTrack videoTrack: AVAssetTrack) -> UIInterfaceOrientation {
+    let transform = videoTrack.preferredTransform
+    let angle = degrees(fromRadians: atan2(transform.b, transform.a))
+    if compareFloats(angle, 0) {
+      return .landscapeRight
+    }
+    else if compareFloats(angle, 90) {
+      return .portrait
+    }
+    else if compareFloats(angle, 180) {
+      return .landscapeLeft
+    }
+    else if compareFloats(angle, -90) {
+      return .portraitUpsideDown
+    }
+    return .landscapeRight
+  }
+  
+  private static func degrees(fromRadians radians: CGFloat) -> CGFloat {
+    return radians * 180 / CGFloat.pi
+  }
+  
+  private static func compareFloats(_ a: CGFloat, _ b: CGFloat) -> Bool {
+    return abs(a - b) < CGFloat.ulpOfOne
   }
 }
