@@ -173,7 +173,6 @@ export default class HomeScreen extends Component<Props, State> {
   >;
 
   componentDidMount() {
-    StatusBar.setBarStyle('light-content');
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
     }
@@ -275,6 +274,7 @@ export default class HomeScreen extends Component<Props, State> {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="light-content" />
         <View style={styles.flex}>
           <ScrollView
             ref={ref => {
