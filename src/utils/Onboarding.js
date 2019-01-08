@@ -48,7 +48,7 @@ export function requireOnboardedUser<P, S>(
         this.props.arePermissionsGranted &&
         !prevProps.arePermissionsGranted
       ) {
-        await Screens.dismissOnboardingModal();
+        // await Screens.dismissOnboardingModal();
       } else if (
         !this.props.arePermissionsGranted &&
         prevProps.arePermissionsGranted

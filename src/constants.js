@@ -43,7 +43,7 @@ export const TEXT_COLORS = {
 
 export const UI_COLORS = {
   WHITE: '#FFFFFF',
-  OFF_WHITE: '#F6F6FD',
+  OFF_WHITE: '#BCCCDD',
   MEDIUM_GREY: '#353434',
   DARK_GREY: '#1A1E1D',
   BLACK: '#000',
@@ -343,7 +343,7 @@ export const SCREEN_PARAMS = {
         },
         layout: {
           orientation: APP_ORIENTATIONS,
-          backgroundColor: 'transparent',
+          backgroundColor: UI_COLORS.OFF_WHITE,
         },
         animations: {
           showModal: {

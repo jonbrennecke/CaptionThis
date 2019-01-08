@@ -1,8 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, Animated } from 'react-native';
+import { Text, Animated, StyleSheet, StatusBar } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
@@ -26,7 +27,7 @@ type Props = OwnProps & StateProps & DispatchProps;
 const styles = {
   container: (anim: Animated.Value) => ({
     flex: 1,
-    backgroundColor: UI_COLORS.DARK_GREY,
+    backgroundColor: UI_COLORS.OFF_WHITE,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 65,
@@ -39,14 +40,15 @@ const styles = {
     marginTop: 25,
   },
   heading: {
-    ...Fonts.getFontStyle('heading', { contentStyle: 'lightContent' }),
+    ...Fonts.getFontStyle('heading', { contentStyle: 'darkContent' }),
     textAlign: 'center',
   },
   paragraph: {
-    ...Fonts.getFontStyle('default', { contentStyle: 'lightContent' }),
+    ...Fonts.getFontStyle('default', { contentStyle: 'darkContent' }),
     textAlign: 'center',
     marginVertical: 15,
   },
+  absoluteFill: StyleSheet.absoluteFillObject
 };
 
 function mapStateToProps(): StateProps {
@@ -63,10 +65,15 @@ function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class OnboardingModal extends Component<Props> {
-  anim = new Animated.Value(1.0);
+  anim: Animated.Value;
 
   async requestPermissons() {
     await this.props.requestAppPermissions();
+  }
+
+  constructor(props: Props) {
+    super(props);
+    this.anim = new Animated.Value(props.arePermissionsGranted ? 1 : 0);
   }
 
   componentDidMount() {
@@ -106,6 +113,14 @@ export default class OnboardingModal extends Component<Props> {
   render() {
     return (
       <Animated.View style={styles.container(this.anim)}>
+        <StatusBar barStyle="dark-content"/>
+        <LinearGradient
+          style={styles.absoluteFill}
+          colors={[
+            UI_COLORS.WHITE,
+            UI_COLORS.OFF_WHITE,
+          ]}
+        />
         <Text style={styles.heading}>Welcome</Text>
         <Text style={styles.paragraph}>
           {`To get started, we need your permission to use your phone's camera and microphone.`}
