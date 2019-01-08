@@ -34,9 +34,9 @@ export const FONT_SIZES = [
 ];
 
 export const TEXT_COLORS = {
-  LIGHT_GREY: '#B7BAE1',
-  MEDIUM_GREY: '#817E98',
-  DARK_GREY: '#332A38',
+  LIGHT_GREY: '#AFADAD',
+  MEDIUM_GREY: '#353434',
+  DARK_GREY: '#1A1E1D',
   WHITE: '#FFF',
   OFF_WHITE: '#F6F6FD',
 };
@@ -44,7 +44,8 @@ export const TEXT_COLORS = {
 export const UI_COLORS = {
   WHITE: '#FFFFFF',
   OFF_WHITE: '#F6F6FD',
-  DARK_GREY: '#332A38',
+  MEDIUM_GREY: '#353434',
+  DARK_GREY: '#1A1E1D',
   BLACK: '#000',
   LIGHT_GREY: '#ACABB4',
   EXTRA_LIGHT_GREY: '#B7BAE1',
