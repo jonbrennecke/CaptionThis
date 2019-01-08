@@ -36,7 +36,7 @@ const styles = {
   title: Fonts.getFontStyle('title', { contentStyle: 'lightContent' }),
   activityIndicator: {
     marginTop: 15,
-  }
+  },
 };
 
 export default class EditScreenExportingOverlay extends Component<Props> {
