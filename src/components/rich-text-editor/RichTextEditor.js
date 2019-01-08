@@ -64,11 +64,12 @@ const styles = {
     left: 0,
     right: 0,
     bottom: -200,
-    backgroundColor: UI_COLORS.BLACK,
+    backgroundColor: UI_COLORS.DARK_GREY,
   },
   button: {
     marginHorizontal: 10,
     marginTop: 7,
+    backgroundColor: UI_COLORS.MEDIUM_GREY,
   },
   colorPickerWrap: (anim: Animated.Value) => ({
     ...StyleSheet.absoluteFillObject,

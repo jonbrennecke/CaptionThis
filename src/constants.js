@@ -34,9 +34,9 @@ export const FONT_SIZES = [
 ];
 
 export const TEXT_COLORS = {
-  LIGHT_GREY: '#B7BAE1',
-  MEDIUM_GREY: '#817E98',
-  DARK_GREY: '#332A38',
+  LIGHT_GREY: '#AFADAD',
+  MEDIUM_GREY: '#353434',
+  DARK_GREY: '#1A1E1D',
   WHITE: '#FFF',
   OFF_WHITE: '#F6F6FD',
 };
@@ -44,7 +44,8 @@ export const TEXT_COLORS = {
 export const UI_COLORS = {
   WHITE: '#FFFFFF',
   OFF_WHITE: '#F6F6FD',
-  DARK_GREY: '#332A38',
+  MEDIUM_GREY: '#353434',
+  DARK_GREY: '#1A1E1D',
   BLACK: '#000',
   LIGHT_GREY: '#ACABB4',
   EXTRA_LIGHT_GREY: '#B7BAE1',
@@ -159,7 +160,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   default: {
     style: {
       color: TEXT_COLORS.DARK_GREY,
-      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontFamily: FONT_FAMILIES.ROBOTO,
       fontSize: 13,
     },
     modifiers: [
@@ -174,14 +175,14 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   formInput: {
     style: {
       color: TEXT_COLORS.DARK_GREY,
-      fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
+      fontFamily: FONT_FAMILIES.ROBOTO,
       fontSize: 20,
     },
   },
   formLabel: {
     style: {
       color: TEXT_COLORS.LIGHT_GREY,
-      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontFamily: FONT_FAMILIES.ROBOTO,
       fontSize: 11,
       letterSpacing: 1.8,
       fontWeight: 'bold',
@@ -226,7 +227,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   heading: {
     style: {
       color: TEXT_COLORS.DARK_GREY,
-      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontFamily: FONT_FAMILIES.ROBOTO,
       fontSize: 19,
       fontWeight: 'bold',
     },
@@ -254,7 +255,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   callToAction: {
     style: {
       color: TEXT_COLORS.MEDIUM_GREY,
-      fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
+      fontFamily: FONT_FAMILIES.ROBOTO,
       fontSize: 23,
       textAlign: 'center',
     },
@@ -263,7 +264,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
     style: {
       color: TEXT_COLORS.OFF_WHITE,
       fontFamily: FONT_FAMILIES.STAATLICHES,
-      fontSize: 23,
+      fontSize: 21,
       fontWeight: 'bold',
       letterSpacing: 1.2,
     },

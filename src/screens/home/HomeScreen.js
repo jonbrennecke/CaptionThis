@@ -320,7 +320,7 @@ export default class HomeScreen extends Component<Props, State> {
             </SafeAreaView>
             <SafeAreaView style={styles.flex}>
               <View style={styles.mediaHeader}>
-                <Text style={styles.mediaText}>CAMERA ROLL</Text>
+                <Text style={styles.mediaText}>Camera Roll</Text>
               </View>
               <ScrollView
                 style={styles.flex}
