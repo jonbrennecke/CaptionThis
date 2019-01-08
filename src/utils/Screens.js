@@ -25,10 +25,17 @@ export const dismissLoginModal = async () => {
   await Navigation.dismissModal(SCREENS.LOGIN_MODAL);
 };
 
-export const showOnboardingModal = async () => {
+export const showOnboardingModal = async (
+  onUserDidCompleteOnboarding: () => {}
+) => {
   await Navigation.showModal({
     stack: {
-      children: [SCREEN_PARAMS[SCREENS.ONBOARDING_MODAL]],
+      children: [
+        merge(
+          { ...SCREEN_PARAMS[SCREENS.ONBOARDING_MODAL] },
+          passPropsComponentMergeParams({ onUserDidCompleteOnboarding })
+        ),
+      ],
     },
   });
 };

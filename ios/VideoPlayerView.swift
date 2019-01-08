@@ -107,7 +107,7 @@ class VideoPlayerView: UIView {
     guard let item = player.currentItem, let asset = player.currentItem?.asset else {
       return
     }
-    self.playerLooper = AVPlayerLooper(player: self.player, templateItem: item)
+    playerLooper = AVPlayerLooper(player: player, templateItem: item)
     Debug.log(message: "Video is ready to play")
     delegate?.videoPlayerDidBecomeReadyToPlayAsset(asset)
     // FIXME: needs to be optimized

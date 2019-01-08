@@ -129,30 +129,26 @@ class VideoAnimationComposition {
     videoComposition.renderSize = videoSize
     videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayers: [videoLayer, effectLayer], in: parentLayer)
   }
-  
-  
+
   private static func videoOrientation(withAssetTrack videoTrack: AVAssetTrack) -> UIInterfaceOrientation {
     let transform = videoTrack.preferredTransform
     let angle = degrees(fromRadians: atan2(transform.b, transform.a))
     if compareFloats(angle, 0) {
       return .landscapeRight
-    }
-    else if compareFloats(angle, 90) {
+    } else if compareFloats(angle, 90) {
       return .portrait
-    }
-    else if compareFloats(angle, 180) {
+    } else if compareFloats(angle, 180) {
       return .landscapeLeft
-    }
-    else if compareFloats(angle, -90) {
+    } else if compareFloats(angle, -90) {
       return .portraitUpsideDown
     }
     return .landscapeRight
   }
-  
+
   private static func degrees(fromRadians radians: CGFloat) -> CGFloat {
     return radians * 180 / CGFloat.pi
   }
-  
+
   private static func compareFloats(_ a: CGFloat, _ b: CGFloat) -> Bool {
     return abs(a - b) < CGFloat.ulpOfOne
   }

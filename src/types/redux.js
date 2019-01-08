@@ -30,7 +30,7 @@ export type AuthState = {
 };
 
 export type OnboardingState = {
-  arePermissionsGranted: ?boolean,
+  arePermissionsGranted: boolean,
   permissionsLoadingState: $Keys<LOADING_STATE>,
 };
 

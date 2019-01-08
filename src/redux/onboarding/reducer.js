@@ -10,7 +10,7 @@ import type {
 } from '../../types/redux';
 
 const initialState: OnboardingState = {
-  arePermissionsGranted: null,
+  arePermissionsGranted: false,
   permissionsLoadingState: LOADING_STATE.NOT_LOADED,
 };
 

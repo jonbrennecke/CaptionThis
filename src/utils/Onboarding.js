@@ -37,24 +37,25 @@ export function requireOnboardedUser<P, S>(
 ): Class<Component<P, S>> {
   class RequireOnboardedUser extends Component<Props> {
     async componentDidMount() {
-      if (!this.props.arePermissionsGranted) {
-        await Screens.showOnboardingModal();
-      }
+      await Screens.showOnboardingModal(() => {
+        this.userDidCompleteOnboarding();
+      });
       await this.props.loadAppPermissions();
     }
 
     async componentDidUpdate(prevProps: Props) {
       if (
-        this.props.arePermissionsGranted &&
-        !prevProps.arePermissionsGranted
-      ) {
-        await Screens.dismissOnboardingModal();
-      } else if (
         !this.props.arePermissionsGranted &&
         prevProps.arePermissionsGranted
       ) {
-        await Screens.showOnboardingModal();
+        await Screens.showOnboardingModal(() => {
+          this.userDidCompleteOnboarding();
+        });
       }
+    }
+
+    async userDidCompleteOnboarding() {
+      await Screens.dismissOnboardingModal();
     }
 
     render() {

@@ -1,21 +1,35 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, Animated } from 'react-native';
+import {
+  Text,
+  View,
+  Animated,
+  StyleSheet,
+  StatusBar,
+  Image,
+  SafeAreaView,
+  Easing,
+  ActivityIndicator,
+} from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
 import Button from '../../components/button/Button';
 import { requestAppPermissions } from '../../redux/onboarding/actionCreators';
+import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 
-import type { Dispatch } from '../../types/redux';
+import type { Dispatch, AppState } from '../../types/redux';
 
 type OwnProps = {
-  arePermissionsGranted: boolean,
+  onUserDidCompleteOnboarding: () => void,
 };
 
-type StateProps = {};
+type StateProps = {
+  arePermissionsGranted: boolean,
+};
 
 type DispatchProps = {
   requestAppPermissions: () => Promise<any>,
@@ -23,13 +37,16 @@ type DispatchProps = {
 
 type Props = OwnProps & StateProps & DispatchProps;
 
+type State = {
+  animationInIsComplete: boolean,
+};
+
 const styles = {
   container: (anim: Animated.Value) => ({
     flex: 1,
-    backgroundColor: UI_COLORS.DARK_GREY,
+    backgroundColor: UI_COLORS.OFF_WHITE,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 65,
     opacity: anim,
   }),
   nextButton: {
@@ -39,18 +56,62 @@ const styles = {
     marginTop: 25,
   },
   heading: {
-    ...Fonts.getFontStyle('heading', { contentStyle: 'lightContent' }),
+    ...Fonts.getFontStyle('title', { contentStyle: 'darkContent' }),
     textAlign: 'center',
   },
   paragraph: {
-    ...Fonts.getFontStyle('default', { contentStyle: 'lightContent' }),
+    ...Fonts.getFontStyle('default', { contentStyle: 'darkContent' }),
     textAlign: 'center',
     marginVertical: 15,
   },
+  absoluteFill: StyleSheet.absoluteFillObject,
+  appIcon: {
+    height: 125,
+    width: 125,
+  },
+  appIconWrap: (anim: Animated.Value) => ({
+    transform: [
+      {
+        translateY: anim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, -65],
+        }),
+      },
+    ],
+  }),
+  textWrap: (anim: Animated.Value) => ({
+    ...StyleSheet.absoluteFillObject,
+    paddingHorizontal: 65,
+    opacity: anim,
+    transform: [
+      {
+        translateY: anim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [200, 125],
+        }),
+      },
+    ],
+  }),
+  safeAreaContents: {},
+  safeArea: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activityIndicatorWrap: (anim: Animated.Value) => ({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: -65,
+    opacity: anim,
+  }),
+  activityIndicator: {},
 };
 
-function mapStateToProps(): StateProps {
-  return {};
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    arePermissionsGranted: arePermissionsGranted(state),
+  };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
@@ -62,11 +123,25 @@ function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
 // $FlowFixMe
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
-export default class OnboardingModal extends Component<Props> {
-  anim = new Animated.Value(1.0);
+export default class OnboardingModal extends Component<Props, State> {
+  fadeAnim: Animated.Value;
+  iconAnim: Animated.Value;
+  activityIndicatorAnim: Animated.Value;
+  textAnim: Animated.Value;
+  state = {
+    animationInIsComplete: false,
+  };
 
   async requestPermissons() {
     await this.props.requestAppPermissions();
+  }
+
+  constructor(props: Props) {
+    super(props);
+    this.fadeAnim = new Animated.Value(props.arePermissionsGranted ? 1 : 0);
+    this.iconAnim = new Animated.Value(0);
+    this.activityIndicatorAnim = new Animated.Value(0);
+    this.textAnim = new Animated.Value(0);
   }
 
   componentDidMount() {
@@ -78,7 +153,7 @@ export default class OnboardingModal extends Component<Props> {
     }
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     if (this.props.arePermissionsGranted && !prevProps.arePermissionsGranted) {
       this.animateOut();
     } else if (
@@ -87,36 +162,117 @@ export default class OnboardingModal extends Component<Props> {
     ) {
       this.animateIn();
     }
+    if (
+      this.props.arePermissionsGranted &&
+      this.state.animationInIsComplete &&
+      !prevState.animationInIsComplete
+    ) {
+      this.animateOut();
+    }
   }
 
   animateIn() {
-    Animated.timing(this.anim, {
-      toValue: 1,
-      duration: 300,
-    }).start();
+    Animated.parallel([
+      Animated.timing(this.fadeAnim, {
+        toValue: 1,
+        duration: 300,
+      }),
+      Animated.timing(this.iconAnim, {
+        toValue: 1,
+        duration: 350,
+        delay: 500,
+        easing: Easing.out(Easing.cubic),
+      }),
+      Animated.timing(this.activityIndicatorAnim, {
+        toValue: 1,
+        duration: 350,
+        delay: 700,
+        easing: Easing.out(Easing.cubic),
+      }),
+    ]).start(() => {
+      this.setState({
+        animationInIsComplete: true,
+      });
+      if (!this.props.arePermissionsGranted) {
+        this.animateInPermissionsText();
+      }
+    });
+  }
+
+  animateInPermissionsText() {
+    Animated.parallel([
+      Animated.timing(this.activityIndicatorAnim, {
+        toValue: 0,
+        duration: 350,
+        delay: 0,
+        easing: Easing.out(Easing.cubic),
+      }),
+      Animated.timing(this.textAnim, {
+        toValue: 1,
+        duration: 350,
+        delay: 350,
+        easing: Easing.out(Easing.cubic),
+      }),
+    ]).start();
   }
 
   animateOut() {
-    Animated.timing(this.anim, {
-      toValue: 0,
-      duration: 300,
-    }).start();
+    if (!this.state.animationInIsComplete) {
+      return;
+    }
+    Animated.parallel([
+      Animated.timing(this.fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        delay: 300,
+      }),
+      Animated.timing(this.iconAnim, {
+        toValue: 0,
+        duration: 300,
+        delay: 300,
+      }),
+    ]).start(() => {
+      this.props.onUserDidCompleteOnboarding();
+    });
   }
 
   render() {
     return (
-      <Animated.View style={styles.container(this.anim)}>
-        <Text style={styles.heading}>Welcome</Text>
-        <Text style={styles.paragraph}>
-          {`To get started, we need your permission to use your phone's camera and microphone.`}
-        </Text>
-        <Button
-          style={styles.nextButton}
-          text="NEXT"
-          onPress={() => {
-            this.requestPermissons();
-          }}
+      <Animated.View style={styles.container(this.fadeAnim)}>
+        <StatusBar barStyle="dark-content" />
+        <LinearGradient
+          style={styles.absoluteFill}
+          colors={[UI_COLORS.WHITE, UI_COLORS.OFF_WHITE]}
         />
+        <Animated.View style={styles.appIconWrap(this.iconAnim)}>
+          <Image source={{ uri: 'Icon' }} style={styles.appIcon} />
+          <Animated.View
+            style={styles.activityIndicatorWrap(this.activityIndicatorAnim)}
+          >
+            <ActivityIndicator
+              style={styles.activityIndicator}
+              color={UI_COLORS.DARK_GREY}
+              size="large"
+            />
+          </Animated.View>
+        </Animated.View>
+        <Animated.View style={styles.textWrap(this.textAnim)}>
+          <SafeAreaView style={styles.safeArea}>
+            <View style={styles.safeAreaContents}>
+              <Text style={styles.heading}>Welcome</Text>
+              <Text style={styles.paragraph}>
+                {`To get started, we need your permission to use your phone's camera and microphone.`}
+              </Text>
+              <Button
+                style={styles.nextButton}
+                text="NEXT"
+                onPress={() => {
+                  this.requestPermissons();
+                }}
+              />
+            </View>
+          </SafeAreaView>
+        </Animated.View>
       </Animated.View>
     );
   }

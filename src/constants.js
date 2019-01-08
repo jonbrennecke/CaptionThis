@@ -43,7 +43,7 @@ export const TEXT_COLORS = {
 
 export const UI_COLORS = {
   WHITE: '#FFFFFF',
-  OFF_WHITE: '#F6F6FD',
+  OFF_WHITE: '#BCCCDD',
   MEDIUM_GREY: '#353434',
   DARK_GREY: '#1A1E1D',
   BLACK: '#000',
@@ -268,6 +268,14 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
       fontWeight: 'bold',
       letterSpacing: 1.2,
     },
+    modifiers: [
+      {
+        name: 'darkContent',
+        style: {
+          color: TEXT_COLORS.DARK_GREY,
+        },
+      },
+    ],
   },
 };
 
@@ -343,7 +351,7 @@ export const SCREEN_PARAMS = {
         },
         layout: {
           orientation: APP_ORIENTATIONS,
-          backgroundColor: 'transparent',
+          backgroundColor: UI_COLORS.OFF_WHITE,
         },
         animations: {
           showModal: {
