@@ -19,8 +19,8 @@ platform :ios do |options|
     )
     gym(
       project: './ios/CaptionThis.xcodeproj',
-      scheme: "CaptionThis",
-      export_method: "ad-hoc"
+      scheme: 'CaptionThis',
+      export_method: 'ad-hoc'
     )
   end
 
@@ -39,7 +39,7 @@ platform :ios do |options|
   end
 
   lane :beta do |options|
-    build
+    build(release: true)
     deploy_beta
   end
 

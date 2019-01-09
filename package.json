@@ -17,7 +17,7 @@
     "bundle-install": "bundle install --path vendor/bundle",
     "fastlane": "bundle exec fastlane",
     "fastlane-build-ios": "npm run fastlane ios build",
-    "deploy-beta": "npm run fastlane ios deploy_beta"
+    "deploy-beta": "npm run fastlane ios beta"
   },
   "dependencies": {
     "bluebird": "^3.5.3",
