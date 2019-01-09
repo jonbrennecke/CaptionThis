@@ -66,8 +66,8 @@ const styles = {
   },
   absoluteFill: StyleSheet.absoluteFillObject,
   appIcon: {
-    height: 125,
-    width: 125,
+    height: 256,
+    width: 256,
   },
   appIconWrap: (anim: Animated.Value) => ({
     transform: [

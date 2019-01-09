@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina6_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,21 +15,21 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="Launch Screen Gradient" translatesAutoresizingMaskIntoConstraints="NO" id="N3e-Wl-O4f">
-                                <rect key="frame" x="-19.5" y="-114.5" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon" translatesAutoresizingMaskIntoConstraints="NO" id="P9O-nm-oMH">
-                                <rect key="frame" x="123.5" y="260.5" width="128" height="146"/>
+                                <rect key="frame" x="79" y="320" width="256" height="256"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="128" id="Uzo-9i-3wu"/>
-                                    <constraint firstAttribute="height" constant="146" id="ZG1-Qz-81j"/>
+                                    <constraint firstAttribute="width" constant="256" id="Uzo-9i-3wu"/>
+                                    <constraint firstAttribute="height" constant="256" id="ZG1-Qz-81j"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="High Street" translatesAutoresizingMaskIntoConstraints="NO" id="f3s-tv-Apz">
-                                <rect key="frame" x="126.5" y="537" width="122" height="30"/>
+                                <rect key="frame" x="146" y="732" width="122" height="30"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -51,7 +51,7 @@
     </scenes>
     <resources>
         <image name="High Street" width="122" height="30"/>
-        <image name="Icon" width="823" height="887"/>
+        <image name="Icon" width="1280" height="1280"/>
         <image name="Launch Screen Gradient" width="414" height="896"/>
     </resources>
 </document>
