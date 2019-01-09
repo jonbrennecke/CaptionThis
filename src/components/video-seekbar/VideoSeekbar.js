@@ -37,7 +37,7 @@ const styles = {
     top: -5,
     height: 55,
     width: 7,
-    backgroundColor: UI_COLORS.OFF_WHITE,
+    backgroundColor: UI_COLORS.WHITE,
     borderRadius: 3,
     shadowOpacity: 0.5,
     shadowOffset: {
