@@ -18,11 +18,13 @@ import type {
   ReceiveBackgroundColorPayload,
   ReceiveTextColorPayload,
   ReceiveVideoAssetPayload,
+  ReceiveFontSizePayload,
 } from '../../types/redux';
 
 const DEFAULT_FONT_FAMILY = FONT_FAMILIES.RUBIK;
 const DEFAULT_BACKGROUND_COLOR = UI_COLORS.WHITE;
 const DEFAULT_TEXT_COLOR = TEXT_COLORS.DARK_GREY;
+const DEFAULT_FONT_SIZE = 16;
 
 const initialState: MediaState = {
   cameraRecordingState: {
@@ -34,6 +36,7 @@ const initialState: MediaState = {
   mediaLoadingState: LOADING_STATE.NOT_LOADED,
   videoExportState: LOADING_STATE.NOT_LOADED,
   fontFamily: DEFAULT_FONT_FAMILY,
+  fontSize: DEFAULT_FONT_SIZE,
   backgroundColor: Color.hexToRgbaObject(DEFAULT_BACKGROUND_COLOR),
   textColor: Color.hexToRgbaObject(DEFAULT_TEXT_COLOR),
 };
@@ -52,6 +55,7 @@ const actions = {
   [ACTION_TYPES.WILL_EXPORT_VIDEO]: willExportVideo,
   [ACTION_TYPES.DID_SUCCESSFULLY_EXPORT_VIDEO]: didSuccessfullyExportVideo,
   [ACTION_TYPES.DID_NOT_SUCCESSFULLY_EXPORT_VIDEO]: didNotSuccessfullyExportVideo,
+  [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_FONT_SIZE]: didReceiveFontSize,
 };
 
 function didStartLoadingVideoAssets(state: MediaState): MediaState {
@@ -190,6 +194,19 @@ function didNotSuccessfullyExportVideo(state: MediaState) {
   return {
     ...state,
     videoExportState: LOADING_STATE.WAS_LOADED_UNSUCCESSFULLY,
+  };
+}
+
+function didReceiveFontSize(
+  state: MediaState,
+  { payload }: Action<ReceiveFontSizePayload>
+): MediaState {
+  if (!payload) {
+    return state;
+  }
+  return {
+    ...state,
+    fontSize: payload.fontSize,
   };
 }
 

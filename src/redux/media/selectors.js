@@ -51,3 +51,7 @@ export function getCurrentVideo(state: AppState): ?VideoAssetIdentifier {
 export function isExportingVideo(state: AppState): boolean {
   return state.media.videoExportState === LOADING_STATE.IS_LOADING;
 }
+
+export function getFontSize(state: AppState): number {
+  return state.media.fontSize;
+}
