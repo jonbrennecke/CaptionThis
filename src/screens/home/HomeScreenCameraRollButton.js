@@ -41,7 +41,7 @@ const styles = {
     right: 0,
     borderRadius: 5,
     borderWidth: 2.5,
-    borderColor: UI_COLORS.OFF_WHITE,
+    borderColor: UI_COLORS.WHITE,
   },
   absoluteFill: {
     position: 'absolute',
