@@ -138,7 +138,7 @@ export default class OnboardingModal extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.fadeAnim = new Animated.Value(props.arePermissionsGranted ? 1 : 0);
+    this.fadeAnim = new Animated.Value(1);
     this.iconAnim = new Animated.Value(0);
     this.activityIndicatorAnim = new Animated.Value(0);
     this.textAnim = new Animated.Value(0);
