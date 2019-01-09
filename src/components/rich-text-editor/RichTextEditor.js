@@ -194,6 +194,7 @@ export default class RichTextEditor extends Component<Props, State> {
           textColor={this.state.textColor}
           backgroundColor={this.state.backgroundColor}
           fontFamily={this.state.fontFamily}
+          fontSize={this.state.fontSize}
           speechTranscription={this.props.speechTranscription}
         />
         <View style={styles.mainContents}>
