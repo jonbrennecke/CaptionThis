@@ -45,6 +45,7 @@
 		B7D7828A6BE74C1081CB20A5 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 755A11963AF5425BBB7CCC66 /* libRNSVG-tvOS.a */; };
 		FC1FE6C621E57C96005F657A /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1FE6C421E57C96005F657A /* Fabric.framework */; };
 		FC1FE6C721E57C96005F657A /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1FE6C521E57C96005F657A /* Crashlytics.framework */; };
+		FC1FE6ED21E5B8DE005F657A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */; };
 		FC254DFF21CDB03800A9C901 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC983DD521CDAF6800063476 /* libReactNativeNavigation.a */; };
 		FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */; };
 		FC6EA7D721CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */; };
@@ -490,6 +491,7 @@
 		DF9290E58A3E4E2F93660B3C /* libRNSafeArea.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSafeArea.a; sourceTree = "<group>"; };
 		FC1FE6C421E57C96005F657A /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FC1FE6C521E57C96005F657A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PassionOne-Regular.ttf"; path = "../assets/fonts/PassionOne-Regular.ttf"; sourceTree = "<group>"; };
 		FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Bold.ttf"; path = "../assets/fonts/PT_Sans-Web-Bold.ttf"; sourceTree = "<group>"; };
 		FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Regular.ttf"; path = "../assets/fonts/PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
@@ -717,6 +719,7 @@
 				FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */,
 				FCA3971D21DCB3B500347CAB /* VideoAnimationParams.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
+				FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */,
 				FC880D9421D4A48E00856037 /* CameraPreviewView */,
 				FC880D9321D49EA900856037 /* CameraBridgeModule */,
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
@@ -1639,6 +1642,7 @@
 				FC7A0F5D21D87E3B00751DBE /* SourceSerifPro-Regular.ttf in Resources */,
 				FC7A0F6021D87E3B00751DBE /* SourceSansPro-Regular.ttf in Resources */,
 				FC7A0F5C21D87E3B00751DBE /* CreteRound-Regular.ttf in Resources */,
+				FC1FE6ED21E5B8DE005F657A /* LaunchScreen.storyboard in Resources */,
 				FC6EA7D821CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf in Resources */,
 				FC93766621E3172600FD2700 /* Roboto-Regular.ttf in Resources */,
 				FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */,
@@ -1888,7 +1892,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -1928,7 +1931,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6DUV3UU8M8;

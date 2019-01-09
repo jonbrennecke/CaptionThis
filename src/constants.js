@@ -267,7 +267,7 @@ export const SCREENS = {
   HOME_SCREEN: `${APP_BUNDLE_ID}.HomeScreen`,
   EDIT_SCREEN: `${APP_BUNDLE_ID}.EditScreen`,
   LOGIN_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
-  ONBOARDING_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
+  ONBOARDING_MODAL: `${APP_BUNDLE_ID}.OnboardingModal`,
   FONT_MODAL: `${APP_BUNDLE_ID}.FontModal`,
   COLOR_MODAL: `${APP_BUNDLE_ID}.ColorModal`,
   EDIT_TRANSCRIPTION_MODAL: `${APP_BUNDLE_ID}.EditTranscriptionModal`,
