@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 import isFinite from 'lodash/isFinite';
 import clamp from 'lodash/clamp';
@@ -29,13 +29,12 @@ type State = {
 const styles = {
   container: {
     backgroundColor: UI_COLORS.DARK_GREY,
-    height: 45,
     borderRadius: 10,
   },
-  seekPositionHandle: (offset: number) => ({
+  handle: (offset: number) => ({
     position: 'absolute',
-    top: -5,
-    height: 55,
+    top: -3,
+    bottom: -3,
     width: 7,
     backgroundColor: UI_COLORS.WHITE,
     borderRadius: 3,
@@ -48,10 +47,9 @@ const styles = {
     shadowRadius: 5,
     transform: [{ translateX: offset }],
   }),
-  dragContainer: {
-    flex: 1,
-  },
+  dragContainer: StyleSheet.absoluteFillObject,
   preview: {
+    ...StyleSheet.absoluteFillObject,
     borderRadius: 10,
   },
 };
@@ -113,7 +111,7 @@ export default class VideoSeekbar extends Component<Props, State> {
           onDragMove={this.dragDidMove}
           renderChildren={props => (
             <View
-              style={styles.seekPositionHandle(
+              style={styles.handle(
                 calculateHandleOffset({
                   viewWidth: this.state.viewWidth,
                   playbackTime: this.props.playbackTime,

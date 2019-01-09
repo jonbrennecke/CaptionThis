@@ -145,7 +145,7 @@ class SpeechManager: NSObject {
 
 extension SpeechManager: SFSpeechRecognizerDelegate {
   func speechRecognizer(_: SFSpeechRecognizer, availabilityDidChange available: Bool) {
-    Debug.log(format: "Speech recognizer availability changed. Available == %@", available)
+    Debug.log(format: "Speech recognizer availability changed. Available == %@", available ? "true" : "false")
     if available {
       delegate?.speechManagerDidBecomeAvailable()
     } else {
