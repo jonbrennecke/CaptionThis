@@ -5,32 +5,7 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: Switch to ios build lane" time="0.010474">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="1: match" time="8.085088">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="2: gym" time="314.402941">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="3: Switch to ios deploy_beta lane" time="0.001315">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="4: changelog_from_git_commits" time="0.058604">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="5: crashlytics" time="86.645296">
+      <testcase classname="fastlane.lanes" name="0: appicon" time="2.034738">
         
       </testcase>
     
