@@ -111,7 +111,7 @@ class VideoAnimationLayer: CALayer {
 
   private func setupContainerLayer() {
     containerLayer.contentsScale = UIScreen.main.scale
-    let multiplier: CGFloat = outputKind == .export ? 2.6 : 1
+    let multiplier: CGFloat = outputKind == .export ? 3 : 1
     let paddingHorizontal = containerPaddingHorizontal * multiplier
     let paddingVertical = containerPaddingVertical * multiplier
     let height = frame.height - paddingVertical * 2
