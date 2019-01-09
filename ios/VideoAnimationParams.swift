@@ -7,6 +7,8 @@ class VideoAnimationParams: NSObject {
   @objc
   var fontFamily: String?
   @objc
+  var fontSize: NSNumber?
+  @objc
   var backgroundColor: UIColor?
   @objc
   var textColor: UIColor?

@@ -44,6 +44,7 @@ export type MediaState = {
     videoAssetIdentifier: ?VideoAssetIdentifier,
   },
   fontFamily: string,
+  fontSize: number,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
 };
@@ -57,7 +58,8 @@ export type Payload =
   | ReceiveSpeechTranscriptionPayload
   | ReceiveFontFamilyPayload
   | ReceiveBackgroundColorPayload
-  | ReceiveTextColorPayload;
+  | ReceiveTextColorPayload
+  | ReceiveFontSizePayload;
 
 export type ReceiveLoginPayload = {|
   token: string,
@@ -92,4 +94,8 @@ export type ReceiveBackgroundColorPayload = {|
 
 export type ReceiveTextColorPayload = {|
   textColor: ColorRGBA,
+|};
+
+export type ReceiveFontSizePayload = {|
+  fontSize: number,
 |};

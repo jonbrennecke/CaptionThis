@@ -2,6 +2,7 @@ import AVFoundation
 import UIKit
 
 let MAX_CHARACTERS_PER_LINE: Int = 32
+let DEFAULT_FONT_SIZE: Float = 16
 
 @objc
 enum VideoAnimationOutputKind: Int {
@@ -110,7 +111,7 @@ class VideoAnimationLayer: CALayer {
 
   private func setupContainerLayer() {
     containerLayer.contentsScale = UIScreen.main.scale
-    let multiplier: CGFloat = outputKind == .export ? 2.6 : 1
+    let multiplier: CGFloat = outputKind == .export ? 3 : 1
     let paddingHorizontal = containerPaddingHorizontal * multiplier
     let paddingVertical = containerPaddingVertical * multiplier
     let height = frame.height - paddingVertical * 2
@@ -168,6 +169,7 @@ class VideoAnimationLayer: CALayer {
     textLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
     textLayer.alignmentMode = .left
     let fontSizeMultiplier = outputKind == .export ? UIScreen.main.scale : 1
+    let fontSize = CGFloat(params.fontSize?.floatValue ?? DEFAULT_FONT_SIZE)
     textLayer.fontSize = fontSize * fontSizeMultiplier
     textLayer.truncationMode = .start
     textLayer.font = params.fontFamily as CFTypeRef

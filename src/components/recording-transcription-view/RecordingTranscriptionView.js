@@ -11,6 +11,7 @@ type Props = {
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
   fontFamily: string,
+  fontSize: number,
   speechTranscription: ?SpeechTranscription,
   onPress?: () => void,
 };
@@ -31,6 +32,7 @@ export default function RecordingTranscriptionView({
   textColor,
   backgroundColor,
   fontFamily,
+  fontSize,
   speechTranscription,
   onPress,
 }: Props) {
@@ -51,6 +53,7 @@ export default function RecordingTranscriptionView({
         style={styles.flex}
         textSegments={textSegments}
         fontFamily={fontFamily}
+        fontSize={fontSize}
         textColor={[
           textColor.red / 255,
           textColor.green / 255,

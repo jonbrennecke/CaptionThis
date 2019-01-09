@@ -21,6 +21,7 @@ RCT_EXPORT_METHOD(exportVideo
       [params objectForKey:@"backgroundColor"];
   UIColor *backgroundColor = [RCTConvert UIColor:backgroundColorJson];
   NSString *fontFamily = [params objectForKey:@"fontFamily"];
+  NSNumber *fontSize = [params objectForKey:@"fontSize"];
   NSMutableArray<TextSegmentParams *> *textSegments =
       [[NSMutableArray alloc] initWithCapacity:textSegmentsJson.count];
   for (NSDictionary *json in textSegmentsJson) {
@@ -36,6 +37,7 @@ RCT_EXPORT_METHOD(exportVideo
   VideoAnimationParams *animationParams = [[VideoAnimationParams alloc] init];
   animationParams.textSegments = textSegments;
   animationParams.fontFamily = fontFamily;
+  animationParams.fontSize = fontSize;
   animationParams.backgroundColor = backgroundColor;
   animationParams.textColor = textColor;
   [AppDelegate.sharedVideoExportManager

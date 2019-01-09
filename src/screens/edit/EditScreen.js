@@ -23,12 +23,14 @@ import {
   receiveUserSelectedFontFamily,
   receiveUserSelectedTextColor,
   receiveUserSelectedBackgroundColor,
+  receiveUserSelectedFontSize,
 } from '../../redux/media/actionCreators';
 import {
   getBackgroundColor,
   getTextColor,
   getSpeechTranscriptions,
   getFontFamily,
+  getFontSize,
   isExportingVideo,
 } from '../../redux/media/selectors';
 
@@ -58,6 +60,7 @@ type StateProps = {
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
   isExportingVideo: boolean,
+  fontSize: number,
 };
 
 type DispatchProps = {
@@ -71,6 +74,7 @@ type DispatchProps = {
   receiveUserSelectedFontFamily: (fontFamily: string) => void,
   receiveUserSelectedTextColor: (color: ColorRGBA) => void,
   receiveUserSelectedBackgroundColor: (color: ColorRGBA) => void,
+  receiveUserSelectedFontSize: (fontSize: number) => void,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -141,6 +145,7 @@ function mapStateToProps(state: AppState): StateProps {
     backgroundColor: getBackgroundColor(state),
     textColor: getTextColor(state),
     isExportingVideo: isExportingVideo(state),
+    fontSize: getFontSize(state),
   };
 }
 
@@ -162,6 +167,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
       dispatch(receiveUserSelectedTextColor(color)),
     receiveUserSelectedBackgroundColor: (color: ColorRGBA) =>
       dispatch(receiveUserSelectedBackgroundColor(color)),
+    receiveUserSelectedFontSize: (fontSize: number) =>
+      dispatch(receiveUserSelectedFontSize(fontSize)),
   };
 }
 
@@ -248,7 +255,7 @@ export default class EditScreen extends Component<Props, State> {
     textColor: ColorRGBA,
     backgroundColor: ColorRGBA,
   }) {
-    // TODO save fontSize
+    this.props.receiveUserSelectedFontSize(params.fontSize);
     this.props.receiveUserSelectedFontFamily(params.fontFamily);
     this.props.receiveUserSelectedTextColor(params.textColor);
     this.props.receiveUserSelectedBackgroundColor(params.backgroundColor);
@@ -272,6 +279,7 @@ export default class EditScreen extends Component<Props, State> {
       textColor: this.props.textColor,
       backgroundColor: this.props.backgroundColor,
       fontFamily: this.props.fontFamily,
+      fontSize: this.props.fontSize,
     });
   }
 
@@ -337,6 +345,7 @@ export default class EditScreen extends Component<Props, State> {
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}
                 fontFamily={this.props.fontFamily}
+                fontSize={this.props.fontSize}
                 speechTranscription={this.getSpeechTranscription()}
                 onPress={() => {
                   this.showEditTranscriptionModal();
@@ -365,6 +374,7 @@ export default class EditScreen extends Component<Props, State> {
           textColor={this.props.textColor}
           backgroundColor={this.props.backgroundColor}
           fontFamily={this.props.fontFamily}
+          fontSize={this.props.fontSize}
           speechTranscription={this.getSpeechTranscription()}
           onRequestSave={(...etc) => {
             this.richTextEditorDidRequestSave(...etc);

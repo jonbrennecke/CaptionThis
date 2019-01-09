@@ -21,6 +21,7 @@ type Props = {
   style?: ?Style,
   isVisible: boolean,
   fontFamily: string,
+  fontSize: number,
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
   speechTranscription: ?SpeechTranscription,
@@ -153,7 +154,7 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
                 style={styles.inside}
                 isVisible={this.props.isVisible}
                 speechTranscription={this.props.speechTranscription}
-                fontSize={16}
+                fontSize={this.props.fontSize}
                 fontFamily={this.props.fontFamily}
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}

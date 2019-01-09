@@ -14,6 +14,7 @@ import type {
   ReceiveTextColorPayload,
   ReceiveBackgroundColorPayload,
   ReceiveFontFamilyPayload,
+  ReceiveFontSizePayload,
 } from '../../types/redux';
 import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { ExportParams } from '../../utils/VideoExportManager';
@@ -172,6 +173,15 @@ export const receiveSpeechTranscriptionFailure = (
     dispatch({
       type: ACTION_TYPES.DID_UNSUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION,
       payload: { videoAssetIdentifier },
+    });
+  };
+};
+
+export const receiveUserSelectedFontSize = (fontSize: number) => {
+  return (dispatch: Dispatch<ReceiveFontSizePayload>) => {
+    dispatch({
+      type: ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_FONT_SIZE,
+      payload: { fontSize },
     });
   };
 };

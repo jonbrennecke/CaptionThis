@@ -15,23 +15,7 @@ export const LOADING_STATE = {
   WAS_LOADED_UNSUCCESSFULLY: 'WAS_LOADED_UNSUCCESSFULLY',
 };
 
-export const FONT_SIZES = [
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  22,
-  23,
-  24,
-];
+export const FONT_SIZES = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
 export const TEXT_COLORS = {
   LIGHT_GREY: '#AFADAD',

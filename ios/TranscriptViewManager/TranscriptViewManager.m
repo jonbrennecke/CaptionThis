@@ -71,6 +71,12 @@ RCT_CUSTOM_VIEW_PROPERTY(fontFamily, NSString *, UIView) {
   [self updateAnimationWithView:view];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(fontSize, NSNumber *, UIView) {
+  NSNumber *fontSize = [RCTConvert NSNumber:json];
+  animationParams.fontSize = fontSize;
+  [self updateAnimationWithView:view];
+}
+
 - (UIView *)view {
   UIView *view = [[UIView alloc] init];
   return view;
