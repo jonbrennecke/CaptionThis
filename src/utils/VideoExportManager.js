@@ -15,6 +15,7 @@ const NativeVideoExportModule = Promise.promisifyAll(_NativeVideoExportModule);
 
 export type ExportParams = {
   video: VideoAssetIdentifier,
+  fontSize: number,
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
   textSegments: TextOverlayParams[],

@@ -279,6 +279,7 @@ export default class EditScreen extends Component<Props, State> {
       textColor: this.props.textColor,
       backgroundColor: this.props.backgroundColor,
       fontFamily: this.props.fontFamily,
+      fontSize: this.props.fontSize,
     });
   }
 
