@@ -27,10 +27,6 @@ export const FONT_SIZES = [
   18,
   19,
   20,
-  21,
-  22,
-  23,
-  24,
 ];
 
 export const TEXT_COLORS = {
