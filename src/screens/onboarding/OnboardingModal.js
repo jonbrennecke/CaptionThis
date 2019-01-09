@@ -41,6 +41,8 @@ type State = {
   animationInIsComplete: boolean,
 };
 
+const INITIAL_DELAY = 500;
+
 const styles = {
   container: (anim: Animated.Value) => ({
     flex: 1,
@@ -176,17 +178,18 @@ export default class OnboardingModal extends Component<Props, State> {
       Animated.timing(this.fadeAnim, {
         toValue: 1,
         duration: 300,
+        delay: INITIAL_DELAY,
       }),
       Animated.timing(this.iconAnim, {
         toValue: 1,
         duration: 350,
-        delay: 500,
+        delay: (INITIAL_DELAY + 500),
         easing: Easing.out(Easing.cubic),
       }),
       Animated.timing(this.activityIndicatorAnim, {
         toValue: 1,
         duration: 350,
-        delay: 700,
+        delay: (INITIAL_DELAY + 700),
         easing: Easing.out(Easing.cubic),
       }),
     ]).start(() => {
