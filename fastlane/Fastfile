@@ -13,14 +13,14 @@ platform :ios do |options|
     app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
     team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
     match(
-      type: 'adhoc',
+      type: options[:export_method] == 'app-store' ? 'appstore' : 'adhoc',
       team_id: team_id,
       app_identifier: app_identifier
     )
     gym(
       project: './ios/CaptionThis.xcodeproj',
       scheme: 'CaptionThis',
-      export_method: 'ad-hoc'
+      export_method: options[:export_method] || 'ad-hoc'
     )
   end
 
@@ -41,8 +41,7 @@ platform :ios do |options|
   lane :deploy_appstore do |options|
     app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
     itc_team_id = CredentialsManager::AppfileConfig.try_fetch_value(:itc_team_id)
-    match(type: 'appstore', app_identifier: app_identifier, force: true)
-    build(release: true)
+    build(release: true, export_method: 'app-store')
     deliver(
       force: true,
       app_identifier: app_identifier,
