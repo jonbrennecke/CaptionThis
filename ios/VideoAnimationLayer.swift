@@ -37,17 +37,37 @@ class VideoAnimationLayer: CALayer {
   }
 
   @objc
-  public func update(playbackTime _: Double) {
-//    containerLayer.beginTime = AVCoreAnimationBeginTimeAtZero + (params.playbackTime?.doubleValue ?? 0)
+  public func restart() {
+    beginTime = convertTime(CACurrentMediaTime(), from: nil)
+  }
+
+  @objc
+  public func seekTo(time _: Double) {
+//    timeOffset = convertTime(CACurrentMediaTime(), from: nil)
+//    beginTime = time
+  }
+
+  @objc
+  public func pause() {
+    speed = 0.0
+    timeOffset = convertTime(CACurrentMediaTime(), from: nil)
+  }
+
+  @objc
+  public func resume() {
+    let pausedTimeOffset = timeOffset
+    speed = 1.0
+    timeOffset = 0.0
+    let timeSincePaused = convertTime(CACurrentMediaTime(), from: nil) - pausedTimeOffset
+    beginTime = timeSincePaused
   }
 
   @objc
   public func animate(withParams params: VideoAnimationParams) {
     setupContainerLayer()
-    containerLayer.beginTime = AVCoreAnimationBeginTimeAtZero + (params.playbackTime?.doubleValue ?? 0)
-    containerLayer.duration = params.duration?.doubleValue ?? 0
-    containerLayer.fillMode = .forwards
-    containerLayer.repeatCount = .greatestFiniteMagnitude
+    duration = params.duration?.doubleValue ?? 0
+    fillMode = .forwards
+    repeatCount = .greatestFiniteMagnitude
     backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
     var textLayers = [CATextLayer]()
     params.textSegments?.forEach { segment in

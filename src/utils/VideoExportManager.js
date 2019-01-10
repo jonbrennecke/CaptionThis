@@ -20,6 +20,7 @@ export type ExportParams = {
   backgroundColor: ColorRGBA,
   textSegments: TextOverlayParams[],
   fontFamily: string,
+  duration: number,
 };
 
 export const exportVideo = async ({

@@ -1,7 +1,9 @@
 
 #import "TranscriptViewManager.h"
 #import "CaptionThis-Swift.h"
+#import <React/RCTBridge.h>
 #import <React/RCTConvert.h>
+#import <React/RCTUIManager.h>
 
 @implementation TranscriptViewManager
 
@@ -13,7 +15,6 @@
     animationLayer.frame =
         CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.height);
     [animationLayer animateWithParams:animationParams];
-    animationLayer.beginTime = CACurrentMediaTime();
     view.layer.sublayers = nil;
     [view.layer insertSublayer:animationLayer atIndex:0];
   });
@@ -22,6 +23,26 @@
 #pragma MARK - React Native Module
 
 RCT_EXPORT_MODULE()
+
+RCT_EXPORT_METHOD(restart : (nonnull NSNumber *)reactTag) {
+  [self.bridge.uiManager
+      addUIBlock:^(RCTUIManager *uiManager,
+                   NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+        UIView *view = viewRegistry[reactTag];
+        if (!view) {
+          RCTLogError(@"Cannot find UIView with tag #%@", reactTag);
+          return;
+        }
+        VideoAnimationLayer *animationLayer = view.layer.sublayers[0];
+        if (!animationLayer ||
+            ![animationLayer isKindOfClass:[VideoAnimationLayer class]]) {
+          RCTLogError(@"Cannot find VideoAnimationLayer in view with tag #%@",
+                      reactTag);
+          return;
+        }
+        [animationLayer restart];
+      }];
+}
 
 RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, UIView) {
   VideoAnimationParams *params = [[VideoAnimationParams alloc] init];
@@ -62,12 +83,6 @@ RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, UIView) {
   if (backgroundColorJson) {
     UIColor *backgroundColor = [RCTConvert UIColor:backgroundColorJson];
     params.backgroundColor = backgroundColor;
-  }
-
-  id playbackTimeJson = [json objectForKey:@"playbackTime"];
-  if (playbackTimeJson) {
-    NSNumber *playbackTime = [RCTConvert NSNumber:playbackTimeJson];
-    params.playbackTime = playbackTime;
   }
 
   [self updateAnimationWithView:view withParams:params];

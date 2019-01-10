@@ -702,6 +702,7 @@
 			isa = PBXGroup;
 			children = (
 				FC6EA7D921CEA457007C3B3E /* fonts */,
+				FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -719,7 +720,6 @@
 				FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */,
 				FCA3971D21DCB3B500347CAB /* VideoAnimationParams.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
-				FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */,
 				FC880D9421D4A48E00856037 /* CameraPreviewView */,
 				FC880D9321D49EA900856037 /* CameraBridgeModule */,
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,

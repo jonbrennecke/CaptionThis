@@ -4,6 +4,7 @@ import { View, SafeAreaView, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import clamp from 'lodash/clamp';
 
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
@@ -174,6 +175,7 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class EditScreen extends Component<Props, State> {
+  transcriptView: ?RecordingTranscriptionView;
   state: State = {
     startTimeSeconds: 0,
     playbackTimeSeconds: 0,
@@ -235,9 +237,10 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   videoPlayerDidRestart() {
-    this.setState({
-      transcriptionStartTime: 0,
-    });
+    if (!this.transcriptView) {
+      return;
+    }
+    this.transcriptView.restart();
   }
 
   speechManagerDidReceiveSpeechTranscription(
@@ -257,17 +260,18 @@ export default class EditScreen extends Component<Props, State> {
 
   speechManagerDidReceiveFinalSpeechTranscription() {
     this.setState({
-      // playbackTimeSeconds: 0,
-      // startTimeSeconds: 0,
-      transcriptionStartTime: this.state.playbackTimeSeconds,
+      playbackTimeSeconds: 0,
+      startTimeSeconds: 0,
+      transcriptionStartTime: 0,
     });
   }
 
   seekBarDidSeekToTime(timeSeconds: number) {
+    const seekTime = clamp(timeSeconds, 0, this.state.durationSeconds);
     this.setState({
-      playbackTimeSeconds: timeSeconds,
-      startTimeSeconds: timeSeconds,
-      transcriptionStartTime: timeSeconds,
+      playbackTimeSeconds: seekTime,
+      // startTimeSeconds: seekTime,
+      // transcriptionStartTime: seekTime,
     });
   }
 
@@ -302,6 +306,7 @@ export default class EditScreen extends Component<Props, State> {
       backgroundColor: this.props.backgroundColor,
       fontFamily: this.props.fontFamily,
       fontSize: this.props.fontSize,
+      duration: this.state.durationSeconds,
     });
   }
 
@@ -364,9 +369,11 @@ export default class EditScreen extends Component<Props, State> {
             />
             {hasFinalTranscription && (
               <RecordingTranscriptionView
+                ref={ref => {
+                  this.transcriptView = ref;
+                }}
                 style={styles.transcription}
                 duration={this.state.durationSeconds}
-                playbackTime={this.state.transcriptionStartTime}
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}
                 fontFamily={this.props.fontFamily}
