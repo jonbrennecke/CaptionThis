@@ -31,7 +31,10 @@
   [self sendEventWithName:@"speechManagerDidBecomeUnavailable" body:@{}];
 }
 
-- (void)speechManagerDidReceiveSpeechTranscriptionWithIsFinal:(BOOL)isFinal transcription:(SFTranscription *)transcription {
+- (void)speechManagerDidReceiveSpeechTranscriptionWithIsFinal:(BOOL)isFinal
+                                                transcription:
+                                                    (SFTranscription *)
+                                                        transcription {
   if (!hasListeners) {
     return;
   }

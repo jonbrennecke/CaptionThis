@@ -157,22 +157,22 @@ extension SpeechManager: SFSpeechRecognitionTaskDelegate {
   func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
     Debug.log(format: "Speech recognizer finished task. Success == %@", success ? "true" : "false")
   }
-  
-  func speechRecognitionTaskWasCancelled(_ task: SFSpeechRecognitionTask) {
+
+  func speechRecognitionTaskWasCancelled(_: SFSpeechRecognitionTask) {
     Debug.log(message: "Speech recognition task was cancelled.")
   }
-  
-  func speechRecognitionTaskFinishedReadingAudio(_ task: SFSpeechRecognitionTask) {
+
+  func speechRecognitionTaskFinishedReadingAudio(_: SFSpeechRecognitionTask) {
 //    TODO: check task.state
     Debug.log(message: "Speech recognition finished accepting audio input.")
   }
-  
-  func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didFinishRecognition result: SFSpeechRecognitionResult) {
+
+  func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishRecognition result: SFSpeechRecognitionResult) {
     let transcription = result.bestTranscription
     delegate?.speechManagerDidReceiveSpeechTranscription(isFinal: true, transcription: transcription)
   }
-  
-  func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didHypothesizeTranscription transcription: SFTranscription) {
+
+  func speechRecognitionTask(_: SFSpeechRecognitionTask, didHypothesizeTranscription transcription: SFTranscription) {
     delegate?.speechManagerDidReceiveSpeechTranscription(isFinal: false, transcription: transcription)
   }
 }
