@@ -26,6 +26,7 @@ type Props = {
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
   speechTranscription: ?SpeechTranscription,
+  duration: number,
   onRequestLockScroll?: () => void,
   onRequestUnlockScroll?: () => void,
   onRequestSave: ({
@@ -192,6 +193,7 @@ export default class RichTextEditor extends Component<Props, State> {
         <RecordingTranscriptionView
           style={styles.transcription}
           playbackTime={0}
+          duration={this.props.duration}
           textColor={this.state.textColor}
           backgroundColor={this.state.backgroundColor}
           fontFamily={this.state.fontFamily}

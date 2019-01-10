@@ -14,6 +14,8 @@ class VideoAnimationParams: NSObject {
   var textColor: UIColor?
   @objc
   var playbackTime: NSNumber?
+  @objc
+  var duration: NSNumber?
 }
 
 @objc

@@ -5,23 +5,14 @@
 
 @implementation TranscriptViewManager
 
-@synthesize animationParams;
-
-- (instancetype)init {
-  self = [super init];
-  if (self) {
-    animationParams = [[VideoAnimationParams alloc] init];
-  }
-  return self;
-}
-
-- (void)updateAnimationWithView:(UIView *)view {
+- (void)updateAnimationWithView:(UIView *)view
+                     withParams:(VideoAnimationParams *)animationParams {
   dispatch_async(dispatch_get_main_queue(), ^{
     VideoAnimationLayer *animationLayer =
         [[VideoAnimationLayer alloc] initFor:VideoAnimationOutputKindView];
     animationLayer.frame =
         CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.height);
-    [animationLayer animateWithParams:self->animationParams];
+    [animationLayer animateWithParams:animationParams];
     animationLayer.beginTime = CACurrentMediaTime();
     view.layer.sublayers = nil;
     [view.layer insertSublayer:animationLayer atIndex:0];
@@ -30,13 +21,63 @@
 
 #pragma MARK - React Native Module
 
-+ (BOOL)requiresMainQueueSetup {
-  return NO;
-}
-
 RCT_EXPORT_MODULE()
 
-RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSArray *, UIView) {
+RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, UIView) {
+  VideoAnimationParams *params = [[VideoAnimationParams alloc] init];
+  id textSegmentsJson = [json objectForKey:@"textSegments"];
+  if (textSegmentsJson) {
+    NSArray<TextSegmentParams *> *textSegments =
+        [self convertTextSegments:textSegmentsJson];
+    if (textSegments) {
+      params.textSegments = textSegments;
+    }
+  }
+
+  id fontFamilyJson = [json objectForKey:@"fontFamily"];
+  if (fontFamilyJson) {
+    NSString *fontFamily = [RCTConvert NSString:fontFamilyJson];
+    params.fontFamily = fontFamily;
+  }
+
+  id fontSizeJson = [json objectForKey:@"fontSize"];
+  if (fontSizeJson) {
+    NSNumber *fontSize = [RCTConvert NSNumber:fontSizeJson];
+    params.fontSize = fontSize;
+  }
+
+  id durationJson = [json objectForKey:@"duration"];
+  if (durationJson) {
+    NSNumber *duration = [RCTConvert NSNumber:durationJson];
+    params.duration = duration;
+  }
+
+  id textColorJson = [json objectForKey:@"textColor"];
+  if (textColorJson) {
+    UIColor *textColor = [RCTConvert UIColor:textColorJson];
+    params.textColor = textColor;
+  }
+
+  id backgroundColorJson = [json objectForKey:@"backgroundColor"];
+  if (backgroundColorJson) {
+    UIColor *backgroundColor = [RCTConvert UIColor:backgroundColorJson];
+    params.backgroundColor = backgroundColor;
+  }
+
+  id playbackTimeJson = [json objectForKey:@"playbackTime"];
+  if (playbackTimeJson) {
+    NSNumber *playbackTime = [RCTConvert NSNumber:playbackTimeJson];
+    params.playbackTime = playbackTime;
+  }
+
+  [self updateAnimationWithView:view withParams:params];
+}
+
+// TODO: extend RCTConvert
+- (NSArray<TextSegmentParams *> *)convertTextSegments:(id)json {
+  if (![json isKindOfClass:[NSArray class]]) {
+    return nil;
+  }
   NSMutableArray<TextSegmentParams *> *textSegments =
       [[NSMutableArray alloc] init];
   for (NSDictionary *segment in json) {
@@ -49,38 +90,7 @@ RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSArray *, UIView) {
                                       timestamp:[timestamp floatValue]];
     [textSegments addObject:params];
   }
-  animationParams.textSegments = textSegments;
-  [self updateAnimationWithView:view];
-}
-
-RCT_CUSTOM_VIEW_PROPERTY(backgroundColor, UIColor *, UIView) {
-  UIColor *backgroundColor = [RCTConvert UIColor:json];
-  animationParams.backgroundColor = backgroundColor;
-  [self updateAnimationWithView:view];
-}
-
-RCT_CUSTOM_VIEW_PROPERTY(textColor, UIColor *, UIView) {
-  UIColor *textColor = [RCTConvert UIColor:json];
-  animationParams.textColor = textColor;
-  [self updateAnimationWithView:view];
-}
-
-RCT_CUSTOM_VIEW_PROPERTY(fontFamily, NSString *, UIView) {
-  NSString *fontFamily = [RCTConvert NSString:json];
-  animationParams.fontFamily = fontFamily;
-  [self updateAnimationWithView:view];
-}
-
-RCT_CUSTOM_VIEW_PROPERTY(fontSize, NSNumber *, UIView) {
-  NSNumber *fontSize = [RCTConvert NSNumber:json];
-  animationParams.fontSize = fontSize;
-  [self updateAnimationWithView:view];
-}
-
-RCT_CUSTOM_VIEW_PROPERTY(playbackTime, NSNumber *, UIView) {
-  NSNumber *playbackTime = [RCTConvert NSNumber:json];
-  animationParams.playbackTime = playbackTime;
-  [self updateAnimationWithView:view];
+  return textSegments;
 }
 
 - (UIView *)view {

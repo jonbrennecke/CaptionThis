@@ -42,6 +42,7 @@ import type { ExportParams } from '../../utils/VideoExportManager';
 
 type State = {
   startTimeSeconds: number,
+  transcriptionStartTime: number,
   durationSeconds: number,
   playbackTimeSeconds: number,
   isVideoPlaying: boolean,
@@ -177,6 +178,7 @@ export default class EditScreen extends Component<Props, State> {
     startTimeSeconds: 0,
     playbackTimeSeconds: 0,
     durationSeconds: 0,
+    transcriptionStartTime: 0,
     isVideoPlaying: false,
     isDraggingSeekbar: false,
     showRichTextOverlay: false,
@@ -232,6 +234,12 @@ export default class EditScreen extends Component<Props, State> {
     });
   }
 
+  videoPlayerDidRestart() {
+    this.setState({
+      transcriptionStartTime: 0,
+    });
+  }
+
   speechManagerDidReceiveSpeechTranscription(
     transcription: SpeechTranscription
   ) {
@@ -249,7 +257,9 @@ export default class EditScreen extends Component<Props, State> {
 
   speechManagerDidReceiveFinalSpeechTranscription() {
     this.setState({
-      startTimeSeconds: 0,
+      // playbackTimeSeconds: 0,
+      // startTimeSeconds: 0,
+      transcriptionStartTime: this.state.playbackTimeSeconds,
     });
   }
 
@@ -257,6 +267,7 @@ export default class EditScreen extends Component<Props, State> {
     this.setState({
       playbackTimeSeconds: timeSeconds,
       startTimeSeconds: timeSeconds,
+      transcriptionStartTime: timeSeconds,
     });
   }
 
@@ -337,6 +348,7 @@ export default class EditScreen extends Component<Props, State> {
               onVideoDidUpdatePlaybackTime={
                 this.videoPlayerDidUpdatePlaybackTime
               }
+              onVideoDidRestart={this.videoPlayerDidRestart}
             />
             <ScreenGradients />
             <EditScreenTopControls
@@ -353,7 +365,8 @@ export default class EditScreen extends Component<Props, State> {
             {hasFinalTranscription && (
               <RecordingTranscriptionView
                 style={styles.transcription}
-                playbackTime={this.state.startTimeSeconds}
+                duration={this.state.durationSeconds}
+                playbackTime={this.state.transcriptionStartTime}
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}
                 fontFamily={this.props.fontFamily}
@@ -378,6 +391,7 @@ export default class EditScreen extends Component<Props, State> {
           </View>
         </SafeAreaView>
         <EditScreenRichTextOverlay
+          duration={this.state.durationSeconds}
           isVisible={this.state.showRichTextOverlay}
           textColor={this.props.textColor}
           backgroundColor={this.props.backgroundColor}

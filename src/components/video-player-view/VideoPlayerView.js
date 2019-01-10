@@ -19,6 +19,7 @@ type Props = {
     playbackTime: number,
     duration: number
   ) => void,
+  onVideoDidRestart: () => void,
 };
 
 const styles = {
@@ -39,6 +40,7 @@ export default function VideoPlayerView({
   onVideoDidFailToLoad,
   onVideoDidPause,
   onVideoDidUpdatePlaybackTime,
+  onVideoDidRestart,
 }: Props) {
   return (
     <View style={[styles.container, style]}>
@@ -62,6 +64,7 @@ export default function VideoPlayerView({
           const { playbackTime, duration } = nativeEvent;
           onVideoDidUpdatePlaybackTime(playbackTime, duration);
         }}
+        onVideoDidRestart={onVideoDidRestart}
       />
     </View>
   );

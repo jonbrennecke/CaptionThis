@@ -66,6 +66,10 @@
   self.onVideoDidUpdatePlaybackTime(body);
 }
 
+- (void)videoPlayerDidRestartVideo {
+  self.onVideoDidRestart(@{});
+}
+
 @end
 
 @implementation VideoPlayerViewManager
@@ -76,6 +80,7 @@ RCT_EXPORT_VIEW_PROPERTY(onVideoDidBecomeReadyToPlay, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidFailToLoad, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidPause, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidUpdatePlaybackTime, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onVideoDidRestart, RCTBubblingEventBlock)
 
 RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
   NSString *localIdentifier = [RCTConvert NSString:json];
@@ -103,7 +108,7 @@ RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
 
 RCT_CUSTOM_VIEW_PROPERTY(startPosition, NSNumber, VideoPlayerViewWrap) {
   NSNumber *startPosition = [RCTConvert NSNumber:json];
-  CMTime time = CMTimeMakeWithSeconds([startPosition floatValue], 1);
+  CMTime time = CMTimeMakeWithSeconds([startPosition floatValue], 600);
   [view.playerView seekTo:time
         completionHandler:^(BOOL success) {
           [view.playerView play];

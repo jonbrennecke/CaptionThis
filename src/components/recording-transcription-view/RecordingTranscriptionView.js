@@ -8,6 +8,7 @@ import type { ColorRGBA } from '../../types/media';
 
 type Props = {
   style?: ?Style,
+  duration: number,
   playbackTime: number,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
@@ -30,6 +31,7 @@ const styles = {
 
 export default function RecordingTranscriptionView({
   style,
+  duration,
   playbackTime,
   textColor,
   backgroundColor,
@@ -53,22 +55,25 @@ export default function RecordingTranscriptionView({
     >
       <NativeTranscriptView
         style={styles.flex}
-        playbackTime={playbackTime}
-        textSegments={textSegments}
-        fontFamily={fontFamily}
-        fontSize={fontSize}
-        textColor={[
-          textColor.red / 255,
-          textColor.green / 255,
-          textColor.blue / 255,
-          textColor.alpha,
-        ]}
-        backgroundColor={[
-          backgroundColor.red / 255,
-          backgroundColor.green / 255,
-          backgroundColor.blue / 255,
-          backgroundColor.alpha,
-        ]}
+        animationParams={{
+          duration,
+          playbackTime,
+          textSegments,
+          fontFamily,
+          fontSize,
+          textColor: [
+            textColor.red / 255,
+            textColor.green / 255,
+            textColor.blue / 255,
+            textColor.alpha,
+          ],
+          backgroundColor: [
+            backgroundColor.red / 255,
+            backgroundColor.green / 255,
+            backgroundColor.blue / 255,
+            backgroundColor.alpha,
+          ],
+        }}
       />
     </TouchableOpacity>
   );
