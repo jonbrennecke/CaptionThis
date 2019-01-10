@@ -47,12 +47,20 @@ class SpeechManager: NSObject {
 
   @objc
   public func isAuthorized() -> Bool {
-    return recognizer.isAvailable
+    if case .authorized = SFSpeechRecognizer.authorizationStatus() {
+      return true
+    }
+    return false
   }
 
   @objc
   public func isCapturing() -> Bool {
     return audioEngine.isRunning
+  }
+  
+  @objc
+  public func isAvailable() -> Bool {
+    return recognizer.isAvailable
   }
 
   @objc
