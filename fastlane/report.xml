@@ -5,7 +5,27 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: appicon" time="1.995661">
+      <testcase classname="fastlane.lanes" name="0: match" time="21.769283">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: Switch to ios build lane" time="0.001416">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: match" time="6.826636">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: gym" time="272.400297">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: deliver" time="94.783372">
         
       </testcase>
     

@@ -38,6 +38,21 @@ platform :ios do |options|
     )
   end
 
+  lane :deploy_appstore do |options|
+    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+    itc_team_id = CredentialsManager::AppfileConfig.try_fetch_value(:itc_team_id)
+    match(type: 'appstore', app_identifier: app_identifier, force: true)
+    build(release: true)
+    deliver(
+      force: true,
+      app_identifier: app_identifier,
+      run_precheck_before_submit: true,
+      submit_for_review: false,
+      automatic_release: false,
+      team_id: itc_team_id,
+    )
+  end
+
   lane :beta do |options|
     build(release: true)
     deploy_beta
