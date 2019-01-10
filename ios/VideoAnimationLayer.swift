@@ -39,6 +39,7 @@ class VideoAnimationLayer: CALayer {
   @objc
   public func animate(withParams params: VideoAnimationParams) {
     setupContainerLayer()
+    containerLayer.timeOffset = params.playbackTime?.doubleValue ?? 0
     backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
     var textLayers = [CATextLayer]()
     params.textSegments?.forEach { segment in

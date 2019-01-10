@@ -191,6 +191,7 @@ export default class RichTextEditor extends Component<Props, State> {
       <View style={[styles.container, this.props.style]}>
         <RecordingTranscriptionView
           style={styles.transcription}
+          playbackTime={0}
           textColor={this.state.textColor}
           backgroundColor={this.state.backgroundColor}
           fontFamily={this.state.fontFamily}

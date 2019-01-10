@@ -77,6 +77,12 @@ RCT_CUSTOM_VIEW_PROPERTY(fontSize, NSNumber *, UIView) {
   [self updateAnimationWithView:view];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(playbackTime, NSNumber *, UIView) {
+  NSNumber *playbackTime = [RCTConvert NSNumber:json];
+  animationParams.playbackTime = playbackTime;
+  [self updateAnimationWithView:view];
+}
+
 - (UIView *)view {
   UIView *view = [[UIView alloc] init];
   return view;

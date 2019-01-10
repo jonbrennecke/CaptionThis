@@ -199,6 +199,14 @@ export default class EditScreen extends Component<Props, State> {
     }
   }
 
+  componentDidUpdate(prevProps: Props) {
+    const speechTranscription = this.getSpeechTranscription(this.props);
+    const prevSpeechTranscription = this.getSpeechTranscription(prevProps);
+    if (speechTranscription?.isFinal && !prevSpeechTranscription?.isFinal) {
+      this.speechManagerDidReceiveFinalSpeechTranscription();
+    }
+  }
+
   videoPlayerDidBecomeReadyToPlay(duration: number) {
     this.setState({ durationSeconds: duration, isVideoPlaying: true });
     this.props.beginSpeechTranscriptionWithVideoAsset(
@@ -237,6 +245,12 @@ export default class EditScreen extends Component<Props, State> {
       this.props.videoAssetIdentifier,
       transcription
     );
+  }
+
+  speechManagerDidReceiveFinalSpeechTranscription() {
+    this.setState({
+      startTimeSeconds: 0,
+    });
   }
 
   seekBarDidSeekToTime(timeSeconds: number) {
@@ -292,8 +306,8 @@ export default class EditScreen extends Component<Props, State> {
     }));
   }
 
-  getSpeechTranscription(): ?SpeechTranscription {
-    const { speechTranscriptions, videoAssetIdentifier: key } = this.props;
+  getSpeechTranscription(props?: Props = this.props): ?SpeechTranscription {
+    const { speechTranscriptions, videoAssetIdentifier: key } = props;
     if (!speechTranscriptions.has(key)) {
       return null;
     }
@@ -339,6 +353,7 @@ export default class EditScreen extends Component<Props, State> {
             {hasFinalTranscription && (
               <RecordingTranscriptionView
                 style={styles.transcription}
+                playbackTime={this.state.startTimeSeconds}
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}
                 fontFamily={this.props.fontFamily}

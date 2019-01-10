@@ -8,6 +8,7 @@ import type { ColorRGBA } from '../../types/media';
 
 type Props = {
   style?: ?Style,
+  playbackTime: number,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
   fontFamily: string,
@@ -29,6 +30,7 @@ const styles = {
 
 export default function RecordingTranscriptionView({
   style,
+  playbackTime,
   textColor,
   backgroundColor,
   fontFamily,
@@ -51,6 +53,7 @@ export default function RecordingTranscriptionView({
     >
       <NativeTranscriptView
         style={styles.flex}
+        playbackTime={playbackTime}
         textSegments={textSegments}
         fontFamily={fontFamily}
         fontSize={fontSize}
