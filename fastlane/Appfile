@@ -9,3 +9,4 @@ end
 
 app_identifier 'com.jonbrennecke.CaptionThis' # TODO: product_bundle_id(scheme_name)
 team_id '6DUV3UU8M8'
+itc_team_id '118649769'
