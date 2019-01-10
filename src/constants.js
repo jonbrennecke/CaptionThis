@@ -401,6 +401,7 @@ export const SCREEN_PARAMS = {
           animate: false,
         },
         layout: {
+          backgroundColor: UI_COLORS.BLACK,
           orientation: APP_ORIENTATIONS,
         },
       },
