@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { PanResponder, Animated, View } from 'react-native';
+import { PanResponder, Animated, View, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 import isNil from 'lodash/isNil';
 import extend from 'lodash/extend';
@@ -132,6 +132,7 @@ export default class DragInteractionContainer extends Component<Props, State> {
 
   render() {
     const dragStyles = [
+      StyleSheet.absoluteFillObject,
       this.props.applyTransformStyles && {
         transform: [
           {
@@ -161,9 +162,6 @@ export default class DragInteractionContainer extends Component<Props, State> {
           {this.props.renderChildren({
             isDragging: this.state.isDragging && this.canDrag(),
           })}
-          {/* {cloneElement(Children.only(this.props.children), {
-            isDragging: this.state.isDragging && this.canDrag(),
-          })} */}
         </Animated.View>
       </View>
     );

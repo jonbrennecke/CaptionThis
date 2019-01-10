@@ -47,12 +47,20 @@ class SpeechManager: NSObject {
 
   @objc
   public func isAuthorized() -> Bool {
-    return recognizer.isAvailable
+    if case .authorized = SFSpeechRecognizer.authorizationStatus() {
+      return true
+    }
+    return false
   }
 
   @objc
   public func isCapturing() -> Bool {
     return audioEngine.isRunning
+  }
+
+  @objc
+  public func isAvailable() -> Bool {
+    return recognizer.isAvailable
   }
 
   @objc
@@ -145,7 +153,7 @@ class SpeechManager: NSObject {
 
 extension SpeechManager: SFSpeechRecognizerDelegate {
   func speechRecognizer(_: SFSpeechRecognizer, availabilityDidChange available: Bool) {
-    Debug.log(format: "Speech recognizer availability changed. Available == %@", available)
+    Debug.log(format: "Speech recognizer availability changed. Available == %@", available ? "true" : "false")
     if available {
       delegate?.speechManagerDidBecomeAvailable()
     } else {

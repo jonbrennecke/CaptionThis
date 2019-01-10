@@ -183,13 +183,13 @@ export default class OnboardingModal extends Component<Props, State> {
       Animated.timing(this.iconAnim, {
         toValue: 1,
         duration: 350,
-        delay: (INITIAL_DELAY + 500),
+        delay: INITIAL_DELAY + 500,
         easing: Easing.out(Easing.cubic),
       }),
       Animated.timing(this.activityIndicatorAnim, {
         toValue: 1,
         duration: 350,
-        delay: (INITIAL_DELAY + 700),
+        delay: INITIAL_DELAY + 700,
         easing: Easing.out(Easing.cubic),
       }),
     ]).start(() => {

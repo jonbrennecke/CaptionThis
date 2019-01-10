@@ -79,7 +79,7 @@ type DispatchProps = {
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const styles = {
   container: {
@@ -91,8 +91,8 @@ const styles = {
   },
   videoWrap: {
     borderRadius: 10,
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT - 125,
+    flex: 1,
+    flexGrow: 1,
     overflow: 'hidden',
     backgroundColor: UI_COLORS.DARK_GREY,
   },
@@ -112,8 +112,11 @@ const styles = {
     bottom: 0,
   },
   editControls: {
-    flex: 1,
-    paddingVertical: 10,
+    height: 70,
+    width: SCREEN_WIDTH,
+    paddingTop: 10,
+    // TODO: The bottom padding is only necessary because of the seekbar handle being cut off in phones without a notch (i.e. iPhones older than the X series)
+    paddingBottom: 3,
   },
   editTopControls: {
     position: 'absolute',
@@ -125,16 +128,10 @@ const styles = {
     flex: 1,
   },
   seekbar: {
-    marginBottom: 15,
-    flexGrow: 1,
+    flex: 1,
   },
   seekbarWrap: {
     flexDirection: 'row',
-  },
-  pauseButton: {
-    width: 45,
-    height: 45,
-    marginRight: 10,
   },
 };
 
@@ -354,19 +351,15 @@ export default class EditScreen extends Component<Props, State> {
             )}
           </View>
           <View style={styles.editControls}>
-            <View style={styles.seekbarWrap}>
-              <VideoSeekbar
-                style={styles.seekbar}
-                duration={this.state.durationSeconds}
-                playbackTime={this.state.playbackTimeSeconds}
-                videoAssetIdentifier={this.props.videoAssetIdentifier}
-                onSeekToTime={this.seekBarDidSeekToTime}
-                onDidBeginDrag={() =>
-                  this.setState({ isDraggingSeekbar: true })
-                }
-                onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
-              />
-            </View>
+            <VideoSeekbar
+              style={styles.seekbar}
+              duration={this.state.durationSeconds}
+              playbackTime={this.state.playbackTimeSeconds}
+              videoAssetIdentifier={this.props.videoAssetIdentifier}
+              onSeekToTime={this.seekBarDidSeekToTime}
+              onDidBeginDrag={() => this.setState({ isDraggingSeekbar: true })}
+              onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
+            />
           </View>
         </SafeAreaView>
         <EditScreenRichTextOverlay

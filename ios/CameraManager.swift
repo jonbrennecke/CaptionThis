@@ -140,6 +140,11 @@ class CameraManager: NSObject {
   @objc
   public func startCapture(completionHandler: @escaping (Error?, Bool) -> Void) {
     sessionQueue.async {
+      guard self.videoCaptureDevice != nil else {
+        Debug.log(message: "Cannot start capture. No video capture device is set.")
+        completionHandler(nil, false)
+        return
+      }
       do {
         let outputURL = try self.saveVideoFileOutputOrThrow()
         self.videoFileOutput.stopRecording()
@@ -186,10 +191,10 @@ class CameraManager: NSObject {
   }
 
   private func attemptToSetupCameraCaptureSession() -> CameraSetupResult {
-    captureSession.sessionPreset = .hd1920x1080
+    captureSession.sessionPreset = .high
 
     // setup videoCaptureDevice
-    videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
+    videoCaptureDevice = captureDevice(withPosition: .front)
     guard let videoCaptureDevice = videoCaptureDevice else {
       Debug.log(message: "Built in wide angle camera (front) is not available.")
       return .failure
@@ -254,6 +259,14 @@ class CameraManager: NSObject {
       return .failure
     }
     return .success
+  }
+
+  private func captureDevice(withPosition position: AVCaptureDevice.Position) -> AVCaptureDevice? {
+    if let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position) {
+      return device
+    }
+    let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: position)
+    return discoverySession.devices.first
   }
 
   @objc
