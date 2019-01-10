@@ -3,7 +3,7 @@ import Speech
 
 @objc
 protocol SpeechManagerDelegate {
-  func speechManagerDidReceiveSpeechTranscription(_ transcription: SpeechManager.SpeechTranscription)
+  func speechManagerDidReceiveSpeechTranscription(isFinal: Bool, transcription: SpeechManager.SpeechTranscription)
   func speechManagerDidBecomeAvailable()
   func speechManagerDidBecomeUnavailable()
 }
@@ -11,7 +11,7 @@ protocol SpeechManagerDelegate {
 @objc
 class SpeechManager: NSObject {
   typealias SpeechTask = SFSpeechAudioBufferRecognitionRequest
-  typealias SpeechTranscription = SFSpeechRecognitionResult
+  typealias SpeechTranscription = SFTranscription
 
   private var recognizer: SFSpeechRecognizer
   private var audioEngine: AVAudioEngine
@@ -127,16 +127,7 @@ class SpeechManager: NSObject {
   }
 
   private func startTranscription(withRequest request: SFSpeechAudioBufferRecognitionRequest) {
-    recognizer.recognitionTask(with: request) { result, error in
-      if let error = error {
-        Debug.log(error: error)
-        return
-      }
-      guard let result = result, let delegate = self.delegate else {
-        return
-      }
-      delegate.speechManagerDidReceiveSpeechTranscription(result)
-    }
+    recognizer.recognitionTask(with: request, delegate: self)
   }
 
   @objc
@@ -163,7 +154,25 @@ extension SpeechManager: SFSpeechRecognizerDelegate {
 }
 
 extension SpeechManager: SFSpeechRecognitionTaskDelegate {
-  func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishSuccessfully successfully: Bool) {
-    Debug.log(format: "Speech recognizer finished task. Success == %@", successfully)
+  func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
+    Debug.log(format: "Speech recognizer finished task. Success == %@", success ? "true" : "false")
+  }
+  
+  func speechRecognitionTaskWasCancelled(_ task: SFSpeechRecognitionTask) {
+    Debug.log(message: "Speech recognition task was cancelled.")
+  }
+  
+  func speechRecognitionTaskFinishedReadingAudio(_ task: SFSpeechRecognitionTask) {
+//    TODO: check task.state
+    Debug.log(message: "Speech recognition finished accepting audio input.")
+  }
+  
+  func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didFinishRecognition result: SFSpeechRecognitionResult) {
+    let transcription = result.bestTranscription
+    delegate?.speechManagerDidReceiveSpeechTranscription(isFinal: true, transcription: transcription)
+  }
+  
+  func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didHypothesizeTranscription transcription: SFTranscription) {
+    delegate?.speechManagerDidReceiveSpeechTranscription(isFinal: false, transcription: transcription)
   }
 }

@@ -31,13 +31,10 @@
   [self sendEventWithName:@"speechManagerDidBecomeUnavailable" body:@{}];
 }
 
-- (void)speechManagerDidReceiveSpeechTranscription:
-    (SFSpeechRecognitionResult *_Nonnull)result {
+- (void)speechManagerDidReceiveSpeechTranscriptionWithIsFinal:(BOOL)isFinal transcription:(SFTranscription *)transcription {
   if (!hasListeners) {
     return;
   }
-  BOOL isFinal = result.isFinal;
-  SFTranscription *transcription = result.bestTranscription;
   NSString *formattedString = transcription.formattedString;
   NSMutableArray<NSDictionary *> *segments =
       [[NSMutableArray alloc] initWithCapacity:transcription.segments.count];
