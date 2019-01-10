@@ -57,7 +57,7 @@ class SpeechManager: NSObject {
   public func isCapturing() -> Bool {
     return audioEngine.isRunning
   }
-  
+
   @objc
   public func isAvailable() -> Bool {
     return recognizer.isAvailable
