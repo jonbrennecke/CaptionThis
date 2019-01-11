@@ -10,61 +10,112 @@ enum VideoAnimationOutputKind: Int {
   case view
 }
 
+enum VideoAnimationPlaybackState {
+  case playing
+  case paused
+  case none
+}
+
 @objc
 class VideoAnimationLayer: CALayer {
-  private let containerLayer = CALayer()
   private let containerPaddingHorizontal: CGFloat = 25
   private let containerPaddingVertical: CGFloat = 15
   private let textPaddingHorizontal: CGFloat = 0
   private let textPaddingVertical: CGFloat = 10
   private let extraTextSpaceBottom: CGFloat = 15
   private let fontSize: CGFloat = 17
-  private let outputKind: VideoAnimationOutputKind
+  private var containerLayer: CALayer?
+  private var outputKind: VideoAnimationOutputKind = .view
+  private var playbackState: VideoAnimationPlaybackState = .none
+
+  private var isPaused: Bool {
+    return playbackState == .paused
+  }
+
+  private var isPlaying: Bool {
+    return playbackState == .playing
+  }
+
+  @objc
+  public var params: VideoAnimationParams = VideoAnimationParams() {
+    didSet {
+      resetAnimation()
+    }
+  }
 
   required init?(coder _: NSCoder) {
     fatalError("init?(coder:) has not been implemented for VideoAnimationLayer")
   }
 
   @objc
+  override init() {
+    super.init()
+//    contentsScale = UIScreen.main.scale
+    masksToBounds = true
+    opacity = 0.0
+//    rasterizationScale = UIScreen.main.scale
+//    shouldRasterize = true
+  }
+
+  @objc
   init(for outputKind: VideoAnimationOutputKind) {
     self.outputKind = outputKind
     super.init()
-    contentsScale = UIScreen.main.scale
-    masksToBounds = true
-    opacity = 0.0
-    rasterizationScale = UIScreen.main.scale
-    shouldRasterize = true
   }
 
   @objc
   public func restart() {
-    beginTime = convertTime(CACurrentMediaTime(), from: nil)
+    Debug.log(message: "Restarting animation")
+    containerLayer?.removeFromSuperlayer()
+    containerLayer = nil
+    resetAnimation()
+    play()
   }
 
   @objc
-  public func seekTo(time _: Double) {
-//    timeOffset = convertTime(CACurrentMediaTime(), from: nil)
-//    beginTime = time
+  public func seekTo(time: Double) {
+    Debug.log(format: "Animation seeking to %d", time)
+    beginTime = AVCoreAnimationBeginTimeAtZero + time
+    timeOffset = AVCoreAnimationBeginTimeAtZero
+    play()
   }
 
   @objc
   public func pause() {
-    speed = 0.0
+    Debug.log(message: "Pausing animation")
+    playbackState = .paused
+    speed = 0
     timeOffset = convertTime(CACurrentMediaTime(), from: nil)
   }
 
   @objc
-  public func resume() {
-    let pausedTimeOffset = timeOffset
-    speed = 1.0
-    timeOffset = 0.0
-    let timeSincePaused = convertTime(CACurrentMediaTime(), from: nil) - pausedTimeOffset
-    beginTime = timeSincePaused
+  public func play() {
+    Debug.log(message: "Playing animation")
+    switch playbackState {
+    case .paused:
+      resume()
+    case .none:
+      playbackState = .playing
+      timeOffset = convertTime(CACurrentMediaTime(), from: nil)
+      beginTime = AVCoreAnimationBeginTimeAtZero
+      speed = 1
+    default:
+      break
+    }
   }
 
-  @objc
-  public func animate(withParams params: VideoAnimationParams) {
-    setupContainerLayer()
+  private func resume() {
+    let pausedTimeOffset = timeOffset
+    speed = 1
+    timeOffset = 0
+    let timeSincePaused = convertTime(CACurrentMediaTime(), from: nil) - pausedTimeOffset
+    beginTime = timeSincePaused
+    playbackState = .playing
+  }
+
+  private func resetAnimation() {
+    let containerLayer = setupContainerLayer()
+    pause()
     duration = params.duration?.doubleValue ?? 0
     fillMode = .forwards
     repeatCount = .greatestFiniteMagnitude
@@ -79,7 +130,7 @@ class VideoAnimationLayer: CALayer {
       let inFrameBottomY = containerLayer.frame.height * 0.25 * multiplier + offset
       let outOfFrameBottomY = -containerLayer.frame.height * 0.25 * multiplier + offset
       guard let bottomTextLayer = textLayers.last else {
-        let textLayer = self.addTextLayer(withParams: params, text: segment.text)
+        let textLayer = self.addTextLayer(parent: containerLayer, withParams: params, text: segment.text)
         textLayer.position.y = inFrameMiddleY
         textLayer.displayIfNeeded()
         textLayer.layoutIfNeeded()
@@ -88,7 +139,7 @@ class VideoAnimationLayer: CALayer {
       }
       let newString = "\(bottomTextLayer.string ?? "") \(segment.text)"
       if newString.count >= MAX_CHARACTERS_PER_LINE {
-        let textLayer = addTextLayer(withParams: params, text: segment.text)
+        let textLayer = addTextLayer(parent: containerLayer, withParams: params, text: segment.text)
         textLayer.position.y = outOfFrameBottomY
         textLayer.opacity = 0
         let fadeInAnimation = animateFadeIn(atTime: Double(segment.timestamp))
@@ -112,7 +163,7 @@ class VideoAnimationLayer: CALayer {
       } else {
         let fadeOutAnimation = animateFadeOut(atTime: Double(segment.timestamp), withDuration: 0)
         bottomTextLayer.add(fadeOutAnimation, forKey: nil)
-        let textLayer = addTextLayer(withParams: params, text: segment.text)
+        let textLayer = addTextLayer(parent: containerLayer, withParams: params, text: segment.text)
         let isMiddle = abs(bottomTextLayer.position.y - inFrameMiddleY) < CGFloat.ulpOfOne
         textLayer.position.y = isMiddle ? inFrameMiddleY : inFrameBottomY
         textLayer.string = newString
@@ -138,7 +189,8 @@ class VideoAnimationLayer: CALayer {
 //     TODO: fade out after last segment duration is complete (+delay)
   }
 
-  private func setupContainerLayer() {
+  private func setupContainerLayer() -> CALayer {
+    let containerLayer = CALayer()
     containerLayer.contentsScale = UIScreen.main.scale
     let multiplier: CGFloat = outputKind == .export ? 3 : 1
     let paddingHorizontal = containerPaddingHorizontal * multiplier
@@ -147,6 +199,8 @@ class VideoAnimationLayer: CALayer {
     let width = frame.width - paddingHorizontal * 2
     containerLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
     addSublayer(containerLayer)
+    self.containerLayer = containerLayer
+    return containerLayer
   }
 
   private func animateFadeIn(atTime beginTime: CFTimeInterval, withDuration duration: CFTimeInterval = 0.25) -> CABasicAnimation {
@@ -185,7 +239,7 @@ class VideoAnimationLayer: CALayer {
     return slideUpAnimation
   }
 
-  private func addTextLayer(withParams params: VideoAnimationParams, text: String) -> CATextLayer {
+  private func addTextLayer(parent: CALayer, withParams params: VideoAnimationParams, text: String) -> CATextLayer {
     let textLayer = CenteredTextLayer()
     textLayer.contentsScale = UIScreen.main.scale
     textLayer.allowsFontSubpixelQuantization = true
@@ -193,8 +247,8 @@ class VideoAnimationLayer: CALayer {
     let multiplier: CGFloat = outputKind == .export ? 1 : 1
     let paddingHorizontal = textPaddingHorizontal * multiplier
     let paddingVertical = textPaddingVertical * multiplier
-    let height = containerLayer.frame.height / 2
-    let width = containerLayer.frame.width
+    let height = parent.frame.height / 2
+    let width = parent.frame.width
     textLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
     textLayer.alignmentMode = .left
     let fontSizeMultiplier = outputKind == .export ? UIScreen.main.scale : 1
@@ -204,7 +258,7 @@ class VideoAnimationLayer: CALayer {
     textLayer.font = params.fontFamily as CFTypeRef
     textLayer.foregroundColor = params.textColor?.cgColor
     textLayer.string = text
-    containerLayer.addSublayer(textLayer)
+    parent.addSublayer(textLayer)
     return textLayer
   }
 }

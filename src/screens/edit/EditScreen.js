@@ -43,7 +43,6 @@ import type { ExportParams } from '../../utils/VideoExportManager';
 
 type State = {
   startTimeSeconds: number,
-  transcriptionStartTime: number,
   durationSeconds: number,
   playbackTimeSeconds: number,
   isVideoPlaying: boolean,
@@ -180,7 +179,6 @@ export default class EditScreen extends Component<Props, State> {
     startTimeSeconds: 0,
     playbackTimeSeconds: 0,
     durationSeconds: 0,
-    transcriptionStartTime: 0,
     isVideoPlaying: false,
     isDraggingSeekbar: false,
     showRichTextOverlay: false,
@@ -220,10 +218,18 @@ export default class EditScreen extends Component<Props, State> {
 
   videoPlayerDidFailToLoad() {
     this.setState({ isVideoPlaying: false });
+    if (!this.transcriptView) {
+      return;
+    }
+    this.transcriptView.pause();
   }
 
   videoPlayerDidPause() {
     this.setState({ isVideoPlaying: false });
+    if (!this.transcriptView) {
+      return;
+    }
+    this.transcriptView.pause();
   }
 
   videoPlayerDidUpdatePlaybackTime(playbackTime: number, duration: number) {
@@ -262,17 +268,22 @@ export default class EditScreen extends Component<Props, State> {
     this.setState({
       playbackTimeSeconds: 0,
       startTimeSeconds: 0,
-      transcriptionStartTime: 0,
     });
+    if (!this.transcriptView) {
+      return;
+    }
+    this.transcriptView.seekToTime(0);
   }
 
   seekBarDidSeekToTime(timeSeconds: number) {
-    const seekTime = clamp(timeSeconds, 0, this.state.durationSeconds);
+    const time = clamp(timeSeconds, 0, this.state.durationSeconds);
     this.setState({
-      playbackTimeSeconds: seekTime,
-      // startTimeSeconds: seekTime,
-      // transcriptionStartTime: seekTime,
+      playbackTimeSeconds: time,
     });
+    if (!this.transcriptView) {
+      return;
+    }
+    this.transcriptView.seekToTime(time);
   }
 
   async richTextEditorDidRequestSave(params: {
@@ -330,14 +341,17 @@ export default class EditScreen extends Component<Props, State> {
     return speechTranscriptions.get(key);
   }
 
+  hasFinalSpeechTranscription(): boolean {
+    const speechTranscription = this.getSpeechTranscription();
+    return !!(speechTranscription && speechTranscription.isFinal);
+  }
+
   async showEditTranscriptionModal() {
     await Screens.showEditTranscriptionModal(this.props.videoAssetIdentifier);
   }
 
   render() {
-    const speechTranscription = this.getSpeechTranscription();
-    const hasFinalTranscription =
-      speechTranscription && speechTranscription.isFinal;
+    const hasFinalTranscription = this.hasFinalSpeechTranscription();
     return (
       <View style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
@@ -367,23 +381,22 @@ export default class EditScreen extends Component<Props, State> {
                 })
               }
             />
-            {hasFinalTranscription && (
-              <RecordingTranscriptionView
-                ref={ref => {
-                  this.transcriptView = ref;
-                }}
-                style={styles.transcription}
-                duration={this.state.durationSeconds}
-                textColor={this.props.textColor}
-                backgroundColor={this.props.backgroundColor}
-                fontFamily={this.props.fontFamily}
-                fontSize={this.props.fontSize}
-                speechTranscription={this.getSpeechTranscription()}
-                onPress={() => {
-                  this.showEditTranscriptionModal();
-                }}
-              />
-            )}
+            <RecordingTranscriptionView
+              ref={ref => {
+                this.transcriptView = ref;
+              }}
+              hasFinalTranscription={hasFinalTranscription}
+              style={styles.transcription}
+              duration={this.state.durationSeconds}
+              textColor={this.props.textColor}
+              backgroundColor={this.props.backgroundColor}
+              fontFamily={this.props.fontFamily}
+              fontSize={this.props.fontSize}
+              speechTranscription={this.getSpeechTranscription()}
+              onPress={() => {
+                this.showEditTranscriptionModal();
+              }}
+            />
           </View>
           <View style={styles.editControls}>
             <VideoSeekbar

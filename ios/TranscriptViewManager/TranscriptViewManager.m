@@ -1,22 +1,17 @@
 
 #import "TranscriptViewManager.h"
 #import "CaptionThis-Swift.h"
+#import "TranscriptView.h"
 #import <React/RCTBridge.h>
 #import <React/RCTConvert.h>
 #import <React/RCTUIManager.h>
 
 @implementation TranscriptViewManager
 
-- (void)updateAnimationWithView:(UIView *)view
+- (void)updateAnimationWithView:(TranscriptView *)view
                      withParams:(VideoAnimationParams *)animationParams {
   dispatch_async(dispatch_get_main_queue(), ^{
-    VideoAnimationLayer *animationLayer =
-        [[VideoAnimationLayer alloc] initFor:VideoAnimationOutputKindView];
-    animationLayer.frame =
-        CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.height);
-    [animationLayer animateWithParams:animationParams];
-    view.layer.sublayers = nil;
-    [view.layer insertSublayer:animationLayer atIndex:0];
+    [view animateWithParams:animationParams];
   });
 }
 
@@ -33,7 +28,7 @@ RCT_EXPORT_METHOD(restart : (nonnull NSNumber *)reactTag) {
           RCTLogError(@"Cannot find UIView with tag #%@", reactTag);
           return;
         }
-        VideoAnimationLayer *animationLayer = view.layer.sublayers[0];
+        VideoAnimationLayer *animationLayer = (VideoAnimationLayer *)view.layer;
         if (!animationLayer ||
             ![animationLayer isKindOfClass:[VideoAnimationLayer class]]) {
           RCTLogError(@"Cannot find VideoAnimationLayer in view with tag #%@",
@@ -41,6 +36,48 @@ RCT_EXPORT_METHOD(restart : (nonnull NSNumber *)reactTag) {
           return;
         }
         [animationLayer restart];
+      }];
+}
+
+RCT_EXPORT_METHOD(pause : (nonnull NSNumber *)reactTag) {
+  [self.bridge.uiManager
+      addUIBlock:^(RCTUIManager *uiManager,
+                   NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+        UIView *view = viewRegistry[reactTag];
+        if (!view) {
+          RCTLogError(@"Cannot find UIView with tag #%@", reactTag);
+          return;
+        }
+        VideoAnimationLayer *animationLayer = (VideoAnimationLayer *)view.layer;
+        if (!animationLayer ||
+            ![animationLayer isKindOfClass:[VideoAnimationLayer class]]) {
+          RCTLogError(@"Cannot find VideoAnimationLayer in view with tag #%@",
+                      reactTag);
+          return;
+        }
+        [animationLayer pause];
+      }];
+}
+
+RCT_EXPORT_METHOD(seekToTime
+                  : (nonnull NSNumber *)reactTag time
+                  : (nonnull NSNumber *)time) {
+  [self.bridge.uiManager
+      addUIBlock:^(RCTUIManager *uiManager,
+                   NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+        UIView *view = viewRegistry[reactTag];
+        if (!view) {
+          RCTLogError(@"Cannot find UIView with tag #%@", reactTag);
+          return;
+        }
+        VideoAnimationLayer *animationLayer = (VideoAnimationLayer *)view.layer;
+        if (!animationLayer ||
+            ![animationLayer isKindOfClass:[VideoAnimationLayer class]]) {
+          RCTLogError(@"Cannot find VideoAnimationLayer in view with tag #%@",
+                      reactTag);
+          return;
+        }
+        [animationLayer seekToTime:[time doubleValue]];
       }];
 }
 
@@ -109,8 +146,8 @@ RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, UIView) {
 }
 
 - (UIView *)view {
-  UIView *view = [[UIView alloc] init];
-  return view;
+  TranscriptView *view = [[TranscriptView alloc] init];
+  return (UIView *)view;
 }
 
 @end

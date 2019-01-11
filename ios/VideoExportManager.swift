@@ -31,7 +31,8 @@ class VideoExportManager: NSObject {
       }
       let animationLayer = VideoAnimationLayer(for: .export)
       animationLayer.frame = CGRect(x: 0, y: self.containerOffsetFromBottom, width: composition.videoSize.width, height: self.containerHeight)
-      animationLayer.animate(withParams: animationParams)
+      animationLayer.params = animationParams
+      animationLayer.play()
       composition.add(effectLayer: animationLayer)
       composition.exportVideo { error, success, url in
         if let error = error {

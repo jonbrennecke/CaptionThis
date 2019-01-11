@@ -20,6 +20,7 @@ type Props = {
   fontFamily: string,
   fontSize: number,
   speechTranscription: ?SpeechTranscription,
+  hasFinalTranscription: boolean,
   onPress?: () => void,
 };
 
@@ -39,10 +40,24 @@ export default class RecordingTranscriptionView extends Component<Props> {
   nativeComponentRef: ?ReactNativeFiberHostComponent;
 
   restart() {
-    if (!this.nativeComponentRef) {
+    if (!this.nativeComponentRef || !this.props.hasFinalTranscription) {
       return;
     }
     TranscriptViewManager.restart(this.nativeComponentRef._nativeTag);
+  }
+
+  pause() {
+    if (!this.nativeComponentRef || !this.props.hasFinalTranscription) {
+      return;
+    }
+    TranscriptViewManager.pause(this.nativeComponentRef._nativeTag);
+  }
+
+  seekToTime(time: number) {
+    if (!this.nativeComponentRef || !this.props.hasFinalTranscription) {
+      return;
+    }
+    TranscriptViewManager.seekToTime(this.nativeComponentRef._nativeTag, time);
   }
 
   render() {
@@ -59,30 +74,32 @@ export default class RecordingTranscriptionView extends Component<Props> {
         style={[styles.container, this.props.style]}
         onPress={this.props.onPress}
       >
-        <NativeTranscriptView
-          ref={ref => {
-            this.nativeComponentRef = ref;
-          }}
-          style={styles.flex}
-          animationParams={{
-            textSegments,
-            duration: this.props.duration,
-            fontFamily: this.props.fontFamily,
-            fontSize: this.props.fontSize,
-            textColor: [
-              this.props.textColor.red / 255,
-              this.props.textColor.green / 255,
-              this.props.textColor.blue / 255,
-              this.props.textColor.alpha,
-            ],
-            backgroundColor: [
-              this.props.backgroundColor.red / 255,
-              this.props.backgroundColor.green / 255,
-              this.props.backgroundColor.blue / 255,
-              this.props.backgroundColor.alpha,
-            ],
-          }}
-        />
+        {this.props.hasFinalTranscription && (
+          <NativeTranscriptView
+            ref={ref => {
+              this.nativeComponentRef = ref;
+            }}
+            style={styles.flex}
+            animationParams={{
+              textSegments,
+              duration: this.props.duration,
+              fontFamily: this.props.fontFamily,
+              fontSize: this.props.fontSize,
+              textColor: [
+                this.props.textColor.red / 255,
+                this.props.textColor.green / 255,
+                this.props.textColor.blue / 255,
+                this.props.textColor.alpha,
+              ],
+              backgroundColor: [
+                this.props.backgroundColor.red / 255,
+                this.props.backgroundColor.green / 255,
+                this.props.backgroundColor.blue / 255,
+                this.props.backgroundColor.alpha,
+              ],
+            }}
+          />
+        )}
       </TouchableOpacity>
     );
   }
