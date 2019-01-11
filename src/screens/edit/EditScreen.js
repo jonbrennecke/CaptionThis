@@ -42,7 +42,6 @@ import type { SpeechTranscription } from '../../types/speech';
 import type { ExportParams } from '../../utils/VideoExportManager';
 
 type State = {
-  startTimeSeconds: number,
   durationSeconds: number,
   playbackTimeSeconds: number,
   isVideoPlaying: boolean,
@@ -175,8 +174,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 @autobind
 export default class EditScreen extends Component<Props, State> {
   transcriptView: ?RecordingTranscriptionView;
+  playerView: ?VideoPlayerView;
   state: State = {
-    startTimeSeconds: 0,
     playbackTimeSeconds: 0,
     durationSeconds: 0,
     isVideoPlaying: false,
@@ -210,6 +209,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   videoPlayerDidBecomeReadyToPlay(duration: number) {
+    // TODO: check if final transcription already exists (e.g. if the user clicked into Edit, then clicked out and back in again)
     this.setState({ durationSeconds: duration, isVideoPlaying: true });
     this.props.beginSpeechTranscriptionWithVideoAsset(
       this.props.videoAssetIdentifier
@@ -247,6 +247,10 @@ export default class EditScreen extends Component<Props, State> {
       return;
     }
     this.transcriptView.restart();
+    if (!this.playerView) {
+      return;
+    }
+    this.playerView.restart();
   }
 
   speechManagerDidReceiveSpeechTranscription(
@@ -267,12 +271,13 @@ export default class EditScreen extends Component<Props, State> {
   speechManagerDidReceiveFinalSpeechTranscription() {
     this.setState({
       playbackTimeSeconds: 0,
-      startTimeSeconds: 0,
     });
-    if (!this.transcriptView) {
-      return;
+    if (this.transcriptView) {
+      this.transcriptView.seekToTime(0);
     }
-    this.transcriptView.seekToTime(0);
+    if (this.playerView) {
+      this.playerView.seekToTime(0);
+    }
   }
 
   seekBarDidSeekToTime(timeSeconds: number) {
@@ -280,10 +285,12 @@ export default class EditScreen extends Component<Props, State> {
     this.setState({
       playbackTimeSeconds: time,
     });
-    if (!this.transcriptView) {
-      return;
+    if (this.transcriptView) {
+      this.transcriptView.seekToTime(0);
     }
-    this.transcriptView.seekToTime(time);
+    if (this.playerView) {
+      this.playerView.seekToTime(0);
+    }
   }
 
   async richTextEditorDidRequestSave(params: {
@@ -357,9 +364,11 @@ export default class EditScreen extends Component<Props, State> {
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.videoWrap}>
             <VideoPlayerView
+              ref={ref => {
+                this.playerView = ref;
+              }}
               style={styles.videoPlayer}
               isPlaying={this.state.isVideoPlaying}
-              startPosition={this.state.startTimeSeconds}
               videoAssetIdentifier={this.props.videoAssetIdentifier}
               onVideoDidBecomeReadyToPlay={this.videoPlayerDidBecomeReadyToPlay}
               onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}

@@ -95,6 +95,11 @@ class VideoPlayerView: UIView {
   public func pause() {
     player.pause()
   }
+  
+  @objc
+  public func restart(completionHandler: @escaping (Bool) -> Void) {
+    seek(to: .zero, completionHandler: completionHandler)
+  }
 
   @objc
   public func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void) {

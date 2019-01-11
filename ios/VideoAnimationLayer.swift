@@ -50,7 +50,7 @@ class VideoAnimationLayer: CALayer {
   @objc
   override init() {
     super.init()
-//    contentsScale = UIScreen.main.scale
+    contentsScale = UIScreen.main.scale
     masksToBounds = true
     opacity = 0.0
 //    rasterizationScale = UIScreen.main.scale
@@ -115,7 +115,6 @@ class VideoAnimationLayer: CALayer {
 
   private func resetAnimation() {
     let containerLayer = setupContainerLayer()
-    pause()
     duration = params.duration?.doubleValue ?? 0
     fillMode = .forwards
     repeatCount = .greatestFiniteMagnitude

@@ -1,16 +1,18 @@
 // @flow
-import React from 'react';
-import { View, requireNativeComponent } from 'react-native';
+import React, { Component } from 'react';
+import { View, requireNativeComponent, NativeModules } from 'react-native';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
 
 const NativeVideoPlayerView = requireNativeComponent('VideoPlayerView');
+const { VideoPlayerViewManager } = NativeModules;
+
+type ReactNativeFiberHostComponent = any;
 
 type Props = {
   style?: ?Style,
   isPlaying: boolean,
-  startPosition: number,
   videoAssetIdentifier: VideoAssetIdentifier,
   onVideoDidFailToLoad: () => void,
   onVideoDidBecomeReadyToPlay: (duration: number) => void,
@@ -31,41 +33,48 @@ const styles = {
   },
 };
 
-export default function VideoPlayerView({
-  style,
-  isPlaying,
-  startPosition,
-  videoAssetIdentifier,
-  onVideoDidBecomeReadyToPlay,
-  onVideoDidFailToLoad,
-  onVideoDidPause,
-  onVideoDidUpdatePlaybackTime,
-  onVideoDidRestart,
-}: Props) {
-  return (
-    <View style={[styles.container, style]}>
-      <NativeVideoPlayerView
-        style={styles.nativeView}
-        isPlaying={isPlaying}
-        startPosition={startPosition}
-        localIdentifier={videoAssetIdentifier}
-        onVideoDidBecomeReadyToPlay={({ nativeEvent }) => {
-          if (!nativeEvent) {
-            return;
-          }
-          onVideoDidBecomeReadyToPlay(nativeEvent.duration);
-        }}
-        onVideoDidFailToLoad={onVideoDidFailToLoad}
-        onVideoDidPause={onVideoDidPause}
-        onVideoDidUpdatePlaybackTime={({ nativeEvent }) => {
-          if (!nativeEvent) {
-            return;
-          }
-          const { playbackTime, duration } = nativeEvent;
-          onVideoDidUpdatePlaybackTime(playbackTime, duration);
-        }}
-        onVideoDidRestart={onVideoDidRestart}
-      />
-    </View>
-  );
+export default class VideoPlayerView extends Component<Props> {
+  nativeComponentRef: ?ReactNativeFiberHostComponent;
+
+  seekToTime(time: number) {
+    if (!this.nativeComponentRef) {
+      return;
+    }
+    VideoPlayerViewManager.seekToTime(this.nativeComponentRef._nativeTag, time);
+  }
+
+  restart() {
+    if (!this.nativeComponentRef) {
+      return;
+    }
+    VideoPlayerViewManager.restart(this.nativeComponentRef._nativeTag);
+  }
+
+  render() {
+    return (
+      <View style={[styles.container, this.props.style]}>
+        <NativeVideoPlayerView
+          style={styles.nativeView}
+          isPlaying={this.props.isPlaying}
+          localIdentifier={this.props.videoAssetIdentifier}
+          onVideoDidBecomeReadyToPlay={({ nativeEvent }) => {
+            if (!nativeEvent) {
+              return;
+            }
+            this.props.onVideoDidBecomeReadyToPlay(nativeEvent.duration);
+          }}
+          onVideoDidFailToLoad={this.props.onVideoDidFailToLoad}
+          onVideoDidPause={this.props.onVideoDidPause}
+          onVideoDidUpdatePlaybackTime={({ nativeEvent }) => {
+            if (!nativeEvent) {
+              return;
+            }
+            const { playbackTime, duration } = nativeEvent;
+            this.props.onVideoDidUpdatePlaybackTime(playbackTime, duration);
+          }}
+          onVideoDidRestart={this.props.onVideoDidRestart}
+        />
+      </View>
+    );
+  }
 }
