@@ -57,8 +57,6 @@ class VideoAnimationLayer: CALayer {
     contentsScale = UIScreen.main.scale
     masksToBounds = true
     opacity = 0.0
-//    rasterizationScale = UIScreen.main.scale
-//    shouldRasterize = true
   }
 
   @objc
@@ -191,8 +189,6 @@ class VideoAnimationLayer: CALayer {
     self.containerLayer?.removeFromSuperlayer()
     addSublayer(containerLayer)
     self.containerLayer = containerLayer
-//    replaceSublayer(self.containerLayer, with: containerLayer)
-//    self.containerLayer = containerLayer
     return containerLayer
   }
 
