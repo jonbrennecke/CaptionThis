@@ -390,6 +390,9 @@ export default class EditScreen extends Component<Props, State> {
                   showRichTextOverlay: !this.state.showRichTextOverlay,
                 })
               }
+              onEditTextButtonPress={() => {
+                this.showEditTranscriptionModal();
+              }}
             />
             <RecordingTranscriptionView
               ref={ref => {

@@ -1,8 +1,6 @@
 // @flow
 import React from 'react';
-import {
-  Animated,
-} from 'react-native';
+import { Animated } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
 import { UI_COLORS } from '../../constants';
