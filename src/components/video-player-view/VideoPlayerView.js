@@ -54,6 +54,9 @@ export default class VideoPlayerView extends Component<Props> {
     return (
       <View style={[styles.container, this.props.style]}>
         <NativeVideoPlayerView
+          ref={ref => {
+            this.nativeComponentRef = ref;
+          }}
           style={styles.nativeView}
           isPlaying={this.props.isPlaying}
           localIdentifier={this.props.videoAssetIdentifier}

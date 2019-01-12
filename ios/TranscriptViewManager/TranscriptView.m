@@ -10,7 +10,6 @@
 - (void)animateWithParams:(VideoAnimationParams *)params {
   VideoAnimationLayer *animationLayer = (VideoAnimationLayer *)self.layer;
   animationLayer.params = params;
-  [animationLayer play];
 }
 
 @end

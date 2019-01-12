@@ -39,7 +39,11 @@ class VideoAnimationLayer: CALayer {
   @objc
   public var params: VideoAnimationParams = VideoAnimationParams() {
     didSet {
+      let stateBeforeReset = playbackState
       resetAnimation()
+      if stateBeforeReset == .playing {
+        resume()
+      }
     }
   }
 
@@ -66,18 +70,17 @@ class VideoAnimationLayer: CALayer {
   @objc
   public func restart() {
     Debug.log(message: "Restarting animation")
-    containerLayer?.removeFromSuperlayer()
-    containerLayer = nil
-    resetAnimation()
-    play()
+    if playbackState != .playing {
+      resume()
+    }
+    seekTo(time: 0)
   }
 
   @objc
   public func seekTo(time: Double) {
-    Debug.log(format: "Animation seeking to %d", time)
-    beginTime = AVCoreAnimationBeginTimeAtZero + time
-    timeOffset = AVCoreAnimationBeginTimeAtZero
-    play()
+    Debug.log(format: "Animation seeking to %0.5f", time)
+    beginTime = convertTime(CACurrentMediaTime(), from: nil) + time
+    timeOffset = 0
   }
 
   @objc
@@ -88,23 +91,8 @@ class VideoAnimationLayer: CALayer {
     timeOffset = convertTime(CACurrentMediaTime(), from: nil)
   }
 
-  @objc
-  public func play() {
-    Debug.log(message: "Playing animation")
-    switch playbackState {
-    case .paused:
-      resume()
-    case .none:
-      playbackState = .playing
-      timeOffset = convertTime(CACurrentMediaTime(), from: nil)
-      beginTime = AVCoreAnimationBeginTimeAtZero
-      speed = 1
-    default:
-      break
-    }
-  }
-
   private func resume() {
+    Debug.log(message: "Resuming paused animation")
     let pausedTimeOffset = timeOffset
     speed = 1
     timeOffset = 0
@@ -114,6 +102,7 @@ class VideoAnimationLayer: CALayer {
   }
 
   private func resetAnimation() {
+    Debug.log(message: "Resetting animation")
     let containerLayer = setupContainerLayer()
     duration = params.duration?.doubleValue ?? 0
     fillMode = .forwards
@@ -186,6 +175,7 @@ class VideoAnimationLayer: CALayer {
     animationIn.duration = 0.1
     add(animationIn, forKey: nil)
 //     TODO: fade out after last segment duration is complete (+delay)
+    pause() // NOTE: Start in paused state
   }
 
   private func setupContainerLayer() -> CALayer {
@@ -197,8 +187,11 @@ class VideoAnimationLayer: CALayer {
     let height = frame.height - paddingVertical * 2
     let width = frame.width - paddingHorizontal * 2
     containerLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
+    self.containerLayer?.removeFromSuperlayer()
     addSublayer(containerLayer)
     self.containerLayer = containerLayer
+//    replaceSublayer(self.containerLayer, with: containerLayer)
+//    self.containerLayer = containerLayer
     return containerLayer
   }
 

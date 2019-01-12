@@ -5,6 +5,7 @@ import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import clamp from 'lodash/clamp';
+import throttle from 'lodash/throttle';
 
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
@@ -247,10 +248,6 @@ export default class EditScreen extends Component<Props, State> {
       return;
     }
     this.transcriptView.restart();
-    if (!this.playerView) {
-      return;
-    }
-    this.playerView.restart();
   }
 
   speechManagerDidReceiveSpeechTranscription(
@@ -273,12 +270,18 @@ export default class EditScreen extends Component<Props, State> {
       playbackTimeSeconds: 0,
     });
     if (this.transcriptView) {
-      this.transcriptView.seekToTime(0);
+      this.transcriptView.restart();
     }
     if (this.playerView) {
-      this.playerView.seekToTime(0);
+      this.playerView.restart();
     }
   }
+
+  seekBarDidSeekToTimeThrottled = throttle(
+    this.seekBarDidSeekToTime,
+    100,
+    { leading: true }
+  )
 
   seekBarDidSeekToTime(timeSeconds: number) {
     const time = clamp(timeSeconds, 0, this.state.durationSeconds);
@@ -286,10 +289,10 @@ export default class EditScreen extends Component<Props, State> {
       playbackTimeSeconds: time,
     });
     if (this.transcriptView) {
-      this.transcriptView.seekToTime(0);
+      this.transcriptView.seekToTime(time);
     }
     if (this.playerView) {
-      this.playerView.seekToTime(0);
+      this.playerView.seekToTime(time);
     }
   }
 
@@ -413,7 +416,7 @@ export default class EditScreen extends Component<Props, State> {
               duration={this.state.durationSeconds}
               playbackTime={this.state.playbackTimeSeconds}
               videoAssetIdentifier={this.props.videoAssetIdentifier}
-              onSeekToTime={this.seekBarDidSeekToTime}
+              onSeekToTime={this.seekBarDidSeekToTimeThrottled}
               onDidBeginDrag={() => this.setState({ isDraggingSeekbar: true })}
               onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
             />
