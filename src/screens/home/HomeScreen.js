@@ -280,6 +280,10 @@ export default class HomeScreen extends Component<Props, State> {
     this.scrollView.scrollTo({ y: SCREEN_HEIGHT });
   }
 
+  tapToFocusDidReceiveFocusPoint(focusPoint: { x: number, y: number }) {
+    
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -301,7 +305,10 @@ export default class HomeScreen extends Component<Props, State> {
             <SafeAreaView style={styles.flex}>
               <View style={styles.cameraPreview}>
                 <CameraPreviewView style={styles.flex} />
-                <CameraTapToFocusView style={styles.absoluteFill} />
+                <CameraTapToFocusView
+                  style={styles.absoluteFill}
+                  onDidRequestFocusOnPoint={this.tapToFocusDidReceiveFocusPoint}
+                />
                 <ScreenGradients />
                 <LiveTranscriptionView
                   style={styles.transcript}

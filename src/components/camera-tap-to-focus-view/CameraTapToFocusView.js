@@ -11,6 +11,7 @@ type Position = { x: number, y: number };
 
 type Props = {
   style?: ?Style,
+  onDidRequestFocusOnPoint: Position => void,
 };
 
 type State = {
@@ -52,13 +53,13 @@ export default class CameraTapToFocusView extends Component<Props, State> {
       return;
     }
     const { locationX, locationY } = event.nativeEvent;
-    this.setState({
-      touchPosition: {
-        x: locationX,
-        y: locationY,
-      },
-    });
+    const touchPosition = {
+      x: locationX,
+      y: locationY,
+    };
+    this.setState({ touchPosition });
     this.animateFocusIn();
+    this.props.onDidRequestFocusOnPoint(touchPosition);
   }
 
   touchableOnPressOut() {
