@@ -9,47 +9,86 @@
 RCT_EXPORT_MODULE(VideoExport)
 
 RCT_EXPORT_METHOD(exportVideo
-                  : (NSDictionary<NSString *, id> *)params withCallback
+                  : (NSDictionary<NSString *, id> *)json withCallback
                   : (RCTResponseSenderBlock)callback) {
-  NSString *localIdentifier = [params objectForKey:@"video"];
-  NSArray<NSDictionary *> *textSegmentsJson =
-      [params objectForKey:@"textSegments"];
-  NSDictionary<NSString *, id> *textColorJson =
-      [params objectForKey:@"textColor"];
-  UIColor *textColor = [RCTConvert UIColor:textColorJson];
-  NSDictionary<NSString *, id> *backgroundColorJson =
-      [params objectForKey:@"backgroundColor"];
-  UIColor *backgroundColor = [RCTConvert UIColor:backgroundColorJson];
-  NSString *fontFamily = [params objectForKey:@"fontFamily"];
-  NSNumber *fontSize = [params objectForKey:@"fontSize"];
+  VideoAnimationParams *params = [[VideoAnimationParams alloc] init];
+  id textSegmentsJson = [json objectForKey:@"textSegments"];
+  if (textSegmentsJson) {
+    NSArray<TextSegmentParams *> *textSegments =
+        [self convertTextSegments:textSegmentsJson];
+    if (textSegments) {
+      params.textSegments = textSegments;
+    }
+  }
+
+  id fontFamilyJson = [json objectForKey:@"fontFamily"];
+  if (fontFamilyJson) {
+    NSString *fontFamily = [RCTConvert NSString:fontFamilyJson];
+    params.fontFamily = fontFamily;
+  }
+
+  id fontSizeJson = [json objectForKey:@"fontSize"];
+  if (fontSizeJson) {
+    NSNumber *fontSize = [RCTConvert NSNumber:fontSizeJson];
+    params.fontSize = fontSize;
+  }
+
+  id durationJson = [json objectForKey:@"duration"];
+  if (durationJson) {
+    NSNumber *duration = [RCTConvert NSNumber:durationJson];
+    params.duration = duration;
+  }
+
+  id textColorJson = [json objectForKey:@"textColor"];
+  if (textColorJson) {
+    UIColor *textColor = [RCTConvert UIColor:textColorJson];
+    params.textColor = textColor;
+  }
+
+  id backgroundColorJson = [json objectForKey:@"backgroundColor"];
+  if (backgroundColorJson) {
+    UIColor *backgroundColor = [RCTConvert UIColor:backgroundColorJson];
+    params.backgroundColor = backgroundColor;
+  }
+
+  id videoIdJson = [json objectForKey:@"video"];
+  if (videoIdJson) {
+    NSString *localIdentifier = [RCTConvert NSString:videoIdJson];
+    [AppDelegate.sharedVideoExportManager
+        exportVideoWithLocalIdentifier:localIdentifier
+                       animationParams:params
+                     completionHandler:^(NSError *_Nullable error,
+                                         BOOL success) {
+                       if (error != nil) {
+                         callback(@[ error, @(NO) ]);
+                         return;
+                       }
+                       callback(@[ [NSNull null], @(success) ]);
+                     }];
+    return;
+  } else {
+    callback(@[ [NSNull null], @(NO) ]);
+  }
+}
+
+// TODO: extend RCTConvert
+- (NSArray<TextSegmentParams *> *)convertTextSegments:(id)json {
+  if (![json isKindOfClass:[NSArray class]]) {
+    return nil;
+  }
   NSMutableArray<TextSegmentParams *> *textSegments =
-      [[NSMutableArray alloc] initWithCapacity:textSegmentsJson.count];
-  for (NSDictionary *json in textSegmentsJson) {
-    NSString *text = [json objectForKey:@"text"];
-    NSNumber *duration = [json objectForKey:@"duration"];
-    NSNumber *timestamp = [json objectForKey:@"timestamp"];
+      [[NSMutableArray alloc] init];
+  for (NSDictionary *segment in json) {
+    NSString *text = [segment objectForKey:@"text"];
+    NSNumber *duration = [segment objectForKey:@"duration"];
+    NSNumber *timestamp = [segment objectForKey:@"timestamp"];
     TextSegmentParams *params =
         [[TextSegmentParams alloc] initWithText:text
                                        duration:[duration floatValue]
                                       timestamp:[timestamp floatValue]];
     [textSegments addObject:params];
   }
-  VideoAnimationParams *animationParams = [[VideoAnimationParams alloc] init];
-  animationParams.textSegments = textSegments;
-  animationParams.fontFamily = fontFamily;
-  animationParams.fontSize = fontSize;
-  animationParams.backgroundColor = backgroundColor;
-  animationParams.textColor = textColor;
-  [AppDelegate.sharedVideoExportManager
-      exportVideoWithLocalIdentifier:localIdentifier
-                     animationParams:animationParams
-                   completionHandler:^(NSError *_Nullable error, BOOL success) {
-                     if (error != nil) {
-                       callback(@[ error, @(NO) ]);
-                       return;
-                     }
-                     callback(@[ [NSNull null], @(success) ]);
-                   }];
+  return textSegments;
 }
 
 @end

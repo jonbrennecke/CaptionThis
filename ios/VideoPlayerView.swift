@@ -7,6 +7,7 @@ protocol VideoPlayerViewDelegate {
   func videoPlayerDidFailToLoad()
   func videoPlayerDidPause()
   func videoPlayerDidUpdatePlaybackTime(_ time: CMTime, duration: CMTime)
+  func videoPlayerDidRestartVideo()
 }
 
 @objc
@@ -40,12 +41,19 @@ class VideoPlayerView: UIView {
         item.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.old, .new], context: nil)
         self.item = item
         self.player.replaceCurrentItem(with: item)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.playerDidPlayToEnd(notification:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
         self.play()
         DispatchQueue.main.async {
+          self.playerLayer.videoGravity = .resizeAspectFill
           self.playerLayer.player = self.player
         }
       }
     }
+  }
+
+  @objc
+  private func playerDidPlayToEnd(notification _: NSNotification) {
+    delegate?.videoPlayerDidRestartVideo()
   }
 
   override func observeValue(forKeyPath keyPath: String?, of _: Any?, change: [NSKeyValueChangeKey: Any]?, context _: UnsafeMutableRawPointer?) {
@@ -86,6 +94,11 @@ class VideoPlayerView: UIView {
   @objc
   public func pause() {
     player.pause()
+  }
+
+  @objc
+  public func restart(completionHandler: @escaping (Bool) -> Void) {
+    seek(to: .zero, completionHandler: completionHandler)
   }
 
   @objc

@@ -46,6 +46,7 @@
 		FC1FE6C621E57C96005F657A /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1FE6C421E57C96005F657A /* Fabric.framework */; };
 		FC1FE6C721E57C96005F657A /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1FE6C521E57C96005F657A /* Crashlytics.framework */; };
 		FC1FE6ED21E5B8DE005F657A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */; };
+		FC1FE7CD21E923D6005F657A /* TranscriptView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC1FE7CC21E923D6005F657A /* TranscriptView.m */; };
 		FC254DFF21CDB03800A9C901 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC983DD521CDAF6800063476 /* libReactNativeNavigation.a */; };
 		FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */; };
 		FC6EA7D721CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */; };
@@ -492,6 +493,8 @@
 		FC1FE6C421E57C96005F657A /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FC1FE6C521E57C96005F657A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FC1FE7CC21E923D6005F657A /* TranscriptView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TranscriptView.m; sourceTree = "<group>"; };
+		FC1FE7CE21E923E0005F657A /* TranscriptView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TranscriptView.h; sourceTree = "<group>"; };
 		FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PassionOne-Regular.ttf"; path = "../assets/fonts/PassionOne-Regular.ttf"; sourceTree = "<group>"; };
 		FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Bold.ttf"; path = "../assets/fonts/PT_Sans-Web-Bold.ttf"; sourceTree = "<group>"; };
 		FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Regular.ttf"; path = "../assets/fonts/PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
@@ -702,6 +705,7 @@
 			isa = PBXGroup;
 			children = (
 				FC6EA7D921CEA457007C3B3E /* fonts */,
+				FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -719,7 +723,6 @@
 				FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */,
 				FCA3971D21DCB3B500347CAB /* VideoAnimationParams.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
-				FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */,
 				FC880D9421D4A48E00856037 /* CameraPreviewView */,
 				FC880D9321D49EA900856037 /* CameraBridgeModule */,
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
@@ -1003,6 +1006,8 @@
 			children = (
 				FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */,
 				FC9374E521DEED5800FD2700 /* TranscriptViewManager.h */,
+				FC1FE7CC21E923D6005F657A /* TranscriptView.m */,
+				FC1FE7CE21E923E0005F657A /* TranscriptView.h */,
 			);
 			path = TranscriptViewManager;
 			sourceTree = "<group>";
@@ -1748,6 +1753,7 @@
 				FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */,
 				FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */,
 				FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */,
+				FC1FE7CD21E923D6005F657A /* TranscriptView.m in Sources */,
 				FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				FCD5F7A821D8225C001F2068 /* VideoSeekbarPreviewView.m in Sources */,

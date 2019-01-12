@@ -4,6 +4,8 @@ import { View, SafeAreaView, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import clamp from 'lodash/clamp';
+import throttle from 'lodash/throttle';
 
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
@@ -41,7 +43,6 @@ import type { SpeechTranscription } from '../../types/speech';
 import type { ExportParams } from '../../utils/VideoExportManager';
 
 type State = {
-  startTimeSeconds: number,
   durationSeconds: number,
   playbackTimeSeconds: number,
   isVideoPlaying: boolean,
@@ -173,8 +174,9 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class EditScreen extends Component<Props, State> {
+  transcriptView: ?RecordingTranscriptionView;
+  playerView: ?VideoPlayerView;
   state: State = {
-    startTimeSeconds: 0,
     playbackTimeSeconds: 0,
     durationSeconds: 0,
     isVideoPlaying: false,
@@ -199,7 +201,16 @@ export default class EditScreen extends Component<Props, State> {
     }
   }
 
+  componentDidUpdate(prevProps: Props) {
+    const speechTranscription = this.getSpeechTranscription(this.props);
+    const prevSpeechTranscription = this.getSpeechTranscription(prevProps);
+    if (speechTranscription?.isFinal && !prevSpeechTranscription?.isFinal) {
+      this.speechManagerDidReceiveFinalSpeechTranscription();
+    }
+  }
+
   videoPlayerDidBecomeReadyToPlay(duration: number) {
+    // TODO: check if final transcription already exists (e.g. if the user clicked into Edit, then clicked out and back in again)
     this.setState({ durationSeconds: duration, isVideoPlaying: true });
     this.props.beginSpeechTranscriptionWithVideoAsset(
       this.props.videoAssetIdentifier
@@ -208,10 +219,18 @@ export default class EditScreen extends Component<Props, State> {
 
   videoPlayerDidFailToLoad() {
     this.setState({ isVideoPlaying: false });
+    if (!this.transcriptView) {
+      return;
+    }
+    this.transcriptView.pause();
   }
 
   videoPlayerDidPause() {
     this.setState({ isVideoPlaying: false });
+    if (!this.transcriptView) {
+      return;
+    }
+    this.transcriptView.pause();
   }
 
   videoPlayerDidUpdatePlaybackTime(playbackTime: number, duration: number) {
@@ -222,6 +241,13 @@ export default class EditScreen extends Component<Props, State> {
       playbackTimeSeconds: playbackTime,
       durationSeconds: duration,
     });
+  }
+
+  videoPlayerDidRestart() {
+    if (!this.transcriptView) {
+      return;
+    }
+    this.transcriptView.restart();
   }
 
   speechManagerDidReceiveSpeechTranscription(
@@ -239,11 +265,33 @@ export default class EditScreen extends Component<Props, State> {
     );
   }
 
-  seekBarDidSeekToTime(timeSeconds: number) {
+  speechManagerDidReceiveFinalSpeechTranscription() {
     this.setState({
-      playbackTimeSeconds: timeSeconds,
-      startTimeSeconds: timeSeconds,
+      playbackTimeSeconds: 0,
     });
+    if (this.transcriptView) {
+      this.transcriptView.restart();
+    }
+    if (this.playerView) {
+      this.playerView.restart();
+    }
+  }
+
+  seekBarDidSeekToTimeThrottled = throttle(this.seekBarDidSeekToTime, 100, {
+    leading: true,
+  });
+
+  seekBarDidSeekToTime(timeSeconds: number) {
+    const time = clamp(timeSeconds, 0, this.state.durationSeconds);
+    this.setState({
+      playbackTimeSeconds: time,
+    });
+    if (this.transcriptView) {
+      this.transcriptView.seekToTime(time);
+    }
+    if (this.playerView) {
+      this.playerView.seekToTime(time);
+    }
   }
 
   async richTextEditorDidRequestSave(params: {
@@ -277,6 +325,7 @@ export default class EditScreen extends Component<Props, State> {
       backgroundColor: this.props.backgroundColor,
       fontFamily: this.props.fontFamily,
       fontSize: this.props.fontSize,
+      duration: this.state.durationSeconds,
     });
   }
 
@@ -292,12 +341,17 @@ export default class EditScreen extends Component<Props, State> {
     }));
   }
 
-  getSpeechTranscription(): ?SpeechTranscription {
-    const { speechTranscriptions, videoAssetIdentifier: key } = this.props;
+  getSpeechTranscription(props?: Props = this.props): ?SpeechTranscription {
+    const { speechTranscriptions, videoAssetIdentifier: key } = props;
     if (!speechTranscriptions.has(key)) {
       return null;
     }
     return speechTranscriptions.get(key);
+  }
+
+  hasFinalSpeechTranscription(): boolean {
+    const speechTranscription = this.getSpeechTranscription();
+    return !!(speechTranscription && speechTranscription.isFinal);
   }
 
   async showEditTranscriptionModal() {
@@ -305,17 +359,17 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   render() {
-    const speechTranscription = this.getSpeechTranscription();
-    const hasFinalTranscription =
-      speechTranscription && speechTranscription.isFinal;
+    const hasFinalTranscription = this.hasFinalSpeechTranscription();
     return (
       <View style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.videoWrap}>
             <VideoPlayerView
+              ref={ref => {
+                this.playerView = ref;
+              }}
               style={styles.videoPlayer}
               isPlaying={this.state.isVideoPlaying}
-              startPosition={this.state.startTimeSeconds}
               videoAssetIdentifier={this.props.videoAssetIdentifier}
               onVideoDidBecomeReadyToPlay={this.videoPlayerDidBecomeReadyToPlay}
               onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
@@ -323,6 +377,7 @@ export default class EditScreen extends Component<Props, State> {
               onVideoDidUpdatePlaybackTime={
                 this.videoPlayerDidUpdatePlaybackTime
               }
+              onVideoDidRestart={this.videoPlayerDidRestart}
             />
             <ScreenGradients />
             <EditScreenTopControls
@@ -336,19 +391,22 @@ export default class EditScreen extends Component<Props, State> {
                 })
               }
             />
-            {hasFinalTranscription && (
-              <RecordingTranscriptionView
-                style={styles.transcription}
-                textColor={this.props.textColor}
-                backgroundColor={this.props.backgroundColor}
-                fontFamily={this.props.fontFamily}
-                fontSize={this.props.fontSize}
-                speechTranscription={this.getSpeechTranscription()}
-                onPress={() => {
-                  this.showEditTranscriptionModal();
-                }}
-              />
-            )}
+            <RecordingTranscriptionView
+              ref={ref => {
+                this.transcriptView = ref;
+              }}
+              hasFinalTranscription={hasFinalTranscription}
+              style={styles.transcription}
+              duration={this.state.durationSeconds}
+              textColor={this.props.textColor}
+              backgroundColor={this.props.backgroundColor}
+              fontFamily={this.props.fontFamily}
+              fontSize={this.props.fontSize}
+              speechTranscription={this.getSpeechTranscription()}
+              onPress={() => {
+                this.showEditTranscriptionModal();
+              }}
+            />
           </View>
           <View style={styles.editControls}>
             <VideoSeekbar
@@ -356,13 +414,15 @@ export default class EditScreen extends Component<Props, State> {
               duration={this.state.durationSeconds}
               playbackTime={this.state.playbackTimeSeconds}
               videoAssetIdentifier={this.props.videoAssetIdentifier}
-              onSeekToTime={this.seekBarDidSeekToTime}
+              onSeekToTime={this.seekBarDidSeekToTimeThrottled}
               onDidBeginDrag={() => this.setState({ isDraggingSeekbar: true })}
               onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
             />
           </View>
         </SafeAreaView>
         <EditScreenRichTextOverlay
+          hasFinalTranscription={hasFinalTranscription}
+          duration={this.state.durationSeconds}
           isVisible={this.state.showRichTextOverlay}
           textColor={this.props.textColor}
           backgroundColor={this.props.backgroundColor}
