@@ -6,7 +6,8 @@ import { UI_COLORS } from '../../constants';
 import * as Color from '../../utils/Color';
 import * as Fonts from '../../utils/Fonts';
 import ChevronLeftIcon from '../../components/chevron-left-icon/ChevronLeftIcon';
-import WandIcon from '../../components/wand-icon/WandIcon';
+import OptionsIcon from '../../components/icons/OptionsIcon';
+import EditIcon from '../../components/icons/EditIcon';
 import CheckmarkIcon from '../../components/checkmark-icon/CheckmarkIcon';
 
 import type { Style } from '../../types/react';
@@ -17,6 +18,7 @@ type Props = {
   onBackButtonPress: () => void,
   onExportButtonPress: () => void,
   onStylizeButtonPress: () => void,
+  onEditTextButtonPress: () => void,
 };
 
 const styles = {
@@ -67,6 +69,7 @@ export default function EditScreenTopControls({
   onBackButtonPress,
   onExportButtonPress,
   onStylizeButtonPress,
+  onEditTextButtonPress,
 }: Props) {
   const white = Color.hexToRgbaObject(UI_COLORS.WHITE);
   return (
@@ -79,7 +82,13 @@ export default function EditScreenTopControls({
           style={styles.buttonLeft}
           onPress={onStylizeButtonPress}
         >
-          <WandIcon style={styles.icon} color={white} />
+          <OptionsIcon style={styles.icon} color={white} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.buttonLeft}
+          onPress={onEditTextButtonPress}
+        >
+          <EditIcon style={styles.icon} color={white} />
         </TouchableOpacity>
       </View>
       <View style={styles.buttonGroupRight}>
