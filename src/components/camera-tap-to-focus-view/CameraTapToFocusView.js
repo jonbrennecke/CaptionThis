@@ -68,7 +68,7 @@ export default class CameraTapToFocusView extends Component<Props, State> {
   animateFocusIn() {
     Animated.timing(this.anim, {
       toValue: 1,
-      duration: 300,
+      duration: 600,
       easing: Easing.bounce,
     }).start();
   }
@@ -76,7 +76,7 @@ export default class CameraTapToFocusView extends Component<Props, State> {
   animateFocusOut() {
     Animated.timing(this.anim, {
       toValue: 0,
-      duration: 300,
+      duration: 600,
       easing: Easing.bounce,
     }).start();
   }
