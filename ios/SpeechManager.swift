@@ -15,6 +15,8 @@ class SpeechManager: NSObject {
 
   private var recognizer: SFSpeechRecognizer
   private var audioEngine: AVAudioEngine
+  private static let operationQueue = OperationQueue()
+  private static let dispatchQueue = DispatchQueue(label: "Speech recognizer queue")
 
   @objc
   public var delegate: SpeechManagerDelegate?
@@ -22,6 +24,7 @@ class SpeechManager: NSObject {
   override init() {
     recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))! // FIXME:
     recognizer.defaultTaskHint = .dictation
+    recognizer.queue = SpeechManager.operationQueue
     audioEngine = AVAudioEngine()
     super.init()
     recognizer.delegate = self
@@ -89,17 +92,19 @@ class SpeechManager: NSObject {
   }
 
   @objc
-  public func startCaptureForAsset(_ asset: AVAsset, callback: (Error?, SFSpeechAudioBufferRecognitionRequest?) -> Void) {
-    do {
-      guard let request = try createRecognitionRequestForAssetOrThrow(asset) else {
-        callback(nil, nil)
-        return
+  public func startCaptureForAsset(_ asset: AVAsset, callback: @escaping (Error?, SFSpeechAudioBufferRecognitionRequest?) -> Void) {
+    SpeechManager.dispatchQueue.async {
+      do {
+        guard let request = try self.createRecognitionRequestForAssetOrThrow(asset) else {
+          callback(nil, nil)
+          return
+        }
+        self.startTranscription(withRequest: request)
+        callback(nil, request)
+      } catch {
+        Debug.log(error: error)
+        callback(error, nil)
       }
-      startTranscription(withRequest: request)
-      callback(nil, request)
-    } catch {
-      Debug.log(error: error)
-      callback(error, nil)
     }
   }
 
