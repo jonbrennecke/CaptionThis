@@ -70,6 +70,7 @@ class VideoAnimationLayer: CALayer {
   @objc
   public func restart() {
     Debug.log(message: "Restarting animation")
+    resetAnimation()
     if playbackState != .playing {
       resume()
     }
