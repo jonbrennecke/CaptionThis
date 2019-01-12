@@ -354,6 +354,8 @@ class CameraManager: NSObject {
       PHPhotoLibrary.shared().performChanges({
         if #available(iOS 9.0, *) {
           let assetRequest = PHAssetCreationRequest.creationRequestForAssetFromVideo(atFileURL: url)
+          // TODO: eventually there should be a user-enabled option to save recorded videos in the library
+          assetRequest?.isHidden = true
           guard let placeholder = assetRequest?.placeholderForCreatedAsset else {
             Debug.log(format: "Asset placeholder could not be created. URL = %@", url.path)
             return
