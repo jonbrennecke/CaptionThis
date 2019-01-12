@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Text, StatusBar } from 'react-native';
+import { View, ScrollView, Dimensions, Text, StatusBar, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 // $FlowFixMe
@@ -37,6 +37,7 @@ import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumb
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCaptureControls from './HomeScreenCaptureControls';
 import LiveTranscriptionView from '../../components/live-transcription-view/LiveTranscriptionView';
+import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 
 import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
@@ -119,6 +120,7 @@ const styles = {
     left: 0,
     right: 0,
   },
+  absoluteFill: StyleSheet.absoluteFill,
 };
 
 function mapStateToProps(state: AppState): StateProps {
@@ -292,6 +294,7 @@ export default class HomeScreen extends Component<Props, State> {
             <SafeAreaView style={styles.flex}>
               <View style={styles.cameraPreview}>
                 <CameraPreviewView style={styles.flex} />
+                <CameraTapToFocusView style={styles.absoluteFill} />
                 <ScreenGradients />
                 <LiveTranscriptionView
                   style={styles.transcript}
