@@ -1,6 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Text, StatusBar } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Dimensions,
+  Text,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 // $FlowFixMe
@@ -37,6 +44,7 @@ import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumb
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCaptureControls from './HomeScreenCaptureControls';
 import LiveTranscriptionView from '../../components/live-transcription-view/LiveTranscriptionView';
+import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 
 import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
@@ -119,6 +127,7 @@ const styles = {
     left: 0,
     right: 0,
   },
+  absoluteFill: StyleSheet.absoluteFill,
 };
 
 function mapStateToProps(state: AppState): StateProps {
@@ -161,6 +170,7 @@ export default class HomeScreen extends Component<Props, State> {
     currentVideoIdentifier: null,
   };
   scrollView: ?ScrollView;
+  cameraView: ?CameraPreviewView;
 
   // eslint-disable-next-line flowtype/generic-spacing
   speechTranscriptionSubscription: ?Return<
@@ -271,6 +281,13 @@ export default class HomeScreen extends Component<Props, State> {
     this.scrollView.scrollTo({ y: SCREEN_HEIGHT });
   }
 
+  tapToFocusDidReceiveFocusPoint(focusPoint: { x: number, y: number }) {
+    if (!this.cameraView) {
+      return;
+    }
+    this.cameraView.focusOnPoint(focusPoint);
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -285,13 +302,23 @@ export default class HomeScreen extends Component<Props, State> {
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="always"
             overScrollMode="always"
+            keyboardDismissMode="on-drag"
             alwaysBounceVertical
             pagingEnabled
             contentInsetAdjustmentBehavior="never"
           >
             <SafeAreaView style={styles.flex}>
               <View style={styles.cameraPreview}>
-                <CameraPreviewView style={styles.flex} />
+                <CameraPreviewView
+                  ref={ref => {
+                    this.cameraView = ref;
+                  }}
+                  style={styles.flex}
+                />
+                <CameraTapToFocusView
+                  style={styles.absoluteFill}
+                  onDidRequestFocusOnPoint={this.tapToFocusDidReceiveFocusPoint}
+                />
                 <ScreenGradients />
                 <LiveTranscriptionView
                   style={styles.transcript}
