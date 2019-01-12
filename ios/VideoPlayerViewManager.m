@@ -86,34 +86,38 @@ RCT_EXPORT_VIEW_PROPERTY(onVideoDidRestart, RCTBubblingEventBlock)
 
 RCT_EXPORT_METHOD(restart : (nonnull NSNumber *)reactTag) {
   [self.bridge.uiManager
-   addUIBlock:^(RCTUIManager *uiManager,
-                NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-     VideoPlayerViewWrap *view = (VideoPlayerViewWrap *)viewRegistry[reactTag];
-     if (!view || ![view isKindOfClass:[VideoPlayerViewWrap class]]) {
-       RCTLogError(@"Cannot find VideoPlayerView with tag #%@", reactTag);
-       return;
-     }
-     [view.playerView restartWithCompletionHandler:^(BOOL success) {
-       [view.playerView play];
-     }];
-   }];
+      addUIBlock:^(RCTUIManager *uiManager,
+                   NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+        VideoPlayerViewWrap *view =
+            (VideoPlayerViewWrap *)viewRegistry[reactTag];
+        if (!view || ![view isKindOfClass:[VideoPlayerViewWrap class]]) {
+          RCTLogError(@"Cannot find VideoPlayerView with tag #%@", reactTag);
+          return;
+        }
+        [view.playerView restartWithCompletionHandler:^(BOOL success) {
+          [view.playerView play];
+        }];
+      }];
 }
 
-RCT_EXPORT_METHOD(seekToTime : (nonnull NSNumber *)reactTag time:(nonnull NSNumber*)seekTime) {
+RCT_EXPORT_METHOD(seekToTime
+                  : (nonnull NSNumber *)reactTag time
+                  : (nonnull NSNumber *)seekTime) {
   [self.bridge.uiManager
-   addUIBlock:^(RCTUIManager *uiManager,
-                NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-     VideoPlayerViewWrap *view = (VideoPlayerViewWrap *)viewRegistry[reactTag];
-     if (!view || ![view isKindOfClass:[VideoPlayerViewWrap class]]) {
-       RCTLogError(@"Cannot find VideoPlayerView with tag #%@", reactTag);
-       return;
-     }
-     CMTime time = CMTimeMakeWithSeconds([seekTime floatValue], 600);
-     [view.playerView seekTo:time
-           completionHandler:^(BOOL success) {
-             [view.playerView play];
-           }];
-   }];
+      addUIBlock:^(RCTUIManager *uiManager,
+                   NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+        VideoPlayerViewWrap *view =
+            (VideoPlayerViewWrap *)viewRegistry[reactTag];
+        if (!view || ![view isKindOfClass:[VideoPlayerViewWrap class]]) {
+          RCTLogError(@"Cannot find VideoPlayerView with tag #%@", reactTag);
+          return;
+        }
+        CMTime time = CMTimeMakeWithSeconds([seekTime floatValue], 600);
+        [view.playerView seekTo:time
+              completionHandler:^(BOOL success) {
+                [view.playerView play];
+              }];
+      }];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {

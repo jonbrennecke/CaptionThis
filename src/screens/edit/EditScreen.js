@@ -277,11 +277,9 @@ export default class EditScreen extends Component<Props, State> {
     }
   }
 
-  seekBarDidSeekToTimeThrottled = throttle(
-    this.seekBarDidSeekToTime,
-    100,
-    { leading: true }
-  )
+  seekBarDidSeekToTimeThrottled = throttle(this.seekBarDidSeekToTime, 100, {
+    leading: true,
+  });
 
   seekBarDidSeekToTime(timeSeconds: number) {
     const time = clamp(timeSeconds, 0, this.state.durationSeconds);
