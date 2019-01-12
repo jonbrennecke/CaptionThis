@@ -79,7 +79,7 @@ const styles = {
     width: 75,
     borderRadius: 37.5,
     position: 'absolute',
-  }
+  },
 };
 
 // $FlowFixMe
