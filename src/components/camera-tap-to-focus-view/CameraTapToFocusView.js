@@ -33,9 +33,9 @@ const styles = {
         scale: anim.interpolate({
           inputRange: [0, 1],
           outputRange: [0.25, 1],
-        })
+        }),
       },
-    ]
+    ],
   }),
 };
 
@@ -44,7 +44,7 @@ const styles = {
 export default class CameraTapToFocusView extends Component<Props, State> {
   state = {
     touchPosition: { x: 0, y: 0 },
-  }
+  };
   anim: Animated.Value = new Animated.Value(0);
 
   touchableOnPressIn(event: any) {
@@ -83,9 +83,14 @@ export default class CameraTapToFocusView extends Component<Props, State> {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPressIn={this.touchableOnPressIn} onPressOut={this.touchableOnPressOut}>
+      <TouchableWithoutFeedback
+        onPressIn={this.touchableOnPressIn}
+        onPressOut={this.touchableOnPressOut}
+      >
         <View style={[styles.container, this.props.style]}>
-          <Animated.View style={styles.focusPoint(this.state.touchPosition, this.anim)}/>
+          <Animated.View
+            style={styles.focusPoint(this.state.touchPosition, this.anim)}
+          />
         </View>
       </TouchableWithoutFeedback>
     );

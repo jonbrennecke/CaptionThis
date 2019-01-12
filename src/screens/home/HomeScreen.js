@@ -1,6 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Text, StatusBar, StyleSheet } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Dimensions,
+  Text,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 // $FlowFixMe
