@@ -170,6 +170,7 @@ export default class HomeScreen extends Component<Props, State> {
     currentVideoIdentifier: null,
   };
   scrollView: ?ScrollView;
+  cameraView: ?CameraPreviewView;
 
   // eslint-disable-next-line flowtype/generic-spacing
   speechTranscriptionSubscription: ?Return<
@@ -281,7 +282,10 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   tapToFocusDidReceiveFocusPoint(focusPoint: { x: number, y: number }) {
-    
+    if (!this.cameraView) {
+      return;
+    }
+    this.cameraView.focusOnPoint(focusPoint);
   }
 
   render() {
@@ -298,13 +302,19 @@ export default class HomeScreen extends Component<Props, State> {
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="always"
             overScrollMode="always"
+            keyboardDismissMode="on-drag"
             alwaysBounceVertical
             pagingEnabled
             contentInsetAdjustmentBehavior="never"
           >
             <SafeAreaView style={styles.flex}>
               <View style={styles.cameraPreview}>
-                <CameraPreviewView style={styles.flex} />
+                <CameraPreviewView
+                  ref={ref => {
+                    this.cameraView = ref;
+                  }}
+                  style={styles.flex}
+                />
                 <CameraTapToFocusView
                   style={styles.absoluteFill}
                   onDidRequestFocusOnPoint={this.tapToFocusDidReceiveFocusPoint}

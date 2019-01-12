@@ -199,6 +199,9 @@ class CameraManager: NSObject {
       Debug.log(message: "Built in wide angle camera (front) is not available.")
       return .failure
     }
+    if videoCaptureDevice.isFocusModeSupported(.autoFocus) {
+      videoCaptureDevice.focusMode = .autoFocus
+    }
 
     // setup videoCaptureDeviceInput
     videoCaptureDeviceInput = try? AVCaptureDeviceInput(device: videoCaptureDevice)
@@ -311,6 +314,33 @@ class CameraManager: NSObject {
       return .failure
     }
     return .success
+  }
+
+  @objc
+  public func focusOnPoint(_ focusPointInLayerCoords: CGPoint) {
+    Debug.log(format: "Setting focus to %0.2f, %0.2f", focusPointInLayerCoords.x, focusPointInLayerCoords.y)
+    guard let device = videoCaptureDevice else {
+      return
+    }
+    let focusPointInDeviceCoords = previewLayer.captureDevicePointConverted(fromLayerPoint: focusPointInLayerCoords)
+    do {
+      try device.lockForConfiguration()
+      if device.isFocusModeSupported(.autoFocus) {
+        device.focusMode = .autoFocus
+      }
+      if device.isFocusPointOfInterestSupported {
+        device.focusPointOfInterest = focusPointInDeviceCoords
+      }
+      if device.isExposureModeSupported(.continuousAutoExposure) {
+        device.exposureMode = .continuousAutoExposure
+      }
+      if device.isExposurePointOfInterestSupported {
+        device.exposurePointOfInterest = focusPointInDeviceCoords
+      }
+      device.unlockForConfiguration()
+    } catch {
+      Debug.log(error: error)
+    }
   }
 
   public func createVideoAsset(forURL url: URL, completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> Void) {
