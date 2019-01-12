@@ -19,6 +19,7 @@ import type { SpeechTranscription } from '../../types/speech';
 
 type Props = {
   style?: ?Style,
+  hasFinalTranscription: boolean,
   isVisible: boolean,
   duration: number,
   fontFamily: string,
@@ -155,6 +156,7 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
                 style={styles.inside}
                 duration={this.props.duration}
                 isVisible={this.props.isVisible}
+                hasFinalTranscription={this.props.hasFinalTranscription}
                 speechTranscription={this.props.speechTranscription}
                 fontSize={this.props.fontSize}
                 fontFamily={this.props.fontFamily}

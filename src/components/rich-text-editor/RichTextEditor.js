@@ -20,6 +20,7 @@ import type { SpeechTranscription } from '../../types/speech';
 
 type Props = {
   style?: ?Style,
+  hasFinalTranscription: boolean,
   isVisible: boolean,
   fontSize: number,
   fontFamily: string,
@@ -94,6 +95,7 @@ const styles = {
 export default class RichTextEditor extends Component<Props, State> {
   colorPickerAnim: Animated.Value = new Animated.Value(0);
   mainContentsAnim: Animated.Value = new Animated.Value(0);
+  transcriptView: ?RecordingTranscriptionView;
 
   constructor(props: Props) {
     super(props);
@@ -104,6 +106,20 @@ export default class RichTextEditor extends Component<Props, State> {
       fontFamily: props.fontFamily,
       fontSize: props.fontSize,
     };
+  }
+
+  componentDidMount() {
+    if (this.props.hasFinalTranscription && this.transcriptView) {
+      this.transcriptView.restart();
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.hasFinalTranscription && !prevProps.hasFinalTranscription) {
+      if (this.transcriptView) {
+        this.transcriptView.restart();
+      }
+    }
   }
 
   fontFamilyListDidSelectFontFamily(fontFamily: string) {
@@ -191,8 +207,11 @@ export default class RichTextEditor extends Component<Props, State> {
     return (
       <View style={[styles.container, this.props.style]}>
         <RecordingTranscriptionView
+          ref={ref => {
+            this.transcriptView = ref;
+          }}
+          hasFinalTranscription={this.props.hasFinalTranscription}
           style={styles.transcription}
-          playbackTime={0}
           duration={this.props.duration}
           textColor={this.state.textColor}
           backgroundColor={this.state.backgroundColor}

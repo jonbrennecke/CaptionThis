@@ -421,6 +421,7 @@ export default class EditScreen extends Component<Props, State> {
           </View>
         </SafeAreaView>
         <EditScreenRichTextOverlay
+          hasFinalTranscription={hasFinalTranscription}
           duration={this.state.durationSeconds}
           isVisible={this.state.showRichTextOverlay}
           textColor={this.props.textColor}
