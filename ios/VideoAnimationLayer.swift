@@ -62,9 +62,9 @@ class VideoAnimationLayer: CALayer {
   }
 
   @objc
-  init(for outputKind: VideoAnimationOutputKind) {
+  convenience init(for outputKind: VideoAnimationOutputKind) {
+    self.init()
     self.outputKind = outputKind
-    super.init()
   }
 
   @objc
@@ -92,7 +92,7 @@ class VideoAnimationLayer: CALayer {
     timeOffset = convertTime(CACurrentMediaTime(), from: nil)
   }
 
-  private func resume() {
+  public func resume() {
     Debug.log(message: "Resuming paused animation")
     let pausedTimeOffset = timeOffset
     speed = 1
