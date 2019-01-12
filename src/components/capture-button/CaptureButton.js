@@ -5,11 +5,13 @@ import {
   Animated,
   TouchableWithoutFeedback,
   MaskedViewIOS,
+  Easing,
 } from 'react-native';
 import { autobind } from 'core-decorators';
 import { BlurView } from 'react-native-blur';
 
 import { UI_COLORS } from '../../constants';
+import CaptureButtonProgressIndicator from './CaptureButtonProgressIndicator';
 
 import type { Style } from '../../types/react';
 
@@ -72,18 +74,30 @@ const styles = {
     bottom: 0,
     backgroundColor: UI_COLORS.WHITE,
   },
+  progress: {
+    height: 75,
+    width: 75,
+    borderRadius: 37.5,
+    position: 'absolute',
+  }
 };
 
 // $FlowFixMe
 @autobind
 export default class ColorPicker extends Component<Props> {
-  outerViewAnim: Animated.Value = new Animated.Value(1.0);
+  outerViewAnim: Animated.Value = new Animated.Value(1);
+  progressAnim: Animated.Value = new Animated.Value(0);
 
   touchableOnPressIn() {
     Animated.parallel([
       Animated.spring(this.outerViewAnim, {
         toValue: 1.35,
         duration: 350,
+      }),
+      Animated.timing(this.progressAnim, {
+        toValue: 100,
+        duration: 60000, // 1 minute
+        easing: Easing.linear,
       }),
     ]).start();
     this.props.onRequestBeginCapture();
@@ -94,6 +108,10 @@ export default class ColorPicker extends Component<Props> {
       Animated.spring(this.outerViewAnim, {
         toValue: 1.0,
         duration: 350,
+      }),
+      Animated.spring(this.progressAnim, {
+        toValue: 0,
+        duration: 400,
       }),
     ]).start();
     this.props.onRequestEndCapture();
@@ -118,6 +136,10 @@ export default class ColorPicker extends Component<Props> {
           >
             <View style={styles.inner} />
           </MaskedViewIOS>
+          <CaptureButtonProgressIndicator
+            style={styles.progress}
+            progress={this.progressAnim}
+          />
         </Animated.View>
       </TouchableWithoutFeedback>
     );
