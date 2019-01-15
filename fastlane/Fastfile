@@ -39,6 +39,12 @@ platform :ios do |options|
   end
 
   lane :deploy_appstore do |options|
+    increment_build_number(
+      xcodeproj: './ios/CaptionThis.xcodeproj',
+    )
+    increment_version_number(
+      xcodeproj: './ios/CaptionThis.xcodeproj',
+    )
     app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
     itc_team_id = CredentialsManager::AppfileConfig.try_fetch_value(:itc_team_id)
     build(release: true, export_method: 'app-store')
