@@ -4,6 +4,7 @@ import Speech
 @objc
 protocol SpeechManagerDelegate {
   func speechManagerDidReceiveSpeechTranscription(isFinal: Bool, transcription: SpeechManager.SpeechTranscription)
+  func speechManagerDidNotDetectSpeech()
   func speechManagerDidBecomeAvailable()
   func speechManagerDidBecomeUnavailable()
 }
@@ -161,6 +162,9 @@ extension SpeechManager: SFSpeechRecognizerDelegate {
 extension SpeechManager: SFSpeechRecognitionTaskDelegate {
   func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
     Debug.log(format: "Speech recognizer finished task. Success == %@", success ? "true" : "false")
+    if !success {
+      delegate?.speechManagerDidNotDetectSpeech()
+    }
   }
 
   func speechRecognitionTaskWasCancelled(_: SFSpeechRecognitionTask) {
