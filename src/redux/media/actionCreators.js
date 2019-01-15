@@ -171,7 +171,7 @@ export const receiveSpeechTranscriptionFailure = (
 ) => {
   return (dispatch: Dispatch<ReceiveVideoAssetPayload>) => {
     dispatch({
-      type: ACTION_TYPES.DID_UNSUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION,
+      type: ACTION_TYPES.DID_NOT_SUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION,
       payload: { videoAssetIdentifier },
     });
   };

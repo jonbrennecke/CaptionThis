@@ -6,6 +6,7 @@ import {
   FONT_FAMILIES,
   UI_COLORS,
   TEXT_COLORS,
+  TRANSCRIPTION_STATE,
 } from '../../constants';
 import * as Color from '../../utils/Color';
 
@@ -32,6 +33,7 @@ const initialState: MediaState = {
     videoAssetIdentifier: null,
   },
   speechTranscriptions: new Map(),
+  speechTranscriptionState: TRANSCRIPTION_STATE.NONE,
   videoAssetIdentifiers: [],
   mediaLoadingState: LOADING_STATE.NOT_LOADED,
   videoExportState: LOADING_STATE.NOT_LOADED,
@@ -45,7 +47,9 @@ const actions = {
   [ACTION_TYPES.DID_START_LOADING_VIDEO_ASSETS]: didStartLoadingVideoAssets,
   [ACTION_TYPES.DID_SUCCESSFULLY_LOAD_VIDEO_ASSETS]: didSuccessfullyLoadVideoAssets,
   [ACTION_TYPES.DID_UNSUCCESSFULLY_LOAD_VIDEO_ASSETS]: didUnsuccessfullyLoadVideoAssets,
+  [ACTION_TYPES.DID_START_SPEECH_TRANSCRIPTION]: didStartSpeechTranscription,
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION]: didSuccessfullyReceiveSpeechTranscription,
+  [ACTION_TYPES.DID_NOT_SUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION]: didNotSuccessfullyReceiveSpeechTranscription,
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_FONT_FAMILY]: didSuccessfullyReceiveFontFamily,
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_BACKGROUND_COLOR]: didSuccessfullyReceiveBackgroundColor,
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_TEXT_COLOR]: didSuccessfullyReceiveTextColor,
@@ -86,6 +90,13 @@ function didUnsuccessfullyLoadVideoAssets(state: MediaState): MediaState {
   };
 }
 
+function didStartSpeechTranscription(state: MediaState): MediaState {
+  return {
+    ...state,
+    speechTranscriptionState: TRANSCRIPTION_STATE.IN_PROGRESS,
+  };
+}
+
 function didSuccessfullyReceiveSpeechTranscription(
   state: MediaState,
   { payload }: Action<ReceiveSpeechTranscriptionPayload>
@@ -98,6 +109,16 @@ function didSuccessfullyReceiveSpeechTranscription(
   return {
     ...state,
     speechTranscriptions,
+    speechTranscriptionState: TRANSCRIPTION_STATE.IN_PROGRESS,
+  };
+}
+
+function didNotSuccessfullyReceiveSpeechTranscription(
+  state: MediaState
+): MediaState {
+  return {
+    ...state,
+    speechTranscriptionState: TRANSCRIPTION_STATE.FAILED,
   };
 }
 

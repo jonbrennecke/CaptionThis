@@ -1,5 +1,5 @@
 // @flow
-import { LOADING_STATE } from '../../constants';
+import { LOADING_STATE, TRANSCRIPTION_STATE } from '../../constants';
 
 import type { AppState } from '../../types/redux';
 import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
@@ -54,4 +54,8 @@ export function isExportingVideo(state: AppState): boolean {
 
 export function getFontSize(state: AppState): number {
   return state.media.fontSize;
+}
+
+export function didSpeechRecognitionFail(state: AppState): boolean {
+  return state.media.speechTranscriptionState === TRANSCRIPTION_STATE.FAILED;
 }
