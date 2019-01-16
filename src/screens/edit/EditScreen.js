@@ -233,7 +233,10 @@ export default class EditScreen extends Component<Props, State> {
       [
         {
           text: 'OK',
-          onPress: () => Navigation.pop(this.props.componentId),
+          onPress: async () => {
+            await Navigation.dismissAllModals();
+            await Navigation.popToRoot(this.props.componentId);
+          },
         },
       ],
       { cancelable: false }
