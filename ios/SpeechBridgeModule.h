@@ -12,4 +12,5 @@
                                                         transcription;
 - (void)speechManagerDidBecomeAvailable;
 - (void)speechManagerDidBecomeUnavailable;
+- (void)speechManagerDidNotDetectSpeech;
 @end

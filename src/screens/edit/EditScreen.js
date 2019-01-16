@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, SafeAreaView, Dimensions } from 'react-native';
+import { View, SafeAreaView, Dimensions, Alert } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -34,6 +34,7 @@ import {
   getFontFamily,
   getFontSize,
   isExportingVideo,
+  didSpeechRecognitionFail,
 } from '../../redux/media/selectors';
 
 import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
@@ -62,6 +63,7 @@ type StateProps = {
   textColor: ColorRGBA,
   isExportingVideo: boolean,
   fontSize: number,
+  didSpeechRecognitionFail: boolean,
 };
 
 type DispatchProps = {
@@ -144,6 +146,7 @@ function mapStateToProps(state: AppState): StateProps {
     textColor: getTextColor(state),
     isExportingVideo: isExportingVideo(state),
     fontSize: getFontSize(state),
+    didSpeechRecognitionFail: didSpeechRecognitionFail(state),
   };
 }
 
@@ -185,19 +188,27 @@ export default class EditScreen extends Component<Props, State> {
   };
 
   // eslint-disable-next-line flowtype/generic-spacing
-  speechTranscriptionSubscription: ?Return<
-    typeof SpeechManager.addSpeechTranscriptionListener
+  didReceiveSpeechTranscriptionSubscription: ?Return<
+    typeof SpeechManager.addDidReceiveSpeechTranscriptionListener
+  >;
+
+  // eslint-disable-next-line flowtype/generic-spacing
+  didNotDetectSpeechSubscription: ?Return<
+    typeof SpeechManager.addDidNotDetectSpeechListener
   >;
 
   componentDidMount() {
-    this.speechTranscriptionSubscription = SpeechManager.addSpeechTranscriptionListener(
+    this.didReceiveSpeechTranscriptionSubscription = SpeechManager.addDidReceiveSpeechTranscriptionListener(
       this.speechManagerDidReceiveSpeechTranscription
+    );
+    this.didNotDetectSpeechSubscription = SpeechManager.addDidNotDetectSpeechListener(
+      this.speechManagerDidNotDetectSpeech
     );
   }
 
   componentWillUnmount() {
-    if (this.speechTranscriptionSubscription) {
-      this.speechTranscriptionSubscription.remove();
+    if (this.didReceiveSpeechTranscriptionSubscription) {
+      this.didReceiveSpeechTranscriptionSubscription.remove();
     }
   }
 
@@ -207,6 +218,29 @@ export default class EditScreen extends Component<Props, State> {
     if (speechTranscription?.isFinal && !prevSpeechTranscription?.isFinal) {
       this.speechManagerDidReceiveFinalSpeechTranscription();
     }
+    if (
+      this.props.didSpeechRecognitionFail &&
+      !prevProps.didSpeechRecognitionFail
+    ) {
+      this.presentTranscriptionFailureAlert();
+    }
+  }
+
+  presentTranscriptionFailureAlert() {
+    Alert.alert(
+      'Failed to generate captions',
+      "Unfortunately, We weren't able to detect any speech. Try again and speak clearly into the microphone.",
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            await Navigation.dismissAllModals();
+            await Navigation.popToRoot(this.props.componentId);
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   }
 
   videoPlayerDidBecomeReadyToPlay(duration: number) {
@@ -275,6 +309,12 @@ export default class EditScreen extends Component<Props, State> {
     if (this.playerView) {
       this.playerView.restart();
     }
+  }
+
+  speechManagerDidNotDetectSpeech() {
+    this.props.receiveSpeechTranscriptionFailure(
+      this.props.videoAssetIdentifier
+    );
   }
 
   seekBarDidSeekToTimeThrottled = throttle(this.seekBarDidSeekToTime, 100, {

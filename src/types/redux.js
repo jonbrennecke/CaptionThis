@@ -1,5 +1,5 @@
 /* @flow */
-import typeof { LOADING_STATE } from '../constants';
+import typeof { LOADING_STATE, TRANSCRIPTION_STATE } from '../constants';
 import type { VideoAssetIdentifier, ColorRGBA } from './media';
 import type { SpeechTranscription } from './speech';
 
@@ -36,6 +36,7 @@ export type OnboardingState = {
 
 export type MediaState = {
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
+  speechTranscriptionState: $Keys<TRANSCRIPTION_STATE>,
   videoAssetIdentifiers: VideoAssetIdentifier[],
   mediaLoadingState: $Keys<LOADING_STATE>,
   videoExportState: $Keys<LOADING_STATE>,

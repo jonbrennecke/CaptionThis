@@ -18,14 +18,24 @@ type EmitterSubscription = Return<
 const EVENTS = {
   DID_RECEIVE_SPEECH_TRANSCRIPTION:
     'speechManagerDidReceiveSpeechTranscription',
+  DID_NOT_DETECT_SPEECH: 'speechManagerDidNotDetectSpeech',
 };
 
 export default class SpeechManager {
-  static addSpeechTranscriptionListener(
+  static addDidReceiveSpeechTranscriptionListener(
     listener: (transcription: SpeechTranscription) => void
   ): EmitterSubscription {
     return NativeSpeechManagerEventEmitter.addListener(
       EVENTS.DID_RECEIVE_SPEECH_TRANSCRIPTION,
+      listener
+    );
+  }
+
+  static addDidNotDetectSpeechListener(
+    listener: () => void
+  ): EmitterSubscription {
+    return NativeSpeechManagerEventEmitter.addListener(
+      EVENTS.DID_NOT_DETECT_SPEECH,
       listener
     );
   }

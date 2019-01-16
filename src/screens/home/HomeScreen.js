@@ -173,8 +173,13 @@ export default class HomeScreen extends Component<Props, State> {
   cameraView: ?CameraPreviewView;
 
   // eslint-disable-next-line flowtype/generic-spacing
-  speechTranscriptionSubscription: ?Return<
-    typeof SpeechManager.addSpeechTranscriptionListener
+  didReceiveSpeechTranscriptionSubscription: ?Return<
+    typeof SpeechManager.addDidReceiveSpeechTranscriptionListener
+  >;
+
+  // eslint-disable-next-line flowtype/generic-spacing
+  didNotDetectSpeechSubscription: ?Return<
+    typeof SpeechManager.addDidNotDetectSpeechListener
   >;
 
   // eslint-disable-next-line flowtype/generic-spacing
@@ -193,8 +198,11 @@ export default class HomeScreen extends Component<Props, State> {
     if (this.cameraManagerDidFinishFileOutputListener) {
       this.cameraManagerDidFinishFileOutputListener.remove();
     }
-    if (this.speechTranscriptionSubscription) {
-      this.speechTranscriptionSubscription.remove();
+    if (this.didReceiveSpeechTranscriptionSubscription) {
+      this.didReceiveSpeechTranscriptionSubscription.remove();
+    }
+    if (this.didNotDetectSpeechSubscription) {
+      this.didNotDetectSpeechSubscription.remove();
     }
   }
 
@@ -234,8 +242,13 @@ export default class HomeScreen extends Component<Props, State> {
       this.cameraManagerDidFinishFileOutput
     );
     await this.props.beginCameraCapture();
-    this.speechTranscriptionSubscription = SpeechManager.addSpeechTranscriptionListener(
+    this.didReceiveSpeechTranscriptionSubscription = SpeechManager.addDidReceiveSpeechTranscriptionListener(
       this.speechManagerDidReceiveSpeechTranscription
+    );
+    this.didNotDetectSpeechSubscription = SpeechManager.addDidNotDetectSpeechListener(
+      () => {
+        this.speechManagerDidNotDetectSpeech();
+      }
     );
     await this.props.beginSpeechTranscriptionWithAudioSession();
   }
@@ -268,6 +281,12 @@ export default class HomeScreen extends Component<Props, State> {
       this.state.currentVideoIdentifier,
       transcription
     );
+  }
+
+  async speechManagerDidNotDetectSpeech() {
+    // eslint-disable-next-line no-console
+    console.log('speechManagerDidNotDetectSpeech');
+    await this.props.endSpeechTranscriptionWithAudioSession();
   }
 
   cameraManagerDidFinishFileOutput(videoAssetIdentifier: VideoAssetIdentifier) {
