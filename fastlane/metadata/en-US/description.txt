@@ -1,0 +1,16 @@
+Caption your stories!
+
+Tired of turning up the volume to watch Instagram stories? “Caption This!” improves engagement with your stories by automatically adding captions to your videos. 
+
+Customize captions with our hand-picked palette of colors and a selection of designer fonts. 
+
+Record videos using the built-in camera mode, or load videos from your camera roll. Captions are generated automatically with speech-recognition, and can be edited with the built in text editor.
+
+Features:
+- Automatically generate captions that are synced with your video
+- Use the camera mode to record videos
+- Load previously-recorded videos from your camera roll
+- In camera mode, tap any location in the screen to set focus and exposure
+- Choose from our list of designer fonts
+- Customize text and background colors. Choose from our color palette, or use the color picker to select any color.
+- Edit the generated captions in the text editor.
