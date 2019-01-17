@@ -15,6 +15,7 @@ class SpeechManager: NSObject {
   typealias SpeechTranscription = SFTranscription
 
   private var recognizer: SFSpeechRecognizer
+  private var task: SFSpeechRecognitionTask?
   private var audioEngine: AVAudioEngine
   private static let operationQueue = OperationQueue()
   private static let dispatchQueue = DispatchQueue(label: "Speech recognizer queue")
@@ -133,7 +134,7 @@ class SpeechManager: NSObject {
   }
 
   private func startTranscription(withRequest request: SFSpeechAudioBufferRecognitionRequest) {
-    recognizer.recognitionTask(with: request, delegate: self)
+    task = recognizer.recognitionTask(with: request, delegate: self)
   }
 
   @objc
@@ -142,6 +143,7 @@ class SpeechManager: NSObject {
       Debug.log(message: "Cannot stop speech recognition capture. Audio engine is not running.")
       return
     }
+    task?.cancel()
     audioEngine.stop()
     let node = audioEngine.inputNode
     node.removeTap(onBus: 0)
@@ -160,9 +162,10 @@ extension SpeechManager: SFSpeechRecognizerDelegate {
 }
 
 extension SpeechManager: SFSpeechRecognitionTaskDelegate {
-  func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
+  func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
     Debug.log(format: "Speech recognizer finished task. Success == %@", success ? "true" : "false")
     if !success {
+      let error = task.error
       delegate?.speechManagerDidNotDetectSpeech()
     }
   }
