@@ -45,8 +45,8 @@ import type { SpeechTranscription } from '../../types/speech';
 import type { ExportParams } from '../../utils/VideoExportManager';
 
 type State = {
-  durationSeconds: number,
-  playbackTimeSeconds: number,
+  duration: number,
+  playbackTime: number,
   isVideoPlaying: boolean,
   isDraggingSeekbar: boolean,
   showRichTextOverlay: boolean,
@@ -181,8 +181,8 @@ export default class EditScreen extends Component<Props, State> {
   transcriptView: ?RecordingTranscriptionView;
   playerView: ?VideoPlayerView;
   state: State = {
-    playbackTimeSeconds: 0,
-    durationSeconds: 0,
+    playbackTime: 0,
+    duration: 0,
     isVideoPlaying: false,
     isDraggingSeekbar: false,
     showRichTextOverlay: false,
@@ -246,7 +246,7 @@ export default class EditScreen extends Component<Props, State> {
 
   videoPlayerDidBecomeReadyToPlay(duration: number) {
     // TODO: check if final transcription already exists (e.g. if the user clicked into Edit, then clicked out and back in again)
-    this.setState({ durationSeconds: duration, isVideoPlaying: true });
+    this.setState({ duration, isVideoPlaying: true });
     this.props.beginSpeechTranscriptionWithVideoAsset(
       this.props.videoAssetIdentifier
     );
@@ -275,8 +275,8 @@ export default class EditScreen extends Component<Props, State> {
       return;
     }
     this.setState({
-      playbackTimeSeconds: playbackTime,
-      durationSeconds: duration,
+      playbackTime,
+      duration,
     });
   }
 
@@ -304,7 +304,7 @@ export default class EditScreen extends Component<Props, State> {
 
   speechManagerDidReceiveFinalSpeechTranscription() {
     this.setState({
-      playbackTimeSeconds: 0,
+      playbackTime: 0,
     });
     if (this.transcriptView) {
       this.transcriptView.restart();
@@ -325,9 +325,9 @@ export default class EditScreen extends Component<Props, State> {
   });
 
   seekBarDidSeekToTime(timeSeconds: number) {
-    const time = clamp(timeSeconds, 0, this.state.durationSeconds);
+    const time = clamp(timeSeconds, 0, this.state.duration);
     this.setState({
-      playbackTimeSeconds: time,
+      playbackTime: time,
     });
     if (this.transcriptView) {
       this.transcriptView.seekToTime(time);
@@ -368,7 +368,7 @@ export default class EditScreen extends Component<Props, State> {
       backgroundColor: this.props.backgroundColor,
       fontFamily: this.props.fontFamily,
       fontSize: this.props.fontSize,
-      duration: this.state.durationSeconds,
+      duration: this.state.duration,
     });
   }
 
@@ -443,7 +443,7 @@ export default class EditScreen extends Component<Props, State> {
               }}
               hasFinalTranscription={hasFinalTranscription}
               style={styles.transcription}
-              duration={this.state.durationSeconds}
+              duration={this.state.duration}
               textColor={this.props.textColor}
               backgroundColor={this.props.backgroundColor}
               fontFamily={this.props.fontFamily}
@@ -457,8 +457,8 @@ export default class EditScreen extends Component<Props, State> {
           <View style={styles.editControls}>
             <VideoSeekbar
               style={styles.seekbar}
-              duration={this.state.durationSeconds}
-              playbackTime={this.state.playbackTimeSeconds}
+              duration={this.state.duration}
+              playbackTime={this.state.playbackTime}
               videoAssetIdentifier={this.props.videoAssetIdentifier}
               onSeekToTime={this.seekBarDidSeekToTimeThrottled}
               onDidBeginDrag={() => this.setState({ isDraggingSeekbar: true })}
@@ -468,7 +468,7 @@ export default class EditScreen extends Component<Props, State> {
         </SafeAreaView>
         <EditScreenRichTextOverlay
           hasFinalTranscription={hasFinalTranscription}
-          duration={this.state.durationSeconds}
+          duration={this.state.duration}
           isVisible={this.state.showRichTextOverlay}
           textColor={this.props.textColor}
           backgroundColor={this.props.backgroundColor}

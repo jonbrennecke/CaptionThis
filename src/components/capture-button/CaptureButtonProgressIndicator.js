@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { Animated } from 'react-native';
+// eslint-disable-next-line import/no-named-as-default
 import Svg, { Circle } from 'react-native-svg';
 
 import { UI_COLORS } from '../../constants';
