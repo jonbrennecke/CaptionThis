@@ -24,7 +24,6 @@ class VideoAnimationLayer: CALayer {
   private let textPaddingVertical: CGFloat = 10
   private let extraTextSpaceBottom: CGFloat = 15
   private let fontSize: CGFloat = 17
-//  private var containerLayer: CALayer?
   private var outputKind: VideoAnimationOutputKind = .view
   private var playbackState: VideoAnimationPlaybackState = .none
 
