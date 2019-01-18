@@ -85,7 +85,6 @@ class VideoAnimationLayer: CALayer {
     if playbackState != .playing {
       resume()
     }
-    
   }
 
   @objc
