@@ -177,14 +177,8 @@ class VideoAnimationLayer: CALayer {
     let opacityLayer = CALayer()
     opacityLayer.backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
     opacityLayer.opacity = 0
-    let animationIn = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
-    animationIn.fromValue = 0.0
-    animationIn.toValue = 1.0
-    animationIn.fillMode = .forwards
-    animationIn.isRemovedOnCompletion = false
-    animationIn.beginTime = AVCoreAnimationBeginTimeAtZero + Double(firstSegment.timestamp)
-    animationIn.duration = 0.1
-    opacityLayer.add(animationIn, forKey: nil)
+    let fadeInAnimation = animateFadeIn(atTime: Double(firstSegment.timestamp))
+    opacityLayer.add(fadeInAnimation, forKey: nil)
     opacityLayer.frame = bounds
     opacityLayer.addSublayer(containerLayer)
     addSublayer(opacityLayer)
