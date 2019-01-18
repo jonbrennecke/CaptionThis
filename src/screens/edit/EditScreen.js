@@ -7,6 +7,7 @@ import { Navigation } from 'react-native-navigation';
 import clamp from 'lodash/clamp';
 import throttle from 'lodash/throttle';
 
+import * as Debug from '../../utils/Debug';
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
@@ -252,6 +253,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   videoPlayerDidFailToLoad() {
+    Debug.log('Video player failed to load');
     this.setState({ isVideoPlaying: false });
     if (!this.transcriptView) {
       return;
@@ -260,6 +262,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   videoPlayerDidPause() {
+    Debug.log('Video player paused');
     this.setState({ isVideoPlaying: false });
     if (!this.transcriptView) {
       return;

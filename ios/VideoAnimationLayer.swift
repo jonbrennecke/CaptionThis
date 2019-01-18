@@ -56,7 +56,7 @@ class VideoAnimationLayer: CALayer {
     super.init()
     contentsScale = UIScreen.main.scale
     masksToBounds = true
-    opacity = 0.0
+//    opacity = 0.0
   }
 
   @objc
@@ -68,33 +68,44 @@ class VideoAnimationLayer: CALayer {
   @objc
   public func restart() {
     Debug.log(message: "Restarting animation")
+    removeAllAnimations()
     resetAnimation()
+    beginTime = convertTime(CACurrentMediaTime(), from: nil)
     if playbackState != .playing {
       resume()
     }
-    seekTo(time: 0)
   }
 
   @objc
   public func seekTo(time: Double) {
+    speed = 0
     Debug.log(format: "Animation seeking to %0.5f", time)
     beginTime = convertTime(CACurrentMediaTime(), from: nil) + time
     timeOffset = 0
+    speed = 1
   }
 
   @objc
   public func pause() {
+    if playbackState == .paused {
+      return
+    }
     Debug.log(message: "Pausing animation")
     playbackState = .paused
     speed = 0
     timeOffset = convertTime(CACurrentMediaTime(), from: nil)
   }
 
+  @objc
   public func resume() {
+    if playbackState != .paused {
+      return
+    }
     Debug.log(message: "Resuming paused animation")
     let pausedTimeOffset = timeOffset
     speed = 1
     timeOffset = 0
+    beginTime = 0
     let timeSincePaused = convertTime(CACurrentMediaTime(), from: nil) - pausedTimeOffset
     beginTime = timeSincePaused
     playbackState = .playing
@@ -102,10 +113,12 @@ class VideoAnimationLayer: CALayer {
 
   private func resetAnimation() {
     Debug.log(message: "Resetting animation")
+    sublayers = nil
+    pause() // NOTE: Start in paused state
     let containerLayer = setupContainerLayer()
-    duration = params.duration?.doubleValue ?? 0
-    fillMode = .forwards
-    repeatCount = .greatestFiniteMagnitude
+    containerLayer.duration = params.duration?.doubleValue ?? 0
+//    containerLayer.fillMode = .forwards
+//    containerLayer.repeatCount = .greatestFiniteMagnitude
     backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
     var textLayers = [CATextLayer]()
     params.textSegments?.forEach { segment in
@@ -165,6 +178,7 @@ class VideoAnimationLayer: CALayer {
     guard let firstSegment = params.textSegments?.first else {
       return
     }
+    containerLayer.opacity = 0
     let animationIn = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
     animationIn.fromValue = 0.0
     animationIn.toValue = 1.0
@@ -172,9 +186,8 @@ class VideoAnimationLayer: CALayer {
     animationIn.isRemovedOnCompletion = false
     animationIn.beginTime = AVCoreAnimationBeginTimeAtZero + Double(firstSegment.timestamp)
     animationIn.duration = 0.1
-    add(animationIn, forKey: nil)
+    containerLayer.add(animationIn, forKey: nil)
 //     TODO: fade out after last segment duration is complete (+delay)
-    pause() // NOTE: Start in paused state
   }
 
   private func setupContainerLayer() -> CALayer {
@@ -186,7 +199,6 @@ class VideoAnimationLayer: CALayer {
     let height = frame.height - paddingVertical * 2
     let width = frame.width - paddingHorizontal * 2
     containerLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
-    self.containerLayer?.removeFromSuperlayer()
     addSublayer(containerLayer)
     self.containerLayer = containerLayer
     return containerLayer

@@ -81,6 +81,21 @@ RCT_EXPORT_METHOD(seekToTime
       }];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(isReadyToPlay, BOOL, UIView) {
+  VideoAnimationLayer *animationLayer = (VideoAnimationLayer *)view.layer;
+  if (!animationLayer ||
+      ![animationLayer isKindOfClass:[VideoAnimationLayer class]]) {
+    RCTLogError(@"Cannot find VideoAnimationLayer in view");
+    return;
+  }
+  BOOL isReadyToPlay = [RCTConvert BOOL:json];
+  if (isReadyToPlay) {
+    [animationLayer resume];
+  } else {
+    [animationLayer pause];
+  }
+}
+
 RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, UIView) {
   VideoAnimationParams *params = [[VideoAnimationParams alloc] init];
   id textSegmentsJson = [json objectForKey:@"textSegments"];
