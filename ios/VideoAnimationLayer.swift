@@ -77,11 +77,15 @@ class VideoAnimationLayer: CALayer {
 
   @objc
   public func seekTo(time: Double) {
-    speed = 0
+    pause()
     Debug.log(format: "Animation seeking to %0.5f", time)
+    removeAllAnimations()
+    resetAnimation()
     beginTime = convertTime(CACurrentMediaTime(), from: nil) + time
-    timeOffset = 0
-    speed = 1
+    if playbackState != .playing {
+      resume()
+    }
+    
   }
 
   @objc
