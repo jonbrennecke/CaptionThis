@@ -92,6 +92,7 @@ const styles = {
 export default class EditScreenRichTextOverlay extends Component<Props> {
   fadeAnim = new Animated.Value(0);
   sheetAnim = new Animated.Value(0);
+  richTextEditor: ?RichTextEditor;
 
   componentDidMount() {
     if (this.props.isVisible) {
@@ -139,6 +140,12 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
     ]).start();
   }
 
+  restartCaptions() {
+    if (this.richTextEditor) {
+      this.richTextEditor.restartCaptions();
+    }
+  }
+
   render() {
     return (
       <Animated.View
@@ -154,6 +161,9 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
           <SafeAreaView style={styles.flex}>
             <View style={styles.insideWrap}>
               <RichTextEditor
+                ref={ref => {
+                  this.richTextEditor = ref;
+                }}
                 style={styles.inside}
                 playbackTime={this.props.playbackTime}
                 duration={this.props.duration}

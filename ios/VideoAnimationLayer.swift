@@ -117,7 +117,7 @@ class VideoAnimationLayer: CALayer {
     pause() // NOTE: Start in a paused state
     let containerLayer = setupContainerLayer()
     containerLayer.duration = params.duration?.doubleValue ?? 0
-    containerLayer.repeatCount = .greatestFiniteMagnitude // TODO: necessary or not?
+//    containerLayer.repeatCount = .greatestFiniteMagnitude // TODO: necessary or not?
     var textLayers = [CATextLayer]()
     params.textSegments?.forEach { segment in
       let multiplier: CGFloat = outputKind == .view ? -1 : 1

@@ -180,6 +180,7 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 export default class EditScreen extends Component<Props, State> {
   transcriptView: ?RecordingTranscriptionView;
   playerView: ?VideoPlayerView;
+  richTextOverlay: ?EditScreenRichTextOverlay;
   state: State = {
     playbackTime: 0,
     duration: 0,
@@ -281,10 +282,12 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   videoPlayerDidRestart() {
-    if (!this.transcriptView) {
-      return;
+    if (this.transcriptView) {
+      this.transcriptView.restart();
     }
-    this.transcriptView.restart();
+    if (this.richTextOverlay) {
+      this.richTextOverlay.restartCaptions();
+    }
   }
 
   speechManagerDidReceiveSpeechTranscription(
@@ -467,6 +470,9 @@ export default class EditScreen extends Component<Props, State> {
           </View>
         </SafeAreaView>
         <EditScreenRichTextOverlay
+          ref={ref => {
+            this.richTextOverlay = ref;
+          }}
           playbackTime={this.state.playbackTime}
           hasFinalTranscription={hasFinalTranscription}
           duration={this.state.duration}

@@ -116,7 +116,12 @@ export default class RichTextEditor extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.isVisible && !prevProps.isVisible && this.props.hasFinalTranscription && this.transcriptView) {
+    if (
+      this.props.isVisible &&
+      !prevProps.isVisible &&
+      this.props.hasFinalTranscription &&
+      this.transcriptView
+    ) {
       this.transcriptView.seekToTime(this.props.playbackTime);
     }
   }
@@ -212,6 +217,12 @@ export default class RichTextEditor extends Component<Props, State> {
       textColor: this.state.textColor,
       backgroundColor: this.state.backgroundColor,
     });
+  }
+
+  restartCaptions() {
+    if (this.transcriptView) {
+      this.transcriptView.restart();
+    }
   }
 
   render() {
