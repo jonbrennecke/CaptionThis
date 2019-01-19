@@ -467,6 +467,7 @@ export default class EditScreen extends Component<Props, State> {
           </View>
         </SafeAreaView>
         <EditScreenRichTextOverlay
+          playbackTime={this.state.playbackTime}
           hasFinalTranscription={hasFinalTranscription}
           duration={this.state.duration}
           isVisible={this.state.showRichTextOverlay}
