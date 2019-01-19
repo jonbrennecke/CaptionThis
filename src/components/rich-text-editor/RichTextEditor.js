@@ -20,6 +20,7 @@ import type { SpeechTranscription } from '../../types/speech';
 
 type Props = {
   style?: ?Style,
+  playbackTime: number,
   hasFinalTranscription: boolean,
   isVisible: boolean,
   fontSize: number,
@@ -115,17 +116,14 @@ export default class RichTextEditor extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.hasFinalTranscription && !prevProps.hasFinalTranscription) {
-      if (this.transcriptView) {
-        this.transcriptView.restart();
-      }
+    if (
+      this.props.isVisible &&
+      !prevProps.isVisible &&
+      this.props.hasFinalTranscription &&
+      this.transcriptView
+    ) {
+      this.transcriptView.seekToTime(this.props.playbackTime);
     }
-  }
-
-  fontFamilyListDidSelectFontFamily(fontFamily: string) {
-    this.setState({
-      fontFamily,
-    });
   }
 
   colorPickerDidUpdateColorThrottled = throttle(
@@ -142,12 +140,18 @@ export default class RichTextEditor extends Component<Props, State> {
     this.setState({
       textColor,
     });
+    if (this.transcriptView) {
+      this.transcriptView.seekToTime(this.props.playbackTime);
+    }
   }
 
   colorPickerDidUpdateBackgroundColor(backgroundColor: ColorRGBA) {
     this.setState({
       backgroundColor,
     });
+    if (this.transcriptView) {
+      this.transcriptView.seekToTime(this.props.playbackTime);
+    }
   }
 
   showColorPicker() {
@@ -188,10 +192,22 @@ export default class RichTextEditor extends Component<Props, State> {
     ]).start();
   }
 
+  fontFamilyListDidSelectFontFamily(fontFamily: string) {
+    this.setState({
+      fontFamily,
+    });
+    if (this.transcriptView) {
+      this.transcriptView.seekToTime(this.props.playbackTime);
+    }
+  }
+
   fontSizeControlDidSelectFontSize(fontSize: number) {
     this.setState({
       fontSize,
     });
+    if (this.transcriptView) {
+      this.transcriptView.seekToTime(this.props.playbackTime);
+    }
   }
 
   save() {
@@ -201,6 +217,12 @@ export default class RichTextEditor extends Component<Props, State> {
       textColor: this.state.textColor,
       backgroundColor: this.state.backgroundColor,
     });
+  }
+
+  restartCaptions() {
+    if (this.transcriptView) {
+      this.transcriptView.restart();
+    }
   }
 
   render() {

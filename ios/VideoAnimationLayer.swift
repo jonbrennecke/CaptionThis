@@ -24,7 +24,6 @@ class VideoAnimationLayer: CALayer {
   private let textPaddingVertical: CGFloat = 10
   private let extraTextSpaceBottom: CGFloat = 15
   private let fontSize: CGFloat = 17
-  private var containerLayer: CALayer?
   private var outputKind: VideoAnimationOutputKind = .view
   private var playbackState: VideoAnimationPlaybackState = .none
 
@@ -56,7 +55,6 @@ class VideoAnimationLayer: CALayer {
     super.init()
     contentsScale = UIScreen.main.scale
     masksToBounds = true
-    opacity = 0.0
   }
 
   @objc
@@ -68,33 +66,46 @@ class VideoAnimationLayer: CALayer {
   @objc
   public func restart() {
     Debug.log(message: "Restarting animation")
+    removeAllAnimations()
     resetAnimation()
+    beginTime = convertTime(CACurrentMediaTime(), from: nil)
     if playbackState != .playing {
       resume()
     }
-    seekTo(time: 0)
   }
 
   @objc
   public func seekTo(time: Double) {
     Debug.log(format: "Animation seeking to %0.5f", time)
-    beginTime = convertTime(CACurrentMediaTime(), from: nil) + time
-    timeOffset = 0
+    removeAllAnimations()
+    resetAnimation()
+    if playbackState != .playing {
+      resume()
+    }
+    timeOffset = time
   }
 
   @objc
   public func pause() {
+    if playbackState == .paused {
+      return
+    }
     Debug.log(message: "Pausing animation")
     playbackState = .paused
     speed = 0
     timeOffset = convertTime(CACurrentMediaTime(), from: nil)
   }
 
+  @objc
   public func resume() {
+    if playbackState != .paused {
+      return
+    }
     Debug.log(message: "Resuming paused animation")
     let pausedTimeOffset = timeOffset
     speed = 1
     timeOffset = 0
+    beginTime = 0
     let timeSincePaused = convertTime(CACurrentMediaTime(), from: nil) - pausedTimeOffset
     beginTime = timeSincePaused
     playbackState = .playing
@@ -102,11 +113,11 @@ class VideoAnimationLayer: CALayer {
 
   private func resetAnimation() {
     Debug.log(message: "Resetting animation")
+    sublayers = nil
+    pause() // NOTE: Start in a paused state
     let containerLayer = setupContainerLayer()
-    duration = params.duration?.doubleValue ?? 0
-    fillMode = .forwards
-    repeatCount = .greatestFiniteMagnitude
-    backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
+    containerLayer.duration = params.duration?.doubleValue ?? 0
+//    containerLayer.repeatCount = .greatestFiniteMagnitude // TODO: necessary or not?
     var textLayers = [CATextLayer]()
     params.textSegments?.forEach { segment in
       let multiplier: CGFloat = outputKind == .view ? -1 : 1
@@ -165,16 +176,15 @@ class VideoAnimationLayer: CALayer {
     guard let firstSegment = params.textSegments?.first else {
       return
     }
-    let animationIn = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
-    animationIn.fromValue = 0.0
-    animationIn.toValue = 1.0
-    animationIn.fillMode = .forwards
-    animationIn.isRemovedOnCompletion = false
-    animationIn.beginTime = AVCoreAnimationBeginTimeAtZero + Double(firstSegment.timestamp)
-    animationIn.duration = 0.1
-    add(animationIn, forKey: nil)
+    let opacityLayer = CALayer()
+    opacityLayer.backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
+    opacityLayer.opacity = 0
+    let fadeInAnimation = animateFadeIn(atTime: Double(firstSegment.timestamp))
+    opacityLayer.add(fadeInAnimation, forKey: nil)
+    opacityLayer.frame = bounds
+    opacityLayer.addSublayer(containerLayer)
+    addSublayer(opacityLayer)
 //     TODO: fade out after last segment duration is complete (+delay)
-    pause() // NOTE: Start in paused state
   }
 
   private func setupContainerLayer() -> CALayer {
@@ -186,9 +196,6 @@ class VideoAnimationLayer: CALayer {
     let height = frame.height - paddingVertical * 2
     let width = frame.width - paddingHorizontal * 2
     containerLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
-    self.containerLayer?.removeFromSuperlayer()
-    addSublayer(containerLayer)
-    self.containerLayer = containerLayer
     return containerLayer
   }
 

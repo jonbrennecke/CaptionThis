@@ -162,10 +162,9 @@ extension SpeechManager: SFSpeechRecognizerDelegate {
 }
 
 extension SpeechManager: SFSpeechRecognitionTaskDelegate {
-  func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
+  func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
     Debug.log(format: "Speech recognizer finished task. Success == %@", success ? "true" : "false")
     if !success {
-      let error = task.error
       delegate?.speechManagerDidNotDetectSpeech()
     }
   }
