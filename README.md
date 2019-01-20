@@ -2,9 +2,7 @@
 
 Check it out on the [App Store](https://itunes.apple.com/us/app/caption-this/id1449087035?ls=1&mt=8)!
 
-![Screenshot #1](./assets/marketing/IMG_2303.JPG)
-![Screenshot #2](./assets/marketing/IMG_2304.JPG)
-![Screenshot #2](./assets/marketing/IMG_2305.JPG)
+![Screenshot #1](./assets/marketing/App_Store_iPhone_XS_Max_Mockup.png)
 
 #### Description:
 
