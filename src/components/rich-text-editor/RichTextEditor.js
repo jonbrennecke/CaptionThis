@@ -262,7 +262,7 @@ export default class RichTextEditor extends Component<Props, State> {
             onDidSelectColor={this.colorPickerDidUpdateBackgroundColor}
             onRequestShowColorPicker={this.showColorPicker}
           />
-          <Button style={styles.button} text="Save" onPress={this.save} />
+          <Button style={styles.button} text="Done" onPress={this.save} />
           <Animated.View
             style={styles.colorPickerWrap(this.colorPickerAnim)}
             pointerEvents={this.state.isColorPickerVisible ? 'auto' : 'none'}
