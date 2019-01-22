@@ -144,7 +144,8 @@ function mapStateToProps(state: AppState): StateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
-    receiveVideos: (videos: VideoAssetIdentifier[]) => dispatch(receiveVideos(videos)),
+    receiveVideos: (videos: VideoAssetIdentifier[]) =>
+      dispatch(receiveVideos(videos)),
     beginCameraCapture: () => dispatch(beginCameraCapture()),
     endCameraCapture: () => dispatch(endCameraCapture()),
     beginSpeechTranscriptionWithAudioSession: () =>
@@ -195,7 +196,7 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async componentWillUnmount() {
-    await this.props.endCameraCapture()
+    await this.props.endCameraCapture();
     MediaManager.stopObservingVideos();
     if (this.cameraManagerDidFinishFileOutputListener) {
       this.cameraManagerDidFinishFileOutputListener.remove();
@@ -223,12 +224,18 @@ export default class HomeScreen extends Component<Props, State> {
 
   async setupAfterOnboarding() {
     Camera.startPreview();
-    MediaManager.startObservingVideos(videos => { this.mediaManagerDidUpdateVideos(videos); } );
+    MediaManager.startObservingVideos(videos => {
+      this.mediaManagerDidUpdateVideos(videos);
+    });
     const videos = await MediaManager.getVideoAssets();
     await this.props.receiveVideos(videos);
   }
 
-  async mediaManagerDidUpdateVideos({ videos }: { videos: VideoAssetIdentifier[] }) {
+  async mediaManagerDidUpdateVideos({
+    videos,
+  }: {
+    videos: VideoAssetIdentifier[],
+  }) {
     await this.props.receiveVideos(videos);
   }
 
