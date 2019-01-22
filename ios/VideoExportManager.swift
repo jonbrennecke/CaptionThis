@@ -5,7 +5,7 @@ import Photos
 class VideoExportManager: NSObject {
   private let containerOffsetFromBottom: CGFloat = 300
   private let containerHeight: CGFloat = {
-    100 * UIScreen.main.scale
+    90 * UIScreen.main.scale
   }()
 
   @objc

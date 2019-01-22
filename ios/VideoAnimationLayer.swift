@@ -247,7 +247,7 @@ class VideoAnimationLayer: CALayer {
     let width = parent.frame.width
     textLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
     textLayer.alignmentMode = .left
-    let fontSizeMultiplier = outputKind == .export ? UIScreen.main.scale : 1
+    let fontSizeMultiplier = outputKind == .export ? UIScreen.main.scale * 1.25 : 1
     let fontSize = CGFloat(params.fontSize?.floatValue ?? DEFAULT_FONT_SIZE)
     textLayer.fontSize = fontSize * fontSizeMultiplier
     textLayer.truncationMode = .start
