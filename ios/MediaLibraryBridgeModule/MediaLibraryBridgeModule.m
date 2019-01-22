@@ -19,16 +19,33 @@
 
 - (void)mediaLibraryManagerDidOutputThumbnail:(UIImage *)thumbnail
                                 forTargetSize:(CGSize)size {
-  if (!thumbnail) {
+  if (!thumbnail || !hasListeners) {
     return;
   }
-  if (hasListeners) {
-    [self sendEventWithName:@"mediaLibraryDidOutputThumbnail"
-                       body:@{
-                         @"size" : @(size),
-                         @"image" : thumbnail
-                       }];
+  [self sendEventWithName:@"mediaLibraryDidOutputThumbnail"
+                     body:@{
+                       @"size" : @(size),
+                       @"image" : thumbnail
+                     }];
+}
+
+- (void)mediaLibraryManagerDidUpdateVideoAssets:(NSArray<PHAsset *> *)videoAssets {
+  if (!hasListeners) {
+    return;
   }
+  NSMutableArray<NSString *> *localIdentifiers =
+  [[NSMutableArray alloc] initWithCapacity:videoAssets.count];
+  [videoAssets enumerateObjectsUsingBlock:^(PHAsset *_Nonnull asset, NSUInteger idx,
+                                       BOOL *_Nonnull stop) {
+    if (asset == nil) {
+      return;
+    }
+    NSString *localIdentifier = asset.localIdentifier;
+    [localIdentifiers insertObject:localIdentifier atIndex:idx];
+  }];
+  [self sendEventWithName:@"mediaLibraryDidUpdateVideos"
+                     body:@{ @"localIdentifiers" : localIdentifiers }];
+  
 }
 
 #pragma mark - React Native module
@@ -46,7 +63,7 @@
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-  return @[ @"mediaLibraryDidOutputThumbnail" ];
+  return @[ @"mediaLibraryDidOutputThumbnail", @"mediaLibraryDidUpdateVideos" ];
 }
 
 RCT_EXPORT_MODULE(MediaLibrary)
