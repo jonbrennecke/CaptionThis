@@ -19,6 +19,7 @@ import * as Fonts from '../../utils/Fonts';
 import * as Screens from '../../utils/Screens';
 import * as Camera from '../../utils/Camera';
 import * as Debug from '../../utils/Debug';
+import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
 import { requireOnboardedUser } from '../../utils/Onboarding';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
@@ -221,7 +222,11 @@ export default class HomeScreen extends Component<Props, State> {
 
   async setupAfterOnboarding() {
     Camera.startPreview();
-    await this.props.loadVideoAssets();
+    MediaManager.startObservingVideos(this.mediaManagerDidUpdateVideos);
+  }
+
+  mediaManagerDidUpdateVideos({ videos }: { videos: [VideoAssetIdentifier] }) {
+    console.log(videos);
   }
 
   async onDidPressVideoThumbnail(identifier: VideoAssetIdentifier) {

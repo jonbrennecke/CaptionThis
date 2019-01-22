@@ -29,8 +29,7 @@
                      }];
 }
 
-- (void)mediaLibraryManagerDidUpdateVideoAssets:
-    (NSArray<PHAsset *> *)videoAssets {
+- (void)mediaLibraryManagerDidUpdateVideos:(NSArray<PHAsset *> *)videoAssets {
   if (!hasListeners) {
     return;
   }
@@ -71,7 +70,7 @@ RCT_EXPORT_MODULE(MediaLibrary)
 
 RCT_EXPORT_METHOD(getVideoAssets : (RCTResponseSenderBlock)callback) {
   NSArray<PHAsset *> *assets =
-      [AppDelegate.sharedMediaLibraryManager getVideoAssetsFromLibrary];
+      [AppDelegate.sharedMediaLibraryManager getVideosFromLibrary];
   NSMutableArray<NSString *> *localIdentifiers =
       [[NSMutableArray alloc] initWithCapacity:assets.count];
   [assets enumerateObjectsUsingBlock:^(PHAsset *_Nonnull asset, NSUInteger idx,
@@ -83,6 +82,14 @@ RCT_EXPORT_METHOD(getVideoAssets : (RCTResponseSenderBlock)callback) {
     [localIdentifiers insertObject:localIdentifier atIndex:idx];
   }];
   callback(@[ [NSNull null], localIdentifiers ]);
+}
+
+RCT_EXPORT_METHOD(startObservingVideos) {
+  [AppDelegate.sharedMediaLibraryManager startObservingVideos];
+}
+
+RCT_EXPORT_METHOD(stopObservingVideos) {
+  [AppDelegate.sharedMediaLibraryManager stopObservingVideos];
 }
 
 @end

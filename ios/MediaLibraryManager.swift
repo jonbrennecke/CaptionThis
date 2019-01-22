@@ -5,7 +5,7 @@ let FETCH_LIMIT = 100
 @objc
 protocol MediaLibraryManagerDelegate {
   func mediaLibraryManagerDidOutputThumbnail(_ thumbnail: UIImage, forTargetSize size: CGSize)
-  func mediaLibraryManagerDidUpdateVideoAssets(_ videoAssets: [PHAsset])
+  func mediaLibraryManagerDidUpdateVideos(_ videoAssets: [PHAsset])
 }
 
 @objc
@@ -14,17 +14,17 @@ class MediaLibraryManager: NSObject {
   public var delegate: MediaLibraryManagerDelegate?
 
   @objc
-  public func beginWatchingVideoAssets() {
+  public func startObservingVideos() {
     PHPhotoLibrary.shared().register(self)
   }
 
   @objc
-  public func stopWatchingVideoAssets() {
+  public func stopObservingVideos() {
     PHPhotoLibrary.shared().unregisterChangeObserver(self)
   }
 
   @objc
-  public func getVideoAssetsFromLibrary() -> [PHAsset] {
+  public func getVideosFromLibrary() -> [PHAsset] {
     let fetchOptions = PHFetchOptions()
     fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
     fetchOptions.fetchLimit = FETCH_LIMIT
@@ -41,7 +41,7 @@ class MediaLibraryManager: NSObject {
 
 extension MediaLibraryManager: PHPhotoLibraryChangeObserver {
   func photoLibraryDidChange(_: PHChange) {
-    let assets = getVideoAssetsFromLibrary()
-    delegate?.mediaLibraryManagerDidUpdateVideoAssets(assets)
+    let assets = getVideosFromLibrary()
+    delegate?.mediaLibraryManagerDidUpdateVideos(assets)
   }
 }
