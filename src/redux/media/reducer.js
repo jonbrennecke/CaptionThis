@@ -44,9 +44,9 @@ const initialState: MediaState = {
 };
 
 const actions = {
-  [ACTION_TYPES.DID_START_LOADING_VIDEO_ASSETS]: didStartLoadingVideoAssets,
-  [ACTION_TYPES.DID_SUCCESSFULLY_LOAD_VIDEO_ASSETS]: didSuccessfullyLoadVideoAssets,
-  [ACTION_TYPES.DID_UNSUCCESSFULLY_LOAD_VIDEO_ASSETS]: didUnsuccessfullyLoadVideoAssets,
+  [ACTION_TYPES.WILL_RECEIVE_VIDEOS]: willLoadVideos,
+  [ACTION_TYPES.DID_RECEIVE_VIDEOS]: didLoadVideos,
+  [ACTION_TYPES.DID_FAIL_TO_RECEIVE_VIDEOS]: didFailToLoadVideos,
   [ACTION_TYPES.DID_START_SPEECH_TRANSCRIPTION]: didStartSpeechTranscription,
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION]: didSuccessfullyReceiveSpeechTranscription,
   [ACTION_TYPES.DID_NOT_SUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION]: didNotSuccessfullyReceiveSpeechTranscription,
@@ -62,14 +62,14 @@ const actions = {
   [ACTION_TYPES.DID_SUCCESSFULLY_RECEIVE_FONT_SIZE]: didReceiveFontSize,
 };
 
-function didStartLoadingVideoAssets(state: MediaState): MediaState {
+function willLoadVideos(state: MediaState): MediaState {
   return {
     ...state,
     mediaLoadingState: LOADING_STATE.IS_LOADING,
   };
 }
 
-function didSuccessfullyLoadVideoAssets(
+function didLoadVideos(
   state: MediaState,
   { payload }: Action<ReceiveVideoAssetsPayload>
 ): MediaState {
@@ -83,7 +83,7 @@ function didSuccessfullyLoadVideoAssets(
   };
 }
 
-function didUnsuccessfullyLoadVideoAssets(state: MediaState): MediaState {
+function didFailToLoadVideos(state: MediaState): MediaState {
   return {
     ...state,
     mediaLoadingState: LOADING_STATE.WAS_LOADED_UNSUCCESSFULLY,
