@@ -12,12 +12,12 @@ protocol MediaLibraryManagerDelegate {
 class MediaLibraryManager: NSObject {
   @objc
   public var delegate: MediaLibraryManagerDelegate?
-  
+
   @objc
   public func beginWatchingVideoAssets() {
     PHPhotoLibrary.shared().register(self)
   }
-  
+
   @objc
   public func stopWatchingVideoAssets() {
     PHPhotoLibrary.shared().unregisterChangeObserver(self)
@@ -39,8 +39,8 @@ class MediaLibraryManager: NSObject {
   }
 }
 
-extension MediaLibraryManager : PHPhotoLibraryChangeObserver {
-  func photoLibraryDidChange(_ changeInstance: PHChange) {
+extension MediaLibraryManager: PHPhotoLibraryChangeObserver {
+  func photoLibraryDidChange(_: PHChange) {
     let assets = getVideoAssetsFromLibrary()
     delegate?.mediaLibraryManagerDidUpdateVideoAssets(assets)
   }

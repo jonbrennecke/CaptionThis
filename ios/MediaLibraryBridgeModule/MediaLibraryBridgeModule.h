@@ -8,5 +8,6 @@
     : RCTEventEmitter <RCTBridgeModule, MediaLibraryManagerDelegate>
 - (void)mediaLibraryManagerDidOutputThumbnail:(UIImage *)thumbnail
                                 forTargetSize:(CGSize)size;
-- (void)mediaLibraryManagerDidUpdateVideoAssets:(NSArray<PHAsset *> *)videoAssets;
+- (void)mediaLibraryManagerDidUpdateVideoAssets:
+    (NSArray<PHAsset *> *)videoAssets;
 @end
