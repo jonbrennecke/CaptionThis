@@ -1,7 +1,6 @@
 // @flow
 import * as Debug from '../../utils/Debug';
 import { ACTION_TYPES } from './constants';
-import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
 import * as Camera from '../../utils/Camera';
 import * as VideoExportManager from '../../utils/VideoExportManager';
@@ -20,20 +19,19 @@ import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { ExportParams } from '../../utils/VideoExportManager';
 import type { SpeechTranscription } from '../../types/speech';
 
-export const loadVideoAssets = () => {
+export const receiveVideos = (ids: VideoAssetIdentifier[]) => {
   return async (dispatch: Dispatch<ReceiveVideoAssetsPayload>) => {
-    dispatch({ type: ACTION_TYPES.DID_START_LOADING_VIDEO_ASSETS });
+    dispatch({ type: ACTION_TYPES.WILL_RECEIVE_VIDEOS });
     try {
-      const ids = await MediaManager.getVideoAssets();
       dispatch({
-        type: ACTION_TYPES.DID_SUCCESSFULLY_LOAD_VIDEO_ASSETS,
+        type: ACTION_TYPES.DID_RECEIVE_VIDEOS,
         payload: {
           videoAssetIdentifiers: ids,
         },
       });
     } catch (error) {
       await Debug.logError(error);
-      dispatch({ type: ACTION_TYPES.DID_UNSUCCESSFULLY_LOAD_VIDEO_ASSETS });
+      dispatch({ type: ACTION_TYPES.DID_FAIL_TO_RECEIVE_VIDEOS });
     }
   };
 };

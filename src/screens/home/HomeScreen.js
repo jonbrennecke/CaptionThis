@@ -24,7 +24,7 @@ import SpeechManager from '../../utils/SpeechManager';
 import { requireOnboardedUser } from '../../utils/Onboarding';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import {
-  loadVideoAssets,
+  receiveVideos,
   beginSpeechTranscriptionWithAudioSession,
   endSpeechTranscriptionWithAudioSession,
   receiveSpeechTranscriptionFailure,
@@ -70,7 +70,7 @@ type StateProps = {
 };
 
 type DispatchProps = {
-  loadVideoAssets: () => Promise<void>,
+  receiveVideos: (videos: VideoAssetIdentifier[]) => Promise<void>,
   beginCameraCapture: () => Promise<void>,
   endCameraCapture: () => Promise<void>,
   beginSpeechTranscriptionWithAudioSession: () => Promise<void>,
@@ -144,7 +144,7 @@ function mapStateToProps(state: AppState): StateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
-    loadVideoAssets: () => dispatch(loadVideoAssets()),
+    receiveVideos: (videos: VideoAssetIdentifier[]) => dispatch(receiveVideos(videos)),
     beginCameraCapture: () => dispatch(beginCameraCapture()),
     endCameraCapture: () => dispatch(endCameraCapture()),
     beginSpeechTranscriptionWithAudioSession: () =>
@@ -195,7 +195,8 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async componentWillUnmount() {
-    await this.props.endCameraCapture();
+    await this.props.endCameraCapture()
+    MediaManager.stopObservingVideos();
     if (this.cameraManagerDidFinishFileOutputListener) {
       this.cameraManagerDidFinishFileOutputListener.remove();
     }
@@ -222,11 +223,13 @@ export default class HomeScreen extends Component<Props, State> {
 
   async setupAfterOnboarding() {
     Camera.startPreview();
-    MediaManager.startObservingVideos(this.mediaManagerDidUpdateVideos);
+    MediaManager.startObservingVideos(videos => { this.mediaManagerDidUpdateVideos(videos); } );
+    const videos = await MediaManager.getVideoAssets();
+    await this.props.receiveVideos(videos);
   }
 
-  mediaManagerDidUpdateVideos({ videos }: { videos: [VideoAssetIdentifier] }) {
-    console.log(videos);
+  async mediaManagerDidUpdateVideos({ videos }: { videos: VideoAssetIdentifier[] }) {
+    await this.props.receiveVideos(videos);
   }
 
   async onDidPressVideoThumbnail(identifier: VideoAssetIdentifier) {

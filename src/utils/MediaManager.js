@@ -21,23 +21,23 @@ type EmitterSubscription = Return<
 
 export default class MediaManager {
   static async getVideoAssets(): Promise<VideoAssetIdentifier[]> {
-    return await MediaLibrary.getVideoAssetsAsync();
+    return await MediaLibrary.getVideosAsync();
   }
 
   static startObservingVideos(
-    listener: ({ videos: [VideoAssetIdentifier] }) => void
+    listener: ({ videos: VideoAssetIdentifier[] }) => void
   ) {
-    MediaLibrary.beginObservingVideoAssets();
+    MediaLibrary.startObservingVideos();
     MediaManager.addDidUpdateVideosListener(listener);
   }
 
   static stopObservingVideos() {
-    MediaLibrary.stopObservingVideoAssets();
+    MediaLibrary.stopObservingVideos();
     MediaManager.removeAllDidUpdateVideosListeners();
   }
 
   static addDidUpdateVideosListener(
-    listener: ({ videos: [VideoAssetIdentifier] }) => void
+    listener: ({ videos: VideoAssetIdentifier[] }) => void
   ): EmitterSubscription {
     return NativeMediaManagerEventEmitter.addListener(
       EVENTS.DID_UPDATE_VIDEOS,

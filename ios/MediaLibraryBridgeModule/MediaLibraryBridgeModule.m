@@ -45,7 +45,7 @@
         [localIdentifiers insertObject:localIdentifier atIndex:idx];
       }];
   [self sendEventWithName:@"mediaLibraryDidUpdateVideos"
-                     body:@{@"localIdentifiers" : localIdentifiers}];
+                     body:@{@"videos" : localIdentifiers}];
 }
 
 #pragma mark - React Native module
@@ -68,7 +68,7 @@
 
 RCT_EXPORT_MODULE(MediaLibrary)
 
-RCT_EXPORT_METHOD(getVideoAssets : (RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(getVideos : (RCTResponseSenderBlock)callback) {
   NSArray<PHAsset *> *assets =
       [AppDelegate.sharedMediaLibraryManager getVideosFromLibrary];
   NSMutableArray<NSString *> *localIdentifiers =
