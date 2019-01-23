@@ -207,6 +207,7 @@ class VideoAnimationLayer: CALayer {
     fadeInAnimation.isRemovedOnCompletion = false
     fadeInAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime
     fadeInAnimation.duration = duration
+    fadeInAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
     return fadeInAnimation
   }
 
@@ -217,6 +218,7 @@ class VideoAnimationLayer: CALayer {
     fadeOutAnimation.isRemovedOnCompletion = false
     fadeOutAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime
     fadeOutAnimation.duration = duration
+    fadeOutAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
     return fadeOutAnimation
   }
 
@@ -232,6 +234,7 @@ class VideoAnimationLayer: CALayer {
     slideUpAnimation.isRemovedOnCompletion = false
     slideUpAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime
     slideUpAnimation.duration = duration
+    slideUpAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
     return slideUpAnimation
   }
 
