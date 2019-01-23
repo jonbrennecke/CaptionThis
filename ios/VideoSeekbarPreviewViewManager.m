@@ -66,10 +66,10 @@ RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
                                           result, nil];
                                return;
                              }
-                             UIImage *image =
-                                 [UIImage imageWithCGImage:cgImage
-                                                     scale:1.0
-                                               orientation:UIImageOrientationUp];
+                             UIImage *image = [UIImage
+                                 imageWithCGImage:cgImage
+                                            scale:1.0
+                                      orientation:UIImageOrientationUp];
                              NSUInteger index = [times
                                  indexOfObject:
                                      [NSValue valueWithCMTime:requestedTime]];
