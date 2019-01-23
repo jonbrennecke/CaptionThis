@@ -123,7 +123,7 @@ export default class SpeechTranscriptionSegmentInput extends Component<
             style={styles.substring}
             value={this.props.segment.substring}
             autoFocus={this.props.autoFocus}
-            autoCapitalize="sentences"
+            autoCapitalize="none"
             onFocus={this.textInputDidFocus}
             onBlur={this.textInputDidBlur}
             returnKeyType="done"
