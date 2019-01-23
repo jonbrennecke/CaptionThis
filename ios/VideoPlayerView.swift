@@ -44,7 +44,17 @@ class VideoPlayerView: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(self.playerDidPlayToEnd(notification:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
         self.play()
         DispatchQueue.main.async {
-          self.playerLayer.videoGravity = .resizeAspectFill
+          let orientation = OrientationUtil.orientation(forTransform: asset.preferredTransform)
+          switch orientation {
+          case .portrait, .portraitUpsideDown:
+            self.playerLayer.videoGravity = .resizeAspectFill
+            break
+          case .landscapeLeft, .landscapeRight:
+            self.playerLayer.videoGravity = .resizeAspect
+            break
+          default:
+            break
+          }
           self.playerLayer.player = self.player
         }
       }

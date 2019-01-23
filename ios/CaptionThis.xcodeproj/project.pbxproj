@@ -80,6 +80,7 @@
 		FCD5F75821D73CA3001F2068 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75721D73CA2001F2068 /* Debug.m */; };
 		FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */; };
 		FCD5F7A821D8225C001F2068 /* VideoSeekbarPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */; };
+		FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8024921F84A640092B5E5 /* OrientationUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -534,6 +535,7 @@
 		FCD5F7A421D8110C001F2068 /* VideoSeekbarPreviewViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewViewManager.h; sourceTree = "<group>"; };
 		FCD5F7A621D82250001F2068 /* VideoSeekbarPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewView.h; sourceTree = "<group>"; };
 		FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoSeekbarPreviewView.m; sourceTree = "<group>"; };
+		FCE8024921F84A640092B5E5 /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -691,6 +693,7 @@
 				FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */,
 				FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */,
 				FC9374E621DEED6700FD2700 /* TranscriptViewManager */,
+				FCE8024921F84A640092B5E5 /* OrientationUtil.swift */,
 			);
 			name = CaptionThis;
 			sourceTree = "<group>";
@@ -1635,6 +1638,7 @@
 				FCD5F7A821D8225C001F2068 /* VideoSeekbarPreviewView.m in Sources */,
 				FC880E0321D5DC4100856037 /* VideoThumbnailViewManager.m in Sources */,
 				FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */,
+				FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */,
 				FCA3971821DC93AF00347CAB /* constants.swift in Sources */,
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,
 				FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */,
