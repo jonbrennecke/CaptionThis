@@ -2,29 +2,28 @@ import UIKit
 
 @objc
 class OrientationUtil: NSObject {
-  // FIXME: should return UIImage.Orientation
+
   @objc
-  public static func orientation(forTransform transform: CGAffineTransform) -> UIInterfaceOrientation {
+  public static func orientation(forTransform transform: CGAffineTransform) -> UIImage.Orientation {
     let angle = degrees(fromRadians: atan2(transform.b, transform.a))
     if compareFloats(angle, 0) {
-      return .landscapeRight
+      return .right
     } else if compareFloats(angle, 90) {
-      return .portrait
+      return .up
     } else if compareFloats(angle, 180) {
-      return .landscapeLeft
+      return .left
     } else if compareFloats(angle, -90) {
-      return .portraitUpsideDown
+      return .down
     }
-    return .landscapeRight
+    return .right
   }
 
-  // FIXME: should return UIImage.Orientation
   @objc
-  public static func orientation(forSize size: CGSize) -> UIInterfaceOrientation {
+  public static func orientation(forSize size: CGSize) -> UIImage.Orientation {
     if size.width > size.height {
-      return .landscapeRight
+      return .right
     } else {
-      return .portrait
+      return .up
     }
   }
 

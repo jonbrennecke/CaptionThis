@@ -38,7 +38,7 @@ class VideoThumbnailView: UIView {
           return
         }
         switch orientation {
-        case .landscapeRight, .landscapeLeft:
+        case .right, .left:
           self.imageView.contentMode = .scaleAspectFit
           break
         default:

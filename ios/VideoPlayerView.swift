@@ -46,7 +46,7 @@ class VideoPlayerView: UIView {
         DispatchQueue.main.async {
           let orientation = OrientationUtil.orientation(forTransform: asset.preferredTransform)
           switch orientation {
-          case .landscapeLeft, .landscapeRight:
+          case .left, .right:
             self.playerLayer.videoGravity = .resizeAspect
             break
           default:
