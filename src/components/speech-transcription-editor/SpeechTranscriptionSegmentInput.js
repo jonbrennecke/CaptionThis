@@ -126,6 +126,7 @@ export default class SpeechTranscriptionSegmentInput extends Component<
             autoCapitalize="sentences"
             onFocus={this.textInputDidFocus}
             onBlur={this.textInputDidBlur}
+            returnKeyType="done"
             onChangeText={value => {
               this.props.onEditSegment({
                 ...this.props.segment,
