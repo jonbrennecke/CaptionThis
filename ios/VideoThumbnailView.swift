@@ -4,20 +4,18 @@ import UIKit
 
 @objc
 class VideoThumbnailView: UIView {
-  
   private let imageView = UIImageView()
-  
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     imageView.frame = frame
-    imageView.contentMode = .scaleAspectFill
     addSubview(imageView)
   }
-  
-  required init?(coder aDecoder: NSCoder) {
+
+  required init?(coder _: NSCoder) {
     fatalError("init?(coder: NSCoder) is not implemented.")
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
     imageView.frame = frame
@@ -33,8 +31,20 @@ class VideoThumbnailView: UIView {
       let requestOptions = PHImageRequestOptions()
       requestOptions.isSynchronous = false
       requestOptions.deliveryMode = .highQualityFormat
+      let pixelSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
+      let orientation = OrientationUtil.orientation(forSize: pixelSize)
       PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: requestOptions) { [unowned self] image, _ in
-        self.imageView.image = image;
+        guard let image = image else {
+          return
+        }
+        switch orientation {
+        case .landscapeRight, .landscapeLeft:
+          self.imageView.contentMode = .scaleAspectFit
+          break
+        default:
+          self.imageView.contentMode = .scaleAspectFill
+        }
+        self.imageView.image = image
       }
     }
   }

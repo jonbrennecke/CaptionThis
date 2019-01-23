@@ -17,6 +17,15 @@ class OrientationUtil: NSObject {
     return .landscapeRight
   }
 
+  @objc
+  public static func orientation(forSize size: CGSize) -> UIInterfaceOrientation {
+    if size.width > size.height {
+      return .landscapeRight
+    } else {
+      return .portrait
+    }
+  }
+
   private static func degrees(fromRadians radians: CGFloat) -> CGFloat {
     return radians * 180 / CGFloat.pi
   }
