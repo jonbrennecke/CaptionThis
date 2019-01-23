@@ -9,7 +9,6 @@
         initWithCapacity:SEEKBAR_NUMBER_OF_PREVIEW_FRAMES];
     for (size_t i = 0; i < SEEKBAR_NUMBER_OF_PREVIEW_FRAMES; i++) {
       UIImageView *imageView = [[UIImageView alloc] init];
-      imageView.contentMode = UIViewContentModeScaleAspectFill;
       imageView.layer.masksToBounds = YES;
       [imageViews addObject:imageView];
       [self addSubview:imageView];
@@ -39,6 +38,15 @@
   }
   dispatch_async(dispatch_get_main_queue(), ^{
     imageView.image = image;
+    switch (image.imageOrientation) {
+    case UIImageOrientationLeft:
+    case UIImageOrientationRight:
+      imageView.contentMode = UIViewContentModeScaleAspectFit;
+      break;
+    default:
+      imageView.contentMode = UIViewContentModeScaleAspectFill;
+      break;
+    }
   });
 }
 

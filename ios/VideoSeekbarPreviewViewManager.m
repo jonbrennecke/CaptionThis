@@ -1,4 +1,5 @@
 #import "VideoSeekbarPreviewViewManager.h"
+#import "CaptionThis-Swift.h"
 #import "Debug.h"
 #import <Photos/Photos.h>
 
@@ -65,10 +66,10 @@ RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
                                           result, nil];
                                return;
                              }
-                             UIImage *image = [UIImage
-                                 imageWithCGImage:cgImage
-                                            scale:1.0
-                                      orientation:UIImageOrientationRight];
+                             UIImage *image =
+                                 [UIImage imageWithCGImage:cgImage
+                                                     scale:1.0
+                                               orientation:UIImageOrientationUp];
                              NSUInteger index = [times
                                  indexOfObject:
                                      [NSValue valueWithCMTime:requestedTime]];
