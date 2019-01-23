@@ -1,6 +1,8 @@
 import UIKit
 
-class OrientationUtil {
+@objc
+class OrientationUtil: NSObject {
+  @objc
   public static func orientation(forTransform transform: CGAffineTransform) -> UIInterfaceOrientation {
     let angle = degrees(fromRadians: atan2(transform.b, transform.a))
     if compareFloats(angle, 0) {
@@ -14,11 +16,11 @@ class OrientationUtil {
     }
     return .landscapeRight
   }
-  
+
   private static func degrees(fromRadians radians: CGFloat) -> CGFloat {
     return radians * 180 / CGFloat.pi
   }
-  
+
   private static func compareFloats(_ a: CGFloat, _ b: CGFloat) -> Bool {
     return abs(a - b) < CGFloat.ulpOfOne
   }

@@ -8,12 +8,11 @@
 RCT_EXPORT_MODULE(VideoThumbnailViewManager)
 
 - (UIView *)view {
-  UIImageView *imageView = [[UIImageView alloc] init];
-  imageView.contentMode = UIViewContentModeScaleAspectFill;
-  return (UIView *)imageView;
+  VideoThumbnailView *thumbnailView = [[VideoThumbnailView alloc] init];
+  return (UIView *)thumbnailView;
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
+RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, VideoThumbnailView) {
   NSString *localIdentifier = [RCTConvert NSString:json];
   PHFetchResult<PHAsset *> *fetchResult =
       [PHAsset fetchAssetsWithLocalIdentifiers:@[ localIdentifier ]
@@ -22,21 +21,12 @@ RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
   if (asset == nil) {
     return;
   }
-  CGSize size = CGSizeMake(100, 100 * 4 / 3);
-  PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
-  requestOptions.synchronous = NO;
-  requestOptions.deliveryMode =
-      PHImageRequestOptionsDeliveryModeHighQualityFormat;
-  [PHImageManager.defaultManager
-      requestImageForAsset:asset
-                targetSize:size
-               contentMode:PHImageContentModeAspectFill
-                   options:requestOptions
-             resultHandler:^(UIImage *_Nullable image,
-                             NSDictionary *_Nullable info) {
-               UIImageView *imageView = (UIImageView *)view;
-               imageView.image = image;
-             }];
+  if (![view isKindOfClass:[VideoThumbnailView class]]) {
+    RCTLogError(
+        @"View is not the correct class. Expected 'VideoThumbnailView'.");
+    return;
+  }
+  view.asset = asset;
 }
 
 @end

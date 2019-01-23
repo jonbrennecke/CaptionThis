@@ -81,6 +81,7 @@
 		FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */; };
 		FCD5F7A821D8225C001F2068 /* VideoSeekbarPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */; };
 		FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8024921F84A640092B5E5 /* OrientationUtil.swift */; };
+		FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -536,6 +537,7 @@
 		FCD5F7A621D82250001F2068 /* VideoSeekbarPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewView.h; sourceTree = "<group>"; };
 		FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoSeekbarPreviewView.m; sourceTree = "<group>"; };
 		FCE8024921F84A640092B5E5 /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
+		FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoThumbnailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -952,6 +954,7 @@
 			children = (
 				FC880E0121D5DC3500856037 /* VideoThumbnailViewManager.h */,
 				FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */,
+				FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */,
 			);
 			name = VideoThumbnailViewManager;
 			sourceTree = "<group>";
@@ -1619,6 +1622,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				FC6EA81221D45123007C3B3E /* Debug.swift in Sources */,
 				FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */,
+				FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */,
 				FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */,
 				FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */,
 				FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */,
