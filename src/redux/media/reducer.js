@@ -41,6 +41,7 @@ const initialState: MediaState = {
   fontSize: DEFAULT_FONT_SIZE,
   backgroundColor: Color.hexToRgbaObject(DEFAULT_BACKGROUND_COLOR),
   textColor: Color.hexToRgbaObject(DEFAULT_TEXT_COLOR),
+  lineStyle: 'twoLines',
 };
 
 const actions = {

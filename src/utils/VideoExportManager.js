@@ -9,6 +9,7 @@ import type {
   TextOverlayParams,
   ColorRGBA,
 } from '../types/media';
+import type { LineStyle } from '../types/video';
 
 const { VideoExport: _NativeVideoExportModule } = NativeModules;
 const NativeVideoExportModule = Promise.promisifyAll(_NativeVideoExportModule);
@@ -21,6 +22,7 @@ export type ExportParams = {
   textSegments: TextOverlayParams[],
   fontFamily: string,
   duration: number,
+  lineStyle: LineStyle,
 };
 
 export const exportVideo = async ({

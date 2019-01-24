@@ -2,8 +2,8 @@ import Foundation
 
 @objc
 enum VideoAnimationLineStyle: Int {
-  case oneLine
-  case twoLines
+  case oneLine = 1
+  case twoLines = 2
 }
 
 @objc

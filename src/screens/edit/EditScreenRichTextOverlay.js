@@ -16,6 +16,7 @@ import RichTextEditor from '../../components/rich-text-editor/RichTextEditor';
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
+import type { LineStyle } from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -28,6 +29,7 @@ type Props = {
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
   speechTranscription: ?SpeechTranscription,
+  lineStyle: LineStyle,
   onRequestSave: ({
     fontSize: number,
     fontFamily: string,
@@ -174,6 +176,7 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
                 fontFamily={this.props.fontFamily}
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}
+                lineStyle={this.props.lineStyle}
                 onRequestSave={this.props.onRequestSave}
               />
             </View>

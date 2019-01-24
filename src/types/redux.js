@@ -2,6 +2,7 @@
 import typeof { LOADING_STATE, TRANSCRIPTION_STATE } from '../constants';
 import type { VideoAssetIdentifier, ColorRGBA } from './media';
 import type { SpeechTranscription } from './speech';
+import type { LineStyle } from './video';
 
 export type Action<T> = {
   +type: string,
@@ -48,6 +49,7 @@ export type MediaState = {
   fontSize: number,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
+  lineStyle: LineStyle,
 };
 
 export type Payload =

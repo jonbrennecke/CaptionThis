@@ -137,6 +137,21 @@ RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, UIView) {
     params.backgroundColor = backgroundColor;
   }
 
+  id lineStyleJson = [json objectForKey:@"lineStyle"];
+  if (lineStyleJson) {
+    NSString *lineStyleString = [RCTConvert NSString:lineStyleJson];
+    if ([lineStyleString isEqualToString:@"oneLine"]) {
+      VideoAnimationLineStyle lineStyle = VideoAnimationLineStyleOneLine;
+      params.lineStyle = lineStyle;
+    } else if ([lineStyleString isEqualToString:@"twoLines"]) {
+      VideoAnimationLineStyle lineStyle = VideoAnimationLineStyleTwoLines;
+      params.lineStyle = lineStyle;
+    } else {
+      RCTLogError(@"The value '%@' is not a valid line style.",
+                  lineStyleString);
+    }
+  }
+
   [self updateAnimationWithView:view withParams:params];
 }
 
