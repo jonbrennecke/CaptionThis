@@ -3,11 +3,6 @@ import Photos
 
 @objc
 class VideoExportManager: NSObject {
-  private let containerOffsetFromBottom: CGFloat = 300
-  private let containerHeight: CGFloat = {
-    90 * UIScreen.main.scale
-  }()
-
   @objc
   public func exportVideo(withLocalIdentifier localIdentifier: String,
                           animationParams: VideoAnimationParams,
@@ -25,31 +20,51 @@ class VideoExportManager: NSObject {
         completionHandler(nil, false)
         return
       }
-      guard let composition = VideoAnimationComposition(withAsset: asset) else {
+      self.exportVideo(withAsset: asset, animationParams: animationParams, completionHandler: completionHandler)
+    }
+  }
+
+  private func exportVideo(withAsset asset: AVAsset,
+                           animationParams: VideoAnimationParams,
+                           completionHandler: @escaping (Error?, Bool) -> Void) {
+    guard let composition = VideoAnimationComposition(withAsset: asset) else {
+      completionHandler(nil, false)
+      return
+    }
+    let animationLayer = VideoAnimationLayer(for: .export)
+    animationLayer.frame = frame(forComposition: composition)
+    animationLayer.params = animationParams
+    animationLayer.beginTime = AVCoreAnimationBeginTimeAtZero
+    animationLayer.timeOffset = 0
+    animationLayer.speed = 1
+    composition.add(effectLayer: animationLayer)
+    composition.exportVideo { error, success, url in
+      if let error = error {
+        completionHandler(error, false)
+        return
+      }
+      guard let url = url else {
         completionHandler(nil, false)
         return
       }
-      let animationLayer = VideoAnimationLayer(for: .export)
-      animationLayer.frame = CGRect(x: 0, y: self.containerOffsetFromBottom, width: composition.videoSize.width, height: self.containerHeight)
-      animationLayer.params = animationParams
-      animationLayer.beginTime = AVCoreAnimationBeginTimeAtZero
-      animationLayer.timeOffset = 0
-      animationLayer.speed = 1
-      composition.add(effectLayer: animationLayer)
-      composition.exportVideo { error, success, url in
-        if let error = error {
-          completionHandler(error, false)
-          return
-        }
-        guard let url = url else {
-          completionHandler(nil, false)
-          return
-        }
-        self.createVideoAsset(forURL: url) { error, success, _ in
-          completionHandler(error, success)
-        }
+      self.createVideoAsset(forURL: url) { error, success, _ in
+        completionHandler(error, success)
       }
     }
+  }
+
+  private func frame(forComposition composition: VideoAnimationComposition) -> CGRect {
+    var offsetFromBottom: CGFloat = 300
+    switch composition.orientation {
+    case .left, .right, .leftMirrored, .rightMirrored:
+      offsetFromBottom = 100
+      break
+    default:
+      break
+    }
+    let height: CGFloat = 90 * UIScreen.main.scale
+    let width = composition.videoSize.width
+    return CGRect(x: 0, y: offsetFromBottom, width: width, height: height)
   }
 
   private func createVideoAsset(forURL url: URL, _ completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> Void) {
