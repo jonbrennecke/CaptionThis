@@ -103,7 +103,7 @@ RCT_EXPORT_METHOD(beginSpeechTranscriptionWithLocalIdentifier
   }
   PHVideoRequestOptions *requestOptions = [[PHVideoRequestOptions alloc] init];
   requestOptions.deliveryMode =
-      PHImageRequestOptionsDeliveryModeHighQualityFormat;
+      PHVideoRequestOptionsDeliveryModeHighQualityFormat;
   [PHImageManager.defaultManager
       requestAVAssetForVideo:asset
                      options:requestOptions

@@ -80,19 +80,6 @@ class SpeechManager: NSObject {
     }
   }
 
-  private func createRecognitionRequestForAudioSessionOrThrow() throws -> SFSpeechAudioBufferRecognitionRequest {
-    let node = audioEngine.inputNode
-    let format = node.outputFormat(forBus: 0)
-    let request = SFSpeechAudioBufferRecognitionRequest()
-    request.shouldReportPartialResults = true
-    node.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
-      request.append(buffer)
-    }
-    audioEngine.prepare()
-    try audioEngine.start()
-    return request
-  }
-
   @objc
   public func startCaptureForAsset(_ asset: AVAsset, callback: @escaping (Error?, SFSpeechAudioBufferRecognitionRequest?) -> Void) {
     SpeechManager.dispatchQueue.async {
@@ -109,19 +96,36 @@ class SpeechManager: NSObject {
       }
     }
   }
+  
+  private func createRecognitionRequestForAudioSessionOrThrow() throws -> SFSpeechAudioBufferRecognitionRequest {
+    let node = audioEngine.inputNode
+    let format = node.outputFormat(forBus: 0)
+    let request = SFSpeechAudioBufferRecognitionRequest()
+    request.shouldReportPartialResults = true
+    node.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
+      request.append(buffer)
+    }
+    audioEngine.prepare()
+    try audioEngine.start()
+    return request
+  }
 
   private func createRecognitionRequestForAssetOrThrow(_ asset: AVAsset) throws -> SFSpeechAudioBufferRecognitionRequest? {
     let assetReader = try AVAssetReader(asset: asset)
     let audioAssetTracks = asset.tracks(withMediaType: .audio)
-    guard let audioAssetTrack = audioAssetTracks.first else {
+    guard let audioAssetTrack = audioAssetTracks.last else {
       Debug.log(message: "Failed to create recognition request. No audio track provided.")
       return nil
     }
-    let outputSettings = [AVFormatIDKey: kAudioFormatLinearPCM]
+    let outputSettings: [String: Any] = [AVFormatIDKey: kAudioFormatLinearPCM]
     let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: outputSettings)
+    if !assetReader.canAdd(assetReaderOutput) {
+      Debug.log(message: "Asset reader cannot add output.")
+      return nil
+    }
     assetReader.add(assetReaderOutput)
     let request = SFSpeechAudioBufferRecognitionRequest()
-    request.shouldReportPartialResults = true
+    request.shouldReportPartialResults = false
     assetReader.startReading()
     while true {
       guard let sampleBuffer = assetReaderOutput.copyNextSampleBuffer() else {
@@ -164,6 +168,8 @@ extension SpeechManager: SFSpeechRecognizerDelegate {
 extension SpeechManager: SFSpeechRecognitionTaskDelegate {
   func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
     Debug.log(format: "Speech recognizer finished task. Success == %@", success ? "true" : "false")
+    // TODO: if task?.error?.code == 203 and localized description == "Retry", then send "speechManagerDidNotDetectSpeech" event
+    // otherwise, send an error event
     if !success {
       delegate?.speechManagerDidNotDetectSpeech()
     }
@@ -175,7 +181,7 @@ extension SpeechManager: SFSpeechRecognitionTaskDelegate {
 
   func speechRecognitionTaskFinishedReadingAudio(_: SFSpeechRecognitionTask) {
 //    TODO: check task.state
-    Debug.log(message: "Speech recognition finished accepting audio input.")
+    Debug.log(message: "Speech recognition finished reading audio input.")
   }
 
   func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishRecognition result: SFSpeechRecognitionResult) {
