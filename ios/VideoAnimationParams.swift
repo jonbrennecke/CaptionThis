@@ -1,6 +1,12 @@
 import Foundation
 
 @objc
+enum VideoAnimationLineStyle: Int {
+  case oneLine
+  case twoLines
+}
+
+@objc
 class VideoAnimationParams: NSObject {
   @objc
   var textSegments: [TextSegmentParams]?
@@ -16,6 +22,8 @@ class VideoAnimationParams: NSObject {
   var playbackTime: NSNumber?
   @objc
   var duration: NSNumber?
+  @objc
+  var lineStyle: VideoAnimationLineStyle = .twoLines
 }
 
 @objc

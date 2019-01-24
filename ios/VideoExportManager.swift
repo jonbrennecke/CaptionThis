@@ -31,6 +31,13 @@ class VideoExportManager: NSObject {
       completionHandler(nil, false)
       return
     }
+    // FIXME: this is a temporary placeholder. Eventually the lineStyle should be a user preference, not hardcoded as a function of video orientation
+    switch composition.orientation {
+    case .left, .leftMirrored, .right, .rightMirrored:
+        animationParams.lineStyle = .oneLine
+    default:
+      break;
+    }
     let animationLayer = VideoAnimationLayer(for: .export)
     animationLayer.frame = frame(forComposition: composition)
     animationLayer.params = animationParams

@@ -3,6 +3,7 @@ import UIKit
 
 let MAX_CHARACTERS_PER_LINE: Int = 32
 let DEFAULT_FONT_SIZE: Float = 16
+let DEFAULT_ANIMATION_DURATION: CFTimeInterval = 0.25
 
 @objc
 enum VideoAnimationOutputKind: Int {
@@ -117,18 +118,87 @@ class VideoAnimationLayer: CALayer {
     pause() // NOTE: Start in a paused state
     let containerLayer = setupContainerLayer()
     containerLayer.duration = params.duration?.doubleValue ?? 0
-//    containerLayer.repeatCount = .greatestFiniteMagnitude // TODO: necessary or not?
+    switch params.lineStyle {
+    case .oneLine:
+      setupOneLineTextAnimation(inParentLayer: containerLayer)
+      break
+    case .twoLines:
+      setupTwoLineTextAnimation(inParentLayer: containerLayer)
+      break
+    }
+    guard let firstSegment = params.textSegments?.first else {
+      return
+    }
+    let opacityLayer = CALayer()
+    opacityLayer.backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
+    opacityLayer.opacity = 0
+    let fadeInAnimation = animateFadeIn(atTime: Double(firstSegment.timestamp))
+    opacityLayer.add(fadeInAnimation, forKey: nil)
+    opacityLayer.frame = bounds
+    opacityLayer.addSublayer(containerLayer)
+    addSublayer(opacityLayer)
+//     TODO: fade out after last segment duration is complete (+delay)
+  }
+
+  private func setupOneLineTextAnimation(inParentLayer parentLayer: CALayer) {
     var textLayers = [CATextLayer]()
     params.textSegments?.forEach { segment in
       let multiplier: CGFloat = outputKind == .view ? -1 : 1
-      let offset: CGFloat = outputKind == .view ? containerLayer.frame.height : 0
-      let outOfFrameTopY = containerLayer.frame.height * 1.25 * multiplier + offset
-      let inFrameTopY = containerLayer.frame.height * 0.75 * multiplier + offset
-      let inFrameMiddleY = containerLayer.frame.height * 0.5 * multiplier + offset
-      let inFrameBottomY = containerLayer.frame.height * 0.25 * multiplier + offset
-      let outOfFrameBottomY = -containerLayer.frame.height * 0.25 * multiplier + offset
+      let offset: CGFloat = outputKind == .view ? parentLayer.frame.height : 0
+      let outOfFrameTopY = parentLayer.frame.height * 1.55 * multiplier + offset
+      let inFrameMiddleY = parentLayer.frame.height * 0.5 * multiplier + offset
+      let outOfFrameBottomY = -parentLayer.frame.height * 0.25 * multiplier + offset
+      guard let centerTextLayer = textLayers.last else {
+        let textLayer = self.addTextLayer(parent: parentLayer, withParams: params, text: segment.text)
+        textLayer.position.y = inFrameMiddleY
+        textLayer.displayIfNeeded()
+        textLayer.layoutIfNeeded()
+        textLayers.append(textLayer)
+        return
+      }
+      let newString = "\(centerTextLayer.string ?? "") \(segment.text)"
+      if newString.count > MAX_CHARACTERS_PER_LINE {
+        let timestamp = Double(segment.timestamp) + DEFAULT_ANIMATION_DURATION
+        let textLayer = addTextLayer(parent: parentLayer, withParams: params, text: segment.text)
+        textLayer.position.y = outOfFrameBottomY
+        textLayer.opacity = 0
+        let fadeInAnimation = animateFadeIn(atTime: timestamp)
+        textLayer.add(fadeInAnimation, forKey: nil)
+        let slideUpAnimation = animateSlideUp(fromPosition: textLayer.position, atTime: timestamp, toValue: inFrameMiddleY)
+        textLayer.add(slideUpAnimation, forKey: nil)
+        let bottomSlideUpAnimation = animateSlideUp(fromPosition: centerTextLayer.position, atTime: timestamp, toValue: outOfFrameTopY)
+        centerTextLayer.add(bottomSlideUpAnimation, forKey: nil)
+        textLayer.displayIfNeeded()
+        textLayer.layoutIfNeeded()
+        textLayers.append(textLayer)
+
+      } else {
+        let fadeOutAnimation = animateFadeOut(atTime: Double(segment.timestamp), withDuration: 0)
+        centerTextLayer.add(fadeOutAnimation, forKey: nil)
+        let textLayer = addTextLayer(parent: parentLayer, withParams: params, text: newString)
+        textLayer.position.y = inFrameMiddleY
+        textLayer.opacity = 0
+        let fadeInAnimation = animateFadeIn(atTime: Double(segment.timestamp), withDuration: 0)
+        textLayer.add(fadeInAnimation, forKey: nil)
+        textLayer.displayIfNeeded()
+        textLayer.layoutIfNeeded()
+        textLayers.append(textLayer)
+      }
+    }
+  }
+
+  private func setupTwoLineTextAnimation(inParentLayer parentLayer: CALayer) {
+    var textLayers = [CATextLayer]()
+    params.textSegments?.forEach { segment in
+      let multiplier: CGFloat = outputKind == .view ? -1 : 1
+      let offset: CGFloat = outputKind == .view ? parentLayer.frame.height : 0
+      let outOfFrameTopY = parentLayer.frame.height * 1.25 * multiplier + offset
+      let inFrameTopY = parentLayer.frame.height * 0.75 * multiplier + offset
+      let inFrameMiddleY = parentLayer.frame.height * 0.5 * multiplier + offset
+      let inFrameBottomY = parentLayer.frame.height * 0.25 * multiplier + offset
+      let outOfFrameBottomY = -parentLayer.frame.height * 0.25 * multiplier + offset
       guard let bottomTextLayer = textLayers.last else {
-        let textLayer = self.addTextLayer(parent: containerLayer, withParams: params, text: segment.text)
+        let textLayer = self.addTextLayer(parent: parentLayer, withParams: params, text: segment.text)
         textLayer.position.y = inFrameMiddleY
         textLayer.displayIfNeeded()
         textLayer.layoutIfNeeded()
@@ -137,7 +207,7 @@ class VideoAnimationLayer: CALayer {
       }
       let newString = "\(bottomTextLayer.string ?? "") \(segment.text)"
       if newString.count >= MAX_CHARACTERS_PER_LINE {
-        let textLayer = addTextLayer(parent: containerLayer, withParams: params, text: segment.text)
+        let textLayer = addTextLayer(parent: parentLayer, withParams: params, text: segment.text)
         textLayer.position.y = outOfFrameBottomY
         textLayer.opacity = 0
         let fadeInAnimation = animateFadeIn(atTime: Double(segment.timestamp))
@@ -161,7 +231,7 @@ class VideoAnimationLayer: CALayer {
       } else {
         let fadeOutAnimation = animateFadeOut(atTime: Double(segment.timestamp), withDuration: 0)
         bottomTextLayer.add(fadeOutAnimation, forKey: nil)
-        let textLayer = addTextLayer(parent: containerLayer, withParams: params, text: segment.text)
+        let textLayer = addTextLayer(parent: parentLayer, withParams: params, text: segment.text)
         let isMiddle = abs(bottomTextLayer.position.y - inFrameMiddleY) < CGFloat.ulpOfOne
         textLayer.position.y = isMiddle ? inFrameMiddleY : inFrameBottomY
         textLayer.string = newString
@@ -173,18 +243,6 @@ class VideoAnimationLayer: CALayer {
         textLayers.append(textLayer)
       }
     }
-    guard let firstSegment = params.textSegments?.first else {
-      return
-    }
-    let opacityLayer = CALayer()
-    opacityLayer.backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
-    opacityLayer.opacity = 0
-    let fadeInAnimation = animateFadeIn(atTime: Double(firstSegment.timestamp))
-    opacityLayer.add(fadeInAnimation, forKey: nil)
-    opacityLayer.frame = bounds
-    opacityLayer.addSublayer(containerLayer)
-    addSublayer(opacityLayer)
-//     TODO: fade out after last segment duration is complete (+delay)
   }
 
   private func setupContainerLayer() -> CALayer {
@@ -199,7 +257,7 @@ class VideoAnimationLayer: CALayer {
     return containerLayer
   }
 
-  private func animateFadeIn(atTime beginTime: CFTimeInterval, withDuration duration: CFTimeInterval = 0.25) -> CABasicAnimation {
+  private func animateFadeIn(atTime beginTime: CFTimeInterval, withDuration duration: CFTimeInterval = DEFAULT_ANIMATION_DURATION) -> CABasicAnimation {
     let fadeInAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
     fadeInAnimation.fromValue = 0.0
     fadeInAnimation.toValue = 1.0
@@ -211,7 +269,7 @@ class VideoAnimationLayer: CALayer {
     return fadeInAnimation
   }
 
-  private func animateFadeOut(atTime beginTime: CFTimeInterval, withDuration duration: CFTimeInterval = 0.25) -> CABasicAnimation {
+  private func animateFadeOut(atTime beginTime: CFTimeInterval, withDuration duration: CFTimeInterval = DEFAULT_ANIMATION_DURATION) -> CABasicAnimation {
     let fadeOutAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
     fadeOutAnimation.toValue = 0.0
     fadeOutAnimation.fillMode = .forwards
@@ -226,7 +284,7 @@ class VideoAnimationLayer: CALayer {
     fromPosition position: CGPoint,
     atTime beginTime: CFTimeInterval,
     toValue value: CGFloat,
-    withDuration duration: CFTimeInterval = 0.25
+    withDuration duration: CFTimeInterval = DEFAULT_ANIMATION_DURATION
   ) -> CABasicAnimation {
     let slideUpAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.position))
     slideUpAnimation.toValue = CGPoint(x: position.x, y: value)
