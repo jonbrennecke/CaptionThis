@@ -100,15 +100,14 @@ class SpeechManager: NSObject {
           }
           self.startTranscription(withRequest: request)
           callback(nil, request)
-        }
-        catch {
+        } catch {
           Debug.log(error: error)
           callback(error, nil)
         }
       }
     }
   }
-  
+
   private func createRecognitionRequestForAudioSessionOrThrow() throws -> SFSpeechAudioBufferRecognitionRequest {
     let node = audioEngine.inputNode
     let format = node.outputFormat(forBus: 0)

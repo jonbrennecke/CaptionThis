@@ -1,10 +1,9 @@
 import AVFoundation
 
 class AudioUtil {
-  
   private static let queue = DispatchQueue(label: "audio conversion queue")
-  
-  public static func extractMonoAudio(forAsset asset: AVAsset, _ completionHandler: @escaping (Error?, AVAsset?) -> ()) {
+
+  public static func extractMonoAudio(forAsset asset: AVAsset, _ completionHandler: @escaping (Error?, AVAsset?) -> Void) {
     asset.loadValuesAsynchronously(forKeys: ["tracks"]) {
       do {
         let audioAssetTracks = asset.tracks(withMediaType: .audio)
@@ -53,13 +52,11 @@ class AudioUtil {
           while assetWriterInput.isReadyForMoreMediaData {
             if let sampleBuffer = assetReaderOutput.copyNextSampleBuffer() {
               assetWriterInput.append(sampleBuffer)
-            }
-            else {
+            } else {
               assetWriterInput.markAsFinished()
               assetReader.cancelReading()
               break
             }
-            
           }
           assetWriterInput.markAsFinished()
           assetWriter.finishWriting {
@@ -67,8 +64,7 @@ class AudioUtil {
             completionHandler(nil, outputAsset)
           }
         }
-      }
-      catch let error {
+      } catch {
         completionHandler(error, nil)
       }
     }
