@@ -32,7 +32,7 @@ class VideoExportManager: NSObject {
       return
     }
     let animationLayer = VideoAnimationLayer(for: .export)
-    animationLayer.frame = frame(forComposition: composition)
+    animationLayer.frame = frame(forComposition: composition, params: animationParams)
     animationLayer.params = animationParams
     animationLayer.beginTime = AVCoreAnimationBeginTimeAtZero
     animationLayer.timeOffset = 0
@@ -53,7 +53,7 @@ class VideoExportManager: NSObject {
     }
   }
 
-  private func frame(forComposition composition: VideoAnimationComposition) -> CGRect {
+  private func frame(forComposition composition: VideoAnimationComposition, params: VideoAnimationParams) -> CGRect {
     var offsetFromBottom: CGFloat = 300
     switch composition.orientation {
     case .left, .right, .leftMirrored, .rightMirrored:
@@ -62,9 +62,9 @@ class VideoExportManager: NSObject {
     default:
       break
     }
-    let height: CGFloat = 90 * UIScreen.main.scale
+    let height = params.frameHeight(forOutputKind: .export)
     let width = composition.videoSize.width
-    return CGRect(x: 0, y: offsetFromBottom, width: width, height: height)
+    return CGRect(x: 0, y: offsetFromBottom, width: width, height: CGFloat(height))
   }
 
   private func createVideoAsset(forURL url: URL, _ completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> Void) {
