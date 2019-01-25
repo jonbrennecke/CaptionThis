@@ -19,6 +19,10 @@ class VideoAnimationComposition {
     return size
   }
 
+  public var orientation: UIImage.Orientation {
+    return OrientationUtil.orientation(forTransform: videoTrack.preferredTransform)
+  }
+
   init?(withAsset asset: AVAsset) {
     videoAsset = asset
     guard let videoTrack = asset.tracks(withMediaType: .video).first else {

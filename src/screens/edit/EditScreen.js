@@ -36,12 +36,14 @@ import {
   getFontSize,
   isExportingVideo,
   didSpeechRecognitionFail,
+  getLineStyle,
 } from '../../redux/media/selectors';
 
 import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
+import type { LineStyle } from '../../types/video';
 import type { ExportParams } from '../../utils/VideoExportManager';
 
 type State = {
@@ -65,6 +67,7 @@ type StateProps = {
   isExportingVideo: boolean,
   fontSize: number,
   didSpeechRecognitionFail: boolean,
+  lineStyle: LineStyle,
 };
 
 type DispatchProps = {
@@ -148,6 +151,7 @@ function mapStateToProps(state: AppState): StateProps {
     isExportingVideo: isExportingVideo(state),
     fontSize: getFontSize(state),
     didSpeechRecognitionFail: didSpeechRecognitionFail(state),
+    lineStyle: getLineStyle(state),
   };
 }
 
@@ -372,6 +376,7 @@ export default class EditScreen extends Component<Props, State> {
       fontFamily: this.props.fontFamily,
       fontSize: this.props.fontSize,
       duration: this.state.duration,
+      lineStyle: this.props.lineStyle,
     });
   }
 
@@ -447,6 +452,7 @@ export default class EditScreen extends Component<Props, State> {
               hasFinalTranscription={hasFinalTranscription}
               style={styles.transcription}
               duration={this.state.duration}
+              lineStyle={this.props.lineStyle}
               textColor={this.props.textColor}
               backgroundColor={this.props.backgroundColor}
               fontFamily={this.props.fontFamily}
@@ -477,6 +483,7 @@ export default class EditScreen extends Component<Props, State> {
           hasFinalTranscription={hasFinalTranscription}
           duration={this.state.duration}
           isVisible={this.state.showRichTextOverlay}
+          lineStyle={this.props.lineStyle}
           textColor={this.props.textColor}
           backgroundColor={this.props.backgroundColor}
           fontFamily={this.props.fontFamily}

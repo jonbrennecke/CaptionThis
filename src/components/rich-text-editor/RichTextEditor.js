@@ -17,6 +17,7 @@ import { UI_COLORS } from '../../constants';
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
+import type { LineStyle } from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -29,6 +30,7 @@ type Props = {
   backgroundColor: ColorRGBA,
   speechTranscription: ?SpeechTranscription,
   duration: number,
+  lineStyle: LineStyle,
   onRequestLockScroll?: () => void,
   onRequestUnlockScroll?: () => void,
   onRequestSave: ({
@@ -45,6 +47,7 @@ type State = {
   backgroundColor: ColorRGBA,
   fontFamily: string,
   fontSize: number,
+  lineStyle: LineStyle,
 };
 
 const styles = {
@@ -106,6 +109,7 @@ export default class RichTextEditor extends Component<Props, State> {
       backgroundColor: props.backgroundColor,
       fontFamily: props.fontFamily,
       fontSize: props.fontSize,
+      lineStyle: props.lineStyle,
     };
   }
 
@@ -240,6 +244,7 @@ export default class RichTextEditor extends Component<Props, State> {
           fontFamily={this.state.fontFamily}
           fontSize={this.state.fontSize}
           speechTranscription={this.props.speechTranscription}
+          lineStyle={this.state.lineStyle}
         />
         <View style={styles.mainContents}>
           <View style={styles.mainContentsBackground} />

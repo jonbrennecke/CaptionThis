@@ -4,6 +4,7 @@ import { LOADING_STATE, TRANSCRIPTION_STATE } from '../../constants';
 import type { AppState } from '../../types/redux';
 import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
+import type { LineStyle } from '../../types/video';
 
 export function getVideoAssetIdentifiers(
   state: AppState
@@ -58,4 +59,8 @@ export function getFontSize(state: AppState): number {
 
 export function didSpeechRecognitionFail(state: AppState): boolean {
   return state.media.speechTranscriptionState === TRANSCRIPTION_STATE.FAILED;
+}
+
+export function getLineStyle(state: AppState): LineStyle {
+  return state.media.lineStyle;
 }

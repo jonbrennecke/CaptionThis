@@ -21,6 +21,7 @@ type Props = {
   fontSize: number,
   speechTranscription: ?SpeechTranscription,
   hasFinalTranscription: boolean,
+  lineStyle: 'oneLine' | 'twoLines',
   onPress?: () => void,
 };
 
@@ -85,6 +86,7 @@ export default class RecordingTranscriptionView extends Component<Props> {
             duration: this.props.duration,
             fontFamily: this.props.fontFamily,
             fontSize: this.props.fontSize,
+            lineStyle: this.props.lineStyle,
             textColor: [
               this.props.textColor.red / 255,
               this.props.textColor.green / 255,

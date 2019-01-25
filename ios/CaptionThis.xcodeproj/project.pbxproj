@@ -80,6 +80,8 @@
 		FCD5F75821D73CA3001F2068 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75721D73CA2001F2068 /* Debug.m */; };
 		FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */; };
 		FCD5F7A821D8225C001F2068 /* VideoSeekbarPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */; };
+		FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8024921F84A640092B5E5 /* OrientationUtil.swift */; };
+		FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -534,6 +536,8 @@
 		FCD5F7A421D8110C001F2068 /* VideoSeekbarPreviewViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewViewManager.h; sourceTree = "<group>"; };
 		FCD5F7A621D82250001F2068 /* VideoSeekbarPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewView.h; sourceTree = "<group>"; };
 		FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoSeekbarPreviewView.m; sourceTree = "<group>"; };
+		FCE8024921F84A640092B5E5 /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
+		FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoThumbnailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -676,7 +680,7 @@
 				FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */,
 				FCA3971D21DCB3B500347CAB /* VideoAnimationParams.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
-				FC58D07521FA795F00E7956D /* AudioUtil.swift */,
+				FC58D11321FAED1A00E7956D /* utils */,
 				FC880D9421D4A48E00856037 /* CameraPreviewView */,
 				FC880D9321D49EA900856037 /* CameraBridgeModule */,
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
@@ -685,7 +689,6 @@
 				FC880E0421D5DC4600856037 /* VideoThumbnailViewManager */,
 				FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */,
 				FCD5F75321D6EA55001F2068 /* SpeechBridgeModule */,
-				FCD5F75621D73C97001F2068 /* Debug */,
 				FC7A0F8621D8AB5D00751DBE /* HueGradientViewManager */,
 				FC7A0F6121D89CCC00751DBE /* SaturationAndBrightnessGradientViewManager */,
 				FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */,
@@ -838,6 +841,16 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		FC58D11321FAED1A00E7956D /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				FC58D07521FA795F00E7956D /* AudioUtil.swift */,
+				FCE8024921F84A640092B5E5 /* OrientationUtil.swift */,
+				FCD5F75621D73C97001F2068 /* Debug */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
 		FC6EA7D921CEA457007C3B3E /* fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -949,6 +962,7 @@
 			children = (
 				FC880E0121D5DC3500856037 /* VideoThumbnailViewManager.h */,
 				FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */,
+				FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */,
 			);
 			name = VideoThumbnailViewManager;
 			sourceTree = "<group>";
@@ -1026,6 +1040,7 @@
 				FCD5F75721D73CA2001F2068 /* Debug.m */,
 			);
 			name = Debug;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */ = {
@@ -1616,6 +1631,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				FC6EA81221D45123007C3B3E /* Debug.swift in Sources */,
 				FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */,
+				FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */,
 				FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */,
 				FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */,
 				FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */,
@@ -1635,6 +1651,7 @@
 				FCD5F7A821D8225C001F2068 /* VideoSeekbarPreviewView.m in Sources */,
 				FC880E0321D5DC4100856037 /* VideoThumbnailViewManager.m in Sources */,
 				FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */,
+				FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */,
 				FCA3971821DC93AF00347CAB /* constants.swift in Sources */,
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,
 				FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */,

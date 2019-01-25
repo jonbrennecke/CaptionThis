@@ -1,4 +1,5 @@
 #import "VideoSeekbarPreviewViewManager.h"
+#import "CaptionThis-Swift.h"
 #import "Debug.h"
 #import <Photos/Photos.h>
 
@@ -38,6 +39,7 @@ RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
                        withView:(VideoSeekbarPreviewView *)view {
   AVAssetImageGenerator *assetImageGenerator =
       [[AVAssetImageGenerator alloc] initWithAsset:asset];
+  assetImageGenerator.appliesPreferredTrackTransform = YES;
   NSMutableArray<NSValue *> *times = [[NSMutableArray alloc] init];
   Float64 duration = CMTimeGetSeconds(asset.duration);
   Float64 step = duration / SEEKBAR_NUMBER_OF_PREVIEW_FRAMES;
@@ -65,10 +67,7 @@ RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
                                           result, nil];
                                return;
                              }
-                             UIImage *image = [UIImage
-                                 imageWithCGImage:cgImage
-                                            scale:1.0
-                                      orientation:UIImageOrientationRight];
+                             UIImage *image = [UIImage imageWithCGImage:cgImage];
                              NSUInteger index = [times
                                  indexOfObject:
                                      [NSValue valueWithCMTime:requestedTime]];
