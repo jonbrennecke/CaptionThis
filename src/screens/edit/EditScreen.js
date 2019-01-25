@@ -376,7 +376,7 @@ export default class EditScreen extends Component<Props, State> {
       fontFamily: this.props.fontFamily,
       fontSize: this.props.fontSize,
       duration: this.state.duration,
-      lineStyle: 'oneLine',
+      lineStyle: this.props.lineStyle,
     });
   }
 
