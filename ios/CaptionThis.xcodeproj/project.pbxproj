@@ -33,6 +33,7 @@
 		FC1FE6ED21E5B8DE005F657A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */; };
 		FC1FE7CD21E923D6005F657A /* TranscriptView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC1FE7CC21E923D6005F657A /* TranscriptView.m */; };
 		FC254DFF21CDB03800A9C901 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC983DD521CDAF6800063476 /* libReactNativeNavigation.a */; };
+		FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58D07521FA795F00E7956D /* AudioUtil.swift */; };
 		FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */; };
 		FC6EA7D721CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */; };
 		FC6EA7D821CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */; };
@@ -471,6 +472,7 @@
 		FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FC1FE7CC21E923D6005F657A /* TranscriptView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TranscriptView.m; sourceTree = "<group>"; };
 		FC1FE7CE21E923E0005F657A /* TranscriptView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TranscriptView.h; sourceTree = "<group>"; };
+		FC58D07521FA795F00E7956D /* AudioUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUtil.swift; sourceTree = "<group>"; };
 		FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PassionOne-Regular.ttf"; path = "../assets/fonts/PassionOne-Regular.ttf"; sourceTree = "<group>"; };
 		FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Bold.ttf"; path = "../assets/fonts/PT_Sans-Web-Bold.ttf"; sourceTree = "<group>"; };
 		FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Regular.ttf"; path = "../assets/fonts/PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
@@ -674,6 +676,7 @@
 				FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */,
 				FCA3971D21DCB3B500347CAB /* VideoAnimationParams.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
+				FC58D07521FA795F00E7956D /* AudioUtil.swift */,
 				FC880D9421D4A48E00856037 /* CameraPreviewView */,
 				FC880D9321D49EA900856037 /* CameraBridgeModule */,
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
@@ -1640,6 +1643,7 @@
 				FCA3971E21DCB3B500347CAB /* VideoAnimationParams.swift in Sources */,
 				FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */,
 				FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */,
+				FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */,
 				FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */,
 				FC9374E821DEF02C00FD2700 /* VideoAnimationComposition.swift in Sources */,
 			);
