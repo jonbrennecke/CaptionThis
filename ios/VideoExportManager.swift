@@ -57,7 +57,7 @@ class VideoExportManager: NSObject {
     var offsetFromBottom: CGFloat = 300
     switch composition.orientation {
     case .left, .right, .leftMirrored, .rightMirrored:
-      offsetFromBottom = 100
+      offsetFromBottom = 50
       break
     default:
       break
