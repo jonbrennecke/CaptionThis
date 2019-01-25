@@ -83,16 +83,28 @@ class SpeechManager: NSObject {
   @objc
   public func startCaptureForAsset(_ asset: AVAsset, callback: @escaping (Error?, SFSpeechAudioBufferRecognitionRequest?) -> Void) {
     SpeechManager.dispatchQueue.async {
-      do {
-        guard let request = try self.createRecognitionRequestForAssetOrThrow(asset) else {
+      AudioUtil.createMonoAudioTrack(forAsset: asset) { decompressedAsset, error in
+        if let error = error {
+          Debug.log(error: error)
+          callback(error, nil)
+          return
+        }
+        guard let decompressedAsset = decompressedAsset else {
           callback(nil, nil)
           return
         }
-        self.startTranscription(withRequest: request)
-        callback(nil, request)
-      } catch {
-        Debug.log(error: error)
-        callback(error, nil)
+        do {
+          guard let request = try self.createRecognitionRequestForAssetOrThrow(decompressedAsset) else {
+            callback(nil, nil)
+            return
+          }
+          self.startTranscription(withRequest: request)
+          callback(nil, request)
+        }
+        catch {
+          Debug.log(error: error)
+          callback(error, nil)
+        }
       }
     }
   }
@@ -117,8 +129,7 @@ class SpeechManager: NSObject {
       Debug.log(message: "Failed to create recognition request. No audio track provided.")
       return nil
     }
-    let outputSettings: [String: Any] = [AVFormatIDKey: kAudioFormatLinearPCM]
-    let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: outputSettings)
+    let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: nil)
     if !assetReader.canAdd(assetReaderOutput) {
       Debug.log(message: "Asset reader cannot add output.")
       return nil
@@ -127,7 +138,7 @@ class SpeechManager: NSObject {
     let request = SFSpeechAudioBufferRecognitionRequest()
     request.shouldReportPartialResults = false
     assetReader.startReading()
-    while true {
+    while assetReader.status == .reading {
       guard let sampleBuffer = assetReaderOutput.copyNextSampleBuffer() else {
         break
       }
