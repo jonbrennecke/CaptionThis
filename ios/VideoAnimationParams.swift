@@ -29,7 +29,7 @@ class VideoAnimationParams: NSObject {
 
   public let containerPaddingHorizontal: Float = 25
   public let containerPaddingVertical: Float = 5
-  public let textPaddingVertical: Float = 10
+  public let textPaddingVertical: Float = 5
 
   public func fontSize(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
     let fontSizeMultiplier = outputKind == .export ? Float(UIScreen.main.scale * 1.25) : 1
