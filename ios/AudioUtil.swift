@@ -4,7 +4,7 @@ class AudioUtil {
   
   private static let queue = DispatchQueue(label: "audio conversion queue")
   
-  public static func createMonoAudioTrack(forAsset asset: AVAsset, _ completionHandler: @escaping (AVAsset?, Error?) -> ()) {
+  public static func extractMonoAudio(forAsset asset: AVAsset, _ completionHandler: @escaping (AVAsset?, Error?) -> ()) {
     asset.loadValuesAsynchronously(forKeys: ["tracks"]) {
       do {
         let audioAssetTracks = asset.tracks(withMediaType: .audio)
@@ -15,7 +15,7 @@ class AudioUtil {
         let outputURL = try FileManager.default
           .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
           .appendingPathComponent("mono_output")
-          .appendingPathExtension("mov")
+          .appendingPathExtension("mp4")
         try? FileManager.default.removeItem(at: outputURL)
         let assetWriter = try AVAssetWriter(outputURL: outputURL, fileType: AVFileType.mov)
         let assetReader = try AVAssetReader(asset: asset)

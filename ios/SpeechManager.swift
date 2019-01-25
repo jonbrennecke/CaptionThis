@@ -83,18 +83,18 @@ class SpeechManager: NSObject {
   @objc
   public func startCaptureForAsset(_ asset: AVAsset, callback: @escaping (Error?, SFSpeechAudioBufferRecognitionRequest?) -> Void) {
     SpeechManager.dispatchQueue.async {
-      AudioUtil.createMonoAudioTrack(forAsset: asset) { decompressedAsset, error in
+      AudioUtil.extractMonoAudio(forAsset: asset) { monoAsset, error in
         if let error = error {
           Debug.log(error: error)
           callback(error, nil)
           return
         }
-        guard let decompressedAsset = decompressedAsset else {
+        guard let monoAsset = monoAsset else {
           callback(nil, nil)
           return
         }
         do {
-          guard let request = try self.createRecognitionRequestForAssetOrThrow(decompressedAsset) else {
+          guard let request = try self.createRecognitionRequestForAssetOrThrow(monoAsset) else {
             callback(nil, nil)
             return
           }
