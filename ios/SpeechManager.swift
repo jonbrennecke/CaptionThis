@@ -83,7 +83,7 @@ class SpeechManager: NSObject {
   @objc
   public func startCaptureForAsset(_ asset: AVAsset, callback: @escaping (Error?, SFSpeechAudioBufferRecognitionRequest?) -> Void) {
     SpeechManager.dispatchQueue.async {
-      AudioUtil.extractMonoAudio(forAsset: asset) { monoAsset, error in
+      AudioUtil.extractMonoAudio(forAsset: asset) { error, monoAsset in
         if let error = error {
           Debug.log(error: error)
           callback(error, nil)

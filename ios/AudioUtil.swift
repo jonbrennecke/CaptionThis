@@ -4,18 +4,19 @@ class AudioUtil {
   
   private static let queue = DispatchQueue(label: "audio conversion queue")
   
-  public static func extractMonoAudio(forAsset asset: AVAsset, _ completionHandler: @escaping (AVAsset?, Error?) -> ()) {
+  public static func extractMonoAudio(forAsset asset: AVAsset, _ completionHandler: @escaping (Error?, AVAsset?) -> ()) {
     asset.loadValuesAsynchronously(forKeys: ["tracks"]) {
       do {
         let audioAssetTracks = asset.tracks(withMediaType: .audio)
         guard let audioAssetTrack = audioAssetTracks.last else {
           Debug.log(message: "Failed to create mono audio track. No input audio track was provided.")
+          completionHandler(nil, nil)
           return
         }
         let outputURL = try FileManager.default
           .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
           .appendingPathComponent("mono_output")
-          .appendingPathExtension("mp4")
+          .appendingPathExtension("mov")
         try? FileManager.default.removeItem(at: outputURL)
         let assetWriter = try AVAssetWriter(outputURL: outputURL, fileType: AVFileType.mov)
         let assetReader = try AVAssetReader(asset: asset)
@@ -39,17 +40,13 @@ class AudioUtil {
         }
         let readerSuccess = assetReader.startReading()
         if !readerSuccess {
-          guard let error = assetReader.error else {
-            return
-          }
-          throw error
+          completionHandler(assetWriter.error, nil)
+          return
         }
         let writerSuccess = assetWriter.startWriting()
         if !writerSuccess {
-          guard let error = assetWriter.error else {
-            return
-          }
-          throw error
+          completionHandler(assetWriter.error, nil)
+          return
         }
         assetWriter.startSession(atSourceTime: .zero)
         assetWriterInput.requestMediaDataWhenReady(on: queue) {
@@ -67,12 +64,12 @@ class AudioUtil {
           assetWriterInput.markAsFinished()
           assetWriter.finishWriting {
             let outputAsset = AVURLAsset(url: outputURL)
-            completionHandler(outputAsset, nil)
+            completionHandler(nil, outputAsset)
           }
         }
       }
       catch let error {
-        completionHandler(nil, error)
+        completionHandler(error, nil)
       }
     }
   }
