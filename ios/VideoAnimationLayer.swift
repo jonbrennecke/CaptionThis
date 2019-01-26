@@ -124,11 +124,12 @@ class VideoAnimationLayer: CALayer {
     }
     let opacityLayer = CALayer()
     opacityLayer.backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
+    opacityLayer.masksToBounds = true
     opacityLayer.opacity = 0
     let fadeInAnimation = animateFadeIn(atTime: Double(firstSegment.timestamp))
     opacityLayer.add(fadeInAnimation, forKey: nil)
     let height = params.frameHeight(forOutputKind: outputKind)
-    opacityLayer.frame = CGRect(x: bounds.minX, y: bounds.minY, width: bounds.width, height: CGFloat(height))
+    opacityLayer.frame = CGRect(x: bounds.minX, y: bounds.minY + (bounds.height - CGFloat(height)), width: bounds.width, height: CGFloat(height))
     opacityLayer.addSublayer(containerLayer)
     addSublayer(opacityLayer)
 //     TODO: fade out after last segment duration is complete (+delay)
@@ -242,8 +243,8 @@ class VideoAnimationLayer: CALayer {
   private func setupTextContainerLayer() -> CALayer {
     let containerLayer = CALayer()
     containerLayer.contentsScale = UIScreen.main.scale
-    let paddingHorizontal = CGFloat(params.containerPaddingHorizontal)
-    let paddingVertical = CGFloat(params.containerPaddingVertical)
+    let paddingHorizontal = CGFloat(params.containerPaddingHorizontal(forOutputKind: outputKind))
+    let paddingVertical = CGFloat(params.containerPaddingVertical(forOutputKind: outputKind))
     let height = params.textHeight(forOutputKind: outputKind)
     let width = frame.width - paddingHorizontal * 2
     containerLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: CGFloat(height))

@@ -27,12 +27,18 @@ class VideoAnimationParams: NSObject {
   @objc
   public var lineStyle: VideoAnimationLineStyle = .twoLines
 
-  public let containerPaddingHorizontal: Float = 25
-  public let containerPaddingVertical: Float = 5
+  public func containerPaddingHorizontal(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
+    return outputKind == .view ? 15 : 45
+  }
+  
+  public func containerPaddingVertical(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
+    return outputKind == .view ? 5 : 15
+  }
+  
   public let textPaddingVertical: Float = 5
 
   public func fontSize(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
-    let fontSizeMultiplier = outputKind == .export ? Float(UIScreen.main.scale * 1.25) : 1
+    let fontSizeMultiplier = outputKind == .export ? Float(UIScreen.main.scale) : 1
     return (fontSize?.floatValue ?? DEFAULT_FONT_SIZE) * fontSizeMultiplier
   }
 
@@ -47,7 +53,7 @@ class VideoAnimationParams: NSObject {
   }
 
   public func frameHeight(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
-    return textHeight(forOutputKind: outputKind) + containerPaddingVertical * 2
+    return textHeight(forOutputKind: outputKind) + containerPaddingVertical(forOutputKind: outputKind) * 2
   }
 }
 

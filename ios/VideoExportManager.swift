@@ -54,7 +54,7 @@ class VideoExportManager: NSObject {
   }
 
   private func frame(forComposition composition: VideoAnimationComposition, params: VideoAnimationParams) -> CGRect {
-    var offsetFromBottom: CGFloat = 300
+    var offsetFromBottom: CGFloat = 200
     switch composition.orientation {
     case .left, .right, .leftMirrored, .rightMirrored:
       offsetFromBottom = 50
