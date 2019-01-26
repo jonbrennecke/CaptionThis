@@ -46,10 +46,10 @@ class VideoThumbnailView: UIView {
       guard let image = image else {
         return
       }
-      self.setBackgroundColor(withImage: image)
       switch orientation {
-      case .right, .left:
+      case .right, .rightMirrored, .left, .leftMirrored:
         self.imageView.contentMode = .scaleAspectFit
+        self.setLandscapeImageBackground(withImage: image)
         break
       default:
         self.imageView.contentMode = .scaleAspectFill
@@ -58,19 +58,20 @@ class VideoThumbnailView: UIView {
     }
   }
   
-  private func setBackgroundColor(withImage image: UIImage) {
-    // TODO check orientation (this is only necessary for landscape videos)
-    let color = getMostFrequentColor(fromImage: image)
-    backgroundColor = color ?? .black
-    DispatchQueue.main.async {
+  private func setLandscapeImageBackground(withImage image: UIImage) {
+    VideoThumbnailView.queue.async {
+      let color = self.getMostFrequentColor(fromImage: image)
       let gradientLayer = CAGradientLayer()
-      gradientLayer.frame = self.bounds
       gradientLayer.colors = [
         UIColor.black.withAlphaComponent(0).cgColor,
         UIColor.black.withAlphaComponent(0.5).cgColor
       ]
       gradientLayer.locations = [0, 1]
-      self.layer.insertSublayer(gradientLayer, at: 0)
+      DispatchQueue.main.async {
+        gradientLayer.frame = self.bounds
+        self.backgroundColor = color ?? .black
+        self.layer.insertSublayer(gradientLayer, at: 0)
+      }
     }
   }
   
@@ -79,34 +80,25 @@ class VideoThumbnailView: UIView {
     guard let cgImage = image.cgImage else {
       return nil
     }
-    // TODO: use NSCountedSet to put colors in bins instead of creating & sorting array through all colors
     let bitmapData = rgbBitmapData(fromImage: cgImage)
-    let colorHistogram = bitmapData.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) -> NSCountedSet in
-      let colorHistogram = NSCountedSet(capacity: bitmapData.count / 32)
+    let colorHistogram = bitmapData.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) -> ColorHistogram in
+      let colorHistogram = ColorHistogram()
       for i in stride(from: 0, to: bitmapData.count, by: 4) {
-        let color = UIColor(
+        colorHistogram.insertColor(
           red: CGFloat(bytes[i]) / 255,
           green: CGFloat(bytes[i + 1]) / 255,
-          blue: CGFloat(bytes[i + 2]) / 255,
-          alpha: 1)
-        colorHistogram.add(color)
+          blue: CGFloat(bytes[i + 2]) / 255)
       }
       return colorHistogram
     }
-    var sortedColors = colorHistogram.sorted { (a, b) -> Bool in
-      return colorHistogram.count(for: a) < colorHistogram.count(for: b)
-    }
-    // TODO check length
-    guard case let color as UIColor = sortedColors[1] else {
-      return nil
-    }
-    return color
+    let sortedColors = colorHistogram.sortedColors()
+    return sortedColors.first
   }
   
   private func rgbBitmapData(fromImage image: CGImage) -> Data {
     let colorSpace = CGColorSpaceCreateDeviceRGB()
     let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue)
-    let scale: CGFloat = 1
+    let scale: CGFloat = 0.25
     let size = CGSize(width: CGFloat(image.width) * scale, height: CGFloat(image.height) * scale)
     let bytesPerPixel = 4
     let bitsPerComponent = 8
@@ -125,5 +117,38 @@ class VideoThumbnailView: UIView {
       context?.draw(image, in: rect)
     }
     return bitmapData
+  }
+}
+
+class ColorHistogram {
+  private let numberOfBins: Int
+  private let countedSet: NSCountedSet
+
+  init(numberOfBins: Int = 100) {
+    self.numberOfBins = numberOfBins
+    self.countedSet = NSCountedSet(capacity: numberOfBins * 3)
+  }
+  
+  public func insertColor(red: CGFloat, green: CGFloat, blue: CGFloat) {
+    let color = binnedColor(red: red, green: green, blue: blue)
+    countedSet.add(color)
+  }
+  
+  public func sortedColors() -> [UIColor] {
+    return countedSet.sorted { (a, b) -> Bool in
+      return countedSet.count(for: a) < countedSet.count(for: b)
+    } as! [UIColor]
+  }
+  
+  private func binnedColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
+    let numberOfBinsFloat = CGFloat(numberOfBins)
+    let r = (red * numberOfBinsFloat).rounded() / numberOfBinsFloat
+    let g = (green * numberOfBinsFloat).rounded() / numberOfBinsFloat
+    let b = (blue * numberOfBinsFloat).rounded() / numberOfBinsFloat
+    return UIColor(
+      red: r,
+      green: g,
+      blue: b,
+      alpha: 1)
   }
 }

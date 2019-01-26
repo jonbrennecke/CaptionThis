@@ -1,6 +1,6 @@
 import Photos
 
-let FETCH_LIMIT = 10
+let FETCH_LIMIT = 100
 
 @objc
 protocol MediaLibraryManagerDelegate {
