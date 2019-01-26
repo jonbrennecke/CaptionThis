@@ -6,6 +6,7 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <UserNotifications/UserNotifications.h>
 
 @class CameraManager;
 @class SpeechManager;
@@ -13,7 +14,7 @@
 @class MediaLibraryManager;
 @class VideoExportManager;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UNUserNotificationCenterDelegate>
 
 @property(nonatomic, strong) UIWindow *window;
 

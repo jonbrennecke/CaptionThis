@@ -8,6 +8,7 @@
 #import "AppDelegate.h"
 
 #import "CaptionThis-Swift.h"
+#import "RNNotifications.h"
 #import <Crashlytics/Crashlytics.h>
 #import <Fabric/Fabric.h>
 #import <React/RCTBundleURLProvider.h>
@@ -97,6 +98,40 @@ static VideoExportManager *_sharedVideoExportManager;
 
   [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
   return YES;
+}
+
+// Required to register for notifications
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+  [RNNotifications didRegisterUserNotificationSettings:notificationSettings];
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+  [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+  [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
+}
+
+// Required for the notification event.
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification {
+  [RNNotifications didReceiveRemoteNotification:notification];
+}
+
+// Required for the localNotification event.
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+  [RNNotifications didReceiveLocalNotification:notification];
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification
+withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
+{
+  NSLog( @"Handle push from foreground" );
+  // custom code to handle push while app is in the foreground
+  completionHandler(UNNotificationPresentationOptionAlert);
 }
 
 @end

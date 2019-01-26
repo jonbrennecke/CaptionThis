@@ -1,6 +1,7 @@
 // @flow
 import { NativeModules } from 'react-native';
 import Promise from 'bluebird';
+import NotificationsIOS from 'react-native-notifications';
 
 import * as Debug from './Debug';
 
@@ -39,7 +40,19 @@ export const exportVideo = async ({
   };
   Debug.log(`Exporting video. Params = ${JSON.stringify(exportParams)}`);
   await NativeVideoExportModule.exportVideoAsync(exportParams);
+  notify();
 };
+
+function notify() {
+  NotificationsIOS.requestPermissions();
+  return NotificationsIOS.localNotification({
+    alertBody: "Local notificiation!",
+    alertTitle: "Local Notification Title",
+    silent: true,
+    category: "SOME_CATEGORY",
+    userInfo: { }
+  });
+}
 
 function convertColorForNativeBridge(
   color: ColorRGBA
