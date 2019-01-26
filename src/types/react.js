@@ -20,3 +20,5 @@ export type Gesture = {
   vx: number,
   vy: number,
 };
+
+export type ReactAppStateEnum = 'active' | 'background' | 'inactive';

@@ -1,6 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import { View, SafeAreaView, Dimensions, Alert } from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Dimensions,
+  Alert,
+  AppState as ReactAppState,
+} from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -38,12 +44,15 @@ import {
   didSpeechRecognitionFail,
   getLineStyle,
 } from '../../redux/media/selectors';
+import { receiveAppStateChange } from '../../redux/device/actionCreators';
+import { isAppInForeground } from '../../redux/device/selectors';
 
 import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
 import type { LineStyle } from '../../types/video';
+import type { ReactAppStateEnum } from '../../types/react';
 import type { ExportParams } from '../../utils/VideoExportManager';
 
 type State = {
@@ -68,6 +77,7 @@ type StateProps = {
   fontSize: number,
   didSpeechRecognitionFail: boolean,
   lineStyle: LineStyle,
+  isAppInForeground: boolean,
 };
 
 type DispatchProps = {
@@ -82,6 +92,7 @@ type DispatchProps = {
   receiveUserSelectedTextColor: (color: ColorRGBA) => void,
   receiveUserSelectedBackgroundColor: (color: ColorRGBA) => void,
   receiveUserSelectedFontSize: (fontSize: number) => void,
+  receiveAppStateChange: (appState: ReactAppStateEnum) => void,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -152,6 +163,7 @@ function mapStateToProps(state: AppState): StateProps {
     fontSize: getFontSize(state),
     didSpeechRecognitionFail: didSpeechRecognitionFail(state),
     lineStyle: getLineStyle(state),
+    isAppInForeground: isAppInForeground(state),
   };
 }
 
@@ -175,6 +187,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
       dispatch(receiveUserSelectedBackgroundColor(color)),
     receiveUserSelectedFontSize: (fontSize: number) =>
       dispatch(receiveUserSelectedFontSize(fontSize)),
+    receiveAppStateChange: (appState: ReactAppStateEnum) =>
+      dispatch(receiveAppStateChange(appState)),
   };
 }
 
@@ -210,9 +224,11 @@ export default class EditScreen extends Component<Props, State> {
     this.didNotDetectSpeechSubscription = SpeechManager.addDidNotDetectSpeechListener(
       this.speechManagerDidNotDetectSpeech
     );
+    ReactAppState.addEventListener('change', this.handleAppStateWillChange);
   }
 
   componentWillUnmount() {
+    ReactAppState.removeEventListener('change', this.handleAppStateWillChange);
     if (this.didReceiveSpeechTranscriptionSubscription) {
       this.didReceiveSpeechTranscriptionSubscription.remove();
     }
@@ -230,6 +246,23 @@ export default class EditScreen extends Component<Props, State> {
     ) {
       this.presentTranscriptionFailureAlert();
     }
+    if (this.props.isAppInForeground && !prevProps.isAppInForeground) {
+      this.appWillEnterForeground();
+    } else if (!this.props.isAppInForeground && prevProps.isAppInForeground) {
+      this.appWillEnterBackground();
+    }
+  }
+
+  handleAppStateWillChange(nextAppState: ReactAppStateEnum) {
+    this.props.receiveAppStateChange(nextAppState);
+  }
+
+  appWillEnterBackground() {
+    this.pausePlayerAndCaptions();
+  }
+
+  appWillEnterForeground() {
+    this.restartPlayerAndCaptions();
   }
 
   presentTranscriptionFailureAlert() {
@@ -260,19 +293,13 @@ export default class EditScreen extends Component<Props, State> {
   videoPlayerDidFailToLoad() {
     Debug.log('Video player failed to load');
     this.setState({ isVideoPlaying: false });
-    if (!this.transcriptView) {
-      return;
-    }
-    this.transcriptView.pause();
+    this.pauseCaptions();
   }
 
   videoPlayerDidPause() {
     Debug.log('Video player paused');
     this.setState({ isVideoPlaying: false });
-    if (!this.transcriptView) {
-      return;
-    }
-    this.transcriptView.pause();
+    this.pauseCaptions();
   }
 
   videoPlayerDidUpdatePlaybackTime(playbackTime: number, duration: number) {
@@ -286,12 +313,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   videoPlayerDidRestart() {
-    if (this.transcriptView) {
-      this.transcriptView.restart();
-    }
-    if (this.richTextOverlay) {
-      this.richTextOverlay.restartCaptions();
-    }
+    this.restartCaptions();
   }
 
   speechManagerDidReceiveSpeechTranscription(
@@ -313,12 +335,7 @@ export default class EditScreen extends Component<Props, State> {
     this.setState({
       playbackTime: 0,
     });
-    if (this.transcriptView) {
-      this.transcriptView.restart();
-    }
-    if (this.playerView) {
-      this.playerView.restart();
-    }
+    this.restartPlayerAndCaptions();
   }
 
   speechManagerDidNotDetectSpeech() {
@@ -407,6 +424,48 @@ export default class EditScreen extends Component<Props, State> {
 
   async showEditTranscriptionModal() {
     await Screens.showEditTranscriptionModal(this.props.videoAssetIdentifier);
+  }
+
+  restartPlayerAndCaptions() {
+    this.restartCaptions();
+    this.restartPlayer();
+  }
+
+  restartCaptions() {
+    if (this.transcriptView) {
+      this.transcriptView.restart();
+    }
+    if (this.richTextOverlay) {
+      this.richTextOverlay.restartCaptions();
+    }
+  }
+
+  restartPlayer() {
+    if (!this.playerView) {
+      return;
+    }
+    this.playerView.restart();
+  }
+
+  pausePlayerAndCaptions() {
+    this.pausePlayer();
+    this.pauseCaptions();
+  }
+
+  pausePlayer() {
+    if (!this.playerView) {
+      return;
+    }
+    this.playerView.pause();
+  }
+
+  pauseCaptions() {
+    if (this.transcriptView) {
+      this.transcriptView.pause();
+    }
+    if (this.richTextOverlay) {
+      this.richTextOverlay.pauseCaptions();
+    }
   }
 
   render() {

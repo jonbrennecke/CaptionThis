@@ -3,6 +3,7 @@ import typeof { LOADING_STATE, TRANSCRIPTION_STATE } from '../constants';
 import type { VideoAssetIdentifier, ColorRGBA } from './media';
 import type { SpeechTranscription } from './speech';
 import type { LineStyle } from './video';
+import type { ReactAppStateEnum } from './react';
 
 export type Action<T> = {
   +type: string,
@@ -21,6 +22,7 @@ export type AppState = {
   auth: AuthState,
   onboarding: OnboardingState,
   media: MediaState,
+  device: DeviceState,
 };
 
 export type GetState = () => AppState;
@@ -52,6 +54,10 @@ export type MediaState = {
   lineStyle: LineStyle,
 };
 
+export type DeviceState = {
+  appState: ReactAppStateEnum,
+};
+
 export type Payload =
   | ReceiveLoginPayload
   | ReceiveAuthPayload
@@ -62,7 +68,8 @@ export type Payload =
   | ReceiveFontFamilyPayload
   | ReceiveBackgroundColorPayload
   | ReceiveTextColorPayload
-  | ReceiveFontSizePayload;
+  | ReceiveFontSizePayload
+  | ReceiveAppStateChangePayload;
 
 export type ReceiveLoginPayload = {|
   token: string,
@@ -101,4 +108,8 @@ export type ReceiveTextColorPayload = {|
 
 export type ReceiveFontSizePayload = {|
   fontSize: number,
+|};
+
+export type ReceiveAppStateChangePayload = {|
+  appState: ReactAppStateEnum,
 |};
