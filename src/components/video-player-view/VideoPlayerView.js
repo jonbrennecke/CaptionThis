@@ -43,6 +43,13 @@ export default class VideoPlayerView extends Component<Props> {
     VideoPlayerViewManager.seekToTime(this.nativeComponentRef._nativeTag, time);
   }
 
+  pause() {
+    if (!this.nativeComponentRef) {
+      return;
+    }
+    VideoPlayerViewManager.pause(this.nativeComponentRef._nativeTag);
+  }
+
   restart() {
     if (!this.nativeComponentRef) {
       return;

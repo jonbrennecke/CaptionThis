@@ -84,6 +84,20 @@ RCT_EXPORT_VIEW_PROPERTY(onVideoDidPause, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidUpdatePlaybackTime, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidRestart, RCTBubblingEventBlock)
 
+RCT_EXPORT_METHOD(pause : (nonnull NSNumber *)reactTag) {
+  [self.bridge.uiManager
+   addUIBlock:^(RCTUIManager *uiManager,
+                NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+     VideoPlayerViewWrap *view =
+     (VideoPlayerViewWrap *)viewRegistry[reactTag];
+     if (!view || ![view isKindOfClass:[VideoPlayerViewWrap class]]) {
+       RCTLogError(@"Cannot find VideoPlayerView with tag #%@", reactTag);
+       return;
+     }
+     [view.playerView pause];
+   }];
+}
+
 RCT_EXPORT_METHOD(restart : (nonnull NSNumber *)reactTag) {
   [self.bridge.uiManager
       addUIBlock:^(RCTUIManager *uiManager,
