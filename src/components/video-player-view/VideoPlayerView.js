@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, requireNativeComponent, NativeModules } from 'react-native';
 
 import type { Style } from '../../types/react';
-import type { VideoAssetIdentifier } from '../../types/media';
+import type { VideoAssetIdentifier, ImageOrientation } from '../../types/media';
 
 const NativeVideoPlayerView = requireNativeComponent('VideoPlayerView');
 const { VideoPlayerViewManager } = NativeModules;
@@ -15,7 +15,10 @@ type Props = {
   isPlaying: boolean,
   videoAssetIdentifier: VideoAssetIdentifier,
   onVideoDidFailToLoad: () => void,
-  onVideoDidBecomeReadyToPlay: (duration: number) => void,
+  onVideoDidBecomeReadyToPlay: (
+    duration: number,
+    orientation: ImageOrientation
+  ) => void,
   onVideoDidPause: () => void,
   onVideoDidUpdatePlaybackTime: (
     playbackTime: number,
@@ -72,8 +75,7 @@ export default class VideoPlayerView extends Component<Props> {
               return;
             }
             const { orientation, duration } = nativeEvent;
-            console.log(orientation)
-            this.props.onVideoDidBecomeReadyToPlay(duration);
+            this.props.onVideoDidBecomeReadyToPlay(duration, orientation);
           }}
           onVideoDidFailToLoad={this.props.onVideoDidFailToLoad}
           onVideoDidPause={this.props.onVideoDidPause}

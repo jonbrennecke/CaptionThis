@@ -37,7 +37,7 @@ const styles = {
   },
 };
 
-export default class RecordingTranscriptionView extends Component<Props> {
+export default class VideoCaptionsView extends Component<Props> {
   nativeComponentRef: ?ReactNativeFiberHostComponent;
 
   restart() {

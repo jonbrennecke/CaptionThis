@@ -5,7 +5,11 @@ import UIKit
 class OrientationUtil: NSObject {
   @objc
   public static func orientation(forAsset asset: AVAsset) -> UIImage.Orientation {
-    return orientation(forTransform: asset.preferredTransform)
+    let videoTracks = asset.tracks(withMediaType: .video)
+    guard let videoTrack = videoTracks.first else {
+      return .right
+    }
+    return orientation(forSize: videoTrack.naturalSize)
   }
 
   @objc
