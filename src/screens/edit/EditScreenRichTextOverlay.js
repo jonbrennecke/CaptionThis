@@ -148,6 +148,12 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
     }
   }
 
+  pauseCaptions() {
+    if (this.richTextEditor) {
+      this.richTextEditor.pauseCaptions();
+    }
+  }
+
   render() {
     return (
       <Animated.View

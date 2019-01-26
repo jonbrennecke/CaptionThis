@@ -7,10 +7,10 @@ import type { ReactAppStateEnum } from '../../types/react';
 export const receiveAppStateChange = (appState: ReactAppStateEnum) => {
   return async (dispatch: Dispatch<ReceiveAppStateChangePayload>) => {
     dispatch({
-    type: ACTION_TYPES.DID_RECEIVE_APP_STATE_CHANGE,
-    payload: {
+      type: ACTION_TYPES.DID_RECEIVE_APP_STATE_CHANGE,
+      payload: {
         appState,
-    },
+      },
     });
   };
 };

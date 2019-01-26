@@ -1,6 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import { View, SafeAreaView, Dimensions, Alert, AppState as ReactAppState } from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Dimensions,
+  Alert,
+  AppState as ReactAppState,
+} from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -242,8 +248,7 @@ export default class EditScreen extends Component<Props, State> {
     }
     if (this.props.isAppInForeground && !prevProps.isAppInForeground) {
       this.appWillEnterForeground();
-    }
-    else if (!this.props.isAppInForeground && prevProps.isAppInForeground) {
+    } else if (!this.props.isAppInForeground && prevProps.isAppInForeground) {
       this.appWillEnterBackground();
     }
   }
@@ -263,7 +268,7 @@ export default class EditScreen extends Component<Props, State> {
   presentTranscriptionFailureAlert() {
     Alert.alert(
       'Failed to generate captions',
-      'Unfortunately, We weren\'t able to detect any speech. Try again and speak clearly into the microphone.',
+      "Unfortunately, We weren't able to detect any speech. Try again and speak clearly into the microphone.",
       [
         {
           text: 'OK',
@@ -441,7 +446,7 @@ export default class EditScreen extends Component<Props, State> {
     }
     this.playerView.restart();
   }
-  
+
   pausePlayerAndCaptions() {
     this.pausePlayer();
     this.pauseCaptions();
@@ -455,7 +460,12 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   pauseCaptions() {
-    // TODO
+    if (this.transcriptView) {
+      this.transcriptView.pause();
+    }
+    if (this.richTextOverlay) {
+      this.richTextOverlay.pauseCaptions();
+    }
   }
 
   render() {

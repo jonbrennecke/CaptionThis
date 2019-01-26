@@ -13,10 +13,13 @@ const initialState: DeviceState = {
 };
 
 const actions = {
-  [ACTION_TYPES.DID_RECEIVE_APP_STATE_CHANGE]: receiveAppStateChange
+  [ACTION_TYPES.DID_RECEIVE_APP_STATE_CHANGE]: receiveAppStateChange,
 };
 
-function receiveAppStateChange(state: DeviceState, { payload }: Action<ReceiveAppStateChangePayload>): DeviceState {
+function receiveAppStateChange(
+  state: DeviceState,
+  { payload }: Action<ReceiveAppStateChangePayload>
+): DeviceState {
   if (!payload) {
     return state;
   }

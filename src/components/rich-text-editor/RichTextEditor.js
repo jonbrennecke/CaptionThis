@@ -229,6 +229,12 @@ export default class RichTextEditor extends Component<Props, State> {
     }
   }
 
+  pauseCaptions() {
+    if (this.transcriptView) {
+      this.transcriptView.pause();
+    }
+  }
+
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
