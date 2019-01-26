@@ -1,7 +1,7 @@
 import AVFoundation
+import CoreGraphics
 import Photos
 import UIKit
-import CoreGraphics
 
 @objc
 class VideoThumbnailView: UIView {
@@ -35,7 +35,7 @@ class VideoThumbnailView: UIView {
       }
     }
   }
-  
+
   private func loadThumbnail(forAsset asset: PHAsset, withSize size: CGSize) {
     let requestOptions = PHImageRequestOptions()
     requestOptions.isSynchronous = false
@@ -57,14 +57,14 @@ class VideoThumbnailView: UIView {
       self.imageView.image = image
     }
   }
-  
+
   private func setLandscapeImageBackground(withImage image: UIImage) {
     VideoThumbnailView.queue.async {
       let color = self.getMostFrequentColor(fromImage: image)
       let gradientLayer = CAGradientLayer()
       gradientLayer.colors = [
         UIColor.black.withAlphaComponent(0).cgColor,
-        UIColor.black.withAlphaComponent(0.5).cgColor
+        UIColor.black.withAlphaComponent(0.5).cgColor,
       ]
       gradientLayer.locations = [0, 1]
       DispatchQueue.main.async {
@@ -74,7 +74,7 @@ class VideoThumbnailView: UIView {
       }
     }
   }
-  
+
   // SEE: https://gist.github.com/Tricertops/6474123
   private func getMostFrequentColor(fromImage image: UIImage) -> UIColor? {
     guard let cgImage = image.cgImage else {
@@ -87,14 +87,15 @@ class VideoThumbnailView: UIView {
         colorHistogram.insertColor(
           red: CGFloat(bytes[i]) / 255,
           green: CGFloat(bytes[i + 1]) / 255,
-          blue: CGFloat(bytes[i + 2]) / 255)
+          blue: CGFloat(bytes[i + 2]) / 255
+        )
       }
       return colorHistogram
     }
     let sortedColors = colorHistogram.sortedColors()
     return sortedColors.first
   }
-  
+
   private func rgbBitmapData(fromImage image: CGImage) -> Data {
     let colorSpace = CGColorSpaceCreateDeviceRGB()
     let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue)
@@ -104,7 +105,7 @@ class VideoThumbnailView: UIView {
     let bitsPerComponent = 8
     let bytesPerRow = bytesPerPixel * Int(size.width)
     var bitmapData = Data(count: Int(size.height * size.width * CGFloat(bytesPerPixel)))
-    bitmapData.withUnsafeMutableBytes { (bytes: UnsafeMutablePointer<UInt8>) -> () in
+    bitmapData.withUnsafeMutableBytes { (bytes: UnsafeMutablePointer<UInt8>) -> Void in
       let context = CGContext(
         data: bytes,
         width: Int(size.width),
@@ -112,7 +113,8 @@ class VideoThumbnailView: UIView {
         bitsPerComponent: bitsPerComponent,
         bytesPerRow: bytesPerRow,
         space: colorSpace,
-        bitmapInfo: bitmapInfo.rawValue)
+        bitmapInfo: bitmapInfo.rawValue
+      )
       let rect = CGRect(origin: .zero, size: size)
       context?.draw(image, in: rect)
     }
@@ -126,20 +128,20 @@ class ColorHistogram {
 
   init(numberOfBins: Int = 100) {
     self.numberOfBins = numberOfBins
-    self.countedSet = NSCountedSet(capacity: numberOfBins * 3)
+    countedSet = NSCountedSet(capacity: numberOfBins * 3)
   }
-  
+
   public func insertColor(red: CGFloat, green: CGFloat, blue: CGFloat) {
     let color = binnedColor(red: red, green: green, blue: blue)
     countedSet.add(color)
   }
-  
+
   public func sortedColors() -> [UIColor] {
     return countedSet.sorted { (a, b) -> Bool in
-      return countedSet.count(for: a) < countedSet.count(for: b)
+      countedSet.count(for: a) < countedSet.count(for: b)
     } as! [UIColor]
   }
-  
+
   private func binnedColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
     let numberOfBinsFloat = CGFloat(numberOfBins)
     let r = (red * numberOfBinsFloat).rounded() / numberOfBinsFloat
@@ -149,6 +151,7 @@ class ColorHistogram {
       red: r,
       green: g,
       blue: b,
-      alpha: 1)
+      alpha: 1
+    )
   }
 }
