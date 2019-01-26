@@ -30,11 +30,11 @@ class VideoAnimationParams: NSObject {
   public func containerPaddingHorizontal(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
     return outputKind == .view ? 15 : 45
   }
-  
+
   public func containerPaddingVertical(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
     return outputKind == .view ? 5 : 15
   }
-  
+
   public let textPaddingVertical: Float = 5
 
   public func fontSize(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
