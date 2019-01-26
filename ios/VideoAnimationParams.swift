@@ -1,5 +1,7 @@
 import Foundation
 
+let DEFAULT_FONT_SIZE: Float = 16
+
 @objc
 enum VideoAnimationLineStyle: Int {
   case oneLine = 1
@@ -9,21 +11,50 @@ enum VideoAnimationLineStyle: Int {
 @objc
 class VideoAnimationParams: NSObject {
   @objc
-  var textSegments: [TextSegmentParams]?
+  public var textSegments: [TextSegmentParams]?
   @objc
-  var fontFamily: String?
+  public var fontFamily: String?
   @objc
-  var fontSize: NSNumber?
+  public var fontSize: NSNumber?
   @objc
-  var backgroundColor: UIColor?
+  public var backgroundColor: UIColor?
   @objc
-  var textColor: UIColor?
+  public var textColor: UIColor?
   @objc
-  var playbackTime: NSNumber?
+  public var playbackTime: NSNumber?
   @objc
-  var duration: NSNumber?
+  public var duration: NSNumber?
   @objc
-  var lineStyle: VideoAnimationLineStyle = .twoLines
+  public var lineStyle: VideoAnimationLineStyle = .twoLines
+
+  public func containerPaddingHorizontal(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
+    return outputKind == .view ? 15 : 45
+  }
+  
+  public func containerPaddingVertical(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
+    return outputKind == .view ? 5 : 15
+  }
+  
+  public let textPaddingVertical: Float = 5
+
+  public func fontSize(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
+    let fontSizeMultiplier = outputKind == .export ? Float(UIScreen.main.scale) : 1
+    return (fontSize?.floatValue ?? DEFAULT_FONT_SIZE) * fontSizeMultiplier
+  }
+
+  public func textLineHeight(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
+    let fontSize = self.fontSize(forOutputKind: outputKind)
+    return fontSize * 1.5
+  }
+
+  public func textHeight(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
+    let lineMultiplier: Float = lineStyle == .oneLine ? 1.0 : 2.0
+    return textLineHeight(forOutputKind: outputKind) * lineMultiplier + textPaddingVertical * 2
+  }
+
+  public func frameHeight(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
+    return textHeight(forOutputKind: outputKind) + containerPaddingVertical(forOutputKind: outputKind) * 2
+  }
 }
 
 @objc

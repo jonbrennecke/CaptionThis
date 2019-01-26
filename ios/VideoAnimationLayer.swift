@@ -2,7 +2,6 @@ import AVFoundation
 import UIKit
 
 let MAX_CHARACTERS_PER_LINE: Int = 32
-let DEFAULT_FONT_SIZE: Float = 16
 let DEFAULT_ANIMATION_DURATION: CFTimeInterval = 0.25
 
 @objc
@@ -19,12 +18,6 @@ enum VideoAnimationPlaybackState {
 
 @objc
 class VideoAnimationLayer: CALayer {
-  private let containerPaddingHorizontal: CGFloat = 25
-  private let containerPaddingVertical: CGFloat = 15
-  private let textPaddingHorizontal: CGFloat = 0
-  private let textPaddingVertical: CGFloat = 10
-  private let extraTextSpaceBottom: CGFloat = 15
-  private let fontSize: CGFloat = 17
   private var outputKind: VideoAnimationOutputKind = .view
   private var playbackState: VideoAnimationPlaybackState = .none
 
@@ -116,7 +109,7 @@ class VideoAnimationLayer: CALayer {
     Debug.log(message: "Resetting animation")
     sublayers = nil
     pause() // NOTE: Start in a paused state
-    let containerLayer = setupContainerLayer()
+    let containerLayer = setupTextContainerLayer()
     containerLayer.duration = params.duration?.doubleValue ?? 0
     switch params.lineStyle {
     case .oneLine:
@@ -131,10 +124,12 @@ class VideoAnimationLayer: CALayer {
     }
     let opacityLayer = CALayer()
     opacityLayer.backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
+    opacityLayer.masksToBounds = true
     opacityLayer.opacity = 0
     let fadeInAnimation = animateFadeIn(atTime: Double(firstSegment.timestamp))
     opacityLayer.add(fadeInAnimation, forKey: nil)
-    opacityLayer.frame = bounds
+    let height = params.frameHeight(forOutputKind: outputKind)
+    opacityLayer.frame = CGRect(x: bounds.minX, y: bounds.minY + (bounds.height - CGFloat(height)), width: bounds.width, height: CGFloat(height))
     opacityLayer.addSublayer(containerLayer)
     addSublayer(opacityLayer)
 //     TODO: fade out after last segment duration is complete (+delay)
@@ -245,15 +240,14 @@ class VideoAnimationLayer: CALayer {
     }
   }
 
-  private func setupContainerLayer() -> CALayer {
+  private func setupTextContainerLayer() -> CALayer {
     let containerLayer = CALayer()
     containerLayer.contentsScale = UIScreen.main.scale
-    let multiplier: CGFloat = outputKind == .export ? 3 : 1
-    let paddingHorizontal = containerPaddingHorizontal * multiplier
-    let paddingVertical = containerPaddingVertical * multiplier
-    let height = frame.height - paddingVertical * 2
+    let paddingHorizontal = CGFloat(params.containerPaddingHorizontal(forOutputKind: outputKind))
+    let paddingVertical = CGFloat(params.containerPaddingVertical(forOutputKind: outputKind))
+    let height = params.textHeight(forOutputKind: outputKind)
     let width = frame.width - paddingHorizontal * 2
-    containerLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
+    containerLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: CGFloat(height))
     return containerLayer
   }
 
@@ -301,16 +295,9 @@ class VideoAnimationLayer: CALayer {
     textLayer.contentsScale = UIScreen.main.scale
     textLayer.allowsFontSubpixelQuantization = true
     textLayer.allowsEdgeAntialiasing = true
-    let multiplier: CGFloat = outputKind == .export ? 1 : 1
-    let paddingHorizontal = textPaddingHorizontal * multiplier
-    let paddingVertical = textPaddingVertical * multiplier
-    let height = parent.frame.height / 2
-    let width = parent.frame.width
-    textLayer.frame = CGRect(x: paddingHorizontal, y: paddingVertical, width: width, height: height)
+    textLayer.frame = CGRect(x: 0, y: CGFloat(params.textPaddingVertical), width: parent.frame.width, height: CGFloat(params.textLineHeight(forOutputKind: outputKind)))
     textLayer.alignmentMode = .left
-    let fontSizeMultiplier = outputKind == .export ? UIScreen.main.scale * 1.25 : 1
-    let fontSize = CGFloat(params.fontSize?.floatValue ?? DEFAULT_FONT_SIZE)
-    textLayer.fontSize = fontSize * fontSizeMultiplier
+    textLayer.fontSize = CGFloat(params.fontSize(forOutputKind: outputKind))
     textLayer.truncationMode = .start
     textLayer.font = params.fontFamily as CFTypeRef
     textLayer.foregroundColor = params.textColor?.cgColor

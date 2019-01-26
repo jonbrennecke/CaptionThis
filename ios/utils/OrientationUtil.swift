@@ -1,14 +1,13 @@
-import UIKit
 import AVFoundation
+import UIKit
 
 @objc
 class OrientationUtil: NSObject {
-  
   @objc
   public static func orientation(forAsset asset: AVAsset) -> UIImage.Orientation {
     return orientation(forTransform: asset.preferredTransform)
   }
-  
+
   @objc
   public static func orientation(forTransform transform: CGAffineTransform) -> UIImage.Orientation {
     let angle = degrees(fromRadians: atan2(transform.b, transform.a))
