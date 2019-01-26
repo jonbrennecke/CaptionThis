@@ -1,5 +1,6 @@
 #import "VideoPlayerViewManager.h"
 #import "CaptionThis-Swift.h"
+#import "RCTConvert+UIImageOrientation.h"
 #import <AVFoundation/AVFoundation.h>
 #import <Photos/Photos.h>
 #import <React/RCTBridge.h>
@@ -41,9 +42,13 @@
   if (!self.onVideoDidBecomeReadyToPlay) {
     return;
   }
+  UIImageOrientation orientation = [OrientationUtil orientationForAsset:asset];
   NSNumber *duration =
       [NSNumber numberWithFloat:CMTimeGetSeconds(asset.duration)];
-  self.onVideoDidBecomeReadyToPlay(@{@"duration" : duration});
+  self.onVideoDidBecomeReadyToPlay(@{
+                                     @"duration" : duration,
+                                     @"orientation": @(orientation)
+                                     });
 }
 
 - (void)videoPlayerDidPause {

@@ -71,7 +71,9 @@ export default class VideoPlayerView extends Component<Props> {
             if (!nativeEvent) {
               return;
             }
-            this.props.onVideoDidBecomeReadyToPlay(nativeEvent.duration);
+            const { orientation, duration } = nativeEvent;
+            console.log(orientation)
+            this.props.onVideoDidBecomeReadyToPlay(duration);
           }}
           onVideoDidFailToLoad={this.props.onVideoDidFailToLoad}
           onVideoDidPause={this.props.onVideoDidPause}

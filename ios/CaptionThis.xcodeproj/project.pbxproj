@@ -80,6 +80,7 @@
 		FCD5F75821D73CA3001F2068 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75721D73CA2001F2068 /* Debug.m */; };
 		FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */; };
 		FCD5F7A821D8225C001F2068 /* VideoSeekbarPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */; };
+		FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */; };
 		FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8024921F84A640092B5E5 /* OrientationUtil.swift */; };
 		FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */; };
 /* End PBXBuildFile section */
@@ -536,6 +537,8 @@
 		FCD5F7A421D8110C001F2068 /* VideoSeekbarPreviewViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewViewManager.h; sourceTree = "<group>"; };
 		FCD5F7A621D82250001F2068 /* VideoSeekbarPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewView.h; sourceTree = "<group>"; };
 		FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoSeekbarPreviewView.m; sourceTree = "<group>"; };
+		FCDA6EE221FD07BF00FA8345 /* RCTConvert+UIImageOrientation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+UIImageOrientation.h"; sourceTree = "<group>"; };
+		FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIImageOrientation.m"; sourceTree = "<group>"; };
 		FCE8024921F84A640092B5E5 /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
 		FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoThumbnailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -681,6 +684,7 @@
 				FCA3971D21DCB3B500347CAB /* VideoAnimationParams.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
 				FC58D11321FAED1A00E7956D /* utils */,
+				FCDA6F1521FD07E100FA8345 /* RCTConvert */,
 				FC880D9421D4A48E00856037 /* CameraPreviewView */,
 				FC880D9321D49EA900856037 /* CameraBridgeModule */,
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
@@ -1052,6 +1056,15 @@
 				FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */,
 			);
 			name = VideoSeekbarPreviewViewManager;
+			sourceTree = "<group>";
+		};
+		FCDA6F1521FD07E100FA8345 /* RCTConvert */ = {
+			isa = PBXGroup;
+			children = (
+				FCDA6EE221FD07BF00FA8345 /* RCTConvert+UIImageOrientation.h */,
+				FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */,
+			);
+			path = RCTConvert;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1660,6 +1673,7 @@
 				FCA3971E21DCB3B500347CAB /* VideoAnimationParams.swift in Sources */,
 				FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */,
 				FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */,
+				FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */,
 				FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */,
 				FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */,
 				FC9374E821DEF02C00FD2700 /* VideoAnimationComposition.swift in Sources */,
