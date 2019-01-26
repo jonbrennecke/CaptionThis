@@ -41,6 +41,10 @@ const styles = {
     height: 45,
     width: 45,
   },
+  buttonLeft: {
+    width: 75,
+    alignItems: 'flex-start',
+  },
   buttonRight: {
     width: 75,
     alignItems: 'flex-end',
@@ -72,22 +76,6 @@ export default function EditScreenTopControls({
   onEditTextButtonPress,
 }: Props) {
   const white = Color.hexToRgbaObject(UI_COLORS.WHITE);
-  const StylizeButton = () => (
-    <TouchableOpacity
-      style={styles.buttonRight}
-      onPress={onStylizeButtonPress}
-    >
-      <OptionsIcon style={styles.icon} color={white} />
-    </TouchableOpacity>
-  );
-  const EditTextButton = () => (
-    <TouchableOpacity
-      style={styles.buttonRight}
-      onPress={onEditTextButtonPress}
-    >
-      <EditIcon style={styles.icon} color={white} />
-    </TouchableOpacity>
-  );
   return (
     <View style={[styles.container, style]}>
       <View style={styles.buttonGroupLeft}>
@@ -96,8 +84,18 @@ export default function EditScreenTopControls({
         </TouchableOpacity>
       </View>
       <View style={styles.buttonGroupRight}>
-        <StylizeButton/>
-        <EditTextButton/>
+        <TouchableOpacity
+          style={styles.buttonRight}
+          onPress={onStylizeButtonPress}
+        >
+          <OptionsIcon style={styles.icon} color={white} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.buttonRight}
+          onPress={onEditTextButtonPress}
+        >
+          <EditIcon style={styles.icon} color={white} />
+        </TouchableOpacity>
         <TouchableOpacity
           disabled={!isReadyToExport}
           style={styles.exportButton(isReadyToExport)}
