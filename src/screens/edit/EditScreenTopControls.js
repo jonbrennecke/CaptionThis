@@ -41,11 +41,11 @@ const styles = {
     height: 45,
     width: 45,
   },
-  buttonLeft: {
+  buttonRight: {
     width: 75,
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
   },
-  buttonRight: (isReadyToExport: boolean) => ({
+  exportButton: (isReadyToExport: boolean) => ({
     width: 75,
     alignItems: 'flex-end',
     opacity: isReadyToExport ? 1 : 0.5,
@@ -72,29 +72,35 @@ export default function EditScreenTopControls({
   onEditTextButtonPress,
 }: Props) {
   const white = Color.hexToRgbaObject(UI_COLORS.WHITE);
+  const StylizeButton = () => (
+    <TouchableOpacity
+      style={styles.buttonRight}
+      onPress={onStylizeButtonPress}
+    >
+      <OptionsIcon style={styles.icon} color={white} />
+    </TouchableOpacity>
+  );
+  const EditTextButton = () => (
+    <TouchableOpacity
+      style={styles.buttonRight}
+      onPress={onEditTextButtonPress}
+    >
+      <EditIcon style={styles.icon} color={white} />
+    </TouchableOpacity>
+  );
   return (
     <View style={[styles.container, style]}>
       <View style={styles.buttonGroupLeft}>
         <TouchableOpacity style={styles.buttonLeft} onPress={onBackButtonPress}>
           <ChevronLeftIcon style={styles.icon} color={white} />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonLeft}
-          onPress={onStylizeButtonPress}
-        >
-          <OptionsIcon style={styles.icon} color={white} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonLeft}
-          onPress={onEditTextButtonPress}
-        >
-          <EditIcon style={styles.icon} color={white} />
-        </TouchableOpacity>
       </View>
       <View style={styles.buttonGroupRight}>
+        <StylizeButton/>
+        <EditTextButton/>
         <TouchableOpacity
           disabled={!isReadyToExport}
-          style={styles.buttonRight(isReadyToExport)}
+          style={styles.exportButton(isReadyToExport)}
           onPress={onExportButtonPress}
         >
           {isReadyToExport ? (
