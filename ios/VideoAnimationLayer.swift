@@ -200,8 +200,8 @@ class VideoAnimationLayer: CALayer {
         textLayers.append(textLayer)
         return
       }
-      let newString = "\(bottomTextLayer.string ?? "") \(segment.text)"
-      if newString.count >= MAX_CHARACTERS_PER_LINE {
+      let newString = stringForLine(byJoiningPreviousString: bottomTextLayer.string, withNextString: segment.text)
+      if newString.length >= MAX_CHARACTERS_PER_LINE {
         let textLayer = addTextLayer(parent: parentLayer, withParams: params, text: segment.text)
         textLayer.position.y = outOfFrameBottomY
         textLayer.opacity = 0
@@ -238,6 +238,15 @@ class VideoAnimationLayer: CALayer {
         textLayers.append(textLayer)
       }
     }
+  }
+  
+  private func stringForLine(byJoiningPreviousString previousString: Any?, withNextString nextString: String) -> NSAttributedString {
+    if let attributedString = previousString as? NSAttributedString {
+      let mutableAttributedString = attributedString.mutableCopy() as! NSMutableAttributedString
+      mutableAttributedString.mutableString.setString("\(attributedString.string) \(nextString)")
+      return mutableAttributedString
+    }
+    return NSAttributedString(string: previousString as? String ?? "")
   }
 
   private func setupTextContainerLayer() -> CALayer {
@@ -291,17 +300,29 @@ class VideoAnimationLayer: CALayer {
   }
 
   private func addTextLayer(parent: CALayer, withParams params: VideoAnimationParams, text: String) -> CATextLayer {
-    let textLayer = CenteredTextLayer()
+    let textLayer = CATextLayer()
     textLayer.contentsScale = UIScreen.main.scale
     textLayer.allowsFontSubpixelQuantization = true
     textLayer.allowsEdgeAntialiasing = true
-    textLayer.frame = CGRect(x: 0, y: CGFloat(params.textPaddingVertical), width: parent.frame.width, height: CGFloat(params.textLineHeight(forOutputKind: outputKind)))
-    textLayer.alignmentMode = .left
-    textLayer.fontSize = CGFloat(params.fontSize(forOutputKind: outputKind))
-    textLayer.truncationMode = .start
-    textLayer.font = params.fontFamily as CFTypeRef
-    textLayer.foregroundColor = params.textColor?.cgColor
-    textLayer.string = text
+    let lineHeight = CGFloat(params.textLineHeight(forOutputKind: outputKind))
+    textLayer.frame = CGRect(x: 0, y: CGFloat(params.textPaddingVertical), width: parent.frame.width, height: lineHeight)
+    let fontSize = CGFloat(params.fontSize(forOutputKind: outputKind))
+    let shadow = NSShadow()
+    shadow.shadowBlurRadius = 1
+    shadow.shadowColor = UIColor.black
+    shadow.shadowOffset = CGSize(width: 2.0, height: 2.0)
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.alignment = .left
+    paragraphStyle.lineBreakMode = .byWordWrapping
+    let font = UIFont(name: params.fontFamily ?? "Helvetica", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
+    let attributes: [NSAttributedString.Key: Any] = [
+      .foregroundColor: params.textColor?.cgColor ?? UIColor.black.cgColor,
+      .paragraphStyle: paragraphStyle,
+      .font: font,
+      .shadow: shadow,
+      .baselineOffset: -abs(fontSize - lineHeight) + (fontSize / 3)
+    ]
+    textLayer.string = NSAttributedString(string: text, attributes: attributes)
     parent.addSublayer(textLayer)
     return textLayer
   }
