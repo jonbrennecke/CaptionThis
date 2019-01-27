@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import { autobind } from 'core-decorators';
 
 import { isLandscape } from '../../utils/Orientation';
 
@@ -22,24 +23,36 @@ type State = {
   viewSize: Size,
 };
 
+const CAPTION_VIEW_HEIGHT = 85;
+
 const styles = {
   container: {},
-  captionsWrap: (orientation: ImageOrientation, size: Size) =>
-    isLandscape(orientation)
-      ? {
-          position: 'absolute',
-          left: 0,
-          right: 0,
-        }
-      : {
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          height: 85,
-          bottom: 50,
-        },
+  captionsWrap: (orientation: ImageOrientation, size: Size) => {
+    if (isLandscape(orientation)) {
+      const videoHeight = size.width * 9 / 16;
+      const topOfVideo = (size.height - videoHeight) / 2;
+      return {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        height: CAPTION_VIEW_HEIGHT,
+        top: topOfVideo + videoHeight - CAPTION_VIEW_HEIGHT - 25,
+      };
+    }
+    else {
+      return {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        height: CAPTION_VIEW_HEIGHT,
+        bottom: 50,
+      };
+    }
+  },
 };
 
+// $FlowFixMe
+@autobind
 export default class VideoCaptionsContainer extends Component<Props, State> {
   view: ?View;
   state = {

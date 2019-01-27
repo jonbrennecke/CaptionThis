@@ -37,14 +37,14 @@ class VideoPlayerView: UIView {
         return
       }
       backgroundQueue.async {
-        let item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: ["playable", "hasProtectedContent"])
+        let item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: ["playable", "hasProtectedContent", "preferredTransform"])
         item.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.old, .new], context: nil)
         self.item = item
         self.player.replaceCurrentItem(with: item)
         NotificationCenter.default.addObserver(self, selector: #selector(self.playerDidPlayToEnd(notification:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
         self.play()
         DispatchQueue.main.async {
-          let orientation = OrientationUtil.orientation(forTransform: asset.preferredTransform)
+          let orientation = OrientationUtil.orientation(forAsset: asset)
           switch orientation {
           case .left, .right:
             self.playerLayer.videoGravity = .resizeAspect

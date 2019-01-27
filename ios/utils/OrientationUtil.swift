@@ -9,7 +9,7 @@ class OrientationUtil: NSObject {
     guard let videoTrack = videoTracks.first else {
       return .right
     }
-    return orientation(forSize: videoTrack.naturalSize)
+    return orientation(forTransform: videoTrack.preferredTransform)
   }
 
   @objc
