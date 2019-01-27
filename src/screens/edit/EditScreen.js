@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   Dimensions,
   Alert,
+  StyleSheet,
   AppState as ReactAppState,
 } from 'react-native';
 import { autobind } from 'core-decorators';
@@ -17,7 +18,8 @@ import * as Debug from '../../utils/Debug';
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
-import RecordingTranscriptionView from '../../components/recording-transcription-view/RecordingTranscriptionView';
+import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
+import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
 import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
@@ -47,7 +49,11 @@ import {
 import { receiveAppStateChange } from '../../redux/device/actionCreators';
 import { isAppInForeground } from '../../redux/device/selectors';
 
-import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
+import type {
+  VideoAssetIdentifier,
+  ColorRGBA,
+  ImageOrientation,
+} from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
@@ -57,6 +63,7 @@ import type { ExportParams } from '../../utils/VideoExportManager';
 
 type State = {
   duration: number,
+  orientation: ?ImageOrientation,
   playbackTime: number,
   isVideoPlaying: boolean,
   isDraggingSeekbar: boolean,
@@ -104,7 +111,7 @@ const styles = {
     flex: 1,
     backgroundColor: UI_COLORS.BLACK,
   },
-  safeArea: {
+  flex: {
     flex: 1,
   },
   videoWrap: {
@@ -114,15 +121,7 @@ const styles = {
     overflow: 'hidden',
     backgroundColor: UI_COLORS.DARK_GREY,
   },
-  videoPlayer: {
-    flex: 1,
-  },
-  transcription: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 50,
-  },
+  captionsContainer: StyleSheet.absoluteFillObject,
   playbackControls: {
     position: 'absolute',
     left: 0,
@@ -141,12 +140,6 @@ const styles = {
     top: 0,
     left: 0,
     right: 0,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  seekbar: {
-    flex: 1,
   },
   seekbarWrap: {
     flexDirection: 'row',
@@ -196,12 +189,13 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class EditScreen extends Component<Props, State> {
-  transcriptView: ?RecordingTranscriptionView;
+  captionsView: ?VideoCaptionsView;
   playerView: ?VideoPlayerView;
   richTextOverlay: ?EditScreenRichTextOverlay;
   state: State = {
     playbackTime: 0,
     duration: 0,
+    orientation: null,
     isVideoPlaying: false,
     isDraggingSeekbar: false,
     showRichTextOverlay: false,
@@ -282,9 +276,12 @@ export default class EditScreen extends Component<Props, State> {
     );
   }
 
-  videoPlayerDidBecomeReadyToPlay(duration: number) {
+  videoPlayerDidBecomeReadyToPlay(
+    duration: number,
+    orientation: ImageOrientation
+  ) {
     // TODO: check if final transcription already exists (e.g. if the user clicked into Edit, then clicked out and back in again)
-    this.setState({ duration, isVideoPlaying: true });
+    this.setState({ duration, orientation, isVideoPlaying: true });
     this.props.beginSpeechTranscriptionWithVideoAsset(
       this.props.videoAssetIdentifier
     );
@@ -353,8 +350,8 @@ export default class EditScreen extends Component<Props, State> {
     this.setState({
       playbackTime: time,
     });
-    if (this.transcriptView) {
-      this.transcriptView.seekToTime(time);
+    if (this.captionsView) {
+      this.captionsView.seekToTime(time);
     }
     if (this.playerView) {
       this.playerView.seekToTime(time);
@@ -432,8 +429,8 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   restartCaptions() {
-    if (this.transcriptView) {
-      this.transcriptView.restart();
+    if (this.captionsView) {
+      this.captionsView.restart();
     }
     if (this.richTextOverlay) {
       this.richTextOverlay.restartCaptions();
@@ -460,8 +457,8 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   pauseCaptions() {
-    if (this.transcriptView) {
-      this.transcriptView.pause();
+    if (this.captionsView) {
+      this.captionsView.pause();
     }
     if (this.richTextOverlay) {
       this.richTextOverlay.pauseCaptions();
@@ -472,13 +469,13 @@ export default class EditScreen extends Component<Props, State> {
     const hasFinalTranscription = this.hasFinalSpeechTranscription();
     return (
       <View style={styles.container}>
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={styles.flex}>
           <View style={styles.videoWrap}>
             <VideoPlayerView
               ref={ref => {
                 this.playerView = ref;
               }}
-              style={styles.videoPlayer}
+              style={styles.flex}
               isPlaying={this.state.isVideoPlaying}
               videoAssetIdentifier={this.props.videoAssetIdentifier}
               onVideoDidBecomeReadyToPlay={this.videoPlayerDidBecomeReadyToPlay}
@@ -490,6 +487,29 @@ export default class EditScreen extends Component<Props, State> {
               onVideoDidRestart={this.videoPlayerDidRestart}
             />
             <ScreenGradients />
+            <VideoCaptionsContainer
+              style={styles.captionsContainer}
+              orientation={this.state.orientation}
+            >
+              <VideoCaptionsView
+                ref={ref => {
+                  this.captionsView = ref;
+                }}
+                style={styles.flex}
+                hasFinalTranscription={hasFinalTranscription}
+                orientation={this.state.orientation || 'up'}
+                duration={this.state.duration}
+                lineStyle={this.props.lineStyle}
+                textColor={this.props.textColor}
+                backgroundColor={this.props.backgroundColor}
+                fontFamily={this.props.fontFamily}
+                fontSize={this.props.fontSize}
+                speechTranscription={this.getSpeechTranscription()}
+                onPress={() => {
+                  this.showEditTranscriptionModal();
+                }}
+              />
+            </VideoCaptionsContainer>
             <EditScreenTopControls
               style={styles.editTopControls}
               isReadyToExport={!!hasFinalTranscription}
@@ -504,27 +524,10 @@ export default class EditScreen extends Component<Props, State> {
                 this.showEditTranscriptionModal();
               }}
             />
-            <RecordingTranscriptionView
-              ref={ref => {
-                this.transcriptView = ref;
-              }}
-              hasFinalTranscription={hasFinalTranscription}
-              style={styles.transcription}
-              duration={this.state.duration}
-              lineStyle={this.props.lineStyle}
-              textColor={this.props.textColor}
-              backgroundColor={this.props.backgroundColor}
-              fontFamily={this.props.fontFamily}
-              fontSize={this.props.fontSize}
-              speechTranscription={this.getSpeechTranscription()}
-              onPress={() => {
-                this.showEditTranscriptionModal();
-              }}
-            />
           </View>
           <View style={styles.editControls}>
             <VideoSeekbar
-              style={styles.seekbar}
+              style={styles.flex}
               duration={this.state.duration}
               playbackTime={this.state.playbackTime}
               videoAssetIdentifier={this.props.videoAssetIdentifier}

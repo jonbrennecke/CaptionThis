@@ -129,7 +129,7 @@ class VideoAnimationLayer: CALayer {
     let fadeInAnimation = animateFadeIn(atTime: Double(firstSegment.timestamp))
     opacityLayer.add(fadeInAnimation, forKey: nil)
     let height = params.frameHeight(forOutputKind: outputKind)
-    opacityLayer.frame = CGRect(x: bounds.minX, y: bounds.minY + (bounds.height - CGFloat(height)), width: bounds.width, height: CGFloat(height))
+    opacityLayer.frame = CGRect(x: bounds.minX, y: bounds.minY + bounds.height - CGFloat(height), width: bounds.width, height: CGFloat(height))
     opacityLayer.addSublayer(containerLayer)
     addSublayer(opacityLayer)
 //     TODO: fade out after last segment duration is complete (+delay)

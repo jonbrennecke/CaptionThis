@@ -19,3 +19,13 @@ export type TextOverlayParams = {
   timestamp: number,
   text: string,
 };
+
+export type ImageOrientation =
+  | 'left'
+  | 'leftMirrored'
+  | 'right'
+  | 'rightMirrored'
+  | 'up'
+  | 'upMirrored'
+  | 'down'
+  | 'downMirrored';

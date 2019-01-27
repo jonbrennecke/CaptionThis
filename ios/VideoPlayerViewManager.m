@@ -1,5 +1,6 @@
 #import "VideoPlayerViewManager.h"
 #import "CaptionThis-Swift.h"
+#import "RCTConvert+UIImageOrientation.h"
 #import <AVFoundation/AVFoundation.h>
 #import <Photos/Photos.h>
 #import <React/RCTBridge.h>
@@ -30,6 +31,25 @@
 
 #pragma mark - VideoPlayerViewDelegate
 
+- (NSString *)stringForImageOrientation:(UIImageOrientation)orientation {
+  NSDictionary *orientationToStringMap = @{
+    @(UIImageOrientationUp) : @"up",
+    @(UIImageOrientationUpMirrored) : @"upMirrored",
+    @(UIImageOrientationDown) : @"down",
+    @(UIImageOrientationDownMirrored) : @"downMirrored",
+    @(UIImageOrientationLeft) : @"left",
+    @(UIImageOrientationLeftMirrored) : @"leftMirrored",
+    @(UIImageOrientationRight) : @"right",
+    @(UIImageOrientationRightMirrored) : @"rightMirrored",
+  };
+  NSString *orientationStr =
+      [orientationToStringMap objectForKey:@(orientation)];
+  if (!orientationStr) {
+    return [orientationToStringMap objectForKey:@(UIImageOrientationUp)];
+  }
+  return orientationStr;
+}
+
 - (void)videoPlayerDidFailToLoad {
   if (!self.onVideoDidFailToLoad) {
     return;
@@ -38,12 +58,22 @@
 }
 
 - (void)videoPlayerDidBecomeReadyToPlayAsset:(AVAsset *)asset {
-  if (!self.onVideoDidBecomeReadyToPlay) {
-    return;
-  }
-  NSNumber *duration =
-      [NSNumber numberWithFloat:CMTimeGetSeconds(asset.duration)];
-  self.onVideoDidBecomeReadyToPlay(@{@"duration" : duration});
+  [asset loadValuesAsynchronouslyForKeys:@[ @"tracks" ]
+                       completionHandler:^{
+                         if (!self.onVideoDidBecomeReadyToPlay) {
+                           return;
+                         }
+                         UIImageOrientation orientation =
+                             [OrientationUtil orientationForAsset:asset];
+                         NSString *orientationStr =
+                             [self stringForImageOrientation:orientation];
+                         NSNumber *duration = [NSNumber
+                             numberWithFloat:CMTimeGetSeconds(asset.duration)];
+                         self.onVideoDidBecomeReadyToPlay(@{
+                           @"duration" : duration,
+                           @"orientation" : orientationStr
+                         });
+                       }];
 }
 
 - (void)videoPlayerDidPause {
@@ -77,6 +107,23 @@
 @implementation VideoPlayerViewManager
 
 RCT_EXPORT_MODULE()
+
+- (NSDictionary *)constantsToExport {
+  return @{
+    @"up" : @(UIImageOrientationUp),
+    @"upMirrored" : @(UIImageOrientationUpMirrored),
+    @"down" : @(UIImageOrientationDown),
+    @"downMirrored" : @(UIImageOrientationDownMirrored),
+    @"left" : @(UIImageOrientationLeft),
+    @"leftMirrored" : @(UIImageOrientationLeftMirrored),
+    @"right" : @(UIImageOrientationRight),
+    @"rightMirrored" : @(UIImageOrientationRightMirrored),
+  };
+}
+
++ (BOOL)requiresMainQueueSetup {
+  return NO;
+}
 
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidBecomeReadyToPlay, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidFailToLoad, RCTBubblingEventBlock)

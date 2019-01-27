@@ -8,13 +8,14 @@ import {
 
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
-import type { ColorRGBA } from '../../types/media';
+import type { ColorRGBA, ImageOrientation } from '../../types/media';
 
 type ReactNativeFiberHostComponent = any;
 
 type Props = {
   style?: ?Style,
   duration: number,
+  orientation: ImageOrientation,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
   fontFamily: string,
@@ -37,7 +38,7 @@ const styles = {
   },
 };
 
-export default class RecordingTranscriptionView extends Component<Props> {
+export default class VideoCaptionsView extends Component<Props> {
   nativeComponentRef: ?ReactNativeFiberHostComponent;
 
   restart() {
@@ -83,6 +84,7 @@ export default class RecordingTranscriptionView extends Component<Props> {
           isReadyToPlay={this.props.hasFinalTranscription}
           animationParams={{
             textSegments,
+            orientation: this.props.orientation,
             duration: this.props.duration,
             fontFamily: this.props.fontFamily,
             fontSize: this.props.fontSize,

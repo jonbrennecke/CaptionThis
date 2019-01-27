@@ -10,7 +10,7 @@ import RichTextFontFamilyControl from './RichTextFontFamilyControl';
 import RichTextBackgroundColorControl from './RichTextBackgroundColorControl';
 import RichTextFontSizeControl from './RichTextFontSizeControl';
 import RichTextEditorColorPicker from './RichTextEditorColorPicker';
-import RecordingTranscriptionView from '../../components/recording-transcription-view/RecordingTranscriptionView';
+import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
 import Button from '../button/Button';
 import { UI_COLORS } from '../../constants';
 
@@ -99,7 +99,7 @@ const styles = {
 export default class RichTextEditor extends Component<Props, State> {
   colorPickerAnim: Animated.Value = new Animated.Value(0);
   mainContentsAnim: Animated.Value = new Animated.Value(0);
-  transcriptView: ?RecordingTranscriptionView;
+  captionsView: ?VideoCaptionsView;
 
   constructor(props: Props) {
     super(props);
@@ -114,8 +114,8 @@ export default class RichTextEditor extends Component<Props, State> {
   }
 
   componentDidMount() {
-    if (this.props.hasFinalTranscription && this.transcriptView) {
-      this.transcriptView.restart();
+    if (this.props.hasFinalTranscription && this.captionsView) {
+      this.captionsView.restart();
     }
   }
 
@@ -123,10 +123,9 @@ export default class RichTextEditor extends Component<Props, State> {
     if (
       this.props.isVisible &&
       !prevProps.isVisible &&
-      this.props.hasFinalTranscription &&
-      this.transcriptView
+      this.props.hasFinalTranscription
     ) {
-      this.transcriptView.seekToTime(this.props.playbackTime);
+      this.seekCaptionsToTime(this.props.playbackTime);
     }
   }
 
@@ -144,18 +143,14 @@ export default class RichTextEditor extends Component<Props, State> {
     this.setState({
       textColor,
     });
-    if (this.transcriptView) {
-      this.transcriptView.seekToTime(this.props.playbackTime);
-    }
+    this.seekCaptionsToTime(this.props.playbackTime);
   }
 
   colorPickerDidUpdateBackgroundColor(backgroundColor: ColorRGBA) {
     this.setState({
       backgroundColor,
     });
-    if (this.transcriptView) {
-      this.transcriptView.seekToTime(this.props.playbackTime);
-    }
+    this.seekCaptionsToTime(this.props.playbackTime);
   }
 
   showColorPicker() {
@@ -200,18 +195,14 @@ export default class RichTextEditor extends Component<Props, State> {
     this.setState({
       fontFamily,
     });
-    if (this.transcriptView) {
-      this.transcriptView.seekToTime(this.props.playbackTime);
-    }
+    this.seekCaptionsToTime(this.props.playbackTime);
   }
 
   fontSizeControlDidSelectFontSize(fontSize: number) {
     this.setState({
       fontSize,
     });
-    if (this.transcriptView) {
-      this.transcriptView.seekToTime(this.props.playbackTime);
-    }
+    this.seekCaptionsToTime(this.props.playbackTime);
   }
 
   save() {
@@ -224,26 +215,34 @@ export default class RichTextEditor extends Component<Props, State> {
   }
 
   restartCaptions() {
-    if (this.transcriptView) {
-      this.transcriptView.restart();
+    if (this.captionsView) {
+      this.captionsView.restart();
     }
   }
 
   pauseCaptions() {
-    if (this.transcriptView) {
-      this.transcriptView.pause();
+    if (this.captionsView) {
+      this.captionsView.pause();
     }
+  }
+
+  seekCaptionsToTime(time: number) {
+    if (!this.captionsView) {
+      return;
+    }
+    this.captionsView.seekToTime(time);
   }
 
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        <RecordingTranscriptionView
+        <VideoCaptionsView
           ref={ref => {
-            this.transcriptView = ref;
+            this.captionsView = ref;
           }}
           hasFinalTranscription={this.props.hasFinalTranscription}
           style={styles.transcription}
+          orientation="up"
           duration={this.props.duration}
           textColor={this.state.textColor}
           backgroundColor={this.state.backgroundColor}

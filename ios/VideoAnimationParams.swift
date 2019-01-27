@@ -11,6 +11,8 @@ enum VideoAnimationLineStyle: Int {
 @objc
 class VideoAnimationParams: NSObject {
   @objc
+  public var orientation: UIImage.Orientation = .right
+  @objc
   public var textSegments: [TextSegmentParams]?
   @objc
   public var fontFamily: String?
@@ -28,18 +30,21 @@ class VideoAnimationParams: NSObject {
   public var lineStyle: VideoAnimationLineStyle = .twoLines
 
   public func containerPaddingHorizontal(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
-    return outputKind == .view ? 15 : 45
+    return (outputKind == .view ? 10 : 45) * orientationMultipler
   }
 
   public func containerPaddingVertical(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
-    return outputKind == .view ? 5 : 15
+    return (outputKind == .view ? 5 : 15) * orientationMultipler
   }
 
-  public let textPaddingVertical: Float = 5
+  public var textPaddingVertical: Float {
+    return 5 * orientationMultipler
+  }
 
   public func fontSize(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
     let fontSizeMultiplier = outputKind == .export ? Float(UIScreen.main.scale) : 1
-    return (fontSize?.floatValue ?? DEFAULT_FONT_SIZE) * fontSizeMultiplier
+    let orientationMultipler: Float = OrientationUtil.isLandscape(orientation: orientation) ? 9.0 / 16.0 : 1
+    return (fontSize?.floatValue ?? DEFAULT_FONT_SIZE) * fontSizeMultiplier * orientationMultipler
   }
 
   public func textLineHeight(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
@@ -54,6 +59,10 @@ class VideoAnimationParams: NSObject {
 
   public func frameHeight(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
     return textHeight(forOutputKind: outputKind) + containerPaddingVertical(forOutputKind: outputKind) * 2
+  }
+
+  private var orientationMultipler: Float {
+    return OrientationUtil.isLandscape(orientation: orientation) ? 9.0 / 16.0 : 1
   }
 }
 
