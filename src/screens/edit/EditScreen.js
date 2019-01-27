@@ -497,6 +497,7 @@ export default class EditScreen extends Component<Props, State> {
                 }}
                 style={styles.flex}
                 hasFinalTranscription={hasFinalTranscription}
+                orientation={this.state.orientation || 'up'}
                 duration={this.state.duration}
                 lineStyle={this.props.lineStyle}
                 textColor={this.props.textColor}

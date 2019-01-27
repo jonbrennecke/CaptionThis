@@ -242,6 +242,7 @@ export default class RichTextEditor extends Component<Props, State> {
           }}
           hasFinalTranscription={this.props.hasFinalTranscription}
           style={styles.transcription}
+          orientation="up"
           duration={this.props.duration}
           textColor={this.state.textColor}
           backgroundColor={this.state.backgroundColor}
