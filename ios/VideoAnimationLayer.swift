@@ -241,7 +241,7 @@ class VideoAnimationLayer: CALayer {
   }
   
   private func maxCharactersPerLine() -> Int {
-    let fontSize = params.fontSize(forOutputKind: outputKind)
+    let fontSize = params.fontSize(forOutputKind: .view)
     switch params.orientation {
     case .left, .leftMirrored, .right, .rightMirrored:
       return Int((MAXIMUM_FONT_SIZE / fontSize * 40).rounded())
@@ -315,7 +315,7 @@ class VideoAnimationLayer: CALayer {
     textLayer.allowsFontSubpixelQuantization = true
     textLayer.allowsEdgeAntialiasing = true
     let lineHeight = CGFloat(params.textLineHeight(forOutputKind: outputKind))
-    textLayer.frame = CGRect(x: 0, y: CGFloat(params.textPaddingVertical), width: parent.frame.width, height: lineHeight)
+    textLayer.frame = CGRect(x: 0, y: CGFloat(params.textPaddingVertical(forOutputKind: outputKind)), width: parent.frame.width, height: lineHeight)
     let fontSize = CGFloat(params.fontSize(forOutputKind: outputKind))
     let font = UIFont(name: params.fontFamily ?? "Helvetica", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
     let attributes: [NSAttributedString.Key: Any] = [

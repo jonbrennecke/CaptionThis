@@ -391,6 +391,7 @@ export default class EditScreen extends Component<Props, State> {
       fontSize: this.props.fontSize,
       duration: this.state.duration,
       lineStyle: this.props.lineStyle,
+      orientation: this.state.orientation || 'up',
     });
   }
 

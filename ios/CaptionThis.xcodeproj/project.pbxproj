@@ -1011,8 +1011,8 @@
 		FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */ = {
 			isa = PBXGroup;
 			children = (
-				FCA3971B21DC969D00347CAB /* VideoExportBridgeModule.h */,
 				FCA3971921DC968E00347CAB /* VideoExportBridgeModule.m */,
+				FCA3971B21DC969D00347CAB /* VideoExportBridgeModule.h */,
 			);
 			name = VideoExportBridgeModule;
 			sourceTree = "<group>";
