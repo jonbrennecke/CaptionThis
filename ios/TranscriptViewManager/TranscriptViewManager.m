@@ -1,8 +1,8 @@
 
 #import "TranscriptViewManager.h"
 #import "CaptionThis-Swift.h"
-#import "TranscriptView.h"
 #import "RCTConvert+UIImageOrientation.h"
+#import "TranscriptView.h"
 #import <React/RCTBridge.h>
 #import <React/RCTConvert.h>
 #import <React/RCTUIManager.h>
@@ -131,10 +131,11 @@ RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, UIView) {
     UIColor *textColor = [RCTConvert UIColor:textColorJson];
     params.textColor = textColor;
   }
-  
+
   id orientationJson = [json objectForKey:@"orientation"];
   if (orientationJson) {
-    UIImageOrientation orientation = [RCTConvert UIImageOrientation:orientationJson];
+    UIImageOrientation orientation =
+        [RCTConvert UIImageOrientation:orientationJson];
     params.orientation = orientation;
   }
 
