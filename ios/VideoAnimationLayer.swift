@@ -123,7 +123,7 @@ class VideoAnimationLayer: CALayer {
       return
     }
     let opacityLayer = CALayer()
-    opacityLayer.backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
+    opacityLayer.backgroundColor = params.backgroundColor?.cgColor
     opacityLayer.masksToBounds = true
     opacityLayer.opacity = 0
     let fadeInAnimation = animateFadeIn(atTime: Double(firstSegment.timestamp))
