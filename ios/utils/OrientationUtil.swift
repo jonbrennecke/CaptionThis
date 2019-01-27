@@ -3,6 +3,19 @@ import UIKit
 
 @objc
 class OrientationUtil: NSObject {
+  public static func isPortrait(orientation: UIImage.Orientation) -> Bool {
+    return !isLandscape(orientation: orientation)
+  }
+
+  public static func isLandscape(orientation: UIImage.Orientation) -> Bool {
+    switch orientation {
+    case .left, .leftMirrored, .right, .rightMirrored:
+      return true
+    default:
+      return false
+    }
+  }
+
   @objc
   public static func orientation(forAsset asset: AVAsset) -> UIImage.Orientation {
     let videoTracks = asset.tracks(withMediaType: .video)

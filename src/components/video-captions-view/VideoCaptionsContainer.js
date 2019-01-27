@@ -31,15 +31,15 @@ const styles = {
     if (isLandscape(orientation)) {
       const videoHeight = size.width * 9 / 16;
       const topOfVideo = (size.height - videoHeight) / 2;
+      const captionViewHeight = 60;
       return {
         position: 'absolute',
         left: 0,
         right: 0,
-        height: CAPTION_VIEW_HEIGHT,
-        top: topOfVideo + videoHeight - CAPTION_VIEW_HEIGHT - 25,
+        height: captionViewHeight,
+        top: topOfVideo + videoHeight - captionViewHeight - 11,
       };
-    }
-    else {
+    } else {
       return {
         position: 'absolute',
         left: 0,
