@@ -1,7 +1,7 @@
 import AVFoundation
 import UIKit
 
-let MAX_CHARACTERS_PER_LINE: Int = 32
+let MAXIMUM_FONT_SIZE: Float = 20
 let DEFAULT_ANIMATION_DURATION: CFTimeInterval = 0.25
 
 @objc
@@ -152,7 +152,7 @@ class VideoAnimationLayer: CALayer {
         return
       }
       let newString = "\(centerTextLayer.string ?? "") \(segment.text)"
-      if newString.count > MAX_CHARACTERS_PER_LINE {
+      if newString.count > maxCharactersPerLine() {
         let timestamp = Double(segment.timestamp) + DEFAULT_ANIMATION_DURATION
         let textLayer = addTextLayer(parent: parentLayer, withParams: params, text: segment.text)
         textLayer.position.y = outOfFrameBottomY
@@ -201,7 +201,7 @@ class VideoAnimationLayer: CALayer {
         return
       }
       let newString = stringForLine(byJoiningPreviousString: bottomTextLayer.string, withNextString: segment.text)
-      if newString.length >= MAX_CHARACTERS_PER_LINE {
+      if newString.length >= maxCharactersPerLine() {
         let textLayer = addTextLayer(parent: parentLayer, withParams: params, text: segment.text)
         textLayer.position.y = outOfFrameBottomY
         textLayer.opacity = 0
@@ -237,6 +237,16 @@ class VideoAnimationLayer: CALayer {
         textLayer.layoutIfNeeded()
         textLayers.append(textLayer)
       }
+    }
+  }
+  
+  private func maxCharactersPerLine() -> Int {
+    let fontSize = params.fontSize(forOutputKind: outputKind)
+    switch params.orientation {
+    case .left, .leftMirrored, .right, .rightMirrored:
+      return Int((MAXIMUM_FONT_SIZE / fontSize * 40).rounded())
+    default:
+      return Int((MAXIMUM_FONT_SIZE / fontSize * 33).rounded())
     }
   }
   
