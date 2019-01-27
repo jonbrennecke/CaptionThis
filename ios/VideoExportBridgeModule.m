@@ -1,6 +1,7 @@
 #import "VideoExportBridgeModule.h"
 #import "AppDelegate.h"
 #import "CaptionThis-Swift.h"
+#import "RCTConvert+UIImageOrientation.h"
 #import <React/RCTConvert.h>
 #import <Speech/Speech.h>
 
@@ -49,6 +50,13 @@ RCT_EXPORT_METHOD(exportVideo
   if (backgroundColorJson) {
     UIColor *backgroundColor = [RCTConvert UIColor:backgroundColorJson];
     params.backgroundColor = backgroundColor;
+  }
+  
+  id orientationJson = [json objectForKey:@"orientation"];
+  if (orientationJson) {
+    UIImageOrientation orientation =
+    [RCTConvert UIImageOrientation:orientationJson];
+    params.orientation = orientation;
   }
 
   id lineStyleJson = [json objectForKey:@"lineStyle"];

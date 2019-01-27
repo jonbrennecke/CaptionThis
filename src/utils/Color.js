@@ -17,3 +17,5 @@ export function rgbaObjectToRgbaString(rgba: ColorRGBA): string {
   const { red, green, blue, alpha } = rgba;
   return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
 }
+
+export const transparent: ColorRGBA = { red: 0, green: 0, blue: 0, alpha: 0 };

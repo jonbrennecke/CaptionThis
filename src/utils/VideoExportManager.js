@@ -8,6 +8,7 @@ import type {
   VideoAssetIdentifier,
   TextOverlayParams,
   ColorRGBA,
+  ImageOrientation,
 } from '../types/media';
 import type { LineStyle } from '../types/video';
 
@@ -23,6 +24,7 @@ export type ExportParams = {
   fontFamily: string,
   duration: number,
   lineStyle: LineStyle,
+  orientation: ImageOrientation,
 };
 
 export const exportVideo = async ({

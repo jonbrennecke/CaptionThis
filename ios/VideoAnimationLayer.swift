@@ -1,7 +1,7 @@
 import AVFoundation
 import UIKit
 
-let MAX_CHARACTERS_PER_LINE: Int = 32
+let MAXIMUM_FONT_SIZE: Float = 20
 let DEFAULT_ANIMATION_DURATION: CFTimeInterval = 0.25
 
 @objc
@@ -123,7 +123,7 @@ class VideoAnimationLayer: CALayer {
       return
     }
     let opacityLayer = CALayer()
-    opacityLayer.backgroundColor = params.backgroundColor?.withAlphaComponent(0.8).cgColor
+    opacityLayer.backgroundColor = params.backgroundColor?.cgColor
     opacityLayer.masksToBounds = true
     opacityLayer.opacity = 0
     let fadeInAnimation = animateFadeIn(atTime: Double(firstSegment.timestamp))
@@ -152,7 +152,7 @@ class VideoAnimationLayer: CALayer {
         return
       }
       let newString = "\(centerTextLayer.string ?? "") \(segment.text)"
-      if newString.count > MAX_CHARACTERS_PER_LINE {
+      if newString.count > maxCharactersPerLine() {
         let timestamp = Double(segment.timestamp) + DEFAULT_ANIMATION_DURATION
         let textLayer = addTextLayer(parent: parentLayer, withParams: params, text: segment.text)
         textLayer.position.y = outOfFrameBottomY
@@ -200,8 +200,8 @@ class VideoAnimationLayer: CALayer {
         textLayers.append(textLayer)
         return
       }
-      let newString = "\(bottomTextLayer.string ?? "") \(segment.text)"
-      if newString.count >= MAX_CHARACTERS_PER_LINE {
+      let newString = stringForLine(byJoiningPreviousString: bottomTextLayer.string, withNextString: segment.text)
+      if newString.length >= maxCharactersPerLine() {
         let textLayer = addTextLayer(parent: parentLayer, withParams: params, text: segment.text)
         textLayer.position.y = outOfFrameBottomY
         textLayer.opacity = 0
@@ -238,6 +238,25 @@ class VideoAnimationLayer: CALayer {
         textLayers.append(textLayer)
       }
     }
+  }
+  
+  private func maxCharactersPerLine() -> Int {
+    let fontSize = params.fontSize(forOutputKind: .view)
+    switch params.orientation {
+    case .left, .leftMirrored, .right, .rightMirrored:
+      return Int((MAXIMUM_FONT_SIZE / fontSize * 40).rounded())
+    default:
+      return Int((MAXIMUM_FONT_SIZE / fontSize * 33).rounded())
+    }
+  }
+  
+  private func stringForLine(byJoiningPreviousString previousString: Any?, withNextString nextString: String) -> NSAttributedString {
+    if let attributedString = previousString as? NSAttributedString {
+      let mutableAttributedString = attributedString.mutableCopy() as! NSMutableAttributedString
+      mutableAttributedString.mutableString.setString("\(attributedString.string) \(nextString)")
+      return mutableAttributedString
+    }
+    return NSAttributedString(string: previousString as? String ?? "")
   }
 
   private func setupTextContainerLayer() -> CALayer {
@@ -291,17 +310,25 @@ class VideoAnimationLayer: CALayer {
   }
 
   private func addTextLayer(parent: CALayer, withParams params: VideoAnimationParams, text: String) -> CATextLayer {
-    let textLayer = CenteredTextLayer()
+    let textLayer = CATextLayer()
     textLayer.contentsScale = UIScreen.main.scale
     textLayer.allowsFontSubpixelQuantization = true
     textLayer.allowsEdgeAntialiasing = true
-    textLayer.frame = CGRect(x: 0, y: CGFloat(params.textPaddingVertical), width: parent.frame.width, height: CGFloat(params.textLineHeight(forOutputKind: outputKind)))
-    textLayer.alignmentMode = .left
-    textLayer.fontSize = CGFloat(params.fontSize(forOutputKind: outputKind))
-    textLayer.truncationMode = .start
-    textLayer.font = params.fontFamily as CFTypeRef
-    textLayer.foregroundColor = params.textColor?.cgColor
-    textLayer.string = text
+    let lineHeight = CGFloat(params.textLineHeight(forOutputKind: outputKind))
+    textLayer.frame = CGRect(x: 0, y: CGFloat(params.textPaddingVertical(forOutputKind: outputKind)), width: parent.frame.width, height: lineHeight)
+    let fontSize = CGFloat(params.fontSize(forOutputKind: outputKind))
+    let font = UIFont(name: params.fontFamily ?? "Helvetica", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
+    let attributes: [NSAttributedString.Key: Any] = [
+      .foregroundColor: params.textColor?.cgColor ?? UIColor.black.cgColor,
+      .font: font,
+      .baselineOffset: -abs(fontSize - lineHeight) + (fontSize / 3)
+    ]
+    textLayer.shadowColor = UIColor.black.cgColor
+    textLayer.shadowRadius = 0.5
+    textLayer.shadowOpacity = 0.2
+    let shadowOffsetHeight  = outputKind == .export ? -1.0 : 1.0
+    textLayer.shadowOffset = CGSize(width: 0.0, height: shadowOffsetHeight )
+    textLayer.string = NSAttributedString(string: text, attributes: attributes)
     parent.addSublayer(textLayer)
     return textLayer
   }
