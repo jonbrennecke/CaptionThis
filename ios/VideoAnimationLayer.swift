@@ -315,8 +315,9 @@ class VideoAnimationLayer: CALayer {
     ]
     textLayer.shadowColor = UIColor.black.cgColor
     textLayer.shadowRadius = 0.5
-    textLayer.shadowOpacity = 0.25
-    textLayer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+    textLayer.shadowOpacity = 0.2
+    let shadowOffsetHeight  = outputKind == .export ? -1.0 : 1.0
+    textLayer.shadowOffset = CGSize(width: 0.0, height: shadowOffsetHeight )
     textLayer.string = NSAttributedString(string: text, attributes: attributes)
     parent.addSublayer(textLayer)
     return textLayer
