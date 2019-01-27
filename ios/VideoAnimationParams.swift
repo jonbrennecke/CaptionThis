@@ -11,7 +11,7 @@ enum VideoAnimationLineStyle: Int {
 @objc
 class VideoAnimationParams: NSObject {
   @objc
-  public var orientation: UIImage.Orientation = .right
+  public var orientation: UIImage.Orientation = .up
   @objc
   public var textSegments: [TextSegmentParams]?
   @objc

@@ -307,21 +307,16 @@ class VideoAnimationLayer: CALayer {
     let lineHeight = CGFloat(params.textLineHeight(forOutputKind: outputKind))
     textLayer.frame = CGRect(x: 0, y: CGFloat(params.textPaddingVertical), width: parent.frame.width, height: lineHeight)
     let fontSize = CGFloat(params.fontSize(forOutputKind: outputKind))
-    let shadow = NSShadow()
-    shadow.shadowBlurRadius = 1
-    shadow.shadowColor = UIColor.black
-    shadow.shadowOffset = CGSize(width: 2.0, height: 2.0)
-    let paragraphStyle = NSMutableParagraphStyle()
-    paragraphStyle.alignment = .left
-    paragraphStyle.lineBreakMode = .byWordWrapping
     let font = UIFont(name: params.fontFamily ?? "Helvetica", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
     let attributes: [NSAttributedString.Key: Any] = [
       .foregroundColor: params.textColor?.cgColor ?? UIColor.black.cgColor,
-      .paragraphStyle: paragraphStyle,
       .font: font,
-      .shadow: shadow,
       .baselineOffset: -abs(fontSize - lineHeight) + (fontSize / 3)
     ]
+    textLayer.shadowColor = UIColor.black.cgColor
+    textLayer.shadowRadius = 0.5
+    textLayer.shadowOpacity = 0.25
+    textLayer.shadowOffset = CGSize(width: 0.0, height: 1.0)
     textLayer.string = NSAttributedString(string: text, attributes: attributes)
     parent.addSublayer(textLayer)
     return textLayer
