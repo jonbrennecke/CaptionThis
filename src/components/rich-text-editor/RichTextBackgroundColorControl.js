@@ -73,7 +73,7 @@ const styles = {
     height: 20,
     width: 20,
     borderRadius: 10,
-  }
+  },
 };
 
 function isWhite(color: ColorRGBA): boolean {
@@ -101,7 +101,10 @@ export default function RichTextBackgroundColorControl({
             onPress={onRequestShowColorPicker}
           >
             <View style={styles.colorPickerButton}>
-              <ColorBucketIcon style={styles.iconSmaller} color={Color.hexToRgbaObject('#dddddd')} />
+              <ColorBucketIcon
+                style={styles.iconSmaller}
+                color={Color.hexToRgbaObject('#dddddd')}
+              />
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -109,7 +112,10 @@ export default function RichTextBackgroundColorControl({
             onPress={() => onDidSelectColor(Color.transparent)}
           >
             <View style={styles.colorPickerButton}>
-              <CloseIcon style={styles.icon} color={Color.hexToRgbaObject('#dddddd')} />
+              <CloseIcon
+                style={styles.icon}
+                color={Color.hexToRgbaObject('#dddddd')}
+              />
             </View>
           </TouchableOpacity>
           {USER_BACKGROUND_COLOR_CHOICES.map(color => (

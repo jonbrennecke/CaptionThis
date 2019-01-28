@@ -22,7 +22,23 @@ export const TRANSCRIPTION_STATE = {
   FAILED: 'FAILED',
 };
 
-export const FONT_SIZES = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+export const FONT_SIZES = [
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+];
 
 export const TEXT_COLORS = {
   LIGHT_GREY: '#AFADAD',
@@ -98,6 +114,7 @@ export const FONT_FAMILIES = {
   DANCING_SCRIPT: 'Dancing Script',
   MONTSERRAT: 'Montserrat',
   SHADOWS_INTO_LIGHT: 'Shadows Into Light',
+  SPECIAL_ELITE: 'Special Elite',
 };
 
 export const FONTS = [
@@ -105,13 +122,22 @@ export const FONTS = [
     fontFamily: FONT_FAMILIES.CRETE_ROUND,
     displayName: 'Crete Round',
   },
+  // FIXME: font baseline gets cut off, disabled until fixed
+  // {
+  //   fontFamily: FONT_FAMILIES.SHADOWS_INTO_LIGHT,
+  //   displayName: 'Shadows Into Light',
+  // },
   {
-    fontFamily: FONT_FAMILIES.SHADOWS_INTO_LIGHT,
-    displayName: 'Shadows Into Light',
+    fontFamily: FONT_FAMILIES.SPECIAL_ELITE,
+    displayName: 'Special Elite',
   },
   {
     fontFamily: FONT_FAMILIES.LOBSTER,
     displayName: 'Lobster',
+  },
+  {
+    fontFamily: FONT_FAMILIES.STAATLICHES,
+    displayName: 'Staatliches',
   },
   {
     fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
@@ -120,10 +146,6 @@ export const FONTS = [
   {
     fontFamily: FONT_FAMILIES.SOURCE_SERIF_PRO,
     displayName: 'Source Serif Pro',
-  },
-  {
-    fontFamily: FONT_FAMILIES.STAATLICHES,
-    displayName: 'Staatliches',
   },
   {
     fontFamily: FONT_FAMILIES.RUBIK,

@@ -18,11 +18,18 @@ const styles = {
     paddingVertical: 4,
     flexDirection: 'row',
   },
+  verticallyCenterTextHelper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   fontFamilyText: (fontFamily: string, isSelected: boolean) => ({
     ...Fonts.getFontStyle('default', {
       contentStyle: 'darkContent',
     }),
     fontSize: 17,
+    lineHeight: 17,
+    justifyContent: 'center',
     fontFamily,
     color: isSelected ? TEXT_COLORS.OFF_WHITE : TEXT_COLORS.LIGHT_GREY,
   }),
@@ -56,12 +63,14 @@ export default function FontFamilyList({
             style={styles.font}
             key={fontFamily}
           >
-            <Text
-              numberOfLines={1}
-              style={[styles.fontFamilyText(fontFamily, isUserSelectedFont)]}
-            >
-              {displayName}
-            </Text>
+            <View style={styles.verticallyCenterTextHelper}>
+              <Text
+                numberOfLines={1}
+                style={[styles.fontFamilyText(fontFamily, isUserSelectedFont)]}
+              >
+                {displayName}
+              </Text>
+            </View>
             <View style={styles.borderBottom(isUserSelectedFont)} />
           </TouchableOpacity>
         );

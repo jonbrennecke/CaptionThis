@@ -51,11 +51,11 @@ RCT_EXPORT_METHOD(exportVideo
     UIColor *backgroundColor = [RCTConvert UIColor:backgroundColorJson];
     params.backgroundColor = backgroundColor;
   }
-  
+
   id orientationJson = [json objectForKey:@"orientation"];
   if (orientationJson) {
     UIImageOrientation orientation =
-    [RCTConvert UIImageOrientation:orientationJson];
+        [RCTConvert UIImageOrientation:orientationJson];
     params.orientation = orientation;
   }
 
