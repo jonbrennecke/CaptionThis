@@ -1,7 +1,7 @@
 import AVFoundation
 import UIKit
 
-let MAXIMUM_FONT_SIZE: Float = 20
+let MAXIMUM_FONT_SIZE: Float = 24
 let DEFAULT_ANIMATION_DURATION: CFTimeInterval = 0.25
 
 @objc
@@ -246,7 +246,7 @@ class VideoAnimationLayer: CALayer {
     case .left, .leftMirrored, .right, .rightMirrored:
       return Int((MAXIMUM_FONT_SIZE / fontSize * 40).rounded())
     default:
-      return Int((MAXIMUM_FONT_SIZE / fontSize * 33).rounded())
+      return Int((MAXIMUM_FONT_SIZE / fontSize * 28).rounded())
     }
   }
   
@@ -321,7 +321,7 @@ class VideoAnimationLayer: CALayer {
     let attributes: [NSAttributedString.Key: Any] = [
       .foregroundColor: params.textColor?.cgColor ?? UIColor.black.cgColor,
       .font: font,
-      .baselineOffset: -abs(fontSize - lineHeight) + (fontSize / 3)
+      .baselineOffset: -abs(fontSize - lineHeight) + (fontSize / 4)
     ]
     textLayer.shadowColor = UIColor.black.cgColor
     textLayer.shadowRadius = 0.5
