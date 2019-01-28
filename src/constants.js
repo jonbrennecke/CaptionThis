@@ -106,6 +106,10 @@ export const FONTS = [
     displayName: 'Crete Round',
   },
   {
+    fontFamily: FONT_FAMILIES.SHADOWS_INTO_LIGHT,
+    displayName: 'Shadows Into Light',
+  },
+  {
     fontFamily: FONT_FAMILIES.LOBSTER,
     displayName: 'Lobster',
   },
@@ -140,10 +144,6 @@ export const FONTS = [
   {
     fontFamily: FONT_FAMILIES.MONTSERRAT,
     displayName: 'Montserrat',
-  },
-  {
-    fontFamily: FONT_FAMILIES.SHADOWS_INTO_LIGHT,
-    displayName: 'Shadows Into Light',
   },
 ];
 
