@@ -24,7 +24,7 @@ import type {
 const DEFAULT_FONT_FAMILY = FONT_FAMILIES.RUBIK;
 const DEFAULT_BACKGROUND_COLOR = Color.transparent;
 const DEFAULT_TEXT_COLOR = Color.hexToRgbaObject(TEXT_COLORS.WHITE);
-const DEFAULT_FONT_SIZE = 22;
+const DEFAULT_FONT_SIZE = 20;
 
 const initialState: MediaState = {
   cameraRecordingState: {
