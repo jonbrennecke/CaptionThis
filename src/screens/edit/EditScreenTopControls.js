@@ -47,10 +47,10 @@ const styles = {
   },
   buttonRight: {
     width: 75,
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   exportButton: (isReadyToExport: boolean) => ({
-    width: 75,
+    width: 50,
     alignItems: 'flex-end',
     opacity: isReadyToExport ? 1 : 0.5,
   }),
