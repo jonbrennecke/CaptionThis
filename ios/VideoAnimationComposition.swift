@@ -2,7 +2,7 @@ import AVFoundation
 
 class VideoAnimationComposition {
   private let videoComposition = AVMutableVideoComposition()
-  private let mixComposition = AVMutableComposition()
+  private var mixComposition = AVMutableComposition()
   private let videoAsset: AVAsset
   private let videoTrack: AVAssetTrack
   private let audioTrack: AVAssetTrack
@@ -12,8 +12,7 @@ class VideoAnimationComposition {
 
   public var videoSize: CGSize {
     let size = videoTrack.naturalSize
-    let orientation = VideoAnimationComposition.videoOrientation(withAssetTrack: videoTrack)
-    if orientation == .portrait || orientation == .portraitUpsideDown {
+    if OrientationUtil.isPortrait(orientation: orientation) {
       return CGSize(width: size.height, height: size.width)
     }
     return size
@@ -132,28 +131,5 @@ class VideoAnimationComposition {
     videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30) // TODO: check video fps
     videoComposition.renderSize = videoSize
     videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayers: [videoLayer, effectLayer], in: parentLayer)
-  }
-
-  private static func videoOrientation(withAssetTrack videoTrack: AVAssetTrack) -> UIInterfaceOrientation {
-    let transform = videoTrack.preferredTransform
-    let angle = degrees(fromRadians: atan2(transform.b, transform.a))
-    if compareFloats(angle, 0) {
-      return .landscapeRight
-    } else if compareFloats(angle, 90) {
-      return .portrait
-    } else if compareFloats(angle, 180) {
-      return .landscapeLeft
-    } else if compareFloats(angle, -90) {
-      return .portraitUpsideDown
-    }
-    return .landscapeRight
-  }
-
-  private static func degrees(fromRadians radians: CGFloat) -> CGFloat {
-    return radians * 180 / CGFloat.pi
-  }
-
-  private static func compareFloats(_ a: CGFloat, _ b: CGFloat) -> Bool {
-    return abs(a - b) < CGFloat.ulpOfOne
   }
 }
