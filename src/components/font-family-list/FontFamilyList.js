@@ -21,7 +21,7 @@ const styles = {
   verticallyCenterTextHelper: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   fontFamilyText: (fontFamily: string, isSelected: boolean) => ({
     ...Fonts.getFontStyle('default', {

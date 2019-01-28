@@ -324,7 +324,7 @@ class VideoAnimationLayer: CALayer {
       .foregroundColor: params.textColor?.cgColor ?? UIColor.black.cgColor,
       .font: font,
       .baselineOffset: -abs(fontSize - lineHeight) + (fontSize / 3),
-      .paragraphStyle: paragraphStyle
+      .paragraphStyle: paragraphStyle,
     ]
     textLayer.shadowColor = UIColor.black.cgColor
     textLayer.shadowRadius = 0.5
