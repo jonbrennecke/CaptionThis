@@ -40,7 +40,6 @@ class VideoAnimationParams: NSObject {
   public func textPaddingVertical(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
     return 5 * orientationMultipler(forOutputKind: outputKind)
   }
-  
 
   public func fontSize(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
     let fontSizeMultiplier = outputKind == .export ? Float(UIScreen.main.scale) : 1
@@ -49,7 +48,7 @@ class VideoAnimationParams: NSObject {
 
   public func textLineHeight(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {
     let fontSize = self.fontSize(forOutputKind: outputKind)
-    return fontSize * 1.5
+    return fontSize * 1.50
   }
 
   public func textHeight(forOutputKind outputKind: VideoAnimationOutputKind) -> Float {

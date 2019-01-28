@@ -4,7 +4,6 @@ import { ACTION_TYPES } from './constants';
 import {
   LOADING_STATE,
   FONT_FAMILIES,
-  UI_COLORS,
   TEXT_COLORS,
   TRANSCRIPTION_STATE,
 } from '../../constants';
@@ -23,9 +22,9 @@ import type {
 } from '../../types/redux';
 
 const DEFAULT_FONT_FAMILY = FONT_FAMILIES.RUBIK;
-const DEFAULT_BACKGROUND_COLOR = UI_COLORS.WHITE;
-const DEFAULT_TEXT_COLOR = TEXT_COLORS.DARK_GREY;
-const DEFAULT_FONT_SIZE = 16;
+const DEFAULT_BACKGROUND_COLOR = Color.transparent;
+const DEFAULT_TEXT_COLOR = Color.hexToRgbaObject(TEXT_COLORS.WHITE);
+const DEFAULT_FONT_SIZE = 20;
 
 const initialState: MediaState = {
   cameraRecordingState: {
@@ -39,8 +38,8 @@ const initialState: MediaState = {
   videoExportState: LOADING_STATE.NOT_LOADED,
   fontFamily: DEFAULT_FONT_FAMILY,
   fontSize: DEFAULT_FONT_SIZE,
-  backgroundColor: Color.hexToRgbaObject(DEFAULT_BACKGROUND_COLOR),
-  textColor: Color.hexToRgbaObject(DEFAULT_TEXT_COLOR),
+  backgroundColor: DEFAULT_BACKGROUND_COLOR,
+  textColor: DEFAULT_TEXT_COLOR,
   lineStyle: 'twoLines',
 };
 

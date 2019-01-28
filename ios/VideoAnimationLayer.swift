@@ -1,7 +1,7 @@
 import AVFoundation
 import UIKit
 
-let MAXIMUM_FONT_SIZE: Float = 20
+let MAXIMUM_FONT_SIZE: Float = 24
 let DEFAULT_ANIMATION_DURATION: CFTimeInterval = 0.25
 
 @objc
@@ -239,17 +239,17 @@ class VideoAnimationLayer: CALayer {
       }
     }
   }
-  
+
   private func maxCharactersPerLine() -> Int {
     let fontSize = params.fontSize(forOutputKind: .view)
     switch params.orientation {
     case .left, .leftMirrored, .right, .rightMirrored:
-      return Int((MAXIMUM_FONT_SIZE / fontSize * 40).rounded())
+      return Int((MAXIMUM_FONT_SIZE / fontSize * 30).rounded())
     default:
-      return Int((MAXIMUM_FONT_SIZE / fontSize * 33).rounded())
+      return Int((MAXIMUM_FONT_SIZE / fontSize * 26).rounded())
     }
   }
-  
+
   private func stringForLine(byJoiningPreviousString previousString: Any?, withNextString nextString: String) -> NSAttributedString {
     if let attributedString = previousString as? NSAttributedString {
       let mutableAttributedString = attributedString.mutableCopy() as! NSMutableAttributedString
@@ -318,16 +318,19 @@ class VideoAnimationLayer: CALayer {
     textLayer.frame = CGRect(x: 0, y: CGFloat(params.textPaddingVertical(forOutputKind: outputKind)), width: parent.frame.width, height: lineHeight)
     let fontSize = CGFloat(params.fontSize(forOutputKind: outputKind))
     let font = UIFont(name: params.fontFamily ?? "Helvetica", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineHeightMultiple = 1.2
     let attributes: [NSAttributedString.Key: Any] = [
       .foregroundColor: params.textColor?.cgColor ?? UIColor.black.cgColor,
       .font: font,
-      .baselineOffset: -abs(fontSize - lineHeight) + (fontSize / 3)
+      .baselineOffset: -abs(fontSize - lineHeight) + (fontSize / 3),
+      .paragraphStyle: paragraphStyle,
     ]
     textLayer.shadowColor = UIColor.black.cgColor
     textLayer.shadowRadius = 0.5
     textLayer.shadowOpacity = 0.2
-    let shadowOffsetHeight  = outputKind == .export ? -1.0 : 1.0
-    textLayer.shadowOffset = CGSize(width: 0.0, height: shadowOffsetHeight )
+    let shadowOffsetHeight = outputKind == .export ? -1.0 : 1.0
+    textLayer.shadowOffset = CGSize(width: 0.0, height: shadowOffsetHeight)
     textLayer.string = NSAttributedString(string: text, attributes: attributes)
     parent.addSublayer(textLayer)
     return textLayer
