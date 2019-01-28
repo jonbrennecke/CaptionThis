@@ -246,7 +246,7 @@ class VideoAnimationLayer: CALayer {
     case .left, .leftMirrored, .right, .rightMirrored:
       return Int((MAXIMUM_FONT_SIZE / fontSize * 30).rounded())
     default:
-      return Int((MAXIMUM_FONT_SIZE / fontSize * 28).rounded())
+      return Int((MAXIMUM_FONT_SIZE / fontSize * 26).rounded())
     }
   }
 
