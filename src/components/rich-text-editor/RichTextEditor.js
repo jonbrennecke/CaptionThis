@@ -148,7 +148,10 @@ export default class RichTextEditor extends Component<Props, State> {
 
   colorPickerDidUpdateBackgroundColor(backgroundColor: ColorRGBA) {
     this.setState({
-      backgroundColor,
+      backgroundColor: {
+        ...backgroundColor,
+        alpha: backgroundColor.alpha > 0.1 ? 0.8 : 0,
+      },
     });
     this.seekCaptionsToTime(this.props.playbackTime);
   }
