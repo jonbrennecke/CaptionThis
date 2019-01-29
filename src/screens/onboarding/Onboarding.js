@@ -179,7 +179,7 @@ export default class Onboarding extends Component<Props, State> {
         toValue: 1,
         duration: 300,
         delay: INITIAL_DELAY,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(this.iconAnim, {
         toValue: 1,
@@ -193,7 +193,7 @@ export default class Onboarding extends Component<Props, State> {
         duration: 350,
         delay: INITIAL_DELAY + 700,
         easing: Easing.out(Easing.cubic),
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
     ]).start(() => {
       this.setState({
@@ -212,7 +212,7 @@ export default class Onboarding extends Component<Props, State> {
         duration: 350,
         delay: 0,
         easing: Easing.out(Easing.cubic),
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(this.textAnim, {
         toValue: 1,
