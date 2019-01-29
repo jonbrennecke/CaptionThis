@@ -280,7 +280,6 @@ export default class EditScreen extends Component<Props, State> {
     duration: number,
     orientation: ImageOrientation
   ) {
-    console.log(orientation);
     // TODO: check if final transcription already exists (e.g. if the user clicked into Edit, then clicked out and back in again)
     this.setState({ duration, orientation, isVideoPlaying: true });
     this.props.beginSpeechTranscriptionWithVideoAsset(

@@ -1,16 +1,17 @@
 // @flow
 import React from 'react';
-import { View } from 'react-native';
 
 import CaptureButton from '../../components/capture-button/CaptureButton';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
 import HomeScreenCameraRollButton from './HomeScreenCameraRollButton';
+import SlideUpAnimatedView from '../../components/animations/SlideUpAnimatedView';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
 
 type Props = {
   style?: ?Style,
+  isVisible: boolean,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
@@ -46,6 +47,7 @@ const styles = {
 
 export default function HomeScreenCaptureControls({
   style,
+  isVisible,
   onRequestBeginCapture,
   onRequestEndCapture,
   onRequestOpenCameraRoll,
@@ -53,7 +55,11 @@ export default function HomeScreenCaptureControls({
   videoAssetIdentifier,
 }: Props) {
   return (
-    <View style={[styles.container, style]}>
+    <SlideUpAnimatedView
+      style={[styles.container, style]}
+      isVisible={isVisible}
+      delay={1000}
+    >
       <HomeScreenCameraRollButton
         videoAssetIdentifier={videoAssetIdentifier}
         onPress={onRequestOpenCameraRoll}
@@ -67,6 +73,6 @@ export default function HomeScreenCaptureControls({
         style={styles.switchCameraButton}
         onRequestSwitchCamera={onRequestSwitchCamera}
       />
-    </View>
+    </SlideUpAnimatedView>
   );
 }

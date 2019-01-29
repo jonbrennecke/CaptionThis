@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import {
+  Animated,
   View,
   ScrollView,
   Dimensions,
@@ -21,7 +22,7 @@ import * as Camera from '../../utils/Camera';
 import * as Debug from '../../utils/Debug';
 import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
-import { requireOnboardedUser } from '../../utils/Onboarding';
+import requireOnboardedUser from '../onboarding/requireOnboardedUser';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import {
   receiveVideos,
@@ -54,6 +55,7 @@ import type { Return } from '../../types/util';
 
 type State = {
   currentVideoIdentifier: ?VideoAssetIdentifier,
+  hasCompletedSetupAfterOnboarding: boolean,
 };
 
 type OwnProps = {
@@ -94,11 +96,15 @@ const styles = {
     flex: 1,
     backgroundColor: UI_COLORS.BLACK,
   },
-  cameraPreview: {
+  cameraPreview: (anim: Animated.Value) => ({
     borderRadius: 10,
     flex: 1,
     overflow: 'hidden',
-  },
+    opacity: anim.interpolate({
+      inputRange: [0, SCREEN_HEIGHT],
+      outputRange: [1, 0],
+    }),
+  }),
   mediaHeader: {
     paddingVertical: 5,
     paddingHorizontal: 7,
@@ -170,9 +176,11 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 export default class HomeScreen extends Component<Props, State> {
   state = {
     currentVideoIdentifier: null,
+    hasCompletedSetupAfterOnboarding: false,
   };
   scrollView: ?ScrollView;
   cameraView: ?CameraPreviewView;
+  scrollAnim = new Animated.Value(0);
 
   // eslint-disable-next-line flowtype/generic-spacing
   didReceiveSpeechTranscriptionSubscription: ?Return<
@@ -229,6 +237,9 @@ export default class HomeScreen extends Component<Props, State> {
     });
     const videos = await MediaManager.getVideoAssets();
     await this.props.receiveVideos(videos);
+    this.setState({
+      hasCompletedSetupAfterOnboarding: true,
+    });
   }
 
   async mediaManagerDidUpdateVideos({
@@ -323,6 +334,13 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   render() {
+    const onScroll = Animated.event([{
+      nativeEvent: {
+        contentOffset: {
+          y: this.scrollAnim
+        }
+      },
+    }]);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
@@ -334,15 +352,17 @@ export default class HomeScreen extends Component<Props, State> {
             style={styles.scrollView}
             contentContainerStyle={styles.scrollViewContent}
             showsVerticalScrollIndicator={false}
+            scrollEventThrottle={16}
             keyboardShouldPersistTaps="always"
             overScrollMode="always"
             keyboardDismissMode="on-drag"
             alwaysBounceVertical
             pagingEnabled
             contentInsetAdjustmentBehavior="never"
+            onScroll={onScroll}
           >
             <SafeAreaView style={styles.flex}>
-              <View style={styles.cameraPreview}>
+              <Animated.View style={styles.cameraPreview(this.scrollAnim)}>
                 <CameraPreviewView
                   ref={ref => {
                     this.cameraView = ref;
@@ -367,6 +387,7 @@ export default class HomeScreen extends Component<Props, State> {
                 />
                 <HomeScreenCaptureControls
                   style={styles.captureControls}
+                  isVisible={this.state.hasCompletedSetupAfterOnboarding}
                   onRequestBeginCapture={() => {
                     this.captureButtonDidRequestBeginCapture();
                   }}
@@ -377,7 +398,7 @@ export default class HomeScreen extends Component<Props, State> {
                   onRequestSwitchCamera={Camera.switchToOppositeCamera}
                   videoAssetIdentifier={this.props.videoAssetIdentifiers[0]}
                 />
-              </View>
+              </Animated.View>
             </SafeAreaView>
             <SafeAreaView style={styles.flex}>
               <View style={styles.mediaHeader}>

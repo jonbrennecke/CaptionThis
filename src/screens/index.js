@@ -3,7 +3,6 @@ import { Navigation } from 'react-native-navigation';
 
 import HomeScreen from './home/HomeScreen';
 import LoginModal from './login/LoginModal';
-import OnboardingModal from './onboarding/OnboardingModal';
 import EditScreen from './edit/EditScreen';
 import FontModal from './fonts/FontModal';
 import ColorModal from './color/ColorModal';
@@ -17,7 +16,6 @@ export function registerScreens(reduxStore: any, ReduxProvider: Element<*>) {
   [
     [SCREENS.HOME_SCREEN, () => HomeScreen],
     [SCREENS.LOGIN_MODAL, () => LoginModal],
-    [SCREENS.ONBOARDING_MODAL, () => OnboardingModal],
     [SCREENS.EDIT_SCREEN, () => EditScreen],
     [SCREENS.FONT_MODAL, () => FontModal],
     [SCREENS.COLOR_MODAL, () => ColorModal],
