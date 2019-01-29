@@ -125,7 +125,7 @@ function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
 // $FlowFixMe
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
-export default class OnboardingModal extends Component<Props, State> {
+export default class Onboarding extends Component<Props, State> {
   fadeAnim: Animated.Value;
   iconAnim: Animated.Value;
   activityIndicatorAnim: Animated.Value;
@@ -179,18 +179,21 @@ export default class OnboardingModal extends Component<Props, State> {
         toValue: 1,
         duration: 300,
         delay: INITIAL_DELAY,
+        useNativeDriver: true
       }),
       Animated.timing(this.iconAnim, {
         toValue: 1,
         duration: 350,
         delay: INITIAL_DELAY + 500,
         easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
       }),
       Animated.timing(this.activityIndicatorAnim, {
         toValue: 1,
         duration: 350,
         delay: INITIAL_DELAY + 700,
         easing: Easing.out(Easing.cubic),
+        useNativeDriver: true
       }),
     ]).start(() => {
       this.setState({
@@ -209,12 +212,14 @@ export default class OnboardingModal extends Component<Props, State> {
         duration: 350,
         delay: 0,
         easing: Easing.out(Easing.cubic),
+        useNativeDriver: true
       }),
       Animated.timing(this.textAnim, {
         toValue: 1,
         duration: 350,
         delay: 350,
         easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
       }),
     ]).start();
   }
@@ -227,12 +232,14 @@ export default class OnboardingModal extends Component<Props, State> {
       Animated.timing(this.fadeAnim, {
         toValue: 0,
         duration: 300,
-        delay: 300,
+        delay: 1000,
+        useNativeDriver: true,
       }),
       Animated.timing(this.iconAnim, {
         toValue: 0,
         duration: 300,
         delay: 300,
+        useNativeDriver: true,
       }),
     ]).start(() => {
       this.props.onUserDidCompleteOnboarding();

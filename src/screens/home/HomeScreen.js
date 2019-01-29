@@ -21,7 +21,7 @@ import * as Camera from '../../utils/Camera';
 import * as Debug from '../../utils/Debug';
 import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
-import { requireOnboardedUser } from '../../utils/Onboarding';
+import requireOnboardedUser from '../onboarding/requireOnboardedUser';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import {
   receiveVideos,
