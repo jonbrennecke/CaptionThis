@@ -54,6 +54,7 @@ import type { Return } from '../../types/util';
 
 type State = {
   currentVideoIdentifier: ?VideoAssetIdentifier,
+  hasCompletedSetupAfterOnboarding: boolean,
 };
 
 type OwnProps = {
@@ -170,6 +171,7 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 export default class HomeScreen extends Component<Props, State> {
   state = {
     currentVideoIdentifier: null,
+    hasCompletedSetupAfterOnboarding: false,
   };
   scrollView: ?ScrollView;
   cameraView: ?CameraPreviewView;
@@ -229,6 +231,9 @@ export default class HomeScreen extends Component<Props, State> {
     });
     const videos = await MediaManager.getVideoAssets();
     await this.props.receiveVideos(videos);
+    this.setState({
+      hasCompletedSetupAfterOnboarding: true,
+    });
   }
 
   async mediaManagerDidUpdateVideos({
@@ -367,6 +372,7 @@ export default class HomeScreen extends Component<Props, State> {
                 />
                 <HomeScreenCaptureControls
                   style={styles.captureControls}
+                  isVisible={this.state.hasCompletedSetupAfterOnboarding}
                   onRequestBeginCapture={() => {
                     this.captureButtonDidRequestBeginCapture();
                   }}

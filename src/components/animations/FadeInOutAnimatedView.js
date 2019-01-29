@@ -13,12 +13,10 @@ type Props = {
 };
 
 const styles = {
-  fade: (anim: FadeAnimation) => ({
-    ...anim.getAnimatedStyle(),
-  }),
+  fade: (anim: FadeAnimation) => anim.getAnimatedStyle(),
 };
 
-export default class AnimatedFadeView extends Component<Props> {
+export default class FadeInOutAnimatedView extends Component<Props> {
   anim: FadeAnimation;
 
   constructor(props: Props) {

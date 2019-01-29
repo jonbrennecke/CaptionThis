@@ -6,7 +6,7 @@ import { autobind } from 'core-decorators';
 
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import { loadAppPermissions } from '../../redux/onboarding/actionCreators';
-import AnimatedFadeView from '../../components/animations/AnimatedFadeView';
+import FadeInOutAnimatedView from '../../components/animations/FadeInOutAnimatedView';
 import Onboarding from './Onboarding';
 
 import type { Dispatch, AppState } from '../../types/redux';
@@ -84,7 +84,7 @@ export default function requireOnboardedUser<P, S>(
         <View style={styles.absoluteFill}>
           {/* $FlowFixMe */}
           <WrappedComponent {...this.props} />
-          <AnimatedFadeView
+          <FadeInOutAnimatedView
             style={styles.absoluteFill}
             isVisible={this.state.isOnboardingVisible}
           >
@@ -92,7 +92,7 @@ export default function requireOnboardedUser<P, S>(
             <Onboarding
               onUserDidCompleteOnboarding={this.userDidCompleteOnboarding}
             />
-          </AnimatedFadeView>
+          </FadeInOutAnimatedView>
         </View>
       );
     }

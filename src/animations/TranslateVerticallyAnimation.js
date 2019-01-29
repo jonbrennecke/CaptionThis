@@ -4,7 +4,7 @@ import { Animated, Easing } from 'react-native';
 import type { Style } from '../types/react';
 import type { Animation } from './types';
 
-export default class FadeAnimation implements Animation {
+export default class TranslateVerticallyAnimation implements Animation {
   value: Animated.Value;
   delay: number;
 
@@ -17,7 +17,8 @@ export default class FadeAnimation implements Animation {
     Animated.timing(this.value, {
       toValue: 1,
       duration: 400,
-      easing: Easing.quad,
+      easing: Easing.in(Easing.quad),
+      delay: this.delay,
       useNativeDriver: true,
     }).start();
   }
@@ -26,7 +27,8 @@ export default class FadeAnimation implements Animation {
     Animated.timing(this.value, {
       toValue: 0,
       duration: 400,
-      easing: Easing.quad,
+      easing: Easing.in(Easing.quad),
+      delay: this.delay,
       useNativeDriver: true,
     }).start();
   }
@@ -34,6 +36,14 @@ export default class FadeAnimation implements Animation {
   getAnimatedStyle(): Style {
     return {
       opacity: this.value,
+      transform: [
+        {
+          translateY: this.value.interpolate({
+            inputRange: [0, 1],
+            outputRange: [200, 0],
+          }),
+        },
+      ],
     };
   }
 }
