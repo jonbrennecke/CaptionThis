@@ -219,14 +219,7 @@ export default class HomeScreen extends Component<Props, State> {
 
   async componentDidUpdate(prevProps: Props) {
     if (!prevProps.arePermissionsGranted && this.props.arePermissionsGranted) {
-      this.setupAfterOnboarding();
-    }
-
-    if (!prevProps.currentVideo && this.props.currentVideo) {
-      const currentVideo = this.props.currentVideo;
-      if (currentVideo) {
-        await Screens.pushEditScreen(this.props.componentId, currentVideo);
-      }
+      await this.setupAfterOnboarding();
     }
   }
 
@@ -334,13 +327,15 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   render() {
-    const onScroll = Animated.event([{
-      nativeEvent: {
-        contentOffset: {
-          y: this.scrollAnim
-        }
+    const onScroll = Animated.event([
+      {
+        nativeEvent: {
+          contentOffset: {
+            y: this.scrollAnim,
+          },
+        },
       },
-    }]);
+    ]);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />

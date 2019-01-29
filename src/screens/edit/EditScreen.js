@@ -373,12 +373,13 @@ export default class EditScreen extends Component<Props, State> {
     });
   }
 
-  onDidPressBackButton() {
-    Navigation.pop(this.props.componentId);
+  async onDidPressBackButton() {
+    console.log('onDidPressBackButton', this.props.componentId);
+    await Navigation.pop(this.props.componentId);
   }
 
-  onDidPressExportButton() {
-    this.exportVideo();
+  async onDidPressExportButton() {
+    await this.exportVideo();
   }
 
   async exportVideo() {
