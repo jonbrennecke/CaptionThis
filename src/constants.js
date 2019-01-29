@@ -122,7 +122,7 @@ export const FONTS = [
     fontFamily: FONT_FAMILIES.CRETE_ROUND,
     displayName: 'Crete Round',
   },
-  // FIXME: font baseline gets cut off, disabled until fixed
+  // FIXME: font tails get cut off, disabled until fixed
   // {
   //   fontFamily: FONT_FAMILIES.SHADOWS_INTO_LIGHT,
   //   displayName: 'Shadows Into Light',
