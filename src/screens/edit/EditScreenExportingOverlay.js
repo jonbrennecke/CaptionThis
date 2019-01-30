@@ -83,7 +83,7 @@ export default class EditScreenExportingOverlay extends Component<Props> {
         style={[styles.container(this.anim), this.props.style]}
         pointerEvents="none"
       >
-        <BlurView style={styles.blurView} blurType="dark" />
+        <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
         <SafeAreaView style={styles.flexCenter}>
           <Text style={styles.title}>Saving...</Text>
           <ActivityIndicator size="large" style={styles.activityIndicator} />

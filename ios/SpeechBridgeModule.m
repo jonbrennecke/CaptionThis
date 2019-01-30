@@ -90,7 +90,8 @@
 - (NSArray<NSString *> *)supportedEvents {
   return @[
     @"speechManagerDidReceiveSpeechTranscription",
-    @"speechManagerDidBecomeAvailable", @"speechManagerDidBecomeUnavailable",
+    @"speechManagerDidBecomeAvailable",
+    @"speechManagerDidBecomeUnavailable",
     @"speechManagerDidNotDetectSpeech",
     @"speechManagerDidTerminate",
   ];

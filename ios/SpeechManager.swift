@@ -183,7 +183,7 @@ extension SpeechManager: SFSpeechRecognitionTaskDelegate {
       return
     }
     if let error = task?.error as NSError? {
-      if error.code == 203 && error.localizedDescription == "Retry" {
+      if error.code == 203, error.localizedDescription == "Retry" {
         delegate?.speechManagerDidNotDetectSpeech()
         return
       }

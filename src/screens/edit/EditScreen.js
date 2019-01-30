@@ -24,6 +24,7 @@ import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
+import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import SpeechManager from '../../utils/SpeechManager';
 import * as Screens from '../../utils/Screens';
 import {
@@ -211,12 +212,15 @@ export default class EditScreen extends Component<Props, State> {
     typeof SpeechManager.addDidNotDetectSpeechListener
   >;
 
-  componentDidMount() {
+  async componentDidMount() {
     this.didReceiveSpeechTranscriptionSubscription = SpeechManager.addDidReceiveSpeechTranscriptionListener(
       this.speechManagerDidReceiveSpeechTranscription
     );
     this.didNotDetectSpeechSubscription = SpeechManager.addDidNotDetectSpeechListener(
       this.speechManagerDidNotDetectSpeech
+    );
+    await this.props.beginSpeechTranscriptionWithVideoAsset(
+      this.props.videoAssetIdentifier
     );
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
   }
@@ -281,10 +285,11 @@ export default class EditScreen extends Component<Props, State> {
     orientation: ImageOrientation
   ) {
     // TODO: check if final transcription already exists (e.g. if the user clicked into Edit, then clicked out and back in again)
-    this.setState({ duration, orientation, isVideoPlaying: true });
-    await this.props.beginSpeechTranscriptionWithVideoAsset(
-      this.props.videoAssetIdentifier
-    );
+    this.setState({ duration, orientation });
+    this.pausePlayerAndCaptions();
+    // await this.props.beginSpeechTranscriptionWithVideoAsset(
+    //   this.props.videoAssetIdentifier
+    // );
   }
 
   videoPlayerDidFailToLoad() {
@@ -568,6 +573,7 @@ export default class EditScreen extends Component<Props, State> {
           }}
         />
         <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
+        <EditScreenLoadingOverlay isVisible={!hasFinalTranscription} />
       </View>
     );
   }
