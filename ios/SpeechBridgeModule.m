@@ -66,6 +66,13 @@
   [self sendEventWithName:@"speechManagerDidNotDetectSpeech" body:@{}];
 }
 
+- (void)speechManagerDidTerminate {
+  if (!hasListeners) {
+    return;
+  }
+  [self sendEventWithName:@"speechManagerDidTerminate" body:@{}];
+}
+
 #pragma mark - React Native module
 
 - (void)startObserving {
@@ -84,7 +91,8 @@
   return @[
     @"speechManagerDidReceiveSpeechTranscription",
     @"speechManagerDidBecomeAvailable", @"speechManagerDidBecomeUnavailable",
-    @"speechManagerDidNotDetectSpeech"
+    @"speechManagerDidNotDetectSpeech",
+    @"speechManagerDidTerminate",
   ];
 }
 

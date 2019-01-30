@@ -5,6 +5,7 @@ import Speech
 protocol SpeechManagerDelegate {
   func speechManagerDidReceiveSpeechTranscription(isFinal: Bool, transcription: SpeechManager.SpeechTranscription)
   func speechManagerDidNotDetectSpeech()
+  func speechManagerDidTerminate()
   func speechManagerDidBecomeAvailable()
   func speechManagerDidBecomeUnavailable()
 }
@@ -178,11 +179,16 @@ extension SpeechManager: SFSpeechRecognizerDelegate {
 extension SpeechManager: SFSpeechRecognitionTaskDelegate {
   func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
     Debug.log(format: "Speech recognizer finished task. Success == %@", success ? "true" : "false")
-    // TODO: if task?.error?.code == 203 and localized description == "Retry", then send "speechManagerDidNotDetectSpeech" event
-    // otherwise, send an error event
-    if !success {
-      delegate?.speechManagerDidNotDetectSpeech()
+    if success {
+      return
     }
+    if let error = task?.error as NSError? {
+      if error.code == 203 && error.localizedDescription == "Retry" {
+        delegate?.speechManagerDidNotDetectSpeech()
+        return
+      }
+    }
+    delegate?.speechManagerDidTerminate()
   }
 
   func speechRecognitionTaskWasCancelled(_: SFSpeechRecognitionTask) {
