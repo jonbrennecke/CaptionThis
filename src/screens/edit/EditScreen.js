@@ -56,11 +56,11 @@ import type {
   ImageOrientation,
 } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
-import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
 import type { LineStyle } from '../../types/video';
 import type { ReactAppStateEnum } from '../../types/react';
 import type { ExportParams } from '../../utils/VideoExportManager';
+import type { EmitterSubscription as SpeechManagerSubscription } from '../../utils/SpeechManager';
 
 type State = {
   duration: number,
@@ -201,16 +201,8 @@ export default class EditScreen extends Component<Props, State> {
     isDraggingSeekbar: false,
     showRichTextOverlay: false,
   };
-
-  // eslint-disable-next-line flowtype/generic-spacing
-  didReceiveSpeechTranscriptionSubscription: ?Return<
-    typeof SpeechManager.addDidReceiveSpeechTranscriptionListener
-  >;
-
-  // eslint-disable-next-line flowtype/generic-spacing
-  didNotDetectSpeechSubscription: ?Return<
-    typeof SpeechManager.addDidNotDetectSpeechListener
-  >;
+  didReceiveSpeechTranscriptionSubscription: ?SpeechManagerSubscription;
+  didNotDetectSpeechSubscription: ?SpeechManagerSubscription;
 
   async componentDidMount() {
     this.didReceiveSpeechTranscriptionSubscription = SpeechManager.addDidReceiveSpeechTranscriptionListener(
