@@ -52,6 +52,7 @@ import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 import type { Return } from '../../types/util';
+import type { EmitterSubscription as MediaLibrarySubscription } from '../../utils/MediaManager';
 
 type State = {
   currentVideoIdentifier: ?VideoAssetIdentifier,
@@ -181,6 +182,7 @@ export default class HomeScreen extends Component<Props, State> {
   scrollView: ?ScrollView;
   cameraView: ?CameraPreviewView;
   scrollAnim = new Animated.Value(0);
+  mediaLibrarySubscription: ?MediaLibrarySubscription;
 
   // eslint-disable-next-line flowtype/generic-spacing
   didReceiveSpeechTranscriptionSubscription: ?Return<
@@ -224,15 +226,25 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async setupAfterOnboarding() {
+    if (this.state.hasCompletedSetupAfterOnboarding) {
+      return;
+    }
     Camera.startPreview();
-    MediaManager.startObservingVideos(videos => {
+    await this.loadMediaLibrary();
+    this.setState({
+      hasCompletedSetupAfterOnboarding: true,
+    });
+  }
+
+  async loadMediaLibrary() {
+    if (this.mediaLibrarySubscription) {
+      return;
+    }
+    this.mediaLibrarySubscription = MediaManager.startObservingVideos(videos => {
       this.mediaManagerDidUpdateVideos(videos);
     });
     const videos = await MediaManager.getVideoAssets();
     await this.props.receiveVideos(videos);
-    this.setState({
-      hasCompletedSetupAfterOnboarding: true,
-    });
   }
 
   async mediaManagerDidUpdateVideos({

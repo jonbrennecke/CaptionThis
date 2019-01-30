@@ -15,7 +15,7 @@ const EVENTS = {
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
-type EmitterSubscription = Return<
+export type EmitterSubscription = Return<
   typeof NativeMediaManagerEventEmitter.addListener
 >;
 
@@ -26,9 +26,9 @@ export default class MediaManager {
 
   static startObservingVideos(
     listener: ({ videos: VideoAssetIdentifier[] }) => void
-  ) {
+  ): EmitterSubscription {
     MediaLibrary.startObservingVideos();
-    MediaManager.addDidUpdateVideosListener(listener);
+    return MediaManager.addDidUpdateVideosListener(listener);
   }
 
   static stopObservingVideos() {
