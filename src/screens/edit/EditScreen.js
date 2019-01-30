@@ -405,7 +405,6 @@ export default class EditScreen extends Component<Props, State> {
     }));
   }
 
-
   isReadyToPlay(): boolean {
     return this.hasFinalSpeechTranscription();
   }

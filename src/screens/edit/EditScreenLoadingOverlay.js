@@ -34,7 +34,7 @@ const styles = {
     bottom: 0,
   },
   activityIndicator: {
-    marginTop: 15,
+    marginBottom: 15,
   },
   title: Fonts.getFontStyle('title', { contentStyle: 'lightContent' }),
 };
@@ -80,8 +80,8 @@ export default class EditScreenExportingOverlay extends Component<Props> {
       >
         <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
         <SafeAreaView style={styles.flexCenter}>
-          <Text style={styles.title}>Loading...</Text>
           <ActivityIndicator size="large" style={styles.activityIndicator} />
+          <Text style={styles.title}>Loading captions...</Text>
         </SafeAreaView>
       </Animated.View>
     );
