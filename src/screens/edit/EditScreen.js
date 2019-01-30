@@ -276,13 +276,13 @@ export default class EditScreen extends Component<Props, State> {
     );
   }
 
-  videoPlayerDidBecomeReadyToPlay(
+  async videoPlayerDidBecomeReadyToPlay(
     duration: number,
     orientation: ImageOrientation
   ) {
     // TODO: check if final transcription already exists (e.g. if the user clicked into Edit, then clicked out and back in again)
     this.setState({ duration, orientation, isVideoPlaying: true });
-    this.props.beginSpeechTranscriptionWithVideoAsset(
+    await this.props.beginSpeechTranscriptionWithVideoAsset(
       this.props.videoAssetIdentifier
     );
   }
@@ -373,12 +373,12 @@ export default class EditScreen extends Component<Props, State> {
     });
   }
 
-  onDidPressBackButton() {
-    Navigation.pop(this.props.componentId);
+  async onDidPressBackButton() {
+    await Navigation.popToRoot(this.props.componentId);
   }
 
-  onDidPressExportButton() {
-    this.exportVideo();
+  async onDidPressExportButton() {
+    await this.exportVideo();
   }
 
   async exportVideo() {
@@ -479,7 +479,9 @@ export default class EditScreen extends Component<Props, State> {
               style={styles.flex}
               isPlaying={this.state.isVideoPlaying}
               videoAssetIdentifier={this.props.videoAssetIdentifier}
-              onVideoDidBecomeReadyToPlay={this.videoPlayerDidBecomeReadyToPlay}
+              onVideoDidBecomeReadyToPlay={(...args) => {
+                this.videoPlayerDidBecomeReadyToPlay(...args);
+              }}
               onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
               onVideoDidPause={this.videoPlayerDidPause}
               onVideoDidUpdatePlaybackTime={
@@ -514,8 +516,12 @@ export default class EditScreen extends Component<Props, State> {
             <EditScreenTopControls
               style={styles.editTopControls}
               isReadyToExport={!!hasFinalTranscription}
-              onBackButtonPress={this.onDidPressBackButton}
-              onExportButtonPress={this.onDidPressExportButton}
+              onBackButtonPress={() => {
+                this.onDidPressBackButton();
+              }}
+              onExportButtonPress={() => {
+                this.onDidPressExportButton();
+              }}
               onStylizeButtonPress={() =>
                 this.setState({
                   showRichTextOverlay: !this.state.showRichTextOverlay,
