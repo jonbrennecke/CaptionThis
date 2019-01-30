@@ -52,7 +52,8 @@ import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 import type { Return } from '../../types/util';
-import type { EmitterSubscription as MediaLibrarySubscription } from '../../utils/MediaManager';
+import type { EmitterSubscription as MediaManagerSubscription } from '../../utils/MediaManager';
+import type { EmitterSubscription as SpeechManagerSubscription } from '../../utils/SpeechManager';
 
 type State = {
   currentVideoIdentifier: ?VideoAssetIdentifier,
@@ -182,17 +183,9 @@ export default class HomeScreen extends Component<Props, State> {
   scrollView: ?ScrollView;
   cameraView: ?CameraPreviewView;
   scrollAnim = new Animated.Value(0);
-  mediaLibrarySubscription: ?MediaLibrarySubscription;
-
-  // eslint-disable-next-line flowtype/generic-spacing
-  didReceiveSpeechTranscriptionSubscription: ?Return<
-    typeof SpeechManager.addDidReceiveSpeechTranscriptionListener
-  >;
-
-  // eslint-disable-next-line flowtype/generic-spacing
-  didNotDetectSpeechSubscription: ?Return<
-    typeof SpeechManager.addDidNotDetectSpeechListener
-  >;
+  mediaLibrarySubscription: ?MediaManagerSubscription;
+  didReceiveSpeechTranscriptionSubscription: SpeechManagerSubscription;
+  didNotDetectSpeechSubscription: ?SpeechManagerSubscription;
 
   // eslint-disable-next-line flowtype/generic-spacing
   cameraManagerDidFinishFileOutputListener: ?Return<
@@ -240,9 +233,11 @@ export default class HomeScreen extends Component<Props, State> {
     if (this.mediaLibrarySubscription) {
       return;
     }
-    this.mediaLibrarySubscription = MediaManager.startObservingVideos(videos => {
-      this.mediaManagerDidUpdateVideos(videos);
-    });
+    this.mediaLibrarySubscription = MediaManager.startObservingVideos(
+      videos => {
+        this.mediaManagerDidUpdateVideos(videos);
+      }
+    );
     const videos = await MediaManager.getVideoAssets();
     await this.props.receiveVideos(videos);
   }

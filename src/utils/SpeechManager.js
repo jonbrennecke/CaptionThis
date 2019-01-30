@@ -11,7 +11,7 @@ const NativeSpeechManager = Promise.promisifyAll(_SpeechManager);
 const NativeSpeechManagerEventEmitter = new NativeEventEmitter(_SpeechManager);
 
 // eslint-disable-next-line flowtype/generic-spacing
-type EmitterSubscription = Return<
+export type EmitterSubscription = Return<
   typeof NativeSpeechManagerEventEmitter.addListener
 >;
 
