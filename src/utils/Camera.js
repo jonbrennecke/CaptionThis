@@ -14,7 +14,7 @@ const NativeCameraManagerEventEmitter = new NativeEventEmitter(
 );
 
 // eslint-disable-next-line flowtype/generic-spacing
-type EmitterSubscription = Return<
+export type EmitterSubscription = Return<
   typeof NativeCameraManagerEventEmitter.addListener
 >;
 

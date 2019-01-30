@@ -52,6 +52,9 @@ import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 import type { Return } from '../../types/util';
+import type { EmitterSubscription as MediaManagerSubscription } from '../../utils/MediaManager';
+import type { EmitterSubscription as SpeechManagerSubscription } from '../../utils/SpeechManager';
+import type { EmitterSubscription as CameraManagerSubscription } from '../../utils/Camera';
 
 type State = {
   currentVideoIdentifier: ?VideoAssetIdentifier,
@@ -181,21 +184,10 @@ export default class HomeScreen extends Component<Props, State> {
   scrollView: ?ScrollView;
   cameraView: ?CameraPreviewView;
   scrollAnim = new Animated.Value(0);
-
-  // eslint-disable-next-line flowtype/generic-spacing
-  didReceiveSpeechTranscriptionSubscription: ?Return<
-    typeof SpeechManager.addDidReceiveSpeechTranscriptionListener
-  >;
-
-  // eslint-disable-next-line flowtype/generic-spacing
-  didNotDetectSpeechSubscription: ?Return<
-    typeof SpeechManager.addDidNotDetectSpeechListener
-  >;
-
-  // eslint-disable-next-line flowtype/generic-spacing
-  cameraManagerDidFinishFileOutputListener: ?Return<
-    typeof Camera.addDidFinishFileOutputListener
-  >;
+  mediaLibrarySubscription: ?MediaManagerSubscription;
+  didReceiveSpeechTranscriptionSubscription: SpeechManagerSubscription;
+  didNotDetectSpeechSubscription: ?SpeechManagerSubscription;
+  cameraManagerDidFinishFileOutputListener: ?CameraManagerSubscription;
 
   componentDidMount() {
     if (this.props.arePermissionsGranted) {
@@ -224,15 +216,27 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async setupAfterOnboarding() {
+    if (this.state.hasCompletedSetupAfterOnboarding) {
+      return;
+    }
     Camera.startPreview();
-    MediaManager.startObservingVideos(videos => {
-      this.mediaManagerDidUpdateVideos(videos);
-    });
-    const videos = await MediaManager.getVideoAssets();
-    await this.props.receiveVideos(videos);
+    await this.loadMediaLibrary();
     this.setState({
       hasCompletedSetupAfterOnboarding: true,
     });
+  }
+
+  async loadMediaLibrary() {
+    if (this.mediaLibrarySubscription) {
+      return;
+    }
+    this.mediaLibrarySubscription = MediaManager.startObservingVideos(
+      videos => {
+        this.mediaManagerDidUpdateVideos(videos);
+      }
+    );
+    const videos = await MediaManager.getVideoAssets();
+    await this.props.receiveVideos(videos);
   }
 
   async mediaManagerDidUpdateVideos({

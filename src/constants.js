@@ -276,10 +276,9 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   title: {
     style: {
       color: TEXT_COLORS.OFF_WHITE,
-      fontFamily: FONT_FAMILIES.STAATLICHES,
+      fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
       fontSize: 21,
       fontWeight: 'bold',
-      letterSpacing: 1.2,
     },
     modifiers: [
       {

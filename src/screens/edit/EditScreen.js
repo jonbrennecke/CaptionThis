@@ -24,6 +24,7 @@ import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
+import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import SpeechManager from '../../utils/SpeechManager';
 import * as Screens from '../../utils/Screens';
 import {
@@ -55,11 +56,11 @@ import type {
   ImageOrientation,
 } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
-import type { Return } from '../../types/util';
 import type { SpeechTranscription } from '../../types/speech';
 import type { LineStyle } from '../../types/video';
 import type { ReactAppStateEnum } from '../../types/react';
 import type { ExportParams } from '../../utils/VideoExportManager';
+import type { EmitterSubscription as SpeechManagerSubscription } from '../../utils/SpeechManager';
 
 type State = {
   duration: number,
@@ -200,25 +201,23 @@ export default class EditScreen extends Component<Props, State> {
     isDraggingSeekbar: false,
     showRichTextOverlay: false,
   };
+  didReceiveSpeechTranscriptionSubscription: ?SpeechManagerSubscription;
+  didNotDetectSpeechSubscription: ?SpeechManagerSubscription;
 
-  // eslint-disable-next-line flowtype/generic-spacing
-  didReceiveSpeechTranscriptionSubscription: ?Return<
-    typeof SpeechManager.addDidReceiveSpeechTranscriptionListener
-  >;
-
-  // eslint-disable-next-line flowtype/generic-spacing
-  didNotDetectSpeechSubscription: ?Return<
-    typeof SpeechManager.addDidNotDetectSpeechListener
-  >;
-
-  componentDidMount() {
+  async componentDidMount() {
     this.didReceiveSpeechTranscriptionSubscription = SpeechManager.addDidReceiveSpeechTranscriptionListener(
       this.speechManagerDidReceiveSpeechTranscription
     );
     this.didNotDetectSpeechSubscription = SpeechManager.addDidNotDetectSpeechListener(
       this.speechManagerDidNotDetectSpeech
     );
+    await this.props.beginSpeechTranscriptionWithVideoAsset(
+      this.props.videoAssetIdentifier
+    );
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
+    if (this.hasFinalSpeechTranscription()) {
+      this.speechManagerDidReceiveFinalSpeechTranscription();
+    }
   }
 
   componentWillUnmount() {
@@ -280,11 +279,10 @@ export default class EditScreen extends Component<Props, State> {
     duration: number,
     orientation: ImageOrientation
   ) {
-    // TODO: check if final transcription already exists (e.g. if the user clicked into Edit, then clicked out and back in again)
-    this.setState({ duration, orientation, isVideoPlaying: true });
-    await this.props.beginSpeechTranscriptionWithVideoAsset(
-      this.props.videoAssetIdentifier
-    );
+    this.setState({ duration, orientation });
+    if (!this.isReadyToPlay()) {
+      this.pausePlayerAndCaptions();
+    }
   }
 
   videoPlayerDidFailToLoad() {
@@ -405,6 +403,10 @@ export default class EditScreen extends Component<Props, State> {
       timestamp: segment.timestamp,
       text: segment.substring,
     }));
+  }
+
+  isReadyToPlay(): boolean {
+    return this.hasFinalSpeechTranscription();
   }
 
   getSpeechTranscription(props?: Props = this.props): ?SpeechTranscription {
@@ -568,6 +570,7 @@ export default class EditScreen extends Component<Props, State> {
           }}
         />
         <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
+        <EditScreenLoadingOverlay isVisible={!hasFinalTranscription} />
       </View>
     );
   }
