@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, SafeAreaView, Animated } from 'react-native';
+import { Text, SafeAreaView, Animated, ActivityIndicator } from 'react-native';
 import { BlurView } from 'react-native-blur';
 
 import * as Fonts from '../../utils/Fonts';
@@ -32,6 +32,9 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  activityIndicator: {
+    marginTop: 15,
   },
   title: Fonts.getFontStyle('title', { contentStyle: 'lightContent' }),
 };
@@ -75,9 +78,10 @@ export default class EditScreenExportingOverlay extends Component<Props> {
         style={[styles.container(this.anim), this.props.style]}
         pointerEvents="none"
       >
-        <BlurView style={styles.blurView} blurType="dark" />
+        <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
         <SafeAreaView style={styles.flexCenter}>
           <Text style={styles.title}>Loading...</Text>
+          <ActivityIndicator size="large" style={styles.activityIndicator} />
         </SafeAreaView>
       </Animated.View>
     );

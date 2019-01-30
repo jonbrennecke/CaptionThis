@@ -215,6 +215,9 @@ export default class EditScreen extends Component<Props, State> {
       this.props.videoAssetIdentifier
     );
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
+    if (this.hasFinalSpeechTranscription()) {
+      this.speechManagerDidReceiveFinalSpeechTranscription();
+    }
   }
 
   componentWillUnmount() {
@@ -276,9 +279,10 @@ export default class EditScreen extends Component<Props, State> {
     duration: number,
     orientation: ImageOrientation
   ) {
-    // TODO: check if final transcription already exists (e.g. if the user clicked into Edit, then clicked out and back in again)
     this.setState({ duration, orientation });
-    this.pausePlayerAndCaptions();
+    if (!this.isReadyToPlay()) {
+      this.pausePlayerAndCaptions();
+    }
   }
 
   videoPlayerDidFailToLoad() {
@@ -399,6 +403,11 @@ export default class EditScreen extends Component<Props, State> {
       timestamp: segment.timestamp,
       text: segment.substring,
     }));
+  }
+
+
+  isReadyToPlay(): boolean {
+    return this.hasFinalSpeechTranscription();
   }
 
   getSpeechTranscription(props?: Props = this.props): ?SpeechTranscription {
