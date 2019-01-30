@@ -54,6 +54,7 @@ import type { SpeechTranscription } from '../../types/speech';
 import type { Return } from '../../types/util';
 import type { EmitterSubscription as MediaManagerSubscription } from '../../utils/MediaManager';
 import type { EmitterSubscription as SpeechManagerSubscription } from '../../utils/SpeechManager';
+import type { EmitterSubscription as CameraManagerSubscription } from '../../utils/Camera';
 
 type State = {
   currentVideoIdentifier: ?VideoAssetIdentifier,
@@ -186,11 +187,7 @@ export default class HomeScreen extends Component<Props, State> {
   mediaLibrarySubscription: ?MediaManagerSubscription;
   didReceiveSpeechTranscriptionSubscription: SpeechManagerSubscription;
   didNotDetectSpeechSubscription: ?SpeechManagerSubscription;
-
-  // eslint-disable-next-line flowtype/generic-spacing
-  cameraManagerDidFinishFileOutputListener: ?Return<
-    typeof Camera.addDidFinishFileOutputListener
-  >;
+  cameraManagerDidFinishFileOutputListener: ?CameraManagerSubscription;
 
   componentDidMount() {
     if (this.props.arePermissionsGranted) {
