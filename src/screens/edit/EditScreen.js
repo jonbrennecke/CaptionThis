@@ -279,9 +279,6 @@ export default class EditScreen extends Component<Props, State> {
     // TODO: check if final transcription already exists (e.g. if the user clicked into Edit, then clicked out and back in again)
     this.setState({ duration, orientation });
     this.pausePlayerAndCaptions();
-    // await this.props.beginSpeechTranscriptionWithVideoAsset(
-    //   this.props.videoAssetIdentifier
-    // );
   }
 
   videoPlayerDidFailToLoad() {
