@@ -212,6 +212,12 @@ export default class HomeScreen extends Component<Props, State> {
     if (!prevProps.arePermissionsGranted && this.props.arePermissionsGranted) {
       await this.setupAfterOnboarding();
     }
+    if (!prevProps.currentVideo && this.props.currentVideo) {
+      const currentVideo = this.props.currentVideo;
+      if (currentVideo) {
+        await Screens.pushEditScreen(this.props.componentId, currentVideo);
+      }
+    }
   }
 
   async setupAfterOnboarding() {
