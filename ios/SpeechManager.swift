@@ -19,7 +19,6 @@ class SpeechManager: NSObject {
   private var task: SFSpeechRecognitionTask?
   private var audioEngine: AVAudioEngine
   private static let operationQueue = OperationQueue()
-  private static let dispatchQueue = DispatchQueue(label: "Speech recognizer queue")
 
   @objc
   public var delegate: SpeechManagerDelegate?
@@ -83,7 +82,7 @@ class SpeechManager: NSObject {
 
   @objc
   public func startCaptureForAsset(_ asset: AVAsset, callback: @escaping (Error?, SFSpeechAudioBufferRecognitionRequest?) -> Void) {
-    SpeechManager.dispatchQueue.async {
+    SpeechManager.operationQueue.addOperation {
       AudioUtil.extractMonoAudio(forAsset: asset) { error, monoAsset in
         if let error = error {
           Debug.log(error: error)
@@ -110,6 +109,7 @@ class SpeechManager: NSObject {
   }
 
   private func createRecognitionRequestForAudioSessionOrThrow() throws -> SFSpeechAudioBufferRecognitionRequest {
+    audioEngine.reset()
     let node = audioEngine.inputNode
     let format = node.outputFormat(forBus: 0)
     let request = SFSpeechAudioBufferRecognitionRequest()
@@ -142,7 +142,8 @@ class SpeechManager: NSObject {
       guard let sampleBuffer = assetReaderOutput.copyNextSampleBuffer() else {
         break
       }
-      if CMSampleBufferGetDataBuffer(sampleBuffer) == nil {
+      guard CMSampleBufferIsValid(sampleBuffer), let desc = CMSampleBufferGetFormatDescription(sampleBuffer),
+        CMAudioFormatDescriptionGetStreamBasicDescription(desc) != nil else {
         continue
       }
       request.appendAudioSampleBuffer(sampleBuffer)
