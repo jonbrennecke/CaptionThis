@@ -22,7 +22,8 @@ class OrientationUtil: NSObject {
     guard let videoTrack = videoTracks.first else {
       return .right
     }
-    return orientation(forTransform: videoTrack.preferredTransform)
+    let size = videoTrack.naturalSize.applying(videoTrack.preferredTransform)
+    return orientation(forSize: size)
   }
 
   @objc
