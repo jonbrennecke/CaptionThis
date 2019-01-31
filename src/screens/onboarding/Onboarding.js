@@ -5,7 +5,6 @@ import {
   View,
   Animated,
   StyleSheet,
-  StatusBar,
   Image,
   SafeAreaView,
   Easing,
@@ -249,7 +248,6 @@ export default class Onboarding extends Component<Props, State> {
   render() {
     return (
       <Animated.View style={styles.container(this.fadeAnim)}>
-        <StatusBar barStyle="dark-content" />
         <LinearGradient
           style={styles.absoluteFill}
           colors={[UI_COLORS.WHITE, UI_COLORS.OFF_WHITE]}

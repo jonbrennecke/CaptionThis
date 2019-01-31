@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 
@@ -82,6 +82,7 @@ export default function requireOnboardedUser<P, S>(
     render() {
       return (
         <View style={styles.absoluteFill}>
+          <StatusBar barStyle={this.state.isOnboardingVisible ? 'dark-content' : 'light-content'} />
           {/* $FlowFixMe */}
           <WrappedComponent {...this.props} />
           <FadeInOutAnimatedView
