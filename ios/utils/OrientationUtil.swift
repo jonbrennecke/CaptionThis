@@ -22,7 +22,9 @@ class OrientationUtil: NSObject {
     guard let videoTrack = videoTracks.first else {
       return .right
     }
-    return orientation(forTransform: videoTrack.preferredTransform)
+    let size = videoTrack.naturalSize.applying(videoTrack.preferredTransform)
+    let positiveSize = CGSize(width: abs(size.width), height: abs(size.height))
+    return orientation(forSize: positiveSize)
   }
 
   @objc
@@ -61,15 +63,15 @@ class OrientationUtil: NSObject {
   public static func imageOrientation(forInterfaceOrientation orientation: UIInterfaceOrientation) -> UIImage.Orientation {
     switch orientation {
     case .landscapeLeft:
-      return UIImage.Orientation.left
+      return .left
     case .landscapeRight:
-      return UIImage.Orientation.right
+      return .right
     case .portrait:
-      return UIImage.Orientation.up
+      return .up
     case .portraitUpsideDown:
-      return UIImage.Orientation.down
+      return .down
     case .unknown:
-      return UIImage.Orientation.up
+      return .up
     }
   }
 }

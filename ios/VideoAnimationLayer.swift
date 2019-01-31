@@ -276,7 +276,7 @@ class VideoAnimationLayer: CALayer {
     fadeInAnimation.toValue = 1.0
     fadeInAnimation.fillMode = .forwards
     fadeInAnimation.isRemovedOnCompletion = false
-    fadeInAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime
+    fadeInAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime - duration
     fadeInAnimation.duration = duration
     fadeInAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
     return fadeInAnimation
