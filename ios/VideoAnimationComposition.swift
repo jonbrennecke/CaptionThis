@@ -11,15 +11,12 @@ class VideoAnimationComposition {
   private let parentLayer = CALayer()
 
   public var videoSize: CGSize {
-    let size = videoTrack.naturalSize
-    if OrientationUtil.isPortrait(orientation: orientation) {
-      return CGSize(width: size.height, height: size.width)
-    }
-    return size
+    let size = videoTrack.naturalSize.applying(videoTrack.preferredTransform)
+    return CGSize(width: abs(size.width), height: abs(size.height))
   }
 
   public var orientation: UIImage.Orientation {
-    return OrientationUtil.orientation(forTransform: videoTrack.preferredTransform)
+    return OrientationUtil.orientation(forAsset: videoAsset)
   }
 
   init?(withAsset asset: AVAsset) {
