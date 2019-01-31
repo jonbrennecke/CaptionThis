@@ -6,7 +6,6 @@ import {
   ScrollView,
   Dimensions,
   Text,
-  StatusBar,
   StyleSheet,
 } from 'react-native';
 import { autobind } from 'core-decorators';
@@ -342,7 +341,6 @@ export default class HomeScreen extends Component<Props, State> {
     ]);
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
         <View style={styles.flex}>
           <ScrollView
             ref={ref => {
