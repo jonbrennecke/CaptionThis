@@ -142,6 +142,9 @@ class SpeechManager: NSObject {
       guard let sampleBuffer = assetReaderOutput.copyNextSampleBuffer() else {
         break
       }
+      if CMSampleBufferGetDataBuffer(sampleBuffer) == nil {
+        continue
+      }
       request.appendAudioSampleBuffer(sampleBuffer)
     }
     request.endAudio()
