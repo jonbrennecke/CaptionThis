@@ -5,7 +5,14 @@ import Photos
 class VideoExportManager: NSObject {
   @objc
   public func exportVideo(withLocalIdentifier localIdentifier: String,
-                          animationParams: VideoAnimationParams,
+                          params: VideoAnimationBridgeParams,
+                          completionHandler: @escaping (Error?, Bool) -> Void) {
+    let model = params.model()
+    exportVideo(withLocalIdentifier: localIdentifier, model: model, completionHandler: completionHandler)
+  }
+  
+  private func exportVideo(withLocalIdentifier localIdentifier: String,
+                          model: VideoAnimationLayerModel,
                           completionHandler: @escaping (Error?, Bool) -> Void) {
     let options = PHFetchOptions()
     let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: options)
@@ -20,20 +27,29 @@ class VideoExportManager: NSObject {
         completionHandler(nil, false)
         return
       }
-      self.exportVideo(withAsset: asset, animationParams: animationParams, completionHandler: completionHandler)
+      self.exportVideo(withAsset: asset, model: model, completionHandler: completionHandler)
     }
   }
 
   private func exportVideo(withAsset asset: AVAsset,
-                           animationParams: VideoAnimationParams,
+                           model: VideoAnimationLayerModel,
                            completionHandler: @escaping (Error?, Bool) -> Void) {
     guard let composition = VideoAnimationComposition(withAsset: asset) else {
       completionHandler(nil, false)
       return
     }
-    let animationLayer = VideoAnimationLayer(for: .export)
-    animationLayer.frame = frame(forComposition: composition, params: animationParams)
-    animationLayer.params = animationParams
+    let videoTracks = asset.tracks(withMediaType: .video)
+    guard let videoTrack = videoTracks.first else {
+      completionHandler(nil, false)
+      return
+    }
+    let size = videoTrack.naturalSize
+    let orientation = OrientationUtil.orientation(forAsset: asset)
+    let dimensions = VideoDimensions(size: size, orientation: orientation)
+    let layout = VideoAnimationLayerLayout.layoutForExport(dimensions: dimensions, model: model)
+    let animationLayer = VideoAnimationLayer(layout: layout, model: model)
+    animationLayer.frame = frame(forComposition: composition, layout: layout)
+    animationLayer.update(model: model, layout: layout)
     animationLayer.beginTime = AVCoreAnimationBeginTimeAtZero
     animationLayer.timeOffset = 0
     animationLayer.speed = 1
@@ -53,7 +69,7 @@ class VideoExportManager: NSObject {
     }
   }
 
-  private func frame(forComposition composition: VideoAnimationComposition, params: VideoAnimationParams) -> CGRect {
+  private func frame(forComposition composition: VideoAnimationComposition, layout: VideoAnimationLayerLayout) -> CGRect {
     var offsetFromBottom: CGFloat = 200
     switch composition.orientation {
     case .left, .right, .leftMirrored, .rightMirrored:
@@ -62,7 +78,7 @@ class VideoExportManager: NSObject {
     default:
       break
     }
-    let height = params.frameHeight(forOutputKind: .export)
+    let height = layout.frameHeight
     let width = composition.videoSize.width
     return CGRect(x: 0, y: offsetFromBottom, width: width, height: CGFloat(height))
   }

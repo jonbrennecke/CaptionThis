@@ -6,5 +6,5 @@
 @class TranscriptViewManager;
 @interface TranscriptViewManager : RCTViewManager
 - (void)updateAnimationWithView:(UIView *)view
-                     withParams:(VideoAnimationParams *)animationParams;
+                     withParams:(VideoAnimationBridgeParams *)animationParams;
 @end

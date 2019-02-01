@@ -7,5 +7,5 @@
 @end
 
 @interface VideoExportBridgeModule (Private)
-- (NSArray<TextSegmentParams *> *)convertTextSegments:(id)json;
+- (NSArray<VideoAnimationBridgeTextSegmentParams *> *)convertTextSegments:(id)json;
 @end
