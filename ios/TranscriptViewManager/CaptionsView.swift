@@ -1,19 +1,16 @@
 import UIKit
 
 @objc
-class CaptionsView : UIView {
-  
+class CaptionsView: UIView {
   private var animationLayer: VideoAnimationLayer? {
-    get {
-      return layer.sublayers?.first as? VideoAnimationLayer
-    }
+    return layer.sublayers?.first as? VideoAnimationLayer
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
     animationLayer?.frame = layer.frame
   }
-  
+
   @objc
   public func animate(params: VideoAnimationBridgeParams) {
     let model = params.model()
@@ -27,22 +24,22 @@ class CaptionsView : UIView {
     }
     animationLayer.update(model: model, layout: layout)
   }
-  
+
   @objc
   public func restart() {
     animationLayer?.restart()
   }
-  
+
   @objc
   public func pause() {
     animationLayer?.pause()
   }
-  
+
   @objc
   public func resume() {
     animationLayer?.resume()
   }
-  
+
   @objc
   public func seek(toTime time: Double) {
     animationLayer?.seekTo(time: time)

@@ -11,18 +11,18 @@ fileprivate enum VideoAnimationPlaybackState {
 
 class VideoAnimationLayer: CALayer {
   private var playbackState: VideoAnimationPlaybackState = .none
-  
+
   private var isPaused: Bool {
     return playbackState == .paused
   }
-  
+
   private var isPlaying: Bool {
     return playbackState == .playing
   }
-  
+
   private var model: VideoAnimationLayerModel
   private var layout: VideoAnimationLayerLayout
-  
+
   required init?(coder _: NSCoder) {
     fatalError("init?(coder:) has not been implemented for VideoAnimationLayer")
   }
@@ -34,13 +34,13 @@ class VideoAnimationLayer: CALayer {
     contentsScale = UIScreen.main.scale
     masksToBounds = true
   }
-  
+
   public func update(model: VideoAnimationLayerModel, layout: VideoAnimationLayerLayout) {
     self.model = model
     self.layout = layout
     triggerReset()
   }
-  
+
   private func triggerReset() {
     let stateBeforeReset = playbackState
     resetAnimation()
@@ -267,8 +267,7 @@ class VideoAnimationLayer: CALayer {
     if duration < 0.25 {
       fadeOutAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime - duration
       fadeOutAnimation.duration = 0.25
-    }
-    else {
+    } else {
       fadeOutAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime
       fadeOutAnimation.duration = duration
     }
@@ -289,8 +288,7 @@ class VideoAnimationLayer: CALayer {
     if duration < 0.25 {
       slideUpAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime - duration
       slideUpAnimation.duration = 0.25
-    }
-    else {
+    } else {
       slideUpAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime
       slideUpAnimation.duration = duration
     }

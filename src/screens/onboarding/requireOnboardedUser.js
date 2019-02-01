@@ -82,7 +82,11 @@ export default function requireOnboardedUser<P, S>(
     render() {
       return (
         <View style={styles.absoluteFill}>
-          <StatusBar barStyle={this.state.isOnboardingVisible ? 'dark-content' : 'light-content'} />
+          <StatusBar
+            barStyle={
+              this.state.isOnboardingVisible ? 'dark-content' : 'light-content'
+            }
+          />
           {/* $FlowFixMe */}
           <WrappedComponent {...this.props} />
           <FadeInOutAnimatedView

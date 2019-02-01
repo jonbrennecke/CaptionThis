@@ -25,7 +25,7 @@ class VideoAnimationBridgeParams: NSObject {
   public var duration: NSNumber?
   @objc
   public var lineStyle: VideoAnimationBridgeLineStyle = .twoLines
-  
+
   public func model() -> VideoAnimationLayerModel {
     let modelTextSegmentsNested = textSegments?.map { t -> [TextSegmentModel] in
       let strings = t.text.split(separator: " ")
@@ -50,7 +50,8 @@ class VideoAnimationBridgeParams: NSObject {
       textColor: modelTextColor,
       playbackTime: modelPlaybackTime,
       duration: modelDuration,
-      lineStyle: modelLineStyle)
+      lineStyle: modelLineStyle
+    )
   }
 }
 

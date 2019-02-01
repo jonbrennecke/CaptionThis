@@ -10,10 +10,10 @@ class VideoExportManager: NSObject {
     let model = params.model()
     exportVideo(withLocalIdentifier: localIdentifier, model: model, completionHandler: completionHandler)
   }
-  
+
   private func exportVideo(withLocalIdentifier localIdentifier: String,
-                          model: VideoAnimationLayerModel,
-                          completionHandler: @escaping (Error?, Bool) -> Void) {
+                           model: VideoAnimationLayerModel,
+                           completionHandler: @escaping (Error?, Bool) -> Void) {
     let options = PHFetchOptions()
     let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: options)
     guard let photosAsset = fetchResult.firstObject else {

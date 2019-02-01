@@ -23,7 +23,7 @@ RCT_EXPORT_METHOD(restart : (nonnull NSNumber *)reactTag) {
   [self.bridge.uiManager
       addUIBlock:^(RCTUIManager *uiManager,
                    NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-        CaptionsView *view = (CaptionsView*)viewRegistry[reactTag];
+        CaptionsView *view = (CaptionsView *)viewRegistry[reactTag];
         if (!view || ![view isKindOfClass:[CaptionsView class]]) {
           RCTLogError(@"Cannot find CaptionsView with tag #%@", reactTag);
           return;
@@ -36,7 +36,7 @@ RCT_EXPORT_METHOD(pause : (nonnull NSNumber *)reactTag) {
   [self.bridge.uiManager
       addUIBlock:^(RCTUIManager *uiManager,
                    NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-        CaptionsView *view = (CaptionsView*)viewRegistry[reactTag];
+        CaptionsView *view = (CaptionsView *)viewRegistry[reactTag];
         if (!view || ![view isKindOfClass:[CaptionsView class]]) {
           RCTLogError(@"Cannot find CaptionsView with tag #%@", reactTag);
           return;
@@ -51,7 +51,7 @@ RCT_EXPORT_METHOD(seekToTime
   [self.bridge.uiManager
       addUIBlock:^(RCTUIManager *uiManager,
                    NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-        CaptionsView *view = (CaptionsView*)viewRegistry[reactTag];
+        CaptionsView *view = (CaptionsView *)viewRegistry[reactTag];
         if (!view || ![view isKindOfClass:[CaptionsView class]]) {
           RCTLogError(@"Cannot find CaptionsView with tag #%@", reactTag);
           return;
@@ -78,7 +78,8 @@ RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, CaptionsView) {
     RCTLogError(@"Cannot find CaptionsView");
     return;
   }
-  VideoAnimationBridgeParams *params = [[VideoAnimationBridgeParams alloc] init];
+  VideoAnimationBridgeParams *params =
+      [[VideoAnimationBridgeParams alloc] init];
   id textSegmentsJson = [json objectForKey:@"textSegments"];
   if (textSegmentsJson) {
     NSArray<VideoAnimationBridgeTextSegmentParams *> *textSegments =
@@ -129,10 +130,12 @@ RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, CaptionsView) {
   if (lineStyleJson) {
     NSString *lineStyleString = [RCTConvert NSString:lineStyleJson];
     if ([lineStyleString isEqualToString:@"oneLine"]) {
-      VideoAnimationBridgeLineStyle lineStyle = VideoAnimationBridgeLineStyleOneLine;
+      VideoAnimationBridgeLineStyle lineStyle =
+          VideoAnimationBridgeLineStyleOneLine;
       params.lineStyle = lineStyle;
     } else if ([lineStyleString isEqualToString:@"twoLines"]) {
-      VideoAnimationBridgeLineStyle lineStyle = VideoAnimationBridgeLineStyleTwoLines;
+      VideoAnimationBridgeLineStyle lineStyle =
+          VideoAnimationBridgeLineStyleTwoLines;
       params.lineStyle = lineStyle;
     } else {
       RCTLogError(@"The value '%@' is not a valid line style.",
@@ -144,7 +147,8 @@ RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, CaptionsView) {
 }
 
 // TODO: extend RCTConvert
-- (NSArray<VideoAnimationBridgeTextSegmentParams *> *)convertTextSegments:(id)json {
+- (NSArray<VideoAnimationBridgeTextSegmentParams *> *)convertTextSegments:
+    (id)json {
   if (![json isKindOfClass:[NSArray class]]) {
     return nil;
   }
@@ -155,9 +159,10 @@ RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, CaptionsView) {
     NSNumber *duration = [segment objectForKey:@"duration"];
     NSNumber *timestamp = [segment objectForKey:@"timestamp"];
     VideoAnimationBridgeTextSegmentParams *params =
-        [[VideoAnimationBridgeTextSegmentParams alloc] initWithText:text
-                                       duration:[duration floatValue]
-                                      timestamp:[timestamp floatValue]];
+        [[VideoAnimationBridgeTextSegmentParams alloc]
+            initWithText:text
+                duration:[duration floatValue]
+               timestamp:[timestamp floatValue]];
     [textSegments addObject:params];
   }
   return textSegments;

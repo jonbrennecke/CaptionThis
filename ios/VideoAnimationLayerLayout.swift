@@ -5,37 +5,31 @@ fileprivate let MAXIMUM_FONT_SIZE = Float(24)
 struct VideoDimensions {
   fileprivate let size: CGSize
   fileprivate let orientation: UIImage.Orientation
-  
+
   private var height: Float {
-    get {
-      return Float(size.height)
-    }
+    return Float(size.height)
   }
-  
+
   private var width: Float {
-    get {
-      return Float(size.width)
-    }
+    return Float(size.width)
   }
-  
+
   private static let defaults = VideoDimensions(
     size: CGSize(width: 1080, height: 1920),
     orientation: .up
   )
-  
+
   init(size: CGSize, orientation: UIImage.Orientation) {
     self.size = size
     self.orientation = orientation
   }
-  
+
   fileprivate var ratio: Float {
-    get {
-      let videoDimension = OrientationUtil.isPortrait(orientation: orientation) ?
-        Float(height) : Float(width)
-      let defaultVideoDimension = OrientationUtil.isPortrait(orientation: VideoDimensions.defaults.orientation) ?
-        Float(VideoDimensions.defaults.height) : Float(VideoDimensions.defaults.width)
-      return videoDimension / defaultVideoDimension
-    }
+    let videoDimension = OrientationUtil.isPortrait(orientation: orientation) ?
+      Float(height) : Float(width)
+    let defaultVideoDimension = OrientationUtil.isPortrait(orientation: VideoDimensions.defaults.orientation) ?
+      Float(VideoDimensions.defaults.height) : Float(VideoDimensions.defaults.width)
+    return videoDimension / defaultVideoDimension
   }
 }
 
@@ -51,7 +45,7 @@ struct VideoAnimationLayerLayout {
   public let shadowOffsetHeight: Float
   public let animationMultipler: Float
   public let animationOffsetMultiplier: Float
-  
+
   public static func layoutForView(orientation: UIImage.Orientation, model: VideoAnimationLayerModel) -> VideoAnimationLayerLayout {
     let orientationMultiplier = OrientationUtil.isLandscape(orientation: orientation) ? Float(9.0 / 16.0) : 1
     let containerPaddingHorizontal = 10 * orientationMultiplier
@@ -77,7 +71,7 @@ struct VideoAnimationLayerLayout {
       animationOffsetMultiplier: 1
     )
   }
-  
+
   public static func layoutForExport(dimensions: VideoDimensions, model: VideoAnimationLayerModel) -> VideoAnimationLayerLayout {
     let videoSizeRatio = dimensions.ratio
     let containerPaddingHorizontal = 45 * videoSizeRatio
