@@ -27,9 +27,13 @@ class VideoAnimationBridgeParams: NSObject {
   public var lineStyle: VideoAnimationBridgeLineStyle = .twoLines
   
   public func model() -> VideoAnimationLayerModel {
-    let modelTextSegments = textSegments?.map { t -> TextSegmentModel in
-      return TextSegmentModel(duration: t.duration, timestamp: t.timestamp, text: t.text)
-      } ?? [TextSegmentModel]()
+    let modelTextSegmentsNested = textSegments?.map { t -> [TextSegmentModel] in
+      let strings = t.text.split(separator: " ")
+      return strings.map { str -> TextSegmentModel in
+       return TextSegmentModel(duration: t.duration, timestamp: t.timestamp, text: String(str))
+      }
+    } ?? []
+    let modelTextSegments = Array(modelTextSegmentsNested.joined())
     let modelFontFamily = fontFamily ?? DEFAULT_FONT_FAMILY
     let modelFontSize = fontSize?.floatValue ?? DEFAULT_FONT_SIZE
     let modelBackgroundColor = backgroundColor ?? DEFAULT_BACKGROUND_COLOR

@@ -62,7 +62,7 @@ struct VideoAnimationLayerLayout {
     let lineMultiplier = Float(model.lineStyle == .oneLine ? 1.0 : 2.0)
     let textHeight = textLineHeight * lineMultiplier + textPaddingVertical * 2
     let frameHeight = textHeight + containerPaddingVertical * 2
-    let maxCharactersPerLine = Int((Float(UIScreen.main.bounds.width) / (fontSize * 0.75)).rounded())
+    let maxCharactersPerLine = Int((Float(UIScreen.main.bounds.width) / (fontSize * 0.65)).rounded())
     return VideoAnimationLayerLayout(
       containerPaddingHorizontal: containerPaddingHorizontal,
       containerPaddingVertical: containerPaddingVertical,
@@ -88,7 +88,7 @@ struct VideoAnimationLayerLayout {
     let lineMultiplier = Float(model.lineStyle == .oneLine ? 1.0 : 2.0)
     let textHeight = textLineHeight * lineMultiplier + textPaddingVertical * 2
     let frameHeight = textHeight + containerPaddingVertical * 2
-    let maxCharactersPerLine = Int((Float(dimensions.size.width) / (fontSize * 0.75)).rounded())
+    let maxCharactersPerLine = Int((Float(dimensions.size.width) / (fontSize * 0.65)).rounded())
     return VideoAnimationLayerLayout(
       containerPaddingHorizontal: containerPaddingHorizontal,
       containerPaddingVertical: containerPaddingVertical,
@@ -102,14 +102,5 @@ struct VideoAnimationLayerLayout {
       animationMultipler: 1,
       animationOffsetMultiplier: 0
     )
-  }
-  
-  private static func maxCharactersPerLine(fontSize: Float, orientation: UIImage.Orientation) -> Int {
-    switch orientation {
-    case .left, .leftMirrored, .right, .rightMirrored:
-      return Int((MAXIMUM_FONT_SIZE / fontSize * 30).rounded())
-    default:
-      return Int((MAXIMUM_FONT_SIZE / fontSize * 24).rounded())
-    }
   }
 }
