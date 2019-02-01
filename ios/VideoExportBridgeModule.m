@@ -12,10 +12,11 @@ RCT_EXPORT_MODULE(VideoExport)
 RCT_EXPORT_METHOD(exportVideo
                   : (NSDictionary<NSString *, id> *)json withCallback
                   : (RCTResponseSenderBlock)callback) {
-  VideoAnimationParams *params = [[VideoAnimationParams alloc] init];
+  VideoAnimationBridgeParams *params =
+      [[VideoAnimationBridgeParams alloc] init];
   id textSegmentsJson = [json objectForKey:@"textSegments"];
   if (textSegmentsJson) {
-    NSArray<TextSegmentParams *> *textSegments =
+    NSArray<VideoAnimationBridgeTextSegmentParams *> *textSegments =
         [self convertTextSegments:textSegmentsJson];
     if (textSegments) {
       params.textSegments = textSegments;
@@ -63,10 +64,12 @@ RCT_EXPORT_METHOD(exportVideo
   if (lineStyleJson) {
     NSString *lineStyleString = [RCTConvert NSString:lineStyleJson];
     if ([lineStyleString isEqualToString:@"oneLine"]) {
-      VideoAnimationLineStyle lineStyle = VideoAnimationLineStyleOneLine;
+      VideoAnimationBridgeLineStyle lineStyle =
+          VideoAnimationBridgeLineStyleOneLine;
       params.lineStyle = lineStyle;
     } else if ([lineStyleString isEqualToString:@"twoLines"]) {
-      VideoAnimationLineStyle lineStyle = VideoAnimationLineStyleTwoLines;
+      VideoAnimationBridgeLineStyle lineStyle =
+          VideoAnimationBridgeLineStyleTwoLines;
       params.lineStyle = lineStyle;
     } else {
       RCTLogError(@"The value '%@' is not a valid line style.",
@@ -79,7 +82,7 @@ RCT_EXPORT_METHOD(exportVideo
     NSString *localIdentifier = [RCTConvert NSString:videoIdJson];
     [AppDelegate.sharedVideoExportManager
         exportVideoWithLocalIdentifier:localIdentifier
-                       animationParams:params
+                                params:params
                      completionHandler:^(NSError *_Nullable error,
                                          BOOL success) {
                        if (error != nil) {
@@ -95,20 +98,22 @@ RCT_EXPORT_METHOD(exportVideo
 }
 
 // TODO: extend RCTConvert
-- (NSArray<TextSegmentParams *> *)convertTextSegments:(id)json {
+- (NSArray<VideoAnimationBridgeTextSegmentParams *> *)convertTextSegments:
+    (id)json {
   if (![json isKindOfClass:[NSArray class]]) {
     return nil;
   }
-  NSMutableArray<TextSegmentParams *> *textSegments =
+  NSMutableArray<VideoAnimationBridgeTextSegmentParams *> *textSegments =
       [[NSMutableArray alloc] init];
   for (NSDictionary *segment in json) {
     NSString *text = [segment objectForKey:@"text"];
     NSNumber *duration = [segment objectForKey:@"duration"];
     NSNumber *timestamp = [segment objectForKey:@"timestamp"];
-    TextSegmentParams *params =
-        [[TextSegmentParams alloc] initWithText:text
-                                       duration:[duration floatValue]
-                                      timestamp:[timestamp floatValue]];
+    VideoAnimationBridgeTextSegmentParams *params =
+        [[VideoAnimationBridgeTextSegmentParams alloc]
+            initWithText:text
+                duration:[duration floatValue]
+               timestamp:[timestamp floatValue]];
     [textSegments addObject:params];
   }
   return textSegments;
