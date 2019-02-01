@@ -29,8 +29,9 @@ class VideoAnimationBridgeParams: NSObject {
   public func model() -> VideoAnimationLayerModel {
     let modelTextSegmentsNested = textSegments?.map { t -> [TextSegmentModel] in
       let strings = t.text.split(separator: " ")
-      return strings.map { str -> TextSegmentModel in
-       return TextSegmentModel(duration: t.duration, timestamp: t.timestamp, text: String(str))
+      return strings.enumerated().map { (index, str) -> TextSegmentModel in
+        let timestamp = t.timestamp + Float(index) * t.duration / Float(strings.count)
+        return TextSegmentModel(duration: t.duration, timestamp: timestamp, text: String(str))
       }
     } ?? []
     let modelTextSegments = Array(modelTextSegmentsNested.joined())

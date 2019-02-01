@@ -32,7 +32,7 @@ class VideoAnimationLayer: CALayer {
     self.model = model
     super.init()
     contentsScale = UIScreen.main.scale
-//    masksToBounds = true
+    masksToBounds = true
   }
   
   public func update(model: VideoAnimationLayerModel, layout: VideoAnimationLayerLayout) {
@@ -112,7 +112,7 @@ class VideoAnimationLayer: CALayer {
     }
     let opacityLayer = CALayer()
     opacityLayer.backgroundColor = model.backgroundColor.cgColor
-//    opacityLayer.masksToBounds = true
+    opacityLayer.masksToBounds = true
     opacityLayer.opacity = 0
     let fadeInAnimation = animateFadeIn(atTime: Double(firstSegment.timestamp))
     opacityLayer.add(fadeInAnimation, forKey: nil)
@@ -264,8 +264,14 @@ class VideoAnimationLayer: CALayer {
     fadeOutAnimation.toValue = 0.0
     fadeOutAnimation.fillMode = .forwards
     fadeOutAnimation.isRemovedOnCompletion = false
-    fadeOutAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime
-    fadeOutAnimation.duration = duration
+    if duration < 0.25 {
+      fadeOutAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime - duration
+      fadeOutAnimation.duration = 0.25
+    }
+    else {
+      fadeOutAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime
+      fadeOutAnimation.duration = duration
+    }
     fadeOutAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
     return fadeOutAnimation
   }
@@ -280,8 +286,14 @@ class VideoAnimationLayer: CALayer {
     slideUpAnimation.toValue = CGPoint(x: position.x, y: value)
     slideUpAnimation.fillMode = .forwards
     slideUpAnimation.isRemovedOnCompletion = false
-    slideUpAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime
-    slideUpAnimation.duration = duration
+    if duration < 0.25 {
+      slideUpAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime - duration
+      slideUpAnimation.duration = 0.25
+    }
+    else {
+      slideUpAnimation.beginTime = AVCoreAnimationBeginTimeAtZero + beginTime
+      slideUpAnimation.duration = duration
+    }
     slideUpAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
     return slideUpAnimation
   }
