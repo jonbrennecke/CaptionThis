@@ -26,6 +26,17 @@ class VideoAnimationLayer: CALayer {
   required init?(coder _: NSCoder) {
     fatalError("init?(coder:) has not been implemented for VideoAnimationLayer")
   }
+  
+  override init(layer: Any) {
+    guard let layer = layer as? VideoAnimationLayer else {
+      fatalError("Incorrect layer class for init(layer:)")
+    }
+    layout = layer.layout
+    model = layer.model
+    super.init(layer: layer)
+    contentsScale = UIScreen.main.scale
+    masksToBounds = true
+  }
 
   init(layout: VideoAnimationLayerLayout, model: VideoAnimationLayerModel) {
     self.layout = layout
