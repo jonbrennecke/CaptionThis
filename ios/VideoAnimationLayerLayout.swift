@@ -77,7 +77,7 @@ struct VideoAnimationLayerLayout {
     let containerPaddingHorizontal = 45 * videoSizeRatio
     let containerPaddingVertical = 15 * videoSizeRatio
     let textPaddingVertical = 5 * videoSizeRatio
-    let fontSize = Float(UIScreen.main.scale) * videoSizeRatio * model.fontSize
+    let fontSize = 3 * videoSizeRatio * model.fontSize
     let textLineHeight = fontSize * 1.50
     let lineMultiplier = Float(model.lineStyle == .oneLine ? 1.0 : 2.0)
     let textHeight = textLineHeight * lineMultiplier + textPaddingVertical * 2
