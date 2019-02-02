@@ -43,7 +43,10 @@ class VideoExportManager: NSObject {
       completionHandler(nil, false)
       return
     }
-    let size = videoTrack.naturalSize
+    let naturalSize = videoTrack.naturalSize
+    let transform = videoTrack.preferredTransform
+    let rotatedSize = naturalSize.applying(transform)
+    let size = CGSize(width: abs(rotatedSize.width), height: abs(rotatedSize.height))
     let orientation = OrientationUtil.orientation(forAsset: asset)
     let dimensions = VideoDimensions(size: size, orientation: orientation)
     let layout = VideoAnimationLayerLayout.layoutForExport(dimensions: dimensions, model: model)

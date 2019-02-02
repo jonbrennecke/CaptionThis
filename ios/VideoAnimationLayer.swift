@@ -26,7 +26,7 @@ class VideoAnimationLayer: CALayer {
   required init?(coder _: NSCoder) {
     fatalError("init?(coder:) has not been implemented for VideoAnimationLayer")
   }
-  
+
   override init(layer: Any) {
     guard let layer = layer as? VideoAnimationLayer else {
       fatalError("Incorrect layer class for init(layer:)")
