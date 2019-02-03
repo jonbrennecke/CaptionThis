@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
@@ -145,6 +146,7 @@ export default class Onboarding extends Component<Props, State> {
   }
 
   componentDidMount() {
+    SplashScreen.hide();
     const isVisible = !this.props.arePermissionsGranted;
     if (isVisible) {
       this.animateIn();
