@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
+import SplashScreen from 'react-native-splash-screen';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
@@ -67,8 +67,8 @@ const styles = {
   },
   absoluteFill: StyleSheet.absoluteFillObject,
   appIcon: {
-    height: 256,
-    width: 256,
+    height: 128,
+    width: 128,
   },
   appIconWrap: (anim: Animated.Value) => ({
     transform: [
@@ -146,6 +146,7 @@ export default class Onboarding extends Component<Props, State> {
   }
 
   componentDidMount() {
+    SplashScreen.hide();
     const isVisible = !this.props.arePermissionsGranted;
     if (isVisible) {
       this.animateIn();
@@ -248,9 +249,9 @@ export default class Onboarding extends Component<Props, State> {
   render() {
     return (
       <Animated.View style={styles.container(this.fadeAnim)}>
-        <LinearGradient
+        <Image
           style={styles.absoluteFill}
-          colors={[UI_COLORS.WHITE, UI_COLORS.OFF_WHITE]}
+          source={{ uri: 'Launch Screen Gradient' }}
         />
         <Animated.View style={styles.appIconWrap(this.iconAnim)}>
           <Image source={{ uri: 'Icon' }} style={styles.appIcon} />
@@ -259,7 +260,7 @@ export default class Onboarding extends Component<Props, State> {
           >
             <ActivityIndicator
               style={styles.activityIndicator}
-              color={UI_COLORS.DARK_GREY}
+              color={UI_COLORS.WHITE}
               size="large"
             />
           </Animated.View>

@@ -13,6 +13,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
+#import "RNSplashScreen.h"
 
 @implementation AppDelegate
 
@@ -96,6 +97,7 @@ static VideoExportManager *_sharedVideoExportManager;
 #endif
 
   [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
+  [RNSplashScreen show];
   return YES;
 }
 
