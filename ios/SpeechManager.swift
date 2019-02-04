@@ -131,6 +131,8 @@ class SpeechManager: NSObject {
     }
     let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: nil)
     assetReaderOutput.alwaysCopiesSampleData = false
+    assetReaderOutput.supportsRandomAccess = true
+    assetReaderOutput.markConfigurationAsFinal()
     if !assetReader.canAdd(assetReaderOutput) {
       Debug.log(message: "Asset reader cannot add output.")
       return nil
@@ -151,6 +153,7 @@ class SpeechManager: NSObject {
       request.appendAudioSampleBuffer(sampleBuffer)
     }
     request.endAudio()
+    assetReader.cancelReading()
     return request
   }
 
