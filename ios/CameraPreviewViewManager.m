@@ -8,8 +8,6 @@
 
 @implementation CameraPreviewViewManager
 
-@synthesize previewView;
-
 RCT_EXPORT_MODULE(CameraPreviewManager)
 
 RCT_EXPORT_METHOD(focusOnPoint
@@ -20,12 +18,23 @@ RCT_EXPORT_METHOD(focusOnPoint
   [cameraManager focusOnPoint:point];
 }
 
+RCT_EXPORT_METHOD(setUp: (nonnull NSNumber *)reactTag) {
+  [self.bridge.uiManager
+   addUIBlock:^(RCTUIManager *uiManager,
+                NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+     CameraPreviewView *view = (CameraPreviewView*)viewRegistry[reactTag];
+     if (!view || ![view isKindOfClass:[CameraPreviewView class]]) {
+       RCTLogError(@"Cannot find CameraPreviewView with tag #%@", reactTag);
+       return;
+     }
+     dispatch_async(dispatch_get_main_queue(), ^{
+       [view setUp];
+     });
+   }];
+}
+
 - (UIView *)view {
-  previewView = [[CameraPreviewView alloc] init];
-  dispatch_async(dispatch_get_main_queue(), ^{
-    CameraManager *cameraManager = [AppDelegate sharedCameraManager];
-    self.previewView.previewLayer = cameraManager.previewLayer;
-  });
+  CameraPreviewView *previewView = [[CameraPreviewView alloc] init];
   return (UIView *)previewView;
 }
 

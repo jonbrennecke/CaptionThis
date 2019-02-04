@@ -225,6 +225,9 @@ export default class HomeScreen extends Component<Props, State> {
       return;
     }
     Camera.startPreview();
+    if (this.cameraView) {
+      this.cameraView.setUp();
+    }
     await this.loadMediaLibrary();
     this.setState({
       hasCompletedSetupAfterOnboarding: true,

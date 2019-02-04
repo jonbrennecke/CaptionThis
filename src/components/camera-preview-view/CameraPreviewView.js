@@ -5,6 +5,7 @@ import {
   View,
   Text,
   NativeModules,
+  StyleSheet,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
@@ -25,8 +26,7 @@ type Props = {
 const styles = {
   previewView: {
     backgroundColor: UI_COLORS.DARK_GREY,
-    alignItems: 'center',
-    justifyContent: 'center',
+    ...StyleSheet.absoluteFill
   },
   text: Fonts.getFontStyle('default', { contentStyle: 'lightContent' }),
 };
@@ -42,6 +42,13 @@ export default class CameraPreviewView extends Component<Props> {
       this.nativeComponentRef._nativeTag,
       focusPoint
     );
+  }
+
+  setUp() {
+    if (!this.nativeComponentRef) {
+      return;
+    }
+    CameraPreviewManager.setUp(this.nativeComponentRef._nativeTag);
   }
 
   render() {

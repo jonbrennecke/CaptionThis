@@ -5,5 +5,4 @@
 
 @class CameraPreviewViewManager;
 @interface CameraPreviewViewManager : RCTViewManager
-@property(nonatomic, strong) CameraPreviewView *previewView;
 @end
