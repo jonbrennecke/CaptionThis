@@ -35,6 +35,7 @@ class AudioUtil {
           assetReader.add(assetReaderOutput)
         }
         let assetWriterInput = AVAssetWriterInput(mediaType: .audio, outputSettings: nil)
+        assetWriterInput.expectsMediaDataInRealTime = false
         if assetWriter.canAdd(assetWriterInput) {
           assetWriter.add(assetWriterInput)
         }
@@ -62,6 +63,7 @@ class AudioUtil {
           }
           assetReader.cancelReading()
           assetWriterInput.markAsFinished()
+          assetWriter.endSession(atSourceTime: asset.duration)
           assetWriter.finishWriting {
             let outputAsset = AVURLAsset(url: outputURL)
             completionHandler(nil, outputAsset)
