@@ -1,15 +1,23 @@
 #import "CameraPreviewView.h"
+#import "Debug.h"
+#import "AppDelegate.h"
 
 @implementation CameraPreviewView
 
+@synthesize previewLayer;
+
 - (void)layoutSubviews {
   [super layoutSubviews];
-  _previewLayer.frame = self.bounds;
+  previewLayer.frame = self.bounds;
 }
 
-- (void)setPreviewLayer:(CALayer *)previewLayer {
-  _previewLayer = previewLayer;
-  [self.layer addSublayer:_previewLayer];
+- (void)setUp {
+  [Debug logWithMessage:@"Setting up camera preview"];
+  CameraManager *cameraManager = [AppDelegate sharedCameraManager];
+  previewLayer = cameraManager.previewLayer;
+  self.layer.sublayers = nil;
+  [self.layer addSublayer:previewLayer];
+  [self layoutSubviews];
 }
 
 @end
