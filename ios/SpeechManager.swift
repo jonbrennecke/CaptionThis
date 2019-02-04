@@ -130,6 +130,7 @@ class SpeechManager: NSObject {
       return nil
     }
     let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: nil)
+    assetReaderOutput.alwaysCopiesSampleData = false
     if !assetReader.canAdd(assetReaderOutput) {
       Debug.log(message: "Asset reader cannot add output.")
       return nil
@@ -144,6 +145,7 @@ class SpeechManager: NSObject {
       }
       guard CMSampleBufferIsValid(sampleBuffer), let desc = CMSampleBufferGetFormatDescription(sampleBuffer),
         CMAudioFormatDescriptionGetStreamBasicDescription(desc) != nil else {
+        Debug.log(message: "Received invalid sample buffer")
         continue
       }
       request.appendAudioSampleBuffer(sampleBuffer)

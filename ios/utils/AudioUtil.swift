@@ -4,7 +4,7 @@ class AudioUtil {
   private static let queue = DispatchQueue(label: "audio conversion queue")
 
   public static func extractMonoAudio(forAsset asset: AVAsset, _ completionHandler: @escaping (Error?, AVAsset?) -> Void) {
-    asset.loadValuesAsynchronously(forKeys: ["tracks"]) {
+    asset.loadValuesAsynchronously(forKeys: ["playable"]) {
       do {
         let audioAssetTracks = asset.tracks(withMediaType: .audio)
         guard let audioAssetTrack = audioAssetTracks.last else {
@@ -30,6 +30,7 @@ class AudioUtil {
           AVNumberOfChannelsKey: 1,
         ]
         let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: readerSettings)
+        assetReaderOutput.alwaysCopiesSampleData = false
         if assetReader.canAdd(assetReaderOutput) {
           assetReader.add(assetReaderOutput)
         }
@@ -49,15 +50,17 @@ class AudioUtil {
         }
         assetWriter.startSession(atSourceTime: .zero)
         assetWriterInput.requestMediaDataWhenReady(on: queue) {
-          while assetWriterInput.isReadyForMoreMediaData {
+          while true {
+            if !assetWriterInput.isReadyForMoreMediaData {
+              continue
+            }
             if let sampleBuffer = assetReaderOutput.copyNextSampleBuffer() {
               assetWriterInput.append(sampleBuffer)
             } else {
-              assetWriterInput.markAsFinished()
-              assetReader.cancelReading()
               break
             }
           }
+          assetReader.cancelReading()
           assetWriterInput.markAsFinished()
           assetWriter.finishWriting {
             let outputAsset = AVURLAsset(url: outputURL)
