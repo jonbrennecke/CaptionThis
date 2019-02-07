@@ -4,5 +4,5 @@
 
 @interface CameraPreviewView : UIView
 @property(nonatomic, strong) CALayer *previewLayer;
--(void)setUp;
+- (void)setUp;
 @end

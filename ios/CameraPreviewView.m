@@ -1,6 +1,6 @@
 #import "CameraPreviewView.h"
-#import "Debug.h"
 #import "AppDelegate.h"
+#import "Debug.h"
 
 @implementation CameraPreviewView
 

@@ -26,7 +26,7 @@ type Props = {
 const styles = {
   previewView: {
     backgroundColor: UI_COLORS.DARK_GREY,
-    ...StyleSheet.absoluteFill
+    ...StyleSheet.absoluteFill,
   },
   text: Fonts.getFontStyle('default', { contentStyle: 'lightContent' }),
 };
