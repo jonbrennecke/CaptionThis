@@ -123,37 +123,14 @@ class SpeechManager: NSObject {
   }
 
   private func createRecognitionRequestForAssetOrThrow(_ asset: AVAsset) throws -> SFSpeechAudioBufferRecognitionRequest? {
-    let assetReader = try AVAssetReader(asset: asset)
-    let audioAssetTracks = asset.tracks(withMediaType: .audio)
-    guard let audioAssetTrack = audioAssetTracks.last else {
-      Debug.log(message: "Failed to create recognition request. No audio track provided.")
-      return nil
-    }
-    let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: nil)
-    assetReaderOutput.alwaysCopiesSampleData = false
-    assetReaderOutput.supportsRandomAccess = true
-    assetReaderOutput.markConfigurationAsFinal()
-    if !assetReader.canAdd(assetReaderOutput) {
-      Debug.log(message: "Asset reader cannot add output.")
-      return nil
-    }
-    assetReader.add(assetReaderOutput)
     let request = SFSpeechAudioBufferRecognitionRequest()
     request.shouldReportPartialResults = false
-    assetReader.startReading()
-    while assetReader.status == .reading {
-      guard let sampleBuffer = assetReaderOutput.copyNextSampleBuffer() else {
-        break
-      }
-      guard CMSampleBufferIsValid(sampleBuffer), let desc = CMSampleBufferGetFormatDescription(sampleBuffer),
-        CMAudioFormatDescriptionGetStreamBasicDescription(desc) != nil else {
-        Debug.log(message: "Received invalid sample buffer")
-        continue
-      }
+    if let error = try AudioUtil.createSampleBuffers(withAsset: asset) { sampleBuffer in
       request.appendAudioSampleBuffer(sampleBuffer)
+    } {
+      throw error
     }
     request.endAudio()
-    assetReader.cancelReading()
     return request
   }
 
