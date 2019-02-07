@@ -1,8 +1,14 @@
 import AVFoundation
 
+enum AudioUtilError: Error {
+  case invalidAsset
+  case invalidAssetReaderState
+}
+
 class AudioUtil {
   private static let queue = DispatchQueue(label: "audio conversion queue")
 
+  // TODO: refactor this to take an AVAssetTrack as input
   public static func extractMonoAudio(forAsset asset: AVAsset, _ completionHandler: @escaping (Error?, AVAsset?) -> Void) {
     asset.loadValuesAsynchronously(forKeys: ["playable"]) {
       do {
@@ -73,5 +79,75 @@ class AudioUtil {
         completionHandler(error, nil)
       }
     }
+  }
+
+  public static func createSampleBuffers(withAsset asset: AVAsset, _ sampleCallback: (CMSampleBuffer) -> Void) throws -> AudioUtilError? {
+    guard case let .ok(result) = try createAssetReaderAndOutput(withAsset: asset) else {
+      Debug.log(message: "Failed to create asset reader.")
+      return .invalidAsset
+    }
+    let (assetReader, assetReaderOutput) = result
+    let audioAssetTracks = asset.tracks(withMediaType: .audio)
+    guard let audioAssetTrack = audioAssetTracks.last else {
+      Debug.log(message: "No audio track provided.")
+      return .invalidAsset
+    }
+    let timeRanges = splitTimeRanges(withAssetTrack: audioAssetTrack)
+    for (index, timeRange) in timeRanges.enumerated() {
+      if index > 0 {
+        assetReaderOutput.reset(forReadingTimeRanges: [timeRange as NSValue])
+      } else {
+        assetReader.timeRange = timeRange
+        assetReader.startReading()
+      }
+      while assetReader.status == .reading {
+        guard let sampleBuffer = assetReaderOutput.copyNextSampleBuffer() else {
+          break
+        }
+        guard CMSampleBufferIsValid(sampleBuffer), let desc = CMSampleBufferGetFormatDescription(sampleBuffer),
+          CMAudioFormatDescriptionGetStreamBasicDescription(desc) != nil else {
+          Debug.log(message: "Received invalid sample buffer")
+          continue
+        }
+        sampleCallback(sampleBuffer)
+      }
+    }
+    assetReader.cancelReading()
+    return nil
+  }
+
+  private static func createAssetReaderAndOutput(withAsset asset: AVAsset) throws
+    -> Result<(AVAssetReader, AVAssetReaderTrackOutput), AudioUtilError> {
+    let audioAssetTracks = asset.tracks(withMediaType: .audio)
+    guard let audioAssetTrack = audioAssetTracks.last else {
+      Debug.log(message: "No audio track provided.")
+      return .err(.invalidAsset)
+    }
+    let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: nil)
+    assetReaderOutput.alwaysCopiesSampleData = false
+    assetReaderOutput.supportsRandomAccess = true
+    let assetReader = try AVAssetReader(asset: asset)
+    if !assetReader.canAdd(assetReaderOutput) {
+      Debug.log(message: "Asset reader cannot add output.")
+      return .err(.invalidAssetReaderState)
+    }
+    assetReader.add(assetReaderOutput)
+    return .ok((assetReader, assetReaderOutput))
+  }
+
+  private static func splitTimeRanges(withAssetTrack assetTrack: AVAssetTrack) -> [CMTimeRange] {
+    if assetTrack.timeRange.duration < CMTimeMakeWithSeconds(50, preferredTimescale: 600) {
+      return [assetTrack.timeRange]
+    }
+    let maxSegmentDuration = CMTimeMakeWithSeconds(3, preferredTimescale: 600)
+    var segmentStart = assetTrack.timeRange.start
+    var timeRanges = [CMTimeRange]()
+    while segmentStart < assetTrack.timeRange.end {
+      let segmentEnd = min(segmentStart + maxSegmentDuration, assetTrack.timeRange.end)
+      let timeRange = CMTimeRange(start: segmentStart, end: segmentEnd)
+      timeRanges.append(timeRange)
+      segmentStart = segmentEnd
+    }
+    return timeRanges
   }
 }

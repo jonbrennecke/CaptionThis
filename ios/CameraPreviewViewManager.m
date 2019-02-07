@@ -18,19 +18,19 @@ RCT_EXPORT_METHOD(focusOnPoint
   [cameraManager focusOnPoint:point];
 }
 
-RCT_EXPORT_METHOD(setUp: (nonnull NSNumber *)reactTag) {
+RCT_EXPORT_METHOD(setUp : (nonnull NSNumber *)reactTag) {
   [self.bridge.uiManager
-   addUIBlock:^(RCTUIManager *uiManager,
-                NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-     CameraPreviewView *view = (CameraPreviewView*)viewRegistry[reactTag];
-     if (!view || ![view isKindOfClass:[CameraPreviewView class]]) {
-       RCTLogError(@"Cannot find CameraPreviewView with tag #%@", reactTag);
-       return;
-     }
-     dispatch_async(dispatch_get_main_queue(), ^{
-       [view setUp];
-     });
-   }];
+      addUIBlock:^(RCTUIManager *uiManager,
+                   NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+        CameraPreviewView *view = (CameraPreviewView *)viewRegistry[reactTag];
+        if (!view || ![view isKindOfClass:[CameraPreviewView class]]) {
+          RCTLogError(@"Cannot find CameraPreviewView with tag #%@", reactTag);
+          return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [view setUp];
+        });
+      }];
 }
 
 - (UIView *)view {

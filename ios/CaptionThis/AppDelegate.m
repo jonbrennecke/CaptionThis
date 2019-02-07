@@ -8,12 +8,12 @@
 #import "AppDelegate.h"
 
 #import "CaptionThis-Swift.h"
+#import "RNSplashScreen.h"
 #import <Crashlytics/Crashlytics.h>
 #import <Fabric/Fabric.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
-#import "RNSplashScreen.h"
 
 @implementation AppDelegate
 
