@@ -55,7 +55,6 @@ const styles = {
   flex: {
     flex: 1,
   },
-  buttonText: Fonts.getFontStyle('button', { contentStyle: 'lightContent' }),
   field: {
     paddingVertical: 2,
   },
@@ -77,6 +76,7 @@ const styles = {
     marginTop: 7,
     backgroundColor: UI_COLORS.MEDIUM_GREY,
   },
+  buttonText: Fonts.getFontStyle('button', { contentStyle: 'lightContent' }),
   colorPickerWrap: (anim: Animated.Value) => ({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: UI_COLORS.BLACK,

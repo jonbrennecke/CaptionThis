@@ -191,6 +191,14 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
       fontFamily: FONT_FAMILIES.ROBOTO,
       fontSize: 20,
     },
+    modifiers: [
+      {
+        name: 'lightContent',
+        style: {
+          color: TEXT_COLORS.WHITE,
+        },
+      },
+    ],
   },
   formLabel: {
     style: {

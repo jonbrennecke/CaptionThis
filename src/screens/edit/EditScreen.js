@@ -25,8 +25,8 @@ import EditScreenTopControls from './EditScreenTopControls';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
+import EditScreenEditCaptionsOverlay from './EditScreenEditCaptionsOverlay';
 import SpeechManager from '../../utils/SpeechManager';
-import * as Screens from '../../utils/Screens';
 import {
   beginSpeechTranscriptionWithVideoAsset,
   receiveSpeechTranscriptionSuccess,
@@ -69,6 +69,7 @@ type State = {
   isVideoPlaying: boolean,
   isDraggingSeekbar: boolean,
   showRichTextOverlay: boolean,
+  showEditCaptionsOverlay: boolean,
 };
 
 type OwnProps = {
@@ -200,6 +201,7 @@ export default class EditScreen extends Component<Props, State> {
     isVideoPlaying: false,
     isDraggingSeekbar: false,
     showRichTextOverlay: false,
+    showEditCaptionsOverlay: false,
   };
   didReceiveSpeechTranscriptionSubscription: ?SpeechManagerSubscription;
   didNotDetectSpeechSubscription: ?SpeechManagerSubscription;
@@ -422,10 +424,6 @@ export default class EditScreen extends Component<Props, State> {
     return !!(speechTranscription && speechTranscription.isFinal);
   }
 
-  async showEditTranscriptionModal() {
-    await Screens.showEditTranscriptionModal(this.props.videoAssetIdentifier);
-  }
-
   restartPlayerAndCaptions() {
     this.restartCaptions();
     this.restartPlayer();
@@ -466,6 +464,20 @@ export default class EditScreen extends Component<Props, State> {
     if (this.richTextOverlay) {
       this.richTextOverlay.pauseCaptions();
     }
+  }
+
+  showEditCaptionsOverlay() {
+    this.pausePlayerAndCaptions();
+    this.setState({
+      showEditCaptionsOverlay: true,
+    });
+  }
+
+  dismissEditCaptionsOverlay() {
+    this.restartPlayerAndCaptions();
+    this.setState({
+      showEditCaptionsOverlay: false,
+    });
   }
 
   render() {
@@ -510,9 +522,7 @@ export default class EditScreen extends Component<Props, State> {
                 fontFamily={this.props.fontFamily}
                 fontSize={this.props.fontSize}
                 speechTranscription={this.getSpeechTranscription()}
-                onPress={() => {
-                  this.showEditTranscriptionModal();
-                }}
+                onPress={this.showEditCaptionsOverlay}
               />
             </VideoCaptionsContainer>
             <EditScreenTopControls
@@ -529,9 +539,7 @@ export default class EditScreen extends Component<Props, State> {
                   showRichTextOverlay: !this.state.showRichTextOverlay,
                 })
               }
-              onEditTextButtonPress={() => {
-                this.showEditTranscriptionModal();
-              }}
+              onEditTextButtonPress={this.showEditCaptionsOverlay}
             />
           </View>
           <View style={styles.editControls}>
@@ -571,6 +579,15 @@ export default class EditScreen extends Component<Props, State> {
         />
         <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
         <EditScreenLoadingOverlay isVisible={!hasFinalTranscription} />
+        <EditScreenEditCaptionsOverlay
+          videoAssetIdentifier={this.props.videoAssetIdentifier}
+          speechTranscriptions={this.props.speechTranscriptions}
+          isVisible={this.state.showEditCaptionsOverlay}
+          onRequestDismissModal={this.dismissEditCaptionsOverlay}
+          receiveSpeechTranscriptionSuccess={
+            this.props.receiveSpeechTranscriptionSuccess
+          }
+        />
       </View>
     );
   }
