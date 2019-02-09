@@ -571,11 +571,6 @@ export default class EditScreen extends Component<Props, State> {
           onRequestSave={(...etc) => {
             this.richTextEditorDidRequestSave(...etc);
           }}
-          onRequestDismissWithoutSaving={() => {
-            this.setState({
-              showRichTextOverlay: false,
-            });
-          }}
         />
         <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
         <EditScreenLoadingOverlay isVisible={!hasFinalTranscription} />
