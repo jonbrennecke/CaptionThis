@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 import * as Color from '../../utils/Color';
 import * as Fonts from '../../utils/Fonts';
@@ -14,13 +14,13 @@ import type { TextAlignmentMode } from '../../types/video';
 
 type Props = {
   style?: ?Style,
+  alignmentMode: TextAlignmentMode,
   onDidSelectTextAlignmentMode: TextAlignmentMode => void,
 };
 
 const styles = {
   container: {
-    paddingVertical: 14,
-    flexDirection: 'row',
+    paddingVertical: 10,
   },
   labelText: {
     ...Fonts.getFontStyle('formLabel', { contentStyle: 'darkContent' }),
@@ -35,9 +35,7 @@ const styles = {
     paddingLeft: 15,
     paddingVertical: 12,
   },
-  item: {
-
-  },
+  item: {},
   icon: {
     height: 35,
     width: 35,
@@ -46,32 +44,49 @@ const styles = {
 
 export default function RichTextAlignmentControl({
   style,
+  alignmentMode,
   onDidSelectTextAlignmentMode,
 }: Props) {
   return (
     <View style={[styles.container, style]}>
-      {USER_TEXT_ALIGNMENT_CHOICES.map(alignmentMode => {
-        const IconComponent = getIconComponent(alignmentMode);
-        return (
-          <TouchableOpacity
-            key={alignmentMode}
-            style={styles.itemWrap}
-            onPress={() => onDidSelectTextAlignmentMode(alignmentMode)}
-          >
-            <View style={styles.item}>
-              {/* TODO color should be WHITE if selected, OFF_WHITE otherwise */}
-              <IconComponent style={styles.icon} color={Color.hexToRgbaObject(UI_COLORS.OFF_WHITE)} />
-            </View>
-          </TouchableOpacity>
-        );
-      })}
+      <Text numberOfLines={1} style={styles.labelText}>
+        {'Alignment'}
+      </Text>
+      <View style={styles.row}>
+        {USER_TEXT_ALIGNMENT_CHOICES.map(mode => {
+          const IconComponent = getIconComponent(mode);
+          const isSelected = mode === alignmentMode;
+          return (
+            <TouchableOpacity
+              key={mode}
+              style={styles.itemWrap}
+              onPress={() => onDidSelectTextAlignmentMode(mode)}
+            >
+              <View style={styles.item}>
+                <IconComponent
+                  style={styles.icon}
+                  color={
+                    isSelected
+                      ? Color.hexToRgbaObject(UI_COLORS.WHITE)
+                      : Color.hexToRgbaObject(UI_COLORS.LIGHT_GREY)
+                  }
+                />
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     </View>
   );
 }
 
+// eslint-disable-next-line flowtype/space-after-type-colon
 function getIconComponent(
   alignmentMode: TextAlignmentMode
-): typeof TextAlignLeftIcon | typeof TextAlignRightIcon | typeof TextAlignCenterIcon {
+):
+  | typeof TextAlignLeftIcon
+  | typeof TextAlignRightIcon
+  | typeof TextAlignCenterIcon {
   switch (alignmentMode) {
     case 'left':
       return TextAlignLeftIcon;

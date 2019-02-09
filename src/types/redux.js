@@ -2,7 +2,7 @@
 import typeof { LOADING_STATE, TRANSCRIPTION_STATE } from '../constants';
 import type { VideoAssetIdentifier, ColorRGBA } from './media';
 import type { SpeechTranscription } from './speech';
-import type { LineStyle } from './video';
+import type { LineStyle, TextAlignmentMode } from './video';
 import type { ReactAppStateEnum } from './react';
 
 export type Action<T> = {
@@ -59,6 +59,7 @@ export type VideoState = {|
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
   lineStyle: LineStyle,
+  alignmentMode: TextAlignmentMode,
 |};
 
 export type SpeechState = {|
@@ -77,7 +78,8 @@ export type Payload =
   | ReceiveBackgroundColorPayload
   | ReceiveTextColorPayload
   | ReceiveFontSizePayload
-  | ReceiveAppStateChangePayload;
+  | ReceiveAppStateChangePayload
+  | ReceiveTextAlignmentModePayload;
 
 export type ReceiveLoginPayload = {|
   token: string,
@@ -120,4 +122,8 @@ export type ReceiveFontSizePayload = {|
 
 export type ReceiveAppStateChangePayload = {|
   appState: ReactAppStateEnum,
+|};
+
+export type ReceiveTextAlignmentModePayload = {|
+  alignmentMode: TextAlignmentMode,
 |};

@@ -143,6 +143,24 @@ RCT_CUSTOM_VIEW_PROPERTY(animationParams, NSDictionary *, CaptionsView) {
     }
   }
 
+  id alignmentModeJson = [json objectForKey:@"alignmentMode"];
+  if (alignmentModeJson) {
+    NSString *alignmentModeString = [RCTConvert NSString:alignmentModeJson];
+    if ([alignmentModeString isEqualToString:@"center"]) {
+      VideoAnimationBridgeAlignmentMode alignmentMode =
+          VideoAnimationBridgeAlignmentModeCenter;
+      params.alignmentMode = alignmentMode;
+    } else if ([alignmentModeString isEqualToString:@"right"]) {
+      VideoAnimationBridgeAlignmentMode alignmentMode =
+          VideoAnimationBridgeAlignmentModeRight;
+      params.alignmentMode = alignmentMode;
+    } else {
+      VideoAnimationBridgeAlignmentMode alignmentMode =
+          VideoAnimationBridgeAlignmentModeLeft;
+      params.alignmentMode = alignmentMode;
+    }
+  }
+
   [self updateAnimationWithView:view withParams:params];
 }
 

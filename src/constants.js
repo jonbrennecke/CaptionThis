@@ -91,8 +91,8 @@ export const USER_TEXT_COLOR_CHOICES = ['#FFFFFF', '#000000'];
 
 export const USER_TEXT_ALIGNMENT_CHOICES: TextAlignmentMode[] = [
   'left',
-  'right',
   'center',
+  'right',
 ];
 
 export const FONT_FAMILIES = {

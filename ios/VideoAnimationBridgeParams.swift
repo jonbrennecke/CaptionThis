@@ -25,6 +25,8 @@ class VideoAnimationBridgeParams: NSObject {
   public var duration: NSNumber?
   @objc
   public var lineStyle: VideoAnimationBridgeLineStyle = .twoLines
+  @objc
+  public var alignmentMode: VideoAnimationBridgeAlignmentMode = .left
 
   public func model() -> VideoAnimationLayerModel {
     let modelTextSegmentsNested = textSegments?.map { t -> [TextSegmentModel] in
@@ -50,7 +52,8 @@ class VideoAnimationBridgeParams: NSObject {
       textColor: modelTextColor,
       playbackTime: modelPlaybackTime,
       duration: modelDuration,
-      lineStyle: modelLineStyle
+      lineStyle: modelLineStyle,
+      alignmentMode: alignmentMode.asModelAlignmentMode()
     )
   }
 }
@@ -59,6 +62,24 @@ class VideoAnimationBridgeParams: NSObject {
 enum VideoAnimationBridgeLineStyle: Int {
   case oneLine = 1
   case twoLines = 2
+}
+
+@objc
+enum VideoAnimationBridgeAlignmentMode: Int {
+  case left = 1
+  case center = 2
+  case right = 3
+
+  fileprivate func asModelAlignmentMode() -> VideoAnimationAlignmentMode {
+    switch self {
+    case .center:
+      return .center
+    case .right:
+      return .right
+    case .left:
+      return .left
+    }
+  }
 }
 
 @objc

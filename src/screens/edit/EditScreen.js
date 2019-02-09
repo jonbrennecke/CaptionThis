@@ -38,6 +38,7 @@ import {
   receiveUserSelectedTextColor,
   receiveUserSelectedBackgroundColor,
   receiveUserSelectedFontSize,
+  receiveUserSelectedTextAlignmentMode,
 } from '../../redux/video/actionCreators';
 import { isExportingVideo } from '../../redux/media/selectors';
 import {
@@ -50,6 +51,7 @@ import {
   getFontFamily,
   getFontSize,
   getLineStyle,
+  getTextAlignmentMode,
 } from '../../redux/video/selectors';
 import { receiveAppStateChange } from '../../redux/device/actionCreators';
 import { isAppInForeground } from '../../redux/device/selectors';
@@ -61,7 +63,7 @@ import type {
 } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { SpeechTranscription } from '../../types/speech';
-import type { LineStyle } from '../../types/video';
+import type { LineStyle, TextAlignmentMode } from '../../types/video';
 import type { ReactAppStateEnum } from '../../types/react';
 import type { ExportParams } from '../../utils/VideoExportManager';
 import type { EmitterSubscription as SpeechManagerSubscription } from '../../utils/SpeechManager';
@@ -86,10 +88,11 @@ type StateProps = {
   fontFamily: string,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
-  isExportingVideo: boolean,
   fontSize: number,
-  didSpeechRecognitionFail: boolean,
   lineStyle: LineStyle,
+  alignmentMode: TextAlignmentMode,
+  isExportingVideo: boolean,
+  didSpeechRecognitionFail: boolean,
   isAppInForeground: boolean,
 };
 
@@ -105,6 +108,9 @@ type DispatchProps = {
   receiveUserSelectedTextColor: (color: ColorRGBA) => void,
   receiveUserSelectedBackgroundColor: (color: ColorRGBA) => void,
   receiveUserSelectedFontSize: (fontSize: number) => void,
+  receiveUserSelectedTextAlignmentMode: (
+    alignmentMode: TextAlignmentMode
+  ) => void,
   receiveAppStateChange: (appState: ReactAppStateEnum) => void,
 };
 
@@ -162,6 +168,7 @@ function mapStateToProps(state: AppState): StateProps {
     fontSize: getFontSize(state),
     didSpeechRecognitionFail: didSpeechRecognitionFail(state),
     lineStyle: getLineStyle(state),
+    alignmentMode: getTextAlignmentMode(state),
     isAppInForeground: isAppInForeground(state),
   };
 }
@@ -186,6 +193,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
       dispatch(receiveUserSelectedBackgroundColor(color)),
     receiveUserSelectedFontSize: (fontSize: number) =>
       dispatch(receiveUserSelectedFontSize(fontSize)),
+    receiveUserSelectedTextAlignmentMode: (alignmentMode: TextAlignmentMode) =>
+      dispatch(receiveUserSelectedTextAlignmentMode(alignmentMode)),
     receiveAppStateChange: (appState: ReactAppStateEnum) =>
       dispatch(receiveAppStateChange(appState)),
   };
@@ -367,11 +376,13 @@ export default class EditScreen extends Component<Props, State> {
     fontFamily: string,
     textColor: ColorRGBA,
     backgroundColor: ColorRGBA,
+    alignmentMode: TextAlignmentMode,
   }) {
     this.props.receiveUserSelectedFontSize(params.fontSize);
     this.props.receiveUserSelectedFontFamily(params.fontFamily);
     this.props.receiveUserSelectedTextColor(params.textColor);
     this.props.receiveUserSelectedBackgroundColor(params.backgroundColor);
+    this.props.receiveUserSelectedTextAlignmentMode(params.alignmentMode);
     this.setState({
       showRichTextOverlay: false,
     });
@@ -396,6 +407,7 @@ export default class EditScreen extends Component<Props, State> {
       duration: this.state.duration,
       lineStyle: this.props.lineStyle,
       orientation: this.state.orientation || 'up',
+      alignmentMode: this.props.alignmentMode,
     });
   }
 
@@ -525,6 +537,8 @@ export default class EditScreen extends Component<Props, State> {
                 backgroundColor={this.props.backgroundColor}
                 fontFamily={this.props.fontFamily}
                 fontSize={this.props.fontSize}
+                alignmentMode={this.props.alignmentMode}
+                s
                 speechTranscription={this.getSpeechTranscription()}
                 onPress={this.showEditCaptionsOverlay}
               />
@@ -571,6 +585,7 @@ export default class EditScreen extends Component<Props, State> {
           backgroundColor={this.props.backgroundColor}
           fontFamily={this.props.fontFamily}
           fontSize={this.props.fontSize}
+          alignmentMode={this.props.alignmentMode}
           speechTranscription={this.getSpeechTranscription()}
           onRequestSave={(...etc) => {
             this.richTextEditorDidRequestSave(...etc);

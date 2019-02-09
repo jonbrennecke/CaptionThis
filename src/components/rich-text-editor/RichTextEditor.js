@@ -18,7 +18,7 @@ import { UI_COLORS } from '../../constants';
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
-import type { LineStyle } from '../../types/video';
+import type { LineStyle, TextAlignmentMode } from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -28,6 +28,7 @@ type Props = {
   fontSize: number,
   fontFamily: string,
   textColor: ColorRGBA,
+  alignmentMode: TextAlignmentMode,
   backgroundColor: ColorRGBA,
   speechTranscription: ?SpeechTranscription,
   duration: number,
@@ -39,6 +40,7 @@ type Props = {
     fontFamily: string,
     textColor: ColorRGBA,
     backgroundColor: ColorRGBA,
+    alignmentMode: TextAlignmentMode,
   }) => void,
 };
 
@@ -49,6 +51,7 @@ type State = {
   fontFamily: string,
   fontSize: number,
   lineStyle: LineStyle,
+  alignmentMode: TextAlignmentMode,
 };
 
 const styles = {
@@ -111,6 +114,7 @@ export default class RichTextEditor extends Component<Props, State> {
       fontFamily: props.fontFamily,
       fontSize: props.fontSize,
       lineStyle: props.lineStyle,
+      alignmentMode: props.alignmentMode,
     };
   }
 
@@ -209,12 +213,19 @@ export default class RichTextEditor extends Component<Props, State> {
     this.seekCaptionsToTime(this.props.playbackTime);
   }
 
+  textAlignControlDidSelectAlignmentMode(alignmentMode: TextAlignmentMode) {
+    this.setState({
+      alignmentMode,
+    });
+  }
+
   save() {
     this.props.onRequestSave({
       fontSize: this.state.fontSize,
       fontFamily: this.state.fontFamily,
       textColor: this.state.textColor,
       backgroundColor: this.state.backgroundColor,
+      alignmentMode: this.state.alignmentMode,
     });
   }
 
@@ -254,6 +265,7 @@ export default class RichTextEditor extends Component<Props, State> {
           fontSize={this.state.fontSize}
           speechTranscription={this.props.speechTranscription}
           lineStyle={this.state.lineStyle}
+          alignmentMode={this.state.alignmentMode}
         />
         <View style={styles.mainContents}>
           <View style={styles.mainContentsBackground} />
@@ -269,9 +281,10 @@ export default class RichTextEditor extends Component<Props, State> {
           />
           <RichTextAlignmentControl
             style={styles.field}
-            onDidSelectTextAlignmentMode={() => {
-              // TODO
-            }}
+            alignmentMode={this.state.alignmentMode}
+            onDidSelectTextAlignmentMode={
+              this.textAlignControlDidSelectAlignmentMode
+            }
           />
           <RichTextFontColorControl
             style={styles.field}

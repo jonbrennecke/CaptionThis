@@ -9,7 +9,7 @@ import BottomSheetModal from '../../components/bottom-sheet-modal/BottomSheetMod
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
-import type { LineStyle } from '../../types/video';
+import type { LineStyle, TextAlignmentMode } from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -21,13 +21,15 @@ type Props = {
   fontSize: number,
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
-  speechTranscription: ?SpeechTranscription,
+  alignmentMode: TextAlignmentMode,
   lineStyle: LineStyle,
+  speechTranscription: ?SpeechTranscription,
   onRequestSave: ({
     fontSize: number,
     fontFamily: string,
     textColor: ColorRGBA,
     backgroundColor: ColorRGBA,
+    alignmentMode: TextAlignmentMode,
   }) => void,
 };
 
@@ -82,6 +84,7 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
             textColor={this.props.textColor}
             backgroundColor={this.props.backgroundColor}
             lineStyle={this.props.lineStyle}
+            alignmentMode={this.props.alignmentMode}
             onRequestSave={this.props.onRequestSave}
           />
         </SafeAreaView>

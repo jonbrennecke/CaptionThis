@@ -1,7 +1,7 @@
 // @flow
 import type { AppState } from '../../types/redux';
 import type { ColorRGBA } from '../../types/media';
-import type { LineStyle } from '../../types/video';
+import type { LineStyle, TextAlignmentMode } from '../../types/video';
 
 export function getFontFamily(state: AppState): string {
   return state.video.fontFamily;
@@ -21,4 +21,8 @@ export function getFontSize(state: AppState): number {
 
 export function getLineStyle(state: AppState): LineStyle {
   return state.video.lineStyle;
+}
+
+export function getTextAlignmentMode(state: AppState): TextAlignmentMode {
+  return state.video.alignmentMode;
 }

@@ -312,6 +312,7 @@ class VideoAnimationLayer: CALayer {
     textLayer.contentsScale = UIScreen.main.scale
     textLayer.allowsFontSubpixelQuantization = true
     textLayer.allowsEdgeAntialiasing = true
+    textLayer.alignmentMode = model.alignmentMode.asTextLayerAlignmentMode()
     let lineHeight = CGFloat(layout.textLineHeight)
     textLayer.frame = CGRect(x: 0, y: CGFloat(layout.textPaddingVertical), width: parent.frame.width, height: lineHeight)
     let fontSize = CGFloat(layout.fontSize)

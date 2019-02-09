@@ -9,6 +9,7 @@ import {
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
 import type { ColorRGBA, ImageOrientation } from '../../types/media';
+import type { TextAlignmentMode, LineStyle } from '../../types/video';
 
 type ReactNativeFiberHostComponent = any;
 
@@ -22,7 +23,8 @@ type Props = {
   fontSize: number,
   speechTranscription: ?SpeechTranscription,
   hasFinalTranscription: boolean,
-  lineStyle: 'oneLine' | 'twoLines',
+  lineStyle: LineStyle,
+  alignmentMode: TextAlignmentMode,
   onPress?: () => void,
 };
 
@@ -89,6 +91,7 @@ export default class VideoCaptionsView extends Component<Props> {
             fontFamily: this.props.fontFamily,
             fontSize: this.props.fontSize,
             lineStyle: this.props.lineStyle,
+            alignmentMode: this.props.alignmentMode,
             textColor: [
               this.props.textColor.red / 255,
               this.props.textColor.green / 255,

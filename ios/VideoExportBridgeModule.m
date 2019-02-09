@@ -77,6 +77,24 @@ RCT_EXPORT_METHOD(exportVideo
     }
   }
 
+  id alignmentModeJson = [json objectForKey:@"alignmentMode"];
+  if (alignmentModeJson) {
+    NSString *alignmentModeString = [RCTConvert NSString:alignmentModeJson];
+    if ([alignmentModeString isEqualToString:@"center"]) {
+      VideoAnimationBridgeAlignmentMode alignmentMode =
+          VideoAnimationBridgeAlignmentModeCenter;
+      params.alignmentMode = alignmentMode;
+    } else if ([alignmentModeString isEqualToString:@"right"]) {
+      VideoAnimationBridgeAlignmentMode alignmentMode =
+          VideoAnimationBridgeAlignmentModeRight;
+      params.alignmentMode = alignmentMode;
+    } else {
+      VideoAnimationBridgeAlignmentMode alignmentMode =
+          VideoAnimationBridgeAlignmentModeLeft;
+      params.alignmentMode = alignmentMode;
+    }
+  }
+
   id videoIdJson = [json objectForKey:@"video"];
   if (videoIdJson) {
     NSString *localIdentifier = [RCTConvert NSString:videoIdJson];

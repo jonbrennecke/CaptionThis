@@ -10,7 +10,7 @@ import type {
   ColorRGBA,
   ImageOrientation,
 } from '../types/media';
-import type { LineStyle } from '../types/video';
+import type { LineStyle, TextAlignmentMode } from '../types/video';
 
 const { VideoExport: _NativeVideoExportModule } = NativeModules;
 const NativeVideoExportModule = Promise.promisifyAll(_NativeVideoExportModule);
@@ -25,6 +25,7 @@ export type ExportParams = {
   duration: number,
   lineStyle: LineStyle,
   orientation: ImageOrientation,
+  alignmentMode: TextAlignmentMode,
 };
 
 export const exportVideo = async ({

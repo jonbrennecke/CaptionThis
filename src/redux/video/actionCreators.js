@@ -7,8 +7,10 @@ import type {
   ReceiveBackgroundColorPayload,
   ReceiveFontFamilyPayload,
   ReceiveFontSizePayload,
+  ReceiveTextAlignmentModePayload,
 } from '../../types/redux';
 import type { ColorRGBA } from '../../types/media';
+import type { TextAlignmentMode } from '../../types/video';
 
 export const receiveUserSelectedFontSize = (fontSize: number) => {
   return (dispatch: Dispatch<ReceiveFontSizePayload>) => {
@@ -44,6 +46,17 @@ export const receiveUserSelectedTextColor = (textColor: ColorRGBA) => {
     dispatch({
       type: ACTION_TYPES.DID_RECEIVE_TEXT_COLOR,
       payload: { textColor },
+    });
+  };
+};
+
+export const receiveUserSelectedTextAlignmentMode = (
+  alignmentMode: TextAlignmentMode
+) => {
+  return (dispatch: Dispatch<ReceiveTextAlignmentModePayload>) => {
+    dispatch({
+      type: ACTION_TYPES.DID_RECEIVE_TEXT_ALIGN_MODE,
+      payload: { alignmentMode },
     });
   };
 };
