@@ -13,22 +13,22 @@ export default class FadeAnimation implements Animation {
     this.delay = delay;
   }
 
-  animateIn() {
+  animateIn(completionHandler?: () => void) {
     Animated.timing(this.value, {
       toValue: 1,
       duration: 400,
       easing: Easing.quad,
       useNativeDriver: true,
-    }).start();
+    }).start(completionHandler);
   }
 
-  animateOut() {
+  animateOut(completionHandler?: () => void) {
     Animated.timing(this.value, {
       toValue: 0,
       duration: 400,
       easing: Easing.quad,
       useNativeDriver: true,
-    }).start();
+    }).start(completionHandler);
   }
 
   getAnimatedStyle(): Style {

@@ -4,8 +4,8 @@ import { Animated, Easing } from 'react-native';
 import type { Style } from '../types/react';
 import type { Animation } from './types';
 
-export default class TranslateVerticallyAnimation implements Animation {
-  value: Animated.Value;
+export default class BottomSheetAnimation implements Animation {
+  value = new Animated.Value(0);
   delay: number;
 
   constructor({ start, delay = 0 }: { start: 'in' | 'out', delay?: number }) {
@@ -16,9 +16,9 @@ export default class TranslateVerticallyAnimation implements Animation {
   animateIn(completionHandler?: () => void) {
     Animated.timing(this.value, {
       toValue: 1,
-      duration: 400,
-      easing: Easing.in(Easing.quad),
+      duration: 150,
       delay: this.delay,
+      easing: Easing.out(Easing.quad),
       useNativeDriver: true,
     }).start(completionHandler);
   }
@@ -26,9 +26,8 @@ export default class TranslateVerticallyAnimation implements Animation {
   animateOut(completionHandler?: () => void) {
     Animated.timing(this.value, {
       toValue: 0,
-      duration: 400,
-      easing: Easing.in(Easing.quad),
-      delay: this.delay,
+      duration: 150,
+      easing: Easing.out(Easing.quad),
       useNativeDriver: true,
     }).start(completionHandler);
   }
@@ -40,7 +39,7 @@ export default class TranslateVerticallyAnimation implements Animation {
         {
           translateY: this.value.interpolate({
             inputRange: [0, 1],
-            outputRange: [200, 0],
+            outputRange: [300, 0],
           }),
         },
       ],

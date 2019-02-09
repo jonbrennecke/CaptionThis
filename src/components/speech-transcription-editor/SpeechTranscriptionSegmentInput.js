@@ -55,12 +55,14 @@ const styles = {
     shadowRadius: 17,
     shadowColor: UI_COLORS.DARK_GREY,
   }),
-  substring: {
-    ...Fonts.getFontStyle('formInput', { contentStyle: 'darkContent' }),
+  substring: (isFocused: boolean) => ({
+    ...Fonts.getFontStyle('formInput', {
+      contentStyle: isFocused ? 'darkContent' : 'lightContent',
+    }),
     textAlign: 'left',
     flex: 1,
     flexGrow: 1,
-  },
+  }),
   timestamp: (anim: Animated.Value) => ({
     position: 'absolute',
     left: 0,
@@ -120,7 +122,7 @@ export default class SpeechTranscriptionSegmentInput extends Component<
             {formatTimestamp(this.props.segment.timestamp)}
           </Animated.Text>
           <TextInput
-            style={styles.substring}
+            style={styles.substring(this.state.isFocused)}
             value={this.props.segment.substring}
             autoFocus={this.props.autoFocus}
             autoCapitalize="none"
