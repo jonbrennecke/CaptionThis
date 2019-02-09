@@ -13,24 +13,24 @@ export default class TranslateVerticallyAnimation implements Animation {
     this.delay = delay;
   }
 
-  animateIn() {
+  animateIn(completionHandler?: () => void) {
     Animated.timing(this.value, {
       toValue: 1,
       duration: 400,
       easing: Easing.in(Easing.quad),
       delay: this.delay,
       useNativeDriver: true,
-    }).start();
+    }).start(completionHandler);
   }
 
-  animateOut() {
+  animateOut(completionHandler?: () => void) {
     Animated.timing(this.value, {
       toValue: 0,
       duration: 400,
       easing: Easing.in(Easing.quad),
       delay: this.delay,
       useNativeDriver: true,
-    }).start();
+    }).start(completionHandler);
   }
 
   getAnimatedStyle(): Style {

@@ -11,6 +11,8 @@ type Props = {
   isVisible: boolean,
   children: ?Children,
   delay?: number,
+  onAnimationInDidEnd?: () => void,
+  onAnimationOutDidEnd?: () => void,
 };
 
 const styles = {
@@ -30,17 +32,17 @@ export default class BottomSheetAnimatedView extends Component<Props> {
 
   componentDidMount() {
     if (this.props.isVisible) {
-      this.anim.animateIn();
+      this.anim.animateIn(this.props.onAnimationInDidEnd);
     } else if (!this.props.isVisible) {
-      this.anim.animateOut();
+      this.anim.animateOut(this.props.onAnimationOutDidEnd);
     }
   }
 
   componentDidUpdate(prevProps: Props) {
     if (this.props.isVisible && !prevProps.isVisible) {
-      this.anim.animateIn();
+      this.anim.animateIn(this.props.onAnimationInDidEnd);
     } else if (!this.props.isVisible && prevProps.isVisible) {
-      this.anim.animateOut();
+      this.anim.animateOut(this.props.onAnimationOutDidEnd);
     }
   }
 

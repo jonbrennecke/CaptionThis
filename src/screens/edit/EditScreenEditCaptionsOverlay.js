@@ -9,6 +9,7 @@ import Button from '../../components/button/Button';
 import SpeechTranscriptionEditor from '../../components/speech-transcription-editor/SpeechTranscriptionEditor';
 import BottomSheetModal from '../../components/bottom-sheet-modal/BottomSheetModal';
 import KeyboardAvoidingView from '../../components/keyboard-avoiding-view/KeyboardAvoidingView';
+import FadeInOutAnimatedView from '../../components/animations/FadeInOutAnimatedView';
 import * as Fonts from '../../utils/Fonts';
 import { UI_COLORS } from '../../constants';
 
@@ -28,6 +29,7 @@ type Props = {
 
 type State = {
   bottomSafeAreaInset: ?number,
+  editorIsVisible: boolean,
 };
 
 const SafeAreaView = withSafeArea(View, 'padding', 'vertical');
@@ -35,9 +37,6 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const styles = {
   flex: {
-    flex: 1,
-  },
-  keyboardAvoidingView: {
     flex: 1,
   },
   fullScreen: {
@@ -82,6 +81,7 @@ export default class EditScreenEditCaptionsOverlay extends Component<
 > {
   state = {
     bottomSafeAreaInset: null,
+    editorIsVisible: false,
   };
 
   componentDidMount() {
@@ -125,11 +125,20 @@ export default class EditScreenEditCaptionsOverlay extends Component<
   }
 
   render() {
-    const speechTranscription = this.getSpeechTranscription();
     return (
       <BottomSheetModal
         isVisible={this.props.isVisible}
         onRequestDismissModal={this.props.onRequestDismissModal}
+        onShowModalAnimationDidEnd={() => {
+          this.setState({
+            editorIsVisible: true,
+          });
+        }}
+        onHideModalAnimationDidEnd={() => {
+          this.setState({
+            editorIsVisible: false,
+          });
+        }}
       >
         <View style={styles.fullScreen}>
           <KeyboardAvoidingView
@@ -138,17 +147,20 @@ export default class EditScreenEditCaptionsOverlay extends Component<
           >
             <SafeAreaView style={styles.safeArea}>
               <View style={styles.mainContentsBackground} />
-              <View style={styles.mainContents}>
-                {this.props.isVisible ? (
+              <FadeInOutAnimatedView
+                style={styles.mainContents}
+                isVisible={this.state.editorIsVisible}
+              >
+                {this.state.editorIsVisible ? (
                   <SpeechTranscriptionEditor
                     style={styles.editor}
-                    speechTranscription={speechTranscription}
+                    speechTranscription={this.getSpeechTranscription()}
                     onDidEditSpeechTranscription={
                       this.editorDidEditSpeechTranscription
                     }
                   />
                 ) : null}
-              </View>
+              </FadeInOutAnimatedView>
               <Button
                 style={styles.button}
                 text="Done"

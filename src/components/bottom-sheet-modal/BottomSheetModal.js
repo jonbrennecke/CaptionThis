@@ -10,9 +10,11 @@ import type { Style, Children } from '../../types/react';
 
 type Props = {
   style?: ?Style,
+  children: ?Children,
   isVisible: boolean,
   onRequestDismissModal: () => void,
-  children: ?Children,
+  onShowModalAnimationDidEnd?: () => void,
+  onHideModalAnimationDidEnd?: () => void,
 };
 
 const styles = {
@@ -32,12 +34,14 @@ export default function BottomSheetModal(props: Props) {
       style={[styles.absoluteFill, props.style]}
     >
       <TouchableWithoutFeedback onPress={props.onRequestDismissModal}>
-        <BlurView style={styles.absoluteFill} blurType="dark" blurAmount={25} />
+        <BlurView style={styles.absoluteFill} blurType="dark" blurAmount={5} />
       </TouchableWithoutFeedback>
       <BottomSheetAnimatedView
         style={styles.bottomSheet}
         isVisible={props.isVisible}
         delay={400}
+        onAnimationOutDidEnd={props.onHideModalAnimationDidEnd}
+        onAnimationInDidEnd={props.onShowModalAnimationDidEnd}
       >
         {props.children}
       </BottomSheetAnimatedView>

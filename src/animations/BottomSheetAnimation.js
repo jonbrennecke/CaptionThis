@@ -13,23 +13,23 @@ export default class BottomSheetAnimation implements Animation {
     this.delay = delay;
   }
 
-  animateIn() {
+  animateIn(completionHandler?: () => void) {
     Animated.timing(this.value, {
       toValue: 1,
       duration: 150,
       delay: this.delay,
       easing: Easing.out(Easing.quad),
       useNativeDriver: true,
-    }).start();
+    }).start(completionHandler);
   }
 
-  animateOut() {
+  animateOut(completionHandler?: () => void) {
     Animated.timing(this.value, {
       toValue: 0,
       duration: 150,
       easing: Easing.out(Easing.quad),
       useNativeDriver: true,
-    }).start();
+    }).start(completionHandler);
   }
 
   getAnimatedStyle(): Style {

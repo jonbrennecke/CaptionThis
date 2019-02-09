@@ -305,7 +305,6 @@ export const SCREENS = {
   LOGIN_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
   FONT_MODAL: `${APP_BUNDLE_ID}.FontModal`,
   COLOR_MODAL: `${APP_BUNDLE_ID}.ColorModal`,
-  EDIT_TRANSCRIPTION_MODAL: `${APP_BUNDLE_ID}.EditTranscriptionModal`,
 };
 
 export const APP_ORIENTATIONS = ['portrait'];
@@ -411,27 +410,6 @@ export const SCREEN_PARAMS = {
         },
         layout: {
           backgroundColor: UI_COLORS.BLACK,
-          orientation: APP_ORIENTATIONS,
-        },
-      },
-    },
-  },
-  [SCREENS.EDIT_TRANSCRIPTION_MODAL]: {
-    component: {
-      name: SCREENS.EDIT_TRANSCRIPTION_MODAL,
-      id: SCREENS.EDIT_TRANSCRIPTION_MODAL,
-      passProps: {},
-      options: {
-        statusBar: {
-          style: 'dark',
-        },
-        modalPresentationStyle: 'overFullScreen',
-        topBar: {
-          visible: false,
-          animate: false,
-        },
-        layout: {
-          backgroundColor: 'transparent',
           orientation: APP_ORIENTATIONS,
         },
       },
