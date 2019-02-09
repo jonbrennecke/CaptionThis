@@ -28,6 +28,12 @@ const styles = {
     backgroundColor: UI_COLORS.DARK_GREY,
     ...StyleSheet.absoluteFill,
   },
+  simulatorPreviewView: {
+    backgroundColor: UI_COLORS.DARK_GREY,
+    ...StyleSheet.absoluteFill,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   text: Fonts.getFontStyle('default', { contentStyle: 'lightContent' }),
 };
 
@@ -54,7 +60,7 @@ export default class CameraPreviewView extends Component<Props> {
   render() {
     if (DeviceInfo.isEmulator()) {
       return (
-        <View style={[styles.previewView, this.props.style]}>
+        <View style={[styles.simulatorPreviewView, this.props.style]}>
           <Text style={styles.text}>Camera preview placeholder</Text>
         </View>
       );
