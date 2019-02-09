@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import type { FontRole, FontStyle } from './types/fonts';
+import type { TextAlignmentMode } from './types/video';
 
 export const APP_BUNDLE_ID = DeviceInfo.getBundleId();
 
@@ -87,6 +88,12 @@ export const USER_BACKGROUND_COLOR_CHOICES = [
 ];
 
 export const USER_TEXT_COLOR_CHOICES = ['#FFFFFF', '#000000'];
+
+export const USER_TEXT_ALIGNMENT_CHOICES: TextAlignmentMode[] = [
+  'left',
+  'right',
+  'center',
+];
 
 export const FONT_FAMILIES = {
   PASSION_ONE: 'PassionOne-Regular',

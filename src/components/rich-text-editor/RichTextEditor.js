@@ -10,6 +10,7 @@ import RichTextFontFamilyControl from './RichTextFontFamilyControl';
 import RichTextBackgroundColorControl from './RichTextBackgroundColorControl';
 import RichTextFontSizeControl from './RichTextFontSizeControl';
 import RichTextEditorColorPicker from './RichTextEditorColorPicker';
+import RichTextAlignmentControl from './RichTextAlignmentControl';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
 import Button from '../button/Button';
 import { UI_COLORS } from '../../constants';
@@ -265,6 +266,12 @@ export default class RichTextEditor extends Component<Props, State> {
             fontSize={this.state.fontSize}
             style={styles.field}
             onDidSelectFontSize={this.fontSizeControlDidSelectFontSize}
+          />
+          <RichTextAlignmentControl
+            style={styles.field}
+            onDidSelectTextAlignmentMode={() => {
+              // TODO
+            }}
           />
           <RichTextFontColorControl
             style={styles.field}
