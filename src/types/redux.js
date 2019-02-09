@@ -23,23 +23,23 @@ export type AppState = {
   onboarding: OnboardingState,
   media: MediaState,
   device: DeviceState,
+  video: VideoState,
+  speech: SpeechState,
 };
 
 export type GetState = () => AppState;
 
-export type AuthState = {
+export type AuthState = {|
   token: ?string,
   authLoadingState: $Keys<LOADING_STATE>,
-};
+|};
 
-export type OnboardingState = {
+export type OnboardingState = {|
   arePermissionsGranted: boolean,
   permissionsLoadingState: $Keys<LOADING_STATE>,
-};
+|};
 
-export type MediaState = {
-  speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
-  speechTranscriptionState: $Keys<TRANSCRIPTION_STATE>,
+export type MediaState = {|
   videoAssetIdentifiers: VideoAssetIdentifier[],
   mediaLoadingState: $Keys<LOADING_STATE>,
   videoExportState: $Keys<LOADING_STATE>,
@@ -47,16 +47,24 @@ export type MediaState = {
     isRecording: boolean,
     videoAssetIdentifier: ?VideoAssetIdentifier,
   },
+|};
+
+export type DeviceState = {|
+  appState: ReactAppStateEnum,
+|};
+
+export type VideoState = {|
   fontFamily: string,
   fontSize: number,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
   lineStyle: LineStyle,
-};
+|};
 
-export type DeviceState = {
-  appState: ReactAppStateEnum,
-};
+export type SpeechState = {|
+  speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
+  speechTranscriptionState: $Keys<TRANSCRIPTION_STATE>,
+|};
 
 export type Payload =
   | ReceiveLoginPayload

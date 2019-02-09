@@ -27,26 +27,30 @@ import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenEditCaptionsOverlay from './EditScreenEditCaptionsOverlay';
 import SpeechManager from '../../utils/SpeechManager';
+import { exportVideo } from '../../redux/media/actionCreators';
 import {
   beginSpeechTranscriptionWithVideoAsset,
   receiveSpeechTranscriptionSuccess,
   receiveSpeechTranscriptionFailure,
-  exportVideo,
+} from '../../redux/speech/actionCreators';
+import {
   receiveUserSelectedFontFamily,
   receiveUserSelectedTextColor,
   receiveUserSelectedBackgroundColor,
   receiveUserSelectedFontSize,
-} from '../../redux/media/actionCreators';
+} from '../../redux/video/actionCreators';
+import { isExportingVideo } from '../../redux/media/selectors';
+import {
+  getSpeechTranscriptions,
+  didSpeechRecognitionFail,
+} from '../../redux/speech/selectors';
 import {
   getBackgroundColor,
   getTextColor,
-  getSpeechTranscriptions,
   getFontFamily,
   getFontSize,
-  isExportingVideo,
-  didSpeechRecognitionFail,
   getLineStyle,
-} from '../../redux/media/selectors';
+} from '../../redux/video/selectors';
 import { receiveAppStateChange } from '../../redux/device/actionCreators';
 import { isAppInForeground } from '../../redux/device/selectors';
 

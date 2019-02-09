@@ -88,11 +88,6 @@ export const USER_BACKGROUND_COLOR_CHOICES = [
 
 export const USER_TEXT_COLOR_CHOICES = ['#FFFFFF', '#000000'];
 
-export const USER_EDITABLE_COLORS = {
-  BACKGROUND_COLOR: 'BACKGROUND_COLOR',
-  TEXT_COLOR: 'TEXT_COLOR',
-};
-
 export const FONT_FAMILIES = {
   PASSION_ONE: 'PassionOne-Regular',
   PT_SANS_REGULAR: Platform.select({
@@ -303,8 +298,6 @@ export const SCREENS = {
   HOME_SCREEN: `${APP_BUNDLE_ID}.HomeScreen`,
   EDIT_SCREEN: `${APP_BUNDLE_ID}.EditScreen`,
   LOGIN_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
-  FONT_MODAL: `${APP_BUNDLE_ID}.FontModal`,
-  COLOR_MODAL: `${APP_BUNDLE_ID}.ColorModal`,
 };
 
 export const APP_ORIENTATIONS = ['portrait'];
@@ -348,48 +341,6 @@ export const SCREEN_PARAMS = {
           animate: false,
         },
         layout: {
-          orientation: APP_ORIENTATIONS,
-        },
-      },
-    },
-  },
-  [SCREENS.FONT_MODAL]: {
-    component: {
-      name: SCREENS.FONT_MODAL,
-      id: SCREENS.FONT_MODAL,
-      passProps: {},
-      options: {
-        statusBar: {
-          style: 'light',
-        },
-        modalPresentationStyle: 'overFullScreen',
-        topBar: {
-          visible: false,
-          animate: false,
-        },
-        layout: {
-          backgroundColor: 'transparent',
-          orientation: APP_ORIENTATIONS,
-        },
-      },
-    },
-  },
-  [SCREENS.COLOR_MODAL]: {
-    component: {
-      name: SCREENS.COLOR_MODAL,
-      id: SCREENS.COLOR_MODAL,
-      passProps: {},
-      options: {
-        statusBar: {
-          style: 'light',
-        },
-        modalPresentationStyle: 'overFullScreen',
-        topBar: {
-          visible: false,
-          animate: false,
-        },
-        layout: {
-          backgroundColor: 'transparent',
           orientation: APP_ORIENTATIONS,
         },
       },
