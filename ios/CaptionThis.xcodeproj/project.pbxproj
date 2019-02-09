@@ -79,6 +79,7 @@
 		FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971921DC968E00347CAB /* VideoExportBridgeModule.m */; };
 		FCA3971E21DCB3B500347CAB /* VideoAnimationBridgeParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971D21DCB3B500347CAB /* VideoAnimationBridgeParams.swift */; };
 		FCB392F2220CCD0900403154 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB392F1220CCD0900403154 /* Result.swift */; };
+		FCB39371220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB39370220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift */; };
 		FCB3D2BF68D740C581A23323 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */; };
 		FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */; };
 		FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */; };
@@ -545,6 +546,7 @@
 		FCA3971B21DC969D00347CAB /* VideoExportBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoExportBridgeModule.h; sourceTree = "<group>"; };
 		FCA3971D21DCB3B500347CAB /* VideoAnimationBridgeParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationBridgeParams.swift; sourceTree = "<group>"; };
 		FCB392F1220CCD0900403154 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		FCB39370220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
 		FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewManager.m; sourceTree = "<group>"; };
 		FCD5F74C21D6BA25001F2068 /* VideoPlayerViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewManager.h; sourceTree = "<group>"; };
 		FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
@@ -890,6 +892,7 @@
 				FC58D07521FA795F00E7956D /* AudioUtil.swift */,
 				FCE8024921F84A640092B5E5 /* OrientationUtil.swift */,
 				FCB392F1220CCD0900403154 /* Result.swift */,
+				FCB39370220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift */,
 				FCD5F75621D73C97001F2068 /* Debug */,
 			);
 			path = utils;
@@ -1696,6 +1699,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCB39371220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				FC6EA81221D45123007C3B3E /* Debug.swift in Sources */,
 				FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */,

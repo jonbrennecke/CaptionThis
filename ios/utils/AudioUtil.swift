@@ -81,8 +81,8 @@ class AudioUtil {
     }
   }
 
-  public static func createSampleBuffers(withAsset asset: AVAsset, _ sampleCallback: (CMSampleBuffer) -> Void) throws -> AudioUtilError? {
-    guard case let .ok(result) = try createAssetReaderAndOutput(withAsset: asset) else {
+  private static func createSampleBuffers(withAsset asset: AVAsset, _ sampleCallback: (CMSampleBuffer) -> Void) -> AudioUtilError? {
+    guard case let .ok(result) = createAssetReaderAndOutput(withAsset: asset) else {
       Debug.log(message: "Failed to create asset reader.")
       return .invalidAsset
     }
@@ -116,7 +116,7 @@ class AudioUtil {
     return nil
   }
 
-  private static func createAssetReaderAndOutput(withAsset asset: AVAsset) throws
+  public static func createAssetReaderAndOutput(withAsset asset: AVAsset)
     -> Result<(AVAssetReader, AVAssetReaderTrackOutput), AudioUtilError> {
     let audioAssetTracks = asset.tracks(withMediaType: .audio)
     guard let audioAssetTrack = audioAssetTracks.last else {
@@ -126,17 +126,23 @@ class AudioUtil {
     let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: nil)
     assetReaderOutput.alwaysCopiesSampleData = false
     assetReaderOutput.supportsRandomAccess = true
-    let assetReader = try AVAssetReader(asset: asset)
-    if !assetReader.canAdd(assetReaderOutput) {
-      Debug.log(message: "Asset reader cannot add output.")
-      return .err(.invalidAssetReaderState)
+    do {
+      let assetReader = try AVAssetReader(asset: asset)
+      if !assetReader.canAdd(assetReaderOutput) {
+        Debug.log(message: "Asset reader cannot add output.")
+        return .err(.invalidAssetReaderState)
+      }
+      assetReader.add(assetReaderOutput)
+      return .ok((assetReader, assetReaderOutput))
     }
-    assetReader.add(assetReaderOutput)
-    return .ok((assetReader, assetReaderOutput))
+    catch let error {
+      Debug.log(error: error)
+      return .err(.invalidAsset)
+    }
   }
 
-  private static func splitTimeRanges(withAssetTrack assetTrack: AVAssetTrack) -> [CMTimeRange] {
-    if assetTrack.timeRange.duration < CMTimeMakeWithSeconds(50, preferredTimescale: 600) {
+  public static func splitTimeRanges(withAssetTrack assetTrack: AVAssetTrack) -> [CMTimeRange] {
+    if assetTrack.timeRange.duration < CMTimeMakeWithSeconds(45, preferredTimescale: 600) {
       return [assetTrack.timeRange]
     }
     let maxSegmentDuration = CMTimeMakeWithSeconds(3, preferredTimescale: 600)

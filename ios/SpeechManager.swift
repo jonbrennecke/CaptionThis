@@ -93,17 +93,22 @@ class SpeechManager: NSObject {
           callback(nil, nil)
           return
         }
-        do {
-          guard let request = try self.createRecognitionRequestForAssetOrThrow(monoAsset) else {
-            callback(nil, nil)
-            return
-          }
-          self.startTranscription(withRequest: request)
-          callback(nil, request)
-        } catch {
-          Debug.log(error: error)
-          callback(error, nil)
+        guard let groupedRequest = GroupedSpeechTranscriptionRequest(forAsset: monoAsset) else {
+          callback(nil, nil)
+          return
         }
+        guard case let .ok(requests) = groupedRequest.createRequests() else {
+          Debug.log(message: "Failed to create speech requests")
+          callback(nil, nil)
+          return
+        }
+        guard let request = requests.first else {
+          Debug.log(message: "Speech requests array should not be empty")
+          callback(nil, nil)
+          return
+        }
+        self.startTranscription(withRequest: request)
+        callback(nil, request)
       }
     }
   }
@@ -119,18 +124,6 @@ class SpeechManager: NSObject {
     }
     audioEngine.prepare()
     try audioEngine.start()
-    return request
-  }
-
-  private func createRecognitionRequestForAssetOrThrow(_ asset: AVAsset) throws -> SFSpeechAudioBufferRecognitionRequest? {
-    let request = SFSpeechAudioBufferRecognitionRequest()
-    request.shouldReportPartialResults = false
-    if let error = try AudioUtil.createSampleBuffers(withAsset: asset) { sampleBuffer in
-      request.appendAudioSampleBuffer(sampleBuffer)
-    } {
-      throw error
-    }
-    request.endAudio()
     return request
   }
 
