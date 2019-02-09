@@ -29,7 +29,6 @@ type Props = {
     textColor: ColorRGBA,
     backgroundColor: ColorRGBA,
   }) => void,
-  onRequestDismissWithoutSaving: () => void,
 };
 
 const styles = {
@@ -55,11 +54,17 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
     }
   }
 
+  save() {
+    if (this.richTextEditor) {
+      this.richTextEditor.save();
+    }
+  }
+
   render() {
     return (
       <BottomSheetModal
         isVisible={this.props.isVisible}
-        onRequestDismissModal={this.props.onRequestDismissWithoutSaving}
+        onRequestDismissModal={this.save}
       >
         <SafeAreaView style={styles.flex}>
           <RichTextEditor
