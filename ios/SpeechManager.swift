@@ -19,6 +19,7 @@ class SpeechManager: NSObject {
 
   private enum SpeechTranscriptionRequestKind {
     case file(FileSpeechTranscriptionRequest)
+    case live(LiveSpeechTranscriptionRequest)
   }
 
   @objc(SpeechTranscription)
@@ -131,19 +132,23 @@ class SpeechManager: NSObject {
   }
 
   @objc
-  public func startCaptureForAudioSession(callback: (Error?, SFSpeechAudioBufferRecognitionRequest?) -> Void) {
-    do {
-      let request = try createRecognitionRequestForAudioSessionOrThrow()
-      startTranscription(withRequest: request)
-      callback(nil, request)
-    } catch {
-      Debug.log(error: error)
-      callback(error, nil)
+  public func startCaptureForAudioSession(callback: @escaping (Error?, Bool) -> Void) {
+    SpeechManager.operationQueue.addOperation {
+      let request = LiveSpeechTranscriptionRequest(audioEngine: self.audioEngine, recognizer: self.recognizer, delegate: self)
+      switch request.startTranscription() {
+      case .ok:
+        self.state = .pending(.live(request))
+        callback(nil, true)
+        break
+      case let .err(error):
+        callback(error, false)
+        break
+      }
     }
   }
 
   @objc
-  public func startCaptureForAsset(_ asset: AVAsset, callback: @escaping (Error?, Bool) -> Void) {
+  public func startCapture(forAsset asset: AVAsset, callback: @escaping (Error?, Bool) -> Void) {
     SpeechManager.operationQueue.addOperation {
       AudioUtil.extractMonoAudio(forAsset: asset) { error, monoAsset in
         if let error = error {
@@ -174,24 +179,6 @@ class SpeechManager: NSObject {
     }
   }
 
-  private func createRecognitionRequestForAudioSessionOrThrow() throws -> SFSpeechAudioBufferRecognitionRequest {
-    audioEngine.reset()
-    let node = audioEngine.inputNode
-    let format = node.outputFormat(forBus: 0)
-    let request = SFSpeechAudioBufferRecognitionRequest()
-    request.shouldReportPartialResults = true
-    node.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
-      request.append(buffer)
-    }
-    audioEngine.prepare()
-    try audioEngine.start()
-    return request
-  }
-
-  private func startTranscription(withRequest request: SFSpeechAudioBufferRecognitionRequest) {
-    task = recognizer.recognitionTask(with: request, delegate: self)
-  }
-
   @objc
   public func stopCaptureForAudioSession() {
     guard audioEngine.isRunning else {
@@ -216,40 +203,6 @@ extension SpeechManager: SFSpeechRecognizerDelegate {
   }
 }
 
-// TODO: delete this
-extension SpeechManager: SFSpeechRecognitionTaskDelegate {
-  func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
-    Debug.log(format: "Speech recognizer finished task. Success == %@", success ? "true" : "false")
-    if success {
-      return
-    }
-    if let error = task?.error as NSError? {
-      if error.code == 203, error.localizedDescription == "Retry" {
-        delegate?.speechManagerDidNotDetectSpeech()
-        return
-      }
-    }
-    delegate?.speechManagerDidTerminate()
-  }
-
-  func speechRecognitionTaskWasCancelled(_: SFSpeechRecognitionTask) {
-    Debug.log(message: "Speech recognition task was cancelled.")
-  }
-
-  func speechRecognitionTaskFinishedReadingAudio(_: SFSpeechRecognitionTask) {
-    Debug.log(message: "Speech recognition finished reading audio input.")
-  }
-
-  func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishRecognition result: SFSpeechRecognitionResult) {
-    let transcription = SpeechTranscription(withTranscription: result.bestTranscription)
-    delegate?.speechManagerDidReceiveSpeechTranscription(isFinal: true, transcription: transcription)
-  }
-
-  func speechRecognitionTask(_: SFSpeechRecognitionTask, didHypothesizeTranscription transcription: SFTranscription) {
-    delegate?.speechManagerDidReceiveSpeechTranscription(isFinal: false, transcription: SpeechTranscription(withTranscription: transcription))
-  }
-}
-
 extension SpeechManager: SpeechTranscriptionRequestDelegate {
   func speechTranscriptionRequestDidNotDetectSpeech() {
     delegate?.speechManagerDidNotDetectSpeech()
@@ -259,11 +212,16 @@ extension SpeechManager: SpeechTranscriptionRequestDelegate {
     delegate?.speechManagerDidTerminate()
   }
 
-  func speechTranscriptionRequestDidFinalizeTranscription(results: [SFSpeechRecognitionResult], inTime executionTime: CFAbsoluteTime) {
+  func speechTranscriptionRequest(didFinalizeTranscriptionResults results: [SFSpeechRecognitionResult], inTime executionTime: CFAbsoluteTime) {
     Debug.log(format: "Finished speech transcription in %0.2f seconds", executionTime / 60)
     let transcriptions = results.map { $0.bestTranscription }
     let transcription = SpeechTranscription(withTranscriptions: transcriptions)
     delegate?.speechManagerDidReceiveSpeechTranscription(isFinal: true, transcription: transcription)
     state = .ready
+  }
+
+  func speechTranscriptionRequest(didHypothesizeTranscriptions transcriptions: [SFTranscription]) {
+    let transcription = SpeechTranscription(withTranscriptions: transcriptions)
+    delegate?.speechManagerDidReceiveSpeechTranscription(isFinal: false, transcription: transcription)
   }
 }

@@ -132,13 +132,12 @@ RCT_EXPORT_METHOD(beginSpeechTranscriptionWithLocalIdentifier
 RCT_EXPORT_METHOD(beginSpeechTranscriptionWithAudioSession
                   : (RCTResponseSenderBlock)callback) {
   [AppDelegate.sharedSpeechManager
-      startCaptureForAudioSessionWithCallback:^(
-          NSError *error, SFSpeechAudioBufferRecognitionRequest *request) {
+      startCaptureForAudioSessionWithCallback:^(NSError *error, BOOL success) {
         if (error != nil) {
           callback(@[ error, @(NO) ]);
           return;
         }
-        callback(@[ [NSNull null], @(YES) ]);
+        callback(@[ [NSNull null], @(success) ]);
       }];
 }
 

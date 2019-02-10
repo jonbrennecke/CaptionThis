@@ -1,17 +1,7 @@
 import AVFoundation
 import Speech
 
-enum SpeechTranscriptionError: Error {
-  case invalidAsset
-}
-
-protocol SpeechTranscriptionRequestDelegate {
-  func speechTranscriptionRequestDidNotDetectSpeech()
-  func speechTranscriptionRequestDidTerminate()
-  func speechTranscriptionRequestDidFinalizeTranscription(results: [SFSpeechRecognitionResult], inTime: CFAbsoluteTime)
-}
-
-class FileSpeechTranscriptionRequest: NSObject {
+class FileSpeechTranscriptionRequest: NSObject, SpeechTranscriptionRequest {
   private enum State {
     case unstarted
     case pending([TaskState], CFAbsoluteTime)
@@ -184,13 +174,13 @@ extension FileSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
         results.append(result)
       }
       let executionTime = CFAbsoluteTimeGetCurrent() - startTime
-      delegate.speechTranscriptionRequestDidFinalizeTranscription(results: results, inTime: executionTime)
+      delegate.speechTranscriptionRequest(didFinalizeTranscriptionResults: results, inTime: executionTime)
     } else {
       startNextTask()
     }
   }
 
   func speechRecognitionTask(_: SFSpeechRecognitionTask, didHypothesizeTranscription _: SFTranscription) {
-    // NOTE: unused
+    // NOTE: unused; FileSpeechTranscriptionRequest does not generate partial results
   }
 }
