@@ -161,14 +161,15 @@ class SpeechManager: NSObject {
           callback(nil, false)
           return
         }
-        let result = request.startTranscription()
-        guard case .ok = result else {
-          // TODO: get error from result
-          callback(nil, false)
-          return
+        switch request.startTranscription() {
+        case .ok:
+          self.state = .pending(.file(request))
+          callback(nil, true)
+          break
+        case let .err(error):
+          callback(error, false)
+          break
         }
-        self.state = .pending(.file(request))
-        callback(nil, true)
       }
     }
   }
