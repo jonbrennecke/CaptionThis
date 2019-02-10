@@ -6,10 +6,7 @@
 
 @interface SpeechBridgeModule
     : RCTEventEmitter <RCTBridgeModule, SpeechManagerDelegate>
-- (void)speechManagerDidReceiveSpeechTranscriptionWithIsFinal:(BOOL)isFinal
-                                                transcription:
-                                                    (SFTranscription *)
-                                                        transcription;
+- (void)speechManagerDidReceiveSpeechTranscriptionWithIsFinal:(BOOL)isFinal transcription:(SpeechTranscription *)transcription;
 - (void)speechManagerDidBecomeAvailable;
 - (void)speechManagerDidBecomeUnavailable;
 - (void)speechManagerDidNotDetectSpeech;

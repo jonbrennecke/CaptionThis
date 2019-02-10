@@ -697,6 +697,7 @@
 				FC6EA7E721D4508D007C3B3E /* CaptionThis-Bridging-Header.h */,
 				FC6EA7E821D4508D007C3B3E /* CameraManager.swift */,
 				FC6EA81321D45266007C3B3E /* SpeechManager.swift */,
+				FCB39370220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift */,
 				FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */,
 				FC6EA81521D45340007C3B3E /* PermissionsManager.swift */,
 				FCA3971721DC93AF00347CAB /* constants.swift */,
@@ -892,7 +893,6 @@
 				FC58D07521FA795F00E7956D /* AudioUtil.swift */,
 				FCE8024921F84A640092B5E5 /* OrientationUtil.swift */,
 				FCB392F1220CCD0900403154 /* Result.swift */,
-				FCB39370220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift */,
 				FCD5F75621D73C97001F2068 /* Debug */,
 			);
 			path = utils;

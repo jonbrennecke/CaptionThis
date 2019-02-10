@@ -5,6 +5,9 @@ enum AudioUtilError: Error {
   case invalidAssetReaderState
 }
 
+private let TIME_RANGE_INTERVAL_DURATION: CFTimeInterval = 45
+private let TIME_RANGE_ADDITIONAL_END_INTERVAL: CFTimeInterval = 0.25
+
 class AudioUtil {
   private static let queue = DispatchQueue(label: "audio conversion queue")
 
@@ -142,17 +145,18 @@ class AudioUtil {
   }
 
   public static func splitTimeRanges(withAssetTrack assetTrack: AVAssetTrack) -> [CMTimeRange] {
-    if assetTrack.timeRange.duration < CMTimeMakeWithSeconds(45, preferredTimescale: 600) {
+    if assetTrack.timeRange.duration < CMTimeMakeWithSeconds(TIME_RANGE_INTERVAL_DURATION, preferredTimescale: 600) {
       return [assetTrack.timeRange]
     }
-    let maxSegmentDuration = CMTimeMakeWithSeconds(3, preferredTimescale: 600)
+    let maxSegmentDuration = CMTimeMakeWithSeconds(TIME_RANGE_INTERVAL_DURATION, preferredTimescale: 600)
     var segmentStart = assetTrack.timeRange.start
     var timeRanges = [CMTimeRange]()
     while segmentStart < assetTrack.timeRange.end {
-      let segmentEnd = min(segmentStart + maxSegmentDuration, assetTrack.timeRange.end)
+      let additionalEndTime = CMTimeMakeWithSeconds(TIME_RANGE_ADDITIONAL_END_INTERVAL, preferredTimescale: 600)
+      let segmentEnd = min(segmentStart + maxSegmentDuration + additionalEndTime, assetTrack.timeRange.end)
       let timeRange = CMTimeRange(start: segmentStart, end: segmentEnd)
       timeRanges.append(timeRange)
-      segmentStart = segmentEnd
+      segmentStart = min(segmentStart + maxSegmentDuration, assetTrack.timeRange.end)
     }
     return timeRanges
   }

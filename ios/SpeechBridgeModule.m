@@ -33,26 +33,25 @@
 
 - (void)speechManagerDidReceiveSpeechTranscriptionWithIsFinal:(BOOL)isFinal
                                                 transcription:
-                                                    (SFTranscription *)
+                                                    (SpeechTranscription *)
                                                         transcription {
   if (!hasListeners) {
     return;
   }
-  NSString *formattedString = transcription.formattedString;
+  NSString *string = transcription.string;
   NSMutableArray<NSDictionary *> *segments =
       [[NSMutableArray alloc] initWithCapacity:transcription.segments.count];
-  for (SFTranscriptionSegment *segment in transcription.segments) {
+  for (SpeechTranscriptionSegment *segment in transcription.segments) {
     [segments addObject:@{
       @"duration" : @(segment.duration),
       @"timestamp" : @(segment.timestamp),
       @"confidence" : @(segment.confidence),
       @"substring" : segment.substring,
-      @"alternativeSubstrings" : segment.alternativeSubstrings
     }];
   }
   NSDictionary *body = @{
     @"isFinal" : @(isFinal),
-    @"formattedString" : formattedString,
+    @"formattedString" : string,
     @"segments" : segments
   };
   [self sendEventWithName:@"speechManagerDidReceiveSpeechTranscription"
@@ -120,15 +119,12 @@ RCT_EXPORT_METHOD(beginSpeechTranscriptionWithLocalIdentifier
                                NSDictionary *info) {
                  [AppDelegate.sharedSpeechManager
                      startCaptureForAsset:asset
-                                 callback:^(
-                                     NSError *error,
-                                     SFSpeechAudioBufferRecognitionRequest
-                                         *request) {
+                                 callback:^(NSError *error, BOOL success) {
                                    if (error != nil) {
                                      callback(@[ error, @(NO) ]);
                                      return;
                                    }
-                                   callback(@[ [NSNull null], @(YES) ]);
+                                   callback(@[ [NSNull null], @(success) ]);
                                  }];
                }];
 }
