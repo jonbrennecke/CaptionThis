@@ -79,7 +79,7 @@
 		FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971921DC968E00347CAB /* VideoExportBridgeModule.m */; };
 		FCA3971E21DCB3B500347CAB /* VideoAnimationBridgeParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971D21DCB3B500347CAB /* VideoAnimationBridgeParams.swift */; };
 		FCB392F2220CCD0900403154 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB392F1220CCD0900403154 /* Result.swift */; };
-		FCB39371220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB39370220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift */; };
+		FCB39371220EB45200403154 /* FileSpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */; };
 		FCB3D2BF68D740C581A23323 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */; };
 		FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */; };
 		FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */; };
@@ -546,7 +546,7 @@
 		FCA3971B21DC969D00347CAB /* VideoExportBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoExportBridgeModule.h; sourceTree = "<group>"; };
 		FCA3971D21DCB3B500347CAB /* VideoAnimationBridgeParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationBridgeParams.swift; sourceTree = "<group>"; };
 		FCB392F1220CCD0900403154 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		FCB39370220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
+		FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
 		FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewManager.m; sourceTree = "<group>"; };
 		FCD5F74C21D6BA25001F2068 /* VideoPlayerViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewManager.h; sourceTree = "<group>"; };
 		FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
@@ -696,8 +696,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				FC6EA7E721D4508D007C3B3E /* CaptionThis-Bridging-Header.h */,
 				FC6EA7E821D4508D007C3B3E /* CameraManager.swift */,
-				FC6EA81321D45266007C3B3E /* SpeechManager.swift */,
-				FCB39370220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift */,
+				FCB393A32210DCD100403154 /* speech */,
 				FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */,
 				FC6EA81521D45340007C3B3E /* PermissionsManager.swift */,
 				FCA3971721DC93AF00347CAB /* constants.swift */,
@@ -1060,6 +1059,15 @@
 				FCA3971B21DC969D00347CAB /* VideoExportBridgeModule.h */,
 			);
 			name = VideoExportBridgeModule;
+			sourceTree = "<group>";
+		};
+		FCB393A32210DCD100403154 /* speech */ = {
+			isa = PBXGroup;
+			children = (
+				FC6EA81321D45266007C3B3E /* SpeechManager.swift */,
+				FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */,
+			);
+			name = speech;
 			sourceTree = "<group>";
 		};
 		FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */ = {
@@ -1699,7 +1707,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FCB39371220EB45200403154 /* GroupedSpeechTranscriptionRequest.swift in Sources */,
+				FCB39371220EB45200403154 /* FileSpeechTranscriptionRequest.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				FC6EA81221D45123007C3B3E /* Debug.swift in Sources */,
 				FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */,

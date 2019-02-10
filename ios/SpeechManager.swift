@@ -12,33 +12,32 @@ protocol SpeechManagerDelegate {
 
 @objc
 class SpeechManager: NSObject {
-
   private enum State {
     case ready
     case pending(SpeechTranscriptionRequestKind)
   }
-  
+
   private enum SpeechTranscriptionRequestKind {
-    case grouped(GroupedSpeechTranscriptionRequest)
+    case file(FileSpeechTranscriptionRequest)
   }
-  
+
   @objc(SpeechTranscription)
   public class SpeechTranscription: NSObject {
     @objc
     public let string: String
     @objc
     public let segments: [SpeechTranscriptionSegment]
-    
+
     public init(string: String, segments: [SpeechTranscriptionSegment]) {
       self.string = string
       self.segments = segments
     }
-    
+
     fileprivate convenience init(withTranscription transcription: SFTranscription) {
       let segments = transcription.segments.map { SpeechTranscriptionSegment(withSegment: $0) }
       self.init(string: transcription.formattedString, segments: segments)
     }
-    
+
     fileprivate convenience init(withTranscriptions transcriptions: [SFTranscription]) {
       let formattedString = transcriptions.reduce(into: "") { acc, t in
         let string = t.formattedString
@@ -53,7 +52,7 @@ class SpeechManager: NSObject {
       self.init(string: formattedString, segments: segments)
     }
   }
-  
+
   @objc(SpeechTranscriptionSegment)
   public class SpeechTranscriptionSegment: NSObject {
     @objc
@@ -64,14 +63,14 @@ class SpeechManager: NSObject {
     public let confidence: Float
     @objc
     public let substring: String
-    
+
     public init(duration: TimeInterval, timestamp: TimeInterval, confidence: Float, substring: String) {
       self.duration = duration
       self.timestamp = timestamp
       self.confidence = confidence
       self.substring = substring
     }
-    
+
     fileprivate convenience init(withSegment segment: SFTranscriptionSegment) {
       self.init(duration: segment.duration, timestamp: segment.timestamp, confidence: segment.confidence, substring: segment.substring)
     }
@@ -157,18 +156,18 @@ class SpeechManager: NSObject {
           callback(nil, false)
           return
         }
-        guard let groupedRequest = GroupedSpeechTranscriptionRequest(forAsset: monoAsset, recognizer: self.recognizer, delegate: self) else {
-          Debug.log(message: "Failed to create grouped speech transcription request")
+        guard let request = FileSpeechTranscriptionRequest(forAsset: monoAsset, recognizer: self.recognizer, delegate: self) else {
+          Debug.log(message: "Failed to create speech transcription request with asset")
           callback(nil, false)
           return
         }
-        let result = groupedRequest.startTranscription()
-        guard case .ok(_) = result else {
-          // TODO get error from result
+        let result = request.startTranscription()
+        guard case .ok = result else {
+          // TODO: get error from result
           callback(nil, false)
           return
         }
-        self.state = .pending(.grouped(groupedRequest))
+        self.state = .pending(.file(request))
         callback(nil, true)
       }
     }
@@ -250,16 +249,16 @@ extension SpeechManager: SFSpeechRecognitionTaskDelegate {
   }
 }
 
-extension SpeechManager: GroupedSpeechTranscriptionRequestDelegate {
-  func groupedSpeechTranscriptionRequestDidNotDetectSpeech() {
+extension SpeechManager: SpeechTranscriptionRequestDelegate {
+  func speechTranscriptionRequestDidNotDetectSpeech() {
     delegate?.speechManagerDidNotDetectSpeech()
   }
-  
-  func groupedSpeechTranscriptionRequestDidTerminate() {
+
+  func speechTranscriptionRequestDidTerminate() {
     delegate?.speechManagerDidTerminate()
   }
-  
-  func groupedSpeechTranscriptionRequestDidFinalizeTranscription(results: [SFSpeechRecognitionResult], inTime executionTime: CFAbsoluteTime) {
+
+  func speechTranscriptionRequestDidFinalizeTranscription(results: [SFSpeechRecognitionResult], inTime executionTime: CFAbsoluteTime) {
     Debug.log(format: "Finished speech transcription in %0.2f seconds", executionTime / 60)
     let transcriptions = results.map { $0.bestTranscription }
     let transcription = SpeechTranscription(withTranscriptions: transcriptions)

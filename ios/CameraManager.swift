@@ -190,7 +190,7 @@ class CameraManager: NSObject {
     }
     captureSession.commitConfiguration()
   }
-  
+
   @objc
   private func captureSessionRuntimeError(error: Error) {
     Debug.log(error: error)

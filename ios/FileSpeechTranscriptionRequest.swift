@@ -1,39 +1,38 @@
-import Speech
 import AVFoundation
+import Speech
 
-enum SpeechTranscriptionError : Error {
+enum SpeechTranscriptionError: Error {
   case invalidAsset
 }
 
-protocol GroupedSpeechTranscriptionRequestDelegate {
-  func groupedSpeechTranscriptionRequestDidNotDetectSpeech()
-  func groupedSpeechTranscriptionRequestDidTerminate()
-  func groupedSpeechTranscriptionRequestDidFinalizeTranscription(results: [SFSpeechRecognitionResult], inTime: CFAbsoluteTime)
+protocol SpeechTranscriptionRequestDelegate {
+  func speechTranscriptionRequestDidNotDetectSpeech()
+  func speechTranscriptionRequestDidTerminate()
+  func speechTranscriptionRequestDidFinalizeTranscription(results: [SFSpeechRecognitionResult], inTime: CFAbsoluteTime)
 }
 
-class GroupedSpeechTranscriptionRequest : NSObject {
-  
+class FileSpeechTranscriptionRequest: NSObject {
   private enum State {
     case unstarted
     case pending([TaskState], CFAbsoluteTime)
     case completed
     case failed
   }
-  
+
   private enum TaskState {
     case unstarted(SFSpeechAudioBufferRecognitionRequest)
     case pending(SFSpeechRecognitionTask)
     case final(SFSpeechRecognitionResult)
   }
-  
+
   private var state: State = .unstarted
   private let asset: AVAsset
   private let assetReader: AVAssetReader
   private let assetReaderOutput: AVAssetReaderTrackOutput
-  private let delegate: GroupedSpeechTranscriptionRequestDelegate
+  private let delegate: SpeechTranscriptionRequestDelegate
   private weak var recognizer: SFSpeechRecognizer! // TODO: should be optional? not optional!
-  
-  init?(forAsset asset: AVAsset, recognizer: SFSpeechRecognizer, delegate: GroupedSpeechTranscriptionRequestDelegate) {
+
+  init?(forAsset asset: AVAsset, recognizer: SFSpeechRecognizer, delegate: SpeechTranscriptionRequestDelegate) {
     self.asset = asset
     guard case let .ok((assetReader, assetReaderOutput)) = AudioUtil.createAssetReaderAndOutput(withAsset: asset) else {
       return nil
@@ -43,7 +42,7 @@ class GroupedSpeechTranscriptionRequest : NSObject {
     self.assetReader = assetReader
     self.assetReaderOutput = assetReaderOutput
   }
-  
+
   public func startTranscription() -> Result<(), SpeechTranscriptionError> {
     let startTime = CFAbsoluteTimeGetCurrent()
     let requestResult = createRequests()
@@ -58,7 +57,7 @@ class GroupedSpeechTranscriptionRequest : NSObject {
     }
     return .ok(())
   }
-  
+
   private func startNextTask() {
     guard case .pending(var tasks, let startTime) = state else {
       Debug.log(message: "Invalid state: startNextTask called while not in 'pending' state")
@@ -66,7 +65,7 @@ class GroupedSpeechTranscriptionRequest : NSObject {
       return
     }
     let maybeIndex = tasks.firstIndex { state in
-      guard case .unstarted(_) = state else {
+      guard case .unstarted = state else {
         return false
       }
       return true
@@ -84,7 +83,7 @@ class GroupedSpeechTranscriptionRequest : NSObject {
     tasks[index] = .pending(recognitionTask)
     state = .pending(tasks, startTime)
   }
-  
+
   private func createRequests() -> Result<[SFSpeechAudioBufferRecognitionRequest], SpeechTranscriptionError> {
     let audioAssetTracks = asset.tracks(withMediaType: .audio)
     guard let audioAssetTrack = audioAssetTracks.last else {
@@ -107,8 +106,8 @@ class GroupedSpeechTranscriptionRequest : NSObject {
         }
         guard CMSampleBufferIsValid(sampleBuffer), let desc = CMSampleBufferGetFormatDescription(sampleBuffer),
           CMAudioFormatDescriptionGetStreamBasicDescription(desc) != nil else {
-            Debug.log(message: "Received invalid sample buffer")
-            continue
+          Debug.log(message: "Received invalid sample buffer")
+          continue
         }
         request.appendAudioSampleBuffer(sampleBuffer)
       }
@@ -118,7 +117,7 @@ class GroupedSpeechTranscriptionRequest : NSObject {
     assetReader.cancelReading()
     return .ok(requests)
   }
-  
+
   private func createRequest() -> SFSpeechAudioBufferRecognitionRequest {
     let request = SFSpeechAudioBufferRecognitionRequest()
     request.shouldReportPartialResults = false
@@ -126,7 +125,7 @@ class GroupedSpeechTranscriptionRequest : NSObject {
   }
 }
 
-extension GroupedSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
+extension FileSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
   func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
     Debug.log(format: "Speech recognizer finished task. Success == %@", success ? "true" : "false")
     if success {
@@ -134,29 +133,29 @@ extension GroupedSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
     }
     if let error = task.error as NSError? {
       if error.code == 203, error.localizedDescription == "Retry" {
-        delegate.groupedSpeechTranscriptionRequestDidNotDetectSpeech()
+        delegate.speechTranscriptionRequestDidNotDetectSpeech()
         return
       }
       Debug.log(error: error)
     }
-    delegate.groupedSpeechTranscriptionRequestDidTerminate()
+    delegate.speechTranscriptionRequestDidTerminate()
   }
-  
+
   func speechRecognitionTaskWasCancelled(_: SFSpeechRecognitionTask) {
     Debug.log(message: "Speech recognition task was cancelled.")
   }
-  
+
   func speechRecognitionTaskFinishedReadingAudio(_: SFSpeechRecognitionTask) {
     Debug.log(message: "Speech recognition finished reading audio input.")
   }
-  
-  func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didFinishRecognition result: SFSpeechRecognitionResult) {
+
+  func speechRecognitionTask(_: SFSpeechRecognitionTask, didFinishRecognition result: SFSpeechRecognitionResult) {
     guard case .pending(var tasks, let startTime) = state else {
       // TODO: invalid state
       return
     }
     let maybeIndex = tasks.firstIndex { state in
-      guard case .pending(_) = state else {
+      guard case .pending = state else {
         return false
       }
       return true
@@ -171,10 +170,10 @@ extension GroupedSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
     }
     tasks[index] = .final(result)
     state = .pending(tasks, startTime)
-    
+
     // Check if all tasks are finalized
     let areAllTasksFinalized = tasks.allSatisfy { state in
-      guard case .final(_) = state else {
+      guard case .final = state else {
         return false
       }
       return true
@@ -185,14 +184,13 @@ extension GroupedSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
         results.append(result)
       }
       let executionTime = CFAbsoluteTimeGetCurrent() - startTime
-      delegate.groupedSpeechTranscriptionRequestDidFinalizeTranscription(results: results, inTime: executionTime)
-    }
-    else {
+      delegate.speechTranscriptionRequestDidFinalizeTranscription(results: results, inTime: executionTime)
+    } else {
       startNextTask()
     }
   }
-  
-  func speechRecognitionTask(_: SFSpeechRecognitionTask, didHypothesizeTranscription transcription: SFTranscription) {
+
+  func speechRecognitionTask(_: SFSpeechRecognitionTask, didHypothesizeTranscription _: SFTranscription) {
     // NOTE: unused
   }
 }

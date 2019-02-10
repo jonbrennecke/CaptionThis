@@ -382,7 +382,9 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   async onDidPressExportButton() {
+    this.pausePlayerAndCaptions();
     await this.exportVideo();
+    this.restartPlayerAndCaptions();
   }
 
   async exportVideo() {

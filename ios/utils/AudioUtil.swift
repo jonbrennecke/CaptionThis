@@ -137,8 +137,7 @@ class AudioUtil {
       }
       assetReader.add(assetReaderOutput)
       return .ok((assetReader, assetReaderOutput))
-    }
-    catch let error {
+    } catch {
       Debug.log(error: error)
       return .err(.invalidAsset)
     }
