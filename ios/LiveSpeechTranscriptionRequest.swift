@@ -15,7 +15,8 @@ class LiveSpeechTranscriptionRequest: NSObject, SpeechTranscriptionRequest {
 
   private enum TaskState {
     case unstarted(SFSpeechAudioBufferRecognitionRequest)
-    case pending(SFSpeechRecognitionTask)
+    case started(SFSpeechRecognitionTask)
+    case stopped(SFSpeechRecognitionTask)
     case final(SFSpeechRecognitionResult)
   }
 
@@ -53,12 +54,30 @@ class LiveSpeechTranscriptionRequest: NSObject, SpeechTranscriptionRequest {
         return .err(.invalidSpeechRecognizer)
       }
       let task = recognizer.recognitionTask(with: request, delegate: self)
-      state = .pending(.pending(task), startTime)
+      state = .pending(.started(task), startTime)
       return .ok(())
     } catch {
       state = .failed
       return .err(.audioEngineError(error))
     }
+  }
+
+  public func stopTranscription() -> Result<(), SpeechTranscriptionError> {
+    guard let audioEngine = audioEngine, audioEngine.isRunning else {
+      Debug.log(message: "Cannot stop speech recognition capture. Audio engine is not running.")
+      state = .failed
+      return .err(.invalidAudioEngine)
+    }
+    guard case let .pending(.started(task), startTime) = state else {
+      Debug.log(message: "Invalid state")
+      return .err(.invalidState)
+    }
+    task.cancel()
+    audioEngine.stop()
+    let node = audioEngine.inputNode
+    node.removeTap(onBus: 0)
+    state = .pending(.stopped(task), startTime)
+    return .ok(())
   }
 }
 
@@ -87,7 +106,7 @@ extension LiveSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
   }
 
   func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didFinishRecognition result: SFSpeechRecognitionResult) {
-    guard case let .pending(.pending(pendingTask), startTime) = state, pendingTask == task else {
+    guard case let .pending(.stopped(pendingTask), startTime) = state, pendingTask == task else {
       Debug.log(message: "Invalid state")
       return
     }
@@ -97,7 +116,7 @@ extension LiveSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
   }
 
   func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didHypothesizeTranscription transcription: SFTranscription) {
-    guard case let .pending(.pending(pendingTask), _) = state, pendingTask == task else {
+    guard case let .pending(.started(pendingTask), _) = state, pendingTask == task else {
       Debug.log(message: "Invalid state")
       return
     }

@@ -181,14 +181,13 @@ class SpeechManager: NSObject {
 
   @objc
   public func stopCaptureForAudioSession() {
-    guard audioEngine.isRunning else {
-      Debug.log(message: "Cannot stop speech recognition capture. Audio engine is not running.")
+    guard case let .pending(.live(request)) = state else {
+      Debug.log(message: "Failed to stop capture. Invalid state.")
       return
     }
-    task?.cancel()
-    audioEngine.stop()
-    let node = audioEngine.inputNode
-    node.removeTap(onBus: 0)
+    if case let .err(error) = request.stopTranscription() {
+      Debug.log(error: error)
+    }
   }
 }
 

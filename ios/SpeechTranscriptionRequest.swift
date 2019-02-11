@@ -2,6 +2,7 @@ import AVFoundation
 import Speech
 
 enum SpeechTranscriptionError: Error {
+  case invalidState
   case invalidAsset
   case invalidAudioEngine
   case invalidSpeechRecognizer
