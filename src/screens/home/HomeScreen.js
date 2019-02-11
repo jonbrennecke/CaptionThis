@@ -316,6 +316,9 @@ export default class HomeScreen extends Component<Props, State> {
   async cameraManagerDidFinishFileOutput(video: VideoObject) {
     this.props.receiveFinishedVideo(video);
     await Screens.pushEditScreen(this.props.componentId, video);
+    if (this.cameraManagerDidFinishFileOutputListener) {
+      this.cameraManagerDidFinishFileOutputListener.remove();
+    }
   }
 
   scrollToCameraRoll() {
