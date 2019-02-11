@@ -247,7 +247,7 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async onDidPressVideoThumbnail(video: VideoObject) {
-    await Screens.pushEditScreen(this.props.componentId, video);
+    await this.pushEditScreen(video);
   }
 
   async captureButtonDidRequestBeginCapture() {
@@ -315,10 +315,15 @@ export default class HomeScreen extends Component<Props, State> {
 
   async cameraManagerDidFinishFileOutput(video: VideoObject) {
     this.props.receiveFinishedVideo(video);
-    await Screens.pushEditScreen(this.props.componentId, video);
     if (this.cameraManagerDidFinishFileOutputListener) {
       this.cameraManagerDidFinishFileOutputListener.remove();
     }
+    await this.pushEditScreen(video);
+  }
+
+  async pushEditScreen(video: VideoObject) {
+    Camera.stopPreview();
+    await Screens.pushEditScreen(this.props.componentId, video);
   }
 
   scrollToCameraRoll() {

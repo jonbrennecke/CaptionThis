@@ -48,6 +48,10 @@ export function startPreview() {
   NativeCameraModule.startCameraPreview();
 }
 
+export function stopPreview() {
+  NativeCameraModule.stopCameraPreview();
+}
+
 export const startCapture = async (): Promise<boolean> => {
   const [success] = await NativeCameraModule.startCameraCaptureAsync();
   return success;
