@@ -56,6 +56,7 @@ import { isAppInForeground } from '../../redux/device/selectors';
 
 import type {
   VideoAssetIdentifier,
+  VideoObject,
   ColorRGBA,
   ImageOrientation,
 } from '../../types/media';
@@ -78,7 +79,7 @@ type State = {
 
 type OwnProps = {
   componentId: string,
-  videoAssetIdentifier: VideoAssetIdentifier,
+  video: VideoObject,
 };
 
 type StateProps = {
@@ -218,7 +219,7 @@ export default class EditScreen extends Component<Props, State> {
       this.speechManagerDidNotDetectSpeech
     );
     await this.props.beginSpeechTranscriptionWithVideoAsset(
-      this.props.videoAssetIdentifier
+      this.props.video.id
     );
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
     if (this.hasFinalSpeechTranscription()) {
@@ -321,13 +322,11 @@ export default class EditScreen extends Component<Props, State> {
     transcription: SpeechTranscription
   ) {
     if (!transcription) {
-      this.props.receiveSpeechTranscriptionFailure(
-        this.props.videoAssetIdentifier
-      );
+      this.props.receiveSpeechTranscriptionFailure(this.props.video.id);
       return;
     }
     this.props.receiveSpeechTranscriptionSuccess(
-      this.props.videoAssetIdentifier,
+      this.props.video.id,
       transcription
     );
   }
@@ -340,9 +339,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   speechManagerDidNotDetectSpeech() {
-    this.props.receiveSpeechTranscriptionFailure(
-      this.props.videoAssetIdentifier
-    );
+    this.props.receiveSpeechTranscriptionFailure(this.props.video.id);
   }
 
   seekBarDidSeekToTimeThrottled = throttle(this.seekBarDidSeekToTime, 100, {
@@ -389,7 +386,7 @@ export default class EditScreen extends Component<Props, State> {
 
   async exportVideo() {
     await this.props.exportVideo({
-      video: this.props.videoAssetIdentifier,
+      video: this.props.video.id,
       textSegments: this.textOverlayParams(),
       textColor: this.props.textColor,
       backgroundColor: this.props.backgroundColor,
@@ -418,11 +415,14 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   getSpeechTranscription(props?: Props = this.props): ?SpeechTranscription {
-    const { speechTranscriptions, videoAssetIdentifier: key } = props;
-    if (!speechTranscriptions.has(key)) {
+    const {
+      speechTranscriptions,
+      video: { id },
+    } = props;
+    if (!speechTranscriptions.has(id)) {
       return null;
     }
-    return speechTranscriptions.get(key);
+    return speechTranscriptions.get(id);
   }
 
   hasFinalSpeechTranscription(): boolean {
@@ -498,7 +498,7 @@ export default class EditScreen extends Component<Props, State> {
               }}
               style={styles.flex}
               isPlaying={this.state.isVideoPlaying}
-              videoAssetIdentifier={this.props.videoAssetIdentifier}
+              videoAssetIdentifier={this.props.video.id}
               onVideoDidBecomeReadyToPlay={(...args) => {
                 this.videoPlayerDidBecomeReadyToPlay(...args);
               }}
@@ -553,7 +553,7 @@ export default class EditScreen extends Component<Props, State> {
               style={styles.flex}
               duration={this.state.duration}
               playbackTime={this.state.playbackTime}
-              videoAssetIdentifier={this.props.videoAssetIdentifier}
+              videoAssetIdentifier={this.props.video.id}
               onSeekToTime={this.seekBarDidSeekToTimeThrottled}
               onDidBeginDrag={() => this.setState({ isDraggingSeekbar: true })}
               onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
@@ -581,10 +581,10 @@ export default class EditScreen extends Component<Props, State> {
         <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
         <EditScreenLoadingOverlay
           isVisible={!hasFinalTranscription}
-          duration={this.state.duration}
+          video={this.props.video}
         />
         <EditScreenEditCaptionsOverlay
-          videoAssetIdentifier={this.props.videoAssetIdentifier}
+          videoAssetIdentifier={this.props.video.id}
           speechTranscriptions={this.props.speechTranscriptions}
           isVisible={this.state.showEditCaptionsOverlay}
           onRequestDismissModal={this.dismissEditCaptionsOverlay}

@@ -214,7 +214,8 @@ export default class HomeScreen extends Component<Props, State> {
       await this.setupAfterOnboarding();
     }
     if (!prevProps.currentVideo && this.props.currentVideo) {
-      const currentVideo = this.props.currentVideo;
+      const currentVideoId = this.props.currentVideo;
+      const currentVideo = this.props.videos.find(v => v.id === currentVideoId);
       if (currentVideo) {
         await Screens.pushEditScreen(this.props.componentId, currentVideo);
       }
@@ -252,8 +253,8 @@ export default class HomeScreen extends Component<Props, State> {
     await this.props.receiveVideos(videos);
   }
 
-  async onDidPressVideoThumbnail(identifier: VideoAssetIdentifier) {
-    await Screens.pushEditScreen(this.props.componentId, identifier);
+  async onDidPressVideoThumbnail(video: VideoObject) {
+    await Screens.pushEditScreen(this.props.componentId, video);
   }
 
   async captureButtonDidRequestBeginCapture() {
@@ -418,8 +419,8 @@ export default class HomeScreen extends Component<Props, State> {
                 <VideoThumbnailGrid
                   style={styles.flex}
                   videos={this.props.videos}
-                  onPressThumbnail={(...args) => {
-                    this.onDidPressVideoThumbnail(...args);
+                  onPressThumbnail={video => {
+                    this.onDidPressVideoThumbnail(video);
                   }}
                 />
               </ScrollView>

@@ -8,12 +8,12 @@ import { UI_COLORS } from '../../constants';
 import VideoThumbnailView from '../video-thumbnail-view/VideoThumbnailView';
 
 import type { Style } from '../../types/react';
-import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
+import type { VideoObject } from '../../types/media';
 
 type Props = {
   style?: ?Style,
   videos: VideoObject[],
-  onPressThumbnail: (id: VideoAssetIdentifier) => void,
+  onPressThumbnail: (video: VideoObject) => void,
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -59,12 +59,15 @@ export default function VideoThumbnailGrid({
 }: Props) {
   return (
     <View style={[styles.container, style]}>
-      {videos.map(({ id, duration }) => (
-        <TouchableOpacity key={id} onPress={() => onPressThumbnail(id)}>
+      {videos.map(video => (
+        <TouchableOpacity
+          key={video.id}
+          onPress={() => onPressThumbnail(video)}
+        >
           <View style={styles.thumbnailWrap}>
-            <VideoThumbnailView style={styles.thumbnail} id={id} />
+            <VideoThumbnailView style={styles.thumbnail} id={video.id} />
             <Text numberOfLines={1} style={styles.duration}>
-              {formatDuration(duration)}
+              {formatDuration(video.duration)}
             </Text>
           </View>
         </TouchableOpacity>

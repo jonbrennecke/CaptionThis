@@ -4,7 +4,7 @@ import merge from 'lodash/merge';
 
 import { SCREEN_PARAMS, SCREENS, APP_BUNDLE_ID } from '../constants';
 
-import type { VideoAssetIdentifier } from '../types/media';
+import type { VideoObject } from '../types/media';
 
 const ROOT_NAVIGATION_STACK_ID = `${APP_BUNDLE_ID}.RootStack`;
 
@@ -22,13 +22,13 @@ export const dismissLoginModal = async () => {
 
 export const pushEditScreen = async (
   currentComponentId: string,
-  videoAssetIdentifier: VideoAssetIdentifier
+  video: VideoObject
 ) => {
   await Navigation.push(
     currentComponentId,
     merge(
       { ...SCREEN_PARAMS[SCREENS.EDIT_SCREEN] },
-      passPropsComponentMergeParams({ videoAssetIdentifier })
+      passPropsComponentMergeParams({ video })
     )
   );
 };

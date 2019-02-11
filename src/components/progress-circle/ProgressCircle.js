@@ -21,7 +21,7 @@ const styles = {
 export default function ProgressCircle(props: Props) {
   const size = 100;
   const halfSize = 100 / 2;
-  const strokeWidth = 5.5;
+  const strokeWidth = 2.25;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = props.progress.interpolate({
