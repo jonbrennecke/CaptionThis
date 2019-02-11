@@ -132,6 +132,7 @@ class VideoPlayerView: UIView {
     Debug.log(message: "Video is ready to play")
     delegate?.videoPlayerDidBecomeReadyToPlayAsset(asset)
     // FIXME: needs to be optimized
+//    if DeviceUtil.
     backgroundQueue.async {
       let timeScale = CMTimeScale(NSEC_PER_SEC)
       let time = CMTime(seconds: 0.1, preferredTimescale: timeScale)

@@ -37,6 +37,8 @@
 		FC4BCD182204345F00822C0F /* VideoAnimationLayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4BCD172204345F00822C0F /* VideoAnimationLayerModel.swift */; };
 		FC4BCD1A22043EBD00822C0F /* CaptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4BCD1922043EBD00822C0F /* CaptionsView.swift */; };
 		FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58D07521FA795F00E7956D /* AudioUtil.swift */; };
+		FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */; };
+		FC6EA41D221221BC009F3D7D /* VideoSeekbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA41C221221BC009F3D7D /* VideoSeekbarView.swift */; };
 		FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */; };
 		FC6EA7D721CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */; };
 		FC6EA7D821CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */; };
@@ -88,7 +90,6 @@
 		FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */; };
 		FCD5F75821D73CA3001F2068 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75721D73CA2001F2068 /* Debug.m */; };
 		FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */; };
-		FCD5F7A821D8225C001F2068 /* VideoSeekbarPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */; };
 		FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */; };
 		FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8024921F84A640092B5E5 /* OrientationUtil.swift */; };
 		FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */; };
@@ -495,6 +496,8 @@
 		FC4BCD172204345F00822C0F /* VideoAnimationLayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationLayerModel.swift; sourceTree = "<group>"; };
 		FC4BCD1922043EBD00822C0F /* CaptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionsView.swift; sourceTree = "<group>"; };
 		FC58D07521FA795F00E7956D /* AudioUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUtil.swift; sourceTree = "<group>"; };
+		FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUtil.swift; sourceTree = "<group>"; };
+		FC6EA41C221221BC009F3D7D /* VideoSeekbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSeekbarView.swift; sourceTree = "<group>"; };
 		FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PassionOne-Regular.ttf"; path = "../assets/fonts/PassionOne-Regular.ttf"; sourceTree = "<group>"; };
 		FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Bold.ttf"; path = "../assets/fonts/PT_Sans-Web-Bold.ttf"; sourceTree = "<group>"; };
 		FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Regular.ttf"; path = "../assets/fonts/PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
@@ -560,8 +563,6 @@
 		FCD5F75721D73CA2001F2068 /* Debug.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Debug.m; sourceTree = "<group>"; };
 		FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoSeekbarPreviewViewManager.m; sourceTree = "<group>"; };
 		FCD5F7A421D8110C001F2068 /* VideoSeekbarPreviewViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewViewManager.h; sourceTree = "<group>"; };
-		FCD5F7A621D82250001F2068 /* VideoSeekbarPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewView.h; sourceTree = "<group>"; };
-		FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoSeekbarPreviewView.m; sourceTree = "<group>"; };
 		FCDA6EE221FD07BF00FA8345 /* RCTConvert+UIImageOrientation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+UIImageOrientation.h"; sourceTree = "<group>"; };
 		FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIImageOrientation.m"; sourceTree = "<group>"; };
 		FCE8024921F84A640092B5E5 /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
@@ -897,6 +898,7 @@
 				FCE8024921F84A640092B5E5 /* OrientationUtil.swift */,
 				FCB392F1220CCD0900403154 /* Result.swift */,
 				FCD5F75621D73C97001F2068 /* Debug */,
+				FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -1111,8 +1113,7 @@
 			children = (
 				FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */,
 				FCD5F7A421D8110C001F2068 /* VideoSeekbarPreviewViewManager.h */,
-				FCD5F7A621D82250001F2068 /* VideoSeekbarPreviewView.h */,
-				FCD5F7A721D8225C001F2068 /* VideoSeekbarPreviewView.m */,
+				FC6EA41C221221BC009F3D7D /* VideoSeekbarView.swift */,
 			);
 			name = VideoSeekbarPreviewViewManager;
 			sourceTree = "<group>";
@@ -1720,6 +1721,7 @@
 				FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */,
 				FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */,
 				FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */,
+				FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */,
 				FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */,
 				FC4BCD15220432CF00822C0F /* VideoAnimationLayerLayout.swift in Sources */,
 				FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */,
@@ -1736,7 +1738,6 @@
 				FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */,
 				FC4BCD1A22043EBD00822C0F /* CaptionsView.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				FCD5F7A821D8225C001F2068 /* VideoSeekbarPreviewView.m in Sources */,
 				FC880E0321D5DC4100856037 /* VideoThumbnailViewManager.m in Sources */,
 				FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */,
 				FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */,
@@ -1744,6 +1745,7 @@
 				FC4BCD182204345F00822C0F /* VideoAnimationLayerModel.swift in Sources */,
 				FCB392F2220CCD0900403154 /* Result.swift in Sources */,
 				FCB393A72210E2C000403154 /* SpeechTranscriptionRequest.swift in Sources */,
+				FC6EA41D221221BC009F3D7D /* VideoSeekbarView.swift in Sources */,
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,
 				FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */,
 				FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */,
