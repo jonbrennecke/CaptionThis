@@ -145,11 +145,13 @@ export default class EditScreenExportingOverlay extends Component<
       Animated.timing(this.anim, {
         toValue: 1,
         duration: 300,
+        useNativeDriver: true,
       }),
       Animated.timing(this.progressAnim, {
         toValue: 100,
         duration: videoLoadingTime,
         easing: Easing.linear,
+        useNativeDriver: true,
       }),
     ]).start();
   }
@@ -159,11 +161,13 @@ export default class EditScreenExportingOverlay extends Component<
       Animated.timing(this.anim, {
         toValue: 0,
         duration: 300,
+        useNativeDriver: true,
       }),
       Animated.timing(this.progressAnim, {
         toValue: 0,
         duration: 400,
         easing: Easing.linear,
+        useNativeDriver: true,
       }),
     ]).start(this.stopCountdown);
   }
