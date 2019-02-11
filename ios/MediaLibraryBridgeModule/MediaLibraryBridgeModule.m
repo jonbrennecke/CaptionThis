@@ -35,19 +35,19 @@
   }
   NSMutableArray<NSDictionary *> *videos =
       [[NSMutableArray alloc] initWithCapacity:videoAssets.count];
-  [videoAssets enumerateObjectsUsingBlock:^(PHAsset *_Nonnull asset,
-                                            NSUInteger idx,
-                                            BOOL *_Nonnull stop) {
-    if (asset == nil) {
-      return;
-    }
-    NSString *localIdentifier = asset.localIdentifier;
-    NSTimeInterval duration = asset.duration;
-    NSDictionary *video =
-        @{ @"id" : localIdentifier,
-           @"duration" : @(duration) };
-    [videos insertObject:video atIndex:idx];
-  }];
+  [videoAssets
+      enumerateObjectsUsingBlock:^(PHAsset *_Nonnull asset, NSUInteger idx,
+                                   BOOL *_Nonnull stop) {
+        if (asset == nil) {
+          return;
+        }
+        NSString *localIdentifier = asset.localIdentifier;
+        NSTimeInterval duration = asset.duration;
+        NSDictionary *video =
+            @{ @"id" : localIdentifier,
+               @"duration" : @(duration) };
+        [videos insertObject:video atIndex:idx];
+      }];
   [self sendEventWithName:@"mediaLibraryDidUpdateVideos"
                      body:@{@"videos" : videos}];
 }

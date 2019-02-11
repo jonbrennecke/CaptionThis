@@ -60,12 +60,7 @@ export default function HomeScreenCameraRollButton({
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <View style={styles.buttonInside}>
-        {id && (
-          <VideoThumbnailView
-            style={styles.flex}
-            id={id}
-          />
-        )}
+        {id && <VideoThumbnailView style={styles.flex} id={id} />}
       </View>
       <MaskedViewIOS
         style={styles.absoluteFill}
