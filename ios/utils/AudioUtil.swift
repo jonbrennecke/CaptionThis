@@ -5,6 +5,9 @@ enum AudioUtilError: Error {
   case invalidAssetReaderState
 }
 
+private let TIME_RANGE_INTERVAL_DURATION: CFTimeInterval = 45
+private let TIME_RANGE_ADDITIONAL_END_INTERVAL: CFTimeInterval = 0.25
+
 class AudioUtil {
   private static let queue = DispatchQueue(label: "audio conversion queue")
 
@@ -81,8 +84,8 @@ class AudioUtil {
     }
   }
 
-  public static func createSampleBuffers(withAsset asset: AVAsset, _ sampleCallback: (CMSampleBuffer) -> Void) throws -> AudioUtilError? {
-    guard case let .ok(result) = try createAssetReaderAndOutput(withAsset: asset) else {
+  private static func createSampleBuffers(withAsset asset: AVAsset, _ sampleCallback: (CMSampleBuffer) -> Void) -> AudioUtilError? {
+    guard case let .ok(result) = createAssetReaderAndOutput(withAsset: asset) else {
       Debug.log(message: "Failed to create asset reader.")
       return .invalidAsset
     }
@@ -116,7 +119,7 @@ class AudioUtil {
     return nil
   }
 
-  private static func createAssetReaderAndOutput(withAsset asset: AVAsset) throws
+  public static func createAssetReaderAndOutput(withAsset asset: AVAsset)
     -> Result<(AVAssetReader, AVAssetReaderTrackOutput), AudioUtilError> {
     let audioAssetTracks = asset.tracks(withMediaType: .audio)
     guard let audioAssetTrack = audioAssetTracks.last else {
@@ -126,27 +129,33 @@ class AudioUtil {
     let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: nil)
     assetReaderOutput.alwaysCopiesSampleData = false
     assetReaderOutput.supportsRandomAccess = true
-    let assetReader = try AVAssetReader(asset: asset)
-    if !assetReader.canAdd(assetReaderOutput) {
-      Debug.log(message: "Asset reader cannot add output.")
-      return .err(.invalidAssetReaderState)
+    do {
+      let assetReader = try AVAssetReader(asset: asset)
+      if !assetReader.canAdd(assetReaderOutput) {
+        Debug.log(message: "Asset reader cannot add output.")
+        return .err(.invalidAssetReaderState)
+      }
+      assetReader.add(assetReaderOutput)
+      return .ok((assetReader, assetReaderOutput))
+    } catch {
+      Debug.log(error: error)
+      return .err(.invalidAsset)
     }
-    assetReader.add(assetReaderOutput)
-    return .ok((assetReader, assetReaderOutput))
   }
 
-  private static func splitTimeRanges(withAssetTrack assetTrack: AVAssetTrack) -> [CMTimeRange] {
-    if assetTrack.timeRange.duration < CMTimeMakeWithSeconds(50, preferredTimescale: 600) {
+  public static func splitTimeRanges(withAssetTrack assetTrack: AVAssetTrack) -> [CMTimeRange] {
+    if assetTrack.timeRange.duration < CMTimeMakeWithSeconds(TIME_RANGE_INTERVAL_DURATION, preferredTimescale: 600) {
       return [assetTrack.timeRange]
     }
-    let maxSegmentDuration = CMTimeMakeWithSeconds(3, preferredTimescale: 600)
+    let maxSegmentDuration = CMTimeMakeWithSeconds(TIME_RANGE_INTERVAL_DURATION, preferredTimescale: 600)
     var segmentStart = assetTrack.timeRange.start
     var timeRanges = [CMTimeRange]()
     while segmentStart < assetTrack.timeRange.end {
-      let segmentEnd = min(segmentStart + maxSegmentDuration, assetTrack.timeRange.end)
+      let additionalEndTime = CMTimeMakeWithSeconds(TIME_RANGE_ADDITIONAL_END_INTERVAL, preferredTimescale: 600)
+      let segmentEnd = min(segmentStart + maxSegmentDuration + additionalEndTime, assetTrack.timeRange.end)
       let timeRange = CMTimeRange(start: segmentStart, end: segmentEnd)
       timeRanges.append(timeRange)
-      segmentStart = segmentEnd
+      segmentStart = min(segmentStart + maxSegmentDuration, assetTrack.timeRange.end)
     }
     return timeRanges
   }

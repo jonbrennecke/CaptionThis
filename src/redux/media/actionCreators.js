@@ -9,17 +9,17 @@ import type {
   ReceiveVideoAssetsPayload,
   ReceiveVideoAssetPayload,
 } from '../../types/redux';
-import type { VideoAssetIdentifier } from '../../types/media';
+import type { VideoObject } from '../../types/media';
 import type { ExportParams } from '../../utils/VideoExportManager';
 
-export const receiveVideos = (ids: VideoAssetIdentifier[]) => {
+export const receiveVideos = (videos: VideoObject[]) => {
   return async (dispatch: Dispatch<ReceiveVideoAssetsPayload>) => {
     dispatch({ type: ACTION_TYPES.WILL_RECEIVE_VIDEOS });
     try {
       dispatch({
         type: ACTION_TYPES.DID_RECEIVE_VIDEOS,
         payload: {
-          videoAssetIdentifiers: ids,
+          videos,
         },
       });
     } catch (error) {
@@ -29,13 +29,11 @@ export const receiveVideos = (ids: VideoAssetIdentifier[]) => {
   };
 };
 
-export const receiveFinishedVideo = (
-  videoAssetIdentifier: VideoAssetIdentifier
-) => {
+export const receiveFinishedVideo = (video: VideoObject) => {
   return (dispatch: Dispatch<ReceiveVideoAssetPayload>) => {
     dispatch({
       type: ACTION_TYPES.DID_RECEIVE_FINISHED_VIDEO,
-      payload: { videoAssetIdentifier },
+      payload: { video },
     });
   };
 };

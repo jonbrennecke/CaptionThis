@@ -7,6 +7,7 @@ import UIKit
 class VideoThumbnailView: UIView {
   private let imageView = UIImageView()
   private static let queue = DispatchQueue(label: "thumbnail loading queue")
+  private var requestID: PHImageRequestID?
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -16,6 +17,12 @@ class VideoThumbnailView: UIView {
 
   required init?(coder _: NSCoder) {
     fatalError("init?(coder: NSCoder) is not implemented.")
+  }
+
+  deinit {
+    if let id = requestID {
+      cancelLoadingThumbnail(requestID: id)
+    }
   }
 
   override func layoutSubviews() {
@@ -31,18 +38,18 @@ class VideoThumbnailView: UIView {
       }
       let size = frame.size.equalTo(.zero) ? CGSize(width: 100, height: 100 * 4 / 3) : frame.size
       VideoThumbnailView.queue.async {
-        self.loadThumbnail(forAsset: asset, withSize: size)
+        self.requestID = self.loadThumbnail(forAsset: asset, withSize: size)
       }
     }
   }
 
-  private func loadThumbnail(forAsset asset: PHAsset, withSize size: CGSize) {
+  private func loadThumbnail(forAsset asset: PHAsset, withSize size: CGSize) -> PHImageRequestID {
     let requestOptions = PHImageRequestOptions()
     requestOptions.isSynchronous = false
     requestOptions.deliveryMode = .highQualityFormat
     let pixelSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
     let orientation = OrientationUtil.orientation(forSize: pixelSize)
-    PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: requestOptions) { [unowned self] image, _ in
+    return PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: requestOptions) { [unowned self] image, _ in
       guard let image = image else {
         return
       }
@@ -56,6 +63,10 @@ class VideoThumbnailView: UIView {
       }
       self.imageView.image = image
     }
+  }
+
+  private func cancelLoadingThumbnail(requestID: PHImageRequestID) {
+    PHImageManager.default().cancelImageRequest(requestID)
   }
 
   private func setLandscapeImageBackground(withImage image: UIImage) {

@@ -1,12 +1,12 @@
 // @flow
-import Promise from 'bluebird';
+import Bluebird from 'bluebird';
 import { NativeModules, NativeEventEmitter } from 'react-native';
 
 import type { VideoAssetIdentifier } from '../types/media';
 import type { Return } from '../types/util';
 
 const { MediaLibrary: _MediaLibrary } = NativeModules;
-const MediaLibrary = Promise.promisifyAll(_MediaLibrary);
+const MediaLibrary = Bluebird.promisifyAll(_MediaLibrary);
 
 const NativeMediaManagerEventEmitter = new NativeEventEmitter(_MediaLibrary);
 
@@ -19,13 +19,15 @@ export type EmitterSubscription = Return<
   typeof NativeMediaManagerEventEmitter.addListener
 >;
 
+export type VideoObject = { id: VideoAssetIdentifier, duration: number };
+
 export default class MediaManager {
-  static async getVideoAssets(): Promise<VideoAssetIdentifier[]> {
+  static async getVideoAssets(): Promise<VideoObject[]> {
     return await MediaLibrary.getVideosAsync();
   }
 
   static startObservingVideos(
-    listener: ({ videos: VideoAssetIdentifier[] }) => void
+    listener: ({ videos: VideoObject[] }) => void
   ): EmitterSubscription {
     MediaLibrary.startObservingVideos();
     return MediaManager.addDidUpdateVideosListener(listener);
@@ -37,7 +39,7 @@ export default class MediaManager {
   }
 
   static addDidUpdateVideosListener(
-    listener: ({ videos: VideoAssetIdentifier[] }) => void
+    listener: ({ videos: VideoObject[] }) => void
   ): EmitterSubscription {
     return NativeMediaManagerEventEmitter.addListener(
       EVENTS.DID_UPDATE_VIDEOS,

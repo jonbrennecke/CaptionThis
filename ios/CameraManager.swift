@@ -184,10 +184,16 @@ class CameraManager: NSObject {
   @objc
   public func setupCameraCaptureSession() {
     captureSession.beginConfiguration()
+    NotificationCenter.default.addObserver(self, selector: #selector(captureSessionRuntimeError), name: .AVCaptureSessionRuntimeError, object: captureSession)
     if case .failure = attemptToSetupCameraCaptureSession() {
       Debug.log(message: "Failed to setup camera capture session")
     }
     captureSession.commitConfiguration()
+  }
+
+  @objc
+  private func captureSessionRuntimeError(error: Error) {
+    Debug.log(error: error)
   }
 
   private func attemptToSetupCameraCaptureSession() -> CameraSetupResult {
@@ -380,6 +386,7 @@ class CameraManager: NSObject {
           completionHandler(error, success, nil)
           return
         }
+        PHAsset.fetchAssets(withLocalIdentifiers: [assetPlaceholder.localIdentifier], options: nil)
         completionHandler(nil, success, assetPlaceholder)
       }
     }

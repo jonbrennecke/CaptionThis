@@ -11,7 +11,7 @@ import type { VideoAssetIdentifier } from '../../types/media';
 type Props = {
   style?: ?Style,
   onPress: () => void,
-  videoAssetIdentifier: ?VideoAssetIdentifier,
+  id: ?VideoAssetIdentifier,
 };
 
 const styles = {
@@ -55,17 +55,12 @@ const styles = {
 export default function HomeScreenCameraRollButton({
   style,
   onPress,
-  videoAssetIdentifier,
+  id,
 }: Props) {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <View style={styles.buttonInside}>
-        {videoAssetIdentifier && (
-          <VideoThumbnailView
-            style={styles.flex}
-            videoAssetIdentifier={videoAssetIdentifier}
-          />
-        )}
+        {id && <VideoThumbnailView style={styles.flex} id={id} />}
       </View>
       <MaskedViewIOS
         style={styles.absoluteFill}

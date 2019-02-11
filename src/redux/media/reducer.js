@@ -15,7 +15,7 @@ const initialState: MediaState = {
     isRecording: false,
     videoAssetIdentifier: null,
   },
-  videoAssetIdentifiers: [],
+  videos: [],
   mediaLoadingState: LOADING_STATE.NOT_LOADED,
   videoExportState: LOADING_STATE.NOT_LOADED,
 };
@@ -48,7 +48,7 @@ function didLoadVideos(
   }
   return {
     ...state,
-    videoAssetIdentifiers: payload.videoAssetIdentifiers,
+    videos: payload.videos,
     mediaLoadingState: LOADING_STATE.WAS_LOADED_SUCCESSFULLY,
   };
 }
@@ -89,9 +89,10 @@ function didReceiveFinishedVideo(
   }
   return {
     ...state,
+    videos: [...state.videos, payload.video],
     cameraRecordingState: {
       isRecording: false,
-      videoAssetIdentifier: payload.videoAssetIdentifier,
+      videoAssetIdentifier: payload.video.id,
     },
   };
 }

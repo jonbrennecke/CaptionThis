@@ -2,7 +2,7 @@
 import Promise from 'bluebird';
 import { NativeModules, NativeEventEmitter } from 'react-native';
 
-import type { VideoAssetIdentifier } from '../types/media';
+import type { VideoObject } from '../types/media';
 import type { Return } from '../types/util';
 
 const { Camera: _NativeCameraModule } = NativeModules;
@@ -25,12 +25,12 @@ const EVENTS = {
 };
 
 export function addDidFinishFileOutputListener(
-  listener: (videoAssetIdentifier: VideoAssetIdentifier) => void
+  listener: VideoObject => void
 ): EmitterSubscription {
   return NativeCameraManagerEventEmitter.addListener(
     EVENTS.CAMERA_MANAGER_DID_FINISH_FILE_OUTPUT,
-    ({ localIdentifier }: { localIdentifier: string }) => {
-      listener(localIdentifier);
+    (video: VideoObject) => {
+      listener(video);
     }
   );
 }

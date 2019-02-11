@@ -8,7 +8,7 @@
     : RCTEventEmitter <RCTBridgeModule, SpeechManagerDelegate>
 - (void)speechManagerDidReceiveSpeechTranscriptionWithIsFinal:(BOOL)isFinal
                                                 transcription:
-                                                    (SFTranscription *)
+                                                    (SpeechTranscription *)
                                                         transcription;
 - (void)speechManagerDidBecomeAvailable;
 - (void)speechManagerDidBecomeUnavailable;

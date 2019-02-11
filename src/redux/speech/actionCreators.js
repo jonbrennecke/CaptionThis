@@ -5,7 +5,7 @@ import SpeechManager from '../../utils/SpeechManager';
 
 import type {
   Dispatch,
-  ReceiveVideoAssetPayload,
+  ReceiveVideoAssetIdPayload,
   ReceiveSpeechTranscriptionPayload,
 } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
@@ -14,7 +14,7 @@ import type { SpeechTranscription } from '../../types/speech';
 export const beginSpeechTranscriptionWithVideoAsset = (
   videoAssetIdentifier: VideoAssetIdentifier
 ) => {
-  return async (dispatch: Dispatch<ReceiveVideoAssetPayload>) => {
+  return async (dispatch: Dispatch<ReceiveVideoAssetIdPayload>) => {
     dispatch({ type: ACTION_TYPES.DID_START_SPEECH_TRANSCRIPTION });
     try {
       const success = await SpeechManager.beginSpeechTranscriptionWithVideoAsset(
@@ -91,7 +91,7 @@ export const receiveSpeechTranscriptionSuccess = (
 export const receiveSpeechTranscriptionFailure = (
   videoAssetIdentifier: VideoAssetIdentifier
 ) => {
-  return (dispatch: Dispatch<ReceiveVideoAssetPayload>) => {
+  return (dispatch: Dispatch<ReceiveVideoAssetIdPayload>) => {
     dispatch({
       type: ACTION_TYPES.DID_NOT_SUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION,
       payload: { videoAssetIdentifier },
