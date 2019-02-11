@@ -24,7 +24,7 @@ const styles = {
     height: 100,
     width: 100,
     borderWidth: 1,
-    borderColor: UI_COLORS.MEDIUM_GREEN,
+    borderColor: UI_COLORS.WHITE,
     position: 'absolute',
     top: y - 50,
     left: x - 50,
@@ -71,6 +71,7 @@ export default class CameraTapToFocusView extends Component<Props, State> {
       toValue: 1,
       duration: 600,
       easing: Easing.bounce,
+      useNativeDriver: true,
     }).start();
   }
 
@@ -79,6 +80,7 @@ export default class CameraTapToFocusView extends Component<Props, State> {
       toValue: 0,
       duration: 600,
       easing: Easing.bounce,
+      useNativeDriver: true,
     }).start();
   }
 

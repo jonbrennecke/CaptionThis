@@ -67,6 +67,7 @@ export default class EditScreenExportingOverlay extends Component<Props> {
     Animated.timing(this.anim, {
       toValue: 1,
       duration: 300,
+      useNativeDriver: true,
     }).start();
   }
 
@@ -74,6 +75,7 @@ export default class EditScreenExportingOverlay extends Component<Props> {
     Animated.timing(this.anim, {
       toValue: 0,
       duration: 300,
+      useNativeDriver: true,
     }).start();
   }
 
