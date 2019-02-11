@@ -16,7 +16,7 @@ type Props = {
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
   onRequestSwitchCamera: () => void,
-  videoAssetIdentifier: ?VideoAssetIdentifier,
+  id: ?VideoAssetIdentifier,
 };
 
 const styles = {
@@ -52,7 +52,7 @@ export default function HomeScreenCaptureControls({
   onRequestEndCapture,
   onRequestOpenCameraRoll,
   onRequestSwitchCamera,
-  videoAssetIdentifier,
+  id,
 }: Props) {
   return (
     <SlideUpAnimatedView
@@ -61,7 +61,7 @@ export default function HomeScreenCaptureControls({
       delay={1000}
     >
       <HomeScreenCameraRollButton
-        videoAssetIdentifier={videoAssetIdentifier}
+        id={id}
         onPress={onRequestOpenCameraRoll}
         style={styles.cameraRollButton}
       />

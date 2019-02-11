@@ -33,19 +33,23 @@
   if (!hasListeners) {
     return;
   }
-  NSMutableArray<NSString *> *localIdentifiers =
+  NSMutableArray<NSDictionary *> *videos =
       [[NSMutableArray alloc] initWithCapacity:videoAssets.count];
-  [videoAssets
-      enumerateObjectsUsingBlock:^(PHAsset *_Nonnull asset, NSUInteger idx,
-                                   BOOL *_Nonnull stop) {
-        if (asset == nil) {
-          return;
-        }
-        NSString *localIdentifier = asset.localIdentifier;
-        [localIdentifiers insertObject:localIdentifier atIndex:idx];
-      }];
+  [videoAssets enumerateObjectsUsingBlock:^(PHAsset *_Nonnull asset,
+                                            NSUInteger idx,
+                                            BOOL *_Nonnull stop) {
+    if (asset == nil) {
+      return;
+    }
+    NSString *localIdentifier = asset.localIdentifier;
+    NSTimeInterval duration = asset.duration;
+    NSDictionary *video =
+        @{ @"id" : localIdentifier,
+           @"duration" : @(duration) };
+    [videos insertObject:video atIndex:idx];
+  }];
   [self sendEventWithName:@"mediaLibraryDidUpdateVideos"
-                     body:@{@"videos" : localIdentifiers}];
+                     body:@{@"videos" : videos}];
 }
 
 #pragma mark - React Native module
@@ -71,7 +75,7 @@ RCT_EXPORT_MODULE(MediaLibrary)
 RCT_EXPORT_METHOD(getVideos : (RCTResponseSenderBlock)callback) {
   NSArray<PHAsset *> *assets =
       [AppDelegate.sharedMediaLibraryManager getVideosFromLibrary];
-  NSMutableArray<NSString *> *localIdentifiers =
+  NSMutableArray<NSDictionary *> *videos =
       [[NSMutableArray alloc] initWithCapacity:assets.count];
   [assets enumerateObjectsUsingBlock:^(PHAsset *_Nonnull asset, NSUInteger idx,
                                        BOOL *_Nonnull stop) {
@@ -79,9 +83,13 @@ RCT_EXPORT_METHOD(getVideos : (RCTResponseSenderBlock)callback) {
       return;
     }
     NSString *localIdentifier = asset.localIdentifier;
-    [localIdentifiers insertObject:localIdentifier atIndex:idx];
+    NSTimeInterval duration = asset.duration;
+    NSDictionary *video =
+        @{ @"id" : localIdentifier,
+           @"duration" : @(duration) };
+    [videos insertObject:video atIndex:idx];
   }];
-  callback(@[ [NSNull null], localIdentifiers ]);
+  callback(@[ [NSNull null], videos ]);
 }
 
 RCT_EXPORT_METHOD(startObservingVideos) {

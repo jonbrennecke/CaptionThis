@@ -9,7 +9,7 @@ const NativeVideoThumbnailView = requireNativeComponent('VideoThumbnailView');
 
 type Props = {
   style?: ?Style,
-  videoAssetIdentifier: VideoAssetIdentifier,
+  id: VideoAssetIdentifier,
 };
 
 const styles = {
@@ -20,15 +20,12 @@ const styles = {
   },
 };
 
-export default function VideoThumbnailView({
-  style,
-  videoAssetIdentifier,
-}: Props) {
+export default function VideoThumbnailView({ style, id }: Props) {
   return (
     <View style={[styles.container, style]}>
       <NativeVideoThumbnailView
         style={styles.nativeView}
-        localIdentifier={videoAssetIdentifier}
+        localIdentifier={id}
       />
     </View>
   );

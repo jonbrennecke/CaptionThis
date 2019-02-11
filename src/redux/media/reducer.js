@@ -15,7 +15,7 @@ const initialState: MediaState = {
     isRecording: false,
     videoAssetIdentifier: null,
   },
-  videoAssetIdentifiers: [],
+  videos: [],
   mediaLoadingState: LOADING_STATE.NOT_LOADED,
   videoExportState: LOADING_STATE.NOT_LOADED,
 };
@@ -48,7 +48,7 @@ function didLoadVideos(
   }
   return {
     ...state,
-    videoAssetIdentifiers: payload.videoAssetIdentifiers,
+    videos: payload.videos,
     mediaLoadingState: LOADING_STATE.WAS_LOADED_SUCCESSFULLY,
   };
 }

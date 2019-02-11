@@ -36,7 +36,7 @@ import {
   receiveSpeechTranscriptionSuccess,
 } from '../../redux/speech/actionCreators';
 import {
-  getVideoAssetIdentifiers,
+  getVideos,
   isCameraRecording,
   getCurrentVideo,
 } from '../../redux/media/selectors';
@@ -50,7 +50,7 @@ import LiveTranscriptionView from '../../components/live-transcription-view/Live
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 
 import type { Dispatch, AppState } from '../../types/redux';
-import type { VideoAssetIdentifier } from '../../types/media';
+import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 import type { Return } from '../../types/util';
 import type { EmitterSubscription as MediaManagerSubscription } from '../../utils/MediaManager';
@@ -67,7 +67,7 @@ type OwnProps = {
 };
 
 type StateProps = {
-  videoAssetIdentifiers: VideoAssetIdentifier[],
+  videos: VideoObject[],
   arePermissionsGranted: boolean,
   isCameraRecording: boolean,
   currentVideo: ?VideoAssetIdentifier,
@@ -76,7 +76,7 @@ type StateProps = {
 };
 
 type DispatchProps = {
-  receiveVideos: (videos: VideoAssetIdentifier[]) => Promise<void>,
+  receiveVideos: (videos: VideoObject[]) => Promise<void>,
   beginCameraCapture: () => Promise<void>,
   endCameraCapture: () => Promise<void>,
   beginSpeechTranscriptionWithAudioSession: () => Promise<void>,
@@ -143,7 +143,7 @@ const styles = {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    videoAssetIdentifiers: getVideoAssetIdentifiers(state),
+    videos: getVideos(state),
     arePermissionsGranted: arePermissionsGranted(state),
     isCameraRecording: isCameraRecording(state),
     currentVideo: getCurrentVideo(state),
@@ -154,8 +154,7 @@ function mapStateToProps(state: AppState): StateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
-    receiveVideos: (videos: VideoAssetIdentifier[]) =>
-      dispatch(receiveVideos(videos)),
+    receiveVideos: (videos: VideoObject[]) => dispatch(receiveVideos(videos)),
     beginCameraCapture: () => dispatch(beginCameraCapture()),
     endCameraCapture: () => dispatch(endCameraCapture()),
     beginSpeechTranscriptionWithAudioSession: () =>
@@ -249,11 +248,7 @@ export default class HomeScreen extends Component<Props, State> {
     await this.props.receiveVideos(videos);
   }
 
-  async mediaManagerDidUpdateVideos({
-    videos,
-  }: {
-    videos: VideoAssetIdentifier[],
-  }) {
+  async mediaManagerDidUpdateVideos({ videos }: { videos: VideoObject[] }) {
     await this.props.receiveVideos(videos);
   }
 
@@ -404,7 +399,7 @@ export default class HomeScreen extends Component<Props, State> {
                   }}
                   onRequestOpenCameraRoll={this.scrollToCameraRoll}
                   onRequestSwitchCamera={Camera.switchToOppositeCamera}
-                  videoAssetIdentifier={this.props.videoAssetIdentifiers[0]}
+                  id={this.props.videos[0]?.id}
                 />
               </Animated.View>
             </SafeAreaView>
@@ -422,7 +417,7 @@ export default class HomeScreen extends Component<Props, State> {
               >
                 <VideoThumbnailGrid
                   style={styles.flex}
-                  videoAssetIdentifiers={this.props.videoAssetIdentifiers}
+                  videos={this.props.videos}
                   onPressThumbnail={(...args) => {
                     this.onDidPressVideoThumbnail(...args);
                   }}

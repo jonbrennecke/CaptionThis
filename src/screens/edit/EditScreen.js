@@ -579,7 +579,10 @@ export default class EditScreen extends Component<Props, State> {
           }}
         />
         <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
-        <EditScreenLoadingOverlay isVisible={!hasFinalTranscription} />
+        <EditScreenLoadingOverlay
+          isVisible={!hasFinalTranscription}
+          duration={this.state.duration}
+        />
         <EditScreenEditCaptionsOverlay
           videoAssetIdentifier={this.props.videoAssetIdentifier}
           speechTranscriptions={this.props.speechTranscriptions}

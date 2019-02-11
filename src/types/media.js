@@ -7,6 +7,11 @@ export type Size = {
 
 export type VideoAssetIdentifier = string;
 
+export type VideoObject = {
+  duration: number,
+  id: VideoAssetIdentifier,
+};
+
 export type ColorRGBA = {
   red: number,
   green: number,

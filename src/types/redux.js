@@ -1,6 +1,6 @@
 /* @flow */
 import typeof { LOADING_STATE, TRANSCRIPTION_STATE } from '../constants';
-import type { VideoAssetIdentifier, ColorRGBA } from './media';
+import type { VideoAssetIdentifier, ColorRGBA, VideoObject } from './media';
 import type { SpeechTranscription } from './speech';
 import type { LineStyle } from './video';
 import type { ReactAppStateEnum } from './react';
@@ -40,7 +40,7 @@ export type OnboardingState = {|
 |};
 
 export type MediaState = {|
-  videoAssetIdentifiers: VideoAssetIdentifier[],
+  videos: VideoObject[],
   mediaLoadingState: $Keys<LOADING_STATE>,
   videoExportState: $Keys<LOADING_STATE>,
   cameraRecordingState: {
@@ -90,7 +90,10 @@ export type ReceivePermissionsPayload = {|
 |};
 
 export type ReceiveVideoAssetsPayload = {|
-  videoAssetIdentifiers: VideoAssetIdentifier[],
+  videos: {
+    duration: number,
+    id: VideoAssetIdentifier,
+  }[],
 |};
 
 export type ReceiveVideoAssetPayload = {|
