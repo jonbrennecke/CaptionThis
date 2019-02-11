@@ -9,7 +9,6 @@ import {
   MaskedViewIOS,
   Easing,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { autobind } from 'core-decorators';
 
 import * as Fonts from '../../utils/Fonts';
@@ -46,13 +45,13 @@ const styles = {
     height: CIRCLE_RADIUS,
     width: CIRCLE_RADIUS,
     borderRadius: CIRCLE_RADIUS / 2,
-    shadowColor: UI_COLORS.BLACK,
-    shadowOpacity: 0.25,
-    shadowOffset: {
-      width: 1,
-      height: 4,
-    },
-    shadowRadius: 5,
+    // shadowColor: UI_COLORS.BLACK,
+    // shadowOpacity: 0.25,
+    // shadowOffset: {
+    //   width: 1,
+    //   height: 4,
+    // },
+    // shadowRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -85,13 +84,9 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  background: {
-    ...StyleSheet.absoluteFillObject,
-  },
   activityIndicator: {
     marginBottom: 15,
   },
-  title: Fonts.getFontStyle('title', { contentStyle: 'lightContent' }),
   countdown: {
     ...Fonts.getFontStyle('heading', {
       contentStyle: 'lightContent',
@@ -103,8 +98,34 @@ const styles = {
       height: 1,
     },
     textShadowRadius: 1,
-    textAlign: 'right',
+    textAlign: 'center',
   },
+  title: {
+    ...Fonts.getFontStyle('heading', {
+      contentStyle: 'lightContent',
+    }),
+    textShadowColor: Color.hexToRgbaString(UI_COLORS.BLACK, 0.25),
+    textShadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    textShadowRadius: 1,
+    textAlign: 'center',
+    marginTop: 45
+  },
+  subtitle: {
+    ...Fonts.getFontStyle('default', {
+      contentStyle: 'lightContent',
+    }),
+    textShadowColor: Color.hexToRgbaString(UI_COLORS.BLACK, 0.25),
+    textShadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    textShadowRadius: 1,
+    textAlign: 'center',
+    marginTop: 10
+  }
 };
 
 // $FlowFixMe
@@ -114,7 +135,7 @@ export default class EditScreenExportingOverlay extends Component<
   State
 > {
   state = {
-    countdown: '0:00',
+    countdown: '0%',
     startTime: 0,
   };
   animationFrameId: ?AnimationFrameID = null;
@@ -204,16 +225,6 @@ export default class EditScreenExportingOverlay extends Component<
         pointerEvents={this.props.isVisible ? 'auto' : 'none'}
         style={[styles.container(this.anim), this.props.style]}
       >
-        <LinearGradient
-          style={styles.background}
-          pointerEvents="none"
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          colors={[
-            Color.hexToRgbaString('#4F5BD5', 1),
-            Color.hexToRgbaString('#456FF2', 1),
-          ]}
-        />
         <SafeAreaView style={styles.flexCenter}>
           <Animated.View style={styles.outerView}>
             <MaskedViewIOS
@@ -231,6 +242,12 @@ export default class EditScreenExportingOverlay extends Component<
               {this.state.countdown}
             </Text>
           </Animated.View>
+          <Text style={styles.title} numberOfLines={1}>
+            Creating captions...
+          </Text>
+          <Text style={styles.subtitle} numberOfLines={2}>
+            Please wait while your captions are generated
+          </Text>
         </SafeAreaView>
       </Animated.View>
     );

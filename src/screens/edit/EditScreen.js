@@ -25,6 +25,7 @@ import EditScreenTopControls from './EditScreenTopControls';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
+import EditScreenLoadingBackground from './EditScreenLoadingBackground';
 import EditScreenEditCaptionsOverlay from './EditScreenEditCaptionsOverlay';
 import SpeechManager from '../../utils/SpeechManager';
 import { exportVideo } from '../../redux/media/actionCreators';
@@ -289,6 +290,8 @@ export default class EditScreen extends Component<Props, State> {
     this.setState({ duration, orientation });
     if (!this.isReadyToPlay()) {
       this.pausePlayerAndCaptions();
+    } else {
+      this.restartPlayerAndCaptions();
     }
   }
 
@@ -490,8 +493,9 @@ export default class EditScreen extends Component<Props, State> {
     const hasFinalTranscription = this.hasFinalSpeechTranscription();
     return (
       <View style={styles.container}>
+        {!hasFinalTranscription && <EditScreenLoadingBackground/>}
         <SafeAreaView style={styles.flex}>
-          <View style={styles.videoWrap}>
+          {hasFinalTranscription && <View style={styles.videoWrap}>
             <VideoPlayerView
               ref={ref => {
                 this.playerView = ref;
@@ -547,8 +551,8 @@ export default class EditScreen extends Component<Props, State> {
               }
               onEditTextButtonPress={this.showEditCaptionsOverlay}
             />
-          </View>
-          <View style={styles.editControls}>
+          </View>}
+          {hasFinalTranscription && <View style={styles.editControls}>
             <VideoSeekbar
               style={styles.flex}
               duration={this.state.duration}
@@ -558,7 +562,7 @@ export default class EditScreen extends Component<Props, State> {
               onDidBeginDrag={() => this.setState({ isDraggingSeekbar: true })}
               onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
             />
-          </View>
+          </View>}
         </SafeAreaView>
         <EditScreenRichTextOverlay
           ref={ref => {
