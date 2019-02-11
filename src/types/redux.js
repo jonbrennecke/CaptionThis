@@ -4,6 +4,7 @@ import type { VideoAssetIdentifier, ColorRGBA, VideoObject } from './media';
 import type { SpeechTranscription } from './speech';
 import type { LineStyle } from './video';
 import type { ReactAppStateEnum } from './react';
+import type { DeviceInfoObject } from '../utils/Device';
 
 export type Action<T> = {
   +type: string,
@@ -51,6 +52,7 @@ export type MediaState = {|
 
 export type DeviceState = {|
   appState: ReactAppStateEnum,
+  deviceInfo: ?DeviceInfoObject,
 |};
 
 export type VideoState = {|
@@ -77,7 +79,8 @@ export type Payload =
   | ReceiveBackgroundColorPayload
   | ReceiveTextColorPayload
   | ReceiveFontSizePayload
-  | ReceiveAppStateChangePayload;
+  | ReceiveAppStateChangePayload
+  | ReceiveDeviceInfoPayload;
 
 export type ReceiveLoginPayload = {|
   token: string,
@@ -124,4 +127,8 @@ export type ReceiveFontSizePayload = {|
 
 export type ReceiveAppStateChangePayload = {|
   appState: ReactAppStateEnum,
+|};
+
+export type ReceiveDeviceInfoPayload = {|
+  deviceInfo: DeviceInfoObject,
 |};

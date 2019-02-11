@@ -35,6 +35,7 @@ import {
   receiveSpeechTranscriptionFailure,
   receiveSpeechTranscriptionSuccess,
 } from '../../redux/speech/actionCreators';
+import { loadDeviceInfo } from '../../redux/device/actionCreators';
 import {
   getVideos,
   isCameraRecording,
@@ -76,6 +77,7 @@ type StateProps = {
 };
 
 type DispatchProps = {
+  loadDeviceInfo: () => Promise<void>,
   receiveVideos: (videos: VideoObject[]) => Promise<void>,
   beginCameraCapture: () => Promise<void>,
   endCameraCapture: () => Promise<void>,
@@ -154,6 +156,7 @@ function mapStateToProps(state: AppState): StateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
+    loadDeviceInfo: () => dispatch(loadDeviceInfo()),
     receiveVideos: (videos: VideoObject[]) => dispatch(receiveVideos(videos)),
     beginCameraCapture: () => dispatch(beginCameraCapture()),
     endCameraCapture: () => dispatch(endCameraCapture()),
@@ -224,6 +227,7 @@ export default class HomeScreen extends Component<Props, State> {
       this.cameraView.setUp();
     }
     await this.loadMediaLibrary();
+    await this.props.loadDeviceInfo();
     this.setState({
       hasCompletedSetupAfterOnboarding: true,
     });

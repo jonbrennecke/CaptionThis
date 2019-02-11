@@ -100,7 +100,6 @@ export default class SpeechTranscriptionSegmentInput extends Component<
     Animated.timing(this.anim, {
       toValue: 1,
       duration: 200,
-      useNativeDriver: true,
     }).start();
   }
 
@@ -111,7 +110,6 @@ export default class SpeechTranscriptionSegmentInput extends Component<
     Animated.timing(this.anim, {
       toValue: 0,
       duration: 200,
-      useNativeDriver: true,
     }).start();
   }
 

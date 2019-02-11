@@ -130,7 +130,7 @@ extension FileSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
       }
       Debug.log(error: error)
     }
-    guard case .pending(_, let startTime) = state else {
+    guard case let .pending(_, startTime) = state else {
       delegate.speechTranscriptionRequestDidTerminate()
       return
     }

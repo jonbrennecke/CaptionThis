@@ -53,7 +53,7 @@ import {
   getLineStyle,
 } from '../../redux/video/selectors';
 import { receiveAppStateChange } from '../../redux/device/actionCreators';
-import { isAppInForeground } from '../../redux/device/selectors';
+import { isAppInForeground, isDeviceLimitedByMemory } from '../../redux/device/selectors';
 
 import type {
   VideoAssetIdentifier,
@@ -93,6 +93,7 @@ type StateProps = {
   didSpeechRecognitionFail: boolean,
   lineStyle: LineStyle,
   isAppInForeground: boolean,
+  isDeviceLimitedByMemory: boolean,
 };
 
 type DispatchProps = {
@@ -165,6 +166,7 @@ function mapStateToProps(state: AppState): StateProps {
     didSpeechRecognitionFail: didSpeechRecognitionFail(state),
     lineStyle: getLineStyle(state),
     isAppInForeground: isAppInForeground(state),
+    isDeviceLimitedByMemory: isDeviceLimitedByMemory(state),
   };
 }
 
@@ -491,6 +493,7 @@ export default class EditScreen extends Component<Props, State> {
 
   render() {
     const hasFinalTranscription = this.hasFinalSpeechTranscription();
+    const showSeekbar = hasFinalTranscription && !this.props.isDeviceLimitedByMemory;
     return (
       <View style={styles.container}>
         {!hasFinalTranscription && <EditScreenLoadingBackground />}
@@ -554,7 +557,7 @@ export default class EditScreen extends Component<Props, State> {
               />
             </View>
           )}
-          {hasFinalTranscription && (
+          {showSeekbar && (
             <View style={styles.editControls}>
               <VideoSeekbar
                 style={styles.flex}

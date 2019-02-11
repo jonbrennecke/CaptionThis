@@ -131,8 +131,10 @@ class VideoPlayerView: UIView {
     playerLooper = AVPlayerLooper(player: player, templateItem: item)
     Debug.log(message: "Video is ready to play")
     delegate?.videoPlayerDidBecomeReadyToPlayAsset(asset)
-    // FIXME: needs to be optimized
-//    if DeviceUtil.
+    if DeviceUtil.isMemoryLimitedDevice() {
+      Debug.log(message: "Skipping creation of periodic time observer (memory limited device).")
+      return
+    }
     backgroundQueue.async {
       let timeScale = CMTimeScale(NSEC_PER_SEC)
       let time = CMTime(seconds: 0.1, preferredTimescale: timeScale)

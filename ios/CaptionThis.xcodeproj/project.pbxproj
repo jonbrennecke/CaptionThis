@@ -39,6 +39,7 @@
 		FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58D07521FA795F00E7956D /* AudioUtil.swift */; };
 		FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */; };
 		FC6EA41D221221BC009F3D7D /* VideoSeekbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA41C221221BC009F3D7D /* VideoSeekbarView.swift */; };
+		FC6EA41F221230A6009F3D7D /* DeviceBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA41E221230A6009F3D7D /* DeviceBridgeModule.m */; };
 		FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */; };
 		FC6EA7D721CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */; };
 		FC6EA7D821CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */; };
@@ -498,6 +499,8 @@
 		FC58D07521FA795F00E7956D /* AudioUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUtil.swift; sourceTree = "<group>"; };
 		FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUtil.swift; sourceTree = "<group>"; };
 		FC6EA41C221221BC009F3D7D /* VideoSeekbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSeekbarView.swift; sourceTree = "<group>"; };
+		FC6EA41E221230A6009F3D7D /* DeviceBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceBridgeModule.m; sourceTree = "<group>"; };
+		FC6EA420221230AF009F3D7D /* DeviceBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceBridgeModule.h; sourceTree = "<group>"; };
 		FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PassionOne-Regular.ttf"; path = "../assets/fonts/PassionOne-Regular.ttf"; sourceTree = "<group>"; };
 		FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Bold.ttf"; path = "../assets/fonts/PT_Sans-Web-Bold.ttf"; sourceTree = "<group>"; };
 		FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Regular.ttf"; path = "../assets/fonts/PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
@@ -724,6 +727,7 @@
 				FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */,
 				FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */,
 				FC9374E621DEED6700FD2700 /* TranscriptViewManager */,
+				FC6EA421221230CA009F3D7D /* DeviceBridgeModule */,
 			);
 			name = CaptionThis;
 			sourceTree = "<group>";
@@ -901,6 +905,15 @@
 				FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		FC6EA421221230CA009F3D7D /* DeviceBridgeModule */ = {
+			isa = PBXGroup;
+			children = (
+				FC6EA41E221230A6009F3D7D /* DeviceBridgeModule.m */,
+				FC6EA420221230AF009F3D7D /* DeviceBridgeModule.h */,
+			);
+			path = DeviceBridgeModule;
 			sourceTree = "<group>";
 		};
 		FC6EA7D921CEA457007C3B3E /* fonts */ = {
@@ -1724,6 +1737,7 @@
 				FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */,
 				FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */,
 				FC4BCD15220432CF00822C0F /* VideoAnimationLayerLayout.swift in Sources */,
+				FC6EA41F221230A6009F3D7D /* DeviceBridgeModule.m in Sources */,
 				FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */,
 				FC6EA7E921D4508D007C3B3E /* CameraManager.swift in Sources */,
 				FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */,
