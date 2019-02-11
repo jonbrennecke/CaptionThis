@@ -47,7 +47,18 @@ class SpeechManager: NSObject {
         acc = firstChar + rest
       }
       let segments = transcriptions.reduce(into: [SpeechTranscriptionSegment]()) { acc, t in
-        let segments = t.segments.map { SpeechTranscriptionSegment(withSegment: $0) }
+        let lastSegment = acc.last
+        let lastTimestamp = lastSegment?.timestamp ?? 0
+        let lastDuration = lastSegment?.duration ?? 0
+        let lastSegmentEndTimestamp = lastTimestamp + lastDuration
+        let segments = t.segments.map {
+          SpeechTranscriptionSegment(
+            duration: $0.duration,
+            timestamp: $0.timestamp + lastSegmentEndTimestamp,
+            confidence: $0.confidence,
+            substring: $0.substring
+          )
+        }
         acc.append(contentsOf: segments)
       }
       self.init(string: formattedString, segments: segments)

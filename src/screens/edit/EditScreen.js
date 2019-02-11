@@ -493,76 +493,82 @@ export default class EditScreen extends Component<Props, State> {
     const hasFinalTranscription = this.hasFinalSpeechTranscription();
     return (
       <View style={styles.container}>
-        {!hasFinalTranscription && <EditScreenLoadingBackground/>}
+        {!hasFinalTranscription && <EditScreenLoadingBackground />}
         <SafeAreaView style={styles.flex}>
-          {hasFinalTranscription && <View style={styles.videoWrap}>
-            <VideoPlayerView
-              ref={ref => {
-                this.playerView = ref;
-              }}
-              style={styles.flex}
-              isPlaying={this.state.isVideoPlaying}
-              videoAssetIdentifier={this.props.video.id}
-              onVideoDidBecomeReadyToPlay={(...args) => {
-                this.videoPlayerDidBecomeReadyToPlay(...args);
-              }}
-              onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
-              onVideoDidPause={this.videoPlayerDidPause}
-              onVideoDidUpdatePlaybackTime={
-                this.videoPlayerDidUpdatePlaybackTime
-              }
-              onVideoDidRestart={this.videoPlayerDidRestart}
-            />
-            <ScreenGradients />
-            <VideoCaptionsContainer
-              style={styles.captionsContainer}
-              orientation={this.state.orientation}
-            >
-              <VideoCaptionsView
+          {hasFinalTranscription && (
+            <View style={styles.videoWrap}>
+              <VideoPlayerView
                 ref={ref => {
-                  this.captionsView = ref;
+                  this.playerView = ref;
                 }}
                 style={styles.flex}
-                hasFinalTranscription={hasFinalTranscription}
-                orientation={this.state.orientation || 'up'}
-                duration={this.state.duration}
-                lineStyle={this.props.lineStyle}
-                textColor={this.props.textColor}
-                backgroundColor={this.props.backgroundColor}
-                fontFamily={this.props.fontFamily}
-                fontSize={this.props.fontSize}
-                speechTranscription={this.getSpeechTranscription()}
-                onPress={this.showEditCaptionsOverlay}
+                isPlaying={this.state.isVideoPlaying}
+                videoAssetIdentifier={this.props.video.id}
+                onVideoDidBecomeReadyToPlay={(...args) => {
+                  this.videoPlayerDidBecomeReadyToPlay(...args);
+                }}
+                onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
+                onVideoDidPause={this.videoPlayerDidPause}
+                onVideoDidUpdatePlaybackTime={
+                  this.videoPlayerDidUpdatePlaybackTime
+                }
+                onVideoDidRestart={this.videoPlayerDidRestart}
               />
-            </VideoCaptionsContainer>
-            <EditScreenTopControls
-              style={styles.editTopControls}
-              isReadyToExport={!!hasFinalTranscription}
-              onBackButtonPress={() => {
-                this.onDidPressBackButton();
-              }}
-              onExportButtonPress={() => {
-                this.onDidPressExportButton();
-              }}
-              onStylizeButtonPress={() =>
-                this.setState({
-                  showRichTextOverlay: !this.state.showRichTextOverlay,
-                })
-              }
-              onEditTextButtonPress={this.showEditCaptionsOverlay}
-            />
-          </View>}
-          {hasFinalTranscription && <View style={styles.editControls}>
-            <VideoSeekbar
-              style={styles.flex}
-              duration={this.state.duration}
-              playbackTime={this.state.playbackTime}
-              videoAssetIdentifier={this.props.video.id}
-              onSeekToTime={this.seekBarDidSeekToTimeThrottled}
-              onDidBeginDrag={() => this.setState({ isDraggingSeekbar: true })}
-              onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
-            />
-          </View>}
+              <ScreenGradients />
+              <VideoCaptionsContainer
+                style={styles.captionsContainer}
+                orientation={this.state.orientation}
+              >
+                <VideoCaptionsView
+                  ref={ref => {
+                    this.captionsView = ref;
+                  }}
+                  style={styles.flex}
+                  hasFinalTranscription={hasFinalTranscription}
+                  orientation={this.state.orientation || 'up'}
+                  duration={this.state.duration}
+                  lineStyle={this.props.lineStyle}
+                  textColor={this.props.textColor}
+                  backgroundColor={this.props.backgroundColor}
+                  fontFamily={this.props.fontFamily}
+                  fontSize={this.props.fontSize}
+                  speechTranscription={this.getSpeechTranscription()}
+                  onPress={this.showEditCaptionsOverlay}
+                />
+              </VideoCaptionsContainer>
+              <EditScreenTopControls
+                style={styles.editTopControls}
+                isReadyToExport={!!hasFinalTranscription}
+                onBackButtonPress={() => {
+                  this.onDidPressBackButton();
+                }}
+                onExportButtonPress={() => {
+                  this.onDidPressExportButton();
+                }}
+                onStylizeButtonPress={() =>
+                  this.setState({
+                    showRichTextOverlay: !this.state.showRichTextOverlay,
+                  })
+                }
+                onEditTextButtonPress={this.showEditCaptionsOverlay}
+              />
+            </View>
+          )}
+          {hasFinalTranscription && (
+            <View style={styles.editControls}>
+              <VideoSeekbar
+                style={styles.flex}
+                duration={this.state.duration}
+                playbackTime={this.state.playbackTime}
+                videoAssetIdentifier={this.props.video.id}
+                onSeekToTime={this.seekBarDidSeekToTimeThrottled}
+                onDidBeginDrag={() =>
+                  this.setState({ isDraggingSeekbar: true })
+                }
+                onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
+              />
+            </View>
+          )}
         </SafeAreaView>
         <EditScreenRichTextOverlay
           ref={ref => {
