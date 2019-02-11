@@ -25,21 +25,23 @@ import requireOnboardedUser from '../onboarding/requireOnboardedUser';
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import {
   receiveVideos,
-  beginSpeechTranscriptionWithAudioSession,
-  endSpeechTranscriptionWithAudioSession,
-  receiveSpeechTranscriptionFailure,
-  receiveSpeechTranscriptionSuccess,
   beginCameraCapture,
   endCameraCapture,
   receiveFinishedVideo,
 } from '../../redux/media/actionCreators';
 import {
+  beginSpeechTranscriptionWithAudioSession,
+  endSpeechTranscriptionWithAudioSession,
+  receiveSpeechTranscriptionFailure,
+  receiveSpeechTranscriptionSuccess,
+} from '../../redux/speech/actionCreators';
+import {
   getVideoAssetIdentifiers,
   isCameraRecording,
   getCurrentVideo,
-  getFontFamily,
-  getSpeechTranscriptions,
 } from '../../redux/media/selectors';
+import { getFontFamily } from '../../redux/video/selectors';
+import { getSpeechTranscriptions } from '../../redux/speech/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
