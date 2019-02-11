@@ -18,7 +18,7 @@ class VideoThumbnailView: UIView {
   required init?(coder _: NSCoder) {
     fatalError("init?(coder: NSCoder) is not implemented.")
   }
-  
+
   deinit {
     if let id = requestID {
       cancelLoadingThumbnail(requestID: id)
@@ -64,7 +64,7 @@ class VideoThumbnailView: UIView {
       self.imageView.image = image
     }
   }
-  
+
   private func cancelLoadingThumbnail(requestID: PHImageRequestID) {
     PHImageManager.default().cancelImageRequest(requestID)
   }
