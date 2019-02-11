@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 import uuid from 'uuid';
+import { Navigation } from 'react-native-navigation';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
@@ -184,6 +185,7 @@ export default class HomeScreen extends Component<Props, State> {
     currentVideoIdentifier: null,
     hasCompletedSetupAfterOnboarding: false,
   };
+  navigationEventListener: ?any;
   scrollView: ?ScrollView;
   cameraView: ?CameraPreviewView;
   scrollAnim = new Animated.Value(0);
@@ -193,6 +195,7 @@ export default class HomeScreen extends Component<Props, State> {
   cameraManagerDidFinishFileOutputListener: ?CameraManagerSubscription;
 
   componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
     }
@@ -210,6 +213,9 @@ export default class HomeScreen extends Component<Props, State> {
     if (this.didNotDetectSpeechSubscription) {
       this.didNotDetectSpeechSubscription.remove();
     }
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
   }
 
   async componentDidUpdate(prevProps: Props) {
@@ -218,11 +224,18 @@ export default class HomeScreen extends Component<Props, State> {
     }
   }
 
+  componentDidAppear() {
+    Camera.startPreview();
+  }
+
+  componentDidDisappear() {
+    Camera.stopPreview();
+  }
+
   async setupAfterOnboarding() {
     if (this.state.hasCompletedSetupAfterOnboarding) {
       return;
     }
-    Camera.startPreview();
     if (this.cameraView) {
       this.cameraView.setUp();
     }
@@ -326,7 +339,6 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async pushEditScreen(video: VideoObject) {
-    Camera.stopPreview();
     await Screens.pushEditScreen(this.props.componentId, video);
   }
 
