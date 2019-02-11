@@ -45,13 +45,6 @@ const styles = {
     height: CIRCLE_RADIUS,
     width: CIRCLE_RADIUS,
     borderRadius: CIRCLE_RADIUS / 2,
-    shadowColor: UI_COLORS.WHITE,
-    shadowOpacity: 0.25,
-    shadowOffset: {
-      width: 1,
-      height: 4,
-    },
-    shadowRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
