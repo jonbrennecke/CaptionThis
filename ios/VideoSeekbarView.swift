@@ -9,6 +9,8 @@ class VideoSeekbarView: UIView {
   private var imageViews: [UIImageView] = []
   private var requestID: PHImageRequestID?
   
+  private static let queue = DispatchQueue.init(label: "seekbar preview view queue")
+  
   init() {
     super.init(frame: .zero)
     imageViews = [UIImageView]()
@@ -42,26 +44,6 @@ class VideoSeekbarView: UIView {
       imageView.frame = CGRect(x: width * CGFloat(index), y: 0, width: width, height: height)
     }
   }
-
-  @objc
-  public func set(image: UIImage, atIndex index: Int) {
-    guard index < imageViews.count else {
-      Debug.log(message: "Index is out of bounds")
-      return
-    }
-    let imageView = imageViews[index]
-    DispatchQueue.main.async {
-      imageView.image = image
-      switch image.imageOrientation {
-      case .left, .right, .leftMirrored, .rightMirrored:
-        imageView.contentMode = .scaleAspectFit
-        break
-      default:
-        imageView.contentMode = .scaleAspectFill
-        break
-      }
-    }
-  }
   
   @objc
   public var localIdentifier: String? {
@@ -69,18 +51,26 @@ class VideoSeekbarView: UIView {
       guard let id = localIdentifier else {
         return
       }
-      let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil)
-      guard let asset = fetchResult.firstObject else {
-        Debug.log(format: "Failed to fetch PHAsset with id = %@", id)
+      VideoSeekbarView.queue.async {
+        self.loadPreviewImages(withLocalIdentifier: id)
+      }
+    }
+  }
+  
+  private func loadPreviewImages(withLocalIdentifier id: String) {
+    let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil)
+    guard let asset = fetchResult.firstObject else {
+      Debug.log(format: "Failed to fetch PHAsset with id = %@", id)
+      return
+    }
+    let videoRequestOptions = PHVideoRequestOptions()
+    videoRequestOptions.deliveryMode = .highQualityFormat
+    requestID = PHImageManager.default().requestAVAsset(forVideo: asset, options: videoRequestOptions) { asset, _, _ in
+      guard let asset = asset else {
+        Debug.log(message: "Failed to generate asset for seekbar preview images")
         return
       }
-      let videoRequestOptions = PHVideoRequestOptions()
-      videoRequestOptions.deliveryMode = .highQualityFormat
-      requestID = PHImageManager.default().requestAVAsset(forVideo: asset, options: videoRequestOptions) { asset, _, _ in
-        guard let asset = asset else {
-          Debug.log(message: "Failed to generate asset for seekbar preview images")
-          return
-        }
+      VideoSeekbarView.queue.async {
         self.generateImages(withAsset: asset)
       }
     }
@@ -111,6 +101,25 @@ class VideoSeekbarView: UIView {
         return
       }
       self.set(image: image, atIndex: index)
+    }
+  }
+  
+  private func set(image: UIImage, atIndex index: Int) {
+    guard index < imageViews.count else {
+      Debug.log(message: "Index is out of bounds")
+      return
+    }
+    let imageView = imageViews[index]
+    DispatchQueue.main.async {
+      imageView.image = image
+      switch image.imageOrientation {
+      case .left, .right, .leftMirrored, .rightMirrored:
+        imageView.contentMode = .scaleAspectFit
+        break
+      default:
+        imageView.contentMode = .scaleAspectFill
+        break
+      }
     }
   }
 }
