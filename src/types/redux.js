@@ -90,13 +90,14 @@ export type ReceivePermissionsPayload = {|
 |};
 
 export type ReceiveVideoAssetsPayload = {|
-  videos: {
-    duration: number,
-    id: VideoAssetIdentifier,
-  }[],
+  videos: VideoObject[],
 |};
 
 export type ReceiveVideoAssetPayload = {|
+  video: VideoObject,
+|};
+
+export type ReceiveVideoAssetIdPayload = {|
   videoAssetIdentifier: VideoAssetIdentifier,
 |};
 

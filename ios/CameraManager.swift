@@ -386,6 +386,7 @@ class CameraManager: NSObject {
           completionHandler(error, success, nil)
           return
         }
+        PHAsset.fetchAssets(withLocalIdentifiers: [assetPlaceholder.localIdentifier], options: nil)
         completionHandler(nil, success, assetPlaceholder)
       }
     }

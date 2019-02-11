@@ -89,7 +89,12 @@ RCT_EXPORT_METHOD(switchToOppositeCamera) {
                @"CameraManager failed to create file asset in Photos library."];
     return;
   }
-  NSDictionary *body = @{@"localIdentifier" : asset.localIdentifier};
+  AVURLAsset *avasset = [[AVURLAsset alloc] initWithURL:fileURL options:nil];
+  CMTime duration = avasset.duration;
+  NSDictionary *body = @{
+    @"id" : asset.localIdentifier,
+    @"duration" : @(CMTimeGetSeconds(duration))
+  };
   [self sendEventWithName:@"cameraManagerDidFinishFileOutput" body:body];
 }
 

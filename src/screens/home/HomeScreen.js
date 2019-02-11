@@ -86,7 +86,7 @@ type DispatchProps = {
     SpeechTranscription
   ) => void,
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
-  receiveFinishedVideo: VideoAssetIdentifier => void,
+  receiveFinishedVideo: VideoObject => void,
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -167,8 +167,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
     ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
     receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
-    receiveFinishedVideo: (id: VideoAssetIdentifier) =>
-      dispatch(receiveFinishedVideo(id)),
+    receiveFinishedVideo: (video: VideoObject) =>
+      dispatch(receiveFinishedVideo(video)),
   };
 }
 
@@ -212,13 +212,6 @@ export default class HomeScreen extends Component<Props, State> {
   async componentDidUpdate(prevProps: Props) {
     if (!prevProps.arePermissionsGranted && this.props.arePermissionsGranted) {
       await this.setupAfterOnboarding();
-    }
-    if (!prevProps.currentVideo && this.props.currentVideo) {
-      const currentVideoId = this.props.currentVideo;
-      const currentVideo = this.props.videos.find(v => v.id === currentVideoId);
-      if (currentVideo) {
-        await Screens.pushEditScreen(this.props.componentId, currentVideo);
-      }
     }
   }
 
@@ -268,7 +261,9 @@ export default class HomeScreen extends Component<Props, State> {
   async startCapture() {
     this.setState({ currentVideoIdentifier: uuid.v4() });
     this.cameraManagerDidFinishFileOutputListener = Camera.addDidFinishFileOutputListener(
-      this.cameraManagerDidFinishFileOutput
+      (...args) => {
+        this.cameraManagerDidFinishFileOutput(...args);
+      }
     );
     await this.props.beginCameraCapture();
     this.didReceiveSpeechTranscriptionSubscription = SpeechManager.addDidReceiveSpeechTranscriptionListener(
@@ -318,8 +313,9 @@ export default class HomeScreen extends Component<Props, State> {
     await this.props.endSpeechTranscriptionWithAudioSession();
   }
 
-  cameraManagerDidFinishFileOutput(videoAssetIdentifier: VideoAssetIdentifier) {
-    this.props.receiveFinishedVideo(videoAssetIdentifier);
+  async cameraManagerDidFinishFileOutput(video: VideoObject) {
+    this.props.receiveFinishedVideo(video);
+    await Screens.pushEditScreen(this.props.componentId, video);
   }
 
   scrollToCameraRoll() {

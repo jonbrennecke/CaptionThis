@@ -89,9 +89,10 @@ function didReceiveFinishedVideo(
   }
   return {
     ...state,
+    videos: [...state.videos, payload.video],
     cameraRecordingState: {
       isRecording: false,
-      videoAssetIdentifier: payload.videoAssetIdentifier,
+      videoAssetIdentifier: payload.video.id,
     },
   };
 }
