@@ -43,18 +43,6 @@ class VideoPlayerView: UIView {
         self.player.replaceCurrentItem(with: item)
         NotificationCenter.default.addObserver(self, selector: #selector(self.playerDidPlayToEnd(notification:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
         self.play()
-        DispatchQueue.main.async {
-          let orientation = OrientationUtil.orientation(forAsset: asset)
-          switch orientation {
-          case .left, .leftMirrored, .right, .rightMirrored:
-            self.playerLayer.videoGravity = .resizeAspect
-            break
-          default:
-            self.playerLayer.videoGravity = .resizeAspectFill
-            break
-          }
-          self.playerLayer.player = self.player
-        }
       }
     }
   }
@@ -131,6 +119,25 @@ class VideoPlayerView: UIView {
     playerLooper = AVPlayerLooper(player: player, templateItem: item)
     Debug.log(message: "Video is ready to play")
     delegate?.videoPlayerDidBecomeReadyToPlayAsset(asset)
+    startTimeObvserver()
+    DispatchQueue.main.async {
+      let orientation = OrientationUtil.orientation(forAsset: asset)
+      switch orientation {
+      case .left, .leftMirrored, .right, .rightMirrored:
+        self.playerLayer.videoGravity = .resizeAspect
+        break
+      default:
+        self.playerLayer.videoGravity = .resizeAspectFill
+        break
+      }
+      self.playerLayer.player = self.player
+    }
+  }
+
+  private func startTimeObvserver() {
+    guard let asset = asset else {
+      return
+    }
     if DeviceUtil.isMemoryLimitedDevice() {
       Debug.log(message: "Skipping creation of periodic time observer (memory limited device).")
       return

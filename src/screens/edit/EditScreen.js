@@ -53,7 +53,10 @@ import {
   getLineStyle,
 } from '../../redux/video/selectors';
 import { receiveAppStateChange } from '../../redux/device/actionCreators';
-import { isAppInForeground, isDeviceLimitedByMemory } from '../../redux/device/selectors';
+import {
+  isAppInForeground,
+  isDeviceLimitedByMemory,
+} from '../../redux/device/selectors';
 
 import type {
   VideoAssetIdentifier,
@@ -493,7 +496,8 @@ export default class EditScreen extends Component<Props, State> {
 
   render() {
     const hasFinalTranscription = this.hasFinalSpeechTranscription();
-    const showSeekbar = hasFinalTranscription && !this.props.isDeviceLimitedByMemory;
+    const showSeekbar =
+      hasFinalTranscription && !this.props.isDeviceLimitedByMemory;
     return (
       <View style={styles.container}>
         {!hasFinalTranscription && <EditScreenLoadingBackground />}

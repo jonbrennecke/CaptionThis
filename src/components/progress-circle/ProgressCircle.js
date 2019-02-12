@@ -42,7 +42,7 @@ export default function ProgressCircle(props: Props) {
         fill="transparent"
         strokeDasharray={[circumference]}
         strokeDashoffset={progress}
-        strokeLinecap="butt"
+        strokeLinecap="round"
       />
     </Svg>
   );
