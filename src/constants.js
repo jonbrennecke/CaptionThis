@@ -111,6 +111,7 @@ export const FONT_FAMILIES = {
   SHADOWS_INTO_LIGHT: 'Shadows Into Light',
   SPECIAL_ELITE: 'Special Elite',
   AMATIC: 'AmaticSC-Bold',
+  BANGERS: 'Bangers',
 };
 
 export const FONTS = [
@@ -166,6 +167,10 @@ export const FONTS = [
   {
     fontFamily: FONT_FAMILIES.AMATIC,
     displayName: 'Amatic SC',
+  },
+  {
+    fontFamily: FONT_FAMILIES.BANGERS,
+    displayName: 'Bangers',
   }
 ];
 
