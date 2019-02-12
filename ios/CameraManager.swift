@@ -138,6 +138,16 @@ class CameraManager: NSObject {
   }
 
   @objc
+  public func stopPreview() {
+    Debug.log(message: "Stopping camera preview")
+    guard captureSession.isRunning else {
+      Debug.log(message: "Cannot stop preview. Camera capture session is not running")
+      return
+    }
+    captureSession.stopRunning()
+  }
+
+  @objc
   public func startCapture(completionHandler: @escaping (Error?, Bool) -> Void) {
     sessionQueue.async {
       guard self.videoCaptureDevice != nil else {
@@ -161,14 +171,6 @@ class CameraManager: NSObject {
     if videoFileOutput.isRecording {
       Debug.log(message: "Stopping video file output.")
       videoFileOutput.stopRecording()
-    }
-  }
-
-  @objc
-  public func stopPreview() {
-    if captureSession.isRunning {
-      Debug.log(message: "Stopping camera capture session.")
-      captureSession.stopRunning()
     }
   }
 

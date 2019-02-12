@@ -26,6 +26,11 @@ RCT_EXPORT_METHOD(startCameraPreview) {
   [cameraManager startPreview];
 }
 
+RCT_EXPORT_METHOD(stopCameraPreview) {
+  CameraManager *cameraManager = [AppDelegate sharedCameraManager];
+  [cameraManager stopPreview];
+}
+
 RCT_EXPORT_METHOD(startCameraCapture : (RCTResponseSenderBlock)callback) {
   [[AppDelegate sharedCameraManager]
       startCaptureWithCompletionHandler:^(NSError *error, BOOL success) {

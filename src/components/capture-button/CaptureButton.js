@@ -93,11 +93,13 @@ export default class ColorPicker extends Component<Props> {
       Animated.spring(this.outerViewAnim, {
         toValue: 1.35,
         duration: 350,
+        useNativeDriver: true,
       }),
       Animated.timing(this.progressAnim, {
         toValue: 100,
         duration: 60000, // 1 minute
         easing: Easing.linear,
+        useNativeDriver: true,
       }),
     ]).start();
     this.props.onRequestBeginCapture();
@@ -108,10 +110,12 @@ export default class ColorPicker extends Component<Props> {
       Animated.spring(this.outerViewAnim, {
         toValue: 1.0,
         duration: 350,
+        useNativeDriver: true,
       }),
       Animated.spring(this.progressAnim, {
         toValue: 0,
         duration: 400,
+        useNativeDriver: true,
       }),
     ]).start();
     this.props.onRequestEndCapture();

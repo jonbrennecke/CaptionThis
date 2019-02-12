@@ -31,6 +31,7 @@ class FileSpeechTranscriptionRequest: NSObject, SpeechTranscriptionRequest {
     self.delegate = delegate
     self.assetReader = assetReader
     self.assetReaderOutput = assetReaderOutput
+    super.init()
   }
 
   public func startTranscription() -> Result<(), SpeechTranscriptionError> {
@@ -69,6 +70,7 @@ class FileSpeechTranscriptionRequest: NSObject, SpeechTranscriptionRequest {
       state = .completed
       return
     }
+    Debug.log(message: "Starting speech recognition task")
     let recognitionTask = recognizer.recognitionTask(with: request, delegate: self)
     tasks[index] = .pending(recognitionTask)
     state = .pending(tasks, startTime)
@@ -128,6 +130,12 @@ extension FileSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
       }
       Debug.log(error: error)
     }
+    guard case let .pending(_, startTime) = state else {
+      delegate.speechTranscriptionRequestDidTerminate()
+      return
+    }
+    let executionTime = CFAbsoluteTimeGetCurrent() - startTime
+    Debug.log(format: "Speech recognition task failed. Execution time = %0.2f seconds", executionTime)
     delegate.speechTranscriptionRequestDidTerminate()
   }
 

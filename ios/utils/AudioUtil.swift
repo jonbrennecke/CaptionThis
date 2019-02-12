@@ -5,6 +5,7 @@ enum AudioUtilError: Error {
   case invalidAssetReaderState
 }
 
+private let TIME_RANGE_INTERVAL_DURATION_FOR_MEMORY_LIMITED_DEVICES: CFTimeInterval = 15 // TODO:
 private let TIME_RANGE_INTERVAL_DURATION: CFTimeInterval = 45
 private let TIME_RANGE_ADDITIONAL_END_INTERVAL: CFTimeInterval = 0.25
 

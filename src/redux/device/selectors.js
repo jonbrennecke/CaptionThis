@@ -8,3 +8,7 @@ export function isAppInBackground(state: AppState): boolean {
 export function isAppInForeground(state: AppState): boolean {
   return state.device.appState == 'active';
 }
+
+export function isDeviceLimitedByMemory(state: AppState): boolean {
+  return !!state.device.deviceInfo?.isMemoryLimitedDevice;
+}

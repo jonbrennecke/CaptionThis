@@ -26,6 +26,7 @@ type Props = {
 };
 
 type State = {
+  isCountdownFinished: boolean,
   countdown: string,
   startTime: number,
 };
@@ -128,6 +129,7 @@ export default class EditScreenExportingOverlay extends Component<
   State
 > {
   state = {
+    isCountdownFinished: false,
     countdown: '0%',
     startTime: 0,
   };
@@ -167,7 +169,7 @@ export default class EditScreenExportingOverlay extends Component<
         easing: Easing.linear,
         useNativeDriver: true,
       }),
-    ]).start();
+    ]).start(() => this.setState({ isCountdownFinished: true }));
   }
 
   animateOut() {
@@ -236,7 +238,7 @@ export default class EditScreenExportingOverlay extends Component<
             </Text>
           </Animated.View>
           <Text style={styles.title} numberOfLines={1}>
-            Creating captions...
+            {this.state.isCountdownFinished ? 'Almost finished...' : 'Creating captions...'}
           </Text>
           <Text style={styles.subtitle} numberOfLines={2}>
             Please wait while your captions are generated

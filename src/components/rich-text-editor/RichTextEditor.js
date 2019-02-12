@@ -175,6 +175,7 @@ export default class RichTextEditor extends Component<Props, State> {
       toValue: 1,
       duration: 200,
       easing: Easing.quad,
+      useNativeDriver: true,
     };
     Animated.parallel([
       Animated.timing(this.colorPickerAnim, config),
@@ -187,6 +188,7 @@ export default class RichTextEditor extends Component<Props, State> {
       toValue: 0,
       duration: 200,
       easing: Easing.quad,
+      useNativeDriver: true,
     };
     Animated.parallel([
       Animated.timing(this.colorPickerAnim, config),

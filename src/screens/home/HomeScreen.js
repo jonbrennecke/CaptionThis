@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 import uuid from 'uuid';
+import { Navigation } from 'react-native-navigation';
 
 import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
@@ -35,6 +36,7 @@ import {
   receiveSpeechTranscriptionFailure,
   receiveSpeechTranscriptionSuccess,
 } from '../../redux/speech/actionCreators';
+import { loadDeviceInfo } from '../../redux/device/actionCreators';
 import {
   getVideos,
   isCameraRecording,
@@ -76,6 +78,7 @@ type StateProps = {
 };
 
 type DispatchProps = {
+  loadDeviceInfo: () => Promise<void>,
   receiveVideos: (videos: VideoObject[]) => Promise<void>,
   beginCameraCapture: () => Promise<void>,
   endCameraCapture: () => Promise<void>,
@@ -154,6 +157,7 @@ function mapStateToProps(state: AppState): StateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
+    loadDeviceInfo: () => dispatch(loadDeviceInfo()),
     receiveVideos: (videos: VideoObject[]) => dispatch(receiveVideos(videos)),
     beginCameraCapture: () => dispatch(beginCameraCapture()),
     endCameraCapture: () => dispatch(endCameraCapture()),
@@ -181,6 +185,7 @@ export default class HomeScreen extends Component<Props, State> {
     currentVideoIdentifier: null,
     hasCompletedSetupAfterOnboarding: false,
   };
+  navigationEventListener: ?any;
   scrollView: ?ScrollView;
   cameraView: ?CameraPreviewView;
   scrollAnim = new Animated.Value(0);
@@ -190,6 +195,7 @@ export default class HomeScreen extends Component<Props, State> {
   cameraManagerDidFinishFileOutputListener: ?CameraManagerSubscription;
 
   componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
     }
@@ -207,12 +213,23 @@ export default class HomeScreen extends Component<Props, State> {
     if (this.didNotDetectSpeechSubscription) {
       this.didNotDetectSpeechSubscription.remove();
     }
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
   }
 
   async componentDidUpdate(prevProps: Props) {
     if (!prevProps.arePermissionsGranted && this.props.arePermissionsGranted) {
       await this.setupAfterOnboarding();
     }
+  }
+
+  componentDidAppear() {
+    Camera.startPreview();
+  }
+
+  componentDidDisappear() {
+    Camera.stopPreview();
   }
 
   async setupAfterOnboarding() {
@@ -224,6 +241,7 @@ export default class HomeScreen extends Component<Props, State> {
       this.cameraView.setUp();
     }
     await this.loadMediaLibrary();
+    await this.props.loadDeviceInfo();
     this.setState({
       hasCompletedSetupAfterOnboarding: true,
     });
@@ -247,7 +265,7 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async onDidPressVideoThumbnail(video: VideoObject) {
-    await Screens.pushEditScreen(this.props.componentId, video);
+    await this.pushEditScreen(video);
   }
 
   async captureButtonDidRequestBeginCapture() {
@@ -315,10 +333,14 @@ export default class HomeScreen extends Component<Props, State> {
 
   async cameraManagerDidFinishFileOutput(video: VideoObject) {
     this.props.receiveFinishedVideo(video);
-    await Screens.pushEditScreen(this.props.componentId, video);
     if (this.cameraManagerDidFinishFileOutputListener) {
       this.cameraManagerDidFinishFileOutputListener.remove();
     }
+    await this.pushEditScreen(video);
+  }
+
+  async pushEditScreen(video: VideoObject) {
+    await Screens.pushEditScreen(this.props.componentId, video);
   }
 
   scrollToCameraRoll() {
