@@ -112,6 +112,7 @@ export const FONT_FAMILIES = {
   SPECIAL_ELITE: 'Special Elite',
   AMATIC: 'AmaticSC-Bold',
   BANGERS: 'Bangers',
+  RIGHTEOUS: 'Righteous',
 };
 
 export const FONTS = [
@@ -171,6 +172,10 @@ export const FONTS = [
   {
     fontFamily: FONT_FAMILIES.BANGERS,
     displayName: 'Bangers',
+  },
+  {
+    fontFamily: FONT_FAMILIES.RIGHTEOUS,
+    displayName: 'Righteous',
   }
 ];
 
