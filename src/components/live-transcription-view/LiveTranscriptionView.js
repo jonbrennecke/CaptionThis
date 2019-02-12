@@ -12,6 +12,7 @@ import type { SpeechTranscription } from '../../types/speech';
 type Props = {
   style: ?Style,
   fontFamily: string,
+  isCameraRecording: boolean,
   speechTranscription: ?SpeechTranscription,
 };
 
@@ -40,6 +41,7 @@ const styles = {
 
 export default function LiveTranscriptionView({
   style,
+  isCameraRecording,
   speechTranscription,
   fontFamily,
 }: Props) {
@@ -52,7 +54,7 @@ export default function LiveTranscriptionView({
         ellipsizeMode="head"
         numberOfLines={1}
       >
-        {formattedText}
+        {isCameraRecording ? formattedText : ''}
       </Text>
     </View>
   );

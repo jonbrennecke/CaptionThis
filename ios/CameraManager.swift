@@ -30,6 +30,9 @@ class CameraManager: NSObject {
 
   @objc
   public var previewLayer: AVCaptureVideoPreviewLayer
+  
+  @objc(sharedInstance)
+  public static let shared = CameraManager()
 
   override init() {
     captureSession = AVCaptureSession()
@@ -185,6 +188,9 @@ class CameraManager: NSObject {
 
   @objc
   public func setupCameraCaptureSession() {
+    if captureSession.isRunning {
+      return
+    }
     captureSession.beginConfiguration()
     NotificationCenter.default.addObserver(self, selector: #selector(captureSessionRuntimeError), name: .AVCaptureSessionRuntimeError, object: captureSession)
     if case .failure = attemptToSetupCameraCaptureSession() {
@@ -199,7 +205,12 @@ class CameraManager: NSObject {
   }
 
   private func attemptToSetupCameraCaptureSession() -> CameraSetupResult {
-    captureSession.sessionPreset = .high
+    if captureSession.canSetSessionPreset(.high) {
+      captureSession.sessionPreset = .high
+    }
+    else {
+      Debug.log(message: "Cannot set session preset")
+    }
 
     // setup videoCaptureDevice
     videoCaptureDevice = captureDevice(withPosition: .front)
@@ -303,20 +314,21 @@ class CameraManager: NSObject {
   private func attemptToSwitchToOppositeCamera() -> CameraSetupResult {
     let cameraPosition = getOppositeCameraPosition()
     videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: cameraPosition)
+    Debug.log(format: "Switching to %@ camera", cameraPosition == .back ? "back" : "front")
     guard let videoCaptureDevice = videoCaptureDevice else {
-      Debug.log(format: "Built in wide angle camera is not available. Position = %@", cameraPosition == .back ? "back" : "front")
+      Debug.log(format: "Camera is not available. Requested camera position = %@", cameraPosition == .back ? "back" : "front")
       return .failure
     }
     if let videoCaptureDeviceInput = videoCaptureDeviceInput {
       captureSession.removeInput(videoCaptureDeviceInput)
     }
-    videoCaptureDeviceInput = try? AVCaptureDeviceInput(device: videoCaptureDevice)
-    guard let videoCaptureDeviceInput = videoCaptureDeviceInput else {
+    guard let deviceInput = try? AVCaptureDeviceInput(device: videoCaptureDevice) else {
       Debug.log(message: "Camera capture device could not be used as an input.")
       return .failure
     }
-    if captureSession.canAddInput(videoCaptureDeviceInput) {
-      captureSession.addInput(videoCaptureDeviceInput)
+    videoCaptureDeviceInput = deviceInput
+    if captureSession.canAddInput(deviceInput) {
+      captureSession.addInput(deviceInput)
     } else {
       Debug.log(message: "Camera input could not be added to capture session.")
       return .failure
@@ -423,22 +435,18 @@ class CameraManager: NSObject {
 
 extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
   func captureOutput(_: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from _: AVCaptureConnection) {
-    guard let delegate = delegate else {
-      return
-    }
-    delegate.cameraManagerDidReceiveCameraDataOutput(videoData: sampleBuffer)
+    delegate?.cameraManagerDidReceiveCameraDataOutput(videoData: sampleBuffer)
   }
 }
 
 extension CameraManager: AVCaptureDataOutputSynchronizerDelegate {
   func dataOutputSynchronizer(_: AVCaptureDataOutputSynchronizer, didOutput synchronizedDataCollection: AVCaptureSynchronizedDataCollection) {
     guard
-      let delegate = delegate,
       let videoData = synchronizedDataCollection.synchronizedData(for: videoOutput) as? AVCaptureSynchronizedSampleBufferData
     else {
       return
     }
-    delegate.cameraManagerDidReceiveCameraDataOutput(videoData: videoData.sampleBuffer)
+    delegate?.cameraManagerDidReceiveCameraDataOutput(videoData: videoData.sampleBuffer)
   }
 }
 

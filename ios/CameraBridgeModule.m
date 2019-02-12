@@ -12,8 +12,7 @@
 - (instancetype)init {
   self = [super init];
   if (self) {
-    CameraManager *cameraManager = [AppDelegate sharedCameraManager];
-    cameraManager.delegate = self;
+    CameraManager.sharedInstance.delegate = self;
   }
   return self;
 }
@@ -21,18 +20,18 @@
 RCT_EXPORT_MODULE(Camera)
 
 RCT_EXPORT_METHOD(startCameraPreview) {
-  CameraManager *cameraManager = [AppDelegate sharedCameraManager];
+  CameraManager *cameraManager = CameraManager.sharedInstance;
   [cameraManager setupCameraCaptureSession];
   [cameraManager startPreview];
 }
 
 RCT_EXPORT_METHOD(stopCameraPreview) {
-  CameraManager *cameraManager = [AppDelegate sharedCameraManager];
+  CameraManager *cameraManager = CameraManager.sharedInstance;
   [cameraManager stopPreview];
 }
 
 RCT_EXPORT_METHOD(startCameraCapture : (RCTResponseSenderBlock)callback) {
-  [[AppDelegate sharedCameraManager]
+  [CameraManager.sharedInstance
       startCaptureWithCompletionHandler:^(NSError *error, BOOL success) {
         if (error != nil) {
           callback(@[ error, @(NO) ]);
@@ -43,11 +42,11 @@ RCT_EXPORT_METHOD(startCameraCapture : (RCTResponseSenderBlock)callback) {
 }
 
 RCT_EXPORT_METHOD(stopCameraCapture) {
-  [[AppDelegate sharedCameraManager] stopCapture];
+  [CameraManager.sharedInstance stopCapture];
 }
 
 RCT_EXPORT_METHOD(switchToOppositeCamera) {
-  [[AppDelegate sharedCameraManager] switchToOppositeCamera];
+  [CameraManager.sharedInstance switchToOppositeCamera];
 }
 
 - (void)startObserving {

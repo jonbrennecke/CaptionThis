@@ -17,18 +17,10 @@
 
 @implementation AppDelegate
 
-static CameraManager *_sharedCameraManager;
 static SpeechManager *_sharedSpeechManager;
 static PermissionsManager *_sharedPermissionsManager;
 static MediaLibraryManager *_sharedMediaLibraryManager;
 static VideoExportManager *_sharedVideoExportManager;
-
-+ (CameraManager *)sharedCameraManager {
-  if (_sharedCameraManager == nil) {
-    _sharedCameraManager = [[CameraManager alloc] init];
-  }
-  return _sharedCameraManager;
-}
 
 + (SpeechManager *)sharedSpeechManager {
   if (_sharedSpeechManager == nil) {
@@ -57,11 +49,6 @@ static VideoExportManager *_sharedVideoExportManager;
   }
   return _sharedVideoExportManager;
 }
-
-+ (void)setSharedCameraManager:(CameraManager *)sharedCameraManager {
-  _sharedCameraManager = sharedCameraManager;
-}
-
 + (void)setSharedSpeechManager:(SpeechManager *)sharedSpeechManager {
   _sharedSpeechManager = sharedSpeechManager;
 }
