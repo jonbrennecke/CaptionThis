@@ -332,6 +332,7 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async cameraManagerDidFinishFileOutput(video: VideoObject) {
+    Debug.log('Camera finished saving video file.');
     this.props.receiveFinishedVideo(video);
     if (this.cameraManagerDidFinishFileOutputListener) {
       this.cameraManagerDidFinishFileOutputListener.remove();
@@ -402,6 +403,7 @@ export default class HomeScreen extends Component<Props, State> {
                 <LiveTranscriptionView
                   style={styles.transcript}
                   fontFamily={this.props.fontFamily}
+                  isCameraRecording={this.props.isCameraRecording}
                   speechTranscription={
                     this.state.currentVideoIdentifier
                       ? this.props.speechTranscriptions.get(

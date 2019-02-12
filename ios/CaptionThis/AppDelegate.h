@@ -7,7 +7,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class CameraManager;
 @class SpeechManager;
 @class PermissionsManager;
 @class MediaLibraryManager;
@@ -17,7 +16,6 @@
 
 @property(nonatomic, strong) UIWindow *window;
 
-@property(class) CameraManager *sharedCameraManager;
 @property(class) SpeechManager *sharedSpeechManager;
 @property(class) PermissionsManager *sharedPermissionsManager;
 @property(class) MediaLibraryManager *sharedMediaLibraryManager;

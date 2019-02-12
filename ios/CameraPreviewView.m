@@ -1,4 +1,5 @@
 #import "CameraPreviewView.h"
+#import "CaptionThis-Swift.h"
 #import "AppDelegate.h"
 #import "Debug.h"
 
@@ -13,7 +14,7 @@
 
 - (void)setUp {
   [Debug logWithMessage:@"Setting up camera preview"];
-  CameraManager *cameraManager = [AppDelegate sharedCameraManager];
+  CameraManager *cameraManager = CameraManager.sharedInstance;
   previewLayer = cameraManager.previewLayer;
   self.layer.sublayers = nil;
   [self.layer addSublayer:previewLayer];

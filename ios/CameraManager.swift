@@ -30,6 +30,9 @@ class CameraManager: NSObject {
 
   @objc
   public var previewLayer: AVCaptureVideoPreviewLayer
+  
+  @objc(sharedInstance)
+  public static let shared = CameraManager()
 
   override init() {
     captureSession = AVCaptureSession()
@@ -423,22 +426,18 @@ class CameraManager: NSObject {
 
 extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
   func captureOutput(_: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from _: AVCaptureConnection) {
-    guard let delegate = delegate else {
-      return
-    }
-    delegate.cameraManagerDidReceiveCameraDataOutput(videoData: sampleBuffer)
+    delegate?.cameraManagerDidReceiveCameraDataOutput(videoData: sampleBuffer)
   }
 }
 
 extension CameraManager: AVCaptureDataOutputSynchronizerDelegate {
   func dataOutputSynchronizer(_: AVCaptureDataOutputSynchronizer, didOutput synchronizedDataCollection: AVCaptureSynchronizedDataCollection) {
     guard
-      let delegate = delegate,
       let videoData = synchronizedDataCollection.synchronizedData(for: videoOutput) as? AVCaptureSynchronizedSampleBufferData
     else {
       return
     }
-    delegate.cameraManagerDidReceiveCameraDataOutput(videoData: videoData.sampleBuffer)
+    delegate?.cameraManagerDidReceiveCameraDataOutput(videoData: videoData.sampleBuffer)
   }
 }
 

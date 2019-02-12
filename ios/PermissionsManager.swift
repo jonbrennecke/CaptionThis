@@ -4,7 +4,7 @@ import Foundation
 class PermissionsManager: NSObject {
   @objc
   func requestAppPermissions(_ callback: @escaping (Bool) -> Void) {
-    AppDelegate.sharedCameraManager.authorize { success in
+    CameraManager.shared.authorize { success in
       guard success else {
         callback(false)
         return
@@ -21,7 +21,7 @@ class PermissionsManager: NSObject {
 
   @objc
   func arePermissionsGranted() -> Bool {
-    let isCameraAuthorized = AppDelegate.sharedCameraManager.isAuthorized()
+    let isCameraAuthorized = CameraManager.shared.isAuthorized()
     let isSpeechAuthorized = AppDelegate.sharedSpeechManager.isAuthorized()
     return isCameraAuthorized && isSpeechAuthorized
   }

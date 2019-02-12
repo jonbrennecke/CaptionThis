@@ -14,7 +14,7 @@ RCT_EXPORT_METHOD(focusOnPoint
                   : (nonnull NSNumber *)reactTag focusPoint
                   : (id)pointJson) {
   CGPoint point = [RCTConvert CGPoint:pointJson];
-  CameraManager *cameraManager = [AppDelegate sharedCameraManager];
+  CameraManager *cameraManager = CameraManager.sharedInstance;
   [cameraManager focusOnPoint:point];
 }
 
