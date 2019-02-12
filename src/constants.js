@@ -110,6 +110,10 @@ export const FONT_FAMILIES = {
   MONTSERRAT: 'Montserrat',
   SHADOWS_INTO_LIGHT: 'Shadows Into Light',
   SPECIAL_ELITE: 'Special Elite',
+  AMATIC: 'AmaticSC-Bold',
+  BANGERS: 'Bangers',
+  RIGHTEOUS: 'Righteous',
+  IBM_PLEX_MONO: 'IBMPlexMono-Medium',
 };
 
 export const FONTS = [
@@ -123,12 +127,24 @@ export const FONTS = [
   //   displayName: 'Shadows Into Light',
   // },
   {
+    fontFamily: FONT_FAMILIES.BANGERS,
+    displayName: 'Bangers',
+  },
+  {
+    fontFamily: FONT_FAMILIES.RIGHTEOUS,
+    displayName: 'Righteous',
+  },
+  {
     fontFamily: FONT_FAMILIES.SPECIAL_ELITE,
     displayName: 'Special Elite',
   },
   {
     fontFamily: FONT_FAMILIES.LOBSTER,
     displayName: 'Lobster',
+  },
+  {
+    fontFamily: FONT_FAMILIES.AMATIC,
+    displayName: 'Amatic SC',
   },
   {
     fontFamily: FONT_FAMILIES.STAATLICHES,
@@ -149,6 +165,10 @@ export const FONTS = [
   {
     fontFamily: FONT_FAMILIES.ROBOTO,
     displayName: 'Roboto',
+  },
+  {
+    fontFamily: FONT_FAMILIES.IBM_PLEX_MONO,
+    displayName: 'IBM Plex Mono',
   },
   {
     fontFamily: FONT_FAMILIES.CUTIVE_MONO,

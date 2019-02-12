@@ -81,6 +81,10 @@
 		FCA3971821DC93AF00347CAB /* constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971721DC93AF00347CAB /* constants.swift */; };
 		FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971921DC968E00347CAB /* VideoExportBridgeModule.m */; };
 		FCA3971E21DCB3B500347CAB /* VideoAnimationBridgeParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971D21DCB3B500347CAB /* VideoAnimationBridgeParams.swift */; };
+		FCB0E50922135EA7002F320B /* AmaticSC-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCB0E4D722135EA6002F320B /* AmaticSC-Bold.ttf */; };
+		FCB0E50B22136148002F320B /* Bangers-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCB0E50A22136148002F320B /* Bangers-Regular.ttf */; };
+		FCB0E55322136343002F320B /* Righteous-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCB0E52122136343002F320B /* Righteous-Regular.ttf */; };
+		FCB0E55522136472002F320B /* IBMPlexMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCB0E55422136472002F320B /* IBMPlexMono-Medium.ttf */; };
 		FCB392F2220CCD0900403154 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB392F1220CCD0900403154 /* Result.swift */; };
 		FCB39371220EB45200403154 /* FileSpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */; };
 		FCB393A52210E0F900403154 /* LiveSpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */; };
@@ -553,6 +557,10 @@
 		FCA3971921DC968E00347CAB /* VideoExportBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoExportBridgeModule.m; sourceTree = "<group>"; };
 		FCA3971B21DC969D00347CAB /* VideoExportBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoExportBridgeModule.h; sourceTree = "<group>"; };
 		FCA3971D21DCB3B500347CAB /* VideoAnimationBridgeParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationBridgeParams.swift; sourceTree = "<group>"; };
+		FCB0E4D722135EA6002F320B /* AmaticSC-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AmaticSC-Bold.ttf"; path = "../assets/fonts/AmaticSC-Bold.ttf"; sourceTree = "<group>"; };
+		FCB0E50A22136148002F320B /* Bangers-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Bangers-Regular.ttf"; path = "../assets/fonts/Bangers-Regular.ttf"; sourceTree = "<group>"; };
+		FCB0E52122136343002F320B /* Righteous-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Righteous-Regular.ttf"; path = "../assets/fonts/Righteous-Regular.ttf"; sourceTree = "<group>"; };
+		FCB0E55422136472002F320B /* IBMPlexMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "IBMPlexMono-Medium.ttf"; path = "../assets/fonts/IBMPlexMono-Medium.ttf"; sourceTree = "<group>"; };
 		FCB392F1220CCD0900403154 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
 		FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
@@ -919,6 +927,10 @@
 		FC6EA7D921CEA457007C3B3E /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				FCB0E55422136472002F320B /* IBMPlexMono-Medium.ttf */,
+				FCB0E52122136343002F320B /* Righteous-Regular.ttf */,
+				FCB0E50A22136148002F320B /* Bangers-Regular.ttf */,
+				FCB0E4D722135EA6002F320B /* AmaticSC-Bold.ttf */,
 				FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */,
 				FC8D50C721FE99FA009E114E /* IndieFlower.ttf */,
 				FC78228B21E3FCB6007AA9B2 /* CutiveMono-Regular.ttf */,
@@ -1671,8 +1683,12 @@
 				FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */,
 				FC93759621E1499A00FD2700 /* Rubik-Regular.ttf in Resources */,
 				FC7822C021E3FCB7007AA9B2 /* CutiveMono-Regular.ttf in Resources */,
+				FCB0E50922135EA7002F320B /* AmaticSC-Bold.ttf in Resources */,
 				FC8D50F821FE99FB009E114E /* IndieFlower.ttf in Resources */,
+				FCB0E55522136472002F320B /* IBMPlexMono-Medium.ttf in Resources */,
+				FCB0E50B22136148002F320B /* Bangers-Regular.ttf in Resources */,
 				FC93753F21E0681800FD2700 /* SourceSerifPro-Semibold.ttf in Resources */,
+				FCB0E55322136343002F320B /* Righteous-Regular.ttf in Resources */,
 				FC7822C121E3FCB7007AA9B2 /* DancingScript-Regular.ttf in Resources */,
 				FC93754021E0681800FD2700 /* SourceSansPro-Bold.ttf in Resources */,
 			);
