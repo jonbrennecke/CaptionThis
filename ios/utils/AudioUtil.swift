@@ -145,10 +145,11 @@ class AudioUtil {
   }
 
   public static func splitTimeRanges(withAssetTrack assetTrack: AVAssetTrack) -> [CMTimeRange] {
-    if assetTrack.timeRange.duration < CMTimeMakeWithSeconds(TIME_RANGE_INTERVAL_DURATION, preferredTimescale: 600) {
+    let intervalDuration = DeviceUtil.isMemoryLimitedDevice() ? TIME_RANGE_INTERVAL_DURATION_FOR_MEMORY_LIMITED_DEVICES : TIME_RANGE_INTERVAL_DURATION
+    if assetTrack.timeRange.duration < CMTimeMakeWithSeconds(intervalDuration, preferredTimescale: 600) {
       return [assetTrack.timeRange]
     }
-    let maxSegmentDuration = CMTimeMakeWithSeconds(TIME_RANGE_INTERVAL_DURATION, preferredTimescale: 600)
+    let maxSegmentDuration = CMTimeMakeWithSeconds(intervalDuration, preferredTimescale: 600)
     var segmentStart = assetTrack.timeRange.start
     var timeRanges = [CMTimeRange]()
     while segmentStart < assetTrack.timeRange.end {

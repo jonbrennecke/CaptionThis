@@ -270,7 +270,7 @@ class CameraManager: NSObject {
       return .failure
     }
     return .success
-    }
+  }
 
   private func captureDevice(withPosition position: AVCaptureDevice.Position) -> AVCaptureDevice? {
     if let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position) {
