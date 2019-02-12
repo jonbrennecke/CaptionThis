@@ -15,7 +15,6 @@
   [Debug logWithMessage:@"Setting up camera preview"];
   CameraManager *cameraManager = [AppDelegate sharedCameraManager];
   previewLayer = cameraManager.previewLayer;
-  previewLayer.frame = self.bounds;
   self.layer.sublayers = nil;
   [self.layer addSublayer:previewLayer];
   [self layoutSubviews];

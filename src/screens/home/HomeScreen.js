@@ -236,6 +236,7 @@ export default class HomeScreen extends Component<Props, State> {
     if (this.state.hasCompletedSetupAfterOnboarding) {
       return;
     }
+    Camera.startPreview();
     if (this.cameraView) {
       this.cameraView.setUp();
     }
