@@ -110,6 +110,7 @@ export const FONT_FAMILIES = {
   MONTSERRAT: 'Montserrat',
   SHADOWS_INTO_LIGHT: 'Shadows Into Light',
   SPECIAL_ELITE: 'Special Elite',
+  AMATIC: 'AmaticSC-Bold',
 };
 
 export const FONTS = [
@@ -162,6 +163,10 @@ export const FONTS = [
     fontFamily: FONT_FAMILIES.MONTSERRAT,
     displayName: 'Montserrat',
   },
+  {
+    fontFamily: FONT_FAMILIES.AMATIC,
+    displayName: 'Amatic SC',
+  }
 ];
 
 export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
