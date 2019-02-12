@@ -1,6 +1,7 @@
 // @flow
 import Promise from 'bluebird';
 import { NativeModules, NativeEventEmitter } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import type { VideoObject } from '../types/media';
 import type { Return } from '../types/util';
@@ -45,6 +46,9 @@ export function addDidFinishFileOutputWithErrorListener(
 }
 
 export function startPreview() {
+  if (DeviceInfo.isEmulator()) {
+    return;
+  }
   NativeCameraModule.startCameraPreview();
 }
 
