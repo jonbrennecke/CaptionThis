@@ -127,12 +127,24 @@ export const FONTS = [
   //   displayName: 'Shadows Into Light',
   // },
   {
+    fontFamily: FONT_FAMILIES.BANGERS,
+    displayName: 'Bangers',
+  },
+  {
+    fontFamily: FONT_FAMILIES.RIGHTEOUS,
+    displayName: 'Righteous',
+  },
+  {
     fontFamily: FONT_FAMILIES.SPECIAL_ELITE,
     displayName: 'Special Elite',
   },
   {
     fontFamily: FONT_FAMILIES.LOBSTER,
     displayName: 'Lobster',
+  },
+  {
+    fontFamily: FONT_FAMILIES.AMATIC,
+    displayName: 'Amatic SC',
   },
   {
     fontFamily: FONT_FAMILIES.STAATLICHES,
@@ -155,6 +167,10 @@ export const FONTS = [
     displayName: 'Roboto',
   },
   {
+    fontFamily: FONT_FAMILIES.IBM_PLEX_MONO,
+    displayName: 'IBM Plex Mono',
+  },
+  {
     fontFamily: FONT_FAMILIES.CUTIVE_MONO,
     displayName: 'Cutive Mono',
   },
@@ -166,22 +182,6 @@ export const FONTS = [
     fontFamily: FONT_FAMILIES.MONTSERRAT,
     displayName: 'Montserrat',
   },
-  {
-    fontFamily: FONT_FAMILIES.AMATIC,
-    displayName: 'Amatic SC',
-  },
-  {
-    fontFamily: FONT_FAMILIES.BANGERS,
-    displayName: 'Bangers',
-  },
-  {
-    fontFamily: FONT_FAMILIES.RIGHTEOUS,
-    displayName: 'Righteous',
-  },
-  {
-    fontFamily: FONT_FAMILIES.IBM_PLEX_MONO,
-    displayName: 'IBM Plex Mono',
-  }
 ];
 
 export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
