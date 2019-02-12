@@ -238,7 +238,9 @@ export default class EditScreenExportingOverlay extends Component<
             </Text>
           </Animated.View>
           <Text style={styles.title} numberOfLines={1}>
-            {this.state.isCountdownFinished ? 'Almost finished...' : 'Creating captions...'}
+            {this.state.isCountdownFinished
+              ? 'Almost finished...'
+              : 'Creating captions...'}
           </Text>
           <Text style={styles.subtitle} numberOfLines={2}>
             Please wait while your captions are generated
