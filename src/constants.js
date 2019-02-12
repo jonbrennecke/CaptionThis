@@ -113,6 +113,7 @@ export const FONT_FAMILIES = {
   AMATIC: 'AmaticSC-Bold',
   BANGERS: 'Bangers',
   RIGHTEOUS: 'Righteous',
+  IBM_PLEX_MONO: 'IBMPlexMono-Medium',
 };
 
 export const FONTS = [
@@ -176,6 +177,10 @@ export const FONTS = [
   {
     fontFamily: FONT_FAMILIES.RIGHTEOUS,
     displayName: 'Righteous',
+  },
+  {
+    fontFamily: FONT_FAMILIES.IBM_PLEX_MONO,
+    displayName: 'IBM Plex Mono',
   }
 ];
 
