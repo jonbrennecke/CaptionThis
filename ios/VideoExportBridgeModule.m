@@ -1,11 +1,39 @@
 #import "VideoExportBridgeModule.h"
-#import "AppDelegate.h"
 #import "CaptionThis-Swift.h"
 #import "RCTConvert+UIImageOrientation.h"
 #import <React/RCTConvert.h>
 #import <Speech/Speech.h>
 
-@implementation VideoExportBridgeModule
+@implementation VideoExportBridgeModule {
+  bool hasListeners;
+}
+
+- (void)startObserving {
+  hasListeners = YES;
+}
+
+- (void)stopObserving {
+  hasListeners = NO;
+}
+
++ (BOOL)requiresMainQueueSetup {
+  return NO;
+}
+
+- (NSArray<NSString *> *)supportedEvents {
+  return @[
+    @"videoExportManagerDidFail",
+    @"videoExportManagerDidFinish"
+  ];
+}
+
+- (instancetype)init {
+  self = [super init];
+  if (self) {
+    VideoExportManager.sharedInstance.delegate = self;
+  }
+  return self;
+}
 
 RCT_EXPORT_MODULE(VideoExport)
 
@@ -80,17 +108,10 @@ RCT_EXPORT_METHOD(exportVideo
   id videoIdJson = [json objectForKey:@"video"];
   if (videoIdJson) {
     NSString *localIdentifier = [RCTConvert NSString:videoIdJson];
-    [AppDelegate.sharedVideoExportManager
+    [VideoExportManager.sharedInstance
         exportVideoWithLocalIdentifier:localIdentifier
-                                params:params
-                     completionHandler:^(NSError *_Nullable error,
-                                         BOOL success) {
-                       if (error != nil) {
-                         callback(@[ error, @(NO) ]);
-                         return;
-                       }
-                       callback(@[ [NSNull null], @(success) ]);
-                     }];
+                                params:params];
+    callback(@[ [NSNull null], @(YES) ]);
     return;
   } else {
     callback(@[ [NSNull null], @(NO) ]);
@@ -117,6 +138,24 @@ RCT_EXPORT_METHOD(exportVideo
     [textSegments addObject:params];
   }
   return textSegments;
+}
+
+@end
+
+@implementation VideoExportBridgeModule (VideoExportManagerDelegate)
+
+- (void)videoExportManagerDidFailWithError:(NSError * _Nonnull)_ {
+  if (!hasListeners) {
+    return;
+  }
+  [self sendEventWithName:@"videoExportManagerDidFail" body:@{}];
+}
+
+- (void)videoExportManagerDidFinishWithObjectPlaceholder:(PHObjectPlaceholder * _Nonnull)_ {
+  if (!hasListeners) {
+    return;
+  }
+  [self sendEventWithName:@"videoExportManagerDidFinish" body:@{}];
 }
 
 @end

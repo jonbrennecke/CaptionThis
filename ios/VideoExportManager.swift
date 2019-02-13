@@ -2,153 +2,48 @@ import AVFoundation
 import Photos
 
 @objc
+protocol VideoExportManagerDelegate {
+  @objc(videoExportManagerDidFinishWithObjectPlaceholder:)
+  func videoExportManager(didFinish _: PHObjectPlaceholder)
+  @objc(videoExportManagerDidFailWithError:)
+  func videoExportManager(didFail _: Error)
+}
+
+@objc
 class VideoExportManager: NSObject {
+  private enum TaskState {
+    case unstarted
+    case pending(VideoExportTask)
+    case final
+  }
+
+  private var state: TaskState = .unstarted
+
   @objc
-  public func exportVideo(withLocalIdentifier localIdentifier: String,
-                          params: VideoAnimationBridgeParams,
-                          completionHandler: @escaping (Error?, Bool) -> Void) {
-    let model = params.model()
-    exportVideo(withLocalIdentifier: localIdentifier, model: model, completionHandler: completionHandler)
+  public var delegate: VideoExportManagerDelegate?
+
+  @objc(sharedInstance)
+  public static let shared = VideoExportManager()
+
+  @objc
+  public func exportVideo(withLocalIdentifier localIdentifier: String, params: VideoAnimationBridgeParams) {
+    let task = VideoExportTask(localIdentifier: localIdentifier, model: params.model())
+    task.delegate = self
+    task.startTask()
+    state = .pending(task)
+  }
+}
+
+extension VideoExportManager: VideoExportTaskDelegate {
+  func videoExportTask(didUpdateProgress percent: Float, time: CFAbsoluteTime) {
+    // TODO
+  }
+  
+  func videoExportTask(didEncounterError error: VideoExportTask.Error) {
+    delegate?.videoExportManager(didFail: error)
   }
 
-  private func exportVideo(withLocalIdentifier localIdentifier: String,
-                           model: VideoAnimationLayerModel,
-                           completionHandler: @escaping (Error?, Bool) -> Void) {
-    let options = PHFetchOptions()
-    let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: options)
-    guard let photosAsset = fetchResult.firstObject else {
-      Debug.log(format: "Could not find PHAsset. Local identifier = %@", localIdentifier)
-      completionHandler(nil, false)
-      return
-    }
-    PHImageManager.default().requestAVAsset(forVideo: photosAsset, options: nil) { asset, _, _ in
-      guard let asset = asset else {
-        Debug.log(format: "Request for AVAsset failed. Local identifier = %@", localIdentifier)
-        completionHandler(nil, false)
-        return
-      }
-      self.exportVideo(withAsset: asset, model: model, completionHandler: completionHandler)
-    }
-  }
-
-  private func exportVideo(withAsset asset: AVAsset,
-                           model: VideoAnimationLayerModel,
-                           completionHandler: @escaping (Error?, Bool) -> Void) {
-    guard let composition = VideoAnimationComposition(withAsset: asset) else {
-      completionHandler(nil, false)
-      return
-    }
-    let videoTracks = asset.tracks(withMediaType: .video)
-    guard let videoTrack = videoTracks.first else {
-      completionHandler(nil, false)
-      return
-    }
-    let naturalSize = videoTrack.naturalSize
-    let transform = videoTrack.preferredTransform
-    let rotatedSize = naturalSize.applying(transform)
-    let size = CGSize(width: abs(rotatedSize.width), height: abs(rotatedSize.height))
-    let orientation = OrientationUtil.orientation(forAsset: asset)
-    let dimensions = VideoDimensions(size: size, orientation: orientation)
-    let layout = VideoAnimationLayerLayout.layoutForExport(dimensions: dimensions, model: model)
-    let animationLayer = VideoAnimationLayer(layout: layout, model: model)
-    animationLayer.frame = frame(forComposition: composition, layout: layout)
-    animationLayer.update(model: model, layout: layout)
-    animationLayer.beginTime = AVCoreAnimationBeginTimeAtZero
-    animationLayer.timeOffset = 0
-    animationLayer.speed = 1
-    composition.add(effectLayer: animationLayer)
-    composition.exportVideo { error, success, url in
-      if let error = error {
-        completionHandler(error, false)
-        return
-      }
-      guard let url = url else {
-        completionHandler(nil, false)
-        return
-      }
-      self.createVideoAsset(forURL: url) { error, success, _ in
-        completionHandler(error, success)
-      }
-    }
-  }
-
-  private func frame(forComposition composition: VideoAnimationComposition, layout: VideoAnimationLayerLayout) -> CGRect {
-    var offsetFromBottom: CGFloat = composition.videoSize.height * 0.1
-    switch composition.orientation {
-    case .left, .right, .leftMirrored, .rightMirrored:
-      offsetFromBottom = 50
-      break
-    default:
-      break
-    }
-    let height = layout.frameHeight
-    let width = composition.videoSize.width
-    return CGRect(x: 0, y: offsetFromBottom, width: width, height: CGFloat(height))
-  }
-
-  private func createVideoAsset(forURL url: URL, _ completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> Void) {
-    withAlbum { error, success, album in
-      guard let album = album else {
-        Debug.log(format: "Failed to find album. Success = %@", success ? "true" : "false")
-        completionHandler(nil, false, nil)
-        return
-      }
-      var assetPlaceholder: PHObjectPlaceholder?
-      PHPhotoLibrary.shared().performChanges({
-        if #available(iOS 9.0, *) {
-          let assetRequest = PHAssetCreationRequest.creationRequestForAssetFromVideo(atFileURL: url)
-          guard let placeholder = assetRequest?.placeholderForCreatedAsset else {
-            Debug.log(format: "Asset placeholder could not be created. URL = %@", url.path)
-            return
-          }
-          guard let albumChangeRequest = PHAssetCollectionChangeRequest(for: album) else {
-            Debug.log(format: "Asset placeholder could not be created. URL = %@", url.path)
-            return
-          }
-          albumChangeRequest.addAssets([placeholder] as NSArray)
-          assetPlaceholder = placeholder
-        } else {
-          fatalError("This app only supports iOS 9.0 or above.")
-        }
-      }) { success, error in
-        Debug.log(format: "Finished creating asset for video. Success = %@", success ? "true" : "false")
-        if let error = error {
-          Debug.log(error: error)
-          completionHandler(error, false, nil)
-          return
-        }
-        guard success, let assetPlaceholder = assetPlaceholder else {
-          completionHandler(error, success, nil)
-          return
-        }
-        completionHandler(nil, success, assetPlaceholder)
-      }
-    }
-  }
-
-  private func withAlbum(_ completionHandler: @escaping (Error?, Bool, PHAssetCollection?) -> Void) {
-    let fetchOptions = PHFetchOptions()
-    fetchOptions.predicate = NSPredicate(format: "title = %@", PhotosAlbum.albumTitle)
-    let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: fetchOptions)
-    if let album = collection.firstObject {
-      completionHandler(nil, true, album)
-      return
-    }
-    var albumPlaceholder: PHObjectPlaceholder?
-    PHPhotoLibrary.shared().performChanges({
-      let assetCollectionRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: PhotosAlbum.albumTitle)
-      albumPlaceholder = assetCollectionRequest.placeholderForCreatedAssetCollection
-    }) { success, error in
-      guard success, let albumPlaceholder = albumPlaceholder else {
-        completionHandler(error, success, nil)
-        return
-      }
-      let albumFetchResult = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [albumPlaceholder.localIdentifier], options: nil)
-      guard let album = albumFetchResult.firstObject else {
-        completionHandler(nil, false, nil)
-        return
-      }
-      completionHandler(nil, true, album)
-    }
+  func videoExportTask(didFinishTask placeholder: PHObjectPlaceholder) {
+    delegate?.videoExportManager(didFinish: placeholder)
   }
 }

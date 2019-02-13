@@ -15,6 +15,7 @@ import clamp from 'lodash/clamp';
 import throttle from 'lodash/throttle';
 
 import * as Debug from '../../utils/Debug';
+import VideoExportManager from '../../utils/VideoExportManager';
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
@@ -28,7 +29,7 @@ import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenLoadingBackground from './EditScreenLoadingBackground';
 import EditScreenEditCaptionsOverlay from './EditScreenEditCaptionsOverlay';
 import SpeechManager from '../../utils/SpeechManager';
-import { exportVideo } from '../../redux/media/actionCreators';
+import { willExportVideo, didExportVideo } from '../../redux/media/actionCreators';
 import {
   beginSpeechTranscriptionWithVideoAsset,
   receiveSpeechTranscriptionSuccess,
@@ -68,7 +69,6 @@ import type { Dispatch, AppState } from '../../types/redux';
 import type { SpeechTranscription } from '../../types/speech';
 import type { LineStyle } from '../../types/video';
 import type { ReactAppStateEnum } from '../../types/react';
-import type { ExportParams } from '../../utils/VideoExportManager';
 import type { EmitterSubscription as SpeechManagerSubscription } from '../../utils/SpeechManager';
 
 type State = {
@@ -106,7 +106,8 @@ type DispatchProps = {
     SpeechTranscription
   ) => void,
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
-  exportVideo: ExportParams => Promise<void>,
+  willExportVideo: () => Promise<void>,
+  didExportVideo: () => Promise<void>,
   receiveUserSelectedFontFamily: (fontFamily: string) => void,
   receiveUserSelectedTextColor: (color: ColorRGBA) => void,
   receiveUserSelectedBackgroundColor: (color: ColorRGBA) => void,
@@ -183,8 +184,10 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
     ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
     receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
-    exportVideo: (exportParams: ExportParams) =>
-      dispatch(exportVideo(exportParams)),
+    willExportVideo: () =>
+      dispatch(willExportVideo()),
+    didExportVideo: () =>
+      dispatch(didExportVideo()),
     receiveUserSelectedFontFamily: (fontFamily: string) =>
       dispatch(receiveUserSelectedFontFamily(fontFamily)),
     receiveUserSelectedTextColor: (color: ColorRGBA) =>
@@ -389,11 +392,13 @@ export default class EditScreen extends Component<Props, State> {
   async onDidPressExportButton() {
     this.pausePlayerAndCaptions();
     await this.exportVideo();
-    this.restartPlayerAndCaptions();
   }
 
   async exportVideo() {
-    await this.props.exportVideo({
+    this.props.willExportVideo();
+    VideoExportManager.addDidFinishListener(this.onExportDidFinish);
+    VideoExportManager.addDidFailListener(this.onExportDidFinish);
+    VideoExportManager.exportVideo({
       video: this.props.video.id,
       textSegments: this.textOverlayParams(),
       textColor: this.props.textColor,
@@ -404,6 +409,24 @@ export default class EditScreen extends Component<Props, State> {
       lineStyle: this.props.lineStyle,
       orientation: this.state.orientation || 'up',
     });
+  }
+
+  onExportDidUpdateProgress() {
+    // TODO
+    Debug.log('Video export progress updated');
+  }
+
+  onExportDidFinish() {
+    // TODO
+    Debug.log('Video export finished');
+    this.props.didExportVideo();
+    this.restartPlayerAndCaptions();
+  }
+
+  onExportDidFail() {
+    // TODO
+    Debug.log('Video export failed');
+    this.restartPlayerAndCaptions();
   }
 
   textOverlayParams() {

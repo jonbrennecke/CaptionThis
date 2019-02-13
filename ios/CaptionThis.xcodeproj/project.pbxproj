@@ -85,6 +85,8 @@
 		FCB0E50B22136148002F320B /* Bangers-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCB0E50A22136148002F320B /* Bangers-Regular.ttf */; };
 		FCB0E55322136343002F320B /* Righteous-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCB0E52122136343002F320B /* Righteous-Regular.ttf */; };
 		FCB0E55522136472002F320B /* IBMPlexMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCB0E55422136472002F320B /* IBMPlexMono-Medium.ttf */; };
+		FCB0E5C12213F076002F320B /* VideoExportTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB0E5C02213F076002F320B /* VideoExportTask.swift */; };
+		FCB0E5C322149C03002F320B /* PhotosAlbumUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB0E5C222149C03002F320B /* PhotosAlbumUtil.swift */; };
 		FCB392F2220CCD0900403154 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB392F1220CCD0900403154 /* Result.swift */; };
 		FCB39371220EB45200403154 /* FileSpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */; };
 		FCB393A52210E0F900403154 /* LiveSpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */; };
@@ -561,6 +563,8 @@
 		FCB0E50A22136148002F320B /* Bangers-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Bangers-Regular.ttf"; path = "../assets/fonts/Bangers-Regular.ttf"; sourceTree = "<group>"; };
 		FCB0E52122136343002F320B /* Righteous-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Righteous-Regular.ttf"; path = "../assets/fonts/Righteous-Regular.ttf"; sourceTree = "<group>"; };
 		FCB0E55422136472002F320B /* IBMPlexMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "IBMPlexMono-Medium.ttf"; path = "../assets/fonts/IBMPlexMono-Medium.ttf"; sourceTree = "<group>"; };
+		FCB0E5C02213F076002F320B /* VideoExportTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExportTask.swift; sourceTree = "<group>"; };
+		FCB0E5C222149C03002F320B /* PhotosAlbumUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosAlbumUtil.swift; sourceTree = "<group>"; };
 		FCB392F1220CCD0900403154 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
 		FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
@@ -712,12 +716,9 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				FC6EA7E721D4508D007C3B3E /* CaptionThis-Bridging-Header.h */,
 				FC6EA7E821D4508D007C3B3E /* CameraManager.swift */,
-				FCB393A32210DCD100403154 /* speech */,
 				FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */,
 				FC6EA81521D45340007C3B3E /* PermissionsManager.swift */,
 				FCA3971721DC93AF00347CAB /* constants.swift */,
-				FCA3971D21DCB3B500347CAB /* VideoAnimationBridgeParams.swift */,
-				FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
 				FC4BCD16220432DA00822C0F /* VideoAnimationLayer */,
 				FC58D11321FAED1A00E7956D /* utils */,
@@ -729,7 +730,7 @@
 				FC880E0021D54B3F00856037 /* MediaLibraryBridgeModule */,
 				FC880E0421D5DC4600856037 /* VideoThumbnailViewManager */,
 				FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */,
-				FCD5F75321D6EA55001F2068 /* SpeechBridgeModule */,
+				FCD5F75321D6EA55001F2068 /* speech */,
 				FC7A0F8621D8AB5D00751DBE /* HueGradientViewManager */,
 				FC7A0F6121D89CCC00751DBE /* SaturationAndBrightnessGradientViewManager */,
 				FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */,
@@ -911,6 +912,7 @@
 				FCB392F1220CCD0900403154 /* Result.swift */,
 				FCD5F75621D73C97001F2068 /* Debug */,
 				FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */,
+				FCB0E5C222149C03002F320B /* PhotosAlbumUtil.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -1085,22 +1087,14 @@
 		FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */ = {
 			isa = PBXGroup;
 			children = (
+				FCA3971D21DCB3B500347CAB /* VideoAnimationBridgeParams.swift */,
+				FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */,
+				FCB0E5C02213F076002F320B /* VideoExportTask.swift */,
 				FCA3971321DC933D00347CAB /* VideoExportManager.swift */,
 				FCA3971921DC968E00347CAB /* VideoExportBridgeModule.m */,
 				FCA3971B21DC969D00347CAB /* VideoExportBridgeModule.h */,
 			);
 			name = VideoExportBridgeModule;
-			sourceTree = "<group>";
-		};
-		FCB393A32210DCD100403154 /* speech */ = {
-			isa = PBXGroup;
-			children = (
-				FC6EA81321D45266007C3B3E /* SpeechManager.swift */,
-				FCB393A62210E2C000403154 /* SpeechTranscriptionRequest.swift */,
-				FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */,
-				FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */,
-			);
-			name = speech;
 			sourceTree = "<group>";
 		};
 		FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */ = {
@@ -1113,13 +1107,17 @@
 			name = VideoPlayerViewManager;
 			sourceTree = "<group>";
 		};
-		FCD5F75321D6EA55001F2068 /* SpeechBridgeModule */ = {
+		FCD5F75321D6EA55001F2068 /* speech */ = {
 			isa = PBXGroup;
 			children = (
+				FC6EA81321D45266007C3B3E /* SpeechManager.swift */,
+				FCB393A62210E2C000403154 /* SpeechTranscriptionRequest.swift */,
+				FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */,
+				FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */,
 				FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */,
 				FCD5F75421D6EA68001F2068 /* SpeechBridgeModule.h */,
 			);
-			name = SpeechBridgeModule;
+			name = speech;
 			sourceTree = "<group>";
 		};
 		FCD5F75621D73C97001F2068 /* Debug */ = {
@@ -1743,6 +1741,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCB0E5C322149C03002F320B /* PhotosAlbumUtil.swift in Sources */,
 				FCB39371220EB45200403154 /* FileSpeechTranscriptionRequest.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				FCB393A52210E0F900403154 /* LiveSpeechTranscriptionRequest.swift in Sources */,
@@ -1761,6 +1760,7 @@
 				FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */,
 				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
 				FC7A0F6321D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m in Sources */,
+				FCB0E5C12213F076002F320B /* VideoExportTask.swift in Sources */,
 				FC9374E421DEED4D00FD2700 /* TranscriptViewManager.m in Sources */,
 				FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */,
 				FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */,

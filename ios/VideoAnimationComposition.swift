@@ -1,6 +1,18 @@
 import AVFoundation
 
-class VideoAnimationComposition {
+class VideoAnimationComposition : NSObject {
+  
+  // TODO: ideally this would be in a different class (e.g. VideoAnimationCompositionExportSession)
+  private enum ExportState {
+    case unstarted
+    case preparingToExport
+    case exporting(Timer, AVAssetExportSession)
+    case finished
+    case failed
+  }
+  
+  private var state: ExportState = .unstarted
+  
   private let videoComposition = AVMutableVideoComposition()
   private var mixComposition = AVMutableComposition()
   private let videoAsset: AVAsset
@@ -31,6 +43,7 @@ class VideoAnimationComposition {
       return nil
     }
     self.audioTrack = audioTrack
+    super.init()
     let frame = CGRect(origin: .zero, size: videoSize)
     parentLayer.frame = frame
     parentLayer.contentsScale = UIScreen.main.scale
@@ -52,39 +65,47 @@ class VideoAnimationComposition {
   }
 
   public func exportVideo(_ completionHandler: @escaping (Error?, Bool, URL?) -> Void) {
+    state = .preparingToExport
     do {
       try applyAnimationToVideo()
     } catch {
+      state = .failed
       completionHandler(error, false, nil)
       return
     }
-    DispatchQueue.global(qos: .background).async {
+    DispatchQueue.main.async {
+//    DispatchQueue.global(qos: .background).async {
       do {
         let exportFileURL = try FileManager.default
           .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
           .appendingPathComponent("output")
           .appendingPathExtension("mov")
         try? FileManager.default.removeItem(at: exportFileURL)
-        guard let assetExport = AVAssetExportSession(asset: self.mixComposition, presetName: AVAssetExportPresetHighestQuality) else {
+        guard let assetExportSession = AVAssetExportSession(asset: self.mixComposition, presetName: AVAssetExportPresetHighestQuality) else {
           Debug.log(message: "Asset export session could not be created")
           completionHandler(nil, false, nil)
           return
         }
-        assetExport.videoComposition = self.videoComposition
-        assetExport.outputFileType = .mov
-        assetExport.outputURL = exportFileURL
+        let timer = Timer(timeInterval: 0.1, target: self, selector: #selector(self.onExportSessionProgressDidUpdate), userInfo: nil, repeats: true)
+//        let timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.onExportSessionProgressDidUpdate), userInfo: nil, repeats: true)
+        RunLoop.current.add(timer, forMode: .common)
+        self.state = .exporting(timer, assetExportSession)
+        assetExportSession.videoComposition = self.videoComposition
+        assetExportSession.outputFileType = .mov
+        assetExportSession.outputURL = exportFileURL
         Debug.log(format: "Exporting video animation. URL = %@", exportFileURL.absoluteString)
-        assetExport.exportAsynchronously {
+        assetExportSession.exportAsynchronously {
           Debug.log(format: "Finished exporting video animation. URL = %@", exportFileURL.absoluteString)
-          switch assetExport.status {
+          switch assetExportSession.status {
           case .failed:
-            if let error = assetExport.error {
+            if let error = assetExportSession.error {
               completionHandler(error, false, nil)
               return
             }
             completionHandler(nil, false, nil)
             return
           case .completed:
+            self.state = .finished
             completionHandler(nil, true, exportFileURL)
             return
           case .unknown, .cancelled, .exporting, .waiting:
@@ -97,6 +118,15 @@ class VideoAnimationComposition {
         completionHandler(error, false, nil)
       }
     }
+  }
+  
+  @objc
+  private func onExportSessionProgressDidUpdate() {
+    guard case let .exporting(_, assetExportSession) = state else {
+      return
+    }
+    let progress = assetExportSession.progress
+    print(progress)
   }
 
   private func applyAnimationToVideo() throws {
