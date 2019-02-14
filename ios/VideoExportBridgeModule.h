@@ -14,6 +14,8 @@
 
 @interface VideoExportBridgeModule (
     VideoExportManagerDelegate) <VideoExportManagerDelegate>
-- (void)videoExportManagerDidFinishWithObjectPlaceholder:(PHObjectPlaceholder *)objectPlaceholder;
+- (void)videoExportManagerDidFinishWithObjectPlaceholder:
+    (PHObjectPlaceholder *)objectPlaceholder;
 - (void)videoExportManagerDidFailWithError:(NSError *)error;
+- (void)videoExportManagerDidDidUpdateProgress:(float)progress;
 @end

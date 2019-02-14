@@ -29,7 +29,10 @@ import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenLoadingBackground from './EditScreenLoadingBackground';
 import EditScreenEditCaptionsOverlay from './EditScreenEditCaptionsOverlay';
 import SpeechManager from '../../utils/SpeechManager';
-import { willExportVideo, didExportVideo } from '../../redux/media/actionCreators';
+import {
+  willExportVideo,
+  didExportVideo,
+} from '../../redux/media/actionCreators';
 import {
   beginSpeechTranscriptionWithVideoAsset,
   receiveSpeechTranscriptionSuccess,
@@ -184,10 +187,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
     ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
     receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
-    willExportVideo: () =>
-      dispatch(willExportVideo()),
-    didExportVideo: () =>
-      dispatch(didExportVideo()),
+    willExportVideo: () => dispatch(willExportVideo()),
+    didExportVideo: () => dispatch(didExportVideo()),
     receiveUserSelectedFontFamily: (fontFamily: string) =>
       dispatch(receiveUserSelectedFontFamily(fontFamily)),
     receiveUserSelectedTextColor: (color: ColorRGBA) =>
@@ -398,6 +399,9 @@ export default class EditScreen extends Component<Props, State> {
     this.props.willExportVideo();
     VideoExportManager.addDidFinishListener(this.onExportDidFinish);
     VideoExportManager.addDidFailListener(this.onExportDidFinish);
+    VideoExportManager.addDidUpdateProgressListener(
+      this.onExportDidUpdateProgress
+    );
     VideoExportManager.exportVideo({
       video: this.props.video.id,
       textSegments: this.textOverlayParams(),
@@ -411,9 +415,8 @@ export default class EditScreen extends Component<Props, State> {
     });
   }
 
-  onExportDidUpdateProgress() {
-    // TODO
-    Debug.log('Video export progress updated');
+  onExportDidUpdateProgress(progress: number) {
+    Debug.log(`Video export progress updated. Progress = ${progress}`);
   }
 
   onExportDidFinish() {

@@ -7,6 +7,8 @@ protocol VideoExportManagerDelegate {
   func videoExportManager(didFinish _: PHObjectPlaceholder)
   @objc(videoExportManagerDidFailWithError:)
   func videoExportManager(didFail _: Error)
+  @objc(videoExportManagerDidDidUpdateProgress:)
+  func videoExportManager(didUpdateProgress _: Float)
 }
 
 @objc
@@ -35,10 +37,10 @@ class VideoExportManager: NSObject {
 }
 
 extension VideoExportManager: VideoExportTaskDelegate {
-  func videoExportTask(didUpdateProgress percent: Float, time: CFAbsoluteTime) {
-    // TODO
+  func videoExportTask(didUpdateProgress progress: Float, time _: CFAbsoluteTime) {
+    delegate?.videoExportManager(didUpdateProgress: progress)
   }
-  
+
   func videoExportTask(didEncounterError error: VideoExportTask.Error) {
     delegate?.videoExportManager(didFail: error)
   }

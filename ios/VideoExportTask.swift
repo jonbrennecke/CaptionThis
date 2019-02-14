@@ -3,21 +3,20 @@ import Photos
 protocol VideoExportTaskDelegate {
   func videoExportTask(didEncounterError _: VideoExportTask.Error)
   func videoExportTask(didFinishTask placeholder: PHObjectPlaceholder)
-  func videoExportTask(didUpdateProgress percent: Float, time: CFAbsoluteTime)
+  func videoExportTask(didUpdateProgress progress: Float, time: CFAbsoluteTime)
 }
 
 class VideoExportTask {
   private enum State {
     case unstarted
-    case pending([ExportTaskState], CFAbsoluteTime)
+    case pending(ExportTaskState, CFAbsoluteTime)
     case completed
     case failed
   }
 
   private enum ExportTaskState {
-    case unstarted
-    case pending
-    case final
+    case fetchingAVAsset
+    case exportingCaptionAnimation(CaptionAnimationExportSession)
   }
 
   public enum Error: GlobalError {
@@ -27,8 +26,10 @@ class VideoExportTask {
     case failedToCreateAsset
     case failedToCreateAssetWithError(GlobalError)
     case noVideoTrack
-    case compositionError(GlobalError)
+    case compositionFailed
+    case compositionFailedWithError(GlobalError)
     case compositionErrorNoURL
+    case invalidState
   }
 
   private var state: State = .unstarted
@@ -41,7 +42,7 @@ class VideoExportTask {
     self.localIdentifier = localIdentifier
     self.model = model
   }
-  
+
   deinit {
     if let id = requestID {
       PHImageManager.default().cancelImageRequest(id)
@@ -49,6 +50,8 @@ class VideoExportTask {
   }
 
   public func startTask() {
+    let startTime = CFAbsoluteTimeGetCurrent()
+    state = .pending(.fetchingAVAsset, startTime)
     let options = PHFetchOptions()
     let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: options)
     guard let photosAsset = fetchResult.firstObject else {
@@ -64,10 +67,13 @@ class VideoExportTask {
       }
       self.exportVideo(withAsset: asset)
     }
-    // TODO save requestID
   }
 
   private func exportVideo(withAsset asset: AVAsset) {
+    guard case let .pending(.fetchingAVAsset, startTime) = state else {
+      delegate?.videoExportTask(didEncounterError: .invalidState)
+      return
+    }
     guard let composition = VideoAnimationComposition(withAsset: asset) else {
       delegate?.videoExportTask(didEncounterError: .failedToCreateComposition)
       return
@@ -91,17 +97,10 @@ class VideoExportTask {
     animationLayer.timeOffset = 0
     animationLayer.speed = 1
     composition.add(effectLayer: animationLayer)
-    composition.exportVideo { error, _, url in
-      if let error = error {
-        self.delegate?.videoExportTask(didEncounterError: .compositionError(error))
-        return
-      }
-      guard let url = url else {
-        self.delegate?.videoExportTask(didEncounterError: .compositionErrorNoURL)
-        return
-      }
-      self.createVideoAsset(forURL: url)
-    }
+    let exportSession = CaptionAnimationExportSession(composition: composition)
+    exportSession.delegate = self
+    exportSession.export()
+    state = .pending(.exportingCaptionAnimation(exportSession), startTime)
   }
 
   private func frame(forComposition composition: VideoAnimationComposition, layout: VideoAnimationLayerLayout) -> CGRect {
@@ -159,5 +158,28 @@ class VideoExportTask {
         break
       }
     }
+  }
+}
+
+extension VideoExportTask: CaptionAnimationExportSessionDelegate {
+  func captionAnimationExportSession(didFail error: GlobalError?) {
+    guard let error = error else {
+      delegate?.videoExportTask(didEncounterError: .compositionFailed)
+      return
+    }
+    Debug.log(error: error)
+    delegate?.videoExportTask(didEncounterError: .compositionFailedWithError(error))
+  }
+
+  func captionAnimationExportSession(didFinish exportFileURL: URL) {
+    createVideoAsset(forURL: exportFileURL)
+  }
+
+  func captionAnimationExportSession(didUpdateProgress progress: Float) {
+    guard case let .pending(_, startTime) = state else {
+      return
+    }
+    let executionTime = CFAbsoluteTimeGetCurrent() - startTime
+    delegate?.videoExportTask(didUpdateProgress: progress, time: executionTime)
   }
 }

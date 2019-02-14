@@ -22,8 +22,8 @@
 
 - (NSArray<NSString *> *)supportedEvents {
   return @[
-    @"videoExportManagerDidFail",
-    @"videoExportManagerDidFinish"
+    @"videoExportManagerDidFail", @"videoExportManagerDidFinish",
+    @"videoExportManagerDidDidUpdateProgress"
   ];
 }
 
@@ -144,18 +144,27 @@ RCT_EXPORT_METHOD(exportVideo
 
 @implementation VideoExportBridgeModule (VideoExportManagerDelegate)
 
-- (void)videoExportManagerDidFailWithError:(NSError * _Nonnull)_ {
+- (void)videoExportManagerDidFailWithError:(NSError *_Nonnull)_ {
   if (!hasListeners) {
     return;
   }
   [self sendEventWithName:@"videoExportManagerDidFail" body:@{}];
 }
 
-- (void)videoExportManagerDidFinishWithObjectPlaceholder:(PHObjectPlaceholder * _Nonnull)_ {
+- (void)videoExportManagerDidFinishWithObjectPlaceholder:
+    (PHObjectPlaceholder *_Nonnull)_ {
   if (!hasListeners) {
     return;
   }
   [self sendEventWithName:@"videoExportManagerDidFinish" body:@{}];
+}
+
+- (void)videoExportManagerDidDidUpdateProgress:(float)progress {
+  if (!hasListeners) {
+    return;
+  }
+  NSDictionary *body = @{ @"progress" : @(progress) };
+  [self sendEventWithName:@"videoExportManagerDidDidUpdateProgress" body:body];
 }
 
 @end

@@ -1,20 +1,8 @@
 import AVFoundation
 
-class VideoAnimationComposition : NSObject {
-  
-  // TODO: ideally this would be in a different class (e.g. VideoAnimationCompositionExportSession)
-  private enum ExportState {
-    case unstarted
-    case preparingToExport
-    case exporting(Timer, AVAssetExportSession)
-    case finished
-    case failed
-  }
-  
-  private var state: ExportState = .unstarted
-  
-  private let videoComposition = AVMutableVideoComposition()
-  private var mixComposition = AVMutableComposition()
+class VideoAnimationComposition: NSObject {
+  public var mixComposition = AVMutableComposition()
+  public let videoComposition = AVMutableVideoComposition()
   private let videoAsset: AVAsset
   private let videoTrack: AVAssetTrack
   private let audioTrack: AVAssetTrack
@@ -64,72 +52,7 @@ class VideoAnimationComposition : NSObject {
     effectLayer.addSublayer(layer)
   }
 
-  public func exportVideo(_ completionHandler: @escaping (Error?, Bool, URL?) -> Void) {
-    state = .preparingToExport
-    do {
-      try applyAnimationToVideo()
-    } catch {
-      state = .failed
-      completionHandler(error, false, nil)
-      return
-    }
-    DispatchQueue.main.async {
-//    DispatchQueue.global(qos: .background).async {
-      do {
-        let exportFileURL = try FileManager.default
-          .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-          .appendingPathComponent("output")
-          .appendingPathExtension("mov")
-        try? FileManager.default.removeItem(at: exportFileURL)
-        guard let assetExportSession = AVAssetExportSession(asset: self.mixComposition, presetName: AVAssetExportPresetHighestQuality) else {
-          Debug.log(message: "Asset export session could not be created")
-          completionHandler(nil, false, nil)
-          return
-        }
-        let timer = Timer(timeInterval: 0.1, target: self, selector: #selector(self.onExportSessionProgressDidUpdate), userInfo: nil, repeats: true)
-//        let timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.onExportSessionProgressDidUpdate), userInfo: nil, repeats: true)
-        RunLoop.current.add(timer, forMode: .common)
-        self.state = .exporting(timer, assetExportSession)
-        assetExportSession.videoComposition = self.videoComposition
-        assetExportSession.outputFileType = .mov
-        assetExportSession.outputURL = exportFileURL
-        Debug.log(format: "Exporting video animation. URL = %@", exportFileURL.absoluteString)
-        assetExportSession.exportAsynchronously {
-          Debug.log(format: "Finished exporting video animation. URL = %@", exportFileURL.absoluteString)
-          switch assetExportSession.status {
-          case .failed:
-            if let error = assetExportSession.error {
-              completionHandler(error, false, nil)
-              return
-            }
-            completionHandler(nil, false, nil)
-            return
-          case .completed:
-            self.state = .finished
-            completionHandler(nil, true, exportFileURL)
-            return
-          case .unknown, .cancelled, .exporting, .waiting:
-            completionHandler(nil, false, nil)
-            return
-          }
-        }
-      } catch {
-        Debug.log(error: error)
-        completionHandler(error, false, nil)
-      }
-    }
-  }
-  
-  @objc
-  private func onExportSessionProgressDidUpdate() {
-    guard case let .exporting(_, assetExportSession) = state else {
-      return
-    }
-    let progress = assetExportSession.progress
-    print(progress)
-  }
-
-  private func applyAnimationToVideo() throws {
+  public func applyAnimationToVideo() throws {
     guard let mixCompositionAudioTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) else {
       Debug.log(message: "Unable to add audio track.")
       return
