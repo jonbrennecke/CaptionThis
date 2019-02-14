@@ -151,6 +151,9 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
   });
 
   seekBarDidSeekToTime(timeSeconds: number) {
+    if (!this.state.isDraggingSeekbar) {
+      return;
+    }
     const playbackTime = clamp(timeSeconds, 0, this.props.duration);
     this.props.onRequestChangePlaybackTime(playbackTime);
     if (this.captionsView) {
@@ -159,6 +162,16 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     if (this.playerView) {
       this.playerView.seekToTime(playbackTime);
     }
+  }
+
+  seekBarDidStartSeeking() {
+    this.pausePlayerAndCaptions();
+    this.setState({ isDraggingSeekbar: true });
+  }
+
+  seekBarDidStopSeeking() {
+    // TODO: this.resumePlayerAndCaptions();
+    this.setState({ isDraggingSeekbar: true });
   }
 
   async videoPlayerDidBecomeReadyToPlay(
@@ -184,11 +197,10 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     this.pauseCaptions();
   }
 
-  videoPlayerDidUpdatePlaybackTime(playbackTime: number, duration: number) {
+  videoPlayerDidUpdatePlaybackTime(playbackTime: number) {
     if (this.state.isDraggingSeekbar) {
       return;
     }
-    this.props.onRequestChangeDuration(duration);
     this.props.onRequestChangePlaybackTime(playbackTime);
   }
 
@@ -297,8 +309,8 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               playbackTime={this.props.playbackTime}
               videoAssetIdentifier={this.props.video.id}
               onSeekToTime={this.seekBarDidSeekToTimeThrottled}
-              onDidBeginDrag={() => this.setState({ isDraggingSeekbar: true })}
-              onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
+              onDidBeginDrag={this.seekBarDidStartSeeking}
+              onDidEndDrag={this.seekBarDidStopSeeking}
             />
           </View>
         )}
