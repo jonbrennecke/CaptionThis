@@ -71,12 +71,12 @@ import type {
 import type { Dispatch, AppState } from '../../types/redux';
 import type { SpeechTranscription } from '../../types/speech';
 import type { LineStyle } from '../../types/video';
-import type { ReactAppStateEnum } from '../../types/react';
-import type { EmitterSubscription as SpeechManagerSubscription } from '../../utils/SpeechManager';
+import type { EmitterSubscription, ReactAppStateEnum } from '../../types/react';
 
 type State = {
   duration: number,
   orientation: ?ImageOrientation,
+  exportProgress: number,
   playbackTime: number,
   isVideoPlaying: boolean,
   isDraggingSeekbar: boolean,
@@ -212,14 +212,18 @@ export default class EditScreen extends Component<Props, State> {
   state: State = {
     playbackTime: 0,
     duration: 0,
+    exportProgress: 0,
     orientation: null,
     isVideoPlaying: false,
     isDraggingSeekbar: false,
     showRichTextOverlay: false,
     showEditCaptionsOverlay: false,
   };
-  didReceiveSpeechTranscriptionSubscription: ?SpeechManagerSubscription;
-  didNotDetectSpeechSubscription: ?SpeechManagerSubscription;
+  didReceiveSpeechTranscriptionSubscription: ?EmitterSubscription;
+  didNotDetectSpeechSubscription: ?EmitterSubscription;
+  exportDidFinishListener: ?EmitterSubscription;
+  exportDidFailListener: ?EmitterSubscription;
+  exportDidUpdateProgressListener: ?EmitterSubscription;
 
   async componentDidMount() {
     this.didReceiveSpeechTranscriptionSubscription = SpeechManager.addDidReceiveSpeechTranscriptionListener(
@@ -397,12 +401,8 @@ export default class EditScreen extends Component<Props, State> {
 
   async exportVideo() {
     this.props.willExportVideo();
-    VideoExportManager.addDidFinishListener(this.onExportDidFinish);
-    VideoExportManager.addDidFailListener(this.onExportDidFinish);
-    VideoExportManager.addDidUpdateProgressListener(
-      this.onExportDidUpdateProgress
-    );
-    VideoExportManager.exportVideo({
+    this.addExportListeners();
+    await VideoExportManager.exportVideo({
       video: this.props.video.id,
       textSegments: this.textOverlayParams(),
       textColor: this.props.textColor,
@@ -417,19 +417,37 @@ export default class EditScreen extends Component<Props, State> {
 
   onExportDidUpdateProgress(progress: number) {
     Debug.log(`Video export progress updated. Progress = ${progress}`);
+    this.setState({
+      exportProgress: progress,
+    });
   }
 
   onExportDidFinish() {
-    // TODO
     Debug.log('Video export finished');
     this.props.didExportVideo();
     this.restartPlayerAndCaptions();
+    this.removeExportListeners();
   }
 
   onExportDidFail() {
-    // TODO
+    // TODO: update redux
     Debug.log('Video export failed');
     this.restartPlayerAndCaptions();
+    this.removeExportListeners();
+  }
+
+  addExportListeners() {
+    this.exportDidFinishListener = VideoExportManager.addDidFinishListener(this.onExportDidFinish);
+    this.exportDidFailListener = VideoExportManager.addDidFailListener(this.onExportDidFinish);
+    this.exportDidUpdateProgressListener = VideoExportManager.addDidUpdateProgressListener(
+      this.onExportDidUpdateProgress
+    );
+  }
+
+  removeExportListeners() {
+    this.exportDidFinishListener && this.exportDidFinishListener.remove();
+    this.exportDidFailListener && this.exportDidFailListener.remove();
+    this.exportDidUpdateProgressListener && this.exportDidUpdateProgressListener.remove();
   }
 
   textOverlayParams() {

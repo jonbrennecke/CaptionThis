@@ -52,8 +52,7 @@ class CaptionAnimationExportSession {
           self.delegate?.captionAnimationExportSession(didFail: error)
           return
         case .completed:
-          self.state = .finished
-          self.delegate?.captionAnimationExportSession(didFinish: exportFileURL)
+          self.completeExport(exportFileURL: exportFileURL)
           return
         case .unknown, .cancelled, .exporting, .waiting:
           self.delegate?.captionAnimationExportSession(didFail: nil)
@@ -65,6 +64,15 @@ class CaptionAnimationExportSession {
       Debug.log(error: error)
       delegate?.captionAnimationExportSession(didFail: error)
     }
+  }
+  
+  private func completeExport(exportFileURL: URL) {
+    guard case let .exporting(timer, _) = state else {
+      return
+    }
+    state = .finished
+    delegate?.captionAnimationExportSession(didFinish: exportFileURL)
+    stop(timer: timer)
   }
 
   private func startTimer() -> Timer {

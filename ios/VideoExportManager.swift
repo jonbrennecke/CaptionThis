@@ -13,13 +13,12 @@ protocol VideoExportManagerDelegate {
 
 @objc
 class VideoExportManager: NSObject {
-  private enum TaskState {
-    case unstarted
+  private enum State {
+    case ready
     case pending(VideoExportTask)
-    case final
   }
 
-  private var state: TaskState = .unstarted
+  private var state: State = .ready
 
   @objc
   public var delegate: VideoExportManagerDelegate?
@@ -43,9 +42,11 @@ extension VideoExportManager: VideoExportTaskDelegate {
 
   func videoExportTask(didEncounterError error: VideoExportTask.Error) {
     delegate?.videoExportManager(didFail: error)
+    state = .ready
   }
 
   func videoExportTask(didFinishTask placeholder: PHObjectPlaceholder) {
     delegate?.videoExportManager(didFinish: placeholder)
+    state = .ready
   }
 }

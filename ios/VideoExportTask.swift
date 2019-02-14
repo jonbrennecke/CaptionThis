@@ -10,7 +10,7 @@ class VideoExportTask {
   private enum State {
     case unstarted
     case pending(ExportTaskState, CFAbsoluteTime)
-    case completed
+    case finished
     case failed
   }
 
@@ -169,10 +169,12 @@ extension VideoExportTask: CaptionAnimationExportSessionDelegate {
     }
     Debug.log(error: error)
     delegate?.videoExportTask(didEncounterError: .compositionFailedWithError(error))
+    state = .failed
   }
 
   func captionAnimationExportSession(didFinish exportFileURL: URL) {
     createVideoAsset(forURL: exportFileURL)
+    state = .finished
   }
 
   func captionAnimationExportSession(didUpdateProgress progress: Float) {
