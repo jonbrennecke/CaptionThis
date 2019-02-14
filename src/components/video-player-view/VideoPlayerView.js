@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, requireNativeComponent, NativeModules } from 'react-native';
 
 import type { Style } from '../../types/react';
-import type { VideoAssetIdentifier, ImageOrientation } from '../../types/media';
+import type { VideoAssetIdentifier, Orientation } from '../../types/media';
 
 const NativeVideoPlayerView = requireNativeComponent('VideoPlayerView');
 const { VideoPlayerViewManager } = NativeModules;
@@ -12,12 +12,11 @@ type ReactNativeFiberHostComponent = any;
 
 type Props = {
   style?: ?Style,
-  isPlaying: boolean,
   videoAssetIdentifier: VideoAssetIdentifier,
   onVideoDidFailToLoad: () => void,
   onVideoDidBecomeReadyToPlay: (
     duration: number,
-    orientation: ImageOrientation
+    orientation: Orientation
   ) => void,
   onVideoDidPause: () => void,
   onVideoDidUpdatePlaybackTime: (
@@ -68,7 +67,6 @@ export default class VideoPlayerView extends Component<Props> {
             this.nativeComponentRef = ref;
           }}
           style={styles.nativeView}
-          isPlaying={this.props.isPlaying}
           localIdentifier={this.props.videoAssetIdentifier}
           onVideoDidBecomeReadyToPlay={({ nativeEvent }) => {
             if (!nativeEvent) {

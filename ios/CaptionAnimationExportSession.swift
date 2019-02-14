@@ -65,7 +65,7 @@ class CaptionAnimationExportSession {
       delegate?.captionAnimationExportSession(didFail: error)
     }
   }
-  
+
   private func completeExport(exportFileURL: URL) {
     guard case let .exporting(timer, _) = state else {
       return

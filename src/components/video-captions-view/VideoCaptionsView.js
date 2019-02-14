@@ -8,14 +8,14 @@ import {
 
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
-import type { ColorRGBA, ImageOrientation } from '../../types/media';
+import type { ColorRGBA, Orientation } from '../../types/media';
 
 type ReactNativeFiberHostComponent = any;
 
 type Props = {
   style?: ?Style,
   duration: number,
-  orientation: ImageOrientation,
+  orientation: Orientation,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
   fontFamily: string,

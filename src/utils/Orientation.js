@@ -1,11 +1,11 @@
 // @flow
-import type { ImageOrientation } from '../types/media';
+import type { Orientation } from '../types/media';
 
-export function isPortrait(orientation: ImageOrientation): boolean {
+export function isPortrait(orientation: Orientation): boolean {
   return !isLandscape(orientation);
 }
 
-export function isLandscape(orientation: ImageOrientation): boolean {
+export function isLandscape(orientation: Orientation): boolean {
   switch (orientation) {
     case 'left':
     case 'leftMirrored':

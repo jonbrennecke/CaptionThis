@@ -25,7 +25,7 @@ export type TextOverlayParams = {
   text: string,
 };
 
-export type ImageOrientation =
+export type Orientation =
   | 'left'
   | 'leftMirrored'
   | 'right'

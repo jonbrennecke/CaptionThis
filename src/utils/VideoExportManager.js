@@ -8,7 +8,7 @@ import type {
   VideoAssetIdentifier,
   TextOverlayParams,
   ColorRGBA,
-  ImageOrientation,
+  Orientation,
 } from '../types/media';
 import type { LineStyle } from '../types/video';
 import type { Return } from '../types/util';
@@ -39,7 +39,7 @@ export type ExportParams = {
   fontFamily: string,
   duration: number,
   lineStyle: LineStyle,
-  orientation: ImageOrientation,
+  orientation: Orientation,
 };
 
 export default class VideoExportManager {
@@ -68,17 +68,11 @@ export default class VideoExportManager {
     );
   }
 
-  static removeDidFinishListener() {
+  static removeDidFinishListener() {}
 
-  }
+  static removeDidFailListener() {}
 
-  static removeDidFailListener() {
-
-  }
-
-  static removeDidUpdateProgressListener() {
-    
-  }
+  static removeDidUpdateProgressListener() {}
 
   static async exportVideo({
     textSegments,
