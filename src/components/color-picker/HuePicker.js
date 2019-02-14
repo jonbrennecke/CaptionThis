@@ -98,7 +98,7 @@ export default class HuePicker extends Component<Props, State> {
         <DragInteractionContainer
           style={styles.draggable}
           horizontal={false}
-          itemsShouldReturnToOriginalPosition={false}
+          returnToOriginalPosition={false}
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}
           onDragMove={this.dragDidMove}

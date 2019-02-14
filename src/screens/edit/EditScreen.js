@@ -222,15 +222,23 @@ export default class EditScreen extends Component<Props, State> {
     this.speechManagerDidNotDetectSpeechListener = SpeechManager.addDidNotDetectSpeechListener(
       this.speechManagerDidNotDetectSpeech
     );
-    this.speechManagerDidEndListener = SpeechManager.addDidEndListener(this.speechManagerDidEnd);
-    this.speechManagerDidFailListener = SpeechManager.addDidFailListener(this.speechManagerDidFail);
+    this.speechManagerDidEndListener = SpeechManager.addDidEndListener(
+      this.speechManagerDidEnd
+    );
+    this.speechManagerDidFailListener = SpeechManager.addDidFailListener(
+      this.speechManagerDidFail
+    );
   }
-  
+
   removeSpeechListeners() {
-    this.speechManagerDidReceiveTranscriptionListener && this.speechManagerDidReceiveTranscriptionListener.remove();
-    this.speechManagerDidNotDetectSpeechListener && this.speechManagerDidNotDetectSpeechListener.remove();
-    this.speechManagerDidEndListener && this.speechManagerDidEndListener.remove();
-    this.speechManagerDidFailListener && this.speechManagerDidFailListener.remove();
+    this.speechManagerDidReceiveTranscriptionListener &&
+      this.speechManagerDidReceiveTranscriptionListener.remove();
+    this.speechManagerDidNotDetectSpeechListener &&
+      this.speechManagerDidNotDetectSpeechListener.remove();
+    this.speechManagerDidEndListener &&
+      this.speechManagerDidEndListener.remove();
+    this.speechManagerDidFailListener &&
+      this.speechManagerDidFailListener.remove();
   }
 
   presentTranscriptionFailureAlert() {

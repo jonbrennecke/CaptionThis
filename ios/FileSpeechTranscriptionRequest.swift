@@ -124,6 +124,7 @@ extension FileSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
       return
     }
     if let error = task.error as NSError? {
+      Debug.log(format: "Speech recognitioni task failed. Error.localizedDescription = %@", error.localizedDescription)
       if error.code == 203, error.localizedDescription == "Retry" {
         delegate.speechTranscriptionRequestDidNotDetectSpeech()
         return

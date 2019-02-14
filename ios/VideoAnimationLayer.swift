@@ -71,7 +71,7 @@ class VideoAnimationLayer: CALayer {
   }
 
   public func seekTo(time: Double) {
-    Debug.log(format: "Animation seeking to %0.5f", time)
+    Debug.log(format: "Animation seeking to %0.2fs", time)
     removeAllAnimations()
     resetAnimation()
     if playbackState != .playing {

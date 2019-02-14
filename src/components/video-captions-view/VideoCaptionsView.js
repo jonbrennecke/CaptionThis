@@ -62,6 +62,14 @@ export default class VideoCaptionsView extends Component<Props> {
     TranscriptViewManager.seekToTime(this.nativeComponentRef._nativeTag, time);
   }
 
+  play() {
+    if (!this.nativeComponentRef || !this.props.hasFinalTranscription) {
+      return;
+    }
+    // TODO:
+    // TranscriptViewManager.play(this.nativeComponentRef._nativeTag, time);
+  }
+
   render() {
     const textSegments = this.props.speechTranscription
       ? this.props.speechTranscription.segments.map(segment => ({

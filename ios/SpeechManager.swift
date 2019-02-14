@@ -222,7 +222,7 @@ extension SpeechManager: SpeechTranscriptionRequestDelegate {
   func speechTranscriptionRequestDidEnd() {
     delegate?.speechManagerDidEnd()
   }
-  
+
   func speechTranscriptionRequestDidFail() {
     delegate?.speechManagerDidFail()
   }

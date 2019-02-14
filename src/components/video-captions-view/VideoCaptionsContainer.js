@@ -62,17 +62,12 @@ export default class VideoCaptionsContainer extends Component<Props, State> {
     },
   };
 
-  viewDidLayout() {
-    if (!this.view) {
-      return;
-    }
-    this.view.measure((fx, fy, width, height) => {
-      this.setState({
-        viewSize: {
-          width,
-          height,
-        },
-      });
+  viewDidLayout({ nativeEvent: { layout } }: any) {
+    this.setState({
+      viewSize: {
+        width: layout.width,
+        height: layout.height,
+      },
     });
   }
 

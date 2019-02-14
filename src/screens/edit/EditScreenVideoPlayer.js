@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import { View, SafeAreaView, Dimensions, StyleSheet } from 'react-native';
-import clamp from 'lodash/clamp';
 import throttle from 'lodash/throttle';
 import { autobind } from 'core-decorators';
 
@@ -26,7 +25,6 @@ type Props = {
   isReadyToPlay: boolean,
   isExportingVideo: boolean,
   duration: number,
-  playbackTime: number,
   duration: number,
   fontFamily: string,
   fontSize: number,
@@ -47,7 +45,7 @@ type Props = {
 };
 
 type State = {
-  isDraggingSeekbar: boolean,
+  playbackTime: number,
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -94,7 +92,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
   captionsView: ?VideoCaptionsView;
   playerView: ?VideoPlayerView;
   state = {
-    isDraggingSeekbar: false,
+    playbackTime: 0,
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -146,33 +144,31 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     this.restartPlayerAndCaptions();
   }
 
-  seekBarDidSeekToTimeThrottled = throttle(this.seekBarDidSeekToTime, 100, {
+  seekBarDidSeekToTimeThrottled = throttle(this.seekBarDidSeekToTime, 50, {
     leading: true,
   });
 
-  seekBarDidSeekToTime(timeSeconds: number) {
-    if (!this.state.isDraggingSeekbar) {
-      return;
-    }
-    const playbackTime = clamp(timeSeconds, 0, this.props.duration);
-    this.props.onRequestChangePlaybackTime(playbackTime);
-    if (this.captionsView) {
-      this.captionsView.seekToTime(playbackTime);
-    }
-    if (this.playerView) {
-      this.playerView.seekToTime(playbackTime);
-    }
+  seekBarDidSeekToTime(time: number) {
+    // TODO: keep rich text editor in sync with video
+    // this.props.onRequestChangePlaybackTime(playbackTime);
+    this.seekToTime(time);
   }
 
   seekBarDidStartSeeking() {
     this.pausePlayerAndCaptions();
-    this.setState({ isDraggingSeekbar: true });
   }
 
   seekBarDidStopSeeking() {
-    // TODO: this.resumePlayerAndCaptions();
-    this.restartPlayerAndCaptions();
-    this.setState({ isDraggingSeekbar: true });
+    this.startPlayerAndCaptions();
+  }
+
+  async seekToTime(time: number) {
+    if (this.captionsView) {
+      this.captionsView.seekToTime(time);
+    }
+    if (this.playerView) {
+      await this.playerView.seekToTime(time);
+    }
   }
 
   async videoPlayerDidBecomeReadyToPlay(
@@ -198,11 +194,14 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     this.pauseCaptions();
   }
 
+  videoPlayerDidUpdatePlaybackTimeThrottled = throttle(this.videoPlayerDidUpdatePlaybackTime, 50, {
+    leading: true,
+  });
+
   videoPlayerDidUpdatePlaybackTime(playbackTime: number) {
-    if (this.state.isDraggingSeekbar) {
-      return;
-    }
-    this.props.onRequestChangePlaybackTime(playbackTime);
+    this.setState({ playbackTime });
+    // TODO: throttle this
+    // this.props.onRequestChangePlaybackTime(playbackTime);
   }
 
   videoPlayerDidRestart() {
@@ -212,6 +211,11 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
   restartPlayerAndCaptions() {
     this.restartCaptions();
     this.restartPlayer();
+  }
+
+  startPlayerAndCaptions() {
+    this.startCaptions();
+    this.startPlayer();
   }
 
   restartCaptions() {
@@ -233,11 +237,27 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     this.pauseCaptions();
   }
 
+  startPlayer() {
+    if (!this.playerView) {
+      return;
+    }
+    this.playerView.play();
+    Debug.log('Player started.');
+  }
+
+  startCaptions() {
+    if (this.captionsView) {
+      this.captionsView.play();
+    }
+    Debug.log('Captions started.');
+  }
+
   pausePlayer() {
     if (!this.playerView) {
       return;
     }
     this.playerView.pause();
+    Debug.log('Player paused.');
   }
 
   pauseCaptions() {
@@ -245,6 +265,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
       this.captionsView.pause();
     }
     this.props.onDidPauseCaptions();
+    Debug.log('Captions paused.');
   }
 
   render() {
@@ -266,7 +287,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
               onVideoDidPause={this.videoPlayerDidPause}
               onVideoDidUpdatePlaybackTime={
-                this.videoPlayerDidUpdatePlaybackTime
+                this.videoPlayerDidUpdatePlaybackTimeThrottled
               }
               onVideoDidRestart={this.videoPlayerDidRestart}
             />
@@ -307,7 +328,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
             <VideoSeekbar
               style={styles.flex}
               duration={this.props.duration}
-              playbackTime={this.props.playbackTime}
+              playbackTime={this.state.playbackTime}
               videoAssetIdentifier={this.props.video.id}
               onSeekToTime={this.seekBarDidSeekToTimeThrottled}
               onDidBeginDrag={this.seekBarDidStartSeeking}

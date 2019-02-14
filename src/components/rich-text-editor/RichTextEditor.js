@@ -79,7 +79,7 @@ const styles = {
   buttonText: Fonts.getFontStyle('button', { contentStyle: 'lightContent' }),
   colorPickerWrap: (anim: Animated.Value) => ({
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: UI_COLORS.BLACK,
+    backgroundColor: UI_COLORS.DARK_GREY,
     justifyContent: 'space-between',
     opacity: anim,
     transform: [

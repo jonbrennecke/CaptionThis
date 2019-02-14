@@ -50,13 +50,8 @@ export default class ColorPicker extends Component<Props, State> {
     viewWidth: 0,
   };
 
-  viewDidLayout() {
-    if (!this.view) {
-      return;
-    }
-    this.view.measure((fx, fy, width) => {
-      this.setState({ viewWidth: width });
-    });
+  viewDidLayout({ nativeEvent: { layout } }: any) {
+    this.setState({ viewWidth: layout.width });
   }
 
   render() {

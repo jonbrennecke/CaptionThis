@@ -1,12 +1,14 @@
 // @flow
 import React, { Component } from 'react';
+import Bluebird from 'bluebird';
 import { View, requireNativeComponent, NativeModules } from 'react-native';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier, Orientation } from '../../types/media';
 
 const NativeVideoPlayerView = requireNativeComponent('VideoPlayerView');
-const { VideoPlayerViewManager } = NativeModules;
+const { VideoPlayerViewManager: _VideoPlayerViewManager } = NativeModules;
+const VideoPlayerViewManager = Bluebird.promisifyAll(_VideoPlayerViewManager);
 
 type ReactNativeFiberHostComponent = any;
 
@@ -38,11 +40,11 @@ const styles = {
 export default class VideoPlayerView extends Component<Props> {
   nativeComponentRef: ?ReactNativeFiberHostComponent;
 
-  seekToTime(time: number) {
+  async seekToTime(time: number) {
     if (!this.nativeComponentRef) {
       return;
     }
-    VideoPlayerViewManager.seekToTime(this.nativeComponentRef._nativeTag, time);
+    await VideoPlayerViewManager.seekToTimeAsync(this.nativeComponentRef._nativeTag, time);
   }
 
   pause() {
@@ -57,6 +59,13 @@ export default class VideoPlayerView extends Component<Props> {
       return;
     }
     VideoPlayerViewManager.restart(this.nativeComponentRef._nativeTag);
+  }
+
+  play() {
+    if (!this.nativeComponentRef) {
+      return;
+    }
+    VideoPlayerViewManager.play(this.nativeComponentRef._nativeTag);
   }
 
   render() {
