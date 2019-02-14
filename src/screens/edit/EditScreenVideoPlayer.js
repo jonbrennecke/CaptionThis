@@ -171,6 +171,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
 
   seekBarDidStopSeeking() {
     // TODO: this.resumePlayerAndCaptions();
+    this.restartPlayerAndCaptions();
     this.setState({ isDraggingSeekbar: true });
   }
 

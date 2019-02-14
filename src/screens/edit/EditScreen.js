@@ -167,33 +167,27 @@ export default class EditScreen extends Component<Props, State> {
     isRichTextEditorVisible: false,
     isCaptionsEditorVisible: false,
   };
-  didReceiveSpeechTranscriptionSubscription: ?EmitterSubscription;
-  didNotDetectSpeechSubscription: ?EmitterSubscription;
+  speechManagerDidReceiveTranscriptionListener: ?EmitterSubscription;
+  speechManagerDidNotDetectSpeechListener: ?EmitterSubscription;
+  speechManagerDidEndListener: ?EmitterSubscription;
+  speechManagerDidFailListener: ?EmitterSubscription;
   exportDidFinishListener: ?EmitterSubscription;
   exportDidFailListener: ?EmitterSubscription;
   exportDidUpdateProgressListener: ?EmitterSubscription;
 
   async componentDidMount() {
-    this.didReceiveSpeechTranscriptionSubscription = SpeechManager.addDidReceiveSpeechTranscriptionListener(
-      this.speechManagerDidReceiveSpeechTranscription
-    );
-    this.didNotDetectSpeechSubscription = SpeechManager.addDidNotDetectSpeechListener(
-      this.speechManagerDidNotDetectSpeech
-    );
-    await this.props.beginSpeechTranscriptionWithVideoAsset(
-      this.props.video.id
-    );
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
     if (this.hasFinalSpeechTranscription()) {
       this.speechManagerDidReceiveFinalSpeechTranscription();
+    } else {
+      await this.beginSpeechTranscription();
     }
   }
 
   componentWillUnmount() {
     ReactAppState.removeEventListener('change', this.handleAppStateWillChange);
-    if (this.didReceiveSpeechTranscriptionSubscription) {
-      this.didReceiveSpeechTranscriptionSubscription.remove();
-    }
+    this.removeSpeechListeners();
+    this.removeExportListeners();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -214,6 +208,31 @@ export default class EditScreen extends Component<Props, State> {
     this.props.receiveAppStateChange(nextAppState);
   }
 
+  async beginSpeechTranscription() {
+    this.addSpeechListeners();
+    await this.props.beginSpeechTranscriptionWithVideoAsset(
+      this.props.video.id
+    );
+  }
+
+  addSpeechListeners() {
+    this.speechManagerDidReceiveTranscriptionListener = SpeechManager.addDidReceiveSpeechTranscriptionListener(
+      this.speechManagerDidReceiveSpeechTranscription
+    );
+    this.speechManagerDidNotDetectSpeechListener = SpeechManager.addDidNotDetectSpeechListener(
+      this.speechManagerDidNotDetectSpeech
+    );
+    this.speechManagerDidEndListener = SpeechManager.addDidEndListener(this.speechManagerDidEnd);
+    this.speechManagerDidFailListener = SpeechManager.addDidFailListener(this.speechManagerDidFail);
+  }
+  
+  removeSpeechListeners() {
+    this.speechManagerDidReceiveTranscriptionListener && this.speechManagerDidReceiveTranscriptionListener.remove();
+    this.speechManagerDidNotDetectSpeechListener && this.speechManagerDidNotDetectSpeechListener.remove();
+    this.speechManagerDidEndListener && this.speechManagerDidEndListener.remove();
+    this.speechManagerDidFailListener && this.speechManagerDidFailListener.remove();
+  }
+
   presentTranscriptionFailureAlert() {
     Alert.alert(
       'Failed to generate captions',
@@ -229,6 +248,15 @@ export default class EditScreen extends Component<Props, State> {
       ],
       { cancelable: false }
     );
+  }
+
+  speechManagerDidEnd() {
+    this.removeSpeechListeners();
+  }
+
+  speechManagerDidFail() {
+    Debug.log('Speech transcription failed.');
+    this.popToHomeScreen();
   }
 
   speechManagerDidReceiveSpeechTranscription(
@@ -248,7 +276,6 @@ export default class EditScreen extends Component<Props, State> {
     this.setState({
       playbackTime: 0,
     });
-    // TODO: this.restartPlayerAndCaptions();
   }
 
   speechManagerDidNotDetectSpeech() {

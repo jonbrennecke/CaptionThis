@@ -19,6 +19,11 @@ const EVENTS = {
   DID_RECEIVE_SPEECH_TRANSCRIPTION:
     'speechManagerDidReceiveSpeechTranscription',
   DID_NOT_DETECT_SPEECH: 'speechManagerDidNotDetectSpeech',
+  DID_FAIL: 'speechManagerDidFail',
+  DID_END: 'speechManagerDidEnd',
+  // TODO:
+  // DID_BECOME_AVAILABLE: 'speechManagerDidBecomeAvailable',
+  // DID_BECOME_UNAVAILABLE: 'speechManagerDidBecomeUnavailable',
 };
 
 export default class SpeechManager {
@@ -36,6 +41,20 @@ export default class SpeechManager {
   ): EmitterSubscription {
     return NativeSpeechManagerEventEmitter.addListener(
       EVENTS.DID_NOT_DETECT_SPEECH,
+      listener
+    );
+  }
+
+  static addDidFailListener(listener: () => void) {
+    return NativeSpeechManagerEventEmitter.addListener(
+      EVENTS.DID_FAIL,
+      listener
+    );
+  }
+
+  static addDidEndListener(listener: () => void) {
+    return NativeSpeechManagerEventEmitter.addListener(
+      EVENTS.DID_END,
       listener
     );
   }

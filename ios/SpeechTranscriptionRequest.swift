@@ -11,7 +11,8 @@ enum SpeechTranscriptionError: Error {
 
 protocol SpeechTranscriptionRequestDelegate {
   func speechTranscriptionRequestDidNotDetectSpeech()
-  func speechTranscriptionRequestDidTerminate()
+  func speechTranscriptionRequestDidEnd()
+  func speechTranscriptionRequestDidFail()
   func speechTranscriptionRequest(didHypothesizeTranscriptions: [SFTranscription])
   func speechTranscriptionRequest(didFinalizeTranscriptionResults: [SFSpeechRecognitionResult], inTime: CFAbsoluteTime)
 }

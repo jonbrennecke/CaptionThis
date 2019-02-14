@@ -85,6 +85,7 @@ extension LiveSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
   func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
     Debug.log(format: "Speech recognizer finished task. Success == %@", success ? "true" : "false")
     if success {
+      delegate.speechTranscriptionRequestDidEnd()
       return
     }
     if let error = task.error as NSError? {
@@ -94,7 +95,7 @@ extension LiveSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
       }
       Debug.log(error: error)
     }
-    delegate.speechTranscriptionRequestDidTerminate()
+    delegate.speechTranscriptionRequestDidFail()
   }
 
   func speechRecognitionTaskWasCancelled(_: SFSpeechRecognitionTask) {

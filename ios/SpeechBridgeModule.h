@@ -13,5 +13,6 @@
 - (void)speechManagerDidBecomeAvailable;
 - (void)speechManagerDidBecomeUnavailable;
 - (void)speechManagerDidNotDetectSpeech;
-- (void)speechManagerDidTerminate;
+- (void)speechManagerDidEnd;
+- (void)speechManagerDidFail;
 @end

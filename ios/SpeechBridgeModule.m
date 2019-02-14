@@ -65,11 +65,18 @@
   [self sendEventWithName:@"speechManagerDidNotDetectSpeech" body:@{}];
 }
 
-- (void)speechManagerDidTerminate {
+- (void)speechManagerDidEnd {
   if (!hasListeners) {
     return;
   }
-  [self sendEventWithName:@"speechManagerDidTerminate" body:@{}];
+  [self sendEventWithName:@"speechManagerDidEnd" body:@{}];
+}
+
+- (void)speechManagerDidFail {
+  if (!hasListeners) {
+    return;
+  }
+  [self sendEventWithName:@"speechManagerDidFail" body:@{}];
 }
 
 #pragma mark - React Native module
@@ -92,7 +99,8 @@
     @"speechManagerDidBecomeAvailable",
     @"speechManagerDidBecomeUnavailable",
     @"speechManagerDidNotDetectSpeech",
-    @"speechManagerDidTerminate",
+    @"speechManagerDidEnd",
+    @"speechManagerDidFail",
   ];
 }
 

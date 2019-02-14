@@ -131,12 +131,12 @@ extension FileSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
       Debug.log(error: error)
     }
     guard case let .pending(_, startTime) = state else {
-      delegate.speechTranscriptionRequestDidTerminate()
+      delegate.speechTranscriptionRequestDidEnd()
       return
     }
     let executionTime = CFAbsoluteTimeGetCurrent() - startTime
     Debug.log(format: "Speech recognition task failed. Execution time = %0.2f seconds", executionTime)
-    delegate.speechTranscriptionRequestDidTerminate()
+    delegate.speechTranscriptionRequestDidFail()
   }
 
   func speechRecognitionTaskWasCancelled(_: SFSpeechRecognitionTask) {
