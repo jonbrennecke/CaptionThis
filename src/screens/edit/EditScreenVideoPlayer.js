@@ -149,9 +149,8 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
   });
 
   seekBarDidSeekToTime(time: number) {
-    // TODO: keep rich text editor in sync with video
-    // this.props.onRequestChangePlaybackTime(playbackTime);
     this.seekToTime(time);
+    this.onRequestChangePlaybackTimeThrottled(time);
   }
 
   seekBarDidStartSeeking() {
@@ -170,6 +169,10 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
       await this.playerView.seekToTime(time);
     }
   }
+
+  onRequestChangePlaybackTimeThrottled = throttle(this.props.onRequestChangePlaybackTime, 50, {
+    leading: true,
+  });
 
   async videoPlayerDidBecomeReadyToPlay(
     duration: number,
@@ -200,8 +203,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
 
   videoPlayerDidUpdatePlaybackTime(playbackTime: number) {
     this.setState({ playbackTime });
-    // TODO: throttle this
-    // this.props.onRequestChangePlaybackTime(playbackTime);
+    this.onRequestChangePlaybackTimeThrottled(playbackTime);
   }
 
   videoPlayerDidRestart() {
