@@ -77,6 +77,7 @@ class VideoAnimationLayer: CALayer {
     if !isPlaying {
       resume()
     }
+    seekTo(time: .leastNonzeroMagnitude)
   }
 
   public func seekTo(time: CFTimeInterval) {
