@@ -3,21 +3,27 @@ import UIKit
 
 let DEFAULT_ANIMATION_DURATION: CFTimeInterval = 0.25
 
-fileprivate enum VideoAnimationPlaybackState {
-  case playing
-  case paused
-  case none
-}
-
 class VideoAnimationLayer: CALayer {
-  private var playbackState: VideoAnimationPlaybackState = .none
+  private enum State {
+    case playing
+    case paused
+    case none
+  }
+  
+  private var state: State = .none
 
   private var isPaused: Bool {
-    return playbackState == .paused
+    guard case .paused = state else {
+      return false
+    }
+    return true
   }
 
   private var isPlaying: Bool {
-    return playbackState == .playing
+    guard case .playing = state else {
+      return false
+    }
+    return true
   }
 
   private var model: VideoAnimationLayerModel
@@ -53,11 +59,14 @@ class VideoAnimationLayer: CALayer {
   }
 
   private func triggerReset() {
-    let stateBeforeReset = playbackState
+    let mediaTimeBeforeReset = convertTime(CACurrentMediaTime(), from: nil)
+    let stateBeforeReset = state
     resetAnimation()
-    if stateBeforeReset == .playing {
-      resume()
+    guard case .playing = stateBeforeReset else {
+      return
     }
+    resume()
+    seekTo(time: mediaTimeBeforeReset)
   }
 
   public func restart() {
@@ -65,33 +74,33 @@ class VideoAnimationLayer: CALayer {
     removeAllAnimations()
     resetAnimation()
     beginTime = convertTime(CACurrentMediaTime(), from: nil)
-    if playbackState != .playing {
+    if !isPlaying {
       resume()
     }
   }
 
-  public func seekTo(time: Double) {
+  public func seekTo(time: CFTimeInterval) {
     Debug.log(format: "Animation seeking to %0.2fs", time)
     removeAllAnimations()
     resetAnimation()
-    if playbackState != .playing {
+    if !isPlaying {
       resume()
     }
     timeOffset = time
   }
 
   public func pause() {
-    if playbackState == .paused {
+    if isPaused {
       return
     }
     Debug.log(message: "Pausing animation")
-    playbackState = .paused
+    state = .paused
     speed = 0
     timeOffset = convertTime(CACurrentMediaTime(), from: nil)
   }
 
   public func resume() {
-    if playbackState != .paused {
+    if !isPaused {
       return
     }
     Debug.log(message: "Resuming paused animation")
@@ -101,7 +110,7 @@ class VideoAnimationLayer: CALayer {
     beginTime = 0
     let timeSincePaused = convertTime(CACurrentMediaTime(), from: nil) - pausedTimeOffset
     beginTime = timeSincePaused
-    playbackState = .playing
+    state = .playing
   }
 
   private func resetAnimation() {

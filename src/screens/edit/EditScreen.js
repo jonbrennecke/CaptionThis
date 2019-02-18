@@ -61,7 +61,6 @@ import type { LineStyle } from '../../types/video';
 import type { EmitterSubscription, ReactAppStateEnum } from '../../types/react';
 
 type State = {
-  playbackTime: number,
   duration: number,
   orientation: ?Orientation,
   exportProgress: number,
@@ -159,7 +158,6 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 export default class EditScreen extends Component<Props, State> {
   richTextOverlay: ?EditScreenRichTextOverlay;
   state: State = {
-    playbackTime: 0,
     duration: 0,
     exportProgress: 0,
     orientation: null,
@@ -281,9 +279,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   speechManagerDidReceiveFinalSpeechTranscription() {
-    this.setState({
-      playbackTime: 0,
-    });
+    // NOTE: noop
   }
 
   speechManagerDidNotDetectSpeech() {
@@ -423,6 +419,24 @@ export default class EditScreen extends Component<Props, State> {
     });
   }
 
+  pauseRichTextEditorCaptions() {
+    if (this.richTextOverlay) {
+      this.richTextOverlay.pauseCaptions();
+    }
+  }
+
+  restartRichTextEditorCaptions() {
+    if (this.richTextOverlay) {
+      this.richTextOverlay.restartCaptions();
+    }
+  }
+
+  seekRichTextEditorCaptionsToTime(time: number) {
+    if (this.richTextOverlay) {
+      this.richTextOverlay.seekCaptionsToTime(time);
+    }
+  }
+
   render() {
     const hasFinalTranscription = this.hasFinalSpeechTranscription();
     const transcription = this.getSpeechTranscription();
@@ -437,7 +451,6 @@ export default class EditScreen extends Component<Props, State> {
           video={this.props.video}
           isReadyToPlay={hasFinalTranscription}
           duration={this.state.duration}
-          playbackTime={this.state.playbackTime}
           orientation={this.state.orientation || 'up'}
           lineStyle={this.props.lineStyle}
           textColor={this.props.textColor}
@@ -446,9 +459,7 @@ export default class EditScreen extends Component<Props, State> {
           fontSize={this.props.fontSize}
           speechTranscription={transcription}
           onRequestChangeDuration={duration => this.setState({ duration })}
-          onRequestChangePlaybackTime={playbackTime =>
-            this.setState({ playbackTime })
-          }
+          onRequestChangePlaybackTime={this.seekRichTextEditorCaptionsToTime}
           onRequestChangeOrientation={orientation =>
             this.setState({ orientation })
           }
@@ -462,22 +473,13 @@ export default class EditScreen extends Component<Props, State> {
             // TODO: handle awaiting this promise
             this.onDidPressExportButton();
           }}
-          onDidRestartCaptions={() => {
-            if (this.richTextOverlay) {
-              this.richTextOverlay.restartCaptions();
-            }
-          }}
-          onDidPauseCaptions={() => {
-            if (this.richTextOverlay) {
-              this.richTextOverlay.pauseCaptions();
-            }
-          }}
+          onDidRestartCaptions={this.restartRichTextEditorCaptions}
+          onDidPauseCaptions={this.pauseRichTextEditorCaptions}
         />
         <EditScreenRichTextOverlay
           ref={ref => {
             this.richTextOverlay = ref;
           }}
-          playbackTime={this.state.playbackTime}
           hasFinalTranscription={hasFinalTranscription}
           duration={this.state.duration}
           isVisible={this.state.isRichTextEditorVisible}

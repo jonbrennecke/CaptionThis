@@ -203,7 +203,6 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
 
   videoPlayerDidUpdatePlaybackTime(playbackTime: number) {
     this.setState({ playbackTime });
-    this.onRequestChangePlaybackTimeThrottled(playbackTime);
   }
 
   videoPlayerDidRestart() {
