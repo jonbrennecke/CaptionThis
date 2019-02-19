@@ -10,6 +10,8 @@ type Props = {
   style?: ?Style,
   isVisible: boolean,
   children: ?Children,
+  onFadeInDidComplete?: () => void,
+  onFadeOutDidComplete?: () => void,
 };
 
 const styles = {
@@ -28,9 +30,9 @@ export default class FadeInOutAnimatedView extends Component<Props> {
 
   componentDidUpdate(prevProps: Props) {
     if (this.props.isVisible && !prevProps.isVisible) {
-      this.anim.animateIn();
+      this.anim.animateIn(this.props.onFadeInDidComplete);
     } else if (!this.props.isVisible && prevProps.isVisible) {
-      this.anim.animateOut();
+      this.anim.animateOut(this.props.onFadeOutDidComplete);
     }
   }
 

@@ -496,6 +496,7 @@ export default class EditScreen extends Component<Props, State> {
         <EditScreenExportingOverlay
           isVisible={this.props.isExportingVideo}
           progress={this.state.exportProgress}
+          onDidDismiss={() => this.setState({ exportProgress: 0 })}
         />
         <EditScreenLoadingOverlay
           isVisible={!hasFinalTranscription}

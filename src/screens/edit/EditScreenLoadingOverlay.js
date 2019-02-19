@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, SafeAreaView, Animated, Easing } from 'react-native';
+import { Text, SafeAreaView, Animated, Easing, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 
 import * as Fonts from '../../utils/Fonts';
@@ -8,6 +8,7 @@ import * as Color from '../../utils/Color';
 import { UI_COLORS } from '../../constants';
 import AnimatedProgressCircle from '../../components/progress-circle/AnimatedProgressCircle';
 import ProgressCircleContainer from '../../components/progress-circle/ProgressCircleContainer';
+import FadeInOutAnimatedView from '../../components/animations/FadeInOutAnimatedView';
 
 import type { Style } from '../../types/react';
 import type { VideoObject } from '../../types/media';
@@ -27,14 +28,7 @@ type State = {
 const CIRCLE_RADIUS = 175;
 
 const styles = {
-  container: (anim: Animated.Value) => ({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    opacity: anim,
-  }),
+  container: StyleSheet.absoluteFillObject,
   progress: (radius: number) => ({
     height: radius,
     width: radius,
@@ -171,9 +165,9 @@ export default class EditScreenExportingOverlay extends Component<
 
   render() {
     return (
-      <Animated.View
-        pointerEvents={this.props.isVisible ? 'auto' : 'none'}
-        style={[styles.container(this.anim), this.props.style]}
+      <FadeInOutAnimatedView
+        style={[styles.container, this.props.style]}
+        isVisible={this.props.isVisible}
       >
         <SafeAreaView style={styles.flexCenter}>
           <ProgressCircleContainer
@@ -200,7 +194,7 @@ export default class EditScreenExportingOverlay extends Component<
             Please wait while your captions are generated
           </Text>
         </SafeAreaView>
-      </Animated.View>
+      </FadeInOutAnimatedView>
     );
   }
 }

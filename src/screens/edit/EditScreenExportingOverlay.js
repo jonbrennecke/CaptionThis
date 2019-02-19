@@ -14,6 +14,7 @@ type Props = {
   style?: ?Style,
   isVisible: boolean,
   progress: number,
+  onDidDismiss: () => void,
 };
 
 const CIRCLE_RADIUS = 175;
@@ -36,6 +37,7 @@ export default class EditScreenExportingOverlay extends Component<Props> {
       <FadeInOutAnimatedView
         style={[styles.container, this.props.style]}
         isVisible={this.props.isVisible}
+        onFadeOutDidComplete={this.props.onDidDismiss}
       >
         <EditScreenLoadingBackground />
         <SafeAreaView style={styles.flexCenter}>

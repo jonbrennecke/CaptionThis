@@ -16,7 +16,7 @@ export default class FadeAnimation implements Animation {
   animateIn(completionHandler?: () => void) {
     Animated.timing(this.value, {
       toValue: 1,
-      duration: 400,
+      duration: 200,
       easing: Easing.quad,
       useNativeDriver: true,
     }).start(completionHandler);
@@ -25,7 +25,7 @@ export default class FadeAnimation implements Animation {
   animateOut(completionHandler?: () => void) {
     Animated.timing(this.value, {
       toValue: 0,
-      duration: 400,
+      duration: 200,
       easing: Easing.quad,
       useNativeDriver: true,
     }).start(completionHandler);
