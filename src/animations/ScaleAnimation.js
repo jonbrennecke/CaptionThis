@@ -34,10 +34,14 @@ export default class ScaleAnimation implements Animation {
   getAnimatedStyle(): Style {
     return {
       opacity: this.value,
-      transform: [{ scale: this.value.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0.8, 1],
-      }) }],
+      transform: [
+        {
+          scale: this.value.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0.8, 1],
+          }),
+        },
+      ],
     };
   }
 }

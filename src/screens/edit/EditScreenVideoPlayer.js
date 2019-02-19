@@ -196,7 +196,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     } else {
       this.restartPlayerAndCaptions();
       this.setState({
-        isVideoReadyToPlay: true
+        isVideoReadyToPlay: true,
       });
     }
   }
@@ -293,7 +293,10 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     return (
       <SafeAreaView style={styles.flex}>
         {this.props.isReadyToPlay && (
-          <ScaleAnimatedView style={styles.videoWrap} isVisible={this.state.isVideoReadyToPlay}>
+          <ScaleAnimatedView
+            style={styles.videoWrap}
+            isVisible={this.state.isVideoReadyToPlay}
+          >
             <VideoPlayerView
               ref={ref => {
                 this.playerView = ref;
@@ -343,7 +346,10 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
           </ScaleAnimatedView>
         )}
         {showSeekbar && (
-          <ScaleAnimatedView isVisible={this.state.isVideoReadyToPlay} style={styles.editControls}>
+          <ScaleAnimatedView
+            isVisible={this.state.isVideoReadyToPlay}
+            style={styles.editControls}
+          >
             <VideoSeekbar
               style={styles.flex}
               duration={this.props.duration}
