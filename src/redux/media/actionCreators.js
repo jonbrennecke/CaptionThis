@@ -2,7 +2,6 @@
 import * as Debug from '../../utils/Debug';
 import { ACTION_TYPES } from './constants';
 import * as Camera from '../../utils/Camera';
-import * as VideoExportManager from '../../utils/VideoExportManager';
 
 import type {
   Dispatch,
@@ -10,7 +9,6 @@ import type {
   ReceiveVideoAssetPayload,
 } from '../../types/redux';
 import type { VideoObject } from '../../types/media';
-import type { ExportParams } from '../../utils/VideoExportManager';
 
 export const receiveVideos = (videos: VideoObject[]) => {
   return async (dispatch: Dispatch<ReceiveVideoAssetsPayload>) => {
@@ -78,11 +76,24 @@ export const endCameraCapture = () => {
   };
 };
 
-export const exportVideo = (exportParams: ExportParams) => {
+export const willExportVideo = () => {
   return async (dispatch: Dispatch<*>) => {
-    dispatch({ type: ACTION_TYPES.WILL_EXPORT_VIDEO });
     try {
-      await VideoExportManager.exportVideo(exportParams);
+      dispatch({
+        type: ACTION_TYPES.WILL_EXPORT_VIDEO,
+      });
+    } catch (error) {
+      await Debug.logError(error);
+      dispatch({
+        type: ACTION_TYPES.DID_NOT_SUCCESSFULLY_EXPORT_VIDEO,
+      });
+    }
+  };
+};
+
+export const didExportVideo = () => {
+  return async (dispatch: Dispatch<*>) => {
+    try {
       dispatch({
         type: ACTION_TYPES.DID_SUCCESSFULLY_EXPORT_VIDEO,
       });

@@ -5,7 +5,8 @@ import Speech
 protocol SpeechManagerDelegate {
   func speechManagerDidReceiveSpeechTranscription(isFinal: Bool, transcription: SpeechManager.SpeechTranscription)
   func speechManagerDidNotDetectSpeech()
-  func speechManagerDidTerminate()
+  func speechManagerDidEnd()
+  func speechManagerDidFail()
   func speechManagerDidBecomeAvailable()
   func speechManagerDidBecomeUnavailable()
 }
@@ -218,8 +219,12 @@ extension SpeechManager: SpeechTranscriptionRequestDelegate {
     delegate?.speechManagerDidNotDetectSpeech()
   }
 
-  func speechTranscriptionRequestDidTerminate() {
-    delegate?.speechManagerDidTerminate()
+  func speechTranscriptionRequestDidEnd() {
+    delegate?.speechManagerDidEnd()
+  }
+
+  func speechTranscriptionRequestDidFail() {
+    delegate?.speechManagerDidFail()
   }
 
   func speechTranscriptionRequest(didFinalizeTranscriptionResults results: [SFSpeechRecognitionResult], inTime executionTime: CFAbsoluteTime) {

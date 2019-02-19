@@ -46,6 +46,7 @@ const styles = {
   button: {
     marginHorizontal: 10,
     marginTop: 7,
+    backgroundColor: UI_COLORS.MEDIUM_GREY,
   },
 };
 

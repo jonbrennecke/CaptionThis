@@ -30,7 +30,7 @@ class CameraManager: NSObject {
 
   @objc
   public var previewLayer: AVCaptureVideoPreviewLayer
-  
+
   @objc(sharedInstance)
   public static let shared = CameraManager()
 
@@ -207,8 +207,7 @@ class CameraManager: NSObject {
   private func attemptToSetupCameraCaptureSession() -> CameraSetupResult {
     if captureSession.canSetSessionPreset(.high) {
       captureSession.sessionPreset = .high
-    }
-    else {
+    } else {
       Debug.log(message: "Cannot set session preset")
     }
 
@@ -364,71 +363,47 @@ class CameraManager: NSObject {
   }
 
   public func createVideoAsset(forURL url: URL, completionHandler: @escaping (Error?, Bool, PHObjectPlaceholder?) -> Void) {
-    withAlbum { error, success, album in
-      guard let album = album else {
-        Debug.log(format: "Failed to find album. Success = %@", success ? "true" : "false")
-        completionHandler(nil, false, nil)
-        return
-      }
-      var assetPlaceholder: PHObjectPlaceholder?
-      PHPhotoLibrary.shared().performChanges({
-        if #available(iOS 9.0, *) {
-          let assetRequest = PHAssetCreationRequest.creationRequestForAssetFromVideo(atFileURL: url)
-          // TODO: eventually there should be a user-enabled option to save recorded videos in the library
-          assetRequest?.isHidden = true
-          guard let placeholder = assetRequest?.placeholderForCreatedAsset else {
-            Debug.log(format: "Asset placeholder could not be created. URL = %@", url.path)
+    PhotosAlbumUtil.withAlbum { result in
+      switch result {
+      case let .err(error):
+        Debug.log(message: "Failed to find album.")
+        completionHandler(error, false, nil)
+      case let .ok(album):
+        var assetPlaceholder: PHObjectPlaceholder?
+        PHPhotoLibrary.shared().performChanges({
+          if #available(iOS 9.0, *) {
+            let assetRequest = PHAssetCreationRequest.creationRequestForAssetFromVideo(atFileURL: url)
+            // TODO: eventually there should be a user-enabled option to save recorded videos in the library
+            assetRequest?.isHidden = true
+            guard let placeholder = assetRequest?.placeholderForCreatedAsset else {
+              Debug.log(format: "Asset placeholder could not be created. URL = %@", url.path)
+              return
+            }
+            guard let albumChangeRequest = PHAssetCollectionChangeRequest(for: album) else {
+              Debug.log(format: "Asset placeholder could not be created. URL = %@", url.path)
+              return
+            }
+            albumChangeRequest.addAssets([placeholder] as NSArray)
+            assetPlaceholder = placeholder
+          } else {
+            fatalError("This app only supports iOS 9.0 or above.")
+          }
+        }) { success, error in
+          Debug.log(format: "Finished creating asset for video. Success = %@", success ? "true" : "false")
+          if let error = error {
+            Debug.log(error: error)
+            completionHandler(error, false, nil)
             return
           }
-          guard let albumChangeRequest = PHAssetCollectionChangeRequest(for: album) else {
-            Debug.log(format: "Asset placeholder could not be created. URL = %@", url.path)
+          guard success, let assetPlaceholder = assetPlaceholder else {
+            completionHandler(error, success, nil)
             return
           }
-          albumChangeRequest.addAssets([placeholder] as NSArray)
-          assetPlaceholder = placeholder
-        } else {
-          fatalError("This app only supports iOS 9.0 or above.")
+          PHAsset.fetchAssets(withLocalIdentifiers: [assetPlaceholder.localIdentifier], options: nil)
+          completionHandler(nil, success, assetPlaceholder)
         }
-      }) { success, error in
-        Debug.log(format: "Finished creating asset for video. Success = %@", success ? "true" : "false")
-        if let error = error {
-          Debug.log(error: error)
-          completionHandler(error, false, nil)
-          return
-        }
-        guard success, let assetPlaceholder = assetPlaceholder else {
-          completionHandler(error, success, nil)
-          return
-        }
-        PHAsset.fetchAssets(withLocalIdentifiers: [assetPlaceholder.localIdentifier], options: nil)
-        completionHandler(nil, success, assetPlaceholder)
+        break
       }
-    }
-  }
-
-  public func withAlbum(_ completionHandler: @escaping (Error?, Bool, PHAssetCollection?) -> Void) {
-    let fetchOptions = PHFetchOptions()
-    fetchOptions.predicate = NSPredicate(format: "title = %@", PhotosAlbum.albumTitle)
-    let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: fetchOptions)
-    if let album = collection.firstObject {
-      completionHandler(nil, true, album)
-      return
-    }
-    var albumPlaceholder: PHObjectPlaceholder?
-    PHPhotoLibrary.shared().performChanges({
-      let assetCollectionRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: PhotosAlbum.albumTitle)
-      albumPlaceholder = assetCollectionRequest.placeholderForCreatedAssetCollection
-    }) { success, error in
-      guard success, let albumPlaceholder = albumPlaceholder else {
-        completionHandler(error, success, nil)
-        return
-      }
-      let albumFetchResult = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [albumPlaceholder.localIdentifier], options: nil)
-      guard let album = albumFetchResult.firstObject else {
-        completionHandler(nil, false, nil)
-        return
-      }
-      completionHandler(nil, true, album)
     }
   }
 }

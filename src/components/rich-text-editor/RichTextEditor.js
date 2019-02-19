@@ -21,7 +21,6 @@ import type { LineStyle } from '../../types/video';
 
 type Props = {
   style?: ?Style,
-  playbackTime: number,
   hasFinalTranscription: boolean,
   isVisible: boolean,
   fontSize: number,
@@ -79,7 +78,7 @@ const styles = {
   buttonText: Fonts.getFontStyle('button', { contentStyle: 'lightContent' }),
   colorPickerWrap: (anim: Animated.Value) => ({
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: UI_COLORS.BLACK,
+    backgroundColor: UI_COLORS.DARK_GREY,
     justifyContent: 'space-between',
     opacity: anim,
     transform: [
@@ -113,22 +112,6 @@ export default class RichTextEditor extends Component<Props, State> {
     };
   }
 
-  componentDidMount() {
-    if (this.props.hasFinalTranscription && this.captionsView) {
-      this.captionsView.restart();
-    }
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (
-      this.props.isVisible &&
-      !prevProps.isVisible &&
-      this.props.hasFinalTranscription
-    ) {
-      this.seekCaptionsToTime(this.props.playbackTime);
-    }
-  }
-
   colorPickerDidUpdateColorThrottled = throttle(
     this.colorPickerDidUpdateColor,
     100,
@@ -143,7 +126,6 @@ export default class RichTextEditor extends Component<Props, State> {
     this.setState({
       textColor,
     });
-    this.seekCaptionsToTime(this.props.playbackTime);
   }
 
   colorPickerDidUpdateBackgroundColor(backgroundColor: ColorRGBA) {
@@ -153,7 +135,6 @@ export default class RichTextEditor extends Component<Props, State> {
         alpha: backgroundColor.alpha > 0.1 ? 0.8 : 0,
       },
     });
-    this.seekCaptionsToTime(this.props.playbackTime);
   }
 
   showColorPicker() {
@@ -200,14 +181,12 @@ export default class RichTextEditor extends Component<Props, State> {
     this.setState({
       fontFamily,
     });
-    this.seekCaptionsToTime(this.props.playbackTime);
   }
 
   fontSizeControlDidSelectFontSize(fontSize: number) {
     this.setState({
       fontSize,
     });
-    this.seekCaptionsToTime(this.props.playbackTime);
   }
 
   save() {

@@ -20,7 +20,6 @@
 static SpeechManager *_sharedSpeechManager;
 static PermissionsManager *_sharedPermissionsManager;
 static MediaLibraryManager *_sharedMediaLibraryManager;
-static VideoExportManager *_sharedVideoExportManager;
 
 + (SpeechManager *)sharedSpeechManager {
   if (_sharedSpeechManager == nil) {
@@ -43,12 +42,6 @@ static VideoExportManager *_sharedVideoExportManager;
   return _sharedMediaLibraryManager;
 }
 
-+ (VideoExportManager *)sharedVideoExportManager {
-  if (_sharedVideoExportManager == nil) {
-    _sharedVideoExportManager = [[VideoExportManager alloc] init];
-  }
-  return _sharedVideoExportManager;
-}
 + (void)setSharedSpeechManager:(SpeechManager *)sharedSpeechManager {
   _sharedSpeechManager = sharedSpeechManager;
 }
@@ -61,11 +54,6 @@ static VideoExportManager *_sharedVideoExportManager;
 + (void)setSharedMediaLibraryManager:
     (MediaLibraryManager *)sharedMediaLibraryManager {
   _sharedMediaLibraryManager = sharedMediaLibraryManager;
-}
-
-+ (void)setSharedVideoExportManager:
-    (VideoExportManager *)sharedVideoExportManager {
-  _sharedVideoExportManager = sharedVideoExportManager;
 }
 
 - (BOOL)application:(UIApplication *)application

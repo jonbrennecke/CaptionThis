@@ -115,28 +115,68 @@ class FileSpeechTranscriptionRequest: NSObject, SpeechTranscriptionRequest {
     request.shouldReportPartialResults = false
     return request
   }
+  
+  private func checkIfFinalized(tasks: [TaskState], startTime: CFAbsoluteTime) {
+    let areAllTasksFinalized = tasks.allSatisfy { state in
+      guard case .final = state else {
+        return false
+      }
+      return true
+    }
+    if areAllTasksFinalized {
+      var results = [SFSpeechRecognitionResult]()
+      for case let .final(result) in tasks {
+        results.append(result)
+      }
+      let executionTime = CFAbsoluteTimeGetCurrent() - startTime
+      delegate.speechTranscriptionRequest(didFinalizeTranscriptionResults: results, inTime: executionTime)
+    } else {
+      startNextTask()
+    }
+  }
 }
 
 extension FileSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
   func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didFinishSuccessfully success: Bool) {
     Debug.log(format: "Speech recognizer finished task. Success == %@", success ? "true" : "false")
     if success {
+      delegate.speechTranscriptionRequestDidEnd()
       return
     }
     if let error = task.error as NSError? {
+      Debug.log(format: "Speech recognition task failed. Error.localizedDescription = %@", error.localizedDescription)
       if error.code == 203, error.localizedDescription == "Retry" {
+        // NOTE: if this is not the first video ignore the retry error
+        // (e.g. if the video is just slightly longer than the cutoff duration, the 2nd segment will commonly have no speech
+        if case .pending(var tasks, let startTime) = state, tasks.count > 1 {
+          let maybeIndex = tasks.firstIndex { state in
+            if case let .pending(t) = state, t == task {
+              return true
+            }
+            return false
+          }
+          guard let index = maybeIndex else {
+            // TODO
+            return
+          }
+          tasks.remove(at: index)
+          state = .pending(tasks, startTime)
+          checkIfFinalized(tasks: tasks, startTime: startTime)
+          delegate.speechTranscriptionRequestDidEnd()
+          return
+        }
         delegate.speechTranscriptionRequestDidNotDetectSpeech()
         return
       }
       Debug.log(error: error)
     }
     guard case let .pending(_, startTime) = state else {
-      delegate.speechTranscriptionRequestDidTerminate()
+      delegate.speechTranscriptionRequestDidEnd()
       return
     }
     let executionTime = CFAbsoluteTimeGetCurrent() - startTime
     Debug.log(format: "Speech recognition task failed. Execution time = %0.2f seconds", executionTime)
-    delegate.speechTranscriptionRequestDidTerminate()
+    delegate.speechTranscriptionRequestDidFail()
   }
 
   func speechRecognitionTaskWasCancelled(_: SFSpeechRecognitionTask) {
@@ -168,24 +208,7 @@ extension FileSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
     }
     tasks[index] = .final(result)
     state = .pending(tasks, startTime)
-
-    // Check if all tasks are finalized
-    let areAllTasksFinalized = tasks.allSatisfy { state in
-      guard case .final = state else {
-        return false
-      }
-      return true
-    }
-    if areAllTasksFinalized {
-      var results = [SFSpeechRecognitionResult]()
-      for case let .final(result) in tasks {
-        results.append(result)
-      }
-      let executionTime = CFAbsoluteTimeGetCurrent() - startTime
-      delegate.speechTranscriptionRequest(didFinalizeTranscriptionResults: results, inTime: executionTime)
-    } else {
-      startNextTask()
-    }
+    checkIfFinalized(tasks: tasks, startTime: startTime)
   }
 
   func speechRecognitionTask(_: SFSpeechRecognitionTask, didHypothesizeTranscription _: SFTranscription) {

@@ -131,6 +131,20 @@ RCT_EXPORT_VIEW_PROPERTY(onVideoDidPause, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidUpdatePlaybackTime, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onVideoDidRestart, RCTBubblingEventBlock)
 
+RCT_EXPORT_METHOD(play : (nonnull NSNumber *)reactTag) {
+  [self.bridge.uiManager
+      addUIBlock:^(RCTUIManager *uiManager,
+                   NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+        VideoPlayerViewWrap *view =
+            (VideoPlayerViewWrap *)viewRegistry[reactTag];
+        if (!view || ![view isKindOfClass:[VideoPlayerViewWrap class]]) {
+          RCTLogError(@"Cannot find VideoPlayerView with tag #%@", reactTag);
+          return;
+        }
+        [view.playerView play];
+      }];
+}
+
 RCT_EXPORT_METHOD(pause : (nonnull NSNumber *)reactTag) {
   [self.bridge.uiManager
       addUIBlock:^(RCTUIManager *uiManager,
@@ -163,7 +177,8 @@ RCT_EXPORT_METHOD(restart : (nonnull NSNumber *)reactTag) {
 
 RCT_EXPORT_METHOD(seekToTime
                   : (nonnull NSNumber *)reactTag time
-                  : (nonnull NSNumber *)seekTime) {
+                  : (nonnull NSNumber *)seekTime
+                  : (RCTResponseSenderBlock)callback) {
   [self.bridge.uiManager
       addUIBlock:^(RCTUIManager *uiManager,
                    NSDictionary<NSNumber *, UIView *> *viewRegistry) {
@@ -176,7 +191,7 @@ RCT_EXPORT_METHOD(seekToTime
         CMTime time = CMTimeMakeWithSeconds([seekTime floatValue], 600);
         [view.playerView seekTo:time
               completionHandler:^(BOOL success) {
-                [view.playerView play];
+                callback(@[ [NSNull null], @(success) ]);
               }];
       }];
 }
@@ -203,16 +218,6 @@ RCT_CUSTOM_VIEW_PROPERTY(localIdentifier, NSString, UIView) {
                      (VideoPlayerViewWrap *)view;
                  playerViewWrap.playerView.asset = asset;
                }];
-}
-
-RCT_CUSTOM_VIEW_PROPERTY(isPlaying, BOOL, VideoPlayerViewWrap) {
-  BOOL isPlaying = [RCTConvert BOOL:json];
-  if (isPlaying) {
-    [view.playerView play];
-    return;
-  } else {
-    [view.playerView pause];
-  }
 }
 
 - (UIView *)view {

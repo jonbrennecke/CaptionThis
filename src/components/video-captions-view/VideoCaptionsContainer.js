@@ -6,12 +6,12 @@ import { autobind } from 'core-decorators';
 import { isLandscape } from '../../utils/Orientation';
 
 import type { Style, Children } from '../../types/react';
-import type { ImageOrientation } from '../../types/media';
+import type { Orientation } from '../../types/media';
 
 type Props = {
   style?: ?Style,
   children?: ?Children,
-  orientation: ?ImageOrientation,
+  orientation: ?Orientation,
 };
 
 type Size = {
@@ -27,7 +27,7 @@ const CAPTION_VIEW_HEIGHT = 85;
 
 const styles = {
   container: {},
-  captionsWrap: (orientation: ImageOrientation, size: Size) => {
+  captionsWrap: (orientation: Orientation, size: Size) => {
     if (isLandscape(orientation)) {
       const videoHeight = size.width * 9 / 16;
       const topOfVideo = (size.height - videoHeight) / 2;
@@ -62,17 +62,12 @@ export default class VideoCaptionsContainer extends Component<Props, State> {
     },
   };
 
-  viewDidLayout() {
-    if (!this.view) {
-      return;
-    }
-    this.view.measure((fx, fy, width, height) => {
-      this.setState({
-        viewSize: {
-          width,
-          height,
-        },
-      });
+  viewDidLayout({ nativeEvent: { layout } }: any) {
+    this.setState({
+      viewSize: {
+        width: layout.width,
+        height: layout.height,
+      },
     });
   }
 

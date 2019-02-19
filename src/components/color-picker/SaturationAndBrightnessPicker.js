@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 
 import SaturationAndBrightnessGradientView from './SaturationAndBrightnessGradientView';
@@ -31,19 +31,14 @@ const styles = {
     borderRadius: 10,
     overflow: 'hidden',
   },
-  draggable: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-  },
+  draggable: StyleSheet.absoluteFillObject,
   handle: {
-    height: 24,
-    width: 24,
-    left: -12,
-    top: -12,
-    borderRadius: 12,
+    position: 'absolute',
+    height: 35,
+    width: 35,
+    left: -17.5,
+    top: -17.5,
+    borderRadius: 17.5,
     borderWidth: 2,
     borderColor: UI_COLORS.DARK_GREY,
     backgroundColor: UI_COLORS.OFF_WHITE,
@@ -101,7 +96,7 @@ export default class SaturationAndBrightnessPicker extends Component<
         />
         <DragInteractionContainer
           style={styles.draggable}
-          itemsShouldReturnToOriginalPosition={false}
+          returnToOriginalPosition={false}
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}
           onDragMove={this.dragDidMove}

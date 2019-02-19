@@ -1,34 +1,25 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  View,
-  SafeAreaView,
-  Dimensions,
-  Alert,
-  StyleSheet,
-  AppState as ReactAppState,
-} from 'react-native';
+import { View, Alert, AppState as ReactAppState } from 'react-native';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
-import clamp from 'lodash/clamp';
-import throttle from 'lodash/throttle';
 
 import * as Debug from '../../utils/Debug';
+import VideoExportManager from '../../utils/VideoExportManager';
 import { UI_COLORS } from '../../constants';
-import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
-import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
-import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
-import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
-import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
-import EditScreenTopControls from './EditScreenTopControls';
+
+import EditScreenVideoPlayer from './EditScreenVideoPlayer';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenLoadingBackground from './EditScreenLoadingBackground';
 import EditScreenEditCaptionsOverlay from './EditScreenEditCaptionsOverlay';
 import SpeechManager from '../../utils/SpeechManager';
-import { exportVideo } from '../../redux/media/actionCreators';
+import {
+  willExportVideo,
+  didExportVideo,
+} from '../../redux/media/actionCreators';
 import {
   beginSpeechTranscriptionWithVideoAsset,
   receiveSpeechTranscriptionSuccess,
@@ -62,23 +53,20 @@ import type {
   VideoAssetIdentifier,
   VideoObject,
   ColorRGBA,
-  ImageOrientation,
+  Orientation,
 } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { SpeechTranscription } from '../../types/speech';
 import type { LineStyle } from '../../types/video';
-import type { ReactAppStateEnum } from '../../types/react';
-import type { ExportParams } from '../../utils/VideoExportManager';
-import type { EmitterSubscription as SpeechManagerSubscription } from '../../utils/SpeechManager';
+import type { EmitterSubscription, ReactAppStateEnum } from '../../types/react';
 
 type State = {
   duration: number,
-  orientation: ?ImageOrientation,
-  playbackTime: number,
-  isVideoPlaying: boolean,
+  orientation: ?Orientation,
+  exportProgress: number,
   isDraggingSeekbar: boolean,
-  showRichTextOverlay: boolean,
-  showEditCaptionsOverlay: boolean,
+  isRichTextEditorVisible: boolean,
+  isCaptionsEditorVisible: boolean,
 };
 
 type OwnProps = {
@@ -106,7 +94,8 @@ type DispatchProps = {
     SpeechTranscription
   ) => void,
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
-  exportVideo: ExportParams => Promise<void>,
+  willExportVideo: () => Promise<void>,
+  didExportVideo: () => Promise<void>,
   receiveUserSelectedFontFamily: (fontFamily: string) => void,
   receiveUserSelectedTextColor: (color: ColorRGBA) => void,
   receiveUserSelectedBackgroundColor: (color: ColorRGBA) => void,
@@ -116,45 +105,10 @@ type DispatchProps = {
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
 const styles = {
   container: {
     flex: 1,
     backgroundColor: UI_COLORS.BLACK,
-  },
-  flex: {
-    flex: 1,
-  },
-  videoWrap: {
-    borderRadius: 10,
-    flex: 1,
-    flexGrow: 1,
-    overflow: 'hidden',
-    backgroundColor: UI_COLORS.DARK_GREY,
-  },
-  captionsContainer: StyleSheet.absoluteFillObject,
-  playbackControls: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  editControls: {
-    height: 70,
-    width: SCREEN_WIDTH,
-    paddingTop: 10,
-    // TODO: The bottom padding is only necessary because of the seekbar handle being cut off in phones without a notch (i.e. iPhones older than the X series)
-    paddingBottom: 3,
-  },
-  editTopControls: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-  },
-  seekbarWrap: {
-    flexDirection: 'row',
   },
 };
 
@@ -183,8 +137,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
     ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
     receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
-    exportVideo: (exportParams: ExportParams) =>
-      dispatch(exportVideo(exportParams)),
+    willExportVideo: () => dispatch(willExportVideo()),
+    didExportVideo: () => dispatch(didExportVideo()),
     receiveUserSelectedFontFamily: (fontFamily: string) =>
       dispatch(receiveUserSelectedFontFamily(fontFamily)),
     receiveUserSelectedTextColor: (color: ColorRGBA) =>
@@ -202,42 +156,36 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
 export default class EditScreen extends Component<Props, State> {
-  captionsView: ?VideoCaptionsView;
-  playerView: ?VideoPlayerView;
   richTextOverlay: ?EditScreenRichTextOverlay;
   state: State = {
-    playbackTime: 0,
     duration: 0,
+    exportProgress: 0,
     orientation: null,
-    isVideoPlaying: false,
     isDraggingSeekbar: false,
-    showRichTextOverlay: false,
-    showEditCaptionsOverlay: false,
+    isRichTextEditorVisible: false,
+    isCaptionsEditorVisible: false,
   };
-  didReceiveSpeechTranscriptionSubscription: ?SpeechManagerSubscription;
-  didNotDetectSpeechSubscription: ?SpeechManagerSubscription;
+  speechManagerDidReceiveTranscriptionListener: ?EmitterSubscription;
+  speechManagerDidNotDetectSpeechListener: ?EmitterSubscription;
+  speechManagerDidEndListener: ?EmitterSubscription;
+  speechManagerDidFailListener: ?EmitterSubscription;
+  exportDidFinishListener: ?EmitterSubscription;
+  exportDidFailListener: ?EmitterSubscription;
+  exportDidUpdateProgressListener: ?EmitterSubscription;
 
   async componentDidMount() {
-    this.didReceiveSpeechTranscriptionSubscription = SpeechManager.addDidReceiveSpeechTranscriptionListener(
-      this.speechManagerDidReceiveSpeechTranscription
-    );
-    this.didNotDetectSpeechSubscription = SpeechManager.addDidNotDetectSpeechListener(
-      this.speechManagerDidNotDetectSpeech
-    );
-    await this.props.beginSpeechTranscriptionWithVideoAsset(
-      this.props.video.id
-    );
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
     if (this.hasFinalSpeechTranscription()) {
       this.speechManagerDidReceiveFinalSpeechTranscription();
+    } else {
+      await this.beginSpeechTranscription();
     }
   }
 
   componentWillUnmount() {
     ReactAppState.removeEventListener('change', this.handleAppStateWillChange);
-    if (this.didReceiveSpeechTranscriptionSubscription) {
-      this.didReceiveSpeechTranscriptionSubscription.remove();
-    }
+    this.removeSpeechListeners();
+    this.removeExportListeners();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -252,23 +200,47 @@ export default class EditScreen extends Component<Props, State> {
     ) {
       this.presentTranscriptionFailureAlert();
     }
-    if (this.props.isAppInForeground && !prevProps.isAppInForeground) {
-      this.appWillEnterForeground();
-    } else if (!this.props.isAppInForeground && prevProps.isAppInForeground) {
-      this.appWillEnterBackground();
-    }
   }
 
   handleAppStateWillChange(nextAppState: ReactAppStateEnum) {
     this.props.receiveAppStateChange(nextAppState);
   }
 
-  appWillEnterBackground() {
-    this.pausePlayerAndCaptions();
+  async beginSpeechTranscription() {
+    this.addSpeechListeners();
+    await this.props.beginSpeechTranscriptionWithVideoAsset(
+      this.props.video.id
+    );
   }
 
-  appWillEnterForeground() {
-    this.restartPlayerAndCaptions();
+  addSpeechListeners() {
+    this.speechManagerDidReceiveTranscriptionListener = SpeechManager.addDidReceiveSpeechTranscriptionListener(
+      this.speechManagerDidReceiveSpeechTranscription
+    );
+    this.speechManagerDidNotDetectSpeechListener = SpeechManager.addDidNotDetectSpeechListener(
+      this.speechManagerDidNotDetectSpeech
+    );
+    this.speechManagerDidEndListener = SpeechManager.addDidEndListener(
+      this.speechManagerDidEnd
+    );
+    this.speechManagerDidFailListener = SpeechManager.addDidFailListener(
+      this.speechManagerDidFail
+    );
+  }
+
+  removeSpeechListeners() {
+    this.speechManagerDidReceiveTranscriptionListener &&
+      this.speechManagerDidReceiveTranscriptionListener.remove();
+    this.speechManagerDidReceiveTranscriptionListener = null;
+    this.speechManagerDidNotDetectSpeechListener &&
+      this.speechManagerDidNotDetectSpeechListener.remove();
+    this.speechManagerDidNotDetectSpeechListener = null;
+    this.speechManagerDidEndListener &&
+      this.speechManagerDidEndListener.remove();
+    this.speechManagerDidEndListener = null;
+    this.speechManagerDidFailListener &&
+      this.speechManagerDidFailListener.remove();
+    this.speechManagerDidFailListener = null;
   }
 
   presentTranscriptionFailureAlert() {
@@ -288,42 +260,14 @@ export default class EditScreen extends Component<Props, State> {
     );
   }
 
-  async videoPlayerDidBecomeReadyToPlay(
-    duration: number,
-    orientation: ImageOrientation
-  ) {
-    this.setState({ duration, orientation });
-    if (!this.isReadyToPlay()) {
-      this.pausePlayerAndCaptions();
-    } else {
-      this.restartPlayerAndCaptions();
-    }
+  speechManagerDidEnd() {
+    // NOTE: noop
   }
 
-  videoPlayerDidFailToLoad() {
-    Debug.log('Video player failed to load');
-    this.setState({ isVideoPlaying: false });
-    this.pauseCaptions();
-  }
-
-  videoPlayerDidPause() {
-    Debug.log('Video player paused');
-    this.setState({ isVideoPlaying: false });
-    this.pauseCaptions();
-  }
-
-  videoPlayerDidUpdatePlaybackTime(playbackTime: number, duration: number) {
-    if (this.state.isDraggingSeekbar) {
-      return;
-    }
-    this.setState({
-      playbackTime,
-      duration,
-    });
-  }
-
-  videoPlayerDidRestart() {
-    this.restartCaptions();
+  speechManagerDidFail() {
+    Debug.log('Speech transcription failed.');
+    this.removeSpeechListeners();
+    this.popToHomeScreen();
   }
 
   speechManagerDidReceiveSpeechTranscription(
@@ -340,31 +284,11 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   speechManagerDidReceiveFinalSpeechTranscription() {
-    this.setState({
-      playbackTime: 0,
-    });
-    this.restartPlayerAndCaptions();
+    this.removeSpeechListeners();
   }
 
   speechManagerDidNotDetectSpeech() {
     this.props.receiveSpeechTranscriptionFailure(this.props.video.id);
-  }
-
-  seekBarDidSeekToTimeThrottled = throttle(this.seekBarDidSeekToTime, 100, {
-    leading: true,
-  });
-
-  seekBarDidSeekToTime(timeSeconds: number) {
-    const time = clamp(timeSeconds, 0, this.state.duration);
-    this.setState({
-      playbackTime: time,
-    });
-    if (this.captionsView) {
-      this.captionsView.seekToTime(time);
-    }
-    if (this.playerView) {
-      this.playerView.seekToTime(time);
-    }
   }
 
   async richTextEditorDidRequestSave(params: {
@@ -378,22 +302,22 @@ export default class EditScreen extends Component<Props, State> {
     this.props.receiveUserSelectedTextColor(params.textColor);
     this.props.receiveUserSelectedBackgroundColor(params.backgroundColor);
     this.setState({
-      showRichTextOverlay: false,
+      isRichTextEditorVisible: false,
     });
   }
 
-  async onDidPressBackButton() {
+  async popToHomeScreen() {
     await Navigation.popToRoot(this.props.componentId);
   }
 
   async onDidPressExportButton() {
-    this.pausePlayerAndCaptions();
     await this.exportVideo();
-    this.restartPlayerAndCaptions();
   }
 
   async exportVideo() {
-    await this.props.exportVideo({
+    this.props.willExportVideo();
+    this.addExportListeners();
+    await VideoExportManager.exportVideo({
       video: this.props.video.id,
       textSegments: this.textOverlayParams(),
       textColor: this.props.textColor,
@@ -404,6 +328,47 @@ export default class EditScreen extends Component<Props, State> {
       lineStyle: this.props.lineStyle,
       orientation: this.state.orientation || 'up',
     });
+  }
+
+  onExportDidUpdateProgress(progress: number) {
+    Debug.log(`Video export progress updated. Progress = ${progress}`);
+    this.setState({
+      exportProgress: progress,
+    });
+  }
+
+  onExportDidFinish() {
+    Debug.log('Video export finished');
+    this.props.didExportVideo();
+    this.removeExportListeners();
+  }
+
+  onExportDidFail() {
+    // TODO: update redux
+    Debug.log('Video export failed');
+    this.removeExportListeners();
+  }
+
+  addExportListeners() {
+    this.exportDidFinishListener = VideoExportManager.addDidFinishListener(
+      this.onExportDidFinish
+    );
+    this.exportDidFailListener = VideoExportManager.addDidFailListener(
+      this.onExportDidFinish
+    );
+    this.exportDidUpdateProgressListener = VideoExportManager.addDidUpdateProgressListener(
+      this.onExportDidUpdateProgress
+    );
+  }
+
+  removeExportListeners() {
+    this.exportDidFinishListener && this.exportDidFinishListener.remove();
+    this.exportDidFinishListener = null;
+    this.exportDidFailListener && this.exportDidFailListener.remove();
+    this.exportDidFailListener = null;
+    this.exportDidUpdateProgressListener &&
+      this.exportDidUpdateProgressListener.remove();
+    this.exportDidUpdateProgressListener = null;
   }
 
   textOverlayParams() {
@@ -438,164 +403,109 @@ export default class EditScreen extends Component<Props, State> {
     return !!(speechTranscription && speechTranscription.isFinal);
   }
 
-  restartPlayerAndCaptions() {
-    this.restartCaptions();
-    this.restartPlayer();
+  showCaptionsEditor() {
+    this.setState({
+      isCaptionsEditorVisible: true,
+    });
   }
 
-  restartCaptions() {
-    if (this.captionsView) {
-      this.captionsView.restart();
-    }
-    if (this.richTextOverlay) {
-      this.richTextOverlay.restartCaptions();
-    }
+  dismissCaptionsEditor() {
+    this.setState({
+      isCaptionsEditorVisible: false,
+    });
   }
 
-  restartPlayer() {
-    if (!this.playerView) {
-      return;
-    }
-    this.playerView.restart();
+  showRichTextEditor() {
+    this.setState({
+      isRichTextEditorVisible: true,
+    });
   }
 
-  pausePlayerAndCaptions() {
-    this.pausePlayer();
-    this.pauseCaptions();
+  dismissRichTextEditor() {
+    this.setState({
+      isRichTextEditorVisible: false,
+    });
   }
 
-  pausePlayer() {
-    if (!this.playerView) {
-      return;
-    }
-    this.playerView.pause();
-  }
-
-  pauseCaptions() {
-    if (this.captionsView) {
-      this.captionsView.pause();
-    }
+  pauseRichTextEditorCaptions() {
     if (this.richTextOverlay) {
       this.richTextOverlay.pauseCaptions();
     }
   }
 
-  showEditCaptionsOverlay() {
-    this.pausePlayerAndCaptions();
-    this.setState({
-      showEditCaptionsOverlay: true,
-    });
+  restartRichTextEditorCaptions() {
+    if (this.richTextOverlay) {
+      this.richTextOverlay.restartCaptions();
+    }
   }
 
-  dismissEditCaptionsOverlay() {
-    this.restartPlayerAndCaptions();
-    this.setState({
-      showEditCaptionsOverlay: false,
-    });
+  seekRichTextEditorCaptionsToTime(time: number) {
+    if (this.richTextOverlay) {
+      this.richTextOverlay.seekCaptionsToTime(time);
+    }
   }
 
   render() {
     const hasFinalTranscription = this.hasFinalSpeechTranscription();
-    const showSeekbar =
-      hasFinalTranscription && !this.props.isDeviceLimitedByMemory;
+    const transcription = this.getSpeechTranscription();
     return (
       <View style={styles.container}>
         {!hasFinalTranscription && <EditScreenLoadingBackground />}
-        <SafeAreaView style={styles.flex}>
-          {hasFinalTranscription && (
-            <View style={styles.videoWrap}>
-              <VideoPlayerView
-                ref={ref => {
-                  this.playerView = ref;
-                }}
-                style={styles.flex}
-                isPlaying={this.state.isVideoPlaying}
-                videoAssetIdentifier={this.props.video.id}
-                onVideoDidBecomeReadyToPlay={(...args) => {
-                  this.videoPlayerDidBecomeReadyToPlay(...args);
-                }}
-                onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
-                onVideoDidPause={this.videoPlayerDidPause}
-                onVideoDidUpdatePlaybackTime={
-                  this.videoPlayerDidUpdatePlaybackTime
-                }
-                onVideoDidRestart={this.videoPlayerDidRestart}
-              />
-              <ScreenGradients />
-              <VideoCaptionsContainer
-                style={styles.captionsContainer}
-                orientation={this.state.orientation}
-              >
-                <VideoCaptionsView
-                  ref={ref => {
-                    this.captionsView = ref;
-                  }}
-                  style={styles.flex}
-                  hasFinalTranscription={hasFinalTranscription}
-                  orientation={this.state.orientation || 'up'}
-                  duration={this.state.duration}
-                  lineStyle={this.props.lineStyle}
-                  textColor={this.props.textColor}
-                  backgroundColor={this.props.backgroundColor}
-                  fontFamily={this.props.fontFamily}
-                  fontSize={this.props.fontSize}
-                  speechTranscription={this.getSpeechTranscription()}
-                  onPress={this.showEditCaptionsOverlay}
-                />
-              </VideoCaptionsContainer>
-              <EditScreenTopControls
-                style={styles.editTopControls}
-                isReadyToExport={!!hasFinalTranscription}
-                onBackButtonPress={() => {
-                  this.onDidPressBackButton();
-                }}
-                onExportButtonPress={() => {
-                  this.onDidPressExportButton();
-                }}
-                onStylizeButtonPress={() =>
-                  this.setState({
-                    showRichTextOverlay: !this.state.showRichTextOverlay,
-                  })
-                }
-                onEditTextButtonPress={this.showEditCaptionsOverlay}
-              />
-            </View>
-          )}
-          {showSeekbar && (
-            <View style={styles.editControls}>
-              <VideoSeekbar
-                style={styles.flex}
-                duration={this.state.duration}
-                playbackTime={this.state.playbackTime}
-                videoAssetIdentifier={this.props.video.id}
-                onSeekToTime={this.seekBarDidSeekToTimeThrottled}
-                onDidBeginDrag={() =>
-                  this.setState({ isDraggingSeekbar: true })
-                }
-                onDidEndDrag={() => this.setState({ isDraggingSeekbar: false })}
-              />
-            </View>
-          )}
-        </SafeAreaView>
-        <EditScreenRichTextOverlay
-          ref={ref => {
-            this.richTextOverlay = ref;
-          }}
-          playbackTime={this.state.playbackTime}
-          hasFinalTranscription={hasFinalTranscription}
+        <EditScreenVideoPlayer
+          isAppInForeground={this.props.isAppInForeground}
+          isDeviceLimitedByMemory={this.props.isDeviceLimitedByMemory}
+          isCaptionsEditorVisible={this.state.isCaptionsEditorVisible}
+          isExportingVideo={this.props.isExportingVideo}
+          video={this.props.video}
+          isReadyToPlay={hasFinalTranscription}
           duration={this.state.duration}
-          isVisible={this.state.showRichTextOverlay}
+          orientation={this.state.orientation || 'up'}
           lineStyle={this.props.lineStyle}
           textColor={this.props.textColor}
           backgroundColor={this.props.backgroundColor}
           fontFamily={this.props.fontFamily}
           fontSize={this.props.fontSize}
-          speechTranscription={this.getSpeechTranscription()}
+          speechTranscription={transcription}
+          onRequestChangeDuration={duration => this.setState({ duration })}
+          onRequestChangePlaybackTime={this.seekRichTextEditorCaptionsToTime}
+          onRequestChangeOrientation={orientation =>
+            this.setState({ orientation })
+          }
+          onRequestShowRichTextEditor={this.showRichTextEditor}
+          onRequestShowCaptionsEditor={this.showCaptionsEditor}
+          onRequestPopToHomeScreen={() => {
+            // TODO: handle awaiting this promise
+            this.popToHomeScreen();
+          }}
+          onRequestExport={() => {
+            // TODO: handle awaiting this promise
+            this.onDidPressExportButton();
+          }}
+          onDidRestartCaptions={this.restartRichTextEditorCaptions}
+          onDidPauseCaptions={this.pauseRichTextEditorCaptions}
+        />
+        <EditScreenRichTextOverlay
+          ref={ref => {
+            this.richTextOverlay = ref;
+          }}
+          hasFinalTranscription={hasFinalTranscription}
+          duration={this.state.duration}
+          isVisible={this.state.isRichTextEditorVisible}
+          lineStyle={this.props.lineStyle}
+          textColor={this.props.textColor}
+          backgroundColor={this.props.backgroundColor}
+          fontFamily={this.props.fontFamily}
+          fontSize={this.props.fontSize}
+          speechTranscription={transcription}
           onRequestSave={(...etc) => {
             this.richTextEditorDidRequestSave(...etc);
           }}
         />
-        <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
+        <EditScreenExportingOverlay
+          isVisible={this.props.isExportingVideo}
+          progress={this.state.exportProgress}
+          onDidDismiss={() => this.setState({ exportProgress: 0 })}
+        />
         <EditScreenLoadingOverlay
           isVisible={!hasFinalTranscription}
           video={this.props.video}
@@ -603,8 +513,8 @@ export default class EditScreen extends Component<Props, State> {
         <EditScreenEditCaptionsOverlay
           videoAssetIdentifier={this.props.video.id}
           speechTranscriptions={this.props.speechTranscriptions}
-          isVisible={this.state.showEditCaptionsOverlay}
-          onRequestDismissModal={this.dismissEditCaptionsOverlay}
+          isVisible={this.state.isCaptionsEditorVisible}
+          onRequestDismissModal={this.dismissCaptionsEditor}
           receiveSpeechTranscriptionSuccess={
             this.props.receiveSpeechTranscriptionSuccess
           }

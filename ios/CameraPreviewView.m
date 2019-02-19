@@ -1,6 +1,6 @@
 #import "CameraPreviewView.h"
-#import "CaptionThis-Swift.h"
 #import "AppDelegate.h"
+#import "CaptionThis-Swift.h"
 #import "Debug.h"
 
 @implementation CameraPreviewView

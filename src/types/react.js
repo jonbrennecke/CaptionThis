@@ -3,6 +3,8 @@ import StyleSheetPropType from 'react-native/Libraries/StyleSheet/StyleSheetProp
 import ViewStylePropTypes from 'react-native/Libraries/Components/View/ViewStylePropTypes';
 
 import type { Element, ChildrenArray } from 'react';
+import type { NativeEventEmitter } from 'react-native';
+import type { Return } from './util';
 
 export type Children = ChildrenArray<?Element<*>> | string;
 
@@ -22,3 +24,5 @@ export type Gesture = {
 };
 
 export type ReactAppStateEnum = 'active' | 'background' | 'inactive';
+
+export type EmitterSubscription = Return<NativeEventEmitter.addListener>;

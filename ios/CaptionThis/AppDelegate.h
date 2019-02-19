@@ -19,6 +19,5 @@
 @property(class) SpeechManager *sharedSpeechManager;
 @property(class) PermissionsManager *sharedPermissionsManager;
 @property(class) MediaLibraryManager *sharedMediaLibraryManager;
-@property(class) VideoExportManager *sharedVideoExportManager;
 
 @end

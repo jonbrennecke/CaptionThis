@@ -8,14 +8,14 @@ import {
 
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
-import type { ColorRGBA, ImageOrientation } from '../../types/media';
+import type { ColorRGBA, Orientation } from '../../types/media';
 
 type ReactNativeFiberHostComponent = any;
 
 type Props = {
   style?: ?Style,
   duration: number,
-  orientation: ImageOrientation,
+  orientation: Orientation,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
   fontFamily: string,
@@ -60,6 +60,13 @@ export default class VideoCaptionsView extends Component<Props> {
       return;
     }
     TranscriptViewManager.seekToTime(this.nativeComponentRef._nativeTag, time);
+  }
+
+  play() {
+    if (!this.nativeComponentRef || !this.props.hasFinalTranscription) {
+      return;
+    }
+    TranscriptViewManager.play(this.nativeComponentRef._nativeTag);
   }
 
   render() {

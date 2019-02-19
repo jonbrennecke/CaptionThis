@@ -13,7 +13,6 @@ import type { LineStyle } from '../../types/video';
 
 type Props = {
   style?: ?Style,
-  playbackTime: number,
   hasFinalTranscription: boolean,
   isVisible: boolean,
   duration: number,
@@ -54,6 +53,12 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
     }
   }
 
+  seekCaptionsToTime(time: number) {
+    if (this.richTextEditor) {
+      this.richTextEditor.seekCaptionsToTime(time);
+    }
+  }
+
   save() {
     if (this.richTextEditor) {
       this.richTextEditor.save();
@@ -72,7 +77,6 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
               this.richTextEditor = ref;
             }}
             style={styles.flex}
-            playbackTime={this.props.playbackTime}
             duration={this.props.duration}
             isVisible={this.props.isVisible}
             hasFinalTranscription={this.props.hasFinalTranscription}

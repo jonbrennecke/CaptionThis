@@ -31,11 +31,12 @@ const styles = {
     backgroundColor: UI_COLORS.DARK_GREY,
     borderRadius: 10,
   },
-  handle: (offset: number) => ({
+  handle: {
     position: 'absolute',
     top: -3,
     bottom: -3,
-    width: 7,
+    width: 15,
+    left: -7.5,
     backgroundColor: UI_COLORS.WHITE,
     borderRadius: 3,
     shadowOpacity: 0.5,
@@ -45,8 +46,7 @@ const styles = {
     },
     shadowColor: UI_COLORS.BLACK,
     shadowRadius: 5,
-    transform: [{ translateX: offset }],
-  }),
+  },
   dragContainer: StyleSheet.absoluteFillObject,
   preview: {
     ...StyleSheet.absoluteFillObject,
@@ -66,29 +66,33 @@ export default class VideoSeekbar extends Component<Props, State> {
     this.props.onDidBeginDrag();
   }
 
-  dragDidEnd() {
+  dragDidEnd({ x }: { x: number, y: number }) {
+    const time = this.calculatePlaybackTime(x);
+    this.props.onSeekToTime(time);
     this.props.onDidEndDrag();
   }
 
   dragDidMove({ x }: { x: number, y: number }) {
-    if (!this.state.viewWidth) {
-      return;
-    }
-    const percentOfWidth = x / this.state.viewWidth;
-    const time = this.props.duration * percentOfWidth;
+    const time = this.calculatePlaybackTime(x);
     this.props.onSeekToTime(time);
   }
 
-  viewDidLayout() {
-    if (!this.view) {
-      return;
-    }
-    this.view.measure((fx, fy, width) => {
-      this.setState({ viewWidth: width });
-    });
+  calculatePlaybackTime(x: number): number {
+    const percentOfWidth = x / this.state.viewWidth;
+    const time = this.props.duration * percentOfWidth;
+    return clamp(time, 0, this.props.duration);
+  }
+
+  viewDidLayout({ nativeEvent: { layout } }: any) {
+    this.setState({ viewWidth: layout.width });
   }
 
   render() {
+    const offsetX = calculateHandleOffset({
+      viewWidth: this.state.viewWidth,
+      playbackTime: this.props.playbackTime,
+      duration: this.props.duration,
+    });
     return (
       <View
         style={[styles.container, this.props.style]}
@@ -104,23 +108,15 @@ export default class VideoSeekbar extends Component<Props, State> {
         <DragInteractionContainer
           style={styles.dragContainer}
           vertical={false}
-          applyTransformStyles={false}
-          itemsShouldReturnToOriginalPosition={false}
+          returnToOriginalPosition={false}
           onDragStart={this.dragDidStart}
           onDragEnd={this.dragDidEnd}
           onDragMove={this.dragDidMove}
-          renderChildren={props => (
-            <View
-              style={styles.handle(
-                calculateHandleOffset({
-                  viewWidth: this.state.viewWidth,
-                  playbackTime: this.props.playbackTime,
-                  duration: this.props.duration,
-                })
-              )}
-              {...props}
-            />
-          )}
+          additionalOffset={{
+            x: offsetX,
+            y: 0,
+          }}
+          renderChildren={props => <View style={styles.handle} {...props} />}
         />
       </View>
     );

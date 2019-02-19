@@ -99,6 +99,7 @@ class VideoPlayerView: UIView {
 
   @objc
   public func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void) {
+    Debug.log(format: "Video player seeking to %0.2fs", CMTimeGetSeconds(time))
     player.seek(to: time, completionHandler: completionHandler)
   }
 

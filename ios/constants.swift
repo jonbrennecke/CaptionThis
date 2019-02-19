@@ -5,7 +5,3 @@ struct ThemeColors {
   static let mediumPink = UIColor(red: 196 / 255, green: 105 / 255, blue: 112 / 255, alpha: 1)
   static let white = UIColor.white
 }
-
-struct PhotosAlbum {
-  static let albumTitle = "Caption This"
-}
