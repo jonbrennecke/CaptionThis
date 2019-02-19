@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, SafeAreaView, Dimensions, StyleSheet } from 'react-native';
+import { SafeAreaView, Dimensions, StyleSheet } from 'react-native';
 import throttle from 'lodash/throttle';
 import { autobind } from 'core-decorators';
 
@@ -12,6 +12,7 @@ import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
+import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
 
 import type { Orientation, VideoObject, ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
@@ -47,6 +48,7 @@ type Props = {
 type State = {
   playbackTime: number,
   isDraggingSeekbar: boolean,
+  isVideoReadyToPlay: boolean,
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -95,6 +97,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
   state = {
     playbackTime: 0,
     isDraggingSeekbar: false,
+    isVideoReadyToPlay: false,
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -192,6 +195,9 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
       this.pausePlayerAndCaptions();
     } else {
       this.restartPlayerAndCaptions();
+      this.setState({
+        isVideoReadyToPlay: true,
+      });
     }
   }
 
@@ -287,7 +293,10 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     return (
       <SafeAreaView style={styles.flex}>
         {this.props.isReadyToPlay && (
-          <View style={styles.videoWrap}>
+          <ScaleAnimatedView
+            style={styles.videoWrap}
+            isVisible={this.state.isVideoReadyToPlay}
+          >
             <VideoPlayerView
               ref={ref => {
                 this.playerView = ref;
@@ -334,10 +343,13 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               onStylizeButtonPress={this.props.onRequestShowRichTextEditor}
               onEditTextButtonPress={this.props.onRequestShowCaptionsEditor}
             />
-          </View>
+          </ScaleAnimatedView>
         )}
         {showSeekbar && (
-          <View style={styles.editControls}>
+          <ScaleAnimatedView
+            isVisible={this.state.isVideoReadyToPlay}
+            style={styles.editControls}
+          >
             <VideoSeekbar
               style={styles.flex}
               duration={this.props.duration}
@@ -347,7 +359,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               onDidBeginDrag={this.seekBarDidStartSeeking}
               onDidEndDrag={this.seekBarDidStopSeeking}
             />
-          </View>
+          </ScaleAnimatedView>
         )}
       </SafeAreaView>
     );

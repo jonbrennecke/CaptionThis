@@ -142,11 +142,14 @@ export default class DragInteractionContainer extends Component<Props, State> {
     }).start();
   }
 
-  viewDidLayout() {
-    if (!this.view) {
+  viewDidLayout({ nativeEvent }: any) {
+    if (!this.view || !nativeEvent) {
       return;
     }
-    this.view.measure((x, y, width, height, pageX, pageY) => {
+    const {
+      layout: { width, height },
+    } = nativeEvent;
+    this.view.measure((x, y, unusedWidth, unusedHeight, pageX, pageY) => {
       this.setState({
         viewWidth: width,
         viewHeight: height,

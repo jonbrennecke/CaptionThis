@@ -115,7 +115,7 @@ class FileSpeechTranscriptionRequest: NSObject, SpeechTranscriptionRequest {
     request.shouldReportPartialResults = false
     return request
   }
-  
+
   private func checkIfFinalized(tasks: [TaskState], startTime: CFAbsoluteTime) {
     let areAllTasksFinalized = tasks.allSatisfy { state in
       guard case .final = state else {
@@ -156,7 +156,7 @@ extension FileSpeechTranscriptionRequest: SFSpeechRecognitionTaskDelegate {
             return false
           }
           guard let index = maybeIndex else {
-            // TODO
+            // TODO:
             return
           }
           tasks.remove(at: index)
