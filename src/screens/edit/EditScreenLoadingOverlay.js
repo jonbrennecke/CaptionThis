@@ -2,11 +2,8 @@
 import React, { Component } from 'react';
 import {
   Text,
-  View,
   SafeAreaView,
   Animated,
-  StyleSheet,
-  MaskedViewIOS,
   Easing,
 } from 'react-native';
 import { autobind } from 'core-decorators';
@@ -14,7 +11,8 @@ import { autobind } from 'core-decorators';
 import * as Fonts from '../../utils/Fonts';
 import * as Color from '../../utils/Color';
 import { UI_COLORS } from '../../constants';
-import ProgressCircle from '../../components/progress-circle/ProgressCircle';
+import AnimatedProgressCircle from '../../components/progress-circle/AnimatedProgressCircle';
+import ProgressCircleContainer from '../../components/progress-circle/ProgressCircleContainer';
 
 import type { Style } from '../../types/react';
 import type { VideoObject } from '../../types/media';
@@ -42,37 +40,12 @@ const styles = {
     bottom: 0,
     opacity: anim,
   }),
-  outerView: {
-    height: CIRCLE_RADIUS,
-    width: CIRCLE_RADIUS,
-    borderRadius: CIRCLE_RADIUS / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  border: {
-    height: CIRCLE_RADIUS,
-    width: CIRCLE_RADIUS,
-    borderRadius: CIRCLE_RADIUS / 2,
-    borderWidth: 4,
+  progress: (radius: number) => ({
+    height: radius,
+    width: radius,
+    borderRadius: radius / 2,
     position: 'absolute',
-  },
-  borderMask: {
-    height: CIRCLE_RADIUS,
-    width: CIRCLE_RADIUS,
-    borderRadius: CIRCLE_RADIUS / 2,
-    position: 'absolute',
-  },
-  inner: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'white',
-    opacity: 0.25,
-  },
-  progress: {
-    height: CIRCLE_RADIUS,
-    width: CIRCLE_RADIUS,
-    borderRadius: CIRCLE_RADIUS / 2,
-    position: 'absolute',
-  },
+  }),
   flexCenter: {
     flex: 1,
     alignItems: 'center',
@@ -80,19 +53,6 @@ const styles = {
   },
   activityIndicator: {
     marginBottom: 15,
-  },
-  countdown: {
-    ...Fonts.getFontStyle('heading', {
-      contentStyle: 'lightContent',
-      size: 'large',
-    }),
-    textShadowColor: Color.hexToRgbaString(UI_COLORS.BLACK, 0.25),
-    textShadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    textShadowRadius: 1,
-    textAlign: 'center',
   },
   title: {
     ...Fonts.getFontStyle('heading', {
@@ -221,22 +181,21 @@ export default class EditScreenExportingOverlay extends Component<
         style={[styles.container(this.anim), this.props.style]}
       >
         <SafeAreaView style={styles.flexCenter}>
-          <Animated.View style={styles.outerView}>
-            <MaskedViewIOS
-              style={styles.borderMask}
-              maskElement={<View style={styles.border} />}
-            >
-              <View style={styles.inner} />
-            </MaskedViewIOS>
-            <ProgressCircle
-              style={styles.progress}
-              progress={this.progressAnim}
-              fillColor={UI_COLORS.WHITE}
-            />
-            <Text style={styles.countdown} numberOfLines={1}>
-              {this.state.countdown}
-            </Text>
-          </Animated.View>
+          <ProgressCircleContainer
+            radius={CIRCLE_RADIUS}
+            renderProgressElement={props => (
+              <AnimatedProgressCircle
+                progress={this.progressAnim}
+                fillColor={UI_COLORS.WHITE}
+                {...props}
+              />
+            )}
+            renderTextElement={props => (
+              <Text numberOfLines={1} {...props}>
+                {this.state.countdown}
+              </Text>
+            )}
+          />
           <Text style={styles.title} numberOfLines={1}>
             {this.state.isCountdownFinished
               ? 'Almost finished...'

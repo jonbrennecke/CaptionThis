@@ -493,7 +493,7 @@ export default class EditScreen extends Component<Props, State> {
             this.richTextEditorDidRequestSave(...etc);
           }}
         />
-        <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} />
+        <EditScreenExportingOverlay isVisible={this.props.isExportingVideo} progress={this.state.exportProgress} />
         <EditScreenLoadingOverlay
           isVisible={!hasFinalTranscription}
           video={this.props.video}

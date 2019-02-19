@@ -68,12 +68,6 @@ export default class VideoExportManager {
     );
   }
 
-  static removeDidFinishListener() {}
-
-  static removeDidFailListener() {}
-
-  static removeDidUpdateProgressListener() {}
-
   static async exportVideo({
     textSegments,
     textColor,

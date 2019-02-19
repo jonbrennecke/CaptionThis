@@ -1,96 +1,61 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, SafeAreaView, Animated, ActivityIndicator } from 'react-native';
-import { BlurView } from 'react-native-blur';
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
 
-import * as Fonts from '../../utils/Fonts';
+import { UI_COLORS } from '../../constants';
+import FadeInOutAnimatedView from '../../components/animations/FadeInOutAnimatedView';
+import EditScreenLoadingBackground from './EditScreenLoadingBackground';
+import NumericProgressCircle from '../../components/progress-circle/NumericProgressCircle';
+import ProgressCircleContainer from '../../components/progress-circle/ProgressCircleContainer';
 
 import type { Style } from '../../types/react';
 
 type Props = {
   style?: ?Style,
   isVisible: boolean,
+  progress: number,
 };
 
+const CIRCLE_RADIUS = 175;
+
 const styles = {
-  container: (anim: Animated.Value) => ({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    opacity: anim,
-  }),
+  container: StyleSheet.absoluteFillObject,
   flexCenter: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  blurView: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  title: Fonts.getFontStyle('title', { contentStyle: 'lightContent' }),
   activityIndicator: {
     marginTop: 15,
   },
 };
 
 export default class EditScreenExportingOverlay extends Component<Props> {
-  anim: Animated.Value;
-
-  constructor(props: Props) {
-    super(props);
-    this.anim = new Animated.Value(this.props.isVisible ? 1 : 0);
-  }
-
-  componentDidMount() {
-    if (this.props.isVisible) {
-      this.animateIn();
-    } else if (!this.props.isVisible) {
-      this.animateOut();
-    }
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.isVisible && !prevProps.isVisible) {
-      this.animateIn();
-    } else if (!this.props.isVisible && prevProps.isVisible) {
-      this.animateOut();
-    }
-  }
-
-  animateIn() {
-    Animated.timing(this.anim, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  }
-
-  animateOut() {
-    Animated.timing(this.anim, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  }
-
   render() {
     return (
-      <Animated.View
-        style={[styles.container(this.anim), this.props.style]}
-        pointerEvents="none"
+      <FadeInOutAnimatedView
+        style={[styles.container, this.props.style]}
+        isVisible={this.props.isVisible}
       >
-        <BlurView style={styles.blurView} blurType="dark" blurAmount={25} />
+        <EditScreenLoadingBackground/>
         <SafeAreaView style={styles.flexCenter}>
-          <Text style={styles.title}>Saving...</Text>
-          <ActivityIndicator size="large" style={styles.activityIndicator} />
+          <ProgressCircleContainer
+            radius={CIRCLE_RADIUS}
+            renderProgressElement={props => (
+              <NumericProgressCircle
+                progress={this.props.progress * 100}
+                fillColor={UI_COLORS.WHITE}
+                {...props}
+              />
+            )}
+            renderTextElement={props => (
+              <Text numberOfLines={1} {...props}>
+                {`${(this.props.progress * 100).toFixed(0)}%`}
+              </Text>
+            )}
+          />
         </SafeAreaView>
-      </Animated.View>
+      </FadeInOutAnimatedView>
     );
   }
 }
