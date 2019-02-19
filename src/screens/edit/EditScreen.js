@@ -231,12 +231,16 @@ export default class EditScreen extends Component<Props, State> {
   removeSpeechListeners() {
     this.speechManagerDidReceiveTranscriptionListener &&
       this.speechManagerDidReceiveTranscriptionListener.remove();
+    this.speechManagerDidReceiveTranscriptionListener = null;
     this.speechManagerDidNotDetectSpeechListener &&
       this.speechManagerDidNotDetectSpeechListener.remove();
+    this.speechManagerDidNotDetectSpeechListener = null;
     this.speechManagerDidEndListener &&
       this.speechManagerDidEndListener.remove();
+    this.speechManagerDidEndListener = null;
     this.speechManagerDidFailListener &&
       this.speechManagerDidFailListener.remove();
+    this.speechManagerDidFailListener = null;
   }
 
   presentTranscriptionFailureAlert() {
@@ -358,9 +362,12 @@ export default class EditScreen extends Component<Props, State> {
 
   removeExportListeners() {
     this.exportDidFinishListener && this.exportDidFinishListener.remove();
+    this.exportDidFinishListener = null;
     this.exportDidFailListener && this.exportDidFailListener.remove();
+    this.exportDidFailListener = null;
     this.exportDidUpdateProgressListener &&
       this.exportDidUpdateProgressListener.remove();
+    this.exportDidUpdateProgressListener = null;
   }
 
   textOverlayParams() {
