@@ -261,11 +261,12 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   speechManagerDidEnd() {
-    this.removeSpeechListeners();
+    // NOTE: noop
   }
 
   speechManagerDidFail() {
     Debug.log('Speech transcription failed.');
+    this.removeSpeechListeners();
     this.popToHomeScreen();
   }
 
@@ -283,7 +284,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   speechManagerDidReceiveFinalSpeechTranscription() {
-    // NOTE: noop
+    this.removeSpeechListeners();
   }
 
   speechManagerDidNotDetectSpeech() {
