@@ -22,15 +22,12 @@ export default class NumericProgressCircle extends Component<Props> {
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.progress != this.props.progress) {
-      Animated.timing(
-        this.progressAnim,
-        {
-          toValue: this.props.progress,
-          duration: 400,
-          easing: Easing.linear,
-          useNativeDriver: true,
-        }
-      ).start();
+      Animated.timing(this.progressAnim, {
+        toValue: this.props.progress,
+        duration: 400,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }).start();
     }
   }
 

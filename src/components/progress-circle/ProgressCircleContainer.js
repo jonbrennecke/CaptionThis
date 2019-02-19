@@ -78,6 +78,6 @@ export default function ProgressCircleContainer(props: Props) {
       </MaskedViewIOS>
       {props.renderProgressElement({ style: styles.progress(props.radius) })}
       {props.renderTextElement({ style: styles.text })}
-      </Animated.View>
+    </Animated.View>
   );
 }

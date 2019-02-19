@@ -37,7 +37,7 @@ export default class EditScreenExportingOverlay extends Component<Props> {
         style={[styles.container, this.props.style]}
         isVisible={this.props.isVisible}
       >
-        <EditScreenLoadingBackground/>
+        <EditScreenLoadingBackground />
         <SafeAreaView style={styles.flexCenter}>
           <ProgressCircleContainer
             radius={CIRCLE_RADIUS}

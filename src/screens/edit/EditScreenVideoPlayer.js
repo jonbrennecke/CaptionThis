@@ -174,9 +174,13 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     }
   }
 
-  onRequestChangePlaybackTimeThrottled = throttle(this.props.onRequestChangePlaybackTime, 50, {
-    leading: true,
-  });
+  onRequestChangePlaybackTimeThrottled = throttle(
+    this.props.onRequestChangePlaybackTime,
+    50,
+    {
+      leading: true,
+    }
+  );
 
   async videoPlayerDidBecomeReadyToPlay(
     duration: number,
@@ -201,9 +205,13 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     this.pauseCaptions();
   }
 
-  videoPlayerDidUpdatePlaybackTimeThrottled = throttle(this.videoPlayerDidUpdatePlaybackTime, 50, {
-    leading: true,
-  });
+  videoPlayerDidUpdatePlaybackTimeThrottled = throttle(
+    this.videoPlayerDidUpdatePlaybackTime,
+    50,
+    {
+      leading: true,
+    }
+  );
 
   videoPlayerDidUpdatePlaybackTime(playbackTime: number) {
     this.setState({ playbackTime });

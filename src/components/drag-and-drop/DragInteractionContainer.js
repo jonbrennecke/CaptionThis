@@ -186,7 +186,7 @@ export default class DragInteractionContainer extends Component<Props, State> {
         <Animated.View style={style}>
           {this.props.renderChildren({
             isDragging: this.state.isDragging,
-            ...this.panResponder?.panHandlers
+            ...this.panResponder?.panHandlers,
           })}
         </Animated.View>
       </View>

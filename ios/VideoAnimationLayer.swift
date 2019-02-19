@@ -9,7 +9,7 @@ class VideoAnimationLayer: CALayer {
     case paused
     case none
   }
-  
+
   private var state: State = .none
 
   private var isPaused: Bool {
@@ -91,8 +91,7 @@ class VideoAnimationLayer: CALayer {
       beginTime = 0
       beginTime = convertTime(CACurrentMediaTime(), from: nil)
       timeOffset = time
-    }
-    else {
+    } else {
       let pausedTimeOffset = timeOffset
       timeOffset = 0
       beginTime = 0

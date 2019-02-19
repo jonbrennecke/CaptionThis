@@ -44,7 +44,10 @@ export default class VideoPlayerView extends Component<Props> {
     if (!this.nativeComponentRef) {
       return;
     }
-    await VideoPlayerViewManager.seekToTimeAsync(this.nativeComponentRef._nativeTag, time);
+    await VideoPlayerViewManager.seekToTimeAsync(
+      this.nativeComponentRef._nativeTag,
+      time
+    );
   }
 
   pause() {

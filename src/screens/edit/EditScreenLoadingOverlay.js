@@ -1,11 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  Text,
-  SafeAreaView,
-  Animated,
-  Easing,
-} from 'react-native';
+import { Text, SafeAreaView, Animated, Easing } from 'react-native';
 import { autobind } from 'core-decorators';
 
 import * as Fonts from '../../utils/Fonts';

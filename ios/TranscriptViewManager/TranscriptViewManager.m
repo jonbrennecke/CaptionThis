@@ -21,15 +21,15 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(play : (nonnull NSNumber *)reactTag) {
   [self.bridge.uiManager
-   addUIBlock:^(RCTUIManager *uiManager,
-                NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-     CaptionsView *view = (CaptionsView *)viewRegistry[reactTag];
-     if (!view || ![view isKindOfClass:[CaptionsView class]]) {
-       RCTLogError(@"Cannot find CaptionsView with tag #%@", reactTag);
-       return;
-     }
-     [view resume];
-   }];
+      addUIBlock:^(RCTUIManager *uiManager,
+                   NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+        CaptionsView *view = (CaptionsView *)viewRegistry[reactTag];
+        if (!view || ![view isKindOfClass:[CaptionsView class]]) {
+          RCTLogError(@"Cannot find CaptionsView with tag #%@", reactTag);
+          return;
+        }
+        [view resume];
+      }];
 }
 
 RCT_EXPORT_METHOD(restart : (nonnull NSNumber *)reactTag) {

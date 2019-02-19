@@ -190,7 +190,7 @@ RCT_EXPORT_METHOD(seekToTime
         }
         CMTime time = CMTimeMakeWithSeconds([seekTime floatValue], 600);
         [view.playerView seekTo:time
-              completionHandler:^(BOOL success){
+              completionHandler:^(BOOL success) {
                 callback(@[ [NSNull null], @(success) ]);
               }];
       }];
