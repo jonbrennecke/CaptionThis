@@ -81,13 +81,25 @@ class VideoAnimationLayer: CALayer {
   }
 
   public func seekTo(time: CFTimeInterval) {
+    let stateBeforeReset = state
     Debug.log(format: "Animation seeking to %0.2fs", time)
     removeAllAnimations()
     resetAnimation()
-    if !isPlaying {
-      resume()
+    if case .playing = stateBeforeReset {
+      speed = 1
+      timeOffset = 0
+      beginTime = 0
+      beginTime = convertTime(CACurrentMediaTime(), from: nil)
+      timeOffset = time
     }
-    timeOffset = time
+    else {
+      let pausedTimeOffset = timeOffset
+      timeOffset = 0
+      beginTime = 0
+      beginTime = convertTime(CACurrentMediaTime(), from: nil) - pausedTimeOffset
+      timeOffset = time
+    }
+    state = stateBeforeReset
   }
 
   public func pause() {

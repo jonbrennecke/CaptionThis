@@ -46,6 +46,7 @@ type Props = {
 
 type State = {
   playbackTime: number,
+  isDraggingSeekbar: boolean,
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -93,6 +94,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
   playerView: ?VideoPlayerView;
   state = {
     playbackTime: 0,
+    isDraggingSeekbar: false,
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -155,18 +157,20 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
 
   seekBarDidStartSeeking() {
     this.pausePlayerAndCaptions();
+    this.setState({ isDraggingSeekbar: true });
   }
 
   seekBarDidStopSeeking() {
+    this.setState({ isDraggingSeekbar: false });
     this.startPlayerAndCaptions();
   }
 
   async seekToTime(time: number) {
-    if (this.captionsView) {
-      this.captionsView.seekToTime(time);
-    }
     if (this.playerView) {
       await this.playerView.seekToTime(time);
+    }
+    if (this.captionsView) {
+      this.captionsView.seekToTime(time);
     }
   }
 

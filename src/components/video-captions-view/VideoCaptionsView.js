@@ -66,8 +66,7 @@ export default class VideoCaptionsView extends Component<Props> {
     if (!this.nativeComponentRef || !this.props.hasFinalTranscription) {
       return;
     }
-    // TODO:
-    // TranscriptViewManager.play(this.nativeComponentRef._nativeTag, time);
+    TranscriptViewManager.play(this.nativeComponentRef._nativeTag);
   }
 
   render() {
