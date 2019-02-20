@@ -104,7 +104,7 @@ export default function EditScreenTopControls({
           disabled={!isReadyToExport}
           style={styles.exportButton(isReadyToExport)}
           onPress={onExportButtonPress}
-        > 
+        >
           <ExportIcon style={styles.exportIcon} />
         </TouchableOpacity>
       </View>

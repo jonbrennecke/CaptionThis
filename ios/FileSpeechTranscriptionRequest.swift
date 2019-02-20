@@ -85,6 +85,7 @@ class FileSpeechTranscriptionRequest: NSObject, SpeechTranscriptionRequest {
     let timeRanges = AudioUtil.splitTimeRanges(withAssetTrack: audioAssetTrack)
     var requests = [SFSpeechAudioBufferRecognitionRequest]()
     for (index, timeRange) in timeRanges.enumerated() {
+      Debug.log(format: "Starting new time segment from %0.2fs to %0.2fs", CMTimeGetSeconds(timeRange.start), CMTimeGetSeconds(timeRange.end))
       if index > 0 {
         assetReaderOutput.reset(forReadingTimeRanges: [timeRange as NSValue])
       } else {
@@ -101,12 +102,16 @@ class FileSpeechTranscriptionRequest: NSObject, SpeechTranscriptionRequest {
           Debug.log(message: "Received invalid sample buffer")
           continue
         }
+        let sampleBufferTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+        if sampleBufferTime == .invalid || sampleBufferTime == .indefinite {
+          continue
+        }
+        Debug.log(format: "Adding sample buffer at %0.2fs", CMTimeGetSeconds(sampleBufferTime))
         request.appendAudioSampleBuffer(sampleBuffer)
       }
       request.endAudio()
       requests.append(request)
     }
-    assetReader.cancelReading()
     return .ok(requests)
   }
 
