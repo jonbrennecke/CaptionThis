@@ -15,10 +15,10 @@ const styles = {
   },
 };
 
-export default function ColorPaletteIcon({ style }: Props) {
+export default function ExportIcon({ style }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <Image source={{ uri: 'ColorPaletteIcon' }} style={styles.flex} />
+      <Image source={{ uri: 'ExportIcon' }} style={styles.flex} />
     </View>
   );
 }
