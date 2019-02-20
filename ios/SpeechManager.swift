@@ -99,7 +99,7 @@ class SpeechManager: NSObject {
   public var delegate: SpeechManagerDelegate?
 
   override init() {
-    recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))! // FIXME:
+    recognizer = SFSpeechRecognizer(locale: Locale.current) ?? SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
     recognizer.defaultTaskHint = .dictation
     recognizer.queue = SpeechManager.operationQueue
     audioEngine = AVAudioEngine()
