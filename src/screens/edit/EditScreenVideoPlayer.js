@@ -163,9 +163,11 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     this.setState({ isDraggingSeekbar: true });
   }
 
-  seekBarDidStopSeeking() {
+  seekBarDidStopSeeking(time: number) {
     this.setState({ isDraggingSeekbar: false });
     this.startPlayerAndCaptions();
+    this.onRequestChangePlaybackTimeThrottled(time);
+    this.props.onDidRestartCaptions();
   }
 
   async seekToTime(time: number) {

@@ -19,7 +19,7 @@ type Props = {
   playbackTime: number,
   onSeekToTime: (time: number) => void,
   onDidBeginDrag: () => void,
-  onDidEndDrag: () => void,
+  onDidEndDrag: (time: number) => void,
 };
 
 type State = {
@@ -69,7 +69,7 @@ export default class VideoSeekbar extends Component<Props, State> {
   dragDidEnd({ x }: { x: number, y: number }) {
     const time = this.calculatePlaybackTime(x);
     this.props.onSeekToTime(time);
-    this.props.onDidEndDrag();
+    this.props.onDidEndDrag(time);
   }
 
   dragDidMove({ x }: { x: number, y: number }) {
