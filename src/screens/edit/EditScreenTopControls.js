@@ -1,14 +1,14 @@
 // @flow
 import React from 'react';
-import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
 import { UI_COLORS } from '../../constants';
 import * as Color from '../../utils/Color';
 import * as Fonts from '../../utils/Fonts';
-import ChevronLeftIcon from '../../components/chevron-left-icon/ChevronLeftIcon';
-import OptionsIcon from '../../components/icons/OptionsIcon';
-import EditIcon from '../../components/icons/EditIcon';
-import CheckmarkIcon from '../../components/checkmark-icon/CheckmarkIcon';
+import ChevronLeftIcon from '../../components/icons/ChevronLeftIcon';
+import EditCaptionsIcon from '../../components/icons/EditCaptionsIcon';
+import ColorPaletteIcon from '../../components/icons/ColorPaletteIcon';
+import ExportIcon from '../../components/icons/ExportIcon';
 
 import type { Style } from '../../types/react';
 
@@ -37,21 +37,26 @@ const styles = {
     height: 30,
     width: 30,
   },
-  checkmarkIcon: {
-    height: 45,
-    width: 45,
-  },
   buttonLeft: {
-    width: 75,
+    width: 60,
+    height: 45,
     alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   buttonRight: {
-    width: 75,
+    width: 60,
+    height: 45,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  exportIcon: {
+    height: 30,
+    width: 30,
+    padding: 3,
   },
   exportButton: (isReadyToExport: boolean) => ({
-    width: 50,
-    alignItems: 'flex-end',
+    width: 60,
+    alignItems: 'center',
     opacity: isReadyToExport ? 1 : 0.5,
   }),
   buttonGroupLeft: {
@@ -75,12 +80,11 @@ export default function EditScreenTopControls({
   onStylizeButtonPress,
   onEditTextButtonPress,
 }: Props) {
-  const white = Color.hexToRgbaObject(UI_COLORS.WHITE);
   return (
     <View style={[styles.container, style]}>
       <View style={styles.buttonGroupLeft}>
         <TouchableOpacity style={styles.buttonLeft} onPress={onBackButtonPress}>
-          <ChevronLeftIcon style={styles.icon} color={white} />
+          <ChevronLeftIcon style={styles.icon} />
         </TouchableOpacity>
       </View>
       <View style={styles.buttonGroupRight}>
@@ -88,24 +92,20 @@ export default function EditScreenTopControls({
           style={styles.buttonRight}
           onPress={onStylizeButtonPress}
         >
-          <OptionsIcon style={styles.icon} color={white} />
+          <ColorPaletteIcon style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttonRight}
           onPress={onEditTextButtonPress}
         >
-          <EditIcon style={styles.icon} color={white} />
+          <EditCaptionsIcon style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity
           disabled={!isReadyToExport}
           style={styles.exportButton(isReadyToExport)}
           onPress={onExportButtonPress}
-        >
-          {isReadyToExport ? (
-            <CheckmarkIcon style={styles.checkmarkIcon} color={white} />
-          ) : (
-            <ActivityIndicator style={styles.checkmarkIcon} color="#fff" />
-          )}
+        > 
+          <ExportIcon style={styles.exportIcon} />
         </TouchableOpacity>
       </View>
     </View>
