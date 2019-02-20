@@ -5,7 +5,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { UI_COLORS } from '../../constants';
 import * as Color from '../../utils/Color';
 import * as Fonts from '../../utils/Fonts';
-import ChevronLeftIcon from '../../components/chevron-left-icon/ChevronLeftIcon';
+import ChevronLeftIcon from '../../components/icons/ChevronLeftIcon';
 import EditCaptionsIcon from '../../components/icons/EditCaptionsIcon';
 import ColorPaletteIcon from '../../components/icons/ColorPaletteIcon';
 import ExportIcon from '../../components/icons/ExportIcon';
@@ -80,12 +80,11 @@ export default function EditScreenTopControls({
   onStylizeButtonPress,
   onEditTextButtonPress,
 }: Props) {
-  const white = Color.hexToRgbaObject(UI_COLORS.WHITE);
   return (
     <View style={[styles.container, style]}>
       <View style={styles.buttonGroupLeft}>
         <TouchableOpacity style={styles.buttonLeft} onPress={onBackButtonPress}>
-          <ChevronLeftIcon style={styles.icon} color={white} />
+          <ChevronLeftIcon style={styles.icon} />
         </TouchableOpacity>
       </View>
       <View style={styles.buttonGroupRight}>
@@ -93,13 +92,13 @@ export default function EditScreenTopControls({
           style={styles.buttonRight}
           onPress={onStylizeButtonPress}
         >
-          <ColorPaletteIcon style={styles.icon} color={white} />
+          <ColorPaletteIcon style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttonRight}
           onPress={onEditTextButtonPress}
         >
-          <EditCaptionsIcon style={styles.icon} color={white} />
+          <EditCaptionsIcon style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity
           disabled={!isReadyToExport}
