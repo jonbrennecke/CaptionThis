@@ -428,15 +428,19 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   pauseRichTextEditorCaptions() {
-    if (this.richTextOverlay) {
-      this.richTextOverlay.pauseCaptions();
-    }
+    requestAnimationFrame(() => {
+      if (this.richTextOverlay) {
+        this.richTextOverlay.pauseCaptions();
+      }
+    });
   }
 
   restartRichTextEditorCaptions() {
-    if (this.richTextOverlay) {
-      this.richTextOverlay.restartCaptions();
-    }
+    requestAnimationFrame(() => {
+      if (this.richTextOverlay) {
+        this.richTextOverlay.restartCaptions();
+      }
+    });
   }
 
   seekRichTextEditorCaptionsToTime(time: number) {

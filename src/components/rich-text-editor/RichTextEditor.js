@@ -4,6 +4,7 @@ import { View, Animated, StyleSheet, Easing } from 'react-native';
 import { autobind } from 'core-decorators';
 import throttle from 'lodash/throttle';
 
+import * as Debug from '../../utils/Debug';
 import * as Fonts from '../../utils/Fonts';
 import RichTextFontColorControl from './RichTextFontColorControl';
 import RichTextFontFamilyControl from './RichTextFontFamilyControl';
@@ -199,22 +200,24 @@ export default class RichTextEditor extends Component<Props, State> {
   }
 
   restartCaptions() {
+    Debug.log('Restarting RTE captions');
     if (this.captionsView) {
       this.captionsView.restart();
     }
   }
 
   pauseCaptions() {
+    Debug.log('Pausing RTE captions');
     if (this.captionsView) {
       this.captionsView.pause();
     }
   }
 
   seekCaptionsToTime(time: number) {
-    if (!this.captionsView) {
-      return;
+    Debug.log(`Seeking RTE captions to ${time.toFixed(2)}s`);
+    if (this.captionsView) {
+      this.captionsView.seekToTime(time);
     }
-    this.captionsView.seekToTime(time);
   }
 
   render() {
