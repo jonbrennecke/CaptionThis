@@ -93,6 +93,7 @@
 		FCB393A72210E2C000403154 /* SpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB393A62210E2C000403154 /* SpeechTranscriptionRequest.swift */; };
 		FCB3D2BF68D740C581A23323 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */; };
 		FCBB1936221524F00014D41C /* CaptionAnimationExportSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */; };
+		FCBB1A14221E5E950014D41C /* FlagKit in Resources */ = {isa = PBXBuildFile; fileRef = FCBB19E2221E5E940014D41C /* FlagKit */; };
 		FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */; };
 		FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */; };
 		FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */; };
@@ -571,6 +572,7 @@
 		FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
 		FCB393A62210E2C000403154 /* SpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
 		FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionAnimationExportSession.swift; sourceTree = "<group>"; };
+		FCBB19E2221E5E940014D41C /* FlagKit */ = {isa = PBXFileReference; lastKnownFileType = folder; path = FlagKit; sourceTree = "<group>"; };
 		FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewManager.m; sourceTree = "<group>"; };
 		FCD5F74C21D6BA25001F2068 /* VideoPlayerViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewManager.h; sourceTree = "<group>"; };
 		FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
@@ -708,6 +710,7 @@
 		13B07FAE1A68108700A75B9A /* CaptionThis */ = {
 			isa = PBXGroup;
 			children = (
+				FCBB19E2221E5E940014D41C /* FlagKit */,
 				FC6EA7D921CEA457007C3B3E /* fonts */,
 				FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -1690,6 +1693,7 @@
 				FCB0E50B22136148002F320B /* Bangers-Regular.ttf in Resources */,
 				FC93753F21E0681800FD2700 /* SourceSerifPro-Semibold.ttf in Resources */,
 				FCB0E55322136343002F320B /* Righteous-Regular.ttf in Resources */,
+				FCBB1A14221E5E950014D41C /* FlagKit in Resources */,
 				FC7822C121E3FCB7007AA9B2 /* DancingScript-Regular.ttf in Resources */,
 				FC93754021E0681800FD2700 /* SourceSansPro-Bold.ttf in Resources */,
 			);
