@@ -12,29 +12,30 @@ type Props = {
 };
 
 type State = {
-  // currentLocale: LocaleObject[],
+  currentLocale: ?LocaleObject,
   locales: LocaleObject[],
 };
 
 const styles = {
-  container: {
-    
-  },
-  flag: {
-
-  }
+  container: {},
+  flag: {},
 };
 
-export default class HomeScreenTopCameraControls extends Component<Props, State> {
+export default class HomeScreenTopCameraControls extends Component<
+  Props,
+  State
+> {
   state = {
     locales: [],
+    currentLocale: null,
   };
 
   async componentDidMount() {
-    // const currentLocale = await SpeechManager.currentLocale();
+    const currentLocale = await SpeechManager.currentLocale();
     const locales = await SpeechManager.supportedLocales();
     this.setState({
       locales,
+      currentLocale,
     });
   }
 
@@ -42,8 +43,10 @@ export default class HomeScreenTopCameraControls extends Component<Props, State>
     return (
       <View style={[styles.container, this.props.style]}>
         {this.state.locales.map(locale => (
-          <View key={`${locale.language.code}-${locale.country.code}`} style={styles.flag}>
-          </View>
+          <View
+            key={`${locale.language.code}-${locale.country.code}`}
+            style={styles.flag}
+          />
         ))}
       </View>
     );

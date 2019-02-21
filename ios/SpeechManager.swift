@@ -98,6 +98,11 @@ class SpeechManager: NSObject {
   @objc
   public var delegate: SpeechManagerDelegate?
 
+  @objc
+  public var locale: Locale {
+    return recognizer.locale
+  }
+
   override init() {
     recognizer = SFSpeechRecognizer(locale: Locale.current) ?? SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
     recognizer.defaultTaskHint = .dictation

@@ -157,6 +157,33 @@ RCT_EXPORT_METHOD(endSpeechTranscriptionWithAudioSession
   callback(@[ [NSNull null], @(YES) ]);
 }
 
+RCT_EXPORT_METHOD(getCurrentLocale : (RCTResponseSenderBlock)callback) {
+  NSLocale *locale = AppDelegate.sharedSpeechManager.locale;
+  NSString *languageCode = locale.languageCode;
+  NSString *countryCode = locale.countryCode;
+  NSString *localizedLanguageCode =
+      [locale localizedStringForLanguageCode:languageCode];
+  NSString *localizedCountryCode =
+      [locale localizedStringForCountryCode:countryCode];
+  NSDictionary *dict = @{
+    @"language" : @{
+      @"code" : objectOrNull(languageCode),
+      @"localizedStrings" : @{
+        @"languageLocale" : objectOrNull(localizedLanguageCode),
+        @"currentLocale" : objectOrNull(localizedLanguageCode),
+      }
+    },
+    @"country" : @{
+      @"code" : objectOrNull(countryCode),
+      @"localizedStrings" : @{
+        @"languageLocale" : objectOrNull(localizedCountryCode),
+        @"currentLocale" : objectOrNull(localizedCountryCode),
+      }
+    }
+  };
+  callback(@[ [NSNull null], dict ]);
+}
+
 RCT_EXPORT_METHOD(getSupportedLocales : (RCTResponseSenderBlock)callback) {
   NSSet<NSLocale *> *locales =
       [AppDelegate.sharedSpeechManager supportedLocales];

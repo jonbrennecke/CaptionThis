@@ -78,4 +78,8 @@ export default class SpeechManager {
   static async supportedLocales(): Promise<LocaleObject[]> {
     return await NativeSpeechManager.getSupportedLocalesAsync();
   }
+
+  static async currentLocale(): Promise<LocaleObject> {
+    return await NativeSpeechManager.getCurrentLocaleAsync();
+  }
 }

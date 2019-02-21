@@ -2,7 +2,6 @@
 import React from 'react';
 import { View } from 'react-native';
 
-
 import HomeScreenBottomCameraControls from './HomeScreenBottomCameraControls';
 import HomeScreenTopCameraControls from './HomeScreenTopCameraControls';
 
@@ -20,9 +19,7 @@ type Props = {
 };
 
 const styles = {
-  container: {
-    
-  },
+  container: {},
   topControls: {
     position: 'absolute',
     top: 0,
@@ -35,7 +32,7 @@ const styles = {
     bottom: 0,
     left: 0,
     right: 0,
-  }
+  },
 };
 
 export default function HomeScreenCameraControls({
@@ -49,7 +46,7 @@ export default function HomeScreenCameraControls({
 }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <HomeScreenTopCameraControls style={styles.topControls}/>
+      <HomeScreenTopCameraControls style={styles.topControls} />
       <HomeScreenBottomCameraControls
         style={styles.bottomControls}
         isVisible={isVisible}
