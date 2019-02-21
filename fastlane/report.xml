@@ -5,32 +5,37 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: Switch to ios build lane" time="0.001647">
+      <testcase classname="fastlane.lanes" name="0: Switch to ios build lane" time="0.00135">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: match" time="13.405736">
+      <testcase classname="fastlane.lanes" name="1: match" time="10.198301">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: gym" time="310.034611">
+      <testcase classname="fastlane.lanes" name="2: gym" time="314.344577">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: Switch to ios deploy_beta lane" time="0.001312">
+      <testcase classname="fastlane.lanes" name="3: Switch to ios deploy_beta lane" time="0.021712">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: changelog_from_git_commits" time="0.042118">
+      <testcase classname="fastlane.lanes" name="4: changelog_from_git_commits" time="0.047561">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: crashlytics" time="95.562473">
+      <testcase classname="fastlane.lanes" name="5: crashlytics" time="85.706453">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: upload_symbols_to_crashlytics" time="1.657274">
         
       </testcase>
     

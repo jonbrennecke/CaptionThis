@@ -36,6 +36,7 @@ platform :ios do |options|
       notes_path: "fastlane/changelog.txt",
       notifications: true
     )
+    upload_symbols_to_crashlytics(dsym_path: './CaptionThis.app.dSYM.zip')
   end
 
   lane :deploy_appstore do |options|
