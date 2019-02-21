@@ -25,7 +25,6 @@ const styles = {
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'blue',
   },
   bottomControls: {
     position: 'absolute',
