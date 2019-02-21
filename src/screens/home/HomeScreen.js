@@ -47,7 +47,7 @@ import { getSpeechTranscriptions } from '../../redux/speech/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
-import HomeScreenCaptureControls from './HomeScreenCaptureControls';
+import HomeScreenCameraControls from './HomeScreenCameraControls';
 import LiveTranscriptionView from '../../components/live-transcription-view/LiveTranscriptionView';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 
@@ -121,12 +121,7 @@ const styles = {
   flex: {
     flex: 1,
   },
-  captureControls: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
+  captureControls: StyleSheet.absoluteFillObject,
   scrollView: {
     flex: 1,
     overflow: 'visible',
@@ -199,7 +194,6 @@ export default class HomeScreen extends Component<Props, State> {
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
     }
-    await SpeechManager.supportedLocales();
   }
 
   async componentWillUnmount() {
@@ -413,7 +407,7 @@ export default class HomeScreen extends Component<Props, State> {
                       : null
                   }
                 />
-                <HomeScreenCaptureControls
+                <HomeScreenCameraControls
                   style={styles.captureControls}
                   isVisible={this.state.hasCompletedSetupAfterOnboarding}
                   onRequestBeginCapture={() => {
@@ -424,7 +418,7 @@ export default class HomeScreen extends Component<Props, State> {
                   }}
                   onRequestOpenCameraRoll={this.scrollToCameraRoll}
                   onRequestSwitchCamera={Camera.switchToOppositeCamera}
-                  id={this.props.videos[0]?.id}
+                  video={this.props.videos[0]?.id}
                 />
               </Animated.View>
             </SafeAreaView>

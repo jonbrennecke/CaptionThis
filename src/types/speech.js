@@ -12,3 +12,20 @@ export type SpeechTranscription = {
   formattedString: string,
   segments: SpeechTranscriptionSegment[],
 };
+
+export type LocaleObject = {
+  language: {
+    code: string,
+    localizedStrings: {
+      languageLocale: string,
+      currentLocale: string,
+    },
+  },
+  country: {
+    code: string,
+    localizedStrings: {
+      languageLocale: string,
+      currentLocale: string,
+    },
+  },
+};

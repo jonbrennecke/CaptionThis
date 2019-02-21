@@ -4,7 +4,7 @@ import { NativeModules, NativeEventEmitter } from 'react-native';
 
 import type { VideoAssetIdentifier } from '../types/media';
 import type { Return } from '../types/util';
-import type { SpeechTranscription } from '../types/speech';
+import type { SpeechTranscription, LocaleObject } from '../types/speech';
 
 const { SpeechManager: _SpeechManager } = NativeModules;
 const NativeSpeechManager = Promise.promisifyAll(_SpeechManager);
@@ -75,8 +75,7 @@ export default class SpeechManager {
     return await NativeSpeechManager.endSpeechTranscriptionWithAudioSessionAsync();
   }
 
-  static async supportedLocales() {
-    const locales = await NativeSpeechManager.getSupportedLocalesAsync();
-    console.log(locales);
+  static async supportedLocales(): Promise<LocaleObject[]> {
+    return await NativeSpeechManager.getSupportedLocalesAsync();
   }
 }
