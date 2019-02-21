@@ -11,6 +11,9 @@ type Props = {
 
 export default function FlagView({ style, countryCode }: Props) {
   return (
-    <Image style={style} source={{ uri: `${countryCode.toLocaleUpperCase()}`, bundle: 'FlagKit' }} />
+    <Image
+      style={style}
+      source={{ uri: `${countryCode.toLocaleUpperCase()}`, bundle: 'FlagKit' }}
+    />
   );
 }

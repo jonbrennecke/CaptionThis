@@ -711,12 +711,12 @@
 			isa = PBXGroup;
 			children = (
 				FCBB1A15221E66820014D41C /* FlagKit.xcassets */,
+				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				FC6EA7D921CEA457007C3B3E /* fonts */,
 				FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				FC6EA7E721D4508D007C3B3E /* CaptionThis-Bridging-Header.h */,

@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { autobind } from 'core-decorators';
 
 import { UI_COLORS } from '../../constants';
 import SpeechManager from '../../utils/SpeechManager';
@@ -11,11 +12,11 @@ import type { LocaleObject } from '../../types/speech';
 
 type Props = {
   style?: ?Style,
+  onRequestOpenLocaleMenu: () => void,
 };
 
 type State = {
   currentLocale: ?LocaleObject,
-  locales: LocaleObject[],
 };
 
 const styles = {
@@ -48,20 +49,19 @@ const styles = {
   fill: StyleSheet.absoluteFillObject,
 };
 
+// $FlowFixMe
+@autobind
 export default class HomeScreenTopCameraControls extends Component<
   Props,
   State
 > {
   state = {
-    locales: [],
     currentLocale: null,
   };
 
   async componentDidMount() {
     const currentLocale = await SpeechManager.currentLocale();
-    const locales = await SpeechManager.supportedLocales();
     this.setState({
-      locales,
       currentLocale,
     });
   }
@@ -70,17 +70,16 @@ export default class HomeScreenTopCameraControls extends Component<
     const countryCode = this.state.currentLocale?.country.code;
     return (
       <View style={[styles.container, this.props.style]}>
-        <View style={styles.currentLocaleFlagWrap}>
+        <TouchableOpacity
+          style={styles.currentLocaleFlagWrap}
+          onPress={this.props.onRequestOpenLocaleMenu}
+        >
           <View style={styles.currentLocaleFlag}>
-            {countryCode && <FlagView countryCode={countryCode} style={styles.fill} />}
+            {countryCode && (
+              <FlagView countryCode={countryCode} style={styles.fill} />
+            )}
           </View>
-        </View>
-        {this.state.locales.map(locale => (
-          <View
-            key={`${locale.language.code}-${locale.country.code}`}
-            style={styles.flag}
-          />
-        ))}
+        </TouchableOpacity>
       </View>
     );
   }

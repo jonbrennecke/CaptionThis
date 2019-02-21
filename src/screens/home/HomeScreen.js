@@ -50,6 +50,7 @@ import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';
 import LiveTranscriptionView from '../../components/live-transcription-view/LiveTranscriptionView';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
+import LocaleMenu from '../../components/localization/LocaleMenu';
 
 import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
@@ -62,6 +63,7 @@ import type { EmitterSubscription as CameraManagerSubscription } from '../../uti
 type State = {
   currentVideoIdentifier: ?VideoAssetIdentifier,
   hasCompletedSetupAfterOnboarding: boolean,
+  isLocaleMenuVisible: boolean,
 };
 
 type OwnProps = {
@@ -179,6 +181,7 @@ export default class HomeScreen extends Component<Props, State> {
   state = {
     currentVideoIdentifier: null,
     hasCompletedSetupAfterOnboarding: false,
+    isLocaleMenuVisible: false,
   };
   navigationEventListener: ?any;
   scrollView: ?ScrollView;
@@ -353,6 +356,18 @@ export default class HomeScreen extends Component<Props, State> {
     this.cameraView.focusOnPoint(focusPoint);
   }
 
+  onRequestOpenLocaleMenu() {
+    this.setState({
+      isLocaleMenuVisible: true,
+    });
+  }
+
+  onRequestDismissLocaleMenu() {
+    this.setState({
+      isLocaleMenuVisible: false,
+    });
+  }
+
   render() {
     const onScroll = Animated.event([
       {
@@ -410,6 +425,7 @@ export default class HomeScreen extends Component<Props, State> {
                 <HomeScreenCameraControls
                   style={styles.captureControls}
                   isVisible={this.state.hasCompletedSetupAfterOnboarding}
+                  video={this.props.videos[0]?.id}
                   onRequestBeginCapture={() => {
                     this.captureButtonDidRequestBeginCapture();
                   }}
@@ -418,7 +434,7 @@ export default class HomeScreen extends Component<Props, State> {
                   }}
                   onRequestOpenCameraRoll={this.scrollToCameraRoll}
                   onRequestSwitchCamera={Camera.switchToOppositeCamera}
-                  video={this.props.videos[0]?.id}
+                  onRequestOpenLocaleMenu={this.onRequestOpenLocaleMenu}
                 />
               </Animated.View>
             </SafeAreaView>
@@ -445,6 +461,10 @@ export default class HomeScreen extends Component<Props, State> {
             </SafeAreaView>
           </ScrollView>
         </View>
+        <LocaleMenu
+          isVisible={this.state.isLocaleMenuVisible}
+          onRequestDismiss={this.onRequestDismissLocaleMenu}
+        />
       </View>
     );
   }

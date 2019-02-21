@@ -15,6 +15,7 @@ type Props = {
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
   onRequestSwitchCamera: () => void,
+  onRequestOpenLocaleMenu: () => void,
   video: ?VideoAssetIdentifier,
 };
 
@@ -42,10 +43,14 @@ export default function HomeScreenCameraControls({
   onRequestEndCapture,
   onRequestOpenCameraRoll,
   onRequestSwitchCamera,
+  onRequestOpenLocaleMenu,
 }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <HomeScreenTopCameraControls style={styles.topControls} />
+      <HomeScreenTopCameraControls
+        style={styles.topControls}
+        onRequestOpenLocaleMenu={onRequestOpenLocaleMenu}
+      />
       <HomeScreenBottomCameraControls
         style={styles.bottomControls}
         isVisible={isVisible}
