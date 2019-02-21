@@ -194,11 +194,12 @@ export default class HomeScreen extends Component<Props, State> {
   didNotDetectSpeechSubscription: ?SpeechManagerSubscription;
   cameraManagerDidFinishFileOutputListener: ?CameraManagerSubscription;
 
-  componentDidMount() {
+  async componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
     }
+    await SpeechManager.supportedLocales();
   }
 
   async componentWillUnmount() {

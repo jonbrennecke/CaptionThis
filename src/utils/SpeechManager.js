@@ -74,4 +74,9 @@ export default class SpeechManager {
   static async endSpeechTranscriptionWithAudioSession(): Promise<boolean> {
     return await NativeSpeechManager.endSpeechTranscriptionWithAudioSessionAsync();
   }
+
+  static async supportedLocales() {
+    const locales = await NativeSpeechManager.getSupportedLocalesAsync();
+    console.log(locales);
+  }
 }

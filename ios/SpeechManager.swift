@@ -107,6 +107,11 @@ class SpeechManager: NSObject {
     recognizer.delegate = self
   }
 
+  @objc
+  public func supportedLocales() -> Set<Locale> {
+    return SFSpeechRecognizer.supportedLocales()
+  }
+
   public func authorize(_ callback: @escaping (Bool) -> Void) {
     SFSpeechRecognizer.requestAuthorization { status in
       switch status {

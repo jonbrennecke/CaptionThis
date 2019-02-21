@@ -3,6 +3,8 @@
 #import <Photos/Photos.h>
 #import <React/RCTConvert.h>
 
+static id objectOrNull(id object) { return object ?: [NSNull null]; }
+
 @implementation SpeechBridgeModule {
   bool hasListeners;
 }
@@ -153,6 +155,44 @@ RCT_EXPORT_METHOD(endSpeechTranscriptionWithAudioSession
                   : (RCTResponseSenderBlock)callback) {
   [AppDelegate.sharedSpeechManager stopCaptureForAudioSession];
   callback(@[ [NSNull null], @(YES) ]);
+}
+
+RCT_EXPORT_METHOD(getSupportedLocales : (RCTResponseSenderBlock)callback) {
+  NSSet<NSLocale *> *locales =
+      [AppDelegate.sharedSpeechManager supportedLocales];
+  NSMutableArray<NSDictionary *> *localizedLocaleStrings =
+      [[NSMutableArray alloc] initWithCapacity:locales.count];
+  NSLocale *currentLocale = NSLocale.currentLocale;
+  for (NSLocale *locale in locales) {
+    NSString *languageCode = locale.languageCode;
+    NSString *countryCode = locale.countryCode;
+    NSString *localizedLanguageCode =
+        [locale localizedStringForLanguageCode:languageCode];
+    NSString *localizedCountryCode =
+        [locale localizedStringForCountryCode:countryCode];
+    NSString *countryCodeInCurrentLocale =
+        [currentLocale localizedStringForCountryCode:countryCode];
+    NSString *languageCodeInCurrentLocale =
+        [currentLocale localizedStringForLanguageCode:languageCode];
+    NSDictionary *dict = @{
+      @"language" : @{
+        @"code" : objectOrNull(languageCode),
+        @"localizedStrings" : @{
+          @"languageLocale" : objectOrNull(localizedLanguageCode),
+          @"currentLocale" : objectOrNull(languageCodeInCurrentLocale),
+        }
+      },
+      @"country" : @{
+        @"code" : objectOrNull(countryCode),
+        @"localizedStrings" : @{
+          @"languageLocale" : objectOrNull(localizedCountryCode),
+          @"currentLocale" : objectOrNull(countryCodeInCurrentLocale),
+        }
+      }
+    };
+    [localizedLocaleStrings addObject:dict];
+  }
+  callback(@[ [NSNull null], localizedLocaleStrings ]);
 }
 
 @end
