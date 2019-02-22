@@ -59,9 +59,7 @@ export default class SpeechManager {
     );
   }
 
-  static addDidChangeLocaleListener(
-    listener: (localeIdentifier: string) => void
-  ) {
+  static addDidChangeLocaleListener(listener: (locale: LocaleObject) => void) {
     return NativeSpeechManagerEventEmitter.addListener(
       EVENTS.DID_CHANGE_LOCALE,
       listener
