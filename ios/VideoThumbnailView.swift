@@ -49,19 +49,19 @@ class VideoThumbnailView: UIView {
     requestOptions.deliveryMode = .highQualityFormat
     let pixelSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
     let orientation = OrientationUtil.orientation(forSize: pixelSize)
-    return PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: requestOptions) { [unowned self] image, _ in
+    return PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: requestOptions) { [weak self] image, _ in
       guard let image = image else {
         return
       }
       switch orientation {
       case .right, .rightMirrored, .left, .leftMirrored:
-        self.imageView.contentMode = .scaleAspectFit
-        self.setLandscapeImageBackground(withImage: image)
+        self?.imageView.contentMode = .scaleAspectFit
+        self?.setLandscapeImageBackground(withImage: image)
         break
       default:
-        self.imageView.contentMode = .scaleAspectFill
+        self?.imageView.contentMode = .scaleAspectFill
       }
-      self.imageView.image = image
+      self?.imageView.image = image
     }
   }
 

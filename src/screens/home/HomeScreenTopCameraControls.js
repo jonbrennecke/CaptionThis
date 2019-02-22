@@ -25,7 +25,7 @@ const styles = {
     height: 35,
     width: 35,
     borderRadius: 17.5,
-    borderWidth: 4,
+    borderWidth: 3,
     borderColor: UI_COLORS.WHITE,
     shadowOpacity: 1,
     shadowColor: UI_COLORS.DARK_GREY,
