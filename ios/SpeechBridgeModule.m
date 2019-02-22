@@ -187,12 +187,15 @@ RCT_EXPORT_METHOD(getCurrentLocale : (RCTResponseSenderBlock)callback) {
 RCT_EXPORT_METHOD(getSupportedLocales : (RCTResponseSenderBlock)callback) {
   NSSet<NSLocale *> *locales =
       [AppDelegate.sharedSpeechManager supportedLocales];
-  NSMutableArray<NSDictionary *> *localizedLocaleStrings =
-      [[NSMutableArray alloc] initWithCapacity:locales.count];
+  NSMutableSet<NSDictionary *> *localizedLocaleStrings =
+      [[NSMutableSet alloc] initWithCapacity:locales.count];
   NSLocale *currentLocale = NSLocale.currentLocale;
   for (NSLocale *locale in locales) {
     NSString *languageCode = locale.languageCode;
     NSString *countryCode = locale.countryCode;
+    if (!countryCode) {
+      continue;
+    }
     NSString *localizedLanguageCode =
         [locale localizedStringForLanguageCode:languageCode];
     NSString *localizedCountryCode =
@@ -219,7 +222,7 @@ RCT_EXPORT_METHOD(getSupportedLocales : (RCTResponseSenderBlock)callback) {
     };
     [localizedLocaleStrings addObject:dict];
   }
-  callback(@[ [NSNull null], localizedLocaleStrings ]);
+  callback(@[ [NSNull null], [localizedLocaleStrings allObjects] ]);
 }
 
 @end

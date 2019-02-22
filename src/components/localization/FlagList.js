@@ -59,23 +59,7 @@ const styles = {
 };
 
 export default function FlagList({ style, locales }: Props) {
-  const grouped = groupBy(locales, l => l.language.code);
-  const groupedMappedLocales = values(grouped).map(locales => {
-    const hasMultiple = locales.length > 1;
-    return locales.map(locale => {
-      const nameWithoutCountry = locale.language.localizedStrings.currentLocale;
-      const nameWithCountry = `${nameWithoutCountry} - ${
-        locale.country.localizedStrings.currentLocale
-      }`;
-      return {
-        displayName: hasMultiple ? nameWithCountry : nameWithoutCountry,
-        ...locale,
-      };
-    });
-  });
-  const sortedLocales = flatMap(
-    sortBy(groupedMappedLocales, l => l[0].displayName)
-  );
+  const sortedLocales = sortLocales(locales);
   return (
     <View style={[styles.container, style]}>
       {sortedLocales.map(locale => (
@@ -102,4 +86,24 @@ export default function FlagList({ style, locales }: Props) {
       ))}
     </View>
   );
+}
+
+function sortLocales(
+  locales: LocaleObject[]
+): (LocaleObject & { displayName: string })[] {
+  const grouped = groupBy(locales, l => l.language.code);
+  const groupedMappedLocales = values(grouped).map(locales => {
+    const hasMultiple = locales.length > 1;
+    return locales.map(locale => {
+      const nameWithoutCountry = locale.language.localizedStrings.currentLocale;
+      const nameWithCountry = `${nameWithoutCountry} - ${
+        locale.country.localizedStrings.currentLocale
+      }`;
+      return {
+        displayName: hasMultiple ? nameWithCountry : nameWithoutCountry,
+        ...locale,
+      };
+    });
+  });
+  return flatMap(sortBy(groupedMappedLocales, l => l[0].displayName));
 }
