@@ -112,6 +112,7 @@ class SpeechManager: NSObject {
     }
     let recognizer = SpeechManager.createSpeechRecognizer(locale: locale)
     self.recognizer = recognizer
+    Debug.log(format: "Changed speech recognizer locale to %@", locale.identifier)
     delegate?.speechManagerDidChangeLocale(locale)
     return true
   }

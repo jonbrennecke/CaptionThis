@@ -7,11 +7,11 @@ import type {
   Action,
   SpeechState,
   ReceiveSpeechTranscriptionPayload,
-  ReceiveLocaleIdentifierPayload,
+  ReceiveLocalePayload,
 } from '../../types/redux';
 
 const initialState: SpeechState = {
-  localeIdentifier: null,
+  locale: null,
   speechTranscriptions: new Map(),
   speechTranscriptionState: TRANSCRIPTION_STATE.NONE,
 };
@@ -57,16 +57,15 @@ function didNotSuccessfullyReceiveSpeechTranscription(
 
 function didSetLocale(
   state: SpeechState,
-  { payload }: Action<ReceiveLocaleIdentifierPayload>
+  { payload }: Action<ReceiveLocalePayload>
 ): SpeechState {
   if (!payload) {
     return state;
   }
   return {
     ...state,
-    localeIdentifier: payload.localeIdentifier,
+    locale: payload.locale,
   };
 }
-
 
 export default handleActions(actions, initialState);

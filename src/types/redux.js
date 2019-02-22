@@ -1,7 +1,7 @@
 /* @flow */
 import typeof { LOADING_STATE, TRANSCRIPTION_STATE } from '../constants';
 import type { VideoAssetIdentifier, ColorRGBA, VideoObject } from './media';
-import type { SpeechTranscription } from './speech';
+import type { SpeechTranscription, LocaleObject } from './speech';
 import type { LineStyle } from './video';
 import type { ReactAppStateEnum } from './react';
 import type { DeviceInfoObject } from '../utils/Device';
@@ -64,7 +64,7 @@ export type VideoState = {|
 |};
 
 export type SpeechState = {|
-  localeIdentifier: ?string,
+  locale: ?LocaleObject,
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
   speechTranscriptionState: $Keys<TRANSCRIPTION_STATE>,
 |};
@@ -82,7 +82,7 @@ export type Payload =
   | ReceiveFontSizePayload
   | ReceiveAppStateChangePayload
   | ReceiveDeviceInfoPayload
-  | ReceiveLocaleIdentifierPayload;
+  | ReceiveLocalePayload;
 
 export type ReceiveLoginPayload = {|
   token: string,
@@ -135,6 +135,6 @@ export type ReceiveDeviceInfoPayload = {|
   deviceInfo: DeviceInfoObject,
 |};
 
-export type ReceiveLocaleIdentifierPayload = {|
-  localeIdentifier: string,
+export type ReceiveLocalePayload = {|
+  locale: LocaleObject,
 |};

@@ -20,6 +20,7 @@ import * as Fonts from '../../utils/Fonts';
 import * as Screens from '../../utils/Screens';
 import * as Camera from '../../utils/Camera';
 import * as Debug from '../../utils/Debug';
+import { localeIdentfier } from '../../utils/Localization';
 import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
 import requireOnboardedUser from '../onboarding/requireOnboardedUser';
@@ -37,6 +38,7 @@ import {
   receiveSpeechTranscriptionSuccess,
   setLocale,
   receiveLocale,
+  loadCurrentLocale,
 } from '../../redux/speech/actionCreators';
 import { loadDeviceInfo } from '../../redux/device/actionCreators';
 import {
@@ -45,7 +47,10 @@ import {
   getCurrentVideo,
 } from '../../redux/media/selectors';
 import { getFontFamily } from '../../redux/video/selectors';
-import { getSpeechTranscriptions } from '../../redux/speech/selectors';
+import {
+  getSpeechTranscriptions,
+  getLocale,
+} from '../../redux/speech/selectors';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
@@ -77,11 +82,13 @@ type StateProps = {
   currentVideo: ?VideoAssetIdentifier,
   fontFamily: string,
   speechTranscriptions: Return<typeof getSpeechTranscriptions>,
+  locale: ?LocaleObject,
 };
 
 type DispatchProps = {
-  receiveLocale: (locale: string) => Promise<void>,
-  setLocale: (locale: string) => Promise<void>,
+  receiveLocale: (locale: LocaleObject) => Promise<void>,
+  loadCurrentLocale: () => Promise<void>,
+  setLocale: (locale: LocaleObject) => Promise<void>,
   loadDeviceInfo: () => Promise<void>,
   receiveVideos: (videos: VideoObject[]) => Promise<void>,
   beginCameraCapture: () => Promise<void>,
@@ -151,13 +158,15 @@ function mapStateToProps(state: AppState): StateProps {
     currentVideo: getCurrentVideo(state),
     fontFamily: getFontFamily(state),
     speechTranscriptions: getSpeechTranscriptions(state),
+    locale: getLocale(state),
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
-    receiveLocale: (locale: string) => dispatch(receiveLocale(locale)),
-    setLocale: (locale: string) => dispatch(setLocale(locale)),
+    loadCurrentLocale: () => dispatch(loadCurrentLocale()),
+    receiveLocale: (locale: LocaleObject) => dispatch(receiveLocale(locale)),
+    setLocale: (locale: LocaleObject) => dispatch(setLocale(locale)),
     loadDeviceInfo: () => dispatch(loadDeviceInfo()),
     receiveVideos: (videos: VideoObject[]) => dispatch(receiveVideos(videos)),
     beginCameraCapture: () => dispatch(beginCameraCapture()),
@@ -222,12 +231,14 @@ export default class HomeScreen extends Component<Props, State> {
     }
   }
 
-  componentDidAppear() {
+  async componentDidAppear() {
     Camera.startPreview();
+    await this.setUpSpeechRecognizer();
   }
 
-  componentDidDisappear() {
+  async componentDidDisappear() {
     Camera.stopPreview();
+    await this.shutDownSpeechRecognizer();
   }
 
   async setupAfterOnboarding() {
@@ -238,7 +249,6 @@ export default class HomeScreen extends Component<Props, State> {
     if (this.cameraView) {
       this.cameraView.setUp();
     }
-    await this.setUpSpeechRecognizer();
     await this.loadMediaLibrary();
     await this.props.loadDeviceInfo();
     this.setState({
@@ -294,19 +304,20 @@ export default class HomeScreen extends Component<Props, State> {
     }
     await this.props.endSpeechTranscriptionWithAudioSession();
     await this.props.endCameraCapture();
+    this.removeSpeechListeners();
   }
 
   async setUpSpeechRecognizer() {
     this.speechManagerDidChangeLocaleListener = SpeechManager.addDidChangeLocaleListener(
       this.speechManagerDidChangeLocale
     );
-    const locale = await SpeechManager.currentLocale();
-    const localeIdentifier = `${locale.language.code}-${locale.country.code}`;
-    this.props.receiveLocale(localeIdentifier);
+    await this.props.loadCurrentLocale();
   }
 
-  async setUpSpeechRecognizerForRecording() {
-
+  async shutDownSpeechRecognizer() {
+    this.speechManagerDidChangeLocaleListener &&
+      this.speechManagerDidChangeLocaleListener.remove();
+    this.speechManagerDidChangeLocaleListener = null;
   }
 
   addSpeechListeners() {
@@ -321,16 +332,26 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   removeSpeechListeners() {
-    this.speechManagerDidReceiveTranscriptionListener && this.speechManagerDidReceiveTranscriptionListener.remove();
+    this.speechManagerDidReceiveTranscriptionListener &&
+      this.speechManagerDidReceiveTranscriptionListener.remove();
     this.speechManagerDidReceiveTranscriptionListener = null;
-    this.speechManagerDidNotDetectSpeechListener && this.speechManagerDidNotDetectSpeechListener.remove();
+    this.speechManagerDidNotDetectSpeechListener &&
+      this.speechManagerDidNotDetectSpeechListener.remove();
     this.speechManagerDidNotDetectSpeechListener = null;
-    this.speechManagerDidChangeLocaleListener && this.speechManagerDidChangeLocaleListener.remove();
-    this.speechManagerDidChangeLocaleListener = null;
+    // this.speechManagerDidChangeLocaleListener &&
+    //   this.speechManagerDidChangeLocaleListener.remove();
+    // this.speechManagerDidChangeLocaleListener = null;
   }
 
-  speechManagerDidChangeLocale(localeIdentifier: string) {
-    this.props.receiveLocale(localeIdentifier);
+  speechManagerDidChangeLocale(locale: LocaleObject) {
+    if (
+      this.props.locale &&
+      // $FlowFixMe
+      localeIdentfier(locale) === localeIdentfier(this.props.locale)
+    ) {
+      return;
+    }
+    this.props.receiveLocale(locale);
   }
 
   speechManagerDidReceiveSpeechTranscription(
@@ -398,8 +419,10 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async onRequestChangeLocale(locale: LocaleObject) {
-    const localeIdentifier = `${locale.language.code}-${locale.country.code}`;
-    await this.props.setLocale(localeIdentifier);
+    await this.props.setLocale(locale);
+    this.setState({
+      isLocaleMenuVisible: false,
+    });
   }
 
   render() {
@@ -459,6 +482,7 @@ export default class HomeScreen extends Component<Props, State> {
                 <HomeScreenCameraControls
                   style={styles.captureControls}
                   isVisible={this.state.hasCompletedSetupAfterOnboarding}
+                  countryCode={this.props.locale?.country.code}
                   video={this.props.videos[0]?.id}
                   onRequestBeginCapture={() => {
                     this.captureButtonDidRequestBeginCapture();
@@ -497,6 +521,7 @@ export default class HomeScreen extends Component<Props, State> {
         </View>
         <LocaleMenu
           isVisible={this.state.isLocaleMenuVisible}
+          locale={this.props.locale}
           onRequestDismiss={this.onRequestDismissLocaleMenu}
           onRequestChangeLocale={this.onRequestChangeLocale}
         />

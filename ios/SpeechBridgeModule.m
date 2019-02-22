@@ -34,12 +34,33 @@ static id objectOrNull(id object) { return object ?: [NSNull null]; }
   [self sendEventWithName:@"speechManagerDidBecomeUnavailable" body:@{}];
 }
 
-- (void)speechManagerDidChangeLocale:(NSLocale*)locale {
+- (void)speechManagerDidChangeLocale:(NSLocale *)locale {
   if (!hasListeners) {
     return;
   }
-  NSString* localeIdentifier = [NSString stringWithFormat:@"%@-%@", locale.languageCode, locale.countryCode];
-  [self sendEventWithName:@"speechManagerDidChangeLocale" body:localeIdentifier];
+  NSString *languageCode = locale.languageCode;
+  NSString *countryCode = locale.countryCode;
+  NSString *localizedLanguageCode =
+      [locale localizedStringForLanguageCode:languageCode];
+  NSString *localizedCountryCode =
+      [locale localizedStringForCountryCode:countryCode];
+  NSDictionary *dict = @{
+    @"language" : @{
+      @"code" : objectOrNull(languageCode),
+      @"localizedStrings" : @{
+        @"languageLocale" : objectOrNull(localizedLanguageCode),
+        @"currentLocale" : objectOrNull(localizedLanguageCode),
+      }
+    },
+    @"country" : @{
+      @"code" : objectOrNull(countryCode),
+      @"localizedStrings" : @{
+        @"languageLocale" : objectOrNull(localizedCountryCode),
+        @"currentLocale" : objectOrNull(localizedCountryCode),
+      }
+    }
+  };
+  [self sendEventWithName:@"speechManagerDidChangeLocale" body:dict];
 }
 
 - (void)speechManagerDidReceiveSpeechTranscriptionWithIsFinal:(BOOL)isFinal

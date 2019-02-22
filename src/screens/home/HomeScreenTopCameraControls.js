@@ -1,22 +1,16 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { autobind } from 'core-decorators';
 
 import { UI_COLORS } from '../../constants';
-import SpeechManager from '../../utils/SpeechManager';
 import FlagView from '../../components/localization/FlagView';
 
 import type { Style } from '../../types/react';
-import type { LocaleObject } from '../../types/speech';
 
 type Props = {
   style?: ?Style,
+  countryCode: ?string,
   onRequestOpenLocaleMenu: () => void,
-};
-
-type State = {
-  currentLocale: ?LocaleObject,
 };
 
 const styles = {
@@ -49,38 +43,23 @@ const styles = {
   fill: StyleSheet.absoluteFillObject,
 };
 
-// $FlowFixMe
-@autobind
-export default class HomeScreenTopCameraControls extends Component<
-  Props,
-  State
-> {
-  state = {
-    currentLocale: null,
-  };
-
-  async componentDidMount() {
-    const currentLocale = await SpeechManager.currentLocale();
-    this.setState({
-      currentLocale,
-    });
-  }
-
-  render() {
-    const countryCode = this.state.currentLocale?.country.code;
-    return (
-      <View style={[styles.container, this.props.style]}>
-        <TouchableOpacity
-          style={styles.currentLocaleFlagWrap}
-          onPress={this.props.onRequestOpenLocaleMenu}
-        >
-          <View style={styles.currentLocaleFlag}>
-            {countryCode && (
-              <FlagView countryCode={countryCode} style={styles.fill} />
-            )}
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+export default function HomeScreenTopCameraControls({
+  style,
+  countryCode,
+  onRequestOpenLocaleMenu,
+}: Props) {
+  return (
+    <View style={[styles.container, style]}>
+      <TouchableOpacity
+        style={styles.currentLocaleFlagWrap}
+        onPress={onRequestOpenLocaleMenu}
+      >
+        <View style={styles.currentLocaleFlag}>
+          {countryCode && (
+            <FlagView countryCode={countryCode} style={styles.fill} />
+          )}
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
 }

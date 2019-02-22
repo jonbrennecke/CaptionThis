@@ -11,6 +11,7 @@ import type { VideoAssetIdentifier } from '../../types/media';
 type Props = {
   style?: ?Style,
   isVisible: boolean,
+  countryCode: ?string,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
@@ -39,6 +40,7 @@ export default function HomeScreenCameraControls({
   style,
   video,
   isVisible,
+  countryCode,
   onRequestBeginCapture,
   onRequestEndCapture,
   onRequestOpenCameraRoll,
@@ -49,6 +51,7 @@ export default function HomeScreenCameraControls({
     <View style={[styles.container, style]}>
       <HomeScreenTopCameraControls
         style={styles.topControls}
+        countryCode={countryCode}
         onRequestOpenLocaleMenu={onRequestOpenLocaleMenu}
       />
       <HomeScreenBottomCameraControls

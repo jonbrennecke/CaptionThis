@@ -12,9 +12,9 @@ type Props = {
 };
 
 export default function FlagView({ style, countryCode }: Props) {
-  // Spanish (Latin America) does not have a matching flag so a default flag is shown instead
+  // Spanish (Latin America) does not have a matching flag so a default flag (Argentina) is shown instead
   if (countryCode === '419') {
-    return <Image style={style} source={{ uri: 'US', bundle: 'FlagKit' }} />;
+    return <Image style={style} source={{ uri: 'AR', bundle: 'FlagKit' }} />;
   }
   return (
     <Image

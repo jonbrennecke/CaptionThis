@@ -16,12 +16,12 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
 type Props = {
   isVisible: boolean,
+  locale: ?LocaleObject,
   onRequestDismiss: () => void,
   onRequestChangeLocale: (locale: LocaleObject) => void,
 };
 
 type State = {
-  currentLocale: ?LocaleObject,
   locales: LocaleObject[],
 };
 
@@ -43,16 +43,13 @@ const styles = {
 @autobind
 export default class LocaleMenu extends Component<Props, State> {
   state = {
-    currentLocale: null,
     locales: [],
   };
 
   async componentDidMount() {
-    const currentLocale = await SpeechManager.currentLocale();
     const locales = await SpeechManager.supportedLocales();
     this.setState({
       locales,
-      currentLocale,
     });
   }
 
@@ -68,7 +65,7 @@ export default class LocaleMenu extends Component<Props, State> {
               <FlagList
                 style={styles.flex}
                 locales={this.state.locales}
-                currentLocale={this.state.currentLocale}
+                currentLocale={this.props.locale}
                 onDidSelectLocale={this.props.onRequestChangeLocale}
               />
             </ScrollView>

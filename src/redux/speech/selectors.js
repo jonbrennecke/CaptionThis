@@ -2,7 +2,7 @@
 import { TRANSCRIPTION_STATE } from '../../constants';
 
 import type { AppState } from '../../types/redux';
-import type { SpeechTranscription } from '../../types/speech';
+import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 import type { VideoAssetIdentifier } from '../../types/media';
 
 export function didSpeechRecognitionFail(state: AppState): boolean {
@@ -22,8 +22,6 @@ export function getSpeechTranscriptionsWithKey(
   return state.speech.speechTranscriptions.get(key);
 }
 
-export function getLocale(
-  state: AppState
-): ?string {
-  return state.speech.localeIdentifier;
+export function getLocale(state: AppState): ?LocaleObject {
+  return state.speech.locale;
 }
