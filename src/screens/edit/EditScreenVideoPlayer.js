@@ -43,6 +43,7 @@ type Props = {
   onRequestExport: () => void,
   onDidPauseCaptions: () => void,
   onDidRestartCaptions: () => void,
+  onLocaleButtonPress: () => void,
 };
 
 type State = {
@@ -344,6 +345,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               onExportButtonPress={this.props.onRequestExport}
               onStylizeButtonPress={this.props.onRequestShowRichTextEditor}
               onEditTextButtonPress={this.props.onRequestShowCaptionsEditor}
+              onLocaleButtonPress={this.props.onLocaleButtonPress}
             />
           </ScaleAnimatedView>
         )}

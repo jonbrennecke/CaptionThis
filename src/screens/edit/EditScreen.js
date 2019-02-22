@@ -450,6 +450,10 @@ export default class EditScreen extends Component<Props, State> {
     }
   }
 
+  showLocaleMenu() {
+    
+  }
+
   render() {
     const hasFinalTranscription = this.hasFinalSpeechTranscription();
     const transcription = this.getSpeechTranscription();
@@ -488,6 +492,7 @@ export default class EditScreen extends Component<Props, State> {
           }}
           onDidRestartCaptions={this.restartRichTextEditorCaptions}
           onDidPauseCaptions={this.pauseRichTextEditorCaptions}
+          onLocaleButtonPress={this.showLocaleMenu}
         />
         <EditScreenRichTextOverlay
           ref={ref => {

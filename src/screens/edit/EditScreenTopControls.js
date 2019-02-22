@@ -9,6 +9,7 @@ import ChevronLeftIcon from '../../components/icons/ChevronLeftIcon';
 import EditCaptionsIcon from '../../components/icons/EditCaptionsIcon';
 import ColorPaletteIcon from '../../components/icons/ColorPaletteIcon';
 import ExportIcon from '../../components/icons/ExportIcon';
+import FlagButton from '../../components/localization/FlagButton';
 
 import type { Style } from '../../types/react';
 
@@ -19,6 +20,7 @@ type Props = {
   onExportButtonPress: () => void,
   onStylizeButtonPress: () => void,
   onEditTextButtonPress: () => void,
+  onLocaleButtonPress: () => void,
 };
 
 const styles = {
@@ -79,6 +81,7 @@ export default function EditScreenTopControls({
   onExportButtonPress,
   onStylizeButtonPress,
   onEditTextButtonPress,
+  onLocaleButtonPress,
 }: Props) {
   return (
     <View style={[styles.container, style]}>
@@ -88,6 +91,9 @@ export default function EditScreenTopControls({
         </TouchableOpacity>
       </View>
       <View style={styles.buttonGroupRight}>
+        <View style={styles.buttonRight}>
+          <FlagButton onPress={onLocaleButtonPress} countryCode="US" />
+        </View>
         <TouchableOpacity
           style={styles.buttonRight}
           onPress={onStylizeButtonPress}
