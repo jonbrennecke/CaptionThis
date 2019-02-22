@@ -7,6 +7,7 @@ import type {
   Dispatch,
   ReceiveVideoAssetIdPayload,
   ReceiveSpeechTranscriptionPayload,
+  ReceiveLocaleIdentifierPayload,
 } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
@@ -95,6 +96,39 @@ export const receiveSpeechTranscriptionFailure = (
     dispatch({
       type: ACTION_TYPES.DID_NOT_SUCCESSFULLY_RECEIVE_SPEECH_TRANSCRIPTION,
       payload: { videoAssetIdentifier },
+    });
+  };
+};
+
+export const setLocale = (localeIdentifier: string) => {
+  return async (dispatch: Dispatch<ReceiveLocaleIdentifierPayload>) => {
+    dispatch({ type: ACTION_TYPES.WILL_SET_LOCALE });
+    try {
+      const success = await SpeechManager.setLocale(localeIdentifier);
+      if (success) {
+        dispatch(receiveLocale(localeIdentifier));
+        return;
+      }
+      dispatch({
+        type: ACTION_TYPES.DID_FAIL_TO_SET_LOCALE,
+      });
+    } catch (error) {
+      await Debug.logError(error);
+      dispatch({
+        type: ACTION_TYPES.DID_FAIL_TO_SET_LOCALE,
+      });
+    }
+  };
+};
+
+
+export const receiveLocale = (localeIdentifier: string) => {
+  return (dispatch: Dispatch<ReceiveLocaleIdentifierPayload>) => {
+    dispatch({
+      type: ACTION_TYPES.DID_SET_LOCALE,
+      payload: {
+        localeIdentifier,
+      },
     });
   };
 };

@@ -9,6 +9,7 @@ protocol SpeechManagerDelegate {
   func speechManagerDidFail()
   func speechManagerDidBecomeAvailable()
   func speechManagerDidBecomeUnavailable()
+  func speechManagerDidChangeLocale(_ locale: Locale)
 }
 
 @objc
@@ -103,13 +104,30 @@ class SpeechManager: NSObject {
     return recognizer.locale
   }
 
+  @objc(setLocale:)
+  public func set(locale: Locale) -> Bool {
+    guard case .ready = state else {
+      Debug.log(message: "Cannot change speech recognizer locale while recognizer is running")
+      return false
+    }
+    let recognizer = SpeechManager.createSpeechRecognizer(locale: locale)
+    self.recognizer = recognizer
+    delegate?.speechManagerDidChangeLocale(locale)
+    return true
+  }
+
   override init() {
-    recognizer = SFSpeechRecognizer(locale: Locale.current) ?? SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
-    recognizer.defaultTaskHint = .dictation
-    recognizer.queue = SpeechManager.operationQueue
+    recognizer = SpeechManager.createSpeechRecognizer(locale: Locale.current)
     audioEngine = AVAudioEngine()
     super.init()
     recognizer.delegate = self
+  }
+
+  private static func createSpeechRecognizer(locale _: Locale) -> SFSpeechRecognizer {
+    let recognizer = SFSpeechRecognizer(locale: Locale.current) ?? SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
+    recognizer.defaultTaskHint = .dictation
+    recognizer.queue = SpeechManager.operationQueue
+    return recognizer
   }
 
   @objc
@@ -217,6 +235,7 @@ extension SpeechManager: SFSpeechRecognizerDelegate {
   func speechRecognizer(_: SFSpeechRecognizer, availabilityDidChange available: Bool) {
     Debug.log(format: "Speech recognizer availability changed. Available == %@", available ? "true" : "false")
     if available {
+      delegate?.speechManagerDidChangeLocale(locale)
       delegate?.speechManagerDidBecomeAvailable()
     } else {
       delegate?.speechManagerDidBecomeUnavailable()

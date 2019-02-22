@@ -15,4 +15,5 @@
 - (void)speechManagerDidNotDetectSpeech;
 - (void)speechManagerDidEnd;
 - (void)speechManagerDidFail;
+- (void)speechManagerDidChangeLocale:(NSLocale*)locale;
 @end

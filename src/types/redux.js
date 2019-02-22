@@ -64,6 +64,7 @@ export type VideoState = {|
 |};
 
 export type SpeechState = {|
+  localeIdentifier: ?string,
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
   speechTranscriptionState: $Keys<TRANSCRIPTION_STATE>,
 |};
@@ -80,7 +81,8 @@ export type Payload =
   | ReceiveTextColorPayload
   | ReceiveFontSizePayload
   | ReceiveAppStateChangePayload
-  | ReceiveDeviceInfoPayload;
+  | ReceiveDeviceInfoPayload
+  | ReceiveLocaleIdentifierPayload;
 
 export type ReceiveLoginPayload = {|
   token: string,
@@ -131,4 +133,8 @@ export type ReceiveAppStateChangePayload = {|
 
 export type ReceiveDeviceInfoPayload = {|
   deviceInfo: DeviceInfoObject,
+|};
+
+export type ReceiveLocaleIdentifierPayload = {|
+  localeIdentifier: string,
 |};

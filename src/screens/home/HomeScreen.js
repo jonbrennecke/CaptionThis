@@ -35,6 +35,8 @@ import {
   endSpeechTranscriptionWithAudioSession,
   receiveSpeechTranscriptionFailure,
   receiveSpeechTranscriptionSuccess,
+  setLocale,
+  receiveLocale,
 } from '../../redux/speech/actionCreators';
 import { loadDeviceInfo } from '../../redux/device/actionCreators';
 import {
@@ -52,13 +54,11 @@ import LiveTranscriptionView from '../../components/live-transcription-view/Live
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 import LocaleMenu from '../../components/localization/LocaleMenu';
 
+import type { EmitterSubscription } from '../../types/react';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
-import type { SpeechTranscription } from '../../types/speech';
+import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 import type { Return } from '../../types/util';
-import type { EmitterSubscription as MediaManagerSubscription } from '../../utils/MediaManager';
-import type { EmitterSubscription as SpeechManagerSubscription } from '../../utils/SpeechManager';
-import type { EmitterSubscription as CameraManagerSubscription } from '../../utils/Camera';
 
 type State = {
   currentVideoIdentifier: ?VideoAssetIdentifier,
@@ -80,6 +80,8 @@ type StateProps = {
 };
 
 type DispatchProps = {
+  receiveLocale: (locale: string) => Promise<void>,
+  setLocale: (locale: string) => Promise<void>,
   loadDeviceInfo: () => Promise<void>,
   receiveVideos: (videos: VideoObject[]) => Promise<void>,
   beginCameraCapture: () => Promise<void>,
@@ -154,6 +156,8 @@ function mapStateToProps(state: AppState): StateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
+    receiveLocale: (locale: string) => dispatch(receiveLocale(locale)),
+    setLocale: (locale: string) => dispatch(setLocale(locale)),
     loadDeviceInfo: () => dispatch(loadDeviceInfo()),
     receiveVideos: (videos: VideoObject[]) => dispatch(receiveVideos(videos)),
     beginCameraCapture: () => dispatch(beginCameraCapture()),
@@ -187,10 +191,11 @@ export default class HomeScreen extends Component<Props, State> {
   scrollView: ?ScrollView;
   cameraView: ?CameraPreviewView;
   scrollAnim = new Animated.Value(0);
-  mediaLibrarySubscription: ?MediaManagerSubscription;
-  didReceiveSpeechTranscriptionSubscription: SpeechManagerSubscription;
-  didNotDetectSpeechSubscription: ?SpeechManagerSubscription;
-  cameraManagerDidFinishFileOutputListener: ?CameraManagerSubscription;
+  mediaLibrarySubscription: ?EmitterSubscription;
+  speechManagerDidReceiveTranscriptionListener: EmitterSubscription;
+  speechManagerDidNotDetectSpeechListener: ?EmitterSubscription;
+  speechManagerDidChangeLocaleListener: ?EmitterSubscription;
+  cameraManagerDidFinishFileOutputListener: ?EmitterSubscription;
 
   async componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
@@ -205,15 +210,10 @@ export default class HomeScreen extends Component<Props, State> {
     if (this.cameraManagerDidFinishFileOutputListener) {
       this.cameraManagerDidFinishFileOutputListener.remove();
     }
-    if (this.didReceiveSpeechTranscriptionSubscription) {
-      this.didReceiveSpeechTranscriptionSubscription.remove();
-    }
-    if (this.didNotDetectSpeechSubscription) {
-      this.didNotDetectSpeechSubscription.remove();
-    }
     if (this.navigationEventListener) {
       this.navigationEventListener.remove();
     }
+    this.removeSpeechListeners();
   }
 
   async componentDidUpdate(prevProps: Props) {
@@ -238,6 +238,7 @@ export default class HomeScreen extends Component<Props, State> {
     if (this.cameraView) {
       this.cameraView.setUp();
     }
+    await this.setUpSpeechRecognizer();
     await this.loadMediaLibrary();
     await this.props.loadDeviceInfo();
     this.setState({
@@ -282,14 +283,7 @@ export default class HomeScreen extends Component<Props, State> {
       }
     );
     await this.props.beginCameraCapture();
-    this.didReceiveSpeechTranscriptionSubscription = SpeechManager.addDidReceiveSpeechTranscriptionListener(
-      this.speechManagerDidReceiveSpeechTranscription
-    );
-    this.didNotDetectSpeechSubscription = SpeechManager.addDidNotDetectSpeechListener(
-      () => {
-        this.speechManagerDidNotDetectSpeech();
-      }
-    );
+    this.addSpeechListeners();
     await this.props.beginSpeechTranscriptionWithAudioSession();
   }
 
@@ -300,6 +294,43 @@ export default class HomeScreen extends Component<Props, State> {
     }
     await this.props.endSpeechTranscriptionWithAudioSession();
     await this.props.endCameraCapture();
+  }
+
+  async setUpSpeechRecognizer() {
+    this.speechManagerDidChangeLocaleListener = SpeechManager.addDidChangeLocaleListener(
+      this.speechManagerDidChangeLocale
+    );
+    const locale = await SpeechManager.currentLocale();
+    const localeIdentifier = `${locale.language.code}-${locale.country.code}`;
+    this.props.receiveLocale(localeIdentifier);
+  }
+
+  async setUpSpeechRecognizerForRecording() {
+
+  }
+
+  addSpeechListeners() {
+    this.speechManagerDidReceiveTranscriptionListener = SpeechManager.addDidReceiveSpeechTranscriptionListener(
+      this.speechManagerDidReceiveSpeechTranscription
+    );
+    this.speechManagerDidNotDetectSpeechListener = SpeechManager.addDidNotDetectSpeechListener(
+      () => {
+        this.speechManagerDidNotDetectSpeech();
+      }
+    );
+  }
+
+  removeSpeechListeners() {
+    this.speechManagerDidReceiveTranscriptionListener && this.speechManagerDidReceiveTranscriptionListener.remove();
+    this.speechManagerDidReceiveTranscriptionListener = null;
+    this.speechManagerDidNotDetectSpeechListener && this.speechManagerDidNotDetectSpeechListener.remove();
+    this.speechManagerDidNotDetectSpeechListener = null;
+    this.speechManagerDidChangeLocaleListener && this.speechManagerDidChangeLocaleListener.remove();
+    this.speechManagerDidChangeLocaleListener = null;
+  }
+
+  speechManagerDidChangeLocale(localeIdentifier: string) {
+    this.props.receiveLocale(localeIdentifier);
   }
 
   speechManagerDidReceiveSpeechTranscription(
@@ -324,8 +355,6 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async speechManagerDidNotDetectSpeech() {
-    // eslint-disable-next-line no-console
-    console.log('speechManagerDidNotDetectSpeech');
     await this.props.endSpeechTranscriptionWithAudioSession();
   }
 
@@ -366,6 +395,11 @@ export default class HomeScreen extends Component<Props, State> {
     this.setState({
       isLocaleMenuVisible: false,
     });
+  }
+
+  async onRequestChangeLocale(locale: LocaleObject) {
+    const localeIdentifier = `${locale.language.code}-${locale.country.code}`;
+    await this.props.setLocale(localeIdentifier);
   }
 
   render() {
@@ -464,6 +498,7 @@ export default class HomeScreen extends Component<Props, State> {
         <LocaleMenu
           isVisible={this.state.isLocaleMenuVisible}
           onRequestDismiss={this.onRequestDismissLocaleMenu}
+          onRequestChangeLocale={this.onRequestChangeLocale}
         />
       </View>
     );

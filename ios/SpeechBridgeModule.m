@@ -1,5 +1,6 @@
 #import "SpeechBridgeModule.h"
 #import "AppDelegate.h"
+#import "Debug.h"
 #import <Photos/Photos.h>
 #import <React/RCTConvert.h>
 
@@ -31,6 +32,14 @@ static id objectOrNull(id object) { return object ?: [NSNull null]; }
     return;
   }
   [self sendEventWithName:@"speechManagerDidBecomeUnavailable" body:@{}];
+}
+
+- (void)speechManagerDidChangeLocale:(NSLocale*)locale {
+  if (!hasListeners) {
+    return;
+  }
+  NSString* localeIdentifier = [NSString stringWithFormat:@"%@-%@", locale.languageCode, locale.countryCode];
+  [self sendEventWithName:@"speechManagerDidChangeLocale" body:localeIdentifier];
 }
 
 - (void)speechManagerDidReceiveSpeechTranscriptionWithIsFinal:(BOOL)isFinal
@@ -103,6 +112,7 @@ static id objectOrNull(id object) { return object ?: [NSNull null]; }
     @"speechManagerDidNotDetectSpeech",
     @"speechManagerDidEnd",
     @"speechManagerDidFail",
+    @"speechManagerDidChangeLocale",
   ];
 }
 
@@ -223,6 +233,20 @@ RCT_EXPORT_METHOD(getSupportedLocales : (RCTResponseSenderBlock)callback) {
     [localizedLocaleStrings addObject:dict];
   }
   callback(@[ [NSNull null], [localizedLocaleStrings allObjects] ]);
+}
+
+RCT_EXPORT_METHOD(setLocale
+                  : (NSString *)identifier withCallback
+                  : (RCTResponseSenderBlock)callback) {
+  NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:identifier];
+  if (!locale) {
+    [Debug logWithFormat:@"Could not create NSLocale. Identifier = %@",
+                         identifier, nil];
+    callback(@[ [NSNull null], @(NO) ]);
+    return;
+  }
+  BOOL success = [AppDelegate.sharedSpeechManager setLocale:locale];
+  callback(@[ [NSNull null], @(success) ]);
 }
 
 @end

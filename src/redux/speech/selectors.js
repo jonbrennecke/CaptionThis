@@ -21,3 +21,9 @@ export function getSpeechTranscriptionsWithKey(
 ): ?SpeechTranscription {
   return state.speech.speechTranscriptions.get(key);
 }
+
+export function getLocale(
+  state: AppState
+): ?string {
+  return state.speech.localeIdentifier;
+}

@@ -17,6 +17,7 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 type Props = {
   isVisible: boolean,
   onRequestDismiss: () => void,
+  onRequestChangeLocale: (locale: LocaleObject) => void,
 };
 
 type State = {
@@ -68,7 +69,7 @@ export default class LocaleMenu extends Component<Props, State> {
                 style={styles.flex}
                 locales={this.state.locales}
                 currentLocale={this.state.currentLocale}
-                onDidSelectLocale={() => {}}
+                onDidSelectLocale={this.props.onRequestChangeLocale}
               />
             </ScrollView>
             <Button

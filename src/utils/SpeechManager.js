@@ -1,5 +1,5 @@
 // @flow
-import Promise from 'bluebird';
+import Bluebird from 'bluebird';
 import { NativeModules, NativeEventEmitter } from 'react-native';
 
 import type { VideoAssetIdentifier } from '../types/media';
@@ -7,7 +7,7 @@ import type { Return } from '../types/util';
 import type { SpeechTranscription, LocaleObject } from '../types/speech';
 
 const { SpeechManager: _SpeechManager } = NativeModules;
-const NativeSpeechManager = Promise.promisifyAll(_SpeechManager);
+const NativeSpeechManager = Bluebird.promisifyAll(_SpeechManager);
 const NativeSpeechManagerEventEmitter = new NativeEventEmitter(_SpeechManager);
 
 // eslint-disable-next-line flowtype/generic-spacing
@@ -21,9 +21,9 @@ const EVENTS = {
   DID_NOT_DETECT_SPEECH: 'speechManagerDidNotDetectSpeech',
   DID_FAIL: 'speechManagerDidFail',
   DID_END: 'speechManagerDidEnd',
-  // TODO:
-  // DID_BECOME_AVAILABLE: 'speechManagerDidBecomeAvailable',
-  // DID_BECOME_UNAVAILABLE: 'speechManagerDidBecomeUnavailable',
+  DID_CHANGE_LOCALE: 'speechManagerDidChangeLocale',
+  DID_BECOME_AVAILABLE: 'speechManagerDidBecomeAvailable',
+  DID_BECOME_UNAVAILABLE: 'speechManagerDidBecomeUnavailable',
 };
 
 export default class SpeechManager {
@@ -59,6 +59,15 @@ export default class SpeechManager {
     );
   }
 
+  static addDidChangeLocaleListener(
+    listener: (localeIdentifier: string) => void
+  ) {
+    return NativeSpeechManagerEventEmitter.addListener(
+      EVENTS.DID_CHANGE_LOCALE,
+      listener
+    );
+  }
+
   static async beginSpeechTranscriptionWithVideoAsset(
     videoAssetIdentifier: VideoAssetIdentifier
   ): Promise<boolean> {
@@ -81,5 +90,9 @@ export default class SpeechManager {
 
   static async currentLocale(): Promise<LocaleObject> {
     return await NativeSpeechManager.getCurrentLocaleAsync();
+  }
+
+  static async setLocale(localeIdentifier: string): Promise<boolean> {
+    return await NativeSpeechManager.setLocaleAsync(localeIdentifier);
   }
 }

@@ -169,6 +169,7 @@ export default class EditScreen extends Component<Props, State> {
   speechManagerDidNotDetectSpeechListener: ?EmitterSubscription;
   speechManagerDidEndListener: ?EmitterSubscription;
   speechManagerDidFailListener: ?EmitterSubscription;
+  // speechManagerDidChangeLocaleListener: ?EmitterSubscription;
   exportDidFinishListener: ?EmitterSubscription;
   exportDidFailListener: ?EmitterSubscription;
   exportDidUpdateProgressListener: ?EmitterSubscription;

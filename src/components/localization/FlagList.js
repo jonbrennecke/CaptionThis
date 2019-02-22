@@ -27,7 +27,7 @@ const styles = {
     flexDirection: 'row',
     paddingHorizontal: 15,
     paddingVertical: 10,
-    backgroundColor: isSelected ? UI_COLORS.MEDIUM_GREY : 'transparent'
+    backgroundColor: isSelected ? UI_COLORS.MEDIUM_GREY : 'transparent',
   }),
   textWrap: {
     alignItems: 'flex-start',
@@ -61,19 +61,26 @@ const styles = {
   },
 };
 
-export default function FlagList({ style, locales, currentLocale, onDidSelectLocale }: Props) {
+export default function FlagList({
+  style,
+  locales,
+  currentLocale,
+  onDidSelectLocale,
+}: Props) {
   const sortedLocales = sortLocales(locales);
   return (
     <View style={[styles.container, style]}>
       {sortedLocales.map(locale => {
         const localeKey = `${locale.language.code}-${locale.country.code}`;
-        const currentLocaleKey = currentLocale ? `${currentLocale.language.code}-${currentLocale.country.code}` : null;
+        const currentLocaleKey = currentLocale
+          ? `${currentLocale.language.code}-${currentLocale.country.code}`
+          : null;
         const isSelected = localeKey === currentLocaleKey;
         return (
           <TouchableOpacity
             key={localeKey}
             style={styles.localeItem(isSelected)}
-            onPress={onDidSelectLocale}
+            onPress={() => onDidSelectLocale(locale)}
           >
             <View style={styles.flagOutline}>
               <View style={styles.flagWrap}>
