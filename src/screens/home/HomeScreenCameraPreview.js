@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { Animated, StyleSheet, Dimensions } from 'react-native';
+import { autobind } from 'core-decorators';
 
 import * as Camera from '../../utils/Camera';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
@@ -51,6 +52,8 @@ const styles = {
   },
 };
 
+// $FlowFixMe
+@autobind
 export default class HomeScreenCameraPreview extends Component<Props> {
   cameraView: ?CameraPreviewView;
 
