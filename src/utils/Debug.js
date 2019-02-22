@@ -1,4 +1,5 @@
 // @flow
+import { Sentry } from 'react-native-sentry';
 
 // NOTE: async because the logError API will eventually write to an
 // external API like Sentry, Logstash or Google Analytics
@@ -8,6 +9,7 @@ export const log = async (message: string) => {
 };
 
 export const logError = async (error: Error) => {
+  Sentry.captureException(error);
   // eslint-disable-next-line
   console.error(error);
 };
