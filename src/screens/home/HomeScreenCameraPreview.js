@@ -54,6 +54,14 @@ const styles = {
 export default class HomeScreenCameraPreview extends Component<Props> {
   cameraView: ?CameraPreviewView;
 
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.hasCompletedSetupAfterOnboarding && !prevProps.hasCompletedSetupAfterOnboarding) {
+      if (this.cameraView) {
+        this.cameraView.setUp();
+      }
+    }
+  }
+
   tapToFocusDidReceiveFocusPoint(focusPoint: { x: number, y: number }) {
     if (!this.cameraView) {
       return;

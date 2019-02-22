@@ -48,7 +48,7 @@ export default function HomeScreenCameraControls({
   onRequestOpenLocaleMenu,
 }: Props) {
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} pointerEvents="box-none">
       <HomeScreenTopCameraControls
         style={styles.topControls}
         countryCode={countryCode}

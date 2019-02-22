@@ -225,10 +225,6 @@ export default class HomeScreen extends Component<Props, State> {
       return;
     }
     Camera.startPreview();
-    // TODO:
-    // if (this.cameraView) {
-    //   this.cameraView.setUp();
-    // }
     await this.loadMediaLibrary();
     await this.props.loadDeviceInfo();
     this.setState({
