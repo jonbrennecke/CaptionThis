@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 import sortBy from 'lodash/sortBy';
 import groupBy from 'lodash/groupBy';
 import flatMap from 'lodash/flatMap';
@@ -15,17 +15,20 @@ import type { LocaleObject } from '../../types/speech';
 
 type Props = {
   style?: ?Style,
+  currentLocale: ?LocaleObject,
   locales: LocaleObject[],
+  onDidSelectLocale: LocaleObject => void,
 };
 
 const styles = {
   container: {},
-  localeItem: {
+  localeItem: (isSelected: boolean) => ({
     flex: 1,
     flexDirection: 'row',
     paddingHorizontal: 15,
     paddingVertical: 10,
-  },
+    backgroundColor: isSelected ? UI_COLORS.MEDIUM_GREY : 'transparent'
+  }),
   textWrap: {
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -33,7 +36,7 @@ const styles = {
     marginLeft: 15,
   },
   flagOutline: {
-    backgroundColor: 'transparent',
+    backgroundColor: UI_COLORS.DARK_GREY,
     height: 35,
     width: 35,
     borderRadius: 17.5,
@@ -58,32 +61,38 @@ const styles = {
   },
 };
 
-export default function FlagList({ style, locales }: Props) {
+export default function FlagList({ style, locales, currentLocale, onDidSelectLocale }: Props) {
   const sortedLocales = sortLocales(locales);
   return (
     <View style={[styles.container, style]}>
-      {sortedLocales.map(locale => (
-        <View
-          key={`${locale.language.code}-${locale.country.code}`}
-          style={styles.localeItem}
-        >
-          <View style={styles.flagOutline}>
-            <View style={styles.flagWrap}>
-              {locale.country.code && (
-                <FlagView
-                  countryCode={locale.country.code}
-                  style={styles.fill}
-                />
-              )}
+      {sortedLocales.map(locale => {
+        const localeKey = `${locale.language.code}-${locale.country.code}`;
+        const currentLocaleKey = currentLocale ? `${currentLocale.language.code}-${currentLocale.country.code}` : null;
+        const isSelected = localeKey === currentLocaleKey;
+        return (
+          <TouchableOpacity
+            key={localeKey}
+            style={styles.localeItem(isSelected)}
+            onPress={onDidSelectLocale}
+          >
+            <View style={styles.flagOutline}>
+              <View style={styles.flagWrap}>
+                {locale.country.code && (
+                  <FlagView
+                    countryCode={locale.country.code}
+                    style={styles.fill}
+                  />
+                )}
+              </View>
             </View>
-          </View>
-          <View style={styles.textWrap}>
-            <Text style={styles.languageText} numberOfLines={1}>
-              {`${locale.displayName}`}
-            </Text>
-          </View>
-        </View>
-      ))}
+            <View style={styles.textWrap}>
+              <Text style={styles.languageText} numberOfLines={1}>
+                {`${locale.displayName}`}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 }

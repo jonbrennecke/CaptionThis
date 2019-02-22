@@ -20,6 +20,7 @@ type Props = {
 };
 
 type State = {
+  currentLocale: ?LocaleObject,
   locales: LocaleObject[],
 };
 
@@ -41,13 +42,16 @@ const styles = {
 @autobind
 export default class LocaleMenu extends Component<Props, State> {
   state = {
+    currentLocale: null,
     locales: [],
   };
 
   async componentDidMount() {
+    const currentLocale = await SpeechManager.currentLocale();
     const locales = await SpeechManager.supportedLocales();
     this.setState({
       locales,
+      currentLocale,
     });
   }
 
@@ -60,7 +64,12 @@ export default class LocaleMenu extends Component<Props, State> {
         <View style={styles.fill}>
           <SafeAreaView style={styles.flex}>
             <ScrollView>
-              <FlagList style={styles.flex} locales={this.state.locales} />
+              <FlagList
+                style={styles.flex}
+                locales={this.state.locales}
+                currentLocale={this.state.currentLocale}
+                onDidSelectLocale={() => {}}
+              />
             </ScrollView>
             <Button
               style={styles.button}
