@@ -16,6 +16,7 @@ import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenLoadingBackground from './EditScreenLoadingBackground';
 import EditScreenEditCaptionsOverlay from './EditScreenEditCaptionsOverlay';
 import SpeechManager from '../../utils/SpeechManager';
+import LocaleMenu from '../../components/localization/LocaleMenu';
 import {
   willExportVideo,
   didExportVideo,
@@ -24,6 +25,7 @@ import {
   beginSpeechTranscriptionWithVideoAsset,
   receiveSpeechTranscriptionSuccess,
   receiveSpeechTranscriptionFailure,
+  setLocale,
 } from '../../redux/speech/actionCreators';
 import {
   receiveUserSelectedFontFamily,
@@ -33,8 +35,10 @@ import {
 } from '../../redux/video/actionCreators';
 import { isExportingVideo } from '../../redux/media/selectors';
 import {
-  getSpeechTranscriptions,
   didSpeechRecognitionFail,
+  getLocale,
+  isSpeechTranscriptionFinal,
+  getSpeechTranscriptionByID,
 } from '../../redux/speech/selectors';
 import {
   getBackgroundColor,
@@ -56,7 +60,7 @@ import type {
   Orientation,
 } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
-import type { SpeechTranscription } from '../../types/speech';
+import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 import type { LineStyle } from '../../types/video';
 import type { EmitterSubscription, ReactAppStateEnum } from '../../types/react';
 
@@ -67,6 +71,7 @@ type State = {
   isDraggingSeekbar: boolean,
   isRichTextEditorVisible: boolean,
   isCaptionsEditorVisible: boolean,
+  isLocaleMenuVisible: boolean,
 };
 
 type OwnProps = {
@@ -75,7 +80,7 @@ type OwnProps = {
 };
 
 type StateProps = {
-  speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
+  speechTranscription: ?SpeechTranscription,
   fontFamily: string,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
@@ -85,10 +90,15 @@ type StateProps = {
   lineStyle: LineStyle,
   isAppInForeground: boolean,
   isDeviceLimitedByMemory: boolean,
+  locale: ?LocaleObject,
+  isSpeechTranscriptionFinal: boolean,
 };
 
 type DispatchProps = {
-  beginSpeechTranscriptionWithVideoAsset: VideoAssetIdentifier => Promise<void>,
+  setLocale: (locale: LocaleObject) => Promise<void>,
+  beginSpeechTranscriptionWithVideoAsset: (
+    video: VideoAssetIdentifier
+  ) => Promise<void>,
   receiveSpeechTranscriptionSuccess: (
     VideoAssetIdentifier,
     SpeechTranscription
@@ -112,9 +122,8 @@ const styles = {
   },
 };
 
-function mapStateToProps(state: AppState): StateProps {
+function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
   return {
-    speechTranscriptions: getSpeechTranscriptions(state),
     fontFamily: getFontFamily(state),
     backgroundColor: getBackgroundColor(state),
     textColor: getTextColor(state),
@@ -124,30 +133,35 @@ function mapStateToProps(state: AppState): StateProps {
     lineStyle: getLineStyle(state),
     isAppInForeground: isAppInForeground(state),
     isDeviceLimitedByMemory: isDeviceLimitedByMemory(state),
+    locale: getLocale(state),
+    isSpeechTranscriptionFinal: isSpeechTranscriptionFinal(
+      state,
+      ownProps.video.id
+    ),
+    speechTranscription: getSpeechTranscriptionByID(state, ownProps.video.id),
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
-    beginSpeechTranscriptionWithVideoAsset: (id: VideoAssetIdentifier) =>
+    setLocale: locale => dispatch(setLocale(locale)),
+    beginSpeechTranscriptionWithVideoAsset: id =>
       dispatch(beginSpeechTranscriptionWithVideoAsset(id)),
-    receiveSpeechTranscriptionSuccess: (
-      id: VideoAssetIdentifier,
-      transcription: SpeechTranscription
-    ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
-    receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
+    receiveSpeechTranscriptionSuccess: (id, transcription) =>
+      dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
+    receiveSpeechTranscriptionFailure: id =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
     willExportVideo: () => dispatch(willExportVideo()),
     didExportVideo: () => dispatch(didExportVideo()),
-    receiveUserSelectedFontFamily: (fontFamily: string) =>
+    receiveUserSelectedFontFamily: fontFamily =>
       dispatch(receiveUserSelectedFontFamily(fontFamily)),
-    receiveUserSelectedTextColor: (color: ColorRGBA) =>
+    receiveUserSelectedTextColor: color =>
       dispatch(receiveUserSelectedTextColor(color)),
-    receiveUserSelectedBackgroundColor: (color: ColorRGBA) =>
+    receiveUserSelectedBackgroundColor: color =>
       dispatch(receiveUserSelectedBackgroundColor(color)),
-    receiveUserSelectedFontSize: (fontSize: number) =>
+    receiveUserSelectedFontSize: fontSize =>
       dispatch(receiveUserSelectedFontSize(fontSize)),
-    receiveAppStateChange: (appState: ReactAppStateEnum) =>
+    receiveAppStateChange: appState =>
       dispatch(receiveAppStateChange(appState)),
   };
 }
@@ -164,18 +178,20 @@ export default class EditScreen extends Component<Props, State> {
     isDraggingSeekbar: false,
     isRichTextEditorVisible: false,
     isCaptionsEditorVisible: false,
+    isLocaleMenuVisible: false,
   };
   speechManagerDidReceiveTranscriptionListener: ?EmitterSubscription;
   speechManagerDidNotDetectSpeechListener: ?EmitterSubscription;
   speechManagerDidEndListener: ?EmitterSubscription;
   speechManagerDidFailListener: ?EmitterSubscription;
+  // speechManagerDidChangeLocaleListener: ?EmitterSubscription;
   exportDidFinishListener: ?EmitterSubscription;
   exportDidFailListener: ?EmitterSubscription;
   exportDidUpdateProgressListener: ?EmitterSubscription;
 
   async componentDidMount() {
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
-    if (this.hasFinalSpeechTranscription()) {
+    if (this.props.isSpeechTranscriptionFinal) {
       this.speechManagerDidReceiveFinalSpeechTranscription();
     } else {
       await this.beginSpeechTranscription();
@@ -189,9 +205,10 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const speechTranscription = this.getSpeechTranscription(this.props);
-    const prevSpeechTranscription = this.getSpeechTranscription(prevProps);
-    if (speechTranscription?.isFinal && !prevSpeechTranscription?.isFinal) {
+    if (
+      this.props.speechTranscription?.isFinal &&
+      !prevProps.speechTranscription?.isFinal
+    ) {
       this.speechManagerDidReceiveFinalSpeechTranscription();
     }
     if (
@@ -372,35 +389,14 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   textOverlayParams() {
-    const speechTranscription = this.getSpeechTranscription();
-    if (!speechTranscription) {
+    if (!this.props.speechTranscription) {
       return [];
     }
-    return speechTranscription.segments.map(segment => ({
+    return this.props.speechTranscription.segments.map(segment => ({
       duration: segment.duration,
       timestamp: segment.timestamp,
       text: segment.substring,
     }));
-  }
-
-  isReadyToPlay(): boolean {
-    return this.hasFinalSpeechTranscription();
-  }
-
-  getSpeechTranscription(props?: Props = this.props): ?SpeechTranscription {
-    const {
-      speechTranscriptions,
-      video: { id },
-    } = props;
-    if (!speechTranscriptions.has(id)) {
-      return null;
-    }
-    return speechTranscriptions.get(id);
-  }
-
-  hasFinalSpeechTranscription(): boolean {
-    const speechTranscription = this.getSpeechTranscription();
-    return !!(speechTranscription && speechTranscription.isFinal);
   }
 
   showCaptionsEditor() {
@@ -449,19 +445,40 @@ export default class EditScreen extends Component<Props, State> {
     }
   }
 
+  showLocaleMenu() {
+    this.setState({
+      isLocaleMenuVisible: true,
+    });
+  }
+
+  dismissLocaleMenu() {
+    this.setState({
+      isLocaleMenuVisible: false,
+    });
+  }
+
+  async onRequestChangeLocale(locale: LocaleObject) {
+    await this.props.setLocale(locale);
+    await this.beginSpeechTranscription();
+    this.setState({
+      isLocaleMenuVisible: false,
+    });
+  }
+
   render() {
-    const hasFinalTranscription = this.hasFinalSpeechTranscription();
-    const transcription = this.getSpeechTranscription();
     return (
       <View style={styles.container}>
-        {!hasFinalTranscription && <EditScreenLoadingBackground />}
+        {!this.props.isSpeechTranscriptionFinal && (
+          <EditScreenLoadingBackground />
+        )}
         <EditScreenVideoPlayer
+          countryCode={this.props.locale?.country.code}
           isAppInForeground={this.props.isAppInForeground}
           isDeviceLimitedByMemory={this.props.isDeviceLimitedByMemory}
           isCaptionsEditorVisible={this.state.isCaptionsEditorVisible}
           isExportingVideo={this.props.isExportingVideo}
           video={this.props.video}
-          isReadyToPlay={hasFinalTranscription}
+          isReadyToPlay={this.props.isSpeechTranscriptionFinal}
           duration={this.state.duration}
           orientation={this.state.orientation || 'up'}
           lineStyle={this.props.lineStyle}
@@ -469,7 +486,7 @@ export default class EditScreen extends Component<Props, State> {
           backgroundColor={this.props.backgroundColor}
           fontFamily={this.props.fontFamily}
           fontSize={this.props.fontSize}
-          speechTranscription={transcription}
+          speechTranscription={this.props.speechTranscription}
           onRequestChangeDuration={duration => this.setState({ duration })}
           onRequestChangePlaybackTime={this.seekRichTextEditorCaptionsToTime}
           onRequestChangeOrientation={orientation =>
@@ -487,12 +504,13 @@ export default class EditScreen extends Component<Props, State> {
           }}
           onDidRestartCaptions={this.restartRichTextEditorCaptions}
           onDidPauseCaptions={this.pauseRichTextEditorCaptions}
+          onLocaleButtonPress={this.showLocaleMenu}
         />
         <EditScreenRichTextOverlay
           ref={ref => {
             this.richTextOverlay = ref;
           }}
-          hasFinalTranscription={hasFinalTranscription}
+          hasFinalTranscription={this.props.isSpeechTranscriptionFinal}
           duration={this.state.duration}
           isVisible={this.state.isRichTextEditorVisible}
           lineStyle={this.props.lineStyle}
@@ -500,7 +518,7 @@ export default class EditScreen extends Component<Props, State> {
           backgroundColor={this.props.backgroundColor}
           fontFamily={this.props.fontFamily}
           fontSize={this.props.fontSize}
-          speechTranscription={transcription}
+          speechTranscription={this.props.speechTranscription}
           onRequestSave={(...etc) => {
             this.richTextEditorDidRequestSave(...etc);
           }}
@@ -511,17 +529,25 @@ export default class EditScreen extends Component<Props, State> {
           onDidDismiss={() => this.setState({ exportProgress: 0 })}
         />
         <EditScreenLoadingOverlay
-          isVisible={!hasFinalTranscription}
+          isVisible={!this.props.isSpeechTranscriptionFinal}
           video={this.props.video}
         />
         <EditScreenEditCaptionsOverlay
-          videoAssetIdentifier={this.props.video.id}
-          speechTranscriptions={this.props.speechTranscriptions}
+          videoID={this.props.video.id}
+          speechTranscription={this.props.speechTranscription}
           isVisible={this.state.isCaptionsEditorVisible}
           onRequestDismissModal={this.dismissCaptionsEditor}
           receiveSpeechTranscriptionSuccess={
             this.props.receiveSpeechTranscriptionSuccess
           }
+        />
+        <LocaleMenu
+          isVisible={this.state.isLocaleMenuVisible}
+          locale={this.props.locale}
+          onRequestDismiss={this.dismissLocaleMenu}
+          onRequestChangeLocale={locale => {
+            this.onRequestChangeLocale(locale);
+          }}
         />
       </View>
     );

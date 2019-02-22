@@ -1,5 +1,7 @@
 #import "SpeechBridgeModule.h"
 #import "AppDelegate.h"
+#import "Debug.h"
+#import "LocaleUtil.h"
 #import <Photos/Photos.h>
 #import <React/RCTConvert.h>
 
@@ -31,6 +33,14 @@
   [self sendEventWithName:@"speechManagerDidBecomeUnavailable" body:@{}];
 }
 
+- (void)speechManagerDidChangeLocale:(NSLocale *)locale {
+  if (!hasListeners) {
+    return;
+  }
+  NSDictionary* json = [LocaleUtil jsonify:locale];
+  [self sendEventWithName:@"speechManagerDidChangeLocale" body:json];
+}
+
 - (void)speechManagerDidReceiveSpeechTranscriptionWithIsFinal:(BOOL)isFinal
                                                 transcription:
                                                     (SpeechTranscription *)
@@ -49,10 +59,12 @@
       @"substring" : segment.substring,
     }];
   }
+  NSLocale *locale = AppDelegate.sharedSpeechManager.locale;
   NSDictionary *body = @{
     @"isFinal" : @(isFinal),
     @"formattedString" : string,
-    @"segments" : segments
+    @"segments" : segments,
+    @"locale" : [LocaleUtil jsonify:locale]
   };
   [self sendEventWithName:@"speechManagerDidReceiveSpeechTranscription"
                      body:body];
@@ -101,6 +113,7 @@
     @"speechManagerDidNotDetectSpeech",
     @"speechManagerDidEnd",
     @"speechManagerDidFail",
+    @"speechManagerDidChangeLocale",
   ];
 }
 
@@ -153,6 +166,43 @@ RCT_EXPORT_METHOD(endSpeechTranscriptionWithAudioSession
                   : (RCTResponseSenderBlock)callback) {
   [AppDelegate.sharedSpeechManager stopCaptureForAudioSession];
   callback(@[ [NSNull null], @(YES) ]);
+}
+
+RCT_EXPORT_METHOD(getCurrentLocale : (RCTResponseSenderBlock)callback) {
+  NSLocale *locale = AppDelegate.sharedSpeechManager.locale;
+  NSDictionary* json = [LocaleUtil jsonify:locale];
+  callback(@[ [NSNull null], json ]);
+}
+
+RCT_EXPORT_METHOD(getSupportedLocales : (RCTResponseSenderBlock)callback) {
+  NSSet<NSLocale *> *locales =
+      [AppDelegate.sharedSpeechManager supportedLocales];
+  NSMutableSet<NSDictionary *> *jsonifiedLocales =
+      [[NSMutableSet alloc] initWithCapacity:locales.count];
+  for (NSLocale *locale in locales) {
+    NSString *languageCode = locale.languageCode;
+    NSString *countryCode = locale.countryCode;
+    if (!languageCode || !countryCode) {
+      continue;
+    }
+    NSDictionary* json = [LocaleUtil jsonify:locale];
+    [jsonifiedLocales addObject:json];
+  }
+  callback(@[ [NSNull null], [jsonifiedLocales allObjects] ]);
+}
+
+RCT_EXPORT_METHOD(setLocale
+                  : (NSString *)identifier withCallback
+                  : (RCTResponseSenderBlock)callback) {
+  NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:identifier];
+  if (!locale) {
+    [Debug logWithFormat:@"Could not create NSLocale. Identifier = %@",
+                         identifier, nil];
+    callback(@[ [NSNull null], @(NO) ]);
+    return;
+  }
+  BOOL success = [AppDelegate.sharedSpeechManager setLocale:locale];
+  callback(@[ [NSNull null], @(success) ]);
 }
 
 @end

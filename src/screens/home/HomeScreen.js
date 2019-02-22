@@ -20,6 +20,7 @@ import * as Fonts from '../../utils/Fonts';
 import * as Screens from '../../utils/Screens';
 import * as Camera from '../../utils/Camera';
 import * as Debug from '../../utils/Debug';
+import { getLocaleID } from '../../utils/Localization';
 import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
 import requireOnboardedUser from '../onboarding/requireOnboardedUser';
@@ -35,6 +36,9 @@ import {
   endSpeechTranscriptionWithAudioSession,
   receiveSpeechTranscriptionFailure,
   receiveSpeechTranscriptionSuccess,
+  setLocale,
+  receiveLocale,
+  loadCurrentLocale,
 } from '../../redux/speech/actionCreators';
 import { loadDeviceInfo } from '../../redux/device/actionCreators';
 import {
@@ -43,25 +47,23 @@ import {
   getCurrentVideo,
 } from '../../redux/media/selectors';
 import { getFontFamily } from '../../redux/video/selectors';
-import { getSpeechTranscriptions } from '../../redux/speech/selectors';
-import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
+import {
+  getSpeechTranscriptions,
+  getLocale,
+} from '../../redux/speech/selectors';
 import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
-import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
-import HomeScreenCaptureControls from './HomeScreenCaptureControls';
-import LiveTranscriptionView from '../../components/live-transcription-view/LiveTranscriptionView';
-import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
+import LocaleMenu from '../../components/localization/LocaleMenu';
+import HomeScreenCameraPreview from './HomeScreenCameraPreview';
 
+import type { EmitterSubscription } from '../../types/react';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
-import type { SpeechTranscription } from '../../types/speech';
-import type { Return } from '../../types/util';
-import type { EmitterSubscription as MediaManagerSubscription } from '../../utils/MediaManager';
-import type { EmitterSubscription as SpeechManagerSubscription } from '../../utils/SpeechManager';
-import type { EmitterSubscription as CameraManagerSubscription } from '../../utils/Camera';
+import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 
 type State = {
-  currentVideoIdentifier: ?VideoAssetIdentifier,
+  videoID: ?VideoAssetIdentifier,
   hasCompletedSetupAfterOnboarding: boolean,
+  isLocaleMenuVisible: boolean,
 };
 
 type OwnProps = {
@@ -74,10 +76,14 @@ type StateProps = {
   isCameraRecording: boolean,
   currentVideo: ?VideoAssetIdentifier,
   fontFamily: string,
-  speechTranscriptions: Return<typeof getSpeechTranscriptions>,
+  speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
+  locale: ?LocaleObject,
 };
 
 type DispatchProps = {
+  receiveLocale: (locale: LocaleObject) => Promise<void>,
+  loadCurrentLocale: () => Promise<void>,
+  setLocale: (locale: LocaleObject) => Promise<void>,
   loadDeviceInfo: () => Promise<void>,
   receiveVideos: (videos: VideoObject[]) => Promise<void>,
   beginCameraCapture: () => Promise<void>,
@@ -103,15 +109,6 @@ const styles = {
     flex: 1,
     backgroundColor: UI_COLORS.BLACK,
   },
-  cameraPreview: (anim: Animated.Value) => ({
-    borderRadius: 10,
-    flex: 1,
-    overflow: 'hidden',
-    opacity: anim.interpolate({
-      inputRange: [0, SCREEN_HEIGHT],
-      outputRange: [1, 0],
-    }),
-  }),
   mediaHeader: {
     paddingVertical: 5,
     paddingHorizontal: 7,
@@ -121,12 +118,6 @@ const styles = {
   flex: {
     flex: 1,
   },
-  captureControls: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
   scrollView: {
     flex: 1,
     overflow: 'visible',
@@ -134,12 +125,6 @@ const styles = {
   scrollViewContent: {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT * 2,
-  },
-  transcript: {
-    position: 'absolute',
-    bottom: 125,
-    left: 0,
-    right: 0,
   },
   absoluteFill: StyleSheet.absoluteFill,
 };
@@ -152,11 +137,15 @@ function mapStateToProps(state: AppState): StateProps {
     currentVideo: getCurrentVideo(state),
     fontFamily: getFontFamily(state),
     speechTranscriptions: getSpeechTranscriptions(state),
+    locale: getLocale(state),
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
+    loadCurrentLocale: () => dispatch(loadCurrentLocale()),
+    receiveLocale: (locale: LocaleObject) => dispatch(receiveLocale(locale)),
+    setLocale: (locale: LocaleObject) => dispatch(setLocale(locale)),
     loadDeviceInfo: () => dispatch(loadDeviceInfo()),
     receiveVideos: (videos: VideoObject[]) => dispatch(receiveVideos(videos)),
     beginCameraCapture: () => dispatch(beginCameraCapture()),
@@ -182,19 +171,20 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 @autobind
 export default class HomeScreen extends Component<Props, State> {
   state = {
-    currentVideoIdentifier: null,
+    videoID: null,
     hasCompletedSetupAfterOnboarding: false,
+    isLocaleMenuVisible: false,
   };
   navigationEventListener: ?any;
   scrollView: ?ScrollView;
-  cameraView: ?CameraPreviewView;
   scrollAnim = new Animated.Value(0);
-  mediaLibrarySubscription: ?MediaManagerSubscription;
-  didReceiveSpeechTranscriptionSubscription: SpeechManagerSubscription;
-  didNotDetectSpeechSubscription: ?SpeechManagerSubscription;
-  cameraManagerDidFinishFileOutputListener: ?CameraManagerSubscription;
+  mediaLibrarySubscription: ?EmitterSubscription;
+  speechManagerDidReceiveTranscriptionListener: EmitterSubscription;
+  speechManagerDidNotDetectSpeechListener: ?EmitterSubscription;
+  speechManagerDidChangeLocaleListener: ?EmitterSubscription;
+  cameraManagerDidFinishFileOutputListener: ?EmitterSubscription;
 
-  componentDidMount() {
+  async componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
@@ -207,15 +197,11 @@ export default class HomeScreen extends Component<Props, State> {
     if (this.cameraManagerDidFinishFileOutputListener) {
       this.cameraManagerDidFinishFileOutputListener.remove();
     }
-    if (this.didReceiveSpeechTranscriptionSubscription) {
-      this.didReceiveSpeechTranscriptionSubscription.remove();
-    }
-    if (this.didNotDetectSpeechSubscription) {
-      this.didNotDetectSpeechSubscription.remove();
-    }
     if (this.navigationEventListener) {
       this.navigationEventListener.remove();
     }
+    this.removeSpeechListeners();
+    this.shutDownSpeechRecognizer();
   }
 
   async componentDidUpdate(prevProps: Props) {
@@ -224,12 +210,14 @@ export default class HomeScreen extends Component<Props, State> {
     }
   }
 
-  componentDidAppear() {
+  async componentDidAppear() {
     Camera.startPreview();
+    await this.setUpSpeechRecognizer();
   }
 
-  componentDidDisappear() {
+  async componentDidDisappear() {
     Camera.stopPreview();
+    await this.shutDownSpeechRecognizer();
   }
 
   async setupAfterOnboarding() {
@@ -237,9 +225,6 @@ export default class HomeScreen extends Component<Props, State> {
       return;
     }
     Camera.startPreview();
-    if (this.cameraView) {
-      this.cameraView.setUp();
-    }
     await this.loadMediaLibrary();
     await this.props.loadDeviceInfo();
     this.setState({
@@ -277,21 +262,14 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async startCapture() {
-    this.setState({ currentVideoIdentifier: uuid.v4() });
+    this.setState({ videoID: uuid.v4() });
     this.cameraManagerDidFinishFileOutputListener = Camera.addDidFinishFileOutputListener(
       (...args) => {
         this.cameraManagerDidFinishFileOutput(...args);
       }
     );
     await this.props.beginCameraCapture();
-    this.didReceiveSpeechTranscriptionSubscription = SpeechManager.addDidReceiveSpeechTranscriptionListener(
-      this.speechManagerDidReceiveSpeechTranscription
-    );
-    this.didNotDetectSpeechSubscription = SpeechManager.addDidNotDetectSpeechListener(
-      () => {
-        this.speechManagerDidNotDetectSpeech();
-      }
-    );
+    this.addSpeechListeners();
     await this.props.beginSpeechTranscriptionWithAudioSession();
   }
 
@@ -302,32 +280,66 @@ export default class HomeScreen extends Component<Props, State> {
     }
     await this.props.endSpeechTranscriptionWithAudioSession();
     await this.props.endCameraCapture();
+    this.removeSpeechListeners();
+  }
+
+  async setUpSpeechRecognizer() {
+    this.speechManagerDidChangeLocaleListener = SpeechManager.addDidChangeLocaleListener(
+      this.speechManagerDidChangeLocale
+    );
+    await this.props.loadCurrentLocale();
+  }
+
+  async shutDownSpeechRecognizer() {
+    this.speechManagerDidChangeLocaleListener &&
+      this.speechManagerDidChangeLocaleListener.remove();
+    this.speechManagerDidChangeLocaleListener = null;
+  }
+
+  addSpeechListeners() {
+    this.speechManagerDidReceiveTranscriptionListener = SpeechManager.addDidReceiveSpeechTranscriptionListener(
+      this.speechManagerDidReceiveSpeechTranscription
+    );
+    this.speechManagerDidNotDetectSpeechListener = SpeechManager.addDidNotDetectSpeechListener(
+      () => {
+        this.speechManagerDidNotDetectSpeech();
+      }
+    );
+  }
+
+  removeSpeechListeners() {
+    this.speechManagerDidReceiveTranscriptionListener &&
+      this.speechManagerDidReceiveTranscriptionListener.remove();
+    this.speechManagerDidReceiveTranscriptionListener = null;
+    this.speechManagerDidNotDetectSpeechListener &&
+      this.speechManagerDidNotDetectSpeechListener.remove();
+    this.speechManagerDidNotDetectSpeechListener = null;
+  }
+
+  speechManagerDidChangeLocale(locale: LocaleObject) {
+    if (
+      this.props.locale &&
+      // $FlowFixMe
+      getLocaleID(locale) === getLocaleID(this.props.locale)
+    ) {
+      return;
+    }
+    this.props.receiveLocale(locale);
   }
 
   speechManagerDidReceiveSpeechTranscription(
     transcription: SpeechTranscription
   ) {
-    if (!this.props.isCameraRecording) {
-      // Debug.logWarningMessage(
-      //   'Received a speech transcription, but camera is not recording.'
-      // );
-      return;
-    }
-    if (!this.state.currentVideoIdentifier) {
-      // Debug.logWarningMessage(
-      //   'Received a speech transcription, but do not have an id for the current video.'
-      // );
+    if (!this.state.videoID) {
       return;
     }
     this.props.receiveSpeechTranscriptionSuccess(
-      this.state.currentVideoIdentifier,
+      this.state.videoID,
       transcription
     );
   }
 
   async speechManagerDidNotDetectSpeech() {
-    // eslint-disable-next-line no-console
-    console.log('speechManagerDidNotDetectSpeech');
     await this.props.endSpeechTranscriptionWithAudioSession();
   }
 
@@ -351,11 +363,23 @@ export default class HomeScreen extends Component<Props, State> {
     this.scrollView.scrollTo({ y: SCREEN_HEIGHT });
   }
 
-  tapToFocusDidReceiveFocusPoint(focusPoint: { x: number, y: number }) {
-    if (!this.cameraView) {
-      return;
-    }
-    this.cameraView.focusOnPoint(focusPoint);
+  onRequestOpenLocaleMenu() {
+    this.setState({
+      isLocaleMenuVisible: true,
+    });
+  }
+
+  onRequestDismissLocaleMenu() {
+    this.setState({
+      isLocaleMenuVisible: false,
+    });
+  }
+
+  async onRequestChangeLocale(locale: LocaleObject) {
+    await this.props.setLocale(locale);
+    this.setState({
+      isLocaleMenuVisible: false,
+    });
   }
 
   render() {
@@ -388,44 +412,30 @@ export default class HomeScreen extends Component<Props, State> {
             onScroll={onScroll}
           >
             <SafeAreaView style={styles.flex}>
-              <Animated.View style={styles.cameraPreview(this.scrollAnim)}>
-                <CameraPreviewView
-                  ref={ref => {
-                    this.cameraView = ref;
-                  }}
-                  style={styles.flex}
-                />
-                <CameraTapToFocusView
-                  style={styles.absoluteFill}
-                  onDidRequestFocusOnPoint={this.tapToFocusDidReceiveFocusPoint}
-                />
-                <ScreenGradients />
-                <LiveTranscriptionView
-                  style={styles.transcript}
-                  fontFamily={this.props.fontFamily}
-                  isCameraRecording={this.props.isCameraRecording}
-                  speechTranscription={
-                    this.state.currentVideoIdentifier
-                      ? this.props.speechTranscriptions.get(
-                          this.state.currentVideoIdentifier
-                        )
-                      : null
-                  }
-                />
-                <HomeScreenCaptureControls
-                  style={styles.captureControls}
-                  isVisible={this.state.hasCompletedSetupAfterOnboarding}
-                  onRequestBeginCapture={() => {
-                    this.captureButtonDidRequestBeginCapture();
-                  }}
-                  onRequestEndCapture={() => {
-                    this.captureButtonDidRequestEndCapture();
-                  }}
-                  onRequestOpenCameraRoll={this.scrollToCameraRoll}
-                  onRequestSwitchCamera={Camera.switchToOppositeCamera}
-                  id={this.props.videos[0]?.id}
-                />
-              </Animated.View>
+              <HomeScreenCameraPreview
+                style={styles.flex}
+                locale={this.props.locale}
+                fontFamily={this.props.fontFamily}
+                animatedScrollValue={this.scrollAnim}
+                isCameraRecording={this.props.isCameraRecording}
+                thumbnailVideoID={this.props.videos[0]?.id}
+                hasCompletedSetupAfterOnboarding={
+                  this.state.hasCompletedSetupAfterOnboarding
+                }
+                speechTranscription={
+                  this.state.videoID
+                    ? this.props.speechTranscriptions.get(this.state.videoID)
+                    : null
+                }
+                onRequestOpenCameraRoll={this.scrollToCameraRoll}
+                onRequestOpenLocaleMenu={this.onRequestOpenLocaleMenu}
+                onRequestBeginCapture={() => {
+                  this.captureButtonDidRequestBeginCapture();
+                }}
+                onRequestEndCapture={() => {
+                  this.captureButtonDidRequestEndCapture();
+                }}
+              />
             </SafeAreaView>
             <SafeAreaView style={styles.flex}>
               <View style={styles.mediaHeader}>
@@ -450,6 +460,14 @@ export default class HomeScreen extends Component<Props, State> {
             </SafeAreaView>
           </ScrollView>
         </View>
+        <LocaleMenu
+          isVisible={this.state.isLocaleMenuVisible}
+          locale={this.props.locale}
+          onRequestDismiss={this.onRequestDismissLocaleMenu}
+          onRequestChangeLocale={l => {
+            this.onRequestChangeLocale(l);
+          }}
+        />
       </View>
     );
   }

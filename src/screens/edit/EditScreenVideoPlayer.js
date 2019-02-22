@@ -20,6 +20,7 @@ import type { LineStyle } from '../../types/video';
 
 type Props = {
   video: VideoObject,
+  countryCode: ?string,
   isAppInForeground: boolean,
   isDeviceLimitedByMemory: boolean,
   isCaptionsEditorVisible: boolean,
@@ -43,6 +44,7 @@ type Props = {
   onRequestExport: () => void,
   onDidPauseCaptions: () => void,
   onDidRestartCaptions: () => void,
+  onLocaleButtonPress: () => void,
 };
 
 type State = {
@@ -339,11 +341,13 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
             </VideoCaptionsContainer>
             <EditScreenTopControls
               style={styles.editTopControls}
+              countryCode={this.props.countryCode}
               isReadyToExport={this.props.isReadyToPlay}
               onBackButtonPress={this.props.onRequestPopToHomeScreen}
               onExportButtonPress={this.props.onRequestExport}
               onStylizeButtonPress={this.props.onRequestShowRichTextEditor}
               onEditTextButtonPress={this.props.onRequestShowCaptionsEditor}
+              onLocaleButtonPress={this.props.onLocaleButtonPress}
             />
           </ScaleAnimatedView>
         )}

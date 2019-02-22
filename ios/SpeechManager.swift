@@ -9,6 +9,7 @@ protocol SpeechManagerDelegate {
   func speechManagerDidFail()
   func speechManagerDidBecomeAvailable()
   func speechManagerDidBecomeUnavailable()
+  func speechManagerDidChangeLocale(_ locale: Locale)
 }
 
 @objc
@@ -98,13 +99,41 @@ class SpeechManager: NSObject {
   @objc
   public var delegate: SpeechManagerDelegate?
 
+  @objc
+  public var locale: Locale {
+    return recognizer.locale
+  }
+
+  @objc(setLocale:)
+  public func set(locale: Locale) -> Bool {
+    guard case .ready = state else {
+      Debug.log(message: "Cannot change speech recognizer locale while recognizer is running")
+      return false
+    }
+    let recognizer = SpeechManager.createSpeechRecognizer(locale: locale)
+    self.recognizer = recognizer
+    Debug.log(format: "Changed speech recognizer locale to %@", recognizer.locale.identifier)
+    delegate?.speechManagerDidChangeLocale(locale)
+    return true
+  }
+
   override init() {
-    recognizer = SFSpeechRecognizer(locale: Locale.current) ?? SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
-    recognizer.defaultTaskHint = .dictation
-    recognizer.queue = SpeechManager.operationQueue
+    recognizer = SpeechManager.createSpeechRecognizer(locale: Locale.current)
     audioEngine = AVAudioEngine()
     super.init()
     recognizer.delegate = self
+  }
+
+  private static func createSpeechRecognizer(locale: Locale) -> SFSpeechRecognizer {
+    let recognizer = SFSpeechRecognizer(locale: locale) ?? SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
+    recognizer.defaultTaskHint = .dictation
+    recognizer.queue = SpeechManager.operationQueue
+    return recognizer
+  }
+
+  @objc
+  public func supportedLocales() -> Set<Locale> {
+    return SFSpeechRecognizer.supportedLocales()
   }
 
   public func authorize(_ callback: @escaping (Bool) -> Void) {
@@ -146,6 +175,7 @@ class SpeechManager: NSObject {
   @objc
   public func startCaptureForAudioSession(callback: @escaping (Error?, Bool) -> Void) {
     SpeechManager.operationQueue.addOperation {
+      Debug.log(format: "Starting speech recognition for live audio. Locale = %@", self.recognizer.locale.identifier)
       let request = LiveSpeechTranscriptionRequest(audioEngine: self.audioEngine, recognizer: self.recognizer, delegate: self)
       switch request.startTranscription() {
       case .ok:
@@ -162,6 +192,7 @@ class SpeechManager: NSObject {
   @objc
   public func startCapture(forAsset asset: AVAsset, callback: @escaping (Error?, Bool) -> Void) {
     SpeechManager.operationQueue.addOperation {
+      Debug.log(format: "Starting speech recognition for asset. Locale = %@", self.recognizer.locale.identifier)
       AudioUtil.extractMonoAudio(forAsset: asset) { error, monoAsset in
         if let error = error {
           Debug.log(error: error)
@@ -207,6 +238,7 @@ extension SpeechManager: SFSpeechRecognizerDelegate {
   func speechRecognizer(_: SFSpeechRecognizer, availabilityDidChange available: Bool) {
     Debug.log(format: "Speech recognizer availability changed. Available == %@", available ? "true" : "false")
     if available {
+      delegate?.speechManagerDidChangeLocale(locale)
       delegate?.speechManagerDidBecomeAvailable()
     } else {
       delegate?.speechManagerDidBecomeUnavailable()

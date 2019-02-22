@@ -5,6 +5,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import * as Color from '../../utils/Color';
 import { UI_COLORS } from '../../constants';
 
+type Props = {
+  colorHex?: string,
+  startOpacity?: number,
+};
+
 const styles = {
   topGradient: {
     position: 'absolute',
@@ -22,7 +27,10 @@ const styles = {
   },
 };
 
-export default function ScreenGradients() {
+export default function ScreenGradients({
+  colorHex = UI_COLORS.BLACK,
+  startOpacity = 0.5,
+}: Props) {
   return (
     <Fragment>
       <LinearGradient
@@ -30,8 +38,8 @@ export default function ScreenGradients() {
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         colors={[
-          Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
-          Color.hexToRgbaString(UI_COLORS.BLACK, 0.0),
+          Color.hexToRgbaString(colorHex, startOpacity),
+          Color.hexToRgbaString(colorHex, 0.0),
         ]}
         style={styles.topGradient}
       />
@@ -40,8 +48,8 @@ export default function ScreenGradients() {
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         colors={[
-          Color.hexToRgbaString(UI_COLORS.BLACK, 0.0),
-          Color.hexToRgbaString(UI_COLORS.BLACK, 0.5),
+          Color.hexToRgbaString(colorHex, 0.0),
+          Color.hexToRgbaString(colorHex, startOpacity),
         ]}
         style={styles.bottomGradient}
       />

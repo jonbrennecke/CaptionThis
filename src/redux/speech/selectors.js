@@ -1,8 +1,9 @@
 // @flow
 import { TRANSCRIPTION_STATE } from '../../constants';
+import { getLocaleID } from '../../utils/Localization';
 
 import type { AppState } from '../../types/redux';
-import type { SpeechTranscription } from '../../types/speech';
+import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 import type { VideoAssetIdentifier } from '../../types/media';
 
 export function didSpeechRecognitionFail(state: AppState): boolean {
@@ -15,9 +16,33 @@ export function getSpeechTranscriptions(
   return state.speech.speechTranscriptions;
 }
 
-export function getSpeechTranscriptionsWithKey(
+export function getSpeechTranscriptionByID(
   state: AppState,
-  key: VideoAssetIdentifier
+  id: VideoAssetIdentifier
 ): ?SpeechTranscription {
-  return state.speech.speechTranscriptions.get(key);
+  if (!state.speech.speechTranscriptions.has(id)) {
+    return null;
+  }
+  return state.speech.speechTranscriptions.get(id);
+}
+
+export function getLocale(state: AppState): ?LocaleObject {
+  return state.speech.locale;
+}
+
+export function isSpeechTranscriptionFinal(
+  state: AppState,
+  videoID: VideoAssetIdentifier
+): boolean {
+  const speechTranscription = getSpeechTranscriptionByID(state, videoID);
+  const currentLocale = state.speech.locale;
+  if (!speechTranscription || !currentLocale) {
+    return false;
+  }
+  const hasFinalizedTranscription = !!(
+    speechTranscription && speechTranscription.isFinal
+  );
+  const hasLocale =
+    getLocaleID(speechTranscription.locale) === getLocaleID(currentLocale);
+  return hasFinalizedTranscription && hasLocale;
 }
