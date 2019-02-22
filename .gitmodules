@@ -1,3 +1,4 @@
 [submodule "ios/FlagKit"]
 	path = ios/FlagKit
 	url = https://github.com/madebybowtie/FlagKit
+	ignore = dirty
