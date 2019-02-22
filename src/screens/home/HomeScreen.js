@@ -423,12 +423,12 @@ export default class HomeScreen extends Component<Props, State> {
                 animatedScrollValue={this.scrollAnim}
                 isCameraRecording={this.props.isCameraRecording}
                 thumbnailVideoID={this.props.videos[0]?.id}
-                hasCompletedSetupAfterOnboarding={this.state.hasCompletedSetupAfterOnboarding}
+                hasCompletedSetupAfterOnboarding={
+                  this.state.hasCompletedSetupAfterOnboarding
+                }
                 speechTranscription={
                   this.state.videoID
-                    ? this.props.speechTranscriptions.get(
-                        this.state.videoID
-                      )
+                    ? this.props.speechTranscriptions.get(this.state.videoID)
                     : null
                 }
                 onRequestOpenCameraRoll={this.scrollToCameraRoll}

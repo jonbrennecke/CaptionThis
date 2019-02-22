@@ -16,6 +16,7 @@ import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenLoadingBackground from './EditScreenLoadingBackground';
 import EditScreenEditCaptionsOverlay from './EditScreenEditCaptionsOverlay';
 import SpeechManager from '../../utils/SpeechManager';
+import LocaleMenu from '../../components/localization/LocaleMenu';
 import {
   willExportVideo,
   didExportVideo,
@@ -24,6 +25,7 @@ import {
   beginSpeechTranscriptionWithVideoAsset,
   receiveSpeechTranscriptionSuccess,
   receiveSpeechTranscriptionFailure,
+  setLocale,
 } from '../../redux/speech/actionCreators';
 import {
   receiveUserSelectedFontFamily,
@@ -35,6 +37,7 @@ import { isExportingVideo } from '../../redux/media/selectors';
 import {
   getSpeechTranscriptions,
   didSpeechRecognitionFail,
+  getLocale,
 } from '../../redux/speech/selectors';
 import {
   getBackgroundColor,
@@ -56,7 +59,7 @@ import type {
   Orientation,
 } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
-import type { SpeechTranscription } from '../../types/speech';
+import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 import type { LineStyle } from '../../types/video';
 import type { EmitterSubscription, ReactAppStateEnum } from '../../types/react';
 
@@ -67,6 +70,7 @@ type State = {
   isDraggingSeekbar: boolean,
   isRichTextEditorVisible: boolean,
   isCaptionsEditorVisible: boolean,
+  isLocaleMenuVisible: boolean,
 };
 
 type OwnProps = {
@@ -85,10 +89,14 @@ type StateProps = {
   lineStyle: LineStyle,
   isAppInForeground: boolean,
   isDeviceLimitedByMemory: boolean,
+  locale: ?LocaleObject,
 };
 
 type DispatchProps = {
-  beginSpeechTranscriptionWithVideoAsset: VideoAssetIdentifier => Promise<void>,
+  setLocale: (locale: LocaleObject) => Promise<void>,
+  beginSpeechTranscriptionWithVideoAsset: (
+    video: VideoAssetIdentifier
+  ) => Promise<void>,
   receiveSpeechTranscriptionSuccess: (
     VideoAssetIdentifier,
     SpeechTranscription
@@ -124,30 +132,30 @@ function mapStateToProps(state: AppState): StateProps {
     lineStyle: getLineStyle(state),
     isAppInForeground: isAppInForeground(state),
     isDeviceLimitedByMemory: isDeviceLimitedByMemory(state),
+    locale: getLocale(state),
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
-    beginSpeechTranscriptionWithVideoAsset: (id: VideoAssetIdentifier) =>
+    setLocale: locale => dispatch(setLocale(locale)),
+    beginSpeechTranscriptionWithVideoAsset: id =>
       dispatch(beginSpeechTranscriptionWithVideoAsset(id)),
-    receiveSpeechTranscriptionSuccess: (
-      id: VideoAssetIdentifier,
-      transcription: SpeechTranscription
-    ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
-    receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
+    receiveSpeechTranscriptionSuccess: (id, transcription) =>
+      dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
+    receiveSpeechTranscriptionFailure: id =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
     willExportVideo: () => dispatch(willExportVideo()),
     didExportVideo: () => dispatch(didExportVideo()),
-    receiveUserSelectedFontFamily: (fontFamily: string) =>
+    receiveUserSelectedFontFamily: fontFamily =>
       dispatch(receiveUserSelectedFontFamily(fontFamily)),
-    receiveUserSelectedTextColor: (color: ColorRGBA) =>
+    receiveUserSelectedTextColor: color =>
       dispatch(receiveUserSelectedTextColor(color)),
-    receiveUserSelectedBackgroundColor: (color: ColorRGBA) =>
+    receiveUserSelectedBackgroundColor: color =>
       dispatch(receiveUserSelectedBackgroundColor(color)),
-    receiveUserSelectedFontSize: (fontSize: number) =>
+    receiveUserSelectedFontSize: fontSize =>
       dispatch(receiveUserSelectedFontSize(fontSize)),
-    receiveAppStateChange: (appState: ReactAppStateEnum) =>
+    receiveAppStateChange: appState =>
       dispatch(receiveAppStateChange(appState)),
   };
 }
@@ -164,6 +172,7 @@ export default class EditScreen extends Component<Props, State> {
     isDraggingSeekbar: false,
     isRichTextEditorVisible: false,
     isCaptionsEditorVisible: false,
+    isLocaleMenuVisible: false,
   };
   speechManagerDidReceiveTranscriptionListener: ?EmitterSubscription;
   speechManagerDidNotDetectSpeechListener: ?EmitterSubscription;
@@ -451,7 +460,22 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   showLocaleMenu() {
-    
+    this.setState({
+      isLocaleMenuVisible: true,
+    });
+  }
+
+  dismissLocaleMenu() {
+    this.setState({
+      isLocaleMenuVisible: false,
+    });
+  }
+
+  async onRequestChangeLocale(locale: LocaleObject) {
+    await this.props.setLocale(locale);
+    this.setState({
+      isLocaleMenuVisible: false,
+    });
   }
 
   render() {
@@ -461,6 +485,7 @@ export default class EditScreen extends Component<Props, State> {
       <View style={styles.container}>
         {!hasFinalTranscription && <EditScreenLoadingBackground />}
         <EditScreenVideoPlayer
+          countryCode={this.props.locale?.country.code}
           isAppInForeground={this.props.isAppInForeground}
           isDeviceLimitedByMemory={this.props.isDeviceLimitedByMemory}
           isCaptionsEditorVisible={this.state.isCaptionsEditorVisible}
@@ -528,6 +553,14 @@ export default class EditScreen extends Component<Props, State> {
           receiveSpeechTranscriptionSuccess={
             this.props.receiveSpeechTranscriptionSuccess
           }
+        />
+        <LocaleMenu
+          isVisible={this.state.isLocaleMenuVisible}
+          locale={this.props.locale}
+          onRequestDismiss={this.dismissLocaleMenu}
+          onRequestChangeLocale={locale => {
+            this.onRequestChangeLocale(locale);
+          }}
         />
       </View>
     );

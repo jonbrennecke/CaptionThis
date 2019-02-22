@@ -15,6 +15,7 @@ import type { Style } from '../../types/react';
 
 type Props = {
   style?: ?Style,
+  countryCode: ?string,
   isReadyToExport: boolean,
   onBackButtonPress: () => void,
   onExportButtonPress: () => void,
@@ -76,6 +77,7 @@ const styles = {
 
 export default function EditScreenTopControls({
   style,
+  countryCode,
   isReadyToExport,
   onBackButtonPress,
   onExportButtonPress,
@@ -92,7 +94,7 @@ export default function EditScreenTopControls({
       </View>
       <View style={styles.buttonGroupRight}>
         <View style={styles.buttonRight}>
-          <FlagButton onPress={onLocaleButtonPress} countryCode="US" />
+          <FlagButton onPress={onLocaleButtonPress} countryCode={countryCode} />
         </View>
         <TouchableOpacity
           style={styles.buttonRight}

@@ -37,21 +37,17 @@ const styles = {
   fill: StyleSheet.absoluteFillObject,
 };
 
-export default function FlagButton({
-  style,
-  countryCode,
-  onPress,
-}: Props) {
+export default function FlagButton({ style, countryCode, onPress }: Props) {
   return (
     <TouchableOpacity
-    style={[styles.currentLocaleFlagWrap, style]}
-    onPress={onPress}
+      style={[styles.currentLocaleFlagWrap, style]}
+      onPress={onPress}
     >
-    <View style={styles.currentLocaleFlag}>
+      <View style={styles.currentLocaleFlag}>
         {countryCode && (
-        <FlagView countryCode={countryCode} style={styles.fill} />
+          <FlagView countryCode={countryCode} style={styles.fill} />
         )}
-    </View>
+      </View>
     </TouchableOpacity>
   );
 }

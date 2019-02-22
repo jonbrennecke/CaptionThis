@@ -63,7 +63,12 @@ export default class HomeScreenCameraPreview extends Component<Props> {
 
   render() {
     return (
-      <Animated.View style={[styles.cameraPreview(this.props.animatedScrollValue), this.props.style]}>
+      <Animated.View
+        style={[
+          styles.cameraPreview(this.props.animatedScrollValue),
+          this.props.style,
+        ]}
+      >
         <CameraPreviewView
           ref={ref => {
             this.cameraView = ref;
