@@ -21,13 +21,13 @@ const styles = {
     borderRadius: 12.5,
     borderWidth: 2,
     borderColor: UI_COLORS.WHITE,
-    shadowOpacity: 1,
+    shadowOpacity: 0.5,
     shadowColor: UI_COLORS.DARK_GREY,
     shadowOffset: {
       width: 1,
       height: 1,
     },
-    shadowRadius: 2,
+    shadowRadius: 1,
   },
   currentLocaleFlag: {
     ...StyleSheet.absoluteFillObject,

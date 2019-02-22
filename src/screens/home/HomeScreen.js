@@ -20,7 +20,7 @@ import * as Fonts from '../../utils/Fonts';
 import * as Screens from '../../utils/Screens';
 import * as Camera from '../../utils/Camera';
 import * as Debug from '../../utils/Debug';
-import { localeIdentfier } from '../../utils/Localization';
+import { getLocaleID } from '../../utils/Localization';
 import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
 import requireOnboardedUser from '../onboarding/requireOnboardedUser';
@@ -324,7 +324,7 @@ export default class HomeScreen extends Component<Props, State> {
     if (
       this.props.locale &&
       // $FlowFixMe
-      localeIdentfier(locale) === localeIdentfier(this.props.locale)
+      getLocaleID(locale) === getLocaleID(this.props.locale)
     ) {
       return;
     }

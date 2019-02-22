@@ -17,10 +17,10 @@ import type { VideoAssetIdentifier } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 
 type Props = {
-  videoAssetIdentifier: VideoAssetIdentifier,
+  videoID: VideoAssetIdentifier,
   isVisible: boolean,
   onRequestDismissModal: () => void,
-  speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
+  speechTranscription: ?SpeechTranscription,
   receiveSpeechTranscriptionSuccess: (
     VideoAssetIdentifier,
     SpeechTranscription
@@ -104,17 +104,9 @@ export default class EditScreenEditCaptionsOverlay extends Component<
     });
   }
 
-  getSpeechTranscription(): ?SpeechTranscription {
-    const { speechTranscriptions, videoAssetIdentifier: key } = this.props;
-    if (!speechTranscriptions.has(key)) {
-      return null;
-    }
-    return speechTranscriptions.get(key);
-  }
-
   editorDidEditSpeechTranscription(transcription: SpeechTranscription) {
     this.props.receiveSpeechTranscriptionSuccess(
-      this.props.videoAssetIdentifier,
+      this.props.videoID,
       transcription
     );
   }
@@ -154,7 +146,7 @@ export default class EditScreenEditCaptionsOverlay extends Component<
                 {this.state.editorIsVisible ? (
                   <SpeechTranscriptionEditor
                     style={styles.editor}
-                    speechTranscription={this.getSpeechTranscription()}
+                    speechTranscription={this.props.speechTranscription}
                     onDidEditSpeechTranscription={
                       this.editorDidEditSpeechTranscription
                     }

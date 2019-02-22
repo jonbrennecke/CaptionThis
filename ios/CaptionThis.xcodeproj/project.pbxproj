@@ -48,6 +48,7 @@
 		FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81321D45266007C3B3E /* SpeechManager.swift */; };
 		FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81521D45340007C3B3E /* PermissionsManager.swift */; };
 		FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */; };
+		FC6FCDA52220A2A9004772B9 /* LocaleUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */; };
 		FC7822C021E3FCB7007AA9B2 /* CutiveMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC78228B21E3FCB6007AA9B2 /* CutiveMono-Regular.ttf */; };
 		FC7822C121E3FCB7007AA9B2 /* DancingScript-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7822BC21E3FCB6007AA9B2 /* DancingScript-Regular.ttf */; };
 		FC7822C221E3FCB7007AA9B2 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7822BD21E3FCB7007AA9B2 /* Montserrat-Regular.ttf */; };
@@ -519,6 +520,8 @@
 		FC6EA81521D45340007C3B3E /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
 		FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PermissionsBridgeModule.m; sourceTree = "<group>"; };
 		FC6EA81921D45730007C3B3E /* PermissionsBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PermissionsBridgeModule.h; sourceTree = "<group>"; };
+		FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocaleUtil.m; sourceTree = "<group>"; };
+		FC6FCDD72220A2C7004772B9 /* LocaleUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocaleUtil.h; sourceTree = "<group>"; };
 		FC78228B21E3FCB6007AA9B2 /* CutiveMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "CutiveMono-Regular.ttf"; path = "../assets/fonts/CutiveMono-Regular.ttf"; sourceTree = "<group>"; };
 		FC7822BC21E3FCB6007AA9B2 /* DancingScript-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DancingScript-Regular.ttf"; path = "../assets/fonts/DancingScript-Regular.ttf"; sourceTree = "<group>"; };
 		FC7822BD21E3FCB7007AA9B2 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
@@ -1122,6 +1125,8 @@
 				FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */,
 				FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */,
 				FCD5F75421D6EA68001F2068 /* SpeechBridgeModule.h */,
+				FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */,
+				FC6FCDD72220A2C7004772B9 /* LocaleUtil.h */,
 			);
 			name = speech;
 			sourceTree = "<group>";
@@ -1786,6 +1791,7 @@
 				FC6EA41D221221BC009F3D7D /* VideoSeekbarView.swift in Sources */,
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,
 				FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */,
+				FC6FCDA52220A2A9004772B9 /* LocaleUtil.m in Sources */,
 				FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */,
 				FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */,
 				FCA3971E21DCB3B500347CAB /* VideoAnimationBridgeParams.swift in Sources */,

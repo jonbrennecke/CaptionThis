@@ -1,10 +1,9 @@
 #import "SpeechBridgeModule.h"
 #import "AppDelegate.h"
 #import "Debug.h"
+#import "LocaleUtil.h"
 #import <Photos/Photos.h>
 #import <React/RCTConvert.h>
-
-static id objectOrNull(id object) { return object ?: [NSNull null]; }
 
 @implementation SpeechBridgeModule {
   bool hasListeners;
@@ -38,29 +37,8 @@ static id objectOrNull(id object) { return object ?: [NSNull null]; }
   if (!hasListeners) {
     return;
   }
-  NSString *languageCode = locale.languageCode;
-  NSString *countryCode = locale.countryCode;
-  NSString *localizedLanguageCode =
-      [locale localizedStringForLanguageCode:languageCode];
-  NSString *localizedCountryCode =
-      [locale localizedStringForCountryCode:countryCode];
-  NSDictionary *dict = @{
-    @"language" : @{
-      @"code" : objectOrNull(languageCode),
-      @"localizedStrings" : @{
-        @"languageLocale" : objectOrNull(localizedLanguageCode),
-        @"currentLocale" : objectOrNull(localizedLanguageCode),
-      }
-    },
-    @"country" : @{
-      @"code" : objectOrNull(countryCode),
-      @"localizedStrings" : @{
-        @"languageLocale" : objectOrNull(localizedCountryCode),
-        @"currentLocale" : objectOrNull(localizedCountryCode),
-      }
-    }
-  };
-  [self sendEventWithName:@"speechManagerDidChangeLocale" body:dict];
+  NSDictionary* json = [LocaleUtil jsonify:locale];
+  [self sendEventWithName:@"speechManagerDidChangeLocale" body:json];
 }
 
 - (void)speechManagerDidReceiveSpeechTranscriptionWithIsFinal:(BOOL)isFinal
@@ -81,10 +59,12 @@ static id objectOrNull(id object) { return object ?: [NSNull null]; }
       @"substring" : segment.substring,
     }];
   }
+  NSLocale *locale = AppDelegate.sharedSpeechManager.locale;
   NSDictionary *body = @{
     @"isFinal" : @(isFinal),
     @"formattedString" : string,
-    @"segments" : segments
+    @"segments" : segments,
+    @"locale" : [LocaleUtil jsonify:locale]
   };
   [self sendEventWithName:@"speechManagerDidReceiveSpeechTranscription"
                      body:body];
@@ -190,70 +170,25 @@ RCT_EXPORT_METHOD(endSpeechTranscriptionWithAudioSession
 
 RCT_EXPORT_METHOD(getCurrentLocale : (RCTResponseSenderBlock)callback) {
   NSLocale *locale = AppDelegate.sharedSpeechManager.locale;
-  NSString *languageCode = locale.languageCode;
-  NSString *countryCode = locale.countryCode;
-  NSString *localizedLanguageCode =
-      [locale localizedStringForLanguageCode:languageCode];
-  NSString *localizedCountryCode =
-      [locale localizedStringForCountryCode:countryCode];
-  NSDictionary *dict = @{
-    @"language" : @{
-      @"code" : objectOrNull(languageCode),
-      @"localizedStrings" : @{
-        @"languageLocale" : objectOrNull(localizedLanguageCode),
-        @"currentLocale" : objectOrNull(localizedLanguageCode),
-      }
-    },
-    @"country" : @{
-      @"code" : objectOrNull(countryCode),
-      @"localizedStrings" : @{
-        @"languageLocale" : objectOrNull(localizedCountryCode),
-        @"currentLocale" : objectOrNull(localizedCountryCode),
-      }
-    }
-  };
-  callback(@[ [NSNull null], dict ]);
+  NSDictionary* json = [LocaleUtil jsonify:locale];
+  callback(@[ [NSNull null], json ]);
 }
 
 RCT_EXPORT_METHOD(getSupportedLocales : (RCTResponseSenderBlock)callback) {
   NSSet<NSLocale *> *locales =
       [AppDelegate.sharedSpeechManager supportedLocales];
-  NSMutableSet<NSDictionary *> *localizedLocaleStrings =
+  NSMutableSet<NSDictionary *> *jsonifiedLocales =
       [[NSMutableSet alloc] initWithCapacity:locales.count];
-  NSLocale *currentLocale = NSLocale.currentLocale;
   for (NSLocale *locale in locales) {
     NSString *languageCode = locale.languageCode;
     NSString *countryCode = locale.countryCode;
-    if (!countryCode) {
+    if (!languageCode || !countryCode) {
       continue;
     }
-    NSString *localizedLanguageCode =
-        [locale localizedStringForLanguageCode:languageCode];
-    NSString *localizedCountryCode =
-        [locale localizedStringForCountryCode:countryCode];
-    NSString *countryCodeInCurrentLocale =
-        [currentLocale localizedStringForCountryCode:countryCode];
-    NSString *languageCodeInCurrentLocale =
-        [currentLocale localizedStringForLanguageCode:languageCode];
-    NSDictionary *dict = @{
-      @"language" : @{
-        @"code" : objectOrNull(languageCode),
-        @"localizedStrings" : @{
-          @"languageLocale" : objectOrNull(localizedLanguageCode),
-          @"currentLocale" : objectOrNull(languageCodeInCurrentLocale),
-        }
-      },
-      @"country" : @{
-        @"code" : objectOrNull(countryCode),
-        @"localizedStrings" : @{
-          @"languageLocale" : objectOrNull(localizedCountryCode),
-          @"currentLocale" : objectOrNull(countryCodeInCurrentLocale),
-        }
-      }
-    };
-    [localizedLocaleStrings addObject:dict];
+    NSDictionary* json = [LocaleUtil jsonify:locale];
+    [jsonifiedLocales addObject:json];
   }
-  callback(@[ [NSNull null], [localizedLocaleStrings allObjects] ]);
+  callback(@[ [NSNull null], [jsonifiedLocales allObjects] ]);
 }
 
 RCT_EXPORT_METHOD(setLocale

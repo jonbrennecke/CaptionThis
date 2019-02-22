@@ -11,6 +11,7 @@ export type SpeechTranscription = {
   isFinal: boolean,
   formattedString: string,
   segments: SpeechTranscriptionSegment[],
+  locale: LocaleObject,
 };
 
 export type LocaleObject = {
