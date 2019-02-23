@@ -3,7 +3,7 @@ import CoreGraphics
 import Photos
 import UIKit
 
-fileprivate let THUMBNAIL_WIDTH: CGFloat = 70
+fileprivate let THUMBNAIL_WIDTH: CGFloat = 100
 fileprivate let THUMBNAIL_SIZE = CGSize(width: THUMBNAIL_WIDTH, height: THUMBNAIL_WIDTH * 4 / 3)
 
 @objc
@@ -57,7 +57,8 @@ class VideoThumbnailView: UIView {
   private func loadThumbnail(forAsset asset: PHAsset, withSize size: CGSize) -> PHImageRequestID {
     let requestOptions = PHImageRequestOptions()
     requestOptions.isSynchronous = false
-    requestOptions.deliveryMode = .fastFormat
+    requestOptions.resizeMode = .fast
+    requestOptions.deliveryMode = .opportunistic
     let pixelSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
     let orientation = OrientationUtil.orientation(forSize: pixelSize)
     return VideoThumbnailView.imageManager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: requestOptions) { [weak self] image, _ in
