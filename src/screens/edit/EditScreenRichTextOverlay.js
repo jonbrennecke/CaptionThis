@@ -13,7 +13,7 @@ import type { LineStyle } from '../../types/video';
 
 type Props = {
   style?: ?Style,
-  hasFinalTranscription: boolean,
+  isReadyToPlay: boolean,
   isVisible: boolean,
   duration: number,
   fontFamily: string,
@@ -79,7 +79,7 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
             style={styles.flex}
             duration={this.props.duration}
             isVisible={this.props.isVisible}
-            hasFinalTranscription={this.props.hasFinalTranscription}
+            isReadyToPlay={this.props.isReadyToPlay}
             speechTranscription={this.props.speechTranscription}
             fontSize={this.props.fontSize}
             fontFamily={this.props.fontFamily}

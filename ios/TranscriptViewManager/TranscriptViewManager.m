@@ -2,6 +2,7 @@
 #import "TranscriptViewManager.h"
 #import "CaptionThis-Swift.h"
 #import "RCTConvert+UIImageOrientation.h"
+#import "Debug.h"
 #import <React/RCTBridge.h>
 #import <React/RCTConvert.h>
 #import <React/RCTUIManager.h>
@@ -79,6 +80,7 @@ RCT_CUSTOM_VIEW_PROPERTY(isReadyToPlay, BOOL, CaptionsView) {
     return;
   }
   BOOL isReadyToPlay = [RCTConvert BOOL:json];
+  [Debug logWithFormat:@"Captions are ready to play = %@", isReadyToPlay ? @"true" : @"false", nil];
   if (isReadyToPlay) {
     [view resume];
   } else {

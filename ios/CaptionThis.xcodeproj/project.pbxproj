@@ -759,7 +759,7 @@
 				FCD5F75321D6EA55001F2068 /* speech */,
 				FC7A0F8621D8AB5D00751DBE /* HueGradientViewManager */,
 				FC7A0F6121D89CCC00751DBE /* SaturationAndBrightnessGradientViewManager */,
-				FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */,
+				FCD5F7A521D8110F001F2068 /* seekbar */,
 				FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */,
 				FC9374E621DEED6700FD2700 /* TranscriptViewManager */,
 				FC6EA421221230CA009F3D7D /* DeviceBridgeModule */,
@@ -1183,14 +1183,14 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */ = {
+		FCD5F7A521D8110F001F2068 /* seekbar */ = {
 			isa = PBXGroup;
 			children = (
 				FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */,
 				FCD5F7A421D8110C001F2068 /* VideoSeekbarPreviewViewManager.h */,
 				FC6EA41C221221BC009F3D7D /* VideoSeekbarView.swift */,
 			);
-			name = VideoSeekbarPreviewViewManager;
+			name = seekbar;
 			sourceTree = "<group>";
 		};
 		FCDA6F1521FD07E100FA8345 /* RCTConvert */ = {

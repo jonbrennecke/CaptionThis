@@ -22,7 +22,7 @@ import type { LineStyle } from '../../types/video';
 
 type Props = {
   style?: ?Style,
-  hasFinalTranscription: boolean,
+  isReadyToPlay: boolean,
   isVisible: boolean,
   fontSize: number,
   fontFamily: string,
@@ -227,7 +227,7 @@ export default class RichTextEditor extends Component<Props, State> {
           ref={ref => {
             this.captionsView = ref;
           }}
-          hasFinalTranscription={this.props.hasFinalTranscription}
+          isReadyToPlay={this.props.isReadyToPlay}
           style={styles.transcription}
           orientation="up"
           duration={this.props.duration}

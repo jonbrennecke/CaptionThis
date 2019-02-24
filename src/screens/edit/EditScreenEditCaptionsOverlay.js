@@ -133,33 +133,35 @@ export default class EditScreenEditCaptionsOverlay extends Component<
         }}
       >
         <View style={styles.fullScreen}>
-          <KeyboardAvoidingView
-            style={styles.flex}
-            keyboardVerticalOffset={-(this.state.bottomSafeAreaInset || 0) + 7}
-          >
-            <SafeAreaView style={styles.safeArea}>
-              <View style={styles.mainContentsBackground} />
-              <FadeInOutAnimatedView
-                style={styles.mainContents}
-                isVisible={this.state.editorIsVisible}
-              >
-                {this.state.editorIsVisible ? (
-                  <SpeechTranscriptionEditor
-                    style={styles.editor}
-                    speechTranscription={this.props.speechTranscription}
-                    onDidEditSpeechTranscription={
-                      this.editorDidEditSpeechTranscription
-                    }
-                  />
-                ) : null}
-              </FadeInOutAnimatedView>
-              <Button
-                style={styles.button}
-                text="Done"
-                onPress={this.props.onRequestDismissModal}
-              />
-            </SafeAreaView>
-          </KeyboardAvoidingView>
+          {this.props.isVisible ? (
+            <KeyboardAvoidingView
+              style={styles.flex}
+              keyboardVerticalOffset={-(this.state.bottomSafeAreaInset || 0) + 7}
+            >
+              <SafeAreaView style={styles.safeArea}>
+                <View style={styles.mainContentsBackground} />
+                <FadeInOutAnimatedView
+                  style={styles.mainContents}
+                  isVisible={this.state.editorIsVisible}
+                >
+                  {this.state.editorIsVisible ? (
+                    <SpeechTranscriptionEditor
+                      style={styles.editor}
+                      speechTranscription={this.props.speechTranscription}
+                      onDidEditSpeechTranscription={
+                        this.editorDidEditSpeechTranscription
+                      }
+                    />
+                  ) : null}
+                </FadeInOutAnimatedView>
+                <Button
+                  style={styles.button}
+                  text="Done"
+                  onPress={this.props.onRequestDismissModal}
+                />
+              </SafeAreaView>
+            </KeyboardAvoidingView>
+          ) : null}
         </View>
       </BottomSheetModal>
     );
