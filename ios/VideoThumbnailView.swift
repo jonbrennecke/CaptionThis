@@ -3,10 +3,14 @@ import CoreGraphics
 import Photos
 import UIKit
 
+fileprivate let THUMBNAIL_WIDTH: CGFloat = 100
+fileprivate let THUMBNAIL_SIZE = CGSize(width: THUMBNAIL_WIDTH, height: THUMBNAIL_WIDTH * 4 / 3)
+
 @objc
 class VideoThumbnailView: UIView {
-  private let imageView = UIImageView()
   private static let queue = DispatchQueue(label: "thumbnail loading queue")
+  private static let imageManager = PHCachingImageManager()
+  private let imageView = UIImageView()
   private var requestID: PHImageRequestID?
 
   override init(frame: CGRect) {
@@ -24,6 +28,14 @@ class VideoThumbnailView: UIView {
       cancelLoadingThumbnail(requestID: id)
     }
   }
+  
+  @objc(startCachingImages:)
+  public static func startCaching(images: [PHAsset]) {
+    imageManager.startCachingImages(for: images,
+                                                targetSize: THUMBNAIL_SIZE,
+                                                contentMode: .aspectFill,
+                                                options: nil)
+  }
 
   override func layoutSubviews() {
     super.layoutSubviews()
@@ -36,9 +48,8 @@ class VideoThumbnailView: UIView {
       guard let asset = self.asset else {
         return
       }
-      let size = frame.size.equalTo(.zero) ? CGSize(width: 100, height: 100 * 4 / 3) : frame.size
-      VideoThumbnailView.queue.async {
-        self.requestID = self.loadThumbnail(forAsset: asset, withSize: size)
+      VideoThumbnailView.queue.async { [weak self] in
+        self?.requestID = self?.loadThumbnail(forAsset: asset, withSize: THUMBNAIL_SIZE)
       }
     }
   }
@@ -46,10 +57,11 @@ class VideoThumbnailView: UIView {
   private func loadThumbnail(forAsset asset: PHAsset, withSize size: CGSize) -> PHImageRequestID {
     let requestOptions = PHImageRequestOptions()
     requestOptions.isSynchronous = false
-    requestOptions.deliveryMode = .highQualityFormat
+    requestOptions.resizeMode = .fast
+    requestOptions.deliveryMode = .opportunistic
     let pixelSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
     let orientation = OrientationUtil.orientation(forSize: pixelSize)
-    return PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: requestOptions) { [weak self] image, _ in
+    return VideoThumbnailView.imageManager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: requestOptions) { [weak self] image, _ in
       guard let image = image else {
         return
       }

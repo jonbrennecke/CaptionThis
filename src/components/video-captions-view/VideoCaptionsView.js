@@ -21,7 +21,7 @@ type Props = {
   fontFamily: string,
   fontSize: number,
   speechTranscription: ?SpeechTranscription,
-  hasFinalTranscription: boolean,
+  isReadyToPlay: boolean,
   lineStyle: 'oneLine' | 'twoLines',
   onPress?: () => void,
 };
@@ -42,28 +42,28 @@ export default class VideoCaptionsView extends Component<Props> {
   nativeComponentRef: ?ReactNativeFiberHostComponent;
 
   restart() {
-    if (!this.nativeComponentRef || !this.props.hasFinalTranscription) {
+    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
       return;
     }
     TranscriptViewManager.restart(this.nativeComponentRef._nativeTag);
   }
 
   pause() {
-    if (!this.nativeComponentRef || !this.props.hasFinalTranscription) {
+    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
       return;
     }
     TranscriptViewManager.pause(this.nativeComponentRef._nativeTag);
   }
 
   seekToTime(time: number) {
-    if (!this.nativeComponentRef || !this.props.hasFinalTranscription) {
+    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
       return;
     }
     TranscriptViewManager.seekToTime(this.nativeComponentRef._nativeTag, time);
   }
 
   play() {
-    if (!this.nativeComponentRef || !this.props.hasFinalTranscription) {
+    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
       return;
     }
     TranscriptViewManager.play(this.nativeComponentRef._nativeTag);
@@ -88,7 +88,7 @@ export default class VideoCaptionsView extends Component<Props> {
             this.nativeComponentRef = ref;
           }}
           style={styles.flex}
-          isReadyToPlay={this.props.hasFinalTranscription}
+          isReadyToPlay={this.props.isReadyToPlay}
           animationParams={{
             textSegments,
             orientation: this.props.orientation,

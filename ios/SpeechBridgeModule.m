@@ -37,7 +37,7 @@
   if (!hasListeners) {
     return;
   }
-  NSDictionary* json = [LocaleUtil jsonify:locale];
+  NSDictionary *json = [LocaleUtil jsonify:locale];
   [self sendEventWithName:@"speechManagerDidChangeLocale" body:json];
 }
 
@@ -170,7 +170,7 @@ RCT_EXPORT_METHOD(endSpeechTranscriptionWithAudioSession
 
 RCT_EXPORT_METHOD(getCurrentLocale : (RCTResponseSenderBlock)callback) {
   NSLocale *locale = AppDelegate.sharedSpeechManager.locale;
-  NSDictionary* json = [LocaleUtil jsonify:locale];
+  NSDictionary *json = [LocaleUtil jsonify:locale];
   callback(@[ [NSNull null], json ]);
 }
 
@@ -185,7 +185,7 @@ RCT_EXPORT_METHOD(getSupportedLocales : (RCTResponseSenderBlock)callback) {
     if (!languageCode || !countryCode) {
       continue;
     }
-    NSDictionary* json = [LocaleUtil jsonify:locale];
+    NSDictionary *json = [LocaleUtil jsonify:locale];
     [jsonifiedLocales addObject:json];
   }
   callback(@[ [NSNull null], [jsonifiedLocales allObjects] ]);

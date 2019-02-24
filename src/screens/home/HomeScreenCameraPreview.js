@@ -58,7 +58,10 @@ export default class HomeScreenCameraPreview extends Component<Props> {
   cameraView: ?CameraPreviewView;
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.hasCompletedSetupAfterOnboarding && !prevProps.hasCompletedSetupAfterOnboarding) {
+    if (
+      this.props.hasCompletedSetupAfterOnboarding &&
+      !prevProps.hasCompletedSetupAfterOnboarding
+    ) {
       if (this.cameraView) {
         this.cameraView.setUp();
       }

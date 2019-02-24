@@ -77,6 +77,7 @@ RCT_EXPORT_METHOD(getVideos : (RCTResponseSenderBlock)callback) {
       [AppDelegate.sharedMediaLibraryManager getVideosFromLibrary];
   NSMutableArray<NSDictionary *> *videos =
       [[NSMutableArray alloc] initWithCapacity:assets.count];
+   [VideoThumbnailView startCachingImages:assets];
   [assets enumerateObjectsUsingBlock:^(PHAsset *_Nonnull asset, NSUInteger idx,
                                        BOOL *_Nonnull stop) {
     if (asset == nil) {

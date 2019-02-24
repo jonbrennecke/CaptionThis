@@ -21,7 +21,7 @@ const styles = {
   },
   flag: {},
   currentLocaleFlagWrap: {
-    backgroundColor: 'transparent',
+    backgroundColor: UI_COLORS.DARK_GREY,
     height: 35,
     width: 35,
     borderRadius: 17.5,

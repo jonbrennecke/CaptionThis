@@ -16,6 +16,8 @@ type Props = {
 
 const styles = {
   container: {
+    backgroundColor: UI_COLORS.DARK_GREY,
+    borderRadius: 5,
     shadowColor: UI_COLORS.BLACK,
     shadowOpacity: 0.25,
     shadowOffset: {

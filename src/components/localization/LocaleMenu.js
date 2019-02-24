@@ -63,22 +63,24 @@ export default class LocaleMenu extends Component<Props, State> {
         onRequestDismissModal={this.props.onRequestDismiss}
       >
         <View style={styles.fill}>
-          <SafeAreaView style={styles.flex}>
-            <ScrollView>
-              <FlagList
-                style={styles.flex}
-                locales={this.state.locales}
-                currentLocale={this.props.locale}
-                onDidSelectLocale={this.props.onRequestChangeLocale}
+          {this.props.isVisible ? (
+            <SafeAreaView style={styles.flex}>
+              <ScrollView>
+                <FlagList
+                  style={styles.flex}
+                  locales={this.state.locales}
+                  currentLocale={this.props.locale}
+                  onDidSelectLocale={this.props.onRequestChangeLocale}
+                />
+              </ScrollView>
+              <ScreenGradients colorHex={UI_COLORS.DARK_GREY} startOpacity={1} />
+              <Button
+                style={styles.button}
+                text="Done"
+                onPress={this.props.onRequestDismiss}
               />
-            </ScrollView>
-            <ScreenGradients colorHex={UI_COLORS.DARK_GREY} startOpacity={1} />
-            <Button
-              style={styles.button}
-              text="Done"
-              onPress={this.props.onRequestDismiss}
-            />
-          </SafeAreaView>
+            </SafeAreaView>
+          ) : null}
         </View>
       </BottomSheetModal>
     );

@@ -1,13 +1,16 @@
 import Photos
 import UIKit
 
-let SEEKBAR_NUMBER_OF_PREVIEW_FRAMES: UInt = 10
+fileprivate let SEEKBAR_NUMBER_OF_PREVIEW_FRAMES: UInt = 10
+fileprivate let THUMBNAIL_WIDTH = 100
+fileprivate let THUMBNAIL_SIZE = CGSize(width: THUMBNAIL_WIDTH, height: THUMBNAIL_WIDTH * 16 / 9)
 
 @objc(VideoSeekbarView)
 class VideoSeekbarView: UIView {
   private var imageViews: [UIImageView] = []
   private var requestID: PHImageRequestID?
 
+  private static let imageManager = PHCachingImageManager()
   private static let queue = DispatchQueue(label: "seekbar preview view queue")
 
   init() {
@@ -32,7 +35,7 @@ class VideoSeekbarView: UIView {
   }
 
   private func cancelLoadingVideo(requestID: PHImageRequestID) {
-    PHImageManager.default().cancelImageRequest(requestID)
+    VideoSeekbarView.imageManager.cancelImageRequest(requestID)
   }
 
   override func layoutSubviews() {
@@ -63,8 +66,8 @@ class VideoSeekbarView: UIView {
       return
     }
     let videoRequestOptions = PHVideoRequestOptions()
-    videoRequestOptions.deliveryMode = .highQualityFormat
-    requestID = PHImageManager.default().requestAVAsset(forVideo: asset, options: videoRequestOptions) { asset, _, _ in
+    videoRequestOptions.deliveryMode = .automatic
+    requestID = VideoSeekbarView.imageManager.requestAVAsset(forVideo: asset, options: videoRequestOptions) { asset, _, _ in
       guard let asset = asset else {
         Debug.log(message: "Failed to generate asset for seekbar preview images")
         return
@@ -85,6 +88,7 @@ class VideoSeekbarView: UIView {
       let time = CMTimeMakeWithSeconds(seconds, preferredTimescale: 600)
       times.append(time as NSValue)
     }
+    assetImageGenerator.maximumSize = THUMBNAIL_SIZE
     assetImageGenerator.generateCGImagesAsynchronously(forTimes: times) { requestedTime, cgImage, _, _, error in
       if let error = error {
         Debug.log(error: error)

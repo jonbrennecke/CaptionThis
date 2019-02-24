@@ -478,7 +478,7 @@ export default class EditScreen extends Component<Props, State> {
           isCaptionsEditorVisible={this.state.isCaptionsEditorVisible}
           isExportingVideo={this.props.isExportingVideo}
           video={this.props.video}
-          isReadyToPlay={this.props.isSpeechTranscriptionFinal}
+          isSpeechTranscriptionFinal={this.props.isSpeechTranscriptionFinal}
           duration={this.state.duration}
           orientation={this.state.orientation || 'up'}
           lineStyle={this.props.lineStyle}
@@ -510,7 +510,7 @@ export default class EditScreen extends Component<Props, State> {
           ref={ref => {
             this.richTextOverlay = ref;
           }}
-          hasFinalTranscription={this.props.isSpeechTranscriptionFinal}
+          isReadyToPlay={this.props.isSpeechTranscriptionFinal}
           duration={this.state.duration}
           isVisible={this.state.isRichTextEditorVisible}
           lineStyle={this.props.lineStyle}

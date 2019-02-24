@@ -24,7 +24,7 @@ type Props = {
   isAppInForeground: boolean,
   isDeviceLimitedByMemory: boolean,
   isCaptionsEditorVisible: boolean,
-  isReadyToPlay: boolean,
+  isSpeechTranscriptionFinal: boolean,
   isExportingVideo: boolean,
   duration: number,
   duration: number,
@@ -195,7 +195,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
   ) {
     this.props.onRequestChangeDuration(duration);
     this.props.onRequestChangeOrientation(orientation);
-    if (!this.props.isReadyToPlay) {
+    if (!this.props.isSpeechTranscriptionFinal) {
       this.pausePlayerAndCaptions();
     } else {
       this.restartPlayerAndCaptions();
@@ -293,10 +293,10 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
 
   render() {
     const showSeekbar =
-      this.props.isReadyToPlay && !this.props.isDeviceLimitedByMemory;
+      this.props.isSpeechTranscriptionFinal && !this.props.isDeviceLimitedByMemory;
     return (
       <SafeAreaView style={styles.flex}>
-        {this.props.isReadyToPlay && (
+        {this.props.isSpeechTranscriptionFinal && (
           <ScaleAnimatedView
             style={styles.videoWrap}
             isVisible={this.state.isVideoReadyToPlay}
@@ -327,7 +327,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                   this.captionsView = ref;
                 }}
                 style={styles.flex}
-                hasFinalTranscription={this.props.isReadyToPlay}
+                isReadyToPlay={this.state.isVideoReadyToPlay && this.props.isSpeechTranscriptionFinal}
                 orientation={this.props.orientation}
                 duration={this.props.duration}
                 lineStyle={this.props.lineStyle}
@@ -342,7 +342,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
             <EditScreenTopControls
               style={styles.editTopControls}
               countryCode={this.props.countryCode}
-              isReadyToExport={this.props.isReadyToPlay}
+              isReadyToExport={this.props.isSpeechTranscriptionFinal}
               onBackButtonPress={this.props.onRequestPopToHomeScreen}
               onExportButtonPress={this.props.onRequestExport}
               onStylizeButtonPress={this.props.onRequestShowRichTextEditor}

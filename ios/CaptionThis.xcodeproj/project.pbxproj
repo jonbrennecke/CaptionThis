@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -743,7 +744,6 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				FC6EA7E721D4508D007C3B3E /* CaptionThis-Bridging-Header.h */,
-				FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */,
 				FC6EA81521D45340007C3B3E /* PermissionsManager.swift */,
 				FCA3971721DC93AF00347CAB /* constants.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
@@ -753,13 +753,13 @@
 				FC6FCDD82220ACD7004772B9 /* camera */,
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
 				FC880D8E21D49AD400856037 /* CameraPreviewViewManager */,
-				FC880E0021D54B3F00856037 /* MediaLibraryBridgeModule */,
+				FC880E0021D54B3F00856037 /* media */,
 				FC880E0421D5DC4600856037 /* VideoThumbnailViewManager */,
 				FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */,
 				FCD5F75321D6EA55001F2068 /* speech */,
 				FC7A0F8621D8AB5D00751DBE /* HueGradientViewManager */,
 				FC7A0F6121D89CCC00751DBE /* SaturationAndBrightnessGradientViewManager */,
-				FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */,
+				FCD5F7A521D8110F001F2068 /* seekbar */,
 				FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */,
 				FC9374E621DEED6700FD2700 /* TranscriptViewManager */,
 				FC6EA421221230CA009F3D7D /* DeviceBridgeModule */,
@@ -1077,13 +1077,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FC880E0021D54B3F00856037 /* MediaLibraryBridgeModule */ = {
+		FC880E0021D54B3F00856037 /* media */ = {
 			isa = PBXGroup;
 			children = (
+				FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */,
 				FC880DFF21D54B3A00856037 /* MediaLibraryBridgeModule.h */,
 				FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */,
 			);
-			path = MediaLibraryBridgeModule;
+			path = media;
 			sourceTree = "<group>";
 		};
 		FC880E0421D5DC4600856037 /* VideoThumbnailViewManager */ = {
@@ -1182,14 +1183,14 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		FCD5F7A521D8110F001F2068 /* VideoSeekbarPreviewViewManager */ = {
+		FCD5F7A521D8110F001F2068 /* seekbar */ = {
 			isa = PBXGroup;
 			children = (
 				FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */,
 				FCD5F7A421D8110C001F2068 /* VideoSeekbarPreviewViewManager.h */,
 				FC6EA41C221221BC009F3D7D /* VideoSeekbarView.swift */,
 			);
-			name = VideoSeekbarPreviewViewManager;
+			name = seekbar;
 			sourceTree = "<group>";
 		};
 		FCDA6F1521FD07E100FA8345 /* RCTConvert */ = {
@@ -1199,14 +1200,6 @@
 				FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */,
 			);
 			path = RCTConvert;
-			sourceTree = "<group>";
-		};
-		3F2C9F721B3D4A51AD3A2CB1 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1788,6 +1781,20 @@
 			shellPath = /bin/sh;
 			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
+		24E681E5CCC043E3B8A6CAF2 /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
+		};
 		FC1FE69321E57C6C005F657A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1804,20 +1811,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run e2a16b2ee9e5ab20283a39f6569c56ab442d60a1 7908792284df8cc3a0ca13333df30bc9f80f50a3561e2869f5283cff1ded890d\n";
-		};
-		24E681E5CCC043E3B8A6CAF2 /* Upload Debug Symbols to Sentry */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			name = "Upload Debug Symbols to Sentry";
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
 		};
 /* End PBXShellScriptBuildPhase section */
 

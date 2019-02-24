@@ -7,10 +7,9 @@ class VideoAnimationLayer: CALayer {
   private enum State {
     case playing
     case paused
-    case none
   }
 
-  private var state: State = .none
+  private var state: State = .paused
 
   private var isPaused: Bool {
     guard case .paused = state else {
