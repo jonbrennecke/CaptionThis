@@ -51,17 +51,18 @@ const styles = {
     opacity: anim,
   }),
   nextButton: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderStyle: 'solid',
-    borderColor: UI_COLORS.OFF_WHITE,
+    borderColor: UI_COLORS.WHITE,
+    backgroundColor: 'transparent',
     marginTop: 25,
   },
   heading: {
-    ...Fonts.getFontStyle('title', { contentStyle: 'darkContent' }),
+    ...Fonts.getFontStyle('title', { contentStyle: 'lightContent' }),
     textAlign: 'center',
   },
   paragraph: {
-    ...Fonts.getFontStyle('default', { contentStyle: 'darkContent' }),
+    ...Fonts.getFontStyle('default', { contentStyle: 'lightContent' }),
     textAlign: 'center',
     marginVertical: 15,
   },

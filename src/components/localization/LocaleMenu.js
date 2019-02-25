@@ -38,6 +38,7 @@ const styles = {
   },
   button: {
     backgroundColor: UI_COLORS.MEDIUM_GREY,
+    margin: 7,
   },
   buttonText: Fonts.getFontStyle('button', { contentStyle: 'lightContent' }),
 };
