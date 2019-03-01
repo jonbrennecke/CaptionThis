@@ -5,6 +5,7 @@ import CaptureButton from '../../components/capture-button/CaptureButton';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
 import HomeScreenCameraRollButton from './HomeScreenCameraRollButton';
 import SlideUpAnimatedView from '../../components/animations/SlideUpAnimatedView';
+import CaptionPresetStylesPicker from '../../components/caption-preset-styles-picker/CaptionPresetStylesPicker';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
@@ -43,6 +44,10 @@ const styles = {
   flex: {
     flex: 1,
   },
+  preset: {
+    height: 50,
+    flex: 1,
+  },
 };
 
 export default function HomeScreenBottomCameraControls({
@@ -60,7 +65,8 @@ export default function HomeScreenBottomCameraControls({
       isVisible={isVisible}
       delay={1000}
     >
-      <HomeScreenCameraRollButton
+      <CaptionPresetStylesPicker style={styles.preset} />
+      {/* <HomeScreenCameraRollButton
         id={video}
         onPress={onRequestOpenCameraRoll}
         style={styles.cameraRollButton}
@@ -72,7 +78,7 @@ export default function HomeScreenBottomCameraControls({
       <SwitchCameraButton
         style={styles.switchCameraButton}
         onRequestSwitchCamera={onRequestSwitchCamera}
-      />
+      /> */}
     </SlideUpAnimatedView>
   );
 }

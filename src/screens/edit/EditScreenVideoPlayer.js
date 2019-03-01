@@ -293,7 +293,8 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
 
   render() {
     const showSeekbar =
-      this.props.isSpeechTranscriptionFinal && !this.props.isDeviceLimitedByMemory;
+      this.props.isSpeechTranscriptionFinal &&
+      !this.props.isDeviceLimitedByMemory;
     return (
       <SafeAreaView style={styles.flex}>
         {this.props.isSpeechTranscriptionFinal && (
@@ -327,7 +328,10 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                   this.captionsView = ref;
                 }}
                 style={styles.flex}
-                isReadyToPlay={this.state.isVideoReadyToPlay && this.props.isSpeechTranscriptionFinal}
+                isReadyToPlay={
+                  this.state.isVideoReadyToPlay &&
+                  this.props.isSpeechTranscriptionFinal
+                }
                 orientation={this.props.orientation}
                 duration={this.props.duration}
                 lineStyle={this.props.lineStyle}

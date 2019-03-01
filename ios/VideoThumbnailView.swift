@@ -28,13 +28,13 @@ class VideoThumbnailView: UIView {
       cancelLoadingThumbnail(requestID: id)
     }
   }
-  
+
   @objc(startCachingImages:)
   public static func startCaching(images: [PHAsset]) {
     imageManager.startCachingImages(for: images,
-                                                targetSize: THUMBNAIL_SIZE,
-                                                contentMode: .aspectFill,
-                                                options: nil)
+                                    targetSize: THUMBNAIL_SIZE,
+                                    contentMode: .aspectFill,
+                                    options: nil)
   }
 
   override func layoutSubviews() {
