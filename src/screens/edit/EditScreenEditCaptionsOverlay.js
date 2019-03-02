@@ -6,7 +6,7 @@ import { autobind } from 'core-decorators';
 import SafeArea, { withSafeArea } from 'react-native-safe-area';
 
 import Button from '../../components/button/Button';
-import SpeechTranscriptionEditor from '../../components/speech-transcription-editor/SpeechTranscriptionEditor';
+import CaptionsEditor from '../../components/captions-editor/CaptionsEditor';
 import BottomSheetModal from '../../components/bottom-sheet-modal/BottomSheetModal';
 import KeyboardAvoidingView from '../../components/keyboard-avoiding-view/KeyboardAvoidingView';
 import FadeInOutAnimatedView from '../../components/animations/FadeInOutAnimatedView';
@@ -145,7 +145,7 @@ export default class EditScreenEditCaptionsOverlay extends Component<
                   isVisible={this.state.editorIsVisible}
                 >
                   {this.state.editorIsVisible ? (
-                    <SpeechTranscriptionEditor
+                    <CaptionsEditor
                       style={styles.editor}
                       speechTranscription={this.props.speechTranscription}
                       onDidEditSpeechTranscription={

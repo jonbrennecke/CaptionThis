@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
 
-import SpeechTranscriptionSegmentInput from './SpeechTranscriptionSegmentInput';
+import CaptionsSegmentInput from './CaptionsSegmentInput';
 
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
@@ -23,13 +23,13 @@ const styles = {
   },
   list: {
     paddingTop: 32,
-    flexDirection: 'row',
+    flexDirection: 'column',
     flexWrap: 1,
     paddingHorizontal: 34,
   },
 };
 
-export default function SpeechTranscriptionEditor({
+export default function CaptionsEditor({
   style,
   speechTranscription,
   onDidEditSpeechTranscription,
@@ -47,7 +47,7 @@ export default function SpeechTranscriptionEditor({
       >
         <View style={styles.list}>
           {(speechTranscription?.segments || []).map((segment, index) => (
-            <SpeechTranscriptionSegmentInput
+            <CaptionsSegmentInput
               key={`${segment.duration}-${index}`}
               segment={segment}
               autoFocus={index === 0}

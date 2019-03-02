@@ -84,7 +84,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class SpeechTranscriptionSegmentInput extends Component<
+export default class CaptionsSegmentInput extends Component<
   Props,
   State
 > {

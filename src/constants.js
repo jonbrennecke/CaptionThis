@@ -204,7 +204,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
     style: {
       color: TEXT_COLORS.DARK_GREY,
       fontFamily: FONT_FAMILIES.ROBOTO,
-      fontSize: 20,
+      fontSize: 17,
     },
     modifiers: [
       {
