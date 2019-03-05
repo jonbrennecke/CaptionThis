@@ -111,7 +111,36 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
 class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .none
 
-  func applyWordStyle(key _: CaptionPresetLayerKey, layer: CALayer, textAlignment _: CaptionPresetTextAlignment) {
-    layer.backgroundColor = UIColor.white.cgColor
+  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment) {
+    layer.sublayers = nil
+    let sublayer = CALayer()
+    sublayer.backgroundColor = UIColor.white.cgColor
+    let args = bounds(key: key, layer: layer, textAlignment: textAlignment)
+    sublayer.anchorPoint = args.anchorPoint
+    sublayer.position = args.position
+    sublayer.bounds = args.bounds
+    layer.addSublayer(sublayer)
+  }
+  
+  private func bounds(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment) -> (bounds: CGRect, anchorPoint: CGPoint, position: CGPoint) {
+    if key == .a {
+      let bounds = CGRect(origin: .zero, size: CGSize(width: layer.bounds.width, height: layer.bounds.height))
+      return (bounds: bounds, anchorPoint: .zero, position: .zero)
+    }
+    switch textAlignment {
+    case .center:
+      let position = CGPoint(x: layer.bounds.width / 2, y: 0)
+      let anchorPoint = CGPoint(x: 0.5, y: 0)
+      let bounds = CGRect(origin: .zero, size: CGSize(width: layer.bounds.width * 0.75, height: layer.bounds.height))
+      return (bounds: bounds, anchorPoint: anchorPoint, position: position)
+    case .left:
+      let bounds = CGRect(origin: .zero, size: CGSize(width: layer.bounds.width * 0.75, height: layer.bounds.height))
+      return (bounds: bounds, anchorPoint: .zero, position: .zero)
+    case .right:
+      let position = CGPoint(x: layer.bounds.width, y: 0)
+      let anchorPoint = CGPoint(x: 1, y: 0)
+      let bounds = CGRect(origin: .zero, size: CGSize(width: layer.bounds.width * 0.75, height: layer.bounds.height))
+      return (bounds: bounds, anchorPoint: anchorPoint, position: position)
+    }
   }
 }

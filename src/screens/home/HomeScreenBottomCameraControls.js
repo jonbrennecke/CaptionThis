@@ -1,11 +1,13 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
+import { View } from 'react-native';
 
 import CaptureButton from '../../components/capture-button/CaptureButton';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
 import HomeScreenCameraRollButton from './HomeScreenCameraRollButton';
+import HomeScreenPresetStylesBottomSheet from './HomeScreenPresetStylesBottomSheet';
 import SlideUpAnimatedView from '../../components/animations/SlideUpAnimatedView';
-import CaptionPresetStylesPicker from '../../components/caption-preset-styles-picker/CaptionPresetStylesPicker';
+import HomeScreenPresetStylesButton from './HomeScreenPresetStylesButton';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
@@ -18,6 +20,10 @@ type Props = {
   onRequestOpenCameraRoll: () => void,
   onRequestSwitchCamera: () => void,
   video: ?VideoAssetIdentifier,
+};
+
+type State = {
+  isPresetSheetVisible: boolean,
 };
 
 const styles = {
@@ -48,37 +54,58 @@ const styles = {
     height: 50,
     flex: 1,
   },
+  leftSideButtons: {
+    flex: 1
+  },
+  rightSideButtons: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 25,
+  },
+  captionPresetButton: {
+    height: 37,
+    width: 37,
+  },
 };
 
-export default function HomeScreenBottomCameraControls({
-  style,
-  isVisible,
-  onRequestBeginCapture,
-  onRequestEndCapture,
-  onRequestOpenCameraRoll,
-  onRequestSwitchCamera,
-  video,
-}: Props) {
-  return (
-    <SlideUpAnimatedView
-      style={[styles.container, style]}
-      isVisible={isVisible}
-      delay={1000}
-    >
-      <CaptionPresetStylesPicker style={styles.preset} />
-      {/* <HomeScreenCameraRollButton
-        id={video}
-        onPress={onRequestOpenCameraRoll}
-        style={styles.cameraRollButton}
-      />
-      <CaptureButton
-        onRequestBeginCapture={onRequestBeginCapture}
-        onRequestEndCapture={onRequestEndCapture}
-      />
-      <SwitchCameraButton
-        style={styles.switchCameraButton}
-        onRequestSwitchCamera={onRequestSwitchCamera}
-      /> */}
-    </SlideUpAnimatedView>
-  );
+export default class HomeScreenBottomCameraControls extends Component<Props, State> {
+  state = {
+    isPresetSheetVisible: false,
+  };
+
+  render() {
+    return (
+      <SlideUpAnimatedView
+        style={[styles.container, this.props.style]}
+        isVisible={this.props.isVisible}
+        delay={1000}
+      >
+        <View style={styles.leftSideButtons}>
+          <HomeScreenCameraRollButton
+            id={this.props.video}
+            onPress={this.props.onRequestOpenCameraRoll}
+            style={styles.cameraRollButton}
+          />
+        </View>
+        <CaptureButton
+          onRequestBeginCapture={this.props.onRequestBeginCapture}
+          onRequestEndCapture={this.props.onRequestEndCapture}
+        />
+        <View style={styles.rightSideButtons}>
+          <HomeScreenPresetStylesButton
+            style={styles.captionPresetButton}
+            onPress={() => this.setState({ isPresetSheetVisible: true })}
+          />
+          <SwitchCameraButton
+            style={styles.switchCameraButton}
+            onRequestSwitchCamera={this.props.onRequestSwitchCamera}
+          />
+        </View>
+        <HomeScreenPresetStylesBottomSheet
+          isVisible={this.state.isPresetSheetVisible}
+        />
+      </SlideUpAnimatedView>
+    );
+  }
 }

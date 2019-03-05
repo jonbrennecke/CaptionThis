@@ -29,7 +29,7 @@ const styles = {
     ...StyleSheet.absoluteFill,
   },
   simulatorPreviewView: {
-    backgroundColor: UI_COLORS.DARK_GREY,
+    backgroundColor: UI_COLORS.LIGHT_GREY,
     ...StyleSheet.absoluteFill,
     alignItems: 'center',
     justifyContent: 'center',
