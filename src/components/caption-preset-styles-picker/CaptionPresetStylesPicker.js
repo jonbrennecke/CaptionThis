@@ -31,6 +31,7 @@ const styles = {
     padding: 5,
   }),
   leftPadding: {
+    backgroundColor: 'transparent',
     width: (SCREEN_WIDTH - PRESET_WIDTH) / 2,
   }
 };
