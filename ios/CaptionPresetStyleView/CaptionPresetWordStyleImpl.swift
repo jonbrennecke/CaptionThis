@@ -3,37 +3,57 @@ import UIKit
 
 protocol CaptionPresetWordStyleImpl {
   var wordStyle: CaptionPresetWordStyle { get }
-  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer)
+  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment)
 }
 
 class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .animated
 
-  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer) {
+  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment) {
     layer.sublayers = nil
     let sublayer = CALayer()
     sublayer.backgroundColor = UIColor.white.cgColor
-    sublayer.position = .zero
-    sublayer.anchorPoint = .zero
-    let animations = createAnimations(forKey: key, layer: layer)
+    let (from: fromBounds, to: toBounds, anchorPoint, position) = bounds(layer: layer, textAlignment: textAlignment)
+    sublayer.anchorPoint = anchorPoint
+    sublayer.position = position
+    let animations = createAnimations(key: key, from: fromBounds, to: toBounds)
     sublayer.add(animations, forKey: "wordStyleAnimation")
     layer.addSublayer(sublayer)
   }
-
-  func createAnimations(forKey key: CaptionPresetLayerKey, layer: CALayer) -> CAAnimationGroup {
-    switch key {
-    case .a:
-      return createAnimationsForLineA(layer: layer)
-    case .b:
-      return createAnimationsForLineB(layer: layer)
-    case .c:
-      return createAnimationsForLineC(layer: layer)
+  
+  private func bounds(layer: CALayer, textAlignment: CaptionPresetTextAlignment) -> (from: CGRect, to: CGRect, anchorPoint: CGPoint, position: CGPoint) {
+    switch textAlignment {
+    case .center:
+      let position = CGPoint(x: layer.bounds.width / 2, y: 0)
+      let anchorPoint = CGPoint(x: 0.5, y: 0)
+      let fromBounds = CGRect(origin: .zero, size: CGSize(width: 0, height: layer.bounds.height))
+      let toBounds = CGRect(origin: .zero, size: layer.bounds.size)
+      return (from: fromBounds, to: toBounds, anchorPoint: anchorPoint, position: position)
+    case .left:
+      let fromBounds = CGRect(origin: .zero, size: CGSize(width: 0, height: layer.bounds.height))
+      let toBounds = CGRect(origin: .zero, size: layer.bounds.size)
+      return (from: fromBounds, to: toBounds, anchorPoint: .zero, position: .zero)
+    case .right:
+      let position = CGPoint(x: layer.bounds.width, y: 0)
+      let anchorPoint = CGPoint(x: 1, y: 0)
+      let fromBounds = CGRect(origin: .zero, size: CGSize(width: 0, height: layer.bounds.height))
+      let toBounds = CGRect(origin: .zero, size: layer.bounds.size)
+      return (from: fromBounds, to: toBounds, anchorPoint: anchorPoint, position: position)
     }
   }
 
-  func createAnimationsForLineA(layer: CALayer) -> CAAnimationGroup {
-    let fromBounds = CGRect(origin: layer.bounds.origin, size: CGSize(width: 0, height: layer.bounds.height))
-    let toBounds = CGRect(origin: layer.bounds.origin, size: layer.bounds.size)
+  private func createAnimations(key: CaptionPresetLayerKey, from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
+    switch key {
+    case .a:
+      return createAnimationsForLineA(from: fromBounds, to: toBounds)
+    case .b:
+      return createAnimationsForLineB(from: fromBounds, to: toBounds)
+    case .c:
+      return createAnimationsForLineC(from: fromBounds, to: toBounds)
+    }
+  }
+
+  private func createAnimationsForLineA(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     group.animations = AnimationListBuilder()
@@ -50,9 +70,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     return group
   }
 
-  func createAnimationsForLineB(layer: CALayer) -> CAAnimationGroup {
-    let fromBounds = CGRect(origin: layer.bounds.origin, size: CGSize(width: 0, height: layer.bounds.height))
-    let toBounds = CGRect(origin: layer.bounds.origin, size: layer.bounds.size)
+  private func createAnimationsForLineB(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     group.animations = AnimationListBuilder()
@@ -70,9 +88,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     return group
   }
 
-  func createAnimationsForLineC(layer: CALayer) -> CAAnimationGroup {
-    let fromBounds = CGRect(origin: layer.bounds.origin, size: CGSize(width: 0, height: layer.bounds.height))
-    let toBounds = CGRect(origin: layer.bounds.origin, size: layer.bounds.size)
+  private func createAnimationsForLineC(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     group.animations = AnimationListBuilder()
@@ -95,7 +111,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
 class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .none
 
-  func applyWordStyle(key _: CaptionPresetLayerKey, layer: CALayer) {
+  func applyWordStyle(key _: CaptionPresetLayerKey, layer: CALayer, textAlignment _: CaptionPresetTextAlignment) {
     layer.backgroundColor = UIColor.white.cgColor
   }
 }

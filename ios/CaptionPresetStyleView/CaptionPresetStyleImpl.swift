@@ -76,8 +76,8 @@ class CaptionPresetStyleImpl {
     layer.removeAllAnimations()
     let animation = lineStyleImpl.animate(key: key, layer: layer, parentLayer: parentLayer)
     layer.add(animation, forKey: "lineStyleAnimation")
-
-    wordStyleImpl.applyWordStyle(key: key, layer: layer)
+    
+    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: textAlignment)
   }
 
   private func layerOrigin(forKey key: CaptionPresetLayerKey, parentLayer: CALayer) -> CGPoint {

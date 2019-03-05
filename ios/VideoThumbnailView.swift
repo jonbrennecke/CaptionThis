@@ -65,15 +65,17 @@ class VideoThumbnailView: UIView {
       guard let image = image else {
         return
       }
-      switch orientation {
-      case .right, .rightMirrored, .left, .leftMirrored:
-        self?.imageView.contentMode = .scaleAspectFit
-        self?.setLandscapeImageBackground(withImage: image)
-        break
-      default:
-        self?.imageView.contentMode = .scaleAspectFill
+      DispatchQueue.main.async {
+        switch orientation {
+        case .right, .rightMirrored, .left, .leftMirrored:
+          self?.imageView.contentMode = .scaleAspectFit
+          self?.setLandscapeImageBackground(withImage: image)
+          break
+        default:
+          self?.imageView.contentMode = .scaleAspectFill
+        }
+        self?.imageView.image = image
       }
-      self?.imageView.image = image
     }
   }
 

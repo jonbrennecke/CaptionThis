@@ -49,6 +49,18 @@ export default function CaptionPresetStylesPicker({ style }: Props) {
       />
       <CaptionPresetStyleView
         style={styles.captionPreset(false)}
+        textAlignment="left"
+        lineStyle="translateY"
+        wordStyle="animated"
+      />
+      <CaptionPresetStyleView
+        style={styles.captionPreset(false)}
+        textAlignment="center"
+        lineStyle="translateY"
+        wordStyle="animated"
+      />
+      <CaptionPresetStyleView
+        style={styles.captionPreset(false)}
         textAlignment="right"
         lineStyle="translateY"
         wordStyle="animated"
