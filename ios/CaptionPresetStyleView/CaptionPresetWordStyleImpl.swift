@@ -20,7 +20,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     sublayer.add(animations, forKey: "wordStyleAnimation")
     layer.addSublayer(sublayer)
   }
-  
+
   private func bounds(layer: CALayer, textAlignment: CaptionPresetTextAlignment) -> (from: CGRect, to: CGRect, anchorPoint: CGPoint, position: CGPoint) {
     switch textAlignment {
     case .center:

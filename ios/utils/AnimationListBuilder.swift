@@ -49,3 +49,29 @@ class BoundsAnimationStep: AnimationBuilderStep {
     return AnimationUtil.animateBounds(from: fromBounds, to: toBounds, at: beginTime, duration: duration)
   }
 }
+
+class FadeInAnimationStep: AnimationBuilderStep {
+  func animate(at beginTime: CFTimeInterval, duration: CFTimeInterval) -> CAAnimation {
+    return AnimationUtil.fadeIn(at: beginTime, duration: duration)
+  }
+}
+
+class FadeOutAnimationStep: AnimationBuilderStep {
+  func animate(at beginTime: CFTimeInterval, duration: CFTimeInterval) -> CAAnimation {
+    return AnimationUtil.fadeOut(at: beginTime, duration: duration)
+  }
+}
+
+class PositionAnimationStep: AnimationBuilderStep {
+  private let fromPosition: CGPoint
+  private let toPosition: CGPoint
+
+  init(from fromPosition: CGPoint, to toPosition: CGPoint) {
+    self.fromPosition = fromPosition
+    self.toPosition = toPosition
+  }
+
+  func animate(at beginTime: CFTimeInterval, duration: CFTimeInterval) -> CAAnimation {
+    return AnimationUtil.animatePosition(from: fromPosition, to: toPosition, at: beginTime, duration: duration)
+  }
+}
