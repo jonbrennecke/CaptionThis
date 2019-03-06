@@ -11,6 +11,7 @@ import HomeScreenPresetStylesButton from './HomeScreenPresetStylesButton';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
+import type { PresetObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -24,7 +25,41 @@ type Props = {
 
 type State = {
   isPresetSheetVisible: boolean,
+  preset: PresetObject,
 };
+
+const PRESET_STYLES: PresetObject[] = [
+  {
+    textAlignment: 'left',
+    lineStyle: 'translateY',
+    wordStyle: 'animated',
+  },
+  {
+    textAlignment: 'right',
+    lineStyle: 'translateY',
+    wordStyle: 'animated',
+  },
+  {
+    textAlignment: 'center',
+    lineStyle: 'translateY',
+    wordStyle: 'animated',
+  },
+  {
+    textAlignment: 'center',
+    lineStyle: 'fadeInOut',
+    wordStyle: 'none',
+  },
+  {
+    textAlignment: 'left',
+    lineStyle: 'fadeInOut',
+    wordStyle: 'none',
+  },
+  {
+    textAlignment: 'right',
+    lineStyle: 'fadeInOut',
+    wordStyle: 'none',
+  },
+];
 
 const styles = {
   container: {
@@ -55,7 +90,7 @@ const styles = {
     flex: 1,
   },
   leftSideButtons: {
-    flex: 1
+    flex: 1,
   },
   rightSideButtons: {
     flex: 1,
@@ -69,9 +104,13 @@ const styles = {
   },
 };
 
-export default class HomeScreenBottomCameraControls extends Component<Props, State> {
+export default class HomeScreenBottomCameraControls extends Component<
+  Props,
+  State
+> {
   state = {
     isPresetSheetVisible: false,
+    preset: PRESET_STYLES[0],
   };
 
   render() {
@@ -104,6 +143,9 @@ export default class HomeScreenBottomCameraControls extends Component<Props, Sta
         </View>
         <HomeScreenPresetStylesBottomSheet
           isVisible={this.state.isPresetSheetVisible}
+          currentPreset={this.state.preset}
+          presets={PRESET_STYLES}
+          onRequestSelectPreset={preset => this.setState({ preset })}
         />
       </SlideUpAnimatedView>
     );

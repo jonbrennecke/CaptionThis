@@ -121,7 +121,7 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     sublayer.bounds = args.bounds
     layer.addSublayer(sublayer)
   }
-  
+
   private func bounds(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment) -> (bounds: CGRect, anchorPoint: CGPoint, position: CGPoint) {
     if key == .a {
       let bounds = CGRect(origin: .zero, size: CGSize(width: layer.bounds.width, height: layer.bounds.height))

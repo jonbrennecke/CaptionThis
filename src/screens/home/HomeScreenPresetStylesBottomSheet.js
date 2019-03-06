@@ -9,10 +9,14 @@ import CaptionPresetStylesPicker from '../../components/caption-preset-styles-pi
 import BottomSheetAnimatedView from '../../components/animations/BottomSheetAnimatedView';
 
 import type { Style } from '../../types/react';
+import type { PresetObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
   isVisible: boolean,
+  currentPreset: PresetObject,
+  presets: PresetObject[],
+  onRequestSelectPreset: PresetObject => void,
 };
 
 const styles = {
@@ -22,7 +26,7 @@ const styles = {
     right: 0,
     bottom: 0,
     height: 100,
-    backgroundColor: UI_COLORS.DARK_GREY,
+    backgroundColor: UI_COLORS.BLACK,
     paddingTop: 15,
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
@@ -35,23 +39,33 @@ const styles = {
     width: 50,
   },
   rightGradient: {
-    // ...StyleSheet.absoluteFillObject,
     position: 'absolute',
     right: 0,
     top: 0,
     bottom: 0,
     width: 50,
-  }
+  },
 };
 
 export default function HomeScreenPresetStylesBottomSheet({
   style,
-  isVisible
+  currentPreset,
+  presets,
+  onRequestSelectPreset,
+  isVisible,
 }: Props) {
-  const colorHex = UI_COLORS.DARK_GREY;
+  const colorHex = UI_COLORS.BLACK;
   return (
-    <BottomSheetAnimatedView isVisible={isVisible} style={[styles.container, style]}>
-      <CaptionPresetStylesPicker style={styles.presets} />
+    <BottomSheetAnimatedView
+      isVisible={isVisible}
+      style={[styles.container, style]}
+    >
+      <CaptionPresetStylesPicker
+        style={styles.presets}
+        presets={presets}
+        currentPreset={currentPreset}
+        onRequestSelectPreset={onRequestSelectPreset}
+      />
       <LinearGradient
         pointerEvents="none"
         start={{ x: 0, y: 0 }}

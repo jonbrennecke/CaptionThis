@@ -37,14 +37,11 @@ const styles = {
   },
   captionPreset: {
     flex: 1,
-    padding: 4
+    padding: 4,
   },
 };
 
-export default function HomeScreePresetStylesButton({
-  style,
-  onPress,
-}: Props) {
+export default function HomeScreePresetStylesButton({ style, onPress }: Props) {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <CaptionPresetStyleView
