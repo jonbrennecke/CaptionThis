@@ -5,9 +5,8 @@ import { View } from 'react-native';
 import CaptureButton from '../../components/capture-button/CaptureButton';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
 import HomeScreenCameraRollButton from './HomeScreenCameraRollButton';
-import HomeScreenPresetStylesBottomSheet from './HomeScreenPresetStylesBottomSheet';
+import HomeScreenPresetStyles from './HomeScreenPresetStyles';
 import SlideUpAnimatedView from '../../components/animations/SlideUpAnimatedView';
-import HomeScreenPresetStylesButton from './HomeScreenPresetStylesButton';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
@@ -62,12 +61,15 @@ const PRESET_STYLES: PresetObject[] = [
 ];
 
 const styles = {
-  container: {
+  container: {},
+  rowWrap: {
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 24,
     flexDirection: 'row',
+    paddingTop: 35,
     paddingHorizontal: 35,
+    paddingBottom: 5,
   },
   cameraRollButton: {
     height: 37,
@@ -91,12 +93,13 @@ const styles = {
   },
   leftSideButtons: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   rightSideButtons: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginLeft: 25,
+    justifyContent: 'flex-end',
   },
   captionPresetButton: {
     height: 37,
@@ -109,45 +112,43 @@ export default class HomeScreenBottomCameraControls extends Component<
   State
 > {
   state = {
-    isPresetSheetVisible: false,
+    isPresetSheetVisible: true,
     preset: PRESET_STYLES[0],
   };
 
   render() {
     return (
-      <SlideUpAnimatedView
-        style={[styles.container, this.props.style]}
-        isVisible={this.props.isVisible}
-        delay={1000}
-      >
-        <View style={styles.leftSideButtons}>
-          <HomeScreenCameraRollButton
-            id={this.props.video}
-            onPress={this.props.onRequestOpenCameraRoll}
-            style={styles.cameraRollButton}
+      <View style={[styles.container, this.props.style]}>
+        <SlideUpAnimatedView
+          style={styles.rowWrap}
+          isVisible={this.props.isVisible}
+          delay={1000}
+        >
+          <View style={styles.leftSideButtons}>
+            <HomeScreenCameraRollButton
+              id={this.props.video}
+              onPress={this.props.onRequestOpenCameraRoll}
+              style={styles.cameraRollButton}
+            />
+          </View>
+          <CaptureButton
+            onRequestBeginCapture={this.props.onRequestBeginCapture}
+            onRequestEndCapture={this.props.onRequestEndCapture}
           />
-        </View>
-        <CaptureButton
-          onRequestBeginCapture={this.props.onRequestBeginCapture}
-          onRequestEndCapture={this.props.onRequestEndCapture}
-        />
-        <View style={styles.rightSideButtons}>
-          <HomeScreenPresetStylesButton
-            style={styles.captionPresetButton}
-            onPress={() => this.setState({ isPresetSheetVisible: true })}
-          />
-          <SwitchCameraButton
-            style={styles.switchCameraButton}
-            onRequestSwitchCamera={this.props.onRequestSwitchCamera}
-          />
-        </View>
-        <HomeScreenPresetStylesBottomSheet
+          <View style={styles.rightSideButtons}>
+            <SwitchCameraButton
+              style={styles.switchCameraButton}
+              onRequestSwitchCamera={this.props.onRequestSwitchCamera}
+            />
+          </View>
+        </SlideUpAnimatedView>
+        <HomeScreenPresetStyles
           isVisible={this.state.isPresetSheetVisible}
-          currentPreset={this.state.preset}
           presets={PRESET_STYLES}
+          currentPreset={this.state.preset}
           onRequestSelectPreset={preset => this.setState({ preset })}
         />
-      </SlideUpAnimatedView>
+      </View>
     );
   }
 }

@@ -24,8 +24,8 @@ type State = {
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const PRESET_WIDTH = 50;
-const PRESET_HEIGHT = 50;
+const PRESET_WIDTH = 45;
+const PRESET_HEIGHT = 45;
 const LEFT_PADDING = (SCREEN_WIDTH - PRESET_WIDTH) / 2;
 const RIGHT_PADDING = (SCREEN_WIDTH - PRESET_WIDTH) / 2;
 
@@ -90,10 +90,12 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
     });
   }
 
-  onScrollViewDidEndDrag() {
+  onScrollViewDidEndDrag(event: any) {
     this.setState({
       isDragging: false,
     });
+    const { contentOffset } = event.nativeEvent;
+    this.scrollToPresetAtScrollOffset(contentOffset.x);
   }
 
   render() {

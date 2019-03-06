@@ -4,6 +4,7 @@ import { Animated, Easing, View, TouchableOpacity } from 'react-native';
 import { autobind } from 'core-decorators';
 
 import { UI_COLORS } from '../../constants';
+import * as Color from '../../utils/Color';
 
 import type { Style, Children } from '../../types/react';
 
@@ -17,7 +18,9 @@ type Props = {
   onAnimationOutDidEnd?: () => void,
 };
 
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(
+  TouchableOpacity
+);
 
 const styles = {
   captionPresetWrap: (
@@ -56,7 +59,7 @@ const styles = {
   borderInner: {
     borderRadius: 6,
     padding: 5,
-    backgroundColor: UI_COLORS.MEDIUM_GREY,
+    backgroundColor: Color.hexToRgbaString(UI_COLORS.MEDIUM_GREY, 0.2),
     flex: 1,
   },
 };
