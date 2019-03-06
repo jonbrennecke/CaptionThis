@@ -1,18 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  ScrollView,
-  View,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import { ScrollView, View, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import isEqual from 'lodash/isEqual';
 import clamp from 'lodash/clamp';
 import round from 'lodash/round';
 
-import { UI_COLORS } from '../../constants';
 import CaptionPresetStyleView from './CaptionPresetStyleView';
+import CaptionPresetAnimatedBorderView from './CaptionPresetAnimatedBorderView';
 
 import type { Style } from '../../types/react';
 import type { PresetObject } from '../../types/video';
@@ -39,38 +34,6 @@ const styles = {
     flexDirection: 'row',
     paddingVertical: 10,
   },
-  captionPresetWrap: (isSelected: boolean) => ({
-    height: PRESET_HEIGHT,
-    width: PRESET_WIDTH,
-    marginRight: 10,
-    transform: [
-      {
-        scale: isSelected ? 1.25 : 1,
-      },
-    ],
-  }),
-  border: (isSelected: boolean) => ({
-    borderWidth: 1.5,
-    borderColor: isSelected ? UI_COLORS.WHITE : 'transparent',
-    overflow: 'hidden',
-    borderRadius: 6,
-    position: 'absolute',
-    height: PRESET_HEIGHT,
-    width: PRESET_WIDTH,
-    shadowOffset: {
-      width: 0,
-      height: 0.2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    shadowColor: UI_COLORS.BLACK,
-  }),
-  borderInner: {
-    borderRadius: 6,
-    padding: 5,
-    backgroundColor: UI_COLORS.MEDIUM_GREY,
-    flex: 1,
-  },
   captionPreset: {
     flex: 1,
   },
@@ -89,7 +52,7 @@ const styles = {
 export default class CaptionPresetStylesPicker extends Component<Props, State> {
   scrollView: ?ScrollView;
   state = {
-    isDragging: false
+    isDragging: false,
   };
 
   onScrollViewDidScroll(event: any) {
@@ -123,13 +86,13 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
 
   onScrollViewDidBeginDrag() {
     this.setState({
-      isDragging: true
+      isDragging: true,
     });
   }
 
   onScrollViewDidEndDrag() {
     this.setState({
-      isDragging: false
+      isDragging: false,
     });
   }
 
@@ -152,21 +115,19 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
         {this.props.presets.map((preset, index) => {
           const isSelected = isEqual(preset, this.props.currentPreset);
           return (
-            <TouchableOpacity
+            <CaptionPresetAnimatedBorderView
+              isSelected={isSelected}
               key={`${preset.lineStyle}+${preset.textAlignment}`}
-              style={styles.captionPresetWrap(isSelected)}
+              size={{ width: PRESET_WIDTH, height: PRESET_HEIGHT }}
               onPress={() => this.scrollToPresetAtIndex(index)}
             >
-              <View style={styles.borderInner}>
-                <CaptionPresetStyleView
-                  style={styles.captionPreset}
-                  textAlignment={preset.textAlignment}
-                  lineStyle={preset.lineStyle}
-                  wordStyle={preset.wordStyle}
-                />
-              </View>
-              <View style={styles.border(isSelected)}/>
-            </TouchableOpacity>
+              <CaptionPresetStyleView
+                style={styles.captionPreset}
+                textAlignment={preset.textAlignment}
+                lineStyle={preset.lineStyle}
+                wordStyle={preset.wordStyle}
+              />
+            </CaptionPresetAnimatedBorderView>
           );
         })}
         <View style={styles.rightPadding} />
