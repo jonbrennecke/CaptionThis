@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   ScrollView,
   View,
   Dimensions,
@@ -23,6 +22,10 @@ type Props = {
   presets: PresetObject[],
   currentPreset: PresetObject,
   onRequestSelectPreset: PresetObject => void,
+};
+
+type State = {
+  isDragging: boolean,
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -83,10 +86,13 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class CaptionPresetStylesPicker extends Component<Props> {
+export default class CaptionPresetStylesPicker extends Component<Props, State> {
   scrollView: ?ScrollView;
+  state = {
+    isDragging: false
+  };
 
-  onScroll(event: any) {
+  onScrollViewDidScroll(event: any) {
     const { contentOffset } = event.nativeEvent;
     const indexFloat = contentOffset.x / (PRESET_WIDTH + 10);
     const index = clamp(round(indexFloat), 0, this.props.presets.length);
@@ -94,7 +100,7 @@ export default class CaptionPresetStylesPicker extends Component<Props> {
     this.props.onRequestSelectPreset(preset);
   }
 
-  onMomentumScrollEnd(event: any) {
+  onScrollViewDidEndMomentumScroll(event: any) {
     const { contentOffset } = event.nativeEvent;
     this.scrollToPresetAtScrollOffset(contentOffset.x);
   }
@@ -102,17 +108,28 @@ export default class CaptionPresetStylesPicker extends Component<Props> {
   scrollToPresetAtScrollOffset(scrollOffset: number) {
     const indexFloat = scrollOffset / (PRESET_WIDTH + 10);
     const index = clamp(round(indexFloat), 0, this.props.presets.length);
-    const preset = this.props.presets[index];
-    this.scrollToPresetAtIndex(index, preset);
+    this.scrollToPresetAtIndex(index);
   }
 
-  scrollToPresetAtIndex(index: number, preset: PresetObject) {
+  scrollToPresetAtIndex(index: number) {
     if (!this.scrollView) {
       return;
     }
     this.scrollView.scrollTo({
       x: index * (PRESET_WIDTH + 10),
       animated: true,
+    });
+  }
+
+  onScrollViewDidBeginDrag() {
+    this.setState({
+      isDragging: true
+    });
+  }
+
+  onScrollViewDidEndDrag() {
+    this.setState({
+      isDragging: false
     });
   }
 
@@ -125,9 +142,11 @@ export default class CaptionPresetStylesPicker extends Component<Props> {
         horizontal
         style={[styles.container, this.props.style]}
         showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={16}
-        onScroll={this.onScroll}
-        onMomentumScrollEnd={this.onMomentumScrollEnd}
+        onScroll={this.onScrollViewDidScroll}
+        scrollEventThrottle={this.state.isDragging ? 16 : 0}
+        onMomentumScrollEnd={this.onScrollViewDidEndMomentumScroll}
+        onScrollBeginDrag={this.onScrollViewDidBeginDrag}
+        onScrollEndDrag={this.onScrollViewDidEndDrag}
       >
         <View style={styles.leftPadding} />
         {this.props.presets.map((preset, index) => {
@@ -136,7 +155,7 @@ export default class CaptionPresetStylesPicker extends Component<Props> {
             <TouchableOpacity
               key={`${preset.lineStyle}+${preset.textAlignment}`}
               style={styles.captionPresetWrap(isSelected)}
-              onPress={() => this.scrollToPresetAtIndex(index, preset)}
+              onPress={() => this.scrollToPresetAtIndex(index)}
             >
               <View style={styles.borderInner}>
                 <CaptionPresetStyleView
