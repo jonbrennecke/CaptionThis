@@ -3,11 +3,11 @@ import Foundation
 class CaptionPresetStyleImplFactory {
   private init() { /* unimplemented */ }
 
-  public static func impl(forPreset preset: CaptionPreset) -> CaptionPresetStyleImpl {
-    let lineStyleImpl = impl(forLineStyle: preset.lineStyle)
-    let textAlignmentImpl = impl(forTextAlignment: preset.textAlignment)
-    let wordStyleImpl = impl(forWordStyle: preset.wordStyle)
-    let backgroundStyleImpl = impl(forBackgroundStyle: preset.backgroundStyle)
+  public static func impl(forStyle style: CaptionPresetStyle) -> CaptionPresetStyleImpl {
+    let lineStyleImpl = impl(forLineStyle: style.lineStyle)
+    let textAlignmentImpl = impl(forTextAlignment: style.textAlignment)
+    let wordStyleImpl = impl(forWordStyle: style.wordStyle)
+    let backgroundStyleImpl = impl(forBackgroundStyle: style.backgroundStyle)
     return CaptionPresetStyleImpl(
       lineStyleImpl: lineStyleImpl,
       textAlignmentImpl: textAlignmentImpl,

@@ -10,7 +10,7 @@ enum CaptionPresetBackgroundStyle: Int {
   case gradient
 }
 
-struct CaptionPreset {
+struct CaptionPresetStyle {
   public let wordStyle: CaptionPresetWordStyle
   public let lineStyle: CaptionPresetLineStyle
   public let textAlignment: CaptionPresetTextAlignment

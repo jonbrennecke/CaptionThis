@@ -15,8 +15,8 @@ class CaptionPresetStyleLayer: CALayer {
     return impl.backgroundStyle
   }
 
-  init(preset: CaptionPreset) {
-    impl = CaptionPresetStyleImplFactory.impl(forPreset: preset)
+  init(style: CaptionPresetStyle) {
+    impl = CaptionPresetStyleImplFactory.impl(forStyle: style)
     super.init()
     contentsScale = UIScreen.main.scale
     masksToBounds = true

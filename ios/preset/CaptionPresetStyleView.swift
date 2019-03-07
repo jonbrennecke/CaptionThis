@@ -4,14 +4,14 @@ import UIKit
 class CaptionPresetStyleView: UIView {
   private var presetLayer: CaptionPresetStyleLayer?
 
-  private var preset = CaptionPreset(
+  private var style = CaptionPresetStyle(
     wordStyle: .none,
     lineStyle: .fadeInOut,
     textAlignment: .left,
     backgroundStyle: .solid
   ) {
     didSet {
-      presetLayer = CaptionPresetStyleLayer(preset: preset)
+      presetLayer = CaptionPresetStyleLayer(style: style)
       presetLayer!.frame = bounds
       layer.sublayers = nil
       layer.addSublayer(presetLayer!)
@@ -21,14 +21,14 @@ class CaptionPresetStyleView: UIView {
   @objc
   public var textAlignment: CaptionPresetTextAlignment {
     get {
-      return preset.textAlignment
+      return style.textAlignment
     }
     set {
-      preset = CaptionPreset(
-        wordStyle: preset.wordStyle,
-        lineStyle: preset.lineStyle,
+      style = CaptionPresetStyle(
+        wordStyle: style.wordStyle,
+        lineStyle: style.lineStyle,
         textAlignment: newValue,
-        backgroundStyle: preset.backgroundStyle
+        backgroundStyle: style.backgroundStyle
       )
     }
   }
@@ -36,14 +36,14 @@ class CaptionPresetStyleView: UIView {
   @objc
   public var lineStyle: CaptionPresetLineStyle {
     get {
-      return preset.lineStyle
+      return style.lineStyle
     }
     set {
-      preset = CaptionPreset(
-        wordStyle: preset.wordStyle,
+      style = CaptionPresetStyle(
+        wordStyle: style.wordStyle,
         lineStyle: newValue,
-        textAlignment: preset.textAlignment,
-        backgroundStyle: preset.backgroundStyle
+        textAlignment: style.textAlignment,
+        backgroundStyle: style.backgroundStyle
       )
     }
   }
@@ -51,14 +51,14 @@ class CaptionPresetStyleView: UIView {
   @objc
   public var wordStyle: CaptionPresetWordStyle {
     get {
-      return preset.wordStyle
+      return style.wordStyle
     }
     set {
-      preset = CaptionPreset(
+      style = CaptionPresetStyle(
         wordStyle: newValue,
-        lineStyle: preset.lineStyle,
-        textAlignment: preset.textAlignment,
-        backgroundStyle: preset.backgroundStyle
+        lineStyle: style.lineStyle,
+        textAlignment: style.textAlignment,
+        backgroundStyle: style.backgroundStyle
       )
     }
   }
@@ -66,13 +66,13 @@ class CaptionPresetStyleView: UIView {
   @objc
   public var backgroundStyle: CaptionPresetBackgroundStyle {
     get {
-      return preset.backgroundStyle
+      return style.backgroundStyle
     }
     set {
-      preset = CaptionPreset(
-        wordStyle: preset.wordStyle,
-        lineStyle: preset.lineStyle,
-        textAlignment: preset.textAlignment,
+      style = CaptionPresetStyle(
+        wordStyle: style.wordStyle,
+        lineStyle: style.lineStyle,
+        textAlignment: style.textAlignment,
         backgroundStyle: newValue
       )
     }
@@ -80,7 +80,7 @@ class CaptionPresetStyleView: UIView {
 
   init() {
     super.init(frame: .zero)
-    presetLayer = CaptionPresetStyleLayer(preset: preset)
+    presetLayer = CaptionPresetStyleLayer(style: style)
     presetLayer!.frame = bounds
     layer.addSublayer(presetLayer!)
   }
