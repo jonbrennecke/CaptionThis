@@ -4,7 +4,7 @@
 
 RCT_ENUM_CONVERTER(CaptionPresetBackgroundStyle, (@{
                                               @"solid" : @(CaptionPresetBackgroundStyleSolid),
-                                              @"gradient" : @(CaptionPresetBackgroundStyleSolid)
+                                              @"gradient" : @(CaptionPresetBackgroundStyleGradient)
                                               }),
                    CaptionPresetBackgroundStyleSolid, integerValue)
 

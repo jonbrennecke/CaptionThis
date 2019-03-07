@@ -58,7 +58,7 @@ const styles = {
   }),
   borderInner: {
     borderRadius: 6,
-    padding: 5,
+    overflow: 'hidden',
     backgroundColor: Color.hexToRgbaString(UI_COLORS.MEDIUM_GREY, 0.2),
     flex: 1,
   },

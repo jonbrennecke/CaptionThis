@@ -8,7 +8,8 @@ class CaptionPresetStyleView: UIView {
     wordStyle: .none,
     lineStyle: .fadeInOut,
     textAlignment: .left,
-    backgroundStyle: .solid
+    backgroundStyle: .solid,
+    backgroundColor: .white
   ) {
     didSet {
       presetLayer = CaptionPresetStyleLayer(style: style)
@@ -28,7 +29,8 @@ class CaptionPresetStyleView: UIView {
         wordStyle: style.wordStyle,
         lineStyle: style.lineStyle,
         textAlignment: newValue,
-        backgroundStyle: style.backgroundStyle
+        backgroundStyle: style.backgroundStyle,
+        backgroundColor: style.backgroundColor
       )
     }
   }
@@ -43,7 +45,8 @@ class CaptionPresetStyleView: UIView {
         wordStyle: style.wordStyle,
         lineStyle: newValue,
         textAlignment: style.textAlignment,
-        backgroundStyle: style.backgroundStyle
+        backgroundStyle: style.backgroundStyle,
+        backgroundColor: style.backgroundColor
       )
     }
   }
@@ -58,7 +61,8 @@ class CaptionPresetStyleView: UIView {
         wordStyle: newValue,
         lineStyle: style.lineStyle,
         textAlignment: style.textAlignment,
-        backgroundStyle: style.backgroundStyle
+        backgroundStyle: style.backgroundStyle,
+        backgroundColor: style.backgroundColor
       )
     }
   }
@@ -73,7 +77,24 @@ class CaptionPresetStyleView: UIView {
         wordStyle: style.wordStyle,
         lineStyle: style.lineStyle,
         textAlignment: style.textAlignment,
-        backgroundStyle: newValue
+        backgroundStyle: newValue,
+        backgroundColor: style.backgroundColor
+      )
+    }
+  }
+
+  @objc
+  public var captionBackgroundColor: UIColor {
+    get {
+      return style.backgroundColor
+    }
+    set {
+      style = CaptionPresetStyle(
+        wordStyle: style.wordStyle,
+        lineStyle: style.lineStyle,
+        textAlignment: style.textAlignment,
+        backgroundStyle: style.backgroundStyle,
+        backgroundColor: newValue
       )
     }
   }

@@ -3,6 +3,7 @@ import React from 'react';
 import { View, requireNativeComponent } from 'react-native';
 
 import type { Style } from '../../types/react';
+import type { CaptionPresetStyleObject } from '../../types/video';
 
 const NativeCaptionPresetStyleView = requireNativeComponent(
   'CaptionPresetStyleView'
@@ -10,9 +11,7 @@ const NativeCaptionPresetStyleView = requireNativeComponent(
 
 type Props = {
   style?: ?Style,
-  textAlignment: 'center' | 'left' | 'right',
-  lineStyle: 'fadeInOut' | 'translateY',
-  wordStyle: 'animated' | 'none',
+  presetStyle: CaptionPresetStyleObject,
 };
 
 const styles = {
@@ -23,19 +22,21 @@ const styles = {
   },
 };
 
-export default function CaptionPresetStyleView({
-  style,
-  textAlignment,
-  lineStyle,
-  wordStyle,
-}: Props) {
+export default function CaptionPresetStyleView({ style, presetStyle }: Props) {
   return (
     <View style={[styles.container, style]}>
       <NativeCaptionPresetStyleView
         style={styles.nativeView}
-        textAlignment={textAlignment}
-        lineStyle={lineStyle}
-        wordStyle={wordStyle}
+        textAlignment={presetStyle.textAlignment}
+        lineStyle={presetStyle.lineStyle}
+        wordStyle={presetStyle.wordStyle}
+        backgroundStyle={presetStyle.backgroundStyle}
+        backgroundColor={[
+          presetStyle.backgroundColor.red / 255,
+          presetStyle.backgroundColor.green / 255,
+          presetStyle.backgroundColor.blue / 255,
+          presetStyle.backgroundColor.alpha,
+        ]}
       />
     </View>
   );

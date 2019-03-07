@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
+import { UI_COLORS } from '../../constants';
+import * as Color from '../../utils/Color';
 import CaptureButton from '../../components/capture-button/CaptureButton';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
 import HomeScreenCameraRollButton from './HomeScreenCameraRollButton';
@@ -10,7 +12,7 @@ import SlideUpAnimatedView from '../../components/animations/SlideUpAnimatedView
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
-import type { PresetObject } from '../../types/video';
+import type { CaptionPresetStyleObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -24,39 +26,52 @@ type Props = {
 
 type State = {
   isPresetSheetVisible: boolean,
-  preset: PresetObject,
+  preset: CaptionPresetStyleObject,
 };
 
-const PRESET_STYLES: PresetObject[] = [
+const PRESET_STYLES: CaptionPresetStyleObject[] = [
   {
     textAlignment: 'left',
     lineStyle: 'translateY',
     wordStyle: 'animated',
+    backgroundStyle: 'gradient',
+    // backgroundColor: Color.Constants.transparent
+    backgroundColor: Color.hexToRgbaObject('#000000'),
   },
   {
     textAlignment: 'right',
     lineStyle: 'translateY',
     wordStyle: 'animated',
+    backgroundStyle: 'solid',
+    backgroundColor: Color.Constants.transparent,
   },
   {
     textAlignment: 'center',
     lineStyle: 'translateY',
     wordStyle: 'animated',
+    backgroundStyle: 'solid',
+    backgroundColor: Color.Constants.transparent,
   },
   {
     textAlignment: 'center',
     lineStyle: 'fadeInOut',
     wordStyle: 'none',
+    backgroundStyle: 'solid',
+    backgroundColor: Color.Constants.transparent,
   },
   {
     textAlignment: 'left',
     lineStyle: 'fadeInOut',
     wordStyle: 'none',
+    backgroundStyle: 'solid',
+    backgroundColor: Color.Constants.transparent,
   },
   {
     textAlignment: 'right',
     lineStyle: 'fadeInOut',
     wordStyle: 'none',
+    backgroundStyle: 'solid',
+    backgroundColor: Color.Constants.transparent,
   },
 ];
 

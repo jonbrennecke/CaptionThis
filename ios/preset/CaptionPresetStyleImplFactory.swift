@@ -12,7 +12,8 @@ class CaptionPresetStyleImplFactory {
       lineStyleImpl: lineStyleImpl,
       textAlignmentImpl: textAlignmentImpl,
       wordStyleImpl: wordStyleImpl,
-      backgroundStyleImpl: backgroundStyleImpl
+      backgroundStyleImpl: backgroundStyleImpl,
+      backgroundColor: style.backgroundColor
     )
   }
 

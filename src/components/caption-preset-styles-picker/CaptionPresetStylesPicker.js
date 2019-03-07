@@ -10,13 +10,13 @@ import CaptionPresetStyleView from './CaptionPresetStyleView';
 import CaptionPresetAnimatedBorderView from './CaptionPresetAnimatedBorderView';
 
 import type { Style } from '../../types/react';
-import type { PresetObject } from '../../types/video';
+import type { CaptionPresetStyleObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
-  presets: PresetObject[],
-  currentPreset: PresetObject,
-  onRequestSelectPreset: PresetObject => void,
+  presets: CaptionPresetStyleObject[],
+  currentPreset: CaptionPresetStyleObject,
+  onRequestSelectPreset: CaptionPresetStyleObject => void,
 };
 
 type State = {
@@ -125,9 +125,7 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
             >
               <CaptionPresetStyleView
                 style={styles.captionPreset}
-                textAlignment={preset.textAlignment}
-                lineStyle={preset.lineStyle}
-                wordStyle={preset.wordStyle}
+                presetStyle={preset}
               />
             </CaptionPresetAnimatedBorderView>
           );

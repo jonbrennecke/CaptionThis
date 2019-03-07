@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 fileprivate let BAR_SPACE_HEIGHT = CGFloat(10)
 
@@ -31,6 +31,7 @@ class CaptionPresetStyleImpl {
   private let lineStyleImpl: CaptionPresetLineStyleImpl
   private let textAlignmentImpl: CaptionPresetTextAlignmentImpl
   private let backgroundStyleImpl: CaptionPresetBackgroundStyleImpl
+  private let backgroundColor: UIColor
 
   public var wordStyle: CaptionPresetWordStyle {
     return wordStyleImpl.wordStyle
@@ -48,11 +49,17 @@ class CaptionPresetStyleImpl {
     return backgroundStyleImpl.backgroundStyle
   }
 
-  public init(lineStyleImpl: CaptionPresetLineStyleImpl, textAlignmentImpl: CaptionPresetTextAlignmentImpl, wordStyleImpl: CaptionPresetWordStyleImpl, backgroundStyleImpl: CaptionPresetBackgroundStyleImpl) {
+  public init(
+    lineStyleImpl: CaptionPresetLineStyleImpl,
+    textAlignmentImpl: CaptionPresetTextAlignmentImpl,
+    wordStyleImpl: CaptionPresetWordStyleImpl,
+    backgroundStyleImpl: CaptionPresetBackgroundStyleImpl,
+    backgroundColor: UIColor) {
     self.lineStyleImpl = lineStyleImpl
     self.textAlignmentImpl = textAlignmentImpl
     self.wordStyleImpl = wordStyleImpl
     self.backgroundStyleImpl = backgroundStyleImpl
+    self.backgroundColor = backgroundColor
   }
 
   func setup(inParentLayer parentLayer: CALayer) {
@@ -84,7 +91,7 @@ class CaptionPresetStyleImpl {
     layer.add(animation, forKey: "lineStyleAnimation")
 
     wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: textAlignment)
-    backgroundStyleImpl.applyBackgroundStyle(layer: layer)
+    backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: backgroundColor)
   }
 
   private func layerOrigin(forKey key: CaptionPresetLayerKey, parentLayer: CALayer) -> CGPoint {

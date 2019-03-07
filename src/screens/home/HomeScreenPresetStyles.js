@@ -8,14 +8,14 @@ import { UI_COLORS } from '../../constants';
 import CaptionPresetStylesPicker from '../../components/caption-preset-styles-picker/CaptionPresetStylesPicker';
 
 import type { Style } from '../../types/react';
-import type { PresetObject } from '../../types/video';
+import type { CaptionPresetStyleObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
   isVisible: boolean,
-  currentPreset: PresetObject,
-  presets: PresetObject[],
-  onRequestSelectPreset: PresetObject => void,
+  currentPreset: CaptionPresetStyleObject,
+  presets: CaptionPresetStyleObject[],
+  onRequestSelectPreset: CaptionPresetStyleObject => void,
 };
 
 const styles = {

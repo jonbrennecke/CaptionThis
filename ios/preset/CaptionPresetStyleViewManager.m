@@ -44,6 +44,14 @@ RCT_CUSTOM_VIEW_PROPERTY(backgroundStyle, NSString *, CaptionPresetStyleView) {
   view.backgroundStyle = backgroundStyle;
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(backgroundColor, UIColor *, CaptionPresetStyleView) {
+  if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
+    return;
+  }
+  UIColor *backgroundColor = [RCTConvert UIColor:json];
+  view.captionBackgroundColor = backgroundColor;
+}
+
 - (UIView *)view {
   CaptionPresetStyleView *view = [[CaptionPresetStyleView alloc] init];
   return (UIView *)view;
