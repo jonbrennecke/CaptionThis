@@ -4,7 +4,8 @@ enum CaptionPresetWordStyle: Int {
   case none
 }
 
-enum CaptionPresetBackgroundStyle {
+@objc
+enum CaptionPresetBackgroundStyle: Int {
   case solid
   case gradient
 }

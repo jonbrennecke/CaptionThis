@@ -11,6 +11,10 @@ class CaptionPresetStyleLayer: CALayer {
     return impl.textAlignment
   }
 
+  public var backgroundStyle: CaptionPresetBackgroundStyle {
+    return impl.backgroundStyle
+  }
+
   init(preset: CaptionPreset) {
     impl = CaptionPresetStyleImplFactory.impl(forPreset: preset)
     super.init()

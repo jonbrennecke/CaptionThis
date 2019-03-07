@@ -63,6 +63,21 @@ class CaptionPresetStyleView: UIView {
     }
   }
 
+  @objc
+  public var backgroundStyle: CaptionPresetBackgroundStyle {
+    get {
+      return preset.backgroundStyle
+    }
+    set {
+      preset = CaptionPreset(
+        wordStyle: preset.wordStyle,
+        lineStyle: preset.lineStyle,
+        textAlignment: preset.textAlignment,
+        backgroundStyle: newValue
+      )
+    }
+  }
+
   init() {
     super.init(frame: .zero)
     presetLayer = CaptionPresetStyleLayer(preset: preset)

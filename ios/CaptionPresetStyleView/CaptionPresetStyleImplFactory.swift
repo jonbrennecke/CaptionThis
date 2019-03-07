@@ -7,7 +7,13 @@ class CaptionPresetStyleImplFactory {
     let lineStyleImpl = impl(forLineStyle: preset.lineStyle)
     let textAlignmentImpl = impl(forTextAlignment: preset.textAlignment)
     let wordStyleImpl = impl(forWordStyle: preset.wordStyle)
-    return CaptionPresetStyleImpl(lineStyleImpl: lineStyleImpl, textAlignmentImpl: textAlignmentImpl, wordStyleImpl: wordStyleImpl)
+    let backgroundStyleImpl = impl(forBackgroundStyle: preset.backgroundStyle)
+    return CaptionPresetStyleImpl(
+      lineStyleImpl: lineStyleImpl,
+      textAlignmentImpl: textAlignmentImpl,
+      wordStyleImpl: wordStyleImpl,
+      backgroundStyleImpl: backgroundStyleImpl
+    )
   }
 
   private static func impl(forLineStyle style: CaptionPresetLineStyle) -> CaptionPresetLineStyleImpl {
@@ -36,6 +42,15 @@ class CaptionPresetStyleImplFactory {
       return CaptionPresetAnimatedWordStyleImpl()
     case .none:
       return CaptionPresetNoWordStyleImpl()
+    }
+  }
+
+  private static func impl(forBackgroundStyle style: CaptionPresetBackgroundStyle) -> CaptionPresetBackgroundStyleImpl {
+    switch style {
+    case .gradient:
+      return CaptionPresetGradientBackgroundStyleImpl()
+    case .solid:
+      return CaptionPresetSolidBackgroundStyleImpl()
     }
   }
 }

@@ -30,6 +30,7 @@ class CaptionPresetStyleImpl {
   private let wordStyleImpl: CaptionPresetWordStyleImpl
   private let lineStyleImpl: CaptionPresetLineStyleImpl
   private let textAlignmentImpl: CaptionPresetTextAlignmentImpl
+  private let backgroundStyleImpl: CaptionPresetBackgroundStyleImpl
 
   public var wordStyle: CaptionPresetWordStyle {
     return wordStyleImpl.wordStyle
@@ -43,10 +44,15 @@ class CaptionPresetStyleImpl {
     return textAlignmentImpl.textAlignment
   }
 
-  public init(lineStyleImpl: CaptionPresetLineStyleImpl, textAlignmentImpl: CaptionPresetTextAlignmentImpl, wordStyleImpl: CaptionPresetWordStyleImpl) {
+  public var backgroundStyle: CaptionPresetBackgroundStyle {
+    return backgroundStyleImpl.backgroundStyle
+  }
+
+  public init(lineStyleImpl: CaptionPresetLineStyleImpl, textAlignmentImpl: CaptionPresetTextAlignmentImpl, wordStyleImpl: CaptionPresetWordStyleImpl, backgroundStyleImpl: CaptionPresetBackgroundStyleImpl) {
     self.lineStyleImpl = lineStyleImpl
     self.textAlignmentImpl = textAlignmentImpl
     self.wordStyleImpl = wordStyleImpl
+    self.backgroundStyleImpl = backgroundStyleImpl
   }
 
   func setup(inParentLayer parentLayer: CALayer) {
@@ -78,6 +84,7 @@ class CaptionPresetStyleImpl {
     layer.add(animation, forKey: "lineStyleAnimation")
 
     wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: textAlignment)
+    backgroundStyleImpl.applyBackgroundStyle(layer: layer)
   }
 
   private func layerOrigin(forKey key: CaptionPresetLayerKey, parentLayer: CALayer) -> CGPoint {

@@ -1,5 +1,6 @@
 #import "CaptionPresetStyleViewManager.h"
 #import "CaptionThis-Swift.h"
+#import "RCTConvert+CaptionPresetBackgroundStyle.h"
 #import "RCTConvert+CaptionPresetLineStyle.h"
 #import "RCTConvert+CaptionPresetTextAlignment.h"
 #import "RCTConvert+CaptionPresetWordStyle.h"
@@ -32,6 +33,15 @@ RCT_CUSTOM_VIEW_PROPERTY(wordStyle, NSString *, CaptionPresetStyleView) {
   }
   CaptionPresetWordStyle wordStyle = [RCTConvert CaptionPresetWordStyle:json];
   view.wordStyle = wordStyle;
+}
+
+RCT_CUSTOM_VIEW_PROPERTY(backgroundStyle, NSString *, CaptionPresetStyleView) {
+  if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
+    return;
+  }
+  CaptionPresetBackgroundStyle backgroundStyle =
+      [RCTConvert CaptionPresetBackgroundStyle:json];
+  view.backgroundStyle = backgroundStyle;
 }
 
 - (UIView *)view {
