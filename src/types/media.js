@@ -25,6 +25,9 @@ export type TextOverlayParams = {
   text: string,
 };
 
+// TODO rename `TextOverlayParams`
+export type TextSegmentObject = TextOverlayParams;
+
 export type Orientation =
   | 'left'
   | 'leftMirrored'

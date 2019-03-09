@@ -9,13 +9,12 @@ class CaptionPresetStyleView: UIView {
     lineStyle: .fadeInOut,
     textAlignment: .left,
     backgroundStyle: .solid,
-    backgroundColor: .white
+    backgroundColor: .white,
+    font: UIFont.systemFont(ofSize: 4.5),
+    textColor: UIColor.white
   ) {
     didSet {
-      presetLayer = CaptionPresetStyleLayer(style: style)
-      presetLayer!.frame = bounds
-      layer.sublayers = nil
-      layer.addSublayer(presetLayer!)
+      updatePresetLayer()
     }
   }
 
@@ -30,7 +29,9 @@ class CaptionPresetStyleView: UIView {
         lineStyle: style.lineStyle,
         textAlignment: newValue,
         backgroundStyle: style.backgroundStyle,
-        backgroundColor: style.backgroundColor
+        backgroundColor: style.backgroundColor,
+        font: style.font,
+        textColor: style.textColor
       )
     }
   }
@@ -46,7 +47,9 @@ class CaptionPresetStyleView: UIView {
         lineStyle: newValue,
         textAlignment: style.textAlignment,
         backgroundStyle: style.backgroundStyle,
-        backgroundColor: style.backgroundColor
+        backgroundColor: style.backgroundColor,
+        font: style.font,
+        textColor: style.textColor
       )
     }
   }
@@ -62,7 +65,9 @@ class CaptionPresetStyleView: UIView {
         lineStyle: style.lineStyle,
         textAlignment: style.textAlignment,
         backgroundStyle: style.backgroundStyle,
-        backgroundColor: style.backgroundColor
+        backgroundColor: style.backgroundColor,
+        font: style.font,
+        textColor: style.textColor
       )
     }
   }
@@ -78,7 +83,9 @@ class CaptionPresetStyleView: UIView {
         lineStyle: style.lineStyle,
         textAlignment: style.textAlignment,
         backgroundStyle: newValue,
-        backgroundColor: style.backgroundColor
+        backgroundColor: style.backgroundColor,
+        font: style.font,
+        textColor: style.textColor
       )
     }
   }
@@ -94,14 +101,35 @@ class CaptionPresetStyleView: UIView {
         lineStyle: style.lineStyle,
         textAlignment: style.textAlignment,
         backgroundStyle: style.backgroundStyle,
-        backgroundColor: newValue
+        backgroundColor: newValue,
+        font: style.font,
+        textColor: style.textColor
       )
     }
   }
 
+  @objc
+  public var textSegments = [TextSegment]() {
+    didSet {
+      updatePresetLayer()
+    }
+  }
+
+  private func updatePresetLayer() {
+    presetLayer = CaptionPresetStyleLayer(style: style, textSegments: textSegments)
+    guard let presetLayer = presetLayer else {
+      return
+    }
+    presetLayer.frame = bounds
+    layer.sublayers = nil
+    layer.addSublayer(presetLayer)
+  }
+
+  // MARK: UIView method implementations
+
   init() {
     super.init(frame: .zero)
-    presetLayer = CaptionPresetStyleLayer(style: style)
+    presetLayer = CaptionPresetStyleLayer(style: style, textSegments: textSegments)
     presetLayer!.frame = bounds
     layer.addSublayer(presetLayer!)
   }

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
-import { UI_COLORS } from '../../constants';
+import { UI_COLORS, USER_BACKGROUND_COLOR_CHOICES } from '../../constants';
 import * as Color from '../../utils/Color';
 import CaptureButton from '../../components/capture-button/CaptureButton';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
@@ -35,15 +35,7 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
     lineStyle: 'translateY',
     wordStyle: 'animated',
     backgroundStyle: 'gradient',
-    // backgroundColor: Color.Constants.transparent
-    backgroundColor: Color.hexToRgbaObject('#000000'),
-  },
-  {
-    textAlignment: 'right',
-    lineStyle: 'translateY',
-    wordStyle: 'animated',
-    backgroundStyle: 'solid',
-    backgroundColor: Color.Constants.transparent,
+    backgroundColor: Color.hexToRgbaObject(UI_COLORS.DARK_GREY),
   },
   {
     textAlignment: 'center',
@@ -61,13 +53,6 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
   },
   {
     textAlignment: 'left',
-    lineStyle: 'fadeInOut',
-    wordStyle: 'none',
-    backgroundStyle: 'solid',
-    backgroundColor: Color.Constants.transparent,
-  },
-  {
-    textAlignment: 'right',
     lineStyle: 'fadeInOut',
     wordStyle: 'none',
     backgroundStyle: 'solid',

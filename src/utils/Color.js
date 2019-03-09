@@ -21,5 +21,5 @@ export function rgbaObjectToRgbaString(rgba: ColorRGBA): string {
 export const transparent: ColorRGBA = { red: 0, green: 0, blue: 0, alpha: 0 };
 
 export const Constants = {
-  transparent: transparent
-}
+  transparent: transparent,
+};

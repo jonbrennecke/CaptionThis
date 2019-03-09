@@ -16,4 +16,6 @@ struct CaptionPresetStyle {
   public let textAlignment: CaptionPresetTextAlignment
   public let backgroundStyle: CaptionPresetBackgroundStyle
   public let backgroundColor: UIColor
+  public let font: UIFont
+  public let textColor: UIColor
 }

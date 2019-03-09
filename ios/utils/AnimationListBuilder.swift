@@ -2,33 +2,37 @@ import Foundation
 
 fileprivate let STEP_DURATION = CFTimeInterval(1)
 
-class AnimationListBuilder {
-  private var steps = [[AnimationBuilderStep]]()
-
-  private class TimingFunction {
-    struct TimingStep {
-      let beginTime: CFTimeInterval
-      let duration: CFTimeInterval
-    }
-
-    func step(at index: Int) -> TimingStep {
-      return TimingStep(beginTime: STEP_DURATION * CFTimeInterval(index * 2), duration: STEP_DURATION)
-    }
+class CaptionAnimationBuilder {
+  private struct TimedStep {
+    let beginTime: CFTimeInterval
+    let duration: CFTimeInterval
+    let animation: AnimationBuilderStep
   }
 
-  public func add(steps: [AnimationBuilderStep]) -> AnimationListBuilder {
-    self.steps.append(steps)
+  private var timedSteps = [TimedStep]()
+
+  public func insert(_ animation: AnimationBuilderStep, at index: Int) -> CaptionAnimationBuilder {
+    let beginTime = STEP_DURATION * CFTimeInterval(index * 2)
+    let duration = STEP_DURATION
+    let step = TimedStep(beginTime: beginTime, duration: duration, animation: animation)
+    timedSteps.append(step)
+    return self
+  }
+
+  public func insert(_ animations: [AnimationBuilderStep], at index: Int) -> CaptionAnimationBuilder {
+    let steps = animations.map { animation -> TimedStep in
+      let beginTime = STEP_DURATION * CFTimeInterval(index * 2)
+      let duration = STEP_DURATION
+      return TimedStep(beginTime: beginTime, duration: duration, animation: animation)
+    }
+    timedSteps.append(contentsOf: steps)
     return self
   }
 
   public func build() -> [CAAnimation] {
-    let timingFn = TimingFunction()
-    let animations = steps.enumerated().map { tuple -> [CAAnimation] in
-      let (index, steps) = tuple
-      let timingStep = timingFn.step(at: index)
-      return steps.map { $0.animate(at: timingStep.beginTime, duration: timingStep.duration) }
+    return timedSteps.map { step in
+      step.animation.animate(at: step.beginTime, duration: step.duration)
     }
-    return Array(animations.joined())
   }
 }
 

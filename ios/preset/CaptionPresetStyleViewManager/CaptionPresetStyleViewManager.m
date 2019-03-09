@@ -4,6 +4,7 @@
 #import "RCTConvert+CaptionPresetLineStyle.h"
 #import "RCTConvert+CaptionPresetTextAlignment.h"
 #import "RCTConvert+CaptionPresetWordStyle.h"
+#import "RCTConvert+TextSegment.h"
 #import <UIKit/UIKit.h>
 
 @implementation CaptionPresetStyleViewManager
@@ -50,6 +51,23 @@ RCT_CUSTOM_VIEW_PROPERTY(backgroundColor, UIColor *, CaptionPresetStyleView) {
   }
   UIColor *backgroundColor = [RCTConvert UIColor:json];
   view.captionBackgroundColor = backgroundColor;
+}
+
+RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionPresetStyleView) {
+  if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
+    return;
+  }
+  NSArray *jsonArray = [RCTConvert NSArray:json];
+  NSMutableArray<TextSegment*> *textSegments = [[NSMutableArray alloc] initWithCapacity:jsonArray.count];
+  for (id jsonTextSegment in jsonArray) {
+    TextSegment *textSegment = [RCTConvert TextSegment:jsonTextSegment];
+    if (!textSegment) {
+      // TODO: log error
+      continue;
+    }
+    [textSegments addObject:textSegment];
+  }
+  view.textSegments = textSegments;
 }
 
 - (UIView *)view {

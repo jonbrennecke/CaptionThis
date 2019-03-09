@@ -8,28 +8,35 @@ enum CaptionPresetLineStyle: Int {
 
 protocol CaptionPresetLineStyleImpl {
   var lineStyle: CaptionPresetLineStyle { get }
-  func animate(key: CaptionPresetLayerKey, layer: CALayer, parentLayer: CALayer) -> CAAnimationGroup
+  func applyLineStyle(key: CaptionPresetLayerKey, layer: CALayer, parentLayer: CALayer)
 }
 
 class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
   public let lineStyle: CaptionPresetLineStyle = .fadeInOut
 
-  func animate(key: CaptionPresetLayerKey, layer _: CALayer, parentLayer _: CALayer) -> CAAnimationGroup {
+  func applyLineStyle(key: CaptionPresetLayerKey, layer: CALayer, parentLayer _: CALayer) {
+    layer.removeAllAnimations()
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     group.duration = 3
-    group.animations = AnimationListBuilder()
-      .add(steps: [FadeInAnimationStep()])
-      .add(steps: [FadeOutAnimationStep()])
+    group.animations = CaptionAnimationBuilder()
+      .insert(FadeInAnimationStep(), at: 0)
+      .insert(FadeOutAnimationStep(), at: 1)
       .build()
-    return group
+    layer.add(group, forKey: "lineStyleAnimation")
   }
 }
 
 class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
   public let lineStyle: CaptionPresetLineStyle = .translateY
 
-  func animate(key: CaptionPresetLayerKey, layer: CALayer, parentLayer: CALayer) -> CAAnimationGroup {
+  func applyLineStyle(key: CaptionPresetLayerKey, layer: CALayer, parentLayer: CALayer) {
+    layer.removeAllAnimations()
+    let group = createAnimation(key: key, layer: layer, parentLayer: parentLayer)
+    layer.add(group, forKey: "lineStyleAnimation")
+  }
+
+  private func createAnimation(key: CaptionPresetLayerKey, layer: CALayer, parentLayer: CALayer) -> CAAnimationGroup {
     switch key {
     case .a:
       return animateLineA(layer: layer, parentLayer: parentLayer)
@@ -44,29 +51,25 @@ class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     let positions = CaptionPresetLinePositions(layer: layer, parentLayer: parentLayer)
-    group.animations = AnimationListBuilder()
-      .add(steps: [
+    group.animations = CaptionAnimationBuilder()
+      .insert([
         FadeInAnimationStep(),
         PositionAnimationStep(from: positions.outOfFrameBottomPosition, to: positions.inFrameMiddlePosition),
-      ])
-      .add(steps: [
-        PositionAnimationStep(from: positions.inFrameMiddlePosition, to: positions.inFrameTopPosition),
-      ])
-      .add(steps: [
+      ], at: 0)
+      .insert(PositionAnimationStep(from: positions.inFrameMiddlePosition, to: positions.inFrameTopPosition), at: 1)
+      .insert([
         PositionAnimationStep(from: positions.inFrameTopPosition, to: positions.outOfFrameTopPosition),
         FadeOutAnimationStep(),
-      ])
-      .add(steps: [
+      ], at: 2)
+      .insert([
         FadeInAnimationStep(),
         PositionAnimationStep(from: positions.outOfFrameBottomPosition, to: positions.inFrameBottomPosition),
-      ])
-      .add(steps: [
-        PositionAnimationStep(from: positions.inFrameBottomPosition, to: positions.inFrameTopPosition),
-      ])
-      .add(steps: [
+      ], at: 3)
+      .insert(PositionAnimationStep(from: positions.inFrameBottomPosition, to: positions.inFrameTopPosition), at: 4)
+      .insert([
         PositionAnimationStep(from: positions.inFrameTopPosition, to: positions.outOfFrameTopPosition),
         FadeOutAnimationStep(),
-      ])
+      ], at: 5)
       .build()
     group.duration = 16
     return group
@@ -76,30 +79,25 @@ class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     let positions = CaptionPresetLinePositions(layer: layer, parentLayer: parentLayer)
-    group.animations = AnimationListBuilder()
-      .add(steps: [])
-      .add(steps: [
+    group.animations = CaptionAnimationBuilder()
+      .insert([
         FadeInAnimationStep(),
         PositionAnimationStep(from: positions.outOfFrameBottomPosition, to: positions.inFrameBottomPosition),
-      ])
-      .add(steps: [
-        PositionAnimationStep(from: positions.inFrameBottomPosition, to: positions.inFrameTopPosition),
-      ])
-      .add(steps: [
+      ], at: 1)
+      .insert(PositionAnimationStep(from: positions.inFrameBottomPosition, to: positions.inFrameTopPosition), at: 2)
+      .insert([
         PositionAnimationStep(from: positions.inFrameTopPosition, to: positions.outOfFrameTopPosition),
         FadeOutAnimationStep(),
-      ])
-      .add(steps: [
+      ], at: 3)
+      .insert([
         FadeInAnimationStep(),
         PositionAnimationStep(from: positions.outOfFrameBottomPosition, to: positions.inFrameBottomPosition),
-      ])
-      .add(steps: [
-        PositionAnimationStep(from: positions.inFrameBottomPosition, to: positions.inFrameTopPosition),
-      ])
-      .add(steps: [
+      ], at: 4)
+      .insert(PositionAnimationStep(from: positions.inFrameBottomPosition, to: positions.inFrameTopPosition), at: 5)
+      .insert([
         PositionAnimationStep(from: positions.inFrameTopPosition, to: positions.outOfFrameTopPosition),
         FadeOutAnimationStep(),
-      ])
+      ], at: 6)
       .build()
     group.duration = 16
     return group
@@ -109,31 +107,29 @@ class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     let positions = CaptionPresetLinePositions(layer: layer, parentLayer: parentLayer)
-    group.animations = AnimationListBuilder()
-      .add(steps: [])
-      .add(steps: [])
-      .add(steps: [
+    group.animations = CaptionAnimationBuilder()
+      .insert([
         FadeInAnimationStep(),
         PositionAnimationStep(from: positions.outOfFrameBottomPosition, to: positions.inFrameBottomPosition),
-      ])
-      .add(steps: [
+      ], at: 2)
+      .insert([
         PositionAnimationStep(from: positions.inFrameBottomPosition, to: positions.inFrameTopPosition),
-      ])
-      .add(steps: [
+      ], at: 3)
+      .insert([
         PositionAnimationStep(from: positions.inFrameTopPosition, to: positions.outOfFrameTopPosition),
         FadeOutAnimationStep(),
-      ])
-      .add(steps: [
+      ], at: 4)
+      .insert([
         FadeInAnimationStep(),
         PositionAnimationStep(from: positions.outOfFrameBottomPosition, to: positions.inFrameBottomPosition),
-      ])
-      .add(steps: [
+      ], at: 5)
+      .insert([
         PositionAnimationStep(from: positions.inFrameBottomPosition, to: positions.inFrameMiddlePosition),
-      ])
-      .add(steps: [
+      ], at: 6)
+      .insert([
         PositionAnimationStep(from: positions.inFrameMiddlePosition, to: positions.outOfFrameTopPosition),
         FadeOutAnimationStep(),
-      ])
+      ], at: 7)
       .build()
     group.duration = 16
     return group

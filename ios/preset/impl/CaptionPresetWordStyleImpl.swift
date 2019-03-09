@@ -3,42 +3,69 @@ import UIKit
 
 protocol CaptionPresetWordStyleImpl {
   var wordStyle: CaptionPresetWordStyle { get }
-  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment)
+  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout)
 }
 
 class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .animated
 
-  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment) {
+  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout) {
     layer.sublayers = nil
     let sublayer = CALayer()
-    sublayer.backgroundColor = UIColor.white.cgColor
-    let (from: fromBounds, to: toBounds, anchorPoint, position) = bounds(layer: layer, textAlignment: textAlignment)
-    sublayer.anchorPoint = anchorPoint
-    sublayer.position = position
-    let animations = createAnimations(key: key, from: fromBounds, to: toBounds)
-    sublayer.add(animations, forKey: "wordStyleAnimation")
+    let bounds = CaptionSizingUtil.layoutForText(originalBounds: layer.bounds, textAlignment: textAlignment)
+    sublayer.anchorPoint = bounds.anchorPoint
+    sublayer.position = bounds.position
+    sublayer.bounds = bounds.toBounds
+
+//    let animations = createAnimations(key: key, from: fromBounds, to: toBounds)
+//    sublayer.add(animations, forKey: "wordStyleAnimation")
+
+    // TODO: place in a function
+    for (index, string) in strings.enumerated() {
+      let textLayer = CATextLayer()
+      textLayer.contentsScale = UIScreen.main.scale
+      textLayer.allowsFontSubpixelQuantization = true
+      textLayer.allowsEdgeAntialiasing = true
+      let textSize = string.size()
+      let textYOffset = (sublayer.frame.height - textSize.height) / 2
+      let textFrame = CGRect(origin: CGPoint(x: 0, y: textYOffset), size: textSize)
+      textLayer.frame = textFrame
+      textLayer.shadowColor = UIColor.black.cgColor
+      textLayer.shadowRadius = 0.5
+      textLayer.shadowOpacity = 0.4
+      textLayer.shadowOffset = CGSize(width: 0.0, height: CGFloat(layout.shadowOffsetHeight))
+      textLayer.string = string
+      textLayer.opacity = 0
+      let textAnimation = createTextAnimations(key: key, index: index)
+      textLayer.add(textAnimation, forKey: "textLayerAnimation")
+      sublayer.addSublayer(textLayer)
+    }
+
     layer.addSublayer(sublayer)
   }
 
-  private func bounds(layer: CALayer, textAlignment: CaptionPresetTextAlignment) -> (from: CGRect, to: CGRect, anchorPoint: CGPoint, position: CGPoint) {
-    switch textAlignment {
-    case .center:
-      let position = CGPoint(x: layer.bounds.width / 2, y: 0)
-      let anchorPoint = CGPoint(x: 0.5, y: 0)
-      let fromBounds = CGRect(origin: .zero, size: CGSize(width: 0, height: layer.bounds.height))
-      let toBounds = CGRect(origin: .zero, size: layer.bounds.size)
-      return (from: fromBounds, to: toBounds, anchorPoint: anchorPoint, position: position)
-    case .left:
-      let fromBounds = CGRect(origin: .zero, size: CGSize(width: 0, height: layer.bounds.height))
-      let toBounds = CGRect(origin: .zero, size: layer.bounds.size)
-      return (from: fromBounds, to: toBounds, anchorPoint: .zero, position: .zero)
-    case .right:
-      let position = CGPoint(x: layer.bounds.width, y: 0)
-      let anchorPoint = CGPoint(x: 1, y: 0)
-      let fromBounds = CGRect(origin: .zero, size: CGSize(width: 0, height: layer.bounds.height))
-      let toBounds = CGRect(origin: .zero, size: layer.bounds.size)
-      return (from: fromBounds, to: toBounds, anchorPoint: anchorPoint, position: position)
+  private func createTextAnimations(key: CaptionPresetLayerKey, index: Int) -> CAAnimationGroup {
+    let group = CAAnimationGroup()
+    group.repeatCount = .greatestFiniteMagnitude
+    let offset = additionalAnimationIndexOffset(key: key)
+    let startIndex = 2 * index + offset
+    group.animations = CaptionAnimationBuilder()
+      .insert(FadeInAnimationStep(), at: 2 * index + offset)
+      .insert(FadeOutAnimationStep(), at: 2 + startIndex)
+      .build()
+    group.duration = 16 // TODO:
+    return group
+  }
+
+  // TODO: rename
+  private func additionalAnimationIndexOffset(key: CaptionPresetLayerKey) -> Int {
+    switch key {
+    case .a:
+      return 0
+    case .b:
+      return 1
+    case .c:
+      return 2
     }
   }
 
@@ -56,54 +83,33 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   private func createAnimationsForLineA(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
-    group.animations = AnimationListBuilder()
-      .add(steps: [
-        BoundsAnimationStep(from: fromBounds, to: toBounds),
-      ])
-      .add(steps: [])
-      .add(steps: [])
-      .add(steps: [
-        BoundsAnimationStep(from: fromBounds, to: toBounds),
-      ])
+    group.animations = CaptionAnimationBuilder()
+      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 0)
+      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 3)
       .build()
-    group.duration = 16
+    group.duration = 16 // TODO:
     return group
   }
 
   private func createAnimationsForLineB(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
-    group.animations = AnimationListBuilder()
-      .add(steps: [])
-      .add(steps: [
-        BoundsAnimationStep(from: fromBounds, to: toBounds),
-      ])
-      .add(steps: [])
-      .add(steps: [])
-      .add(steps: [
-        BoundsAnimationStep(from: fromBounds, to: toBounds),
-      ])
+    group.animations = CaptionAnimationBuilder()
+      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 1)
+      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 4)
       .build()
-    group.duration = 16
+    group.duration = 16 // TODO:
     return group
   }
 
   private func createAnimationsForLineC(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
-    group.animations = AnimationListBuilder()
-      .add(steps: [])
-      .add(steps: [])
-      .add(steps: [
-        BoundsAnimationStep(from: fromBounds, to: toBounds),
-      ])
-      .add(steps: [])
-      .add(steps: [])
-      .add(steps: [
-        BoundsAnimationStep(from: fromBounds, to: toBounds),
-      ])
+    group.animations = CaptionAnimationBuilder()
+      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 2)
+      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 5)
       .build()
-    group.duration = 16
+    group.duration = 16 // TODO:
     return group
   }
 }
@@ -111,7 +117,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
 class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .none
 
-  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment) {
+  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings _: [NSAttributedString], layout _: VideoAnimationLayerLayout) {
     layer.sublayers = nil
     let sublayer = CALayer()
     sublayer.backgroundColor = UIColor.white.cgColor
@@ -122,6 +128,7 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     layer.addSublayer(sublayer)
   }
 
+  // TODO:
   private func bounds(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment) -> (bounds: CGRect, anchorPoint: CGPoint, position: CGPoint) {
     if key == .a {
       let bounds = CGRect(origin: .zero, size: CGSize(width: layer.bounds.width, height: layer.bounds.height))

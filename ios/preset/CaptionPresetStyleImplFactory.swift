@@ -3,7 +3,7 @@ import Foundation
 class CaptionPresetStyleImplFactory {
   private init() { /* unimplemented */ }
 
-  public static func impl(forStyle style: CaptionPresetStyle) -> CaptionPresetStyleImpl {
+  public static func impl(forStyle style: CaptionPresetStyle, textSegments: [TextSegment]) -> CaptionPresetStyleImpl {
     let lineStyleImpl = impl(forLineStyle: style.lineStyle)
     let textAlignmentImpl = impl(forTextAlignment: style.textAlignment)
     let wordStyleImpl = impl(forWordStyle: style.wordStyle)
@@ -13,7 +13,8 @@ class CaptionPresetStyleImplFactory {
       textAlignmentImpl: textAlignmentImpl,
       wordStyleImpl: wordStyleImpl,
       backgroundStyleImpl: backgroundStyleImpl,
-      backgroundColor: style.backgroundColor
+      textSegments: textSegments,
+      style: style
     )
   }
 

@@ -31,35 +31,23 @@ class CaptionPresetStyleImpl {
   private let lineStyleImpl: CaptionPresetLineStyleImpl
   private let textAlignmentImpl: CaptionPresetTextAlignmentImpl
   private let backgroundStyleImpl: CaptionPresetBackgroundStyleImpl
-  private let backgroundColor: UIColor
-
-  public var wordStyle: CaptionPresetWordStyle {
-    return wordStyleImpl.wordStyle
-  }
-
-  public var lineStyle: CaptionPresetLineStyle {
-    return lineStyleImpl.lineStyle
-  }
-
-  public var textAlignment: CaptionPresetTextAlignment {
-    return textAlignmentImpl.textAlignment
-  }
-
-  public var backgroundStyle: CaptionPresetBackgroundStyle {
-    return backgroundStyleImpl.backgroundStyle
-  }
+  private let textSegments: [TextSegment]
+  private let style: CaptionPresetStyle
 
   public init(
     lineStyleImpl: CaptionPresetLineStyleImpl,
     textAlignmentImpl: CaptionPresetTextAlignmentImpl,
     wordStyleImpl: CaptionPresetWordStyleImpl,
     backgroundStyleImpl: CaptionPresetBackgroundStyleImpl,
-    backgroundColor: UIColor) {
+    textSegments: [TextSegment],
+    style: CaptionPresetStyle
+  ) {
     self.lineStyleImpl = lineStyleImpl
     self.textAlignmentImpl = textAlignmentImpl
     self.wordStyleImpl = wordStyleImpl
     self.backgroundStyleImpl = backgroundStyleImpl
-    self.backgroundColor = backgroundColor
+    self.textSegments = textSegments
+    self.style = style
   }
 
   func setup(inParentLayer parentLayer: CALayer) {
@@ -75,23 +63,30 @@ class CaptionPresetStyleImpl {
   }
 
   func resize(inParentLayer parentLayer: CALayer) {
-    resize(key: .a, parentLayer: parentLayer)
-    resize(key: .b, parentLayer: parentLayer)
-    resize(key: .c, parentLayer: parentLayer)
+    let layerASize = resize(key: .a, parentLayer: parentLayer)
+    let layerBSize = resize(key: .b, parentLayer: parentLayer)
+    let layerCSize = resize(key: .c, parentLayer: parentLayer)
+    let layerSizes: [CaptionPresetLayerKey: CGSize] = [.a: layerASize, .b: layerBSize, .c: layerCSize]
+    let layout = VideoAnimationLayerLayout.layoutForView(orientation: .up, style: style)
+    let layerStrings = CaptionTextUtil.fitText(layerSizes: layerSizes, textSegments: textSegments, style: style, layout: layout)
+    applyStyles(key: .a, parentLayer: parentLayer, strings: layerStrings[.a]!, layout: layout)
+    applyStyles(key: .b, parentLayer: parentLayer, strings: layerStrings[.b]!, layout: layout)
+    applyStyles(key: .c, parentLayer: parentLayer, strings: layerStrings[.c]!, layout: layout)
   }
 
-  private func resize(key: CaptionPresetLayerKey, parentLayer: CALayer) {
+  private func resize(key: CaptionPresetLayerKey, parentLayer: CALayer) -> CGSize {
     let layer = layers.get(byKey: key)
     let origin = layerOrigin(forKey: key, parentLayer: parentLayer)
     let size = textAlignmentImpl.layerSize(forKey: key, parentLayer: parentLayer)
     layer.frame = CGRect(origin: origin, size: size)
-    // TODO: rename lineStyleImpl.animate to applyLineStyle(key:layer:)
-    layer.removeAllAnimations()
-    let animation = lineStyleImpl.animate(key: key, layer: layer, parentLayer: parentLayer)
-    layer.add(animation, forKey: "lineStyleAnimation")
+    return size
+  }
 
-    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: textAlignment)
-    backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: backgroundColor)
+  private func applyStyles(key: CaptionPresetLayerKey, parentLayer: CALayer, strings: [NSAttributedString], layout: VideoAnimationLayerLayout) {
+    let layer = layers.get(byKey: key)
+    lineStyleImpl.applyLineStyle(key: key, layer: layer, parentLayer: parentLayer)
+    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, strings: strings, layout: layout)
+    backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor)
   }
 
   private func layerOrigin(forKey key: CaptionPresetLayerKey, parentLayer: CALayer) -> CGPoint {

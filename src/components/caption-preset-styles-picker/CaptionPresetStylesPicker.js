@@ -126,6 +126,54 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
               <CaptionPresetStyleView
                 style={styles.captionPreset}
                 presetStyle={preset}
+                textSegments={[
+                  // TODO: interpolate text segments in duration
+                  {
+                    duration: 0,
+                    timestamp: 0,
+                    text: 'the',
+                  },
+                  {
+                    duration: 2.5,
+                    timestamp: 0,
+                    text: 'quick',
+                  },
+                  {
+                    duration: 0,
+                    timestamp: 0,
+                    text: 'brown',
+                  },
+                  {
+                    duration: 0,
+                    timestamp: 0,
+                    text: 'fox',
+                  },
+                  {
+                    duration: 0,
+                    timestamp: 0,
+                    text: 'jumped',
+                  },
+                  {
+                    duration: 0,
+                    timestamp: 0,
+                    text: 'over',
+                  },
+                  {
+                    duration: 0,
+                    timestamp: 0,
+                    text: 'the',
+                  },
+                  {
+                    duration: 0,
+                    timestamp: 0,
+                    text: 'lazy',
+                  },
+                  {
+                    duration: 0,
+                    timestamp: 0,
+                    text: 'dog',
+                  },
+                ]}
               />
             </CaptionPresetAnimatedBorderView>
           );
