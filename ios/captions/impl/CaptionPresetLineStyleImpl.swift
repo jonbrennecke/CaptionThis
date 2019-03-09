@@ -38,7 +38,7 @@ class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
     var builder = CaptionAnimationBuilder()
     let offset = additionalAnimationIndexOffset(key: key)
     for (index, _) in strings.enumerated() {
-      let startIndex = 6 * index + offset
+      let startIndex = (index * 3) + offset
       let outOfFrameBottom = positions.getPosition(forKey: .outOfFrameBottom)
       let inFrameTop = positions.getPosition(forKey: .inFrameTop)
       let outOfFrameTop = positions.getPosition(forKey: .outOfFrameTop)
