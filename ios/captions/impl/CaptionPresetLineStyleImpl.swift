@@ -32,11 +32,6 @@ class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
 
   func applyLineStyle(key: CaptionPresetLayerKey, layer: CALayer, parentLayer: CALayer, strings: [NSAttributedString], duration: CFTimeInterval) {
     layer.removeAllAnimations()
-    let group = createAnimation(key: key, layer: layer, parentLayer: parentLayer, strings: strings, duration: duration)
-    layer.add(group, forKey: "lineStyleAnimation")
-  }
-
-  private func createAnimation(key: CaptionPresetLayerKey, layer: CALayer, parentLayer: CALayer, strings: [NSAttributedString], duration: CFTimeInterval) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     let positions = CaptionPresetLinePositions(layer: layer, parentLayer: parentLayer)
@@ -61,7 +56,7 @@ class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
     }
     group.animations = builder.build()
     group.duration = duration
-    return group
+    layer.add(group, forKey: "lineStyleAnimation")
   }
 
   // TODO: make this reusable
