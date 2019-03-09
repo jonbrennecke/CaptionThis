@@ -2,6 +2,7 @@ import UIKit
 
 fileprivate let BAR_SPACE_HEIGHT = CGFloat(10)
 
+// TODO: rename to CaptionPresetLayer.Key
 enum CaptionPresetLayerKey {
   case a
   case b
@@ -33,6 +34,7 @@ class CaptionPresetStyleImpl {
   private let backgroundStyleImpl: CaptionPresetBackgroundStyleImpl
   private let textSegments: [TextSegment]
   private let style: CaptionPresetStyle
+  private let duration: CFTimeInterval
 
   public init(
     lineStyleImpl: CaptionPresetLineStyleImpl,
@@ -40,7 +42,8 @@ class CaptionPresetStyleImpl {
     wordStyleImpl: CaptionPresetWordStyleImpl,
     backgroundStyleImpl: CaptionPresetBackgroundStyleImpl,
     textSegments: [TextSegment],
-    style: CaptionPresetStyle
+    style: CaptionPresetStyle,
+    duration: CFTimeInterval
   ) {
     self.lineStyleImpl = lineStyleImpl
     self.textAlignmentImpl = textAlignmentImpl
@@ -48,6 +51,7 @@ class CaptionPresetStyleImpl {
     self.backgroundStyleImpl = backgroundStyleImpl
     self.textSegments = textSegments
     self.style = style
+    self.duration = duration
   }
 
   func setup(inParentLayer parentLayer: CALayer) {
@@ -84,8 +88,8 @@ class CaptionPresetStyleImpl {
 
   private func applyStyles(key: CaptionPresetLayerKey, parentLayer: CALayer, strings: [NSAttributedString], layout: VideoAnimationLayerLayout) {
     let layer = layers.get(byKey: key)
-    lineStyleImpl.applyLineStyle(key: key, layer: layer, parentLayer: parentLayer)
-    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, strings: strings, layout: layout)
+    lineStyleImpl.applyLineStyle(key: key, layer: layer, parentLayer: parentLayer, strings: strings, duration: duration)
+    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, strings: strings, layout: layout, duration: duration)
     backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor)
   }
 

@@ -3,8 +3,8 @@ import AVFoundation
 class CaptionPresetStyleLayer: CALayer {
   private let impl: CaptionPresetStyleImpl
 
-  init(style: CaptionPresetStyle, textSegments: [TextSegment]) {
-    impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments)
+  init(style: CaptionPresetStyle, textSegments: [TextSegment], duration: CFTimeInterval) {
+    impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
     super.init()
     contentsScale = UIScreen.main.scale
     masksToBounds = true

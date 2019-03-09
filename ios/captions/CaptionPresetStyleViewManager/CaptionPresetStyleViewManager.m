@@ -53,6 +53,14 @@ RCT_CUSTOM_VIEW_PROPERTY(backgroundColor, UIColor *, CaptionPresetStyleView) {
   view.captionBackgroundColor = backgroundColor;
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(duration, NSNumber *, CaptionPresetStyleView) {
+  if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
+    return;
+  }
+  NSNumber *duration = [RCTConvert NSNumber:json];
+  view.duration = [duration doubleValue];
+}
+
 RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionPresetStyleView) {
   if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
     return;

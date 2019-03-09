@@ -3,13 +3,13 @@ import UIKit
 
 protocol CaptionPresetWordStyleImpl {
   var wordStyle: CaptionPresetWordStyle { get }
-  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout)
+  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout, duration: CFTimeInterval)
 }
 
 class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .animated
 
-  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout) {
+  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout, duration: CFTimeInterval) {
     layer.sublayers = nil
     let sublayer = CALayer()
     let bounds = CaptionSizingUtil.layoutForText(originalBounds: layer.bounds, textAlignment: textAlignment)
@@ -36,7 +36,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
       textLayer.shadowOffset = CGSize(width: 0.0, height: CGFloat(layout.shadowOffsetHeight))
       textLayer.string = string
       textLayer.opacity = 0
-      let textAnimation = createTextAnimations(key: key, index: index)
+      let textAnimation = createTextAnimations(key: key, index: index, duration: duration)
       textLayer.add(textAnimation, forKey: "textLayerAnimation")
       sublayer.addSublayer(textLayer)
     }
@@ -44,20 +44,19 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     layer.addSublayer(sublayer)
   }
 
-  private func createTextAnimations(key: CaptionPresetLayerKey, index: Int) -> CAAnimationGroup {
+  private func createTextAnimations(key: CaptionPresetLayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     let offset = additionalAnimationIndexOffset(key: key)
     let startIndex = 2 * index + offset
     group.animations = CaptionAnimationBuilder()
-      .insert(FadeInAnimationStep(), at: 2 * index + offset)
-      .insert(FadeOutAnimationStep(), at: 2 + startIndex)
+      .insert(FadeInAnimationStep(), at: startIndex)
+      .insert(FadeOutAnimationStep(), at: startIndex + 2)
       .build()
-    group.duration = 16 // TODO:
+    group.duration = duration
     return group
   }
 
-  // TODO: rename
   private func additionalAnimationIndexOffset(key: CaptionPresetLayerKey) -> Int {
     switch key {
     case .a:
@@ -69,55 +68,55 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     }
   }
 
-  private func createAnimations(key: CaptionPresetLayerKey, from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
-    switch key {
-    case .a:
-      return createAnimationsForLineA(from: fromBounds, to: toBounds)
-    case .b:
-      return createAnimationsForLineB(from: fromBounds, to: toBounds)
-    case .c:
-      return createAnimationsForLineC(from: fromBounds, to: toBounds)
-    }
-  }
-
-  private func createAnimationsForLineA(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
-    let group = CAAnimationGroup()
-    group.repeatCount = .greatestFiniteMagnitude
-    group.animations = CaptionAnimationBuilder()
-      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 0)
-      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 3)
-      .build()
-    group.duration = 16 // TODO:
-    return group
-  }
-
-  private func createAnimationsForLineB(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
-    let group = CAAnimationGroup()
-    group.repeatCount = .greatestFiniteMagnitude
-    group.animations = CaptionAnimationBuilder()
-      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 1)
-      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 4)
-      .build()
-    group.duration = 16 // TODO:
-    return group
-  }
-
-  private func createAnimationsForLineC(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
-    let group = CAAnimationGroup()
-    group.repeatCount = .greatestFiniteMagnitude
-    group.animations = CaptionAnimationBuilder()
-      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 2)
-      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 5)
-      .build()
-    group.duration = 16 // TODO:
-    return group
-  }
+//  private func createAnimations(key: CaptionPresetLayerKey, from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
+//    switch key {
+//    case .a:
+//      return createAnimationsForLineA(from: fromBounds, to: toBounds)
+//    case .b:
+//      return createAnimationsForLineB(from: fromBounds, to: toBounds)
+//    case .c:
+//      return createAnimationsForLineC(from: fromBounds, to: toBounds)
+//    }
+//  }
+//
+//  private func createAnimationsForLineA(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
+//    let group = CAAnimationGroup()
+//    group.repeatCount = .greatestFiniteMagnitude
+//    group.animations = CaptionAnimationBuilder()
+//      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 0)
+//      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 3)
+//      .build()
+//    group.duration = 16 // TODO:
+//    return group
+//  }
+//
+//  private func createAnimationsForLineB(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
+//    let group = CAAnimationGroup()
+//    group.repeatCount = .greatestFiniteMagnitude
+//    group.animations = CaptionAnimationBuilder()
+//      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 1)
+//      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 4)
+//      .build()
+//    group.duration = 16 // TODO:
+//    return group
+//  }
+//
+//  private func createAnimationsForLineC(from fromBounds: CGRect, to toBounds: CGRect) -> CAAnimationGroup {
+//    let group = CAAnimationGroup()
+//    group.repeatCount = .greatestFiniteMagnitude
+//    group.animations = CaptionAnimationBuilder()
+//      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 2)
+//      .insert(BoundsAnimationStep(from: fromBounds, to: toBounds), at: 5)
+//      .build()
+//    group.duration = 16 // TODO:
+//    return group
+//  }
 }
 
 class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .none
 
-  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings _: [NSAttributedString], layout _: VideoAnimationLayerLayout) {
+  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings _: [NSAttributedString], layout _: VideoAnimationLayerLayout, duration: CFTimeInterval) {
     layer.sublayers = nil
     let sublayer = CALayer()
     sublayer.backgroundColor = UIColor.white.cgColor

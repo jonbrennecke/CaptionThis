@@ -126,6 +126,7 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
               <CaptionPresetStyleView
                 style={styles.captionPreset}
                 presetStyle={preset}
+                duration={10}
                 textSegments={[
                   // TODO: interpolate text segments in duration
                   {
@@ -134,7 +135,7 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
                     text: 'the',
                   },
                   {
-                    duration: 2.5,
+                    duration: 0,
                     timestamp: 0,
                     text: 'quick',
                   },

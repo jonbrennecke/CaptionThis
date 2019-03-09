@@ -12,6 +12,7 @@ const NativeCaptionPresetStyleView = requireNativeComponent(
 
 type Props = {
   style?: ?Style,
+  duration: number,
   textSegments: TextSegmentObject[],
   presetStyle: CaptionPresetStyleObject,
 };
@@ -26,6 +27,7 @@ const styles = {
 
 export default function CaptionPresetStyleView({
   style,
+  duration,
   textSegments,
   presetStyle,
 }: Props) {
@@ -33,6 +35,7 @@ export default function CaptionPresetStyleView({
     <View style={[styles.container, style]}>
       <NativeCaptionPresetStyleView
         style={styles.nativeView}
+        duration={duration}
         textSegments={textSegments}
         textAlignment={presetStyle.textAlignment}
         lineStyle={presetStyle.lineStyle}

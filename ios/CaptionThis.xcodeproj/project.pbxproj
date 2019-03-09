@@ -797,7 +797,7 @@
 				FC6EA81521D45340007C3B3E /* PermissionsManager.swift */,
 				FCA3971721DC93AF00347CAB /* constants.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
-				FC6FCF6222249860004772B9 /* preset */,
+				FC6FCF6222249860004772B9 /* captions */,
 				FC4BCD16220432DA00822C0F /* VideoAnimationLayer */,
 				FC58D11321FAED1A00E7956D /* utils */,
 				FCDA6F1521FD07E100FA8345 /* RCTConvert */,
@@ -1094,7 +1094,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FC6FCF6222249860004772B9 /* preset */ = {
+		FC6FCF6222249860004772B9 /* captions */ = {
 			isa = PBXGroup;
 			children = (
 				FC1492F822331A4600A753DD /* CaptionSizingUtil.swift */,
@@ -1106,11 +1106,11 @@
 				FCF51FC2222B5C1C0066D81B /* CaptionPresetStyleImplFactory.swift */,
 				FC6FCF9B22249B65004772B9 /* CaptionPresetStyleLayer.swift */,
 				FC6FCF9622249874004772B9 /* CaptionPresetStyleView.swift */,
-				FC388F562230F063001CE3A3 /* CaptionPresetStyleViewManager */,
 				FC388F5022309A36001CE3A3 /* impl */,
+				FC388F562230F063001CE3A3 /* CaptionPresetStyleViewManager */,
 				FC388F172230983E001CE3A3 /* RCTConvert */,
 			);
-			path = preset;
+			path = captions;
 			sourceTree = "<group>";
 		};
 		FC7A0F4F21D876E500751DBE /* Products */ = {

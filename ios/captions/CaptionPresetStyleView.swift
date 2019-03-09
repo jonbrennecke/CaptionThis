@@ -109,6 +109,13 @@ class CaptionPresetStyleView: UIView {
   }
 
   @objc
+  public var duration = CFTimeInterval(0) {
+    didSet {
+      updatePresetLayer()
+    }
+  }
+
+  @objc
   public var textSegments = [TextSegment]() {
     didSet {
       updatePresetLayer()
@@ -116,7 +123,7 @@ class CaptionPresetStyleView: UIView {
   }
 
   private func updatePresetLayer() {
-    presetLayer = CaptionPresetStyleLayer(style: style, textSegments: textSegments)
+    presetLayer = CaptionPresetStyleLayer(style: style, textSegments: textSegments, duration: duration)
     guard let presetLayer = presetLayer else {
       return
     }
@@ -129,7 +136,7 @@ class CaptionPresetStyleView: UIView {
 
   init() {
     super.init(frame: .zero)
-    presetLayer = CaptionPresetStyleLayer(style: style, textSegments: textSegments)
+    presetLayer = CaptionPresetStyleLayer(style: style, textSegments: textSegments, duration: duration)
     presetLayer!.frame = bounds
     layer.addSublayer(presetLayer!)
   }
