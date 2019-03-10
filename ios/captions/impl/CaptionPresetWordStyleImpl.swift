@@ -28,7 +28,8 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
       textLayer.allowsEdgeAntialiasing = true
       let textSize = string.size()
       let textYOffset = (sublayer.frame.height - textSize.height) / 2
-      let textFrame = CGRect(origin: CGPoint(x: 0, y: textYOffset), size: textSize)
+      let textXOffset = textHorizontalOffset(textWidth: textSize.width, parentLayerWidth: sublayer.frame.width, textAlignment: textAlignment)
+      let textFrame = CGRect(origin: CGPoint(x: textXOffset, y: textYOffset), size: textSize)
       textLayer.frame = textFrame
       textLayer.shadowColor = UIColor.black.cgColor
       textLayer.shadowRadius = 0.5
@@ -36,12 +37,24 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
       textLayer.shadowOffset = CGSize(width: 0.0, height: CGFloat(layout.shadowOffsetHeight))
       textLayer.string = string
       textLayer.opacity = 0
+      textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
       let textAnimation = createTextAnimations(key: key, index: index, duration: duration)
       textLayer.add(textAnimation, forKey: "textLayerAnimation")
       sublayer.addSublayer(textLayer)
     }
 
     layer.addSublayer(sublayer)
+  }
+  
+  private func textHorizontalOffset(textWidth: CGFloat, parentLayerWidth parentWidth: CGFloat, textAlignment: CaptionPresetTextAlignment) -> CGFloat {
+    switch textAlignment {
+    case .center:
+      return (parentWidth - textWidth) / 2
+    case .left:
+      return 0
+    case .right:
+      return parentWidth - textWidth
+    }
   }
 
   private func createTextAnimations(key: CaptionPresetLayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {

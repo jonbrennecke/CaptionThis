@@ -29,6 +29,55 @@ const PRESET_HEIGHT = 45;
 const LEFT_PADDING = (SCREEN_WIDTH - PRESET_WIDTH) / 2;
 const RIGHT_PADDING = (SCREEN_WIDTH - PRESET_WIDTH) / 2;
 
+// TODO: interpolate text segments in duration
+const PRESET_TEXT_SEGMENTS = [
+  {
+    duration: 0,
+    timestamp: 0,
+    text: 'the',
+  },
+  {
+    duration: 0,
+    timestamp: 0,
+    text: 'quick',
+  },
+  {
+    duration: 0,
+    timestamp: 0,
+    text: 'brown',
+  },
+  {
+    duration: 0,
+    timestamp: 0,
+    text: 'fox',
+  },
+  {
+    duration: 0,
+    timestamp: 0,
+    text: 'jumped',
+  },
+  {
+    duration: 0,
+    timestamp: 0,
+    text: 'over',
+  },
+  {
+    duration: 0,
+    timestamp: 0,
+    text: 'the',
+  },
+  {
+    duration: 0,
+    timestamp: 0,
+    text: 'lazy',
+  },
+  {
+    duration: 0,
+    timestamp: 0,
+    text: 'dog',
+  },
+];
+
 const styles = {
   container: {
     flexDirection: 'row',
@@ -127,54 +176,7 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
                 style={styles.captionPreset}
                 presetStyle={preset}
                 duration={10}
-                textSegments={[
-                  // TODO: interpolate text segments in duration
-                  {
-                    duration: 0,
-                    timestamp: 0,
-                    text: 'the',
-                  },
-                  {
-                    duration: 0,
-                    timestamp: 0,
-                    text: 'quick',
-                  },
-                  {
-                    duration: 0,
-                    timestamp: 0,
-                    text: 'brown',
-                  },
-                  {
-                    duration: 0,
-                    timestamp: 0,
-                    text: 'fox',
-                  },
-                  {
-                    duration: 0,
-                    timestamp: 0,
-                    text: 'jumped',
-                  },
-                  {
-                    duration: 0,
-                    timestamp: 0,
-                    text: 'over',
-                  },
-                  {
-                    duration: 0,
-                    timestamp: 0,
-                    text: 'the',
-                  },
-                  {
-                    duration: 0,
-                    timestamp: 0,
-                    text: 'lazy',
-                  },
-                  {
-                    duration: 0,
-                    timestamp: 0,
-                    text: 'dog',
-                  },
-                ]}
+                textSegments={PRESET_TEXT_SEGMENTS}
               />
             </CaptionPresetAnimatedBorderView>
           );
