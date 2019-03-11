@@ -12,11 +12,13 @@ import CaptionPresetAnimatedBorderView from './CaptionPresetAnimatedBorderView';
 import type { Style } from '../../types/react';
 import type { CaptionPresetStyleObject } from '../../types/video';
 
+type CaptionPresetStyleObjectWithId = CaptionPresetStyleObject & { id: string };
+
 type Props = {
   style?: ?Style,
-  presets: CaptionPresetStyleObject[],
-  currentPreset: CaptionPresetStyleObject,
-  onRequestSelectPreset: CaptionPresetStyleObject => void,
+  presets: CaptionPresetStyleObjectWithId[],
+  currentPreset: CaptionPresetStyleObjectWithId,
+  onRequestSelectPreset: CaptionPresetStyleObjectWithId => void,
 };
 
 type State = {
@@ -168,14 +170,14 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
           return (
             <CaptionPresetAnimatedBorderView
               isSelected={isSelected}
-              key={`${preset.lineStyle}+${preset.textAlignment}`}
+              key={preset.id}
               size={{ width: PRESET_WIDTH, height: PRESET_HEIGHT }}
               onPress={() => this.scrollToPresetAtIndex(index)}
             >
               <CaptionPresetStyleView
                 style={styles.captionPreset}
                 presetStyle={preset}
-                duration={10}
+                duration={15}
                 textSegments={PRESET_TEXT_SEGMENTS}
               />
             </CaptionPresetAnimatedBorderView>

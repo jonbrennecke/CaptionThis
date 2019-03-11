@@ -73,9 +73,19 @@ class CaptionPresetStyleImpl {
     let layerSizes: [CaptionPresetLayerKey: CGSize] = [.a: layerASize, .b: layerBSize, .c: layerCSize]
     let layout = VideoAnimationLayerLayout.layoutForView(orientation: .up, style: style)
     let layerStrings = CaptionTextUtil.fitText(layerSizes: layerSizes, textSegments: textSegments, style: style, layout: layout)
-    applyStyles(key: .a, parentLayer: parentLayer, strings: layerStrings[.a]!, layout: layout)
-    applyStyles(key: .b, parentLayer: parentLayer, strings: layerStrings[.b]!, layout: layout)
-    applyStyles(key: .c, parentLayer: parentLayer, strings: layerStrings[.c]!, layout: layout)
+    let keys = CaptionPresetStyleImpl.listKeys(forLineStyle: style.lineStyle)
+    for key in keys {
+      applyStyles(key: key, parentLayer: parentLayer, strings: layerStrings[key]!, layout: layout)
+    }
+  }
+  
+  private static func listKeys(forLineStyle lineStyle: CaptionPresetLineStyle) -> [CaptionPresetLayerKey] {
+    switch lineStyle {
+    case .fadeInOut:
+      return [.a, .b]
+    case .translateY:
+      return [.a, .b, .c]
+    }
   }
 
   private func resize(key: CaptionPresetLayerKey, parentLayer: CALayer) -> CGSize {

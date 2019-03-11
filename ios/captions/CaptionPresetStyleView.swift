@@ -10,7 +10,7 @@ class CaptionPresetStyleView: UIView {
     textAlignment: .left,
     backgroundStyle: .solid,
     backgroundColor: .white,
-    font: UIFont.systemFont(ofSize: 4.5),
+    font: UIFont.systemFont(ofSize: 7),
     textColor: UIColor.white
   ) {
     didSet {

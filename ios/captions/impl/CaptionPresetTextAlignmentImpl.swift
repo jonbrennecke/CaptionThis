@@ -8,7 +8,7 @@ enum CaptionPresetTextAlignment: Int {
   case center
   case left
   case right
-  
+
   public func textLayerAlignmentMode() -> CATextLayerAlignmentMode {
     switch self {
     case .center:
@@ -16,7 +16,7 @@ enum CaptionPresetTextAlignment: Int {
     case .left:
       return .left
     case .right:
-        return .right
+      return .right
     }
   }
 }

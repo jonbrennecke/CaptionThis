@@ -10,12 +10,14 @@ import CaptionPresetStylesPicker from '../../components/caption-preset-styles-pi
 import type { Style } from '../../types/react';
 import type { CaptionPresetStyleObject } from '../../types/video';
 
+type CaptionPresetStyleObjectWithId = CaptionPresetStyleObject & { id: string };
+
 type Props = {
   style?: ?Style,
   isVisible: boolean,
-  currentPreset: CaptionPresetStyleObject,
-  presets: CaptionPresetStyleObject[],
-  onRequestSelectPreset: CaptionPresetStyleObject => void,
+  currentPreset: CaptionPresetStyleObjectWithId,
+  presets: CaptionPresetStyleObjectWithId[],
+  onRequestSelectPreset: CaptionPresetStyleObjectWithId => void,
 };
 
 const styles = {

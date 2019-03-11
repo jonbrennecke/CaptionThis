@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import uuid from 'uuid';
 
 import { UI_COLORS, USER_BACKGROUND_COLOR_CHOICES } from '../../constants';
 import * as Color from '../../utils/Color';
@@ -14,6 +15,8 @@ import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { CaptionPresetStyleObject } from '../../types/video';
 
+type CaptionPresetStyleObjectWithId = CaptionPresetStyleObject & { id: string };
+
 type Props = {
   style?: ?Style,
   isVisible: boolean,
@@ -26,7 +29,7 @@ type Props = {
 
 type State = {
   isPresetSheetVisible: boolean,
-  preset: CaptionPresetStyleObject,
+  preset: CaptionPresetStyleObjectWithId,
 };
 
 const PRESET_STYLES: CaptionPresetStyleObject[] = [
@@ -41,6 +44,20 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
     textAlignment: 'center',
     lineStyle: 'translateY',
     wordStyle: 'animated',
+    backgroundStyle: 'gradient',
+    backgroundColor: Color.hexToRgbaObject(UI_COLORS.MEDIUM_RED),
+  },
+  {
+    textAlignment: 'center',
+    lineStyle: 'fadeInOut',
+    wordStyle: 'none',
+    backgroundStyle: 'solid',
+    backgroundColor: Color.hexToRgbaObject(USER_BACKGROUND_COLOR_CHOICES[1]),
+  },
+  {
+    textAlignment: 'left',
+    lineStyle: 'fadeInOut',
+    wordStyle: 'none',
     backgroundStyle: 'solid',
     backgroundColor: Color.Constants.transparent,
   },
@@ -51,14 +68,12 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
     backgroundStyle: 'solid',
     backgroundColor: Color.Constants.transparent,
   },
-  {
-    textAlignment: 'left',
-    lineStyle: 'fadeInOut',
-    wordStyle: 'none',
-    backgroundStyle: 'solid',
-    backgroundColor: Color.Constants.transparent,
-  },
 ];
+
+const PRESET_STYLES_WITH_ID: CaptionPresetStyleObjectWithId[] = PRESET_STYLES.map(p => ({
+  id: uuid.v4(),
+  ...p,
+}));
 
 const styles = {
   container: {},
@@ -113,7 +128,7 @@ export default class HomeScreenBottomCameraControls extends Component<
 > {
   state = {
     isPresetSheetVisible: true,
-    preset: PRESET_STYLES[0],
+    preset: PRESET_STYLES_WITH_ID[0],
   };
 
   render() {
@@ -144,7 +159,7 @@ export default class HomeScreenBottomCameraControls extends Component<
         </SlideUpAnimatedView>
         <HomeScreenPresetStyles
           isVisible={this.state.isPresetSheetVisible}
-          presets={PRESET_STYLES}
+          presets={PRESET_STYLES_WITH_ID}
           currentPreset={this.state.preset}
           onRequestSelectPreset={preset => this.setState({ preset })}
         />

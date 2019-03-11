@@ -8,7 +8,7 @@ class CaptionTextUtil {
     style: CaptionPresetStyle,
     layout: VideoAnimationLayerLayout
   ) -> [CaptionPresetLayerKey: [NSAttributedString]] {
-    let keys: [CaptionPresetLayerKey] = [.a, .b, .c]
+    let keys = listKeys(forLineStyle: style.lineStyle)
     var stringsMap = [CaptionPresetLayerKey: [NSAttributedString]]()
     var segments = textSegments
     while segments.count > 0 {
@@ -28,6 +28,15 @@ class CaptionTextUtil {
       }
     }
     return stringsMap
+  }
+  
+  private static func listKeys(forLineStyle lineStyle: CaptionPresetLineStyle) -> [CaptionPresetLayerKey] {
+    switch lineStyle {
+    case .fadeInOut:
+      return [.a, .b]
+    case .translateY:
+      return [.a, .b, .c]
+    }
   }
 
   static func fitText(
