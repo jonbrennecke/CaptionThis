@@ -61,7 +61,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     let offset = additionalAnimationIndexOffset(key: key)
-    let startIndex = 2 * index + offset
+    let startIndex = (index * 3) + offset
     group.animations = CaptionAnimationBuilder()
       .insert(FadeInAnimationStep(), at: startIndex)
       .insert(FadeOutAnimationStep(), at: startIndex + 2)
