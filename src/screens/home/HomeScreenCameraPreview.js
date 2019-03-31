@@ -101,7 +101,7 @@ export default class HomeScreenCameraPreview extends Component<Props> {
           onDidRequestFocusOnPoint={this.tapToFocusDidReceiveFocusPoint}
         />
         <ScreenGradients />
-        <CaptionView
+        {/* <CaptionView
           duration={10}
           textSegments={textSegments}
           captionStyle={{
@@ -111,7 +111,7 @@ export default class HomeScreenCameraPreview extends Component<Props> {
             backgroundStyle: 'solid',
             backgroundColor: Color.hexToRgbaObject(USER_BACKGROUND_COLOR_CHOICES[1]),
           }}
-        />
+        /> */}
         <HomeScreenCameraControls
           style={styles.absoluteFill}
           isVisible={this.props.hasCompletedSetupAfterOnboarding}

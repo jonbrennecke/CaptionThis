@@ -3,7 +3,7 @@ import React from 'react';
 import { View, requireNativeComponent } from 'react-native';
 
 import type { Style } from '../../types/react';
-import type { CaptionPresetStyleObject } from '../../types/video';
+import type { CaptionStyleObject } from '../../types/video';
 import type { TextSegmentObject } from '../../types/media';
 
 const NativeCaptionView = requireNativeComponent(
@@ -14,7 +14,7 @@ type Props = {
   style?: ?Style,
   duration: number,
   textSegments: TextSegmentObject[],
-  captionStyle: CaptionPresetStyleObject,
+  captionStyle: CaptionStyleObject,
 };
 
 const styles = {
@@ -47,6 +47,8 @@ export default function CaptionView({
           captionStyle.backgroundColor.blue / 255,
           captionStyle.backgroundColor.alpha,
         ]}
+        fontSize={captionStyle.fontSize}
+        fontFamily={captionStyle.fontFamily}
       />
     </View>
   );

@@ -116,6 +116,44 @@ class CaptionView : UIView {
   }
   
   @objc
+  public var fontSize: Float {
+    get {
+      return Float(style.font.pointSize)
+    }
+    set {
+      style = CaptionStyle(
+        wordStyle: style.wordStyle,
+        lineStyle: style.lineStyle,
+        textAlignment: style.textAlignment,
+        backgroundStyle: style.backgroundStyle,
+        backgroundColor: style.backgroundColor,
+        font: style.font.withSize(CGFloat(newValue)),
+        textColor: style.textColor
+      )
+    }
+  }
+  
+  @objc
+  public var fontFamily: String {
+    get {
+      return style.font.familyName
+    }
+    set {
+      let currentFontSize = CGFloat(fontSize)
+      style = CaptionStyle(
+        wordStyle: style.wordStyle,
+        lineStyle: style.lineStyle,
+        textAlignment: style.textAlignment,
+        backgroundStyle: style.backgroundStyle,
+        backgroundColor: style.backgroundColor,
+        font: UIFont(name: newValue, size: currentFontSize) ?? UIFont.systemFont(ofSize: currentFontSize),
+        textColor: style.textColor
+      )
+    }
+  }
+  
+  
+  @objc
   public var textSegments = [TextSegment]() {
     didSet {
       updateCaptionLayer()
@@ -151,6 +189,6 @@ class CaptionView : UIView {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-//    presetLayer?.frame = bounds
+    captionLayer?.frame = bounds
   }
 }

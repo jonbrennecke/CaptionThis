@@ -1,10 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  TouchableOpacity,
-  requireNativeComponent,
-  NativeModules,
-} from 'react-native';
+import { TouchableOpacity } from 'react-native';
+
+import CaptionView from '../caption-view/CaptionView';
 
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
@@ -22,12 +20,8 @@ type Props = {
   fontSize: number,
   speechTranscription: ?SpeechTranscription,
   isReadyToPlay: boolean,
-  lineStyle: 'oneLine' | 'twoLines',
   onPress?: () => void,
 };
-
-const NativeTranscriptView = requireNativeComponent('TranscriptView');
-const { TranscriptViewManager } = NativeModules;
 
 const styles = {
   container: {
@@ -45,28 +39,28 @@ export default class VideoCaptionsView extends Component<Props> {
     if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
       return;
     }
-    TranscriptViewManager.restart(this.nativeComponentRef._nativeTag);
+    // TODO: TranscriptViewManager.restart(this.nativeComponentRef._nativeTag);
   }
 
   pause() {
     if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
       return;
     }
-    TranscriptViewManager.pause(this.nativeComponentRef._nativeTag);
+    // TODO: TranscriptViewManager.pause(this.nativeComponentRef._nativeTag);
   }
 
   seekToTime(time: number) {
     if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
       return;
     }
-    TranscriptViewManager.seekToTime(this.nativeComponentRef._nativeTag, time);
+    // TODO: TranscriptViewManager.seekToTime(this.nativeComponentRef._nativeTag, time);
   }
 
   play() {
     if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
       return;
     }
-    TranscriptViewManager.play(this.nativeComponentRef._nativeTag);
+    // TODO: TranscriptViewManager.play(this.nativeComponentRef._nativeTag);
   }
 
   render() {
@@ -83,7 +77,7 @@ export default class VideoCaptionsView extends Component<Props> {
         style={[styles.container, this.props.style]}
         onPress={this.props.onPress}
       >
-        <NativeTranscriptView
+        {/* <NativeTranscriptView
           ref={ref => {
             this.nativeComponentRef = ref;
           }}
@@ -108,6 +102,20 @@ export default class VideoCaptionsView extends Component<Props> {
               this.props.backgroundColor.blue / 255,
               this.props.backgroundColor.alpha,
             ],
+          }}
+        /> */}
+        <CaptionView
+          style={styles.flex}
+          duration={this.props.duration}
+          textSegments={textSegments}
+          captionStyle={{
+            textAlignment: 'left',
+            lineStyle: 'translateY',
+            wordStyle: 'none',
+            backgroundStyle: 'gradient',
+            backgroundColor: this.props.backgroundColor,
+            fontSize: this.props.fontSize,
+            fontFamily: this.props.fontFamily,
           }}
         />
       </TouchableOpacity>

@@ -61,6 +61,23 @@ RCT_CUSTOM_VIEW_PROPERTY(duration, NSNumber *, CaptionView) {
   view.duration = [duration doubleValue];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(fontSize, NSNumber *, CaptionView) {
+  if (![view isKindOfClass:[CaptionView class]]) {
+    return;
+  }
+  NSNumber *fontSize = [RCTConvert NSNumber:json];
+  view.fontSize = [fontSize floatValue];
+}
+
+
+RCT_CUSTOM_VIEW_PROPERTY(fontFamily, NSString *, CaptionView) {
+  if (![view isKindOfClass:[CaptionView class]]) {
+    return;
+  }
+  NSNumber *fontFamily = [RCTConvert NSString:json];
+  view.fontFamily = fontFamily;
+}
+
 RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionView) {
   if (![view isKindOfClass:[CaptionView class]]) {
     return;
