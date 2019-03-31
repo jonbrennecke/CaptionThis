@@ -1,6 +1,5 @@
 import Foundation
 
-fileprivate let BAR_THICKNESS = CGFloat(4)
 fileprivate let BAR_SPACE_HEIGHT = CGFloat(10)
 
 @objc
@@ -23,25 +22,15 @@ enum CaptionPresetTextAlignment: Int {
 
 protocol CaptionPresetTextAlignmentImpl {
   var textAlignment: CaptionPresetTextAlignment { get }
-  func layerSize(forKey key: CaptionPresetLayerKey, parentLayer: CALayer) -> CGSize
+  func layerSize(forKey key: CaptionPresetLayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize
 }
 
 class CaptionPresetTextAlignmentLeftImpl: CaptionPresetTextAlignmentImpl {
   public let textAlignment: CaptionPresetTextAlignment = .left
 
-  func layerSize(forKey _: CaptionPresetLayerKey, parentLayer: CALayer) -> CGSize {
-    return fullSize(parentLayer: parentLayer)
-  }
-
-  private func fullSize(parentLayer: CALayer) -> CGSize {
+  func layerSize(forKey _: CaptionPresetLayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize {
     let width = parentLayer.frame.width
-    let height = BAR_THICKNESS
-    return CGSize(width: width, height: height)
-  }
-
-  private func halfSize(parentLayer: CALayer) -> CGSize {
-    let width = parentLayer.frame.width / 2
-    let height = BAR_THICKNESS
+    let height = fontSize
     return CGSize(width: width, height: height)
   }
 }
@@ -49,19 +38,9 @@ class CaptionPresetTextAlignmentLeftImpl: CaptionPresetTextAlignmentImpl {
 class CaptionPresetTextAlignmentRightImpl: CaptionPresetTextAlignmentImpl {
   public let textAlignment: CaptionPresetTextAlignment = .right
 
-  func layerSize(forKey _: CaptionPresetLayerKey, parentLayer: CALayer) -> CGSize {
-    return fullSize(parentLayer: parentLayer)
-  }
-
-  private func fullSize(parentLayer: CALayer) -> CGSize {
+  func layerSize(forKey _: CaptionPresetLayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize {
     let width = parentLayer.frame.width
-    let height = BAR_THICKNESS
-    return CGSize(width: width, height: height)
-  }
-
-  private func halfSize(parentLayer: CALayer) -> CGSize {
-    let width = parentLayer.frame.width / 2
-    let height = BAR_THICKNESS
+    let height = fontSize
     return CGSize(width: width, height: height)
   }
 }
@@ -69,19 +48,9 @@ class CaptionPresetTextAlignmentRightImpl: CaptionPresetTextAlignmentImpl {
 class CaptionPresetTextAlignmentCenterImpl: CaptionPresetTextAlignmentImpl {
   public let textAlignment: CaptionPresetTextAlignment = .center
 
-  func layerSize(forKey _: CaptionPresetLayerKey, parentLayer: CALayer) -> CGSize {
-    return fullSize(parentLayer: parentLayer)
-  }
-
-  private func fullSize(parentLayer: CALayer) -> CGSize {
+  func layerSize(forKey _: CaptionPresetLayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize {
     let width = parentLayer.frame.width
-    let height = BAR_THICKNESS
-    return CGSize(width: width, height: height)
-  }
-
-  private func halfSize(parentLayer: CALayer) -> CGSize {
-    let width = parentLayer.frame.width / 2
-    let height = BAR_THICKNESS
+    let height = fontSize
     return CGSize(width: width, height: height)
   }
 }

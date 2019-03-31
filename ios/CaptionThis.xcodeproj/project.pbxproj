@@ -972,6 +972,8 @@
 		FC388F5022309A36001CE3A3 /* impl */ = {
 			isa = PBXGroup;
 			children = (
+				FCF51FC4222B5EC50066D81B /* CaptionPresetStyleImpl.swift */,
+				FCF51FC2222B5C1C0066D81B /* CaptionPresetStyleImplFactory.swift */,
 				FC388F4E22309A11001CE3A3 /* CaptionPresetBackgroundStyleImpl.swift */,
 				FCB8AEF1222DDEEE002F30D8 /* CaptionPresetWordStyleImpl.swift */,
 				FCF51FBB222B55480066D81B /* CaptionPresetLineStyleImpl.swift */,
@@ -1123,8 +1125,6 @@
 				FC388F532230EBF1001CE3A3 /* TextSegment.swift */,
 				FCF51F86222B4D550066D81B /* CaptionPresetStyle.swift */,
 				FCB8AE71222DBE26002F30D8 /* CaptionPresetLinePositions.swift */,
-				FCF51FC4222B5EC50066D81B /* CaptionPresetStyleImpl.swift */,
-				FCF51FC2222B5C1C0066D81B /* CaptionPresetStyleImplFactory.swift */,
 				FC388F5022309A36001CE3A3 /* impl */,
 				FC388F172230983E001CE3A3 /* RCTConvert */,
 			);

@@ -94,7 +94,7 @@ class CaptionPresetStyleImpl {
   private func resize(key: CaptionPresetLayerKey, parentLayer: CALayer) -> CGSize {
     let layer = layers.get(byKey: key)
     let origin = layerOrigin(forKey: key, parentLayer: parentLayer)
-    let size = textAlignmentImpl.layerSize(forKey: key, parentLayer: parentLayer)
+    let size = textAlignmentImpl.layerSize(forKey: key, parentLayer: parentLayer, fontSize: style.font.lineHeight)
     layer.frame = CGRect(origin: origin, size: size)
     return size
   }

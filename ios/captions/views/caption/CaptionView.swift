@@ -116,9 +116,9 @@ class CaptionView : UIView {
   }
   
   @objc
-  public var fontSize: Float {
+  public var fontSize: CGFloat {
     get {
-      return Float(style.font.pointSize)
+      return style.font.pointSize
     }
     set {
       style = CaptionStyle(
@@ -127,7 +127,7 @@ class CaptionView : UIView {
         textAlignment: style.textAlignment,
         backgroundStyle: style.backgroundStyle,
         backgroundColor: style.backgroundColor,
-        font: style.font.withSize(CGFloat(newValue)),
+        font: style.font.withSize(newValue),
         textColor: style.textColor
       )
     }
@@ -139,14 +139,13 @@ class CaptionView : UIView {
       return style.font.familyName
     }
     set {
-      let currentFontSize = CGFloat(fontSize)
       style = CaptionStyle(
         wordStyle: style.wordStyle,
         lineStyle: style.lineStyle,
         textAlignment: style.textAlignment,
         backgroundStyle: style.backgroundStyle,
         backgroundColor: style.backgroundColor,
-        font: UIFont(name: newValue, size: currentFontSize) ?? UIFont.systemFont(ofSize: currentFontSize),
+        font: UIFont(name: newValue, size: fontSize) ?? UIFont.systemFont(ofSize: fontSize),
         textColor: style.textColor
       )
     }
