@@ -104,7 +104,7 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout, duration: CFTimeInterval) {
     layer.sublayers = nil
     let sublayer = CALayer()
-    
+
     let bounds = CaptionSizingUtil.layoutForText(originalBounds: layer.bounds, textAlignment: textAlignment)
     sublayer.anchorPoint = bounds.anchorPoint
     sublayer.position = bounds.position
@@ -167,10 +167,10 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     }
   }
 
-  private func createTextAnimations(key: CaptionPresetLayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
+  private func createTextAnimations(key _: CaptionPresetLayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
-    let startIndex = index * 3  
+    let startIndex = index * 3
     group.animations = CaptionAnimationBuilder()
       .insert(FadeInAnimationStep(), at: startIndex)
       .insert(FadeOutAnimationStep(), at: startIndex + 2)

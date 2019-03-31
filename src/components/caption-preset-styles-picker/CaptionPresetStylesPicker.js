@@ -6,7 +6,7 @@ import isEqual from 'lodash/isEqual';
 import clamp from 'lodash/clamp';
 import round from 'lodash/round';
 
-import CaptionPresetStyleView from './CaptionPresetStyleView';
+import CaptionPresetView from './CaptionPresetView';
 import CaptionPresetAnimatedBorderView from './CaptionPresetAnimatedBorderView';
 
 import type { Style } from '../../types/react';
@@ -174,7 +174,7 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
               size={{ width: PRESET_WIDTH, height: PRESET_HEIGHT }}
               onPress={() => this.scrollToPresetAtIndex(index)}
             >
-              <CaptionPresetStyleView
+              <CaptionPresetView
                 style={styles.captionPreset}
                 presetStyle={preset}
                 duration={15}

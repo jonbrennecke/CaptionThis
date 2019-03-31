@@ -29,7 +29,7 @@ class CaptionTextUtil {
     }
     return stringsMap
   }
-  
+
   private static func listKeys(forLineStyle lineStyle: CaptionPresetLineStyle) -> [CaptionPresetLayerKey] {
     switch lineStyle {
     case .fadeInOut:

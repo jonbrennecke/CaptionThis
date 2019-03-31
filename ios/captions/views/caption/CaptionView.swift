@@ -1,10 +1,10 @@
 import UIKit
 
-@objc
-class CaptionPresetStyleView: UIView {
-  private var presetLayer: CaptionPresetStyleLayer?
-
-  private var style = CaptionPresetStyle(
+@objc(CaptionView)
+class CaptionView : UIView {
+  private var captionLayer: CaptionLayer?
+  
+  private var style = CaptionStyle(
     wordStyle: .none,
     lineStyle: .fadeInOut,
     textAlignment: .left,
@@ -12,19 +12,19 @@ class CaptionPresetStyleView: UIView {
     backgroundColor: .white,
     font: UIFont.systemFont(ofSize: 7),
     textColor: UIColor.white
-  ) {
+    ) {
     didSet {
-      updatePresetLayer()
+      updateCaptionLayer()
     }
   }
-
+  
   @objc
   public var textAlignment: CaptionPresetTextAlignment {
     get {
       return style.textAlignment
     }
     set {
-      style = CaptionPresetStyle(
+      style = CaptionStyle(
         wordStyle: style.wordStyle,
         lineStyle: style.lineStyle,
         textAlignment: newValue,
@@ -35,14 +35,14 @@ class CaptionPresetStyleView: UIView {
       )
     }
   }
-
+  
   @objc
   public var lineStyle: CaptionPresetLineStyle {
     get {
       return style.lineStyle
     }
     set {
-      style = CaptionPresetStyle(
+      style = CaptionStyle(
         wordStyle: style.wordStyle,
         lineStyle: newValue,
         textAlignment: style.textAlignment,
@@ -53,14 +53,14 @@ class CaptionPresetStyleView: UIView {
       )
     }
   }
-
+  
   @objc
   public var wordStyle: CaptionPresetWordStyle {
     get {
       return style.wordStyle
     }
     set {
-      style = CaptionPresetStyle(
+      style = CaptionStyle(
         wordStyle: newValue,
         lineStyle: style.lineStyle,
         textAlignment: style.textAlignment,
@@ -71,14 +71,14 @@ class CaptionPresetStyleView: UIView {
       )
     }
   }
-
+  
   @objc
   public var backgroundStyle: CaptionPresetBackgroundStyle {
     get {
       return style.backgroundStyle
     }
     set {
-      style = CaptionPresetStyle(
+      style = CaptionStyle(
         wordStyle: style.wordStyle,
         lineStyle: style.lineStyle,
         textAlignment: style.textAlignment,
@@ -89,14 +89,14 @@ class CaptionPresetStyleView: UIView {
       )
     }
   }
-
+  
   @objc
   public var captionBackgroundColor: UIColor {
     get {
       return style.backgroundColor
     }
     set {
-      style = CaptionPresetStyle(
+      style = CaptionStyle(
         wordStyle: style.wordStyle,
         lineStyle: style.lineStyle,
         textAlignment: style.textAlignment,
@@ -107,50 +107,50 @@ class CaptionPresetStyleView: UIView {
       )
     }
   }
-
+  
   @objc
   public var duration = CFTimeInterval(0) {
     didSet {
-      updatePresetLayer()
+      updateCaptionLayer()
     }
   }
-
+  
   @objc
   public var textSegments = [TextSegment]() {
     didSet {
-      updatePresetLayer()
+      updateCaptionLayer()
     }
   }
-
-  private func updatePresetLayer() {
-    presetLayer = CaptionPresetStyleLayer(style: style, textSegments: textSegments, duration: duration)
-    guard let presetLayer = presetLayer else {
+  
+  private func updateCaptionLayer() {
+    captionLayer = CaptionLayer(style: style, textSegments: textSegments, duration: duration)
+    guard let captionLayer = captionLayer else {
       return
     }
-    presetLayer.frame = bounds
+    captionLayer.frame = bounds
     layer.sublayers = nil
-    layer.addSublayer(presetLayer)
+    layer.addSublayer(captionLayer)
   }
-
+  
   // MARK: UIView method implementations
-
+  
   init() {
     super.init(frame: .zero)
-    presetLayer = CaptionPresetStyleLayer(style: style, textSegments: textSegments, duration: duration)
-    presetLayer!.frame = bounds
-    layer.addSublayer(presetLayer!)
+    captionLayer = CaptionLayer(style: style, textSegments: textSegments, duration: duration)
+    captionLayer!.frame = bounds
+    layer.addSublayer(captionLayer!)
   }
-
+  
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
+  
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
   }
-
+  
   override func layoutSubviews() {
     super.layoutSubviews()
-    presetLayer?.frame = bounds
+//    presetLayer?.frame = bounds
   }
 }

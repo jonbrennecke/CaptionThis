@@ -37,6 +37,7 @@
     "react-native-svg": "8.0.10",
     "react-redux": "5.0.7",
     "redux": "3.7.2",
+    "redux-devtools-extension": "^2.13.8",
     "redux-logger": "3.0.6",
     "redux-storage": "4.1.2",
     "redux-storage-merger-immutablejs": "1.0.5",

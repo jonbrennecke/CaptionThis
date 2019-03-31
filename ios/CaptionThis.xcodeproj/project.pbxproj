@@ -46,6 +46,7 @@
 		FC4BCD182204345F00822C0F /* VideoAnimationLayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4BCD172204345F00822C0F /* VideoAnimationLayerModel.swift */; };
 		FC4BCD1A22043EBD00822C0F /* CaptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4BCD1922043EBD00822C0F /* CaptionsView.swift */; };
 		FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58D07521FA795F00E7956D /* AudioUtil.swift */; };
+		FC691AFA225124C900A30AA6 /* CaptionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC691AF9225124C900A30AA6 /* CaptionLayer.swift */; };
 		FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */; };
 		FC6EA41D221221BC009F3D7D /* VideoSeekbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA41C221221BC009F3D7D /* VideoSeekbarView.swift */; };
 		FC6EA41F221230A6009F3D7D /* DeviceBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA41E221230A6009F3D7D /* DeviceBridgeModule.m */; };
@@ -58,9 +59,9 @@
 		FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81521D45340007C3B3E /* PermissionsManager.swift */; };
 		FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */; };
 		FC6FCDA52220A2A9004772B9 /* LocaleUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */; };
-		FC6FCF9722249874004772B9 /* CaptionPresetStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9622249874004772B9 /* CaptionPresetStyleView.swift */; };
-		FC6FCF9922249899004772B9 /* CaptionPresetStyleViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9822249899004772B9 /* CaptionPresetStyleViewManager.m */; };
-		FC6FCF9C22249B65004772B9 /* CaptionPresetStyleLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9B22249B65004772B9 /* CaptionPresetStyleLayer.swift */; };
+		FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9622249874004772B9 /* CaptionPresetView.swift */; };
+		FC6FCF9922249899004772B9 /* CaptionPresetViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9822249899004772B9 /* CaptionPresetViewManager.m */; };
+		FC6FCF9C22249B65004772B9 /* CaptionPresetLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9B22249B65004772B9 /* CaptionPresetLayer.swift */; };
 		FC7822C021E3FCB7007AA9B2 /* CutiveMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC78228B21E3FCB6007AA9B2 /* CutiveMono-Regular.ttf */; };
 		FC7822C121E3FCB7007AA9B2 /* DancingScript-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7822BC21E3FCB6007AA9B2 /* DancingScript-Regular.ttf */; };
 		FC7822C221E3FCB7007AA9B2 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7822BD21E3FCB7007AA9B2 /* Montserrat-Regular.ttf */; };
@@ -119,6 +120,8 @@
 		FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */; };
 		FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8024921F84A640092B5E5 /* OrientationUtil.swift */; };
 		FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */; };
+		FCE83950223A172E002C85CA /* CaptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8394F223A172E002C85CA /* CaptionView.swift */; };
+		FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCE83952223A1795002C85CA /* CaptionViewManager.m */; };
 		FCF51EC6222651220066D81B /* AnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51EC5222651220066D81B /* AnimationUtil.swift */; };
 		FCF51F87222B4D550066D81B /* CaptionPresetStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51F86222B4D550066D81B /* CaptionPresetStyle.swift */; };
 		FCF51FBC222B55480066D81B /* CaptionPresetLineStyleImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBB222B55480066D81B /* CaptionPresetLineStyleImpl.swift */; };
@@ -556,6 +559,7 @@
 		FC4BCD172204345F00822C0F /* VideoAnimationLayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationLayerModel.swift; sourceTree = "<group>"; };
 		FC4BCD1922043EBD00822C0F /* CaptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionsView.swift; sourceTree = "<group>"; };
 		FC58D07521FA795F00E7956D /* AudioUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUtil.swift; sourceTree = "<group>"; };
+		FC691AF9225124C900A30AA6 /* CaptionLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLayer.swift; sourceTree = "<group>"; };
 		FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUtil.swift; sourceTree = "<group>"; };
 		FC6EA41C221221BC009F3D7D /* VideoSeekbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSeekbarView.swift; sourceTree = "<group>"; };
 		FC6EA41E221230A6009F3D7D /* DeviceBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceBridgeModule.m; sourceTree = "<group>"; };
@@ -572,10 +576,10 @@
 		FC6EA81921D45730007C3B3E /* PermissionsBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PermissionsBridgeModule.h; sourceTree = "<group>"; };
 		FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocaleUtil.m; sourceTree = "<group>"; };
 		FC6FCDD72220A2C7004772B9 /* LocaleUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocaleUtil.h; sourceTree = "<group>"; };
-		FC6FCF9622249874004772B9 /* CaptionPresetStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetStyleView.swift; sourceTree = "<group>"; };
-		FC6FCF9822249899004772B9 /* CaptionPresetStyleViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptionPresetStyleViewManager.m; sourceTree = "<group>"; };
-		FC6FCF9A222498A2004772B9 /* CaptionPresetStyleViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptionPresetStyleViewManager.h; sourceTree = "<group>"; };
-		FC6FCF9B22249B65004772B9 /* CaptionPresetStyleLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetStyleLayer.swift; sourceTree = "<group>"; };
+		FC6FCF9622249874004772B9 /* CaptionPresetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetView.swift; sourceTree = "<group>"; };
+		FC6FCF9822249899004772B9 /* CaptionPresetViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptionPresetViewManager.m; sourceTree = "<group>"; };
+		FC6FCF9A222498A2004772B9 /* CaptionPresetViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptionPresetViewManager.h; sourceTree = "<group>"; };
+		FC6FCF9B22249B65004772B9 /* CaptionPresetLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetLayer.swift; sourceTree = "<group>"; };
 		FC78228B21E3FCB6007AA9B2 /* CutiveMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "CutiveMono-Regular.ttf"; path = "../assets/fonts/CutiveMono-Regular.ttf"; sourceTree = "<group>"; };
 		FC7822BC21E3FCB6007AA9B2 /* DancingScript-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DancingScript-Regular.ttf"; path = "../assets/fonts/DancingScript-Regular.ttf"; sourceTree = "<group>"; };
 		FC7822BD21E3FCB7007AA9B2 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
@@ -648,6 +652,9 @@
 		FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIImageOrientation.m"; sourceTree = "<group>"; };
 		FCE8024921F84A640092B5E5 /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
 		FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoThumbnailView.swift; sourceTree = "<group>"; };
+		FCE8394F223A172E002C85CA /* CaptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionView.swift; sourceTree = "<group>"; };
+		FCE83951223A1786002C85CA /* CaptionViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptionViewManager.h; sourceTree = "<group>"; };
+		FCE83952223A1795002C85CA /* CaptionViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptionViewManager.m; sourceTree = "<group>"; };
 		FCF51EC5222651220066D81B /* AnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtil.swift; sourceTree = "<group>"; };
 		FCF51F86222B4D550066D81B /* CaptionPresetStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetStyle.swift; sourceTree = "<group>"; };
 		FCF51FBB222B55480066D81B /* CaptionPresetLineStyleImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetLineStyleImpl.swift; sourceTree = "<group>"; };
@@ -973,13 +980,15 @@
 			path = impl;
 			sourceTree = "<group>";
 		};
-		FC388F562230F063001CE3A3 /* CaptionPresetStyleViewManager */ = {
+		FC388F562230F063001CE3A3 /* preset */ = {
 			isa = PBXGroup;
 			children = (
-				FC6FCF9822249899004772B9 /* CaptionPresetStyleViewManager.m */,
-				FC6FCF9A222498A2004772B9 /* CaptionPresetStyleViewManager.h */,
+				FC6FCF9B22249B65004772B9 /* CaptionPresetLayer.swift */,
+				FC6FCF9622249874004772B9 /* CaptionPresetView.swift */,
+				FC6FCF9822249899004772B9 /* CaptionPresetViewManager.m */,
+				FC6FCF9A222498A2004772B9 /* CaptionPresetViewManager.h */,
 			);
-			path = CaptionPresetStyleViewManager;
+			path = preset;
 			sourceTree = "<group>";
 		};
 		FC4BCD16220432DA00822C0F /* VideoAnimationLayer */ = {
@@ -1035,6 +1044,17 @@
 				FCB8AF23222F1773002F30D8 /* AnimationListBuilder.swift */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		FC691AF82251249B00A30AA6 /* caption */ = {
+			isa = PBXGroup;
+			children = (
+				FCE83951223A1786002C85CA /* CaptionViewManager.h */,
+				FCE83952223A1795002C85CA /* CaptionViewManager.m */,
+				FCE8394F223A172E002C85CA /* CaptionView.swift */,
+				FC691AF9225124C900A30AA6 /* CaptionLayer.swift */,
+			);
+			path = caption;
 			sourceTree = "<group>";
 		};
 		FC6EA421221230CA009F3D7D /* DeviceBridgeModule */ = {
@@ -1097,6 +1117,7 @@
 		FC6FCF6222249860004772B9 /* captions */ = {
 			isa = PBXGroup;
 			children = (
+				FCE8391B223A11D6002C85CA /* views */,
 				FC1492F822331A4600A753DD /* CaptionSizingUtil.swift */,
 				FC388F8D2231B41C001CE3A3 /* CaptionTextUtil.swift */,
 				FC388F532230EBF1001CE3A3 /* TextSegment.swift */,
@@ -1104,10 +1125,7 @@
 				FCB8AE71222DBE26002F30D8 /* CaptionPresetLinePositions.swift */,
 				FCF51FC4222B5EC50066D81B /* CaptionPresetStyleImpl.swift */,
 				FCF51FC2222B5C1C0066D81B /* CaptionPresetStyleImplFactory.swift */,
-				FC6FCF9B22249B65004772B9 /* CaptionPresetStyleLayer.swift */,
-				FC6FCF9622249874004772B9 /* CaptionPresetStyleView.swift */,
 				FC388F5022309A36001CE3A3 /* impl */,
-				FC388F562230F063001CE3A3 /* CaptionPresetStyleViewManager */,
 				FC388F172230983E001CE3A3 /* RCTConvert */,
 			);
 			path = captions;
@@ -1310,6 +1328,15 @@
 				FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */,
 			);
 			path = RCTConvert;
+			sourceTree = "<group>";
+		};
+		FCE8391B223A11D6002C85CA /* views */ = {
+			isa = PBXGroup;
+			children = (
+				FC691AF82251249B00A30AA6 /* caption */,
+				FC388F562230F063001CE3A3 /* preset */,
+			);
+			path = views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1938,7 +1965,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FCB8AF24222F1773002F30D8 /* AnimationListBuilder.swift in Sources */,
-				FC6FCF9C22249B65004772B9 /* CaptionPresetStyleLayer.swift in Sources */,
+				FC6FCF9C22249B65004772B9 /* CaptionPresetLayer.swift in Sources */,
 				FCF51FC5222B5EC50066D81B /* CaptionPresetStyleImpl.swift in Sources */,
 				FCF51F87222B4D550066D81B /* CaptionPresetStyle.swift in Sources */,
 				FCB0E5C322149C03002F320B /* PhotosAlbumUtil.swift in Sources */,
@@ -1947,7 +1974,7 @@
 				FCB393A52210E0F900403154 /* LiveSpeechTranscriptionRequest.swift in Sources */,
 				FC388F922231C153001CE3A3 /* VideoDimensions.swift in Sources */,
 				FC6EA81221D45123007C3B3E /* Debug.swift in Sources */,
-				FC6FCF9722249874004772B9 /* CaptionPresetStyleView.swift in Sources */,
+				FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */,
 				FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */,
 				FC388F4C22309855001CE3A3 /* RCTConvert+CaptionPresetBackgroundStyle.m in Sources */,
 				FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */,
@@ -1962,13 +1989,14 @@
 				FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */,
 				FCF51FC3222B5C1C0066D81B /* CaptionPresetStyleImplFactory.swift in Sources */,
 				FCB8AEF2222DDEEE002F30D8 /* CaptionPresetWordStyleImpl.swift in Sources */,
-				FC6FCF9922249899004772B9 /* CaptionPresetStyleViewManager.m in Sources */,
+				FC6FCF9922249899004772B9 /* CaptionPresetViewManager.m in Sources */,
 				FCA3971621DC937C00347CAB /* VideoAnimationLayer.swift in Sources */,
 				FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */,
 				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
 				FC388F542230EBF1001CE3A3 /* TextSegment.swift in Sources */,
 				FC7A0F6321D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m in Sources */,
 				FCB0E5C12213F076002F320B /* VideoExportTask.swift in Sources */,
+				FCE83950223A172E002C85CA /* CaptionView.swift in Sources */,
 				FC388F522230EBA9001CE3A3 /* RCTConvert+TextSegment.m in Sources */,
 				FCF51FBE222B56AD0066D81B /* CaptionPresetTextAlignmentImpl.swift in Sources */,
 				FCF51FC8222B62C60066D81B /* RCTConvert+CaptionPresetLineStyle.m in Sources */,
@@ -1996,6 +2024,7 @@
 				FCF51EC6222651220066D81B /* AnimationUtil.swift in Sources */,
 				FCF51FC0222B5A1F0066D81B /* RCTConvert+CaptionPresetTextAlignment.m in Sources */,
 				FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */,
+				FC691AFA225124C900A30AA6 /* CaptionLayer.swift in Sources */,
 				FC6FCDA52220A2A9004772B9 /* LocaleUtil.m in Sources */,
 				FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */,
 				FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */,
@@ -2003,6 +2032,7 @@
 				FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */,
 				FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */,
 				FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */,
+				FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */,
 				FCB8AE72222DBE26002F30D8 /* CaptionPresetLinePositions.swift in Sources */,
 				FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */,
 				FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */,

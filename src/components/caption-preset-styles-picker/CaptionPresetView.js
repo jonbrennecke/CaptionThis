@@ -6,8 +6,8 @@ import type { Style } from '../../types/react';
 import type { CaptionPresetStyleObject } from '../../types/video';
 import type { TextSegmentObject } from '../../types/media';
 
-const NativeCaptionPresetStyleView = requireNativeComponent(
-  'CaptionPresetStyleView'
+const NativeCaptionPresetView = requireNativeComponent(
+  'CaptionPresetView'
 );
 
 type Props = {
@@ -25,7 +25,7 @@ const styles = {
   },
 };
 
-export default function CaptionPresetStyleView({
+export default function CaptionPresetView({
   style,
   duration,
   textSegments,
@@ -33,7 +33,7 @@ export default function CaptionPresetStyleView({
 }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <NativeCaptionPresetStyleView
+      <NativeCaptionPresetView
         style={styles.nativeView}
         duration={duration}
         textSegments={textSegments}

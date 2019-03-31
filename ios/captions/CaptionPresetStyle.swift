@@ -19,3 +19,5 @@ struct CaptionPresetStyle {
   public let font: UIFont
   public let textColor: UIColor
 }
+
+typealias CaptionStyle = CaptionPresetStyle

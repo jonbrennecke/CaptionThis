@@ -70,10 +70,12 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
   },
 ];
 
-const PRESET_STYLES_WITH_ID: CaptionPresetStyleObjectWithId[] = PRESET_STYLES.map(p => ({
-  id: uuid.v4(),
-  ...p,
-}));
+const PRESET_STYLES_WITH_ID: CaptionPresetStyleObjectWithId[] = PRESET_STYLES.map(
+  p => ({
+    id: uuid.v4(),
+    ...p,
+  })
+);
 
 const styles = {
   container: {},

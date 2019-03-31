@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import { Animated, StyleSheet, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 
+import * as Color from '../../utils/Color';
 import * as Camera from '../../utils/Camera';
+import { USER_BACKGROUND_COLOR_CHOICES } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';
-import LiveTranscriptionView from '../../components/live-transcription-view/LiveTranscriptionView';
+import CaptionView from '../../components/caption-view/CaptionView';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 
@@ -76,6 +78,11 @@ export default class HomeScreenCameraPreview extends Component<Props> {
   }
 
   render() {
+    const textSegments = this.props.speechTranscription ? this.props.speechTranscription.segments.map(s => ({
+      duration: s.duration,
+      timestamp: s.timestamp,
+      text: s.substring,
+    })) : [];
     return (
       <Animated.View
         style={[
@@ -94,11 +101,16 @@ export default class HomeScreenCameraPreview extends Component<Props> {
           onDidRequestFocusOnPoint={this.tapToFocusDidReceiveFocusPoint}
         />
         <ScreenGradients />
-        <LiveTranscriptionView
-          style={styles.transcript}
-          fontFamily={this.props.fontFamily}
-          isCameraRecording={this.props.isCameraRecording}
-          speechTranscription={this.props.speechTranscription}
+        <CaptionView
+          duration={10}
+          textSegments={textSegments}
+          captionStyle={{
+            textAlignment: 'center',
+            lineStyle: 'fadeInOut',
+            wordStyle: 'none',
+            backgroundStyle: 'solid',
+            backgroundColor: Color.hexToRgbaObject(USER_BACKGROUND_COLOR_CHOICES[1]),
+          }}
         />
         <HomeScreenCameraControls
           style={styles.absoluteFill}

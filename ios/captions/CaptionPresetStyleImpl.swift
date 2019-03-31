@@ -75,10 +75,13 @@ class CaptionPresetStyleImpl {
     let layerStrings = CaptionTextUtil.fitText(layerSizes: layerSizes, textSegments: textSegments, style: style, layout: layout)
     let keys = CaptionPresetStyleImpl.listKeys(forLineStyle: style.lineStyle)
     for key in keys {
-      applyStyles(key: key, parentLayer: parentLayer, strings: layerStrings[key]!, layout: layout)
+      guard let strings = layerStrings[key] else {
+        return
+      }
+      applyStyles(key: key, parentLayer: parentLayer, strings: strings, layout: layout)
     }
   }
-  
+
   private static func listKeys(forLineStyle lineStyle: CaptionPresetLineStyle) -> [CaptionPresetLayerKey] {
     switch lineStyle {
     case .fadeInOut:

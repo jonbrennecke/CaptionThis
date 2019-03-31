@@ -1,4 +1,4 @@
-#import "CaptionPresetStyleViewManager.h"
+#import "CaptionPresetViewManager.h"
 #import "CaptionThis-Swift.h"
 #import "RCTConvert+CaptionPresetBackgroundStyle.h"
 #import "RCTConvert+CaptionPresetLineStyle.h"
@@ -7,12 +7,12 @@
 #import "RCTConvert+TextSegment.h"
 #import <UIKit/UIKit.h>
 
-@implementation CaptionPresetStyleViewManager
+@implementation CaptionPresetViewManager
 
-RCT_EXPORT_MODULE(CaptionPresetStyleView)
+RCT_EXPORT_MODULE(CaptionPresetView)
 
-RCT_CUSTOM_VIEW_PROPERTY(textAlignment, NSString *, CaptionPresetStyleView) {
-  if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
+RCT_CUSTOM_VIEW_PROPERTY(textAlignment, NSString *, CaptionPresetView) {
+  if (![view isKindOfClass:[CaptionPresetView class]]) {
     return;
   }
   CaptionPresetTextAlignment textAlignment =
@@ -20,24 +20,24 @@ RCT_CUSTOM_VIEW_PROPERTY(textAlignment, NSString *, CaptionPresetStyleView) {
   view.textAlignment = textAlignment;
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(lineStyle, NSString *, CaptionPresetStyleView) {
-  if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
+RCT_CUSTOM_VIEW_PROPERTY(lineStyle, NSString *, CaptionPresetView) {
+  if (![view isKindOfClass:[CaptionPresetView class]]) {
     return;
   }
   CaptionPresetLineStyle lineStyle = [RCTConvert CaptionPresetLineStyle:json];
   view.lineStyle = lineStyle;
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(wordStyle, NSString *, CaptionPresetStyleView) {
-  if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
+RCT_CUSTOM_VIEW_PROPERTY(wordStyle, NSString *, CaptionPresetView) {
+  if (![view isKindOfClass:[CaptionPresetView class]]) {
     return;
   }
   CaptionPresetWordStyle wordStyle = [RCTConvert CaptionPresetWordStyle:json];
   view.wordStyle = wordStyle;
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(backgroundStyle, NSString *, CaptionPresetStyleView) {
-  if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
+RCT_CUSTOM_VIEW_PROPERTY(backgroundStyle, NSString *, CaptionPresetView) {
+  if (![view isKindOfClass:[CaptionPresetView class]]) {
     return;
   }
   CaptionPresetBackgroundStyle backgroundStyle =
@@ -45,24 +45,24 @@ RCT_CUSTOM_VIEW_PROPERTY(backgroundStyle, NSString *, CaptionPresetStyleView) {
   view.backgroundStyle = backgroundStyle;
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(backgroundColor, UIColor *, CaptionPresetStyleView) {
-  if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
+RCT_CUSTOM_VIEW_PROPERTY(backgroundColor, UIColor *, CaptionPresetView) {
+  if (![view isKindOfClass:[CaptionPresetView class]]) {
     return;
   }
   UIColor *backgroundColor = [RCTConvert UIColor:json];
   view.captionBackgroundColor = backgroundColor;
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(duration, NSNumber *, CaptionPresetStyleView) {
-  if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
+RCT_CUSTOM_VIEW_PROPERTY(duration, NSNumber *, CaptionPresetView) {
+  if (![view isKindOfClass:[CaptionPresetView class]]) {
     return;
   }
   NSNumber *duration = [RCTConvert NSNumber:json];
   view.duration = [duration doubleValue];
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionPresetStyleView) {
-  if (![view isKindOfClass:[CaptionPresetStyleView class]]) {
+RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionPresetView) {
+  if (![view isKindOfClass:[CaptionPresetView class]]) {
     return;
   }
   NSArray *jsonArray = [RCTConvert NSArray:json];
@@ -79,7 +79,7 @@ RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionPresetStyleView) {
 }
 
 - (UIView *)view {
-  CaptionPresetStyleView *view = [[CaptionPresetStyleView alloc] init];
+  CaptionPresetView *view = [[CaptionPresetView alloc] init];
   return (UIView *)view;
 }
 
