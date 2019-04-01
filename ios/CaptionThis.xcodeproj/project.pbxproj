@@ -982,7 +982,7 @@
 			path = impl;
 			sourceTree = "<group>";
 		};
-		FC388F562230F063001CE3A3 /* preset */ = {
+		FC388F562230F063001CE3A3 /* presets */ = {
 			isa = PBXGroup;
 			children = (
 				FC6FCF9B22249B65004772B9 /* CaptionPresetLayer.swift */,
@@ -990,7 +990,7 @@
 				FC6FCF9822249899004772B9 /* CaptionPresetViewManager.m */,
 				FC6FCF9A222498A2004772B9 /* CaptionPresetViewManager.h */,
 			);
-			path = preset;
+			path = presets;
 			sourceTree = "<group>";
 		};
 		FC4BCD16220432DA00822C0F /* VideoAnimationLayer */ = {
@@ -1048,7 +1048,7 @@
 			path = utils;
 			sourceTree = "<group>";
 		};
-		FC691AF82251249B00A30AA6 /* caption */ = {
+		FC691AF82251249B00A30AA6 /* captions */ = {
 			isa = PBXGroup;
 			children = (
 				FCE83951223A1786002C85CA /* CaptionViewManager.h */,
@@ -1056,7 +1056,7 @@
 				FCE8394F223A172E002C85CA /* CaptionView.swift */,
 				FC691AF9225124C900A30AA6 /* CaptionLayer.swift */,
 			);
-			path = caption;
+			path = captions;
 			sourceTree = "<group>";
 		};
 		FC6EA421221230CA009F3D7D /* DeviceBridgeModule */ = {
@@ -1333,8 +1333,8 @@
 		FCE8391B223A11D6002C85CA /* views */ = {
 			isa = PBXGroup;
 			children = (
-				FC691AF82251249B00A30AA6 /* caption */,
-				FC388F562230F063001CE3A3 /* preset */,
+				FC691AF82251249B00A30AA6 /* captions */,
+				FC388F562230F063001CE3A3 /* presets */,
 			);
 			path = views;
 			sourceTree = "<group>";
