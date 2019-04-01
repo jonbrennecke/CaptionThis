@@ -2,20 +2,33 @@ import UIKit
 
 fileprivate let BAR_SPACE_HEIGHT_FACTOR = CGFloat(1.25)
 
-// TODO: rename to CaptionPresetLayer.Key
-enum CaptionPresetLayerKey {
-  case a
-  case b
-  case c
-}
-
-class CaptionPresetStyleImpl {
+class CaptionStyleImpl {
+  
+  public enum LayerKey {
+    case a
+    case b
+    case c
+    
+    public var index: Int {
+      get {
+        switch self {
+        case .a:
+          return 0
+        case .b:
+          return 1
+        case .c:
+          return 2
+        }
+      }
+    }
+  }
+  
   private struct Layers {
     let a = CALayer()
     let b = CALayer()
     let c = CALayer()
 
-    public func get(byKey key: CaptionPresetLayerKey) -> CALayer {
+    public func get(byKey key: LayerKey) -> CALayer {
       switch key {
       case .a:
         return a
@@ -70,10 +83,10 @@ class CaptionPresetStyleImpl {
     let layerASize = resize(key: .a, parentLayer: parentLayer)
     let layerBSize = resize(key: .b, parentLayer: parentLayer)
     let layerCSize = resize(key: .c, parentLayer: parentLayer)
-    let layerSizes: [CaptionPresetLayerKey: CGSize] = [.a: layerASize, .b: layerBSize, .c: layerCSize]
+    let layerSizes: [LayerKey: CGSize] = [.a: layerASize, .b: layerBSize, .c: layerCSize]
     let layout = VideoAnimationLayerLayout.layoutForView(orientation: .up, style: style)
     let layerStrings = CaptionTextUtil.fitText(layerSizes: layerSizes, textSegments: textSegments, style: style, layout: layout)
-    let keys = CaptionPresetStyleImpl.listKeys(forLineStyle: style.lineStyle)
+    let keys = CaptionStyleImpl.listKeys(forLineStyle: style.lineStyle)
     for key in keys {
       guard let strings = layerStrings[key] else {
         return
@@ -82,7 +95,7 @@ class CaptionPresetStyleImpl {
     }
   }
 
-  private static func listKeys(forLineStyle lineStyle: CaptionPresetLineStyle) -> [CaptionPresetLayerKey] {
+  private static func listKeys(forLineStyle lineStyle: CaptionPresetLineStyle) -> [LayerKey] {
     switch lineStyle {
     case .fadeInOut:
       return [.a, .b]
@@ -91,7 +104,7 @@ class CaptionPresetStyleImpl {
     }
   }
 
-  private func resize(key: CaptionPresetLayerKey, parentLayer: CALayer) -> CGSize {
+  private func resize(key: LayerKey, parentLayer: CALayer) -> CGSize {
     let layer = layers.get(byKey: key)
     let origin = layerOrigin(forKey: key, parentLayer: parentLayer)
     let size = textAlignmentImpl.layerSize(forKey: key, parentLayer: parentLayer, fontSize: style.font.lineHeight)
@@ -99,14 +112,14 @@ class CaptionPresetStyleImpl {
     return size
   }
 
-  private func applyStyles(key: CaptionPresetLayerKey, parentLayer: CALayer, strings: [NSAttributedString], layout: VideoAnimationLayerLayout) {
+  private func applyStyles(key: LayerKey, parentLayer: CALayer, strings: [NSAttributedString], layout: VideoAnimationLayerLayout) {
     let layer = layers.get(byKey: key)
     lineStyleImpl.applyLineStyle(key: key, layer: layer, parentLayer: parentLayer, strings: strings, duration: duration)
     wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, strings: strings, layout: layout, duration: duration)
     backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor)
   }
 
-  private func layerOrigin(forKey key: CaptionPresetLayerKey, parentLayer: CALayer) -> CGPoint {
+  private func layerOrigin(forKey key: LayerKey, parentLayer: CALayer) -> CGPoint {
     switch key {
     case .a:
       let layer = layers.get(byKey: .a)

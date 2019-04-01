@@ -3,13 +3,13 @@ import Foundation
 // TODO: rename class
 class CaptionTextUtil {
   static func fitText(
-    layerSizes: [CaptionPresetLayerKey: CGSize],
+    layerSizes: [CaptionStyleImpl.LayerKey: CGSize],
     textSegments: [TextSegment],
     style: CaptionPresetStyle,
     layout: VideoAnimationLayerLayout
-  ) -> [CaptionPresetLayerKey: [NSAttributedString]] {
+  ) -> [CaptionStyleImpl.LayerKey: [NSAttributedString]] {
     let keys = listKeys(forLineStyle: style.lineStyle)
-    var stringsMap = [CaptionPresetLayerKey: [NSAttributedString]]()
+    var stringsMap = [CaptionStyleImpl.LayerKey: [NSAttributedString]]()
     var segments = textSegments
     while segments.count > 0 {
       for key in keys {
@@ -30,7 +30,7 @@ class CaptionTextUtil {
     return stringsMap
   }
 
-  private static func listKeys(forLineStyle lineStyle: CaptionPresetLineStyle) -> [CaptionPresetLayerKey] {
+  private static func listKeys(forLineStyle lineStyle: CaptionPresetLineStyle) -> [CaptionStyleImpl.LayerKey] {
     switch lineStyle {
     case .fadeInOut:
       return [.a, .b]

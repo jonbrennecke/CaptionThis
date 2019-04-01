@@ -3,13 +3,13 @@ import UIKit
 
 protocol CaptionPresetWordStyleImpl {
   var wordStyle: CaptionPresetWordStyle { get }
-  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout, duration: CFTimeInterval)
+  func applyWordStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout, duration: CFTimeInterval)
 }
 
 class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .animated
 
-  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout, duration: CFTimeInterval) {
+  func applyWordStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout, duration: CFTimeInterval) {
     layer.sublayers = nil
     let sublayer = CALayer()
     let bounds = CaptionSizingUtil.layoutForText(originalBounds: layer.bounds, textAlignment: textAlignment)
@@ -33,7 +33,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   }
 
   private func createTextLayer(
-    key: CaptionPresetLayerKey,
+    key: CaptionStyleImpl.LayerKey,
     string: NSAttributedString,
     index: Int,
     parentLayer: CALayer,
@@ -73,7 +73,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     }
   }
 
-  private func createTextAnimations(key: CaptionPresetLayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
+  private func createTextAnimations(key: CaptionStyleImpl.LayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     let offset = additionalAnimationIndexOffset(key: key)
@@ -86,7 +86,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     return group
   }
 
-  private func additionalAnimationIndexOffset(key: CaptionPresetLayerKey) -> Int {
+  private func additionalAnimationIndexOffset(key: CaptionStyleImpl.LayerKey) -> Int {
     switch key {
     case .a:
       return 0
@@ -101,7 +101,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
 class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .none
 
-  func applyWordStyle(key: CaptionPresetLayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout, duration: CFTimeInterval) {
+  func applyWordStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: [NSAttributedString], layout: VideoAnimationLayerLayout, duration: CFTimeInterval) {
     layer.sublayers = nil
     let sublayer = CALayer()
 
@@ -127,7 +127,7 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   }
 
   private func createTextLayer(
-    key: CaptionPresetLayerKey,
+    key: CaptionStyleImpl.LayerKey,
     string: NSAttributedString,
     index: Int,
     parentLayer: CALayer,
@@ -167,7 +167,7 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     }
   }
 
-  private func createTextAnimations(key _: CaptionPresetLayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
+  private func createTextAnimations(key _: CaptionStyleImpl.LayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     let startIndex = index * 3

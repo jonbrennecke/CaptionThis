@@ -8,13 +8,13 @@ enum CaptionPresetLineStyle: Int {
 
 protocol CaptionPresetLineStyleImpl {
   var lineStyle: CaptionPresetLineStyle { get }
-  func applyLineStyle(key: CaptionPresetLayerKey, layer: CALayer, parentLayer: CALayer, strings: [NSAttributedString], duration: CFTimeInterval)
+  func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer: CALayer, strings: [NSAttributedString], duration: CFTimeInterval)
 }
 
 class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
   public let lineStyle: CaptionPresetLineStyle = .fadeInOut
 
-  func applyLineStyle(key: CaptionPresetLayerKey, layer: CALayer, parentLayer _: CALayer, strings: [NSAttributedString], duration: CFTimeInterval) {
+  func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer _: CALayer, strings: [NSAttributedString], duration: CFTimeInterval) {
     layer.removeAllAnimations()
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
@@ -38,15 +38,14 @@ class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
 class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
   public let lineStyle: CaptionPresetLineStyle = .translateY
 
-  func applyLineStyle(key: CaptionPresetLayerKey, layer: CALayer, parentLayer: CALayer, strings: [NSAttributedString], duration: CFTimeInterval) {
+  func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer: CALayer, strings: [NSAttributedString], duration: CFTimeInterval) {
     layer.removeAllAnimations()
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     let positions = CaptionPresetLinePositions(layer: layer, parentLayer: parentLayer)
-    let offset = additionalAnimationIndexOffset(key: key)
     var builder = CaptionAnimationBuilder()
     for (index, _) in strings.enumerated() {
-      let startIndex = (index * 3) + offset
+      let startIndex = (index * 3) + key.index
       let outOfFrameBottom = positions.getPosition(forKey: .outOfFrameBottom)
       let inFrameTop = positions.getPosition(forKey: .inFrameTop)
       let outOfFrameTop = positions.getPosition(forKey: .outOfFrameTop)
@@ -65,17 +64,5 @@ class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
     group.animations = builder.build()
     group.duration = duration
     layer.add(group, forKey: "lineStyleAnimation")
-  }
-
-  // TODO: make this reusable
-  private func additionalAnimationIndexOffset(key: CaptionPresetLayerKey) -> Int {
-    switch key {
-    case .a:
-      return 0
-    case .b:
-      return 1
-    case .c:
-      return 2
-    }
   }
 }

@@ -20,13 +20,13 @@ enum CaptionPresetTextAlignment: Int {
 
 protocol CaptionPresetTextAlignmentImpl {
   var textAlignment: CaptionPresetTextAlignment { get }
-  func layerSize(forKey key: CaptionPresetLayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize
+  func layerSize(forKey key: CaptionStyleImpl.LayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize
 }
 
 class CaptionPresetTextAlignmentLeftImpl: CaptionPresetTextAlignmentImpl {
   public let textAlignment: CaptionPresetTextAlignment = .left
 
-  func layerSize(forKey _: CaptionPresetLayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize {
+  func layerSize(forKey _: CaptionStyleImpl.LayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize {
     let width = parentLayer.frame.width
     let height = fontSize
     return CGSize(width: width, height: height)
@@ -36,7 +36,7 @@ class CaptionPresetTextAlignmentLeftImpl: CaptionPresetTextAlignmentImpl {
 class CaptionPresetTextAlignmentRightImpl: CaptionPresetTextAlignmentImpl {
   public let textAlignment: CaptionPresetTextAlignment = .right
 
-  func layerSize(forKey _: CaptionPresetLayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize {
+  func layerSize(forKey _: CaptionStyleImpl.LayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize {
     let width = parentLayer.frame.width
     let height = fontSize
     return CGSize(width: width, height: height)
@@ -46,7 +46,7 @@ class CaptionPresetTextAlignmentRightImpl: CaptionPresetTextAlignmentImpl {
 class CaptionPresetTextAlignmentCenterImpl: CaptionPresetTextAlignmentImpl {
   public let textAlignment: CaptionPresetTextAlignment = .center
 
-  func layerSize(forKey _: CaptionPresetLayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize {
+  func layerSize(forKey _: CaptionStyleImpl.LayerKey, parentLayer: CALayer, fontSize: CGFloat) -> CGSize {
     let width = parentLayer.frame.width
     let height = fontSize
     return CGSize(width: width, height: height)

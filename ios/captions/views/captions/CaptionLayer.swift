@@ -1,8 +1,8 @@
 import AVFoundation
 
 class CaptionLayer: CALayer {
-  private let impl: CaptionPresetStyleImpl
-
+  private let impl: CaptionStyleImpl
+  
   init(style: CaptionStyle, textSegments: [TextSegment], duration: CFTimeInterval) {
     impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
     super.init()
