@@ -1,7 +1,5 @@
 import Foundation
 
-fileprivate let BAR_SPACE_HEIGHT = CGFloat(10)
-
 @objc
 enum CaptionPresetTextAlignment: Int {
   case center

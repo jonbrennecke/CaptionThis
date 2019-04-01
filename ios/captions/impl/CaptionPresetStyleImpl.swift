@@ -1,6 +1,6 @@
 import UIKit
 
-fileprivate let BAR_SPACE_HEIGHT = CGFloat(10)
+fileprivate let BAR_SPACE_HEIGHT_FACTOR = CGFloat(1.25)
 
 // TODO: rename to CaptionPresetLayer.Key
 enum CaptionPresetLayerKey {
@@ -120,12 +120,12 @@ class CaptionPresetStyleImpl {
   }
 
   private func topLayerOrigin(layer: CALayer, parentLayer: CALayer) -> CGPoint {
-    let inFrameTopY = (parentLayer.frame.height - layer.frame.height - BAR_SPACE_HEIGHT) / 2
+    let inFrameTopY = (parentLayer.frame.height - layer.frame.height - (layer.frame.height * BAR_SPACE_HEIGHT_FACTOR)) / 2
     return CGPoint(x: 0, y: inFrameTopY)
   }
 
   private func bottomLayerOrigin(layer: CALayer, parentLayer: CALayer) -> CGPoint {
-    let inFrameBottomY = (parentLayer.frame.height - layer.frame.height + BAR_SPACE_HEIGHT) / 2
+    let inFrameBottomY = (parentLayer.frame.height - layer.frame.height + (layer.frame.height * BAR_SPACE_HEIGHT_FACTOR)) / 2
     return CGPoint(x: 0, y: inFrameBottomY)
   }
 
