@@ -116,6 +116,7 @@ export default class VideoCaptionsView extends Component<Props> {
             backgroundColor: this.props.backgroundColor,
             fontSize: this.props.fontSize,
             fontFamily: this.props.fontFamily,
+            textColor: this.props.textColor
           }}
         />
       </TouchableOpacity>

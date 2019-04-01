@@ -17,6 +17,7 @@ export type CaptionStyleObject = {
   wordStyle: 'animated' | 'none',
   backgroundStyle: 'gradient' | 'solid',
   backgroundColor: ColorRGBA,
+  textColor: ColorRGBA,
   fontSize: number,
   fontFamily: string,
 };

@@ -109,6 +109,24 @@ class CaptionView : UIView {
   }
   
   @objc
+  public var textColor: UIColor {
+    get {
+      return style.textColor
+    }
+    set {
+      style = CaptionStyle(
+        wordStyle: style.wordStyle,
+        lineStyle: style.lineStyle,
+        textAlignment: style.textAlignment,
+        backgroundStyle: style.backgroundStyle,
+        backgroundColor: style.backgroundColor,
+        font: style.font,
+        textColor: newValue
+      )
+    }
+  }
+  
+  @objc
   public var duration = CFTimeInterval(0) {
     didSet {
       updateCaptionLayer()

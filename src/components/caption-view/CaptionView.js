@@ -2,6 +2,8 @@
 import React from 'react';
 import { View, requireNativeComponent } from 'react-native';
 
+import * as Color from '../../utils/Color';
+
 import type { Style } from '../../types/react';
 import type { CaptionStyleObject } from '../../types/video';
 import type { TextSegmentObject } from '../../types/media';
@@ -41,15 +43,12 @@ export default function CaptionView({
         lineStyle={captionStyle.lineStyle}
         wordStyle={captionStyle.wordStyle}
         backgroundStyle={captionStyle.backgroundStyle}
-        backgroundColor={[
-          captionStyle.backgroundColor.red / 255,
-          captionStyle.backgroundColor.green / 255,
-          captionStyle.backgroundColor.blue / 255,
-          captionStyle.backgroundColor.alpha,
-        ]}
         fontSize={captionStyle.fontSize}
         fontFamily={captionStyle.fontFamily}
+        backgroundColor={Color.transformRgbaObjectForNativeBridge(captionStyle.backgroundColor)}
+        textColor={Color.transformRgbaObjectForNativeBridge(captionStyle.textColor)}
       />
     </View>
   );
 }
+

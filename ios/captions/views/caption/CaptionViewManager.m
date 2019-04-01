@@ -53,6 +53,14 @@ RCT_CUSTOM_VIEW_PROPERTY(backgroundColor, UIColor *, CaptionView) {
   view.captionBackgroundColor = backgroundColor;
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(textColor, UIColor *, CaptionView) {
+  if (![view isKindOfClass:[CaptionView class]]) {
+    return;
+  }
+  UIColor *textColor = [RCTConvert UIColor:json];
+  view.textColor = textColor;
+}
+
 RCT_CUSTOM_VIEW_PROPERTY(duration, NSNumber *, CaptionView) {
   if (![view isKindOfClass:[CaptionView class]]) {
     return;
@@ -68,7 +76,6 @@ RCT_CUSTOM_VIEW_PROPERTY(fontSize, NSNumber *, CaptionView) {
   NSNumber *fontSize = [RCTConvert NSNumber:json];
   view.fontSize = [fontSize floatValue];
 }
-
 
 RCT_CUSTOM_VIEW_PROPERTY(fontFamily, NSString *, CaptionView) {
   if (![view isKindOfClass:[CaptionView class]]) {
