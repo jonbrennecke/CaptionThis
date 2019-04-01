@@ -2,7 +2,7 @@ import AVFoundation
 
 class CaptionLayer: CALayer {
   private let impl: CaptionPresetStyleImpl
-  
+
   init(style: CaptionStyle, textSegments: [TextSegment], duration: CFTimeInterval) {
     impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
     super.init()
@@ -10,7 +10,7 @@ class CaptionLayer: CALayer {
     masksToBounds = true
     initAnimation()
   }
-  
+
   override init(layer: Any) {
     let layer = layer as! CaptionLayer
     impl = layer.impl
@@ -19,20 +19,20 @@ class CaptionLayer: CALayer {
     masksToBounds = true
     initAnimation()
   }
-  
+
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func layoutSublayers() {
     super.layoutSublayers()
     resizeSublayers()
   }
-  
+
   private func initAnimation() {
     impl.setup(inParentLayer: self)
   }
-  
+
   private func resizeSublayers() {
     impl.resize(inParentLayer: self)
   }

@@ -8,9 +8,7 @@ import type { Style } from '../../types/react';
 import type { CaptionStyleObject } from '../../types/video';
 import type { TextSegmentObject } from '../../types/media';
 
-const NativeCaptionView = requireNativeComponent(
-  'CaptionView'
-);
+const NativeCaptionView = requireNativeComponent('CaptionView');
 
 type Props = {
   style?: ?Style,
@@ -45,10 +43,13 @@ export default function CaptionView({
         backgroundStyle={captionStyle.backgroundStyle}
         fontSize={captionStyle.fontSize}
         fontFamily={captionStyle.fontFamily}
-        backgroundColor={Color.transformRgbaObjectForNativeBridge(captionStyle.backgroundColor)}
-        textColor={Color.transformRgbaObjectForNativeBridge(captionStyle.textColor)}
+        backgroundColor={Color.transformRgbaObjectForNativeBridge(
+          captionStyle.backgroundColor
+        )}
+        textColor={Color.transformRgbaObjectForNativeBridge(
+          captionStyle.textColor
+        )}
       />
     </View>
   );
 }
-

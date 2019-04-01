@@ -24,11 +24,11 @@ export const Constants = {
   transparent: transparent,
 };
 
-export function transformRgbaObjectForNativeBridge({ red, green, blue, alpha }: ColorRGBA): [number, number, number, number] {
-  return [
-    red / 255,
-    green / 255,
-    blue / 255,
-    alpha
-  ];
+export function transformRgbaObjectForNativeBridge({
+  red,
+  green,
+  blue,
+  alpha,
+}: ColorRGBA): [number, number, number, number] {
+  return [red / 255, green / 255, blue / 255, alpha];
 }

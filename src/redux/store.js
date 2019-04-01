@@ -24,8 +24,5 @@ const middleware = isProduction
 const composeEnhancers = composeWithDevTools({});
 
 export default () => {
-  return createStore(
-    rootReducer,
-    composeEnhancers(middleware)
-  );
+  return createStore(rootReducer, composeEnhancers(middleware));
 };

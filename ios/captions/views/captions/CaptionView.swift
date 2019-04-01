@@ -1,9 +1,9 @@
 import UIKit
 
 @objc(CaptionView)
-class CaptionView : UIView {
+class CaptionView: UIView {
   private var captionLayer: CaptionLayer?
-  
+
   private var style = CaptionStyle(
     wordStyle: .none,
     lineStyle: .fadeInOut,
@@ -12,12 +12,12 @@ class CaptionView : UIView {
     backgroundColor: .white,
     font: UIFont.systemFont(ofSize: 7),
     textColor: UIColor.white
-    ) {
+  ) {
     didSet {
       updateCaptionLayer()
     }
   }
-  
+
   @objc
   public var textAlignment: CaptionPresetTextAlignment {
     get {
@@ -35,7 +35,7 @@ class CaptionView : UIView {
       )
     }
   }
-  
+
   @objc
   public var lineStyle: CaptionPresetLineStyle {
     get {
@@ -53,7 +53,7 @@ class CaptionView : UIView {
       )
     }
   }
-  
+
   @objc
   public var wordStyle: CaptionPresetWordStyle {
     get {
@@ -71,7 +71,7 @@ class CaptionView : UIView {
       )
     }
   }
-  
+
   @objc
   public var backgroundStyle: CaptionPresetBackgroundStyle {
     get {
@@ -89,7 +89,7 @@ class CaptionView : UIView {
       )
     }
   }
-  
+
   @objc
   public var captionBackgroundColor: UIColor {
     get {
@@ -107,7 +107,7 @@ class CaptionView : UIView {
       )
     }
   }
-  
+
   @objc
   public var textColor: UIColor {
     get {
@@ -125,14 +125,14 @@ class CaptionView : UIView {
       )
     }
   }
-  
+
   @objc
   public var duration = CFTimeInterval(0) {
     didSet {
       updateCaptionLayer()
     }
   }
-  
+
   @objc
   public var fontSize: CGFloat {
     get {
@@ -150,7 +150,7 @@ class CaptionView : UIView {
       )
     }
   }
-  
+
   @objc
   public var fontFamily: String {
     get {
@@ -168,15 +168,14 @@ class CaptionView : UIView {
       )
     }
   }
-  
-  
+
   @objc
   public var textSegments = [TextSegment]() {
     didSet {
       updateCaptionLayer()
     }
   }
-  
+
   private func updateCaptionLayer() {
     captionLayer = CaptionLayer(style: style, textSegments: textSegments, duration: duration)
     guard let captionLayer = captionLayer else {
@@ -186,24 +185,24 @@ class CaptionView : UIView {
     layer.sublayers = nil
     layer.addSublayer(captionLayer)
   }
-  
+
   // MARK: UIView method implementations
-  
+
   init() {
     super.init(frame: .zero)
     captionLayer = CaptionLayer(style: style, textSegments: textSegments, duration: duration)
     captionLayer!.frame = bounds
     layer.addSublayer(captionLayer!)
   }
-  
+
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
     captionLayer?.frame = bounds

@@ -2,13 +2,13 @@
 import React from 'react';
 import { View, requireNativeComponent } from 'react-native';
 
+import * as Color from '../../utils/Color';
+
 import type { Style } from '../../types/react';
 import type { CaptionPresetStyleObject } from '../../types/video';
 import type { TextSegmentObject } from '../../types/media';
 
-const NativeCaptionPresetView = requireNativeComponent(
-  'CaptionPresetView'
-);
+const NativeCaptionPresetView = requireNativeComponent('CaptionPresetView');
 
 type Props = {
   style?: ?Style,
@@ -41,12 +41,9 @@ export default function CaptionPresetView({
         lineStyle={presetStyle.lineStyle}
         wordStyle={presetStyle.wordStyle}
         backgroundStyle={presetStyle.backgroundStyle}
-        backgroundColor={[
-          presetStyle.backgroundColor.red / 255,
-          presetStyle.backgroundColor.green / 255,
-          presetStyle.backgroundColor.blue / 255,
-          presetStyle.backgroundColor.alpha,
-        ]}
+        backgroundColor={Color.transformRgbaObjectForNativeBridge(
+          presetStyle.backgroundColor
+        )}
       />
     </View>
   );
