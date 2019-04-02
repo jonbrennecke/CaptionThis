@@ -2,6 +2,7 @@ import Foundation
 
 @objc
 class TextSegment: NSObject {
+  // TODO: duration and timestamp should be CFTimeInterval
   let duration: Float
   let timestamp: Float
   let text: String

@@ -3,7 +3,7 @@ import Foundation
 fileprivate let STEP_DURATION = CFTimeInterval(1)
 
 class CaptionAnimationBuilder {
-  private struct TimedStep {
+  public struct TimedStep {
     let beginTime: CFTimeInterval
     let duration: CFTimeInterval
     let animation: AnimationBuilderStep
@@ -14,9 +14,8 @@ class CaptionAnimationBuilder {
   public func insert(_ animation: AnimationBuilderStep, at index: Int) -> CaptionAnimationBuilder {
     let beginTime = STEP_DURATION * CFTimeInterval(index * 2)
     let duration = STEP_DURATION
-    let step = TimedStep(beginTime: beginTime, duration: duration, animation: animation)
-    timedSteps.append(step)
-    return self
+    let timedStep = TimedStep(beginTime: beginTime, duration: duration, animation: animation)
+    return insert(timedStep)
   }
 
   public func insert(_ animations: [AnimationBuilderStep], at index: Int) -> CaptionAnimationBuilder {
@@ -26,6 +25,11 @@ class CaptionAnimationBuilder {
       return TimedStep(beginTime: beginTime, duration: duration, animation: animation)
     }
     timedSteps.append(contentsOf: steps)
+    return self
+  }
+
+  public func insert(_ timedStep: TimedStep) -> CaptionAnimationBuilder {
+    timedSteps.append(timedStep)
     return self
   }
 

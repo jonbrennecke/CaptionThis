@@ -2,7 +2,7 @@ import AVFoundation
 
 class CaptionPresetLayer: CALayer {
   public typealias Impl = CaptionStyleImpl
-  
+
   private let impl: Impl
 
   init(style: CaptionPresetStyle, textSegments: [TextSegment], duration: CFTimeInterval) {

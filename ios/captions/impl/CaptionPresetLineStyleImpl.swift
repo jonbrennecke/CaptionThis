@@ -8,13 +8,13 @@ enum CaptionPresetLineStyle: Int {
 
 protocol CaptionPresetLineStyleImpl {
   var lineStyle: CaptionPresetLineStyle { get }
-  func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer: CALayer, strings: [NSAttributedString], duration: CFTimeInterval)
+  func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer: CALayer, strings: CaptionStringsMap.Value, duration: CFTimeInterval)
 }
 
 class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
   public let lineStyle: CaptionPresetLineStyle = .fadeInOut
 
-  func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer _: CALayer, strings: [NSAttributedString], duration: CFTimeInterval) {
+  func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer _: CALayer, strings: CaptionStringsMap.Value, duration: CFTimeInterval) {
     layer.removeAllAnimations()
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
@@ -38,7 +38,7 @@ class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
 class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
   public let lineStyle: CaptionPresetLineStyle = .translateY
 
-  func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer: CALayer, strings: [NSAttributedString], duration: CFTimeInterval) {
+  func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer: CALayer, strings: CaptionStringsMap.Value, duration: CFTimeInterval) {
     layer.removeAllAnimations()
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude

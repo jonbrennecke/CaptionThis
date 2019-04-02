@@ -3,26 +3,23 @@ import UIKit
 fileprivate let BAR_SPACE_HEIGHT_FACTOR = CGFloat(1.25)
 
 class CaptionStyleImpl {
-  
   public enum LayerKey {
     case a
     case b
     case c
-    
+
     public var index: Int {
-      get {
-        switch self {
-        case .a:
-          return 0
-        case .b:
-          return 1
-        case .c:
-          return 2
-        }
+      switch self {
+      case .a:
+        return 0
+      case .b:
+        return 1
+      case .c:
+        return 2
       }
     }
   }
-  
+
   private struct Layers {
     let a = CALayer()
     let b = CALayer()
@@ -85,12 +82,8 @@ class CaptionStyleImpl {
     let layerCSize = resize(key: .c, parentLayer: parentLayer)
     let layerSizes: [LayerKey: CGSize] = [.a: layerASize, .b: layerBSize, .c: layerCSize]
     let layout = VideoAnimationLayerLayout.layoutForView(orientation: .up, style: style)
-    let layerStrings = CaptionTextUtil.fitText(layerSizes: layerSizes, textSegments: textSegments, style: style, layout: layout)
-    let keys = CaptionStyleImpl.listKeys(forLineStyle: style.lineStyle)
-    for key in keys {
-      guard let strings = layerStrings[key] else {
-        return
-      }
+    let stringsMap = CaptionStringsMap.byFitting(textSegments: textSegments, toLayersOfSize: layerSizes, style: style, layout: layout)
+    stringsMap.each { key, strings in
       applyStyles(key: key, parentLayer: parentLayer, strings: strings, layout: layout)
     }
   }
@@ -112,7 +105,7 @@ class CaptionStyleImpl {
     return size
   }
 
-  private func applyStyles(key: LayerKey, parentLayer: CALayer, strings: [NSAttributedString], layout: VideoAnimationLayerLayout) {
+  private func applyStyles(key: LayerKey, parentLayer: CALayer, strings: CaptionStringsMap.Value, layout: VideoAnimationLayerLayout) {
     let layer = layers.get(byKey: key)
     lineStyleImpl.applyLineStyle(key: key, layer: layer, parentLayer: parentLayer, strings: strings, duration: duration)
     wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, strings: strings, layout: layout, duration: duration)

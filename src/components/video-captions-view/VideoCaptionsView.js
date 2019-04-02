@@ -105,13 +105,16 @@ export default class VideoCaptionsView extends Component<Props> {
           }}
         /> */}
         <CaptionView
+          ref={ref => {
+            this.nativeComponentRef = ref;
+          }}
           style={styles.flex}
           duration={this.props.duration}
           textSegments={textSegments}
           captionStyle={{
             textAlignment: 'left',
             lineStyle: 'translateY',
-            wordStyle: 'none',
+            wordStyle: 'animated',
             backgroundStyle: 'gradient',
             backgroundColor: this.props.backgroundColor,
             fontSize: this.props.fontSize,
