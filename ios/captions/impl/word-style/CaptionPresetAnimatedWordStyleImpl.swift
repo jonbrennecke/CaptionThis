@@ -1,7 +1,6 @@
 import UIKit
 
-// TODO:
-fileprivate let STEP_DURATION = CFTimeInterval(1)
+fileprivate let ANIM_FADE_IN_OUT_DURATION = CFTimeInterval(0.25)
 
 class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .animated
@@ -18,6 +17,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
       let textLayer = CaptionPresetAnimatedWordStyleImpl.createTextLayer(
         key: key,
         taggedLine: line,
+        map: map,
         index: index,
         parentLayer: sublayer,
         layout: layout,
@@ -32,6 +32,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   private static func createTextLayer(
     key: CaptionStyleImpl.LayerKey,
     taggedLine: CaptionStringsMap.TaggedLine,
+    map: CaptionStringsMap,
     index: Int,
     parentLayer: CALayer,
     layout: VideoAnimationLayerLayout,
@@ -63,12 +64,12 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
       textLayer.string = substring.attributedString
       textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
       parentLayer.addSublayer(textLayer)
-//      textLayer.opacity = 0
+      textLayer.opacity = 0
       let wordAnimations = createWordAnimations(key: key, index: index, timestamp: substring.timestamp, duration: duration)
       textLayer.add(wordAnimations, forKey: "textLayerWordAnimation")
     }
-//    parentLayer.opacity = 0
-    let textAnimation = createTextAnimations(key: key, index: index, duration: duration)
+    parentLayer.opacity = 0
+    let textAnimation = createTextAnimations(map: map, key: key, index: index, duration: duration)
     parentLayer.add(textAnimation, forKey: "textLayerLineAnimation")
     return parentLayer
   }
@@ -94,27 +95,30 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     }
   }
 
-  private static func createTextAnimations(key: CaptionStyleImpl.LayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
+  private static func createTextAnimations(map: CaptionStringsMap, key: CaptionStyleImpl.LayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
-//    let startIndex = (index * 3) + key.index
-//    group.animations = CaptionAnimationBuilder()
-//      .insert(FadeInAnimationStep(), at: startIndex)
-//      .insert(FadeOutAnimationStep(), at: startIndex + 2)
-//      .build()
+    let builder = CaptionAnimation.Builder()
+    builder.insert(
+      in: [FadeInAnimationStep()],
+      center: [],
+      out: [FadeOutAnimationStep()],
+      index: index,
+      key: key
+    )
+    group.animations = builder.build(withMap: map)
     group.duration = duration
     return group
   }
 
   private static func createWordAnimations(key: CaptionStyleImpl.LayerKey, index: Int, timestamp: CFTimeInterval, duration: CFTimeInterval) -> CAAnimationGroup {
-    let startIndex = (index * 3) + key.index
-    let beginTime = STEP_DURATION * CFTimeInterval(startIndex * 2)
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
-//    group.animations = [
-//      AnimationUtil.fadeIn(at: beginTime + timestamp, duration: STEP_DURATION),
-//    ]
     group.duration = duration
+    let beginTime = clamp(timestamp - ANIM_FADE_IN_OUT_DURATION, from: 0, to: timestamp)
+    group.animations = [
+      AnimationUtil.fadeIn(at: beginTime, duration: ANIM_FADE_IN_OUT_DURATION),
+    ]
     return group
   }
 }

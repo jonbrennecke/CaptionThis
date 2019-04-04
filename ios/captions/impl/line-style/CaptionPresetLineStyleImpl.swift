@@ -51,13 +51,13 @@ class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
       let inFrameTop = positions.getPosition(forKey: .inFrameTop)
       let outOfFrameTop = positions.getPosition(forKey: .outOfFrameTop)
       let inFrameBottomOrMiddle = positions.getPosition(forKey: index == 0 && key == .a ? .inFrameMiddle : .inFrameBottom)
-      builder.insert(animation: CaptionAnimation(
+      builder.insert(
         in: [
           FadeInAnimationStep(),
           PositionAnimationStep(from: outOfFrameBottom, to: inFrameBottomOrMiddle),
         ],
-        during: [
-          PositionAnimationStep(from: inFrameBottomOrMiddle, to: inFrameTop)
+        center: [
+          PositionAnimationStep(from: inFrameBottomOrMiddle, to: inFrameTop),
         ],
         out: [
           PositionAnimationStep(from: inFrameTop, to: outOfFrameTop),
@@ -65,12 +65,11 @@ class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
         ],
         index: index,
         key: key
-      ))
+      )
     }
     group.animations = builder.build(withMap: map)
     group.duration = duration
     layer.add(group, forKey: "lineStyleAnimation")
-//    layer.opacity = 0
-//    layer.backgroundColor = UIColor.red.cgColor
+    layer.opacity = 0
   }
 }

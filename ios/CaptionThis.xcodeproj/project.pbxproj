@@ -42,6 +42,7 @@
 		FC388F542230EBF1001CE3A3 /* TextSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F532230EBF1001CE3A3 /* TextSegment.swift */; };
 		FC388F8E2231B41C001CE3A3 /* CaptionStringsMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F8D2231B41C001CE3A3 /* CaptionStringsMap.swift */; };
 		FC388F922231C153001CE3A3 /* VideoDimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F912231C153001CE3A3 /* VideoDimensions.swift */; };
+		FC3A07D02256957800057426 /* clamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3A07CF2256957800057426 /* clamp.swift */; };
 		FC4607D62252CA4A00E34AD4 /* CaptionPresetAnimatedWordStyleImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D52252CA4A00E34AD4 /* CaptionPresetAnimatedWordStyleImpl.swift */; };
 		FC4607D82252CAEF00E34AD4 /* CaptionPresetNoWordStyleImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D72252CAEF00E34AD4 /* CaptionPresetNoWordStyleImpl.swift */; };
 		FC4607DA2252E1F800E34AD4 /* Pair.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D92252E1F800E34AD4 /* Pair.swift */; };
@@ -558,6 +559,7 @@
 		FC388F552230EC4B001CE3A3 /* RCTConvert+TextSegment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+TextSegment.h"; sourceTree = "<group>"; };
 		FC388F8D2231B41C001CE3A3 /* CaptionStringsMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionStringsMap.swift; sourceTree = "<group>"; };
 		FC388F912231C153001CE3A3 /* VideoDimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDimensions.swift; sourceTree = "<group>"; };
+		FC3A07CF2256957800057426 /* clamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = clamp.swift; sourceTree = "<group>"; };
 		FC4607D52252CA4A00E34AD4 /* CaptionPresetAnimatedWordStyleImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetAnimatedWordStyleImpl.swift; sourceTree = "<group>"; };
 		FC4607D72252CAEF00E34AD4 /* CaptionPresetNoWordStyleImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetNoWordStyleImpl.swift; sourceTree = "<group>"; };
 		FC4607D92252E1F800E34AD4 /* Pair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pair.swift; sourceTree = "<group>"; };
@@ -1077,6 +1079,7 @@
 				FCB0E5C222149C03002F320B /* PhotosAlbumUtil.swift */,
 				FCB8AF23222F1773002F30D8 /* CaptionAnimation.swift */,
 				FC4607D92252E1F800E34AD4 /* Pair.swift */,
+				FC3A07CF2256957800057426 /* clamp.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -2041,6 +2044,7 @@
 				FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */,
 				FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */,
 				FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */,
+				FC3A07D02256957800057426 /* clamp.swift in Sources */,
 				FC4BCD1A22043EBD00822C0F /* CaptionsView.swift in Sources */,
 				FC388F8E2231B41C001CE3A3 /* CaptionStringsMap.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,

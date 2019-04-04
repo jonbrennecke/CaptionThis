@@ -18,7 +18,7 @@ class CaptionStyleImpl {
         return 2
       }
     }
-    
+
     public var nextKey: LayerKey {
       switch self {
       case .a:
@@ -94,7 +94,7 @@ class CaptionStyleImpl {
     let layerSizes: [LayerKey: CGSize] = [.a: layerASize, .b: layerBSize, .c: layerCSize]
     let layout = VideoAnimationLayerLayout.layoutForView(orientation: .up, style: style)
     let map = CaptionStringsMap.byFitting(textSegments: textSegments, toLayersOfSize: layerSizes, style: style, layout: layout)
-    map.each { key, strings in
+    map.each { key, _ in
       applyStyles(key: key, parentLayer: parentLayer, map: map, layout: layout)
     }
   }

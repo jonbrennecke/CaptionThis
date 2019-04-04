@@ -75,7 +75,7 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
 //      .insert(FadeInAnimationStep(), at: startIndex)
 //      .insert(FadeOutAnimationStep(), at: startIndex + 2)
 //      .build()
-    
+
     group.duration = duration
     return group
   }
