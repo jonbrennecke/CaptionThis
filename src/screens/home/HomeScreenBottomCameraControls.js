@@ -48,6 +48,13 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
     backgroundColor: Color.hexToRgbaObject(UI_COLORS.MEDIUM_RED),
   },
   {
+    textAlignment: 'left',
+    lineStyle: 'translateY',
+    wordStyle: 'none',
+    backgroundStyle: 'gradient',
+    backgroundColor: Color.hexToRgbaObject(UI_COLORS.DARK_GREY),
+  },
+  {
     textAlignment: 'center',
     lineStyle: 'fadeInOut',
     wordStyle: 'none',

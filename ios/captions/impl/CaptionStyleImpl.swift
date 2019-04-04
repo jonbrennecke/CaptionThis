@@ -18,6 +18,17 @@ class CaptionStyleImpl {
         return 2
       }
     }
+    
+    public var nextKey: LayerKey {
+      switch self {
+      case .a:
+        return .b
+      case .b:
+        return .c
+      case .c:
+        return .a
+      }
+    }
   }
 
   private struct Layers {
@@ -82,9 +93,9 @@ class CaptionStyleImpl {
     let layerCSize = resize(key: .c, parentLayer: parentLayer)
     let layerSizes: [LayerKey: CGSize] = [.a: layerASize, .b: layerBSize, .c: layerCSize]
     let layout = VideoAnimationLayerLayout.layoutForView(orientation: .up, style: style)
-    let stringsMap = CaptionStringsMap.byFitting(textSegments: textSegments, toLayersOfSize: layerSizes, style: style, layout: layout)
-    stringsMap.each { key, strings in
-      applyStyles(key: key, parentLayer: parentLayer, strings: strings, layout: layout)
+    let map = CaptionStringsMap.byFitting(textSegments: textSegments, toLayersOfSize: layerSizes, style: style, layout: layout)
+    map.each { key, strings in
+      applyStyles(key: key, parentLayer: parentLayer, map: map, layout: layout)
     }
   }
 
@@ -105,10 +116,10 @@ class CaptionStyleImpl {
     return size
   }
 
-  private func applyStyles(key: LayerKey, parentLayer: CALayer, strings: CaptionStringsMap.Value, layout: VideoAnimationLayerLayout) {
+  private func applyStyles(key: LayerKey, parentLayer: CALayer, map: CaptionStringsMap, layout: VideoAnimationLayerLayout) {
     let layer = layers.get(byKey: key)
-    lineStyleImpl.applyLineStyle(key: key, layer: layer, parentLayer: parentLayer, strings: strings, duration: duration)
-    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, strings: strings, layout: layout, duration: duration)
+    lineStyleImpl.applyLineStyle(key: key, layer: layer, parentLayer: parentLayer, map: map, duration: duration)
+    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, map: map, layout: layout, duration: duration)
     backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor)
   }
 

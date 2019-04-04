@@ -3,14 +3,15 @@ import UIKit
 class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .none
 
-  func applyWordStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, strings: CaptionStringsMap.Value, layout: VideoAnimationLayerLayout, duration: CFTimeInterval) {
+  func applyWordStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, map: CaptionStringsMap, layout: VideoAnimationLayerLayout, duration: CFTimeInterval) {
     layer.sublayers = nil
     let sublayer = CALayer()
     let bounds = CaptionSizingUtil.layoutForText(originalBounds: layer.bounds, textAlignment: textAlignment)
     sublayer.anchorPoint = bounds.anchorPoint
     sublayer.position = bounds.position
     sublayer.bounds = bounds.toBounds
-    for (index, line) in strings.enumerated() {
+    let lines = map.getValues(byKey: key)!
+    for (index, line) in lines.enumerated() {
       let textLayer = createTextLayer(
         key: key,
         string: line.wholeString.attributedString,
@@ -70,10 +71,11 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     let startIndex = index * 3
-    group.animations = CaptionAnimationBuilder()
-      .insert(FadeInAnimationStep(), at: startIndex)
-      .insert(FadeOutAnimationStep(), at: startIndex + 2)
-      .build()
+//    group.animations = CaptionAnimationBuilder()
+//      .insert(FadeInAnimationStep(), at: startIndex)
+//      .insert(FadeOutAnimationStep(), at: startIndex + 2)
+//      .build()
+    
     group.duration = duration
     return group
   }

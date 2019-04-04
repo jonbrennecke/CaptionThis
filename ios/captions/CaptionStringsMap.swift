@@ -13,6 +13,8 @@ class CaptionStringsMap {
   public struct TaggedLine {
     let wholeString: TaggedString
     let wordSubstrings: [TaggedString]
+    let timestamp: CFTimeInterval
+    let duration: CFTimeInterval
   }
 
   private var data = [Key: Value]()
@@ -47,7 +49,9 @@ class CaptionStringsMap {
           continue
         }
         let width = CaptionSizingUtil.textWidth(forLayerSize: size)
-        let (line, remainingSegments) = fitNextLine(textSegments: segments, width: width, style: style, layout: layout)
+        guard case let (line?, remainingSegments) = fitNextLine(textSegments: segments, width: width, style: style, layout: layout) else {
+          continue
+        }
         segments = remainingSegments
         if var values = map.getValues(byKey: key) {
           values.append(line)
@@ -70,7 +74,7 @@ class CaptionStringsMap {
     }
   }
 
-  //    TODO: TextSegment.byInterpolatingWords(segments: [TextSegments])
+  // TODO: replace with `TextSegment.arrayByInterpolatingWords(segments: [TextSegments])`
   private static func interpolate(segments: [TextSegment]) -> [TextSegment] {
     var outputSegments = [TextSegment]()
     for segment in segments {
@@ -90,12 +94,13 @@ class CaptionStringsMap {
     width: CGFloat,
     style: CaptionPresetStyle,
     layout: VideoAnimationLayerLayout
-  ) -> (line: TaggedLine, remainingSegments: [TextSegment]) {
+  ) -> (line: TaggedLine?, remainingSegments: [TextSegment]) {
     let interpolatedSegments = interpolate(segments: textSegments)
     var textSegmentsMutableCopy = interpolatedSegments
     let attributes = getStringAttributes(style: style, layout: layout)
     var attributedString = NSAttributedString(string: "", attributes: attributes)
     var wordSubstrings = [TaggedString]()
+    var endTimestamp = CFTimeInterval(0)
     while let segment = textSegmentsMutableCopy.first {
       let newString = "\(attributedString.string) \(segment.text)".trimmingCharacters(in: .whitespacesAndNewlines)
       let newAttributedString = NSAttributedString(string: newString, attributes: attributes)
@@ -105,6 +110,7 @@ class CaptionStringsMap {
         let timestamp = CFTimeInterval(segment.timestamp)
         let duration = CFTimeInterval(segment.duration)
         let taggedString = TaggedString(attributedString: segmentAttributedString, timestamp: timestamp, duration: duration)
+        endTimestamp = timestamp
         wordSubstrings.append(taggedString)
         textSegmentsMutableCopy.removeFirst()
         attributedString = newAttributedString
@@ -112,10 +118,13 @@ class CaptionStringsMap {
       }
       break
     }
-    let timestamp = CFTimeInterval(textSegments.first?.timestamp ?? 0)
-    let duration = (textSegments.last != nil) ? CFTimeInterval(textSegments.last!.timestamp + textSegments.last!.duration) : CFTimeInterval(0)
-    let wholeString = TaggedString(attributedString: attributedString, timestamp: timestamp, duration: duration)
-    let line = TaggedLine(wholeString: wholeString, wordSubstrings: wordSubstrings)
+    if attributedString.length == 0 {
+      return (line: nil, remainingSegments: textSegmentsMutableCopy)
+    }
+    let beginTimestamp = CFTimeInterval(textSegments.first?.timestamp ?? 0)
+    let duration = endTimestamp - beginTimestamp
+    let wholeString = TaggedString(attributedString: attributedString, timestamp: beginTimestamp, duration: duration)
+    let line = TaggedLine(wholeString: wholeString, wordSubstrings: wordSubstrings, timestamp: beginTimestamp, duration: duration)
     return (line: line, remainingSegments: textSegmentsMutableCopy)
   }
 
