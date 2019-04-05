@@ -117,7 +117,7 @@ class CaptionStringsMap {
         let timestamp = CFTimeInterval(segment.timestamp)
         let duration = CFTimeInterval(segment.duration)
         let taggedString = TaggedString(attributedString: segmentAttributedString, timestamp: timestamp, duration: duration)
-        endTimestamp = timestamp
+        endTimestamp = timestamp + duration
         wordSubstrings.append(taggedString)
         textSegmentsMutableCopy.removeFirst()
         attributedString = newAttributedString
