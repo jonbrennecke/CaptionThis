@@ -10,12 +10,15 @@ class CaptionPresetGradientBackgroundStyleImpl: CaptionPresetBackgroundStyleImpl
 
   func applyBackgroundStyle(parentLayer: CALayer, backgroundColor: UIColor) {
     let gradientLayer = CAGradientLayer()
-    gradientLayer.frame = parentLayer.bounds
+    let origin = parentLayer.bounds.origin
+    let size = CGSize(width: parentLayer.bounds.width, height: parentLayer.bounds.height * 2)
+    gradientLayer.frame = CGRect(origin: origin, size: size)
     gradientLayer.colors = [
+      backgroundColor.withAlphaComponent(0.20).cgColor,
       backgroundColor.withAlphaComponent(0.20).cgColor,
       backgroundColor.withAlphaComponent(0).cgColor,
     ]
-    gradientLayer.locations = [0, 1]
+    gradientLayer.locations = [0, 0.5, 1]
     gradientLayer.startPoint = CGPoint(x: 0.5, y: 1)
     gradientLayer.endPoint = CGPoint(x: 0.5, y: 0)
     parentLayer.insertSublayer(gradientLayer, at: 0)

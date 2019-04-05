@@ -1,6 +1,6 @@
 import Foundation
 
-fileprivate let ANIM_IN_OUT_DURATION = CFTimeInterval(1)
+fileprivate let ANIM_IN_OUT_DURATION = CFTimeInterval(0.5)
 fileprivate let ANIM_FINAL_LINE_DURATION = CFTimeInterval(2)
 
 struct CaptionAnimation {

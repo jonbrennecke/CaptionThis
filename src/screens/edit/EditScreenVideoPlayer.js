@@ -334,7 +334,6 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                 }
                 orientation={this.props.orientation}
                 duration={this.props.duration}
-                lineStyle={this.props.lineStyle}
                 textColor={this.props.textColor}
                 backgroundColor={this.props.backgroundColor}
                 fontFamily={this.props.fontFamily}

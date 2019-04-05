@@ -7,7 +7,7 @@ class CaptionLayer: CALayer {
     impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
     super.init()
     contentsScale = UIScreen.main.scale
-    masksToBounds = true
+    masksToBounds = false
     initAnimation()
   }
 
@@ -16,7 +16,7 @@ class CaptionLayer: CALayer {
     impl = layer.impl
     super.init(layer: layer)
     contentsScale = UIScreen.main.scale
-    masksToBounds = true
+    masksToBounds = false
     initAnimation()
   }
 

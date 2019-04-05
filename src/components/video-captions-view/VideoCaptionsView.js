@@ -77,33 +77,6 @@ export default class VideoCaptionsView extends Component<Props> {
         style={[styles.container, this.props.style]}
         onPress={this.props.onPress}
       >
-        {/* <NativeTranscriptView
-          ref={ref => {
-            this.nativeComponentRef = ref;
-          }}
-          style={styles.flex}
-          isReadyToPlay={this.props.isReadyToPlay}
-          animationParams={{
-            textSegments,
-            orientation: this.props.orientation,
-            duration: this.props.duration,
-            fontFamily: this.props.fontFamily,
-            fontSize: this.props.fontSize,
-            lineStyle: this.props.lineStyle,
-            textColor: [
-              this.props.textColor.red / 255,
-              this.props.textColor.green / 255,
-              this.props.textColor.blue / 255,
-              this.props.textColor.alpha,
-            ],
-            backgroundColor: [
-              this.props.backgroundColor.red / 255,
-              this.props.backgroundColor.green / 255,
-              this.props.backgroundColor.blue / 255,
-              this.props.backgroundColor.alpha,
-            ],
-          }}
-        /> */}
         <CaptionView
           ref={ref => {
             this.nativeComponentRef = ref;
@@ -114,7 +87,7 @@ export default class VideoCaptionsView extends Component<Props> {
           captionStyle={{
             textAlignment: 'left',
             lineStyle: 'translateY',
-            wordStyle: 'animated',
+            wordStyle: 'none',
             backgroundStyle: 'gradient',
             backgroundColor: this.props.backgroundColor,
             fontSize: this.props.fontSize,

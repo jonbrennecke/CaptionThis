@@ -13,6 +13,7 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     let lines = map.getValues(byKey: key)!
     for (index, line) in lines.enumerated() {
       let textLayer = createTextLayer(
+        map: map,
         key: key,
         string: line.wholeString.attributedString,
         index: index,
@@ -27,6 +28,7 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   }
 
   private func createTextLayer(
+    map: CaptionStringsMap,
     key: CaptionStyleImpl.LayerKey,
     string: NSAttributedString,
     index: Int,
@@ -51,7 +53,7 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     textLayer.string = string
     textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
     textLayer.opacity = 0
-    let textAnimation = createTextAnimations(key: key, index: index, duration: duration)
+    let textAnimation = createTextAnimations(map: map, key: key, index: index, duration: duration)
     textLayer.add(textAnimation, forKey: "textLayerAnimation")
     return textLayer
   }
@@ -67,15 +69,18 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     }
   }
 
-  private func createTextAnimations(key _: CaptionStyleImpl.LayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
+  private func createTextAnimations(map: CaptionStringsMap, key: CaptionStyleImpl.LayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     let startIndex = index * 3
-//    group.animations = CaptionAnimationBuilder()
-//      .insert(FadeInAnimationStep(), at: startIndex)
-//      .insert(FadeOutAnimationStep(), at: startIndex + 2)
-//      .build()
-
+    let builder = CaptionAnimation.Builder()
+    builder.insert(
+      in: [FadeInAnimationStep()],
+      center: [],
+      out: [FadeOutAnimationStep()],
+      index: index,
+      key: key)
+    group.animations = builder.build(withMap: map)
     group.duration = duration
     return group
   }

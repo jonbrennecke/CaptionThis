@@ -37,11 +37,12 @@ class CaptionSizingUtil {
       let toBounds = CGRect(origin: .zero, size: toSize)
       return CaptionLayerLayout(from: fromBounds, to: toBounds, anchorPoint: .zero, position: origin)
     case .right:
-      // TODO: apply widthPercent
-      let position = CGPoint(x: originalBounds.width, y: 0)
-      let anchorPoint = CGPoint(x: 1, y: 0)
+      let position = CGPoint(x: originalBounds.width * (1 - widthPercentOfLayer) / 2, y: 0)
+      let anchorPoint = CGPoint(x: 0, y: 0)
       let fromBounds = CGRect(origin: .zero, size: CGSize(width: 0, height: originalBounds.height))
-      let toBounds = CGRect(origin: .zero, size: originalBounds.size)
+      let width = textWidth(forLayerSize: originalBounds.size)
+      let toSize = CGSize(width: width, height: originalBounds.height)
+      let toBounds = CGRect(origin: .zero, size: toSize)
       return CaptionLayerLayout(from: fromBounds, to: toBounds, anchorPoint: anchorPoint, position: position)
     }
   }
