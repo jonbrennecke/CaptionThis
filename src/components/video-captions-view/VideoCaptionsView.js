@@ -88,7 +88,7 @@ export default class VideoCaptionsView extends Component<Props> {
             textAlignment: 'left',
             lineStyle: 'translateY',
             wordStyle: 'none',
-            backgroundStyle: 'gradient',
+            backgroundStyle: 'solid',
             backgroundColor: this.props.backgroundColor,
             fontSize: this.props.fontSize,
             fontFamily: this.props.fontFamily,

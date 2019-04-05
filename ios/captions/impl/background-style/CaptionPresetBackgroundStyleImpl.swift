@@ -30,5 +30,6 @@ class CaptionPresetSolidBackgroundStyleImpl: CaptionPresetBackgroundStyleImpl {
 
   func applyBackgroundStyle(parentLayer: CALayer, backgroundColor: UIColor) {
     parentLayer.backgroundColor = backgroundColor.cgColor
+    parentLayer.masksToBounds = true
   }
 }
