@@ -41,7 +41,8 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     textLayer.contentsScale = UIScreen.main.scale
     textLayer.allowsFontSubpixelQuantization = true
     textLayer.allowsEdgeAntialiasing = true
-    let textSize = string.size()
+    let textNaturalSize = string.size()
+    let textSize = CGSize(width: textNaturalSize.width + 5, height: textNaturalSize.height)
     let textYOffset = (parentLayer.frame.height - textSize.height) / 2
     let textXOffset = textHorizontalOffset(textWidth: textSize.width, parentLayerWidth: parentLayer.frame.width, textAlignment: textAlignment)
     let textFrame = CGRect(origin: CGPoint(x: textXOffset, y: textYOffset), size: textSize)
@@ -72,7 +73,6 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   private func createTextAnimations(map: CaptionStringsMap, key: CaptionStyleImpl.LayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
-    let startIndex = index * 3
     let builder = CaptionAnimation.Builder()
     builder.insert(
       in: [FadeInAnimationStep()],

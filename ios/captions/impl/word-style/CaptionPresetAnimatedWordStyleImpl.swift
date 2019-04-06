@@ -50,10 +50,11 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     parentLayer.frame = textFrame
     var xOffsetAcc = CGFloat(0)
     for substring in taggedLine.substrings {
-      let substringSize = substring.attributedString.size()
+      let substringNaturalSize = substring.attributedString.size()
+      let substringSize = CGSize(width: substringNaturalSize.width + 5, height: substringNaturalSize.height)
       let textLayer = CATextLayer()
       textLayer.frame = CGRect(origin: CGPoint(x: xOffsetAcc, y: 0), size: substringSize)
-      xOffsetAcc += substringSize.width + whitespaceCharacterSize.width
+      xOffsetAcc += substringNaturalSize.width + whitespaceCharacterSize.width
       textLayer.contentsScale = UIScreen.main.scale
       textLayer.allowsFontSubpixelQuantization = true
       textLayer.allowsEdgeAntialiasing = true

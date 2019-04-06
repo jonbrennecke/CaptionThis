@@ -87,7 +87,7 @@ export default class VideoCaptionsView extends Component<Props> {
           captionStyle={{
             textAlignment: 'left',
             lineStyle: 'translateY',
-            wordStyle: 'none',
+            wordStyle: 'animated',
             backgroundStyle: 'gradient',
             backgroundColor: this.props.backgroundColor,
             fontSize: this.props.fontSize,
