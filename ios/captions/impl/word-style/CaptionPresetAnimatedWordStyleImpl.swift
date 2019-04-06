@@ -39,7 +39,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     textAlignment: CaptionPresetTextAlignment,
     duration: CFTimeInterval
   ) -> CALayer {
-    let attributedString = taggedLine.wholeString.attributedString
+    let attributedString = taggedLine.string.attributedString
     let whitespaceCharacterSize = stringSize(matchingAttributesOf: attributedString, string: " ")
     let textSize = attributedString.size()
     let textYOffset = (parentLayer.frame.height - textSize.height) / 2
@@ -49,7 +49,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     parentLayer.contentsScale = UIScreen.main.scale
     parentLayer.frame = textFrame
     var xOffsetAcc = CGFloat(0)
-    for substring in taggedLine.wordSubstrings {
+    for substring in taggedLine.substrings {
       let substringSize = substring.attributedString.size()
       let textLayer = CATextLayer()
       textLayer.frame = CGRect(origin: CGPoint(x: xOffsetAcc, y: 0), size: substringSize)

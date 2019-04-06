@@ -15,7 +15,7 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
       let textLayer = createTextLayer(
         map: map,
         key: key,
-        string: line.wholeString.attributedString,
+        string: line.string.attributedString,
         index: index,
         parentLayer: sublayer,
         layout: layout,

@@ -11,8 +11,8 @@ class CaptionStringsMap {
   }
 
   public struct TaggedLine {
-    let wholeString: TaggedString
-    let wordSubstrings: [TaggedString]
+    let string: TaggedString
+    let substrings: [TaggedString]
     let timestamp: CFTimeInterval
     let duration: CFTimeInterval
   }
@@ -106,7 +106,7 @@ class CaptionStringsMap {
     var textSegmentsMutableCopy = interpolatedSegments
     let attributes = getStringAttributes(style: style, layout: layout)
     var attributedString = NSAttributedString(string: "", attributes: attributes)
-    var wordSubstrings = [TaggedString]()
+    var substrings = [TaggedString]()
     var endTimestamp = CFTimeInterval(0)
     while let segment = textSegmentsMutableCopy.first {
       let newString = "\(attributedString.string) \(segment.text)".trimmingCharacters(in: .whitespacesAndNewlines)
@@ -118,7 +118,7 @@ class CaptionStringsMap {
         let duration = CFTimeInterval(segment.duration)
         let taggedString = TaggedString(attributedString: segmentAttributedString, timestamp: timestamp, duration: duration)
         endTimestamp = timestamp + duration
-        wordSubstrings.append(taggedString)
+        substrings.append(taggedString)
         textSegmentsMutableCopy.removeFirst()
         attributedString = newAttributedString
         continue
@@ -130,8 +130,8 @@ class CaptionStringsMap {
     }
     let beginTimestamp = CFTimeInterval(textSegments.first?.timestamp ?? 0)
     let duration = endTimestamp - beginTimestamp
-    let wholeString = TaggedString(attributedString: attributedString, timestamp: beginTimestamp, duration: duration)
-    let line = TaggedLine(wholeString: wholeString, wordSubstrings: wordSubstrings, timestamp: beginTimestamp, duration: duration)
+    let string = TaggedString(attributedString: attributedString, timestamp: beginTimestamp, duration: duration)
+    let line = TaggedLine(string: string, substrings: substrings, timestamp: beginTimestamp, duration: duration)
     return (line: line, remainingSegments: textSegmentsMutableCopy)
   }
 
