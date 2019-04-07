@@ -109,6 +109,60 @@ class CaptionPresetView: UIView {
   }
 
   @objc
+  public var fontSize: CGFloat {
+    get {
+      return style.font.pointSize
+    }
+    set {
+      style = CaptionStyle(
+        wordStyle: style.wordStyle,
+        lineStyle: style.lineStyle,
+        textAlignment: style.textAlignment,
+        backgroundStyle: style.backgroundStyle,
+        backgroundColor: style.backgroundColor,
+        font: style.font.withSize(newValue),
+        textColor: style.textColor
+      )
+    }
+  }
+
+  @objc
+  public var fontFamily: String {
+    get {
+      return style.font.familyName
+    }
+    set {
+      style = CaptionStyle(
+        wordStyle: style.wordStyle,
+        lineStyle: style.lineStyle,
+        textAlignment: style.textAlignment,
+        backgroundStyle: style.backgroundStyle,
+        backgroundColor: style.backgroundColor,
+        font: UIFont(name: newValue, size: fontSize) ?? UIFont.systemFont(ofSize: fontSize),
+        textColor: style.textColor
+      )
+    }
+  }
+
+  @objc
+  public var textColor: UIColor {
+    get {
+      return style.textColor
+    }
+    set {
+      style = CaptionStyle(
+        wordStyle: style.wordStyle,
+        lineStyle: style.lineStyle,
+        textAlignment: style.textAlignment,
+        backgroundStyle: style.backgroundStyle,
+        backgroundColor: style.backgroundColor,
+        font: style.font,
+        textColor: newValue
+      )
+    }
+  }
+
+  @objc
   public var duration = CFTimeInterval(0) {
     didSet {
       updatePresetLayer()

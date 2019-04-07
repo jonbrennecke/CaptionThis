@@ -44,6 +44,10 @@ export default function CaptionPresetView({
         backgroundColor={Color.transformRgbaObjectForNativeBridge(
           presetStyle.backgroundColor
         )}
+        fontFamily={presetStyle.fontFamily}
+        textColor={Color.transformRgbaObjectForNativeBridge(
+          presetStyle.textColor
+        )}
       />
     </View>
   );

@@ -3,7 +3,12 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import uuid from 'uuid';
 
-import { UI_COLORS, USER_BACKGROUND_COLOR_CHOICES } from '../../constants';
+import {
+  UI_COLORS,
+  USER_BACKGROUND_COLOR_CHOICES,
+  USER_TEXT_COLOR_CHOICES,
+  FONT_FAMILIES,
+} from '../../constants';
 import * as Color from '../../utils/Color';
 import CaptureButton from '../../components/capture-button/CaptureButton';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
@@ -36,9 +41,11 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
   {
     textAlignment: 'left',
     lineStyle: 'translateY',
-    wordStyle: 'animated',
+    wordStyle: 'none',
     backgroundStyle: 'gradient',
     backgroundColor: Color.hexToRgbaObject(UI_COLORS.DARK_GREY),
+    fontFamily: FONT_FAMILIES.RIGHTEOUS,
+    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
   },
   {
     textAlignment: 'center',
@@ -46,13 +53,26 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
     wordStyle: 'animated',
     backgroundStyle: 'gradient',
     backgroundColor: Color.hexToRgbaObject(UI_COLORS.MEDIUM_RED),
+    fontFamily: FONT_FAMILIES.BANGERS,
+    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
   },
   {
     textAlignment: 'left',
     lineStyle: 'translateY',
     wordStyle: 'none',
+    backgroundStyle: 'solid',
+    backgroundColor: Color.hexToRgbaObject(UI_COLORS.WHITE),
+    fontFamily: FONT_FAMILIES.STAATLICHES,
+    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[1]),
+  },
+  {
+    textAlignment: 'left',
+    lineStyle: 'translateY',
+    wordStyle: 'animated',
     backgroundStyle: 'gradient',
     backgroundColor: Color.hexToRgbaObject(UI_COLORS.DARK_GREY),
+    fontFamily: FONT_FAMILIES.ROBOTO,
+    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[2]),
   },
   {
     textAlignment: 'center',
@@ -60,6 +80,8 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
     wordStyle: 'none',
     backgroundStyle: 'solid',
     backgroundColor: Color.hexToRgbaObject(USER_BACKGROUND_COLOR_CHOICES[1]),
+    fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
+    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
   },
   {
     textAlignment: 'left',
@@ -67,6 +89,8 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
     wordStyle: 'none',
     backgroundStyle: 'solid',
     backgroundColor: Color.Constants.transparent,
+    fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
+    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
   },
   {
     textAlignment: 'center',
@@ -74,6 +98,8 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
     wordStyle: 'none',
     backgroundStyle: 'solid',
     backgroundColor: Color.Constants.transparent,
+    fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
+    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
   },
 ];
 

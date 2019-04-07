@@ -81,7 +81,7 @@ RCT_CUSTOM_VIEW_PROPERTY(fontFamily, NSString *, CaptionView) {
   if (![view isKindOfClass:[CaptionView class]]) {
     return;
   }
-  NSNumber *fontFamily = [RCTConvert NSString:json];
+  NSString *fontFamily = [RCTConvert NSString:json];
   view.fontFamily = fontFamily;
 }
 

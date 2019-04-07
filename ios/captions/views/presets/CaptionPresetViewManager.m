@@ -78,6 +78,22 @@ RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionPresetView) {
   view.textSegments = textSegments;
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(fontFamily, NSString *, CaptionPresetView) {
+  if (![view isKindOfClass:[CaptionPresetView class]]) {
+    return;
+  }
+  NSString *fontFamily = [RCTConvert NSString:json];
+  view.fontFamily = fontFamily;
+}
+
+RCT_CUSTOM_VIEW_PROPERTY(textColor, UIColor *, CaptionPresetView) {
+  if (![view isKindOfClass:[CaptionPresetView class]]) {
+    return;
+  }
+  UIColor *textColor = [RCTConvert UIColor:json];
+  view.textColor = textColor;
+}
+
 - (UIView *)view {
   CaptionPresetView *view = [[CaptionPresetView alloc] init];
   return (UIView *)view;

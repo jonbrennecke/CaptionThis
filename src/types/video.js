@@ -9,6 +9,8 @@ export type CaptionPresetStyleObject = {
   wordStyle: 'animated' | 'none',
   backgroundStyle: 'gradient' | 'solid',
   backgroundColor: ColorRGBA,
+  fontFamily: string,
+  textColor: ColorRGBA,
 };
 
 export type CaptionStyleObject = {
