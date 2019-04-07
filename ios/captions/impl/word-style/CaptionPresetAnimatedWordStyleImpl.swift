@@ -53,7 +53,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
       let substringNaturalSize = substring.attributedString.size()
       let substringSize = CGSize(width: substringNaturalSize.width + 5, height: substringNaturalSize.height)
       let textLayer = CATextLayer()
-      textLayer.frame = CGRect(origin: CGPoint(x: xOffsetAcc, y: 0), size: substringSize)
+      textLayer.frame = CGRect(origin: CGPoint(x: textAlignment == .center ? xOffsetAcc - 2.5 : xOffsetAcc, y: 0), size: substringSize)
       xOffsetAcc += substringNaturalSize.width + whitespaceCharacterSize.width
       textLayer.contentsScale = UIScreen.main.scale
       textLayer.allowsFontSubpixelQuantization = true
@@ -112,7 +112,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     return group
   }
 
-  private static func createWordAnimations(key: CaptionStyleImpl.LayerKey, index: Int, timestamp: CFTimeInterval, duration: CFTimeInterval) -> CAAnimationGroup {
+  private static func createWordAnimations(key _: CaptionStyleImpl.LayerKey, index _: Int, timestamp: CFTimeInterval, duration: CFTimeInterval) -> CAAnimationGroup {
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     group.duration = duration

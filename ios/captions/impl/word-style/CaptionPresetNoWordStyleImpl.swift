@@ -79,7 +79,8 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
       center: [],
       out: [FadeOutAnimationStep()],
       index: index,
-      key: key)
+      key: key
+    )
     group.animations = builder.build(withMap: map)
     group.duration = duration
     return group

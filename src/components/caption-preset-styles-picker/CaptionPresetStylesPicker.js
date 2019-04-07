@@ -31,54 +31,14 @@ const PRESET_HEIGHT = 45;
 const LEFT_PADDING = (SCREEN_WIDTH - PRESET_WIDTH) / 2;
 const RIGHT_PADDING = (SCREEN_WIDTH - PRESET_WIDTH) / 2;
 
-// TODO: interpolate text segments in duration
-const PRESET_TEXT_SEGMENTS = [
-  {
-    duration: 0,
-    timestamp: 0,
-    text: 'the',
-  },
-  {
-    duration: 0,
-    timestamp: 0,
-    text: 'quick',
-  },
-  {
-    duration: 0,
-    timestamp: 0,
-    text: 'brown',
-  },
-  {
-    duration: 0,
-    timestamp: 0,
-    text: 'fox',
-  },
-  {
-    duration: 0,
-    timestamp: 0,
-    text: 'jumped',
-  },
-  {
-    duration: 0,
-    timestamp: 0,
-    text: 'over',
-  },
-  {
-    duration: 0,
-    timestamp: 0,
-    text: 'the',
-  },
-  {
-    duration: 0,
-    timestamp: 0,
-    text: 'lazy',
-  },
-  {
-    duration: 0,
-    timestamp: 0,
-    text: 'dog',
-  },
-];
+const PRESET_TEXT_SEGMENTS = 'The quick brown fox jumped over the lazy dog'
+  .split(' ')
+  .map((text, i) => ({ text, duration: 0.5, timestamp: 0.5 * i }));
+
+const LAST_PRESET_TEXT_SEGMENTS =
+  PRESET_TEXT_SEGMENTS[PRESET_TEXT_SEGMENTS.length - 1];
+const PRESET_TEXT_SEGMENTS_DURATION =
+  LAST_PRESET_TEXT_SEGMENTS.timestamp + LAST_PRESET_TEXT_SEGMENTS.duration + 2;
 
 const styles = {
   container: {
@@ -177,7 +137,7 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
               <CaptionPresetView
                 style={styles.captionPreset}
                 presetStyle={preset}
-                duration={15}
+                duration={PRESET_TEXT_SEGMENTS_DURATION}
                 textSegments={PRESET_TEXT_SEGMENTS}
               />
             </CaptionPresetAnimatedBorderView>

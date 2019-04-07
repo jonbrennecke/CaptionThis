@@ -26,7 +26,7 @@ class CaptionStringsMap {
   public func setValues(byKey key: Key, values: Value) {
     data[key] = values
   }
-  
+
   public func getLine(byKey key: Key, index: Int) -> TaggedLine? {
     guard let lines = getValues(byKey: key), index < lines.count else {
       return nil
