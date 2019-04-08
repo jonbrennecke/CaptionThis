@@ -24,15 +24,7 @@ import {
   isCameraRecording,
   getCurrentVideo,
 } from '../../redux/media/selectors';
-import {
-  setFontFamily,
-  setTextColor,
-  setTextAlignment,
-  setLineStyle,
-  setWordStyle,
-  setBackgroundStyle,
-  setBackgroundColor,
-} from '../../redux/video/actionCreators';
+import { updateCaptionStyle } from '../../redux/video/actionCreators';
 import { getFontFamily } from '../../redux/video/selectors';
 import {
   getSpeechTranscriptions,
@@ -44,21 +36,14 @@ import type { Dispatch, AppState } from '../../types/redux';
 import type {
   VideoAssetIdentifier,
   VideoObject,
-  ColorRGBA,
 } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
-import type {
-  CaptionTextAlignment,
-  CaptionLineStyle,
-  CaptionWordStyle,
-  CaptionBackgroundStyle,
-} from '../../types/video';
 
-type OwnProps = {
+type OwnProps = {|
   componentId: string,
-};
+|};
 
-type StateProps = {
+type StateProps = {|
   videos: VideoObject[],
   arePermissionsGranted: boolean,
   isCameraRecording: boolean,
@@ -66,9 +51,9 @@ type StateProps = {
   fontFamily: string,
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
   locale: ?LocaleObject,
-};
+|};
 
-type DispatchProps = {
+type DispatchProps = {|
   receiveLocale: (locale: LocaleObject) => Promise<void>,
   loadCurrentLocale: () => Promise<void>,
   setLocale: (locale: LocaleObject) => Promise<void>,
@@ -84,16 +69,10 @@ type DispatchProps = {
   ) => void,
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
   receiveFinishedVideo: VideoObject => void,
-  setFontFamily: string => void,
-  setBackgroundColor: ColorRGBA => void,
-  setTextColor: ColorRGBA => void,
-  setTextAlignment: CaptionTextAlignment => void,
-  setLineStyle: CaptionLineStyle => void,
-  setWordStyle: CaptionWordStyle => void,
-  setBackgroundStyle: CaptionBackgroundStyle => void,
-};
+  updateCaptionStyle: typeof updateCaptionStyle,
+|};
 
-export type Props = OwnProps & StateProps & DispatchProps;
+export type Props = {| ...OwnProps, ...StateProps, ...DispatchProps |};
 
 function mapStateToProps(state: AppState): StateProps {
   return {
@@ -128,15 +107,7 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
       dispatch(receiveSpeechTranscriptionFailure(id)),
     receiveFinishedVideo: (video: VideoObject) =>
       dispatch(receiveFinishedVideo(video)),
-    setFontFamily: fontFamily => dispatch(setFontFamily(fontFamily)),
-    setTextColor: textColor => dispatch(setTextColor(textColor)),
-    setTextAlignment: textAlignment =>
-      dispatch(setTextAlignment(textAlignment)),
-    setLineStyle: lineStyle => dispatch(setLineStyle(lineStyle)),
-    setWordStyle: wordStyle => dispatch(setWordStyle(wordStyle)),
-    setBackgroundStyle: backgroundStyle =>
-      dispatch(setBackgroundStyle(backgroundStyle)),
-    setBackgroundColor: color => dispatch(setBackgroundColor(color)),
+    updateCaptionStyle: partialCaptionStyle => dispatch(updateCaptionStyle(partialCaptionStyle)),
   };
 }
 

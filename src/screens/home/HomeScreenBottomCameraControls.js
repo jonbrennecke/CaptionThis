@@ -27,7 +27,7 @@ import type {
   CaptionBackgroundStyle,
 } from '../../types/video';
 
-type CaptionPresetStyleObjectWithId = CaptionPresetStyleObject & { id: string };
+type CaptionPresetStyleObjectWithId = {| ...CaptionPresetStyleObject, id: string |};
 
 type Props = {
   style?: ?Style,

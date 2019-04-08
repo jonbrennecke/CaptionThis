@@ -18,19 +18,15 @@ import { UI_COLORS } from '../../constants';
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
-import type { LineStyle } from '../../types/video';
+import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
   isReadyToPlay: boolean,
   isVisible: boolean,
-  fontSize: number,
-  fontFamily: string,
-  textColor: ColorRGBA,
-  backgroundColor: ColorRGBA,
+  captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
   duration: number,
-  lineStyle: LineStyle,
   onRequestLockScroll?: () => void,
   onRequestUnlockScroll?: () => void,
   onRequestSave: ({
@@ -47,7 +43,6 @@ type State = {
   backgroundColor: ColorRGBA,
   fontFamily: string,
   fontSize: number,
-  lineStyle: LineStyle,
 };
 
 const styles = {
@@ -105,11 +100,10 @@ export default class RichTextEditor extends Component<Props, State> {
     super(props);
     this.state = {
       isColorPickerVisible: false,
-      textColor: props.textColor,
-      backgroundColor: props.backgroundColor,
-      fontFamily: props.fontFamily,
-      fontSize: props.fontSize,
-      lineStyle: props.lineStyle,
+      textColor: props.captionStyle.textColor,
+      backgroundColor: props.captionStyle.backgroundColor,
+      fontFamily: props.captionStyle.fontFamily,
+      fontSize: props.captionStyle.fontSize,
     };
   }
 
@@ -235,8 +229,8 @@ export default class RichTextEditor extends Component<Props, State> {
           backgroundColor={this.state.backgroundColor}
           fontFamily={this.state.fontFamily}
           fontSize={this.state.fontSize}
+          backgroundStyle={this.props.captionStyle.backgroundStyle}
           speechTranscription={this.props.speechTranscription}
-          lineStyle={this.state.lineStyle}
         />
         <View style={styles.mainContents}>
           <View style={styles.mainContentsBackground} />

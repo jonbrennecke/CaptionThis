@@ -5,6 +5,7 @@ import { autobind } from 'core-decorators';
 import isEqual from 'lodash/isEqual';
 import clamp from 'lodash/clamp';
 import round from 'lodash/round';
+import omit from 'lodash/omit';
 
 import CaptionPresetView from './CaptionPresetView';
 import CaptionPresetAnimatedBorderView from './CaptionPresetAnimatedBorderView';
@@ -12,7 +13,7 @@ import CaptionPresetAnimatedBorderView from './CaptionPresetAnimatedBorderView';
 import type { Style } from '../../types/react';
 import type { CaptionPresetStyleObject } from '../../types/video';
 
-type CaptionPresetStyleObjectWithId = CaptionPresetStyleObject & { id: string };
+type CaptionPresetStyleObjectWithId = {| ...CaptionPresetStyleObject, id: string |};
 
 type Props = {
   style?: ?Style,
@@ -125,12 +126,12 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
         onScrollEndDrag={this.onScrollViewDidEndDrag}
       >
         <View style={styles.leftPadding} />
-        {this.props.presets.map((preset, index) => {
-          const isSelected = isEqual(preset, this.props.currentPreset);
+        {this.props.presets.map(({ id, ...preset }, index) => {
+          const isSelected = isEqual(preset, omit(this.props.currentPreset, 'id'));
           return (
             <CaptionPresetAnimatedBorderView
               isSelected={isSelected}
-              key={preset.id}
+              key={id}
               size={{ width: PRESET_WIDTH, height: PRESET_HEIGHT }}
               onPress={() => this.scrollToPresetAtIndex(index)}
             >
