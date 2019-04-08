@@ -12,15 +12,10 @@ import HomeScreenCameraControls from './HomeScreenCameraControls';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 
-import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
+import type { VideoAssetIdentifier } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
 import type { Style } from '../../types/react';
-import type {
-  CaptionTextAlignment,
-  CaptionLineStyle,
-  CaptionWordStyle,
-  CaptionBackgroundStyle,
-} from '../../types/video';
+import type { CaptionPresetStyleObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -35,13 +30,7 @@ type Props = {
   onRequestOpenLocaleMenu: () => void,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
-  onRequestSetFontFamily: string => void,
-  onRequestSetBackgroundColor: ColorRGBA => void,
-  onRequestSetTextColor: ColorRGBA => void,
-  onRequestSetTextAlignment: CaptionTextAlignment => void,
-  onRequestSetLineStyle: CaptionLineStyle => void,
-  onRequestSetWordStyle: CaptionWordStyle => void,
-  onRequestSetBackgroundStyle: CaptionBackgroundStyle => void,
+  onRequestSetCaptionStyle: CaptionPresetStyleObject => void,
 };
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -137,13 +126,7 @@ export default class HomeScreenCameraPreview extends Component<Props> {
           onRequestOpenCameraRoll={this.props.onRequestOpenCameraRoll}
           onRequestSwitchCamera={Camera.switchToOppositeCamera}
           onRequestOpenLocaleMenu={this.props.onRequestOpenLocaleMenu}
-          onRequestSetFontFamily={this.props.onRequestSetFontFamily}
-          onRequestSetBackgroundColor={this.props.onRequestSetBackgroundColor}
-          onRequestSetTextColor={this.props.onRequestSetTextColor}
-          onRequestSetTextAlignment={this.props.onRequestSetTextAlignment}
-          onRequestSetLineStyle={this.props.onRequestSetLineStyle}
-          onRequestSetWordStyle={this.props.onRequestSetWordStyle}
-          onRequestSetBackgroundStyle={this.props.onRequestSetBackgroundStyle}
+          onRequestSetCaptionStyle={this.props.onRequestSetCaptionStyle}
         />
       </Animated.View>
     );

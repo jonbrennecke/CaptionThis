@@ -10,7 +10,10 @@ import CaptionPresetStylesPicker from '../../components/caption-preset-styles-pi
 import type { Style } from '../../types/react';
 import type { CaptionPresetStyleObject } from '../../types/video';
 
-type CaptionPresetStyleObjectWithId = {| ...CaptionPresetStyleObject, id: string |};
+type CaptionPresetStyleObjectWithId = {|
+  ...CaptionPresetStyleObject,
+  id: string,
+|};
 
 type Props = {
   style?: ?Style,

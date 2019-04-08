@@ -16,7 +16,10 @@ import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
 
 import type { Orientation, VideoObject, ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
-import type { CaptionLineStyle, CaptionBackgroundStyle } from '../../types/video';
+import type {
+  CaptionLineStyle,
+  CaptionBackgroundStyle,
+} from '../../types/video';
 
 type Props = {
   video: VideoObject,

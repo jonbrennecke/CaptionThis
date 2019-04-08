@@ -18,16 +18,13 @@ import HomeScreenPresetStyles from './HomeScreenPresetStyles';
 import SlideUpAnimatedView from '../../components/animations/SlideUpAnimatedView';
 
 import type { Style } from '../../types/react';
-import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
-import type {
-  CaptionPresetStyleObject,
-  CaptionTextAlignment,
-  CaptionLineStyle,
-  CaptionWordStyle,
-  CaptionBackgroundStyle,
-} from '../../types/video';
+import type { VideoAssetIdentifier } from '../../types/media';
+import type { CaptionPresetStyleObject } from '../../types/video';
 
-type CaptionPresetStyleObjectWithId = {| ...CaptionPresetStyleObject, id: string |};
+type CaptionPresetStyleObjectWithId = {|
+  ...CaptionPresetStyleObject,
+  id: string,
+|};
 
 type Props = {
   style?: ?Style,
@@ -37,13 +34,7 @@ type Props = {
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
   onRequestSwitchCamera: () => void,
-  onRequestSetFontFamily: string => void,
-  onRequestSetBackgroundColor: ColorRGBA => void,
-  onRequestSetTextColor: ColorRGBA => void,
-  onRequestSetTextAlignment: CaptionTextAlignment => void,
-  onRequestSetLineStyle: CaptionLineStyle => void,
-  onRequestSetWordStyle: CaptionWordStyle => void,
-  onRequestSetBackgroundStyle: CaptionBackgroundStyle => void,
+  onRequestSetCaptionStyle: CaptionPresetStyleObject => void,
 };
 
 type State = {
@@ -82,7 +73,7 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
   {
     textAlignment: 'left',
     lineStyle: 'translateY',
-    wordStyle: 'animated',
+    wordStyle: 'none',
     backgroundStyle: 'gradient',
     backgroundColor: Color.hexToRgbaObject(UI_COLORS.DARK_GREY),
     fontFamily: FONT_FAMILIES.ROBOTO,
@@ -182,16 +173,12 @@ export default class HomeScreenBottomCameraControls extends Component<
     preset: PRESET_STYLES_WITH_ID[0],
   };
 
-  presetPickerDidSelectPreset(preset: CaptionPresetStyleObjectWithId) {
-    this.setState({ preset });
-    this.props.onRequestSetFontFamily(preset.fontFamily);
-    this.props.onRequestSetBackgroundColor(preset.backgroundColor);
-    this.props.onRequestSetTextAlignment(preset.textAlignment);
-    this.props.onRequestSetLineStyle(preset.lineStyle);
-    this.props.onRequestSetWordStyle(preset.wordStyle);
-    this.props.onRequestSetBackgroundStyle(preset.backgroundStyle);
-    this.props.onRequestSetBackgroundColor(preset.backgroundColor);
-    this.props.onRequestSetTextColor(preset.textColor);
+  presetPickerDidSelectPreset({
+    id,
+    ...preset
+  }: CaptionPresetStyleObjectWithId) {
+    this.setState({ preset: { id, ...preset } });
+    this.props.onRequestSetCaptionStyle(preset);
   }
 
   render() {

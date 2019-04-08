@@ -13,7 +13,10 @@ import CaptionPresetAnimatedBorderView from './CaptionPresetAnimatedBorderView';
 import type { Style } from '../../types/react';
 import type { CaptionPresetStyleObject } from '../../types/video';
 
-type CaptionPresetStyleObjectWithId = {| ...CaptionPresetStyleObject, id: string |};
+type CaptionPresetStyleObjectWithId = {|
+  ...CaptionPresetStyleObject,
+  id: string,
+|};
 
 type Props = {
   style?: ?Style,
@@ -127,7 +130,10 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
       >
         <View style={styles.leftPadding} />
         {this.props.presets.map(({ id, ...preset }, index) => {
-          const isSelected = isEqual(preset, omit(this.props.currentPreset, 'id'));
+          const isSelected = isEqual(
+            preset,
+            omit(this.props.currentPreset, 'id')
+          );
           return (
             <CaptionPresetAnimatedBorderView
               isSelected={isSelected}

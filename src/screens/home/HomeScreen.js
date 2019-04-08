@@ -338,13 +338,9 @@ export default class HomeScreen extends Component<Props, State> {
                 onRequestEndCapture={() => {
                   this.captureButtonDidRequestEndCapture();
                 }}
-                onRequestSetFontFamily={fontFamily => { this.props.updateCaptionStyle({ fontFamily }); }}
-                onRequestSetTextColor={textColor => { this.props.updateCaptionStyle({ textColor }); }}
-                onRequestSetTextAlignment={textAlignment => { this.props.updateCaptionStyle({ textAlignment }); }}
-                onRequestSetLineStyle={lineStyle => { this.props.updateCaptionStyle({ lineStyle }); }}
-                onRequestSetWordStyle={wordStyle => { this.props.updateCaptionStyle({ wordStyle }); }}
-                onRequestSetBackgroundStyle={backgroundStyle => { this.props.updateCaptionStyle({ backgroundStyle }); }}
-                onRequestSetBackgroundColor={backgroundColor => { this.props.updateCaptionStyle({ backgroundColor }); }}
+                onRequestSetCaptionStyle={captionStyle => {
+                  this.props.updateCaptionStyle(captionStyle);
+                }}
               />
             </SafeAreaView>
             <SafeAreaView style={styles.flex}>

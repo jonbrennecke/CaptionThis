@@ -1,7 +1,11 @@
 // @flow
 import type { AppState } from '../../types/redux';
 import type { ColorRGBA } from '../../types/media';
-import type { CaptionLineStyle, CaptionBackgroundStyle, CaptionStyleObject } from '../../types/video';
+import type {
+  CaptionLineStyle,
+  CaptionBackgroundStyle,
+  CaptionStyleObject,
+} from '../../types/video';
 
 export function getFontFamily(state: AppState): string {
   return getCaptionStyle(state).fontFamily;

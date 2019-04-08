@@ -27,10 +27,7 @@ import {
 } from '../../redux/device/selectors';
 
 import type { ComponentType } from 'react';
-import type {
-  VideoAssetIdentifier,
-  VideoObject,
-} from '../../types/media';
+import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { CaptionStyleObject } from '../../types/video';
 import type { SpeechTranscription, LocaleObject } from '../../types/speech';
@@ -97,7 +94,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
       dispatch(receiveSpeechTranscriptionFailure(id)),
     willExportVideo: () => dispatch(willExportVideo()),
     didExportVideo: () => dispatch(didExportVideo()),
-    updateCaptionStyle: partialCaptionStyle => dispatch(updateCaptionStyle(partialCaptionStyle)),
+    updateCaptionStyle: partialCaptionStyle =>
+      dispatch(updateCaptionStyle(partialCaptionStyle)),
     receiveAppStateChange: appState =>
       dispatch(receiveAppStateChange(appState)),
   };

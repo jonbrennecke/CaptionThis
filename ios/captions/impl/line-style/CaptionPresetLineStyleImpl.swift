@@ -18,19 +18,18 @@ class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
     layer.removeAllAnimations()
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
-    var builder = CaptionAnimation.Builder()
+    let builder = CaptionAnimation.Builder()
     let lines = map.getValues(byKey: key)!
     for (index, _) in lines.enumerated() {
-      let startIndex = (index * 3)
-//      builder = builder
-//        .insert([
-//          FadeInAnimationStep(),
-//        ], at: startIndex)
-//        .insert([
-//          FadeOutAnimationStep(),
-//        ], at: 2 + startIndex)
+      builder.insert(
+        in: [FadeInAnimationStep()],
+        center: [],
+        out: [FadeOutAnimationStep()],
+        index: index,
+        key: key
+      )
     }
-//    group.animations = builder.build(withTaggedLines: strings)
+    group.animations = builder.build(withMap: map)
     group.duration = duration
     layer.add(group, forKey: "lineStyleAnimation")
   }

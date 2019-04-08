@@ -18,10 +18,7 @@ import SpeechManager from '../../utils/SpeechManager';
 import LocaleMenu from '../../components/localization/LocaleMenu';
 import Container from './Container';
 
-import type {
-  ColorRGBA,
-  Orientation,
-} from '../../types/media';
+import type { ColorRGBA, Orientation } from '../../types/media';
 import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 import type { EmitterSubscription, ReactAppStateEnum } from '../../types/react';
 import type { Props } from './Container';
@@ -185,7 +182,12 @@ export default class EditScreen extends Component<Props, State> {
     this.props.receiveSpeechTranscriptionFailure(this.props.video.id);
   }
 
-  async richTextEditorDidRequestSave({ fontSize, fontFamily, textColor, backgroundColor }: {
+  async richTextEditorDidRequestSave({
+    fontSize,
+    fontFamily,
+    textColor,
+    backgroundColor,
+  }: {
     fontSize: number,
     fontFamily: string,
     textColor: ColorRGBA,
@@ -195,7 +197,7 @@ export default class EditScreen extends Component<Props, State> {
       fontSize,
       fontFamily,
       textColor,
-      backgroundColor
+      backgroundColor,
     });
     this.setState({
       isRichTextEditorVisible: false,

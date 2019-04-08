@@ -33,10 +33,7 @@ import {
 
 import type { ComponentType } from 'react';
 import type { Dispatch, AppState } from '../../types/redux';
-import type {
-  VideoAssetIdentifier,
-  VideoObject,
-} from '../../types/media';
+import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
 
 type OwnProps = {|
@@ -107,7 +104,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
       dispatch(receiveSpeechTranscriptionFailure(id)),
     receiveFinishedVideo: (video: VideoObject) =>
       dispatch(receiveFinishedVideo(video)),
-    updateCaptionStyle: partialCaptionStyle => dispatch(updateCaptionStyle(partialCaptionStyle)),
+    updateCaptionStyle: partialCaptionStyle =>
+      dispatch(updateCaptionStyle(partialCaptionStyle)),
   };
 }
 

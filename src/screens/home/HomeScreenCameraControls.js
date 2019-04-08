@@ -6,13 +6,8 @@ import HomeScreenBottomCameraControls from './HomeScreenBottomCameraControls';
 import HomeScreenTopCameraControls from './HomeScreenTopCameraControls';
 
 import type { Style } from '../../types/react';
-import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
-import type {
-  CaptionTextAlignment,
-  CaptionLineStyle,
-  CaptionWordStyle,
-  CaptionBackgroundStyle,
-} from '../../types/video';
+import type { VideoAssetIdentifier } from '../../types/media';
+import type { CaptionPresetStyleObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -24,13 +19,7 @@ type Props = {
   onRequestOpenCameraRoll: () => void,
   onRequestSwitchCamera: () => void,
   onRequestOpenLocaleMenu: () => void,
-  onRequestSetFontFamily: string => void,
-  onRequestSetBackgroundColor: ColorRGBA => void,
-  onRequestSetTextColor: ColorRGBA => void,
-  onRequestSetTextAlignment: CaptionTextAlignment => void,
-  onRequestSetLineStyle: CaptionLineStyle => void,
-  onRequestSetWordStyle: CaptionWordStyle => void,
-  onRequestSetBackgroundStyle: CaptionBackgroundStyle => void,
+  onRequestSetCaptionStyle: CaptionPresetStyleObject => void,
 };
 
 const styles = {
@@ -59,13 +48,7 @@ export default function HomeScreenCameraControls({
   onRequestOpenCameraRoll,
   onRequestSwitchCamera,
   onRequestOpenLocaleMenu,
-  onRequestSetFontFamily,
-  onRequestSetBackgroundColor,
-  onRequestSetTextColor,
-  onRequestSetTextAlignment,
-  onRequestSetLineStyle,
-  onRequestSetWordStyle,
-  onRequestSetBackgroundStyle,
+  onRequestSetCaptionStyle,
 }: Props) {
   return (
     <View style={[styles.container, style]} pointerEvents="box-none">
@@ -82,13 +65,7 @@ export default function HomeScreenCameraControls({
         onRequestEndCapture={onRequestEndCapture}
         onRequestOpenCameraRoll={onRequestOpenCameraRoll}
         onRequestSwitchCamera={onRequestSwitchCamera}
-        onRequestSetFontFamily={onRequestSetFontFamily}
-        onRequestSetBackgroundColor={onRequestSetBackgroundColor}
-        onRequestSetTextColor={onRequestSetTextColor}
-        onRequestSetTextAlignment={onRequestSetTextAlignment}
-        onRequestSetLineStyle={onRequestSetLineStyle}
-        onRequestSetWordStyle={onRequestSetWordStyle}
-        onRequestSetBackgroundStyle={onRequestSetBackgroundStyle}
+        onRequestSetCaptionStyle={onRequestSetCaptionStyle}
       />
     </View>
   );
