@@ -16,7 +16,7 @@ import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
 
 import type { Orientation, VideoObject, ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
-import type { LineStyle } from '../../types/video';
+import type { CaptionLineStyle, CaptionBackgroundStyle } from '../../types/video';
 
 type Props = {
   video: VideoObject,
@@ -32,8 +32,9 @@ type Props = {
   fontSize: number,
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
+  backgroundStyle: CaptionBackgroundStyle,
   speechTranscription: ?SpeechTranscription,
-  lineStyle: LineStyle,
+  lineStyle: CaptionLineStyle,
   orientation: Orientation,
   onRequestChangeDuration: number => void,
   onRequestChangePlaybackTime: number => void,
@@ -338,6 +339,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                 backgroundColor={this.props.backgroundColor}
                 fontFamily={this.props.fontFamily}
                 fontSize={this.props.fontSize}
+                backgroundStyle={this.props.backgroundStyle}
                 speechTranscription={this.props.speechTranscription}
                 onPress={this.props.onRequestShowRichTextEditor}
               />

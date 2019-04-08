@@ -28,10 +28,10 @@ import {
   setLocale,
 } from '../../redux/speech/actionCreators';
 import {
-  receiveUserSelectedFontFamily,
-  receiveUserSelectedTextColor,
-  receiveUserSelectedBackgroundColor,
-  receiveUserSelectedFontSize,
+  setFontFamily,
+  setTextColor,
+  setBackgroundColor,
+  setFontSize,
 } from '../../redux/video/actionCreators';
 import { isExportingVideo } from '../../redux/media/selectors';
 import {
@@ -46,6 +46,7 @@ import {
   getFontFamily,
   getFontSize,
   getLineStyle,
+  getBackgroundStyle
 } from '../../redux/video/selectors';
 import { receiveAppStateChange } from '../../redux/device/actionCreators';
 import {
@@ -61,7 +62,7 @@ import type {
 } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { SpeechTranscription, LocaleObject } from '../../types/speech';
-import type { LineStyle } from '../../types/video';
+import type { CaptionLineStyle, CaptionBackgroundStyle } from '../../types/video';
 import type { EmitterSubscription, ReactAppStateEnum } from '../../types/react';
 
 type State = {
@@ -84,10 +85,11 @@ type StateProps = {
   fontFamily: string,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
+  backgroundStyle: CaptionBackgroundStyle,
   isExportingVideo: boolean,
   fontSize: number,
   didSpeechRecognitionFail: boolean,
-  lineStyle: LineStyle,
+  lineStyle: CaptionLineStyle,
   isAppInForeground: boolean,
   isDeviceLimitedByMemory: boolean,
   locale: ?LocaleObject,
@@ -106,10 +108,10 @@ type DispatchProps = {
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
   willExportVideo: () => Promise<void>,
   didExportVideo: () => Promise<void>,
-  receiveUserSelectedFontFamily: (fontFamily: string) => void,
-  receiveUserSelectedTextColor: (color: ColorRGBA) => void,
-  receiveUserSelectedBackgroundColor: (color: ColorRGBA) => void,
-  receiveUserSelectedFontSize: (fontSize: number) => void,
+  setFontFamily: string => void,
+  setTextColor: ColorRGBA => void,
+  setBackgroundColor: ColorRGBA => void,
+  setFontSize: number => void,
   receiveAppStateChange: (appState: ReactAppStateEnum) => void,
 };
 
@@ -139,6 +141,7 @@ function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
       ownProps.video.id
     ),
     speechTranscription: getSpeechTranscriptionByID(state, ownProps.video.id),
+    backgroundStyle: getBackgroundStyle(state),
   };
 }
 
@@ -153,14 +156,10 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
       dispatch(receiveSpeechTranscriptionFailure(id)),
     willExportVideo: () => dispatch(willExportVideo()),
     didExportVideo: () => dispatch(didExportVideo()),
-    receiveUserSelectedFontFamily: fontFamily =>
-      dispatch(receiveUserSelectedFontFamily(fontFamily)),
-    receiveUserSelectedTextColor: color =>
-      dispatch(receiveUserSelectedTextColor(color)),
-    receiveUserSelectedBackgroundColor: color =>
-      dispatch(receiveUserSelectedBackgroundColor(color)),
-    receiveUserSelectedFontSize: fontSize =>
-      dispatch(receiveUserSelectedFontSize(fontSize)),
+    setFontFamily: fontFamily => dispatch(setFontFamily(fontFamily)),
+    setTextColor: color => dispatch(setTextColor(color)),
+    setBackgroundColor: color => dispatch(setBackgroundColor(color)),
+    setFontSize: fontSize => dispatch(setFontSize(fontSize)),
     receiveAppStateChange: appState =>
       dispatch(receiveAppStateChange(appState)),
   };
@@ -314,10 +313,10 @@ export default class EditScreen extends Component<Props, State> {
     textColor: ColorRGBA,
     backgroundColor: ColorRGBA,
   }) {
-    this.props.receiveUserSelectedFontSize(params.fontSize);
-    this.props.receiveUserSelectedFontFamily(params.fontFamily);
-    this.props.receiveUserSelectedTextColor(params.textColor);
-    this.props.receiveUserSelectedBackgroundColor(params.backgroundColor);
+    this.props.setFontSize(params.fontSize);
+    this.props.setFontFamily(params.fontFamily);
+    this.props.setTextColor(params.textColor);
+    this.props.setBackgroundColor(params.backgroundColor);
     this.setState({
       isRichTextEditorVisible: false,
     });
@@ -482,6 +481,7 @@ export default class EditScreen extends Component<Props, State> {
           duration={this.state.duration}
           orientation={this.state.orientation || 'up'}
           lineStyle={this.props.lineStyle}
+          backgroundStyle={this.props.backgroundStyle}
           textColor={this.props.textColor}
           backgroundColor={this.props.backgroundColor}
           fontFamily={this.props.fontFamily}

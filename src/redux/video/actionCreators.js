@@ -1,49 +1,81 @@
 // @flow
 import { ACTION_TYPES } from './constants';
+import { getCaptionStyle } from './selectors';
 
-import type {
-  Dispatch,
-  ReceiveTextColorPayload,
-  ReceiveBackgroundColorPayload,
-  ReceiveFontFamilyPayload,
-  ReceiveFontSizePayload,
-} from '../../types/redux';
+import type { Dispatch, GetState, ReceiveCaptionStylePayload } from '../../types/redux';
 import type { ColorRGBA } from '../../types/media';
+import type {
+  CaptionStyleObject,
+  CaptionBackgroundStyle,
+  CaptionWordStyle,
+  CaptionLineStyle,
+  CaptionTextAlignment,
+} from '../../types/video';
 
-export const receiveUserSelectedFontSize = (fontSize: number) => {
-  return (dispatch: Dispatch<ReceiveFontSizePayload>) => {
-    dispatch({
-      type: ACTION_TYPES.DID_RECEIVE_FONT_SIZE,
-      payload: { fontSize },
-    });
+export const setFontSize = (fontSize: number) => {
+  return (dispatch: Dispatch<ReceiveCaptionStylePayload>) => {
+    dispatch(setPartialCaptionStyle({ fontSize }));
   };
 };
 
-export const receiveUserSelectedFontFamily = (fontFamily: string) => {
-  return (dispatch: Dispatch<ReceiveFontFamilyPayload>) => {
-    dispatch({
-      type: ACTION_TYPES.DID_RECEIVE_FONT_FAMILY,
-      payload: { fontFamily },
-    });
+export const setFontFamily = (fontFamily: string) => {
+  return (dispatch: Dispatch<ReceiveCaptionStylePayload>) => {
+    dispatch(setPartialCaptionStyle({ fontFamily }));
   };
 };
 
-export const receiveUserSelectedBackgroundColor = (
-  backgroundColor: ColorRGBA
-) => {
-  return (dispatch: Dispatch<ReceiveBackgroundColorPayload>) => {
-    dispatch({
-      type: ACTION_TYPES.DID_RECEIVE_BACKGROUND_COLOR,
-      payload: { backgroundColor },
-    });
+export const setTextAlignment = (textAlignment: CaptionTextAlignment) => {
+  return (dispatch: Dispatch<ReceiveCaptionStylePayload>) => {
+    dispatch(setPartialCaptionStyle({ textAlignment }));
   };
 };
 
-export const receiveUserSelectedTextColor = (textColor: ColorRGBA) => {
-  return (dispatch: Dispatch<ReceiveTextColorPayload>) => {
+export const setLineStyle = (lineStyle: CaptionLineStyle) => {
+  return (dispatch: Dispatch<ReceiveCaptionStylePayload>) => {
+    dispatch(setPartialCaptionStyle({ lineStyle }));
+  };
+};
+
+export const setWordStyle = (wordStyle: CaptionWordStyle) => {
+  return (dispatch: Dispatch<ReceiveCaptionStylePayload>) => {
+    dispatch(setPartialCaptionStyle({ wordStyle }));
+  };
+};
+
+export const setBackgroundStyle = (backgroundStyle: CaptionBackgroundStyle) => {
+  return (dispatch: Dispatch<ReceiveCaptionStylePayload>) => {
+    dispatch(setPartialCaptionStyle({ backgroundStyle }));
+  };
+};
+
+export const setTextColor = (textColor: ColorRGBA) => {
+  return (dispatch: Dispatch<ReceiveCaptionStylePayload>) => {
+    dispatch(setPartialCaptionStyle({ textColor }));
+  };
+};
+
+export const setBackgroundColor = (backgroundColor: ColorRGBA) => {
+  return (dispatch: Dispatch<ReceiveCaptionStylePayload>) => {
+    dispatch(setPartialCaptionStyle({ backgroundColor }));
+  };
+};
+
+export const setPartialCaptionStyle = (partialCaptionStyle: $Shape<CaptionStyleObject>) => {
+  return (dispatch: Dispatch<ReceiveCaptionStylePayload>, getState: GetState) => {
+    const captionStyle = getCaptionStyle(getState());
+    dispatch(setCaptionStyle({
+      ...captionStyle,
+      ...partialCaptionStyle,
+    }));
+  };
+};
+
+
+export const setCaptionStyle = (captionStyle: CaptionStyleObject) => {
+  return (dispatch: Dispatch<ReceiveCaptionStylePayload>) => {
     dispatch({
-      type: ACTION_TYPES.DID_RECEIVE_TEXT_COLOR,
-      payload: { textColor },
+      type: ACTION_TYPES.DID_RECEIVE_CAPTION_STYLE,
+      payload: { captionStyle },
     });
   };
 };

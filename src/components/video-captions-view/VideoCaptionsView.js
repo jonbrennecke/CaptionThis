@@ -7,6 +7,7 @@ import CaptionView from '../caption-view/CaptionView';
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
 import type { ColorRGBA, Orientation } from '../../types/media';
+import type { CaptionBackgroundStyle } from '../../types/video';
 
 type ReactNativeFiberHostComponent = any;
 
@@ -18,6 +19,7 @@ type Props = {
   textColor: ColorRGBA,
   fontFamily: string,
   fontSize: number,
+  backgroundStyle: CaptionBackgroundStyle,
   speechTranscription: ?SpeechTranscription,
   isReadyToPlay: boolean,
   onPress?: () => void,
@@ -77,10 +79,10 @@ export default class VideoCaptionsView extends Component<Props> {
         style={[styles.container, this.props.style]}
         onPress={this.props.onPress}
       >
-        <CaptionView
-          ref={ref => {
+        {/* ref={ref => {
             this.nativeComponentRef = ref;
-          }}
+          }} */}
+        <CaptionView
           style={styles.flex}
           duration={this.props.duration}
           textSegments={textSegments}
@@ -88,7 +90,7 @@ export default class VideoCaptionsView extends Component<Props> {
             textAlignment: 'left',
             lineStyle: 'translateY',
             wordStyle: 'animated',
-            backgroundStyle: 'gradient',
+            backgroundStyle: this.props.backgroundStyle,
             backgroundColor: this.props.backgroundColor,
             fontSize: this.props.fontSize,
             fontFamily: this.props.fontFamily,

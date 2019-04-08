@@ -9,7 +9,7 @@ import BottomSheetModal from '../../components/bottom-sheet-modal/BottomSheetMod
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
-import type { LineStyle } from '../../types/video';
+import type { CaptionLineStyle } from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -21,7 +21,7 @@ type Props = {
   textColor: ColorRGBA,
   backgroundColor: ColorRGBA,
   speechTranscription: ?SpeechTranscription,
-  lineStyle: LineStyle,
+  lineStyle: CaptionLineStyle,
   onRequestSave: ({
     fontSize: number,
     fontFamily: string,

@@ -3,18 +3,24 @@ import React, { Component } from 'react';
 import { Animated, StyleSheet, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 
-import * as Color from '../../utils/Color';
+// import * as Color from '../../utils/Color';
 import * as Camera from '../../utils/Camera';
-import { USER_BACKGROUND_COLOR_CHOICES } from '../../constants';
+// import { USER_BACKGROUND_COLOR_CHOICES } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';
-import CaptionView from '../../components/caption-view/CaptionView';
+// import CaptionView from '../../components/caption-view/CaptionView';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 
-import type { VideoAssetIdentifier } from '../../types/media';
+import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
 import type { Style } from '../../types/react';
+import type {
+  CaptionTextAlignment,
+  CaptionLineStyle,
+  CaptionWordStyle,
+  CaptionBackgroundStyle,
+} from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -29,6 +35,13 @@ type Props = {
   onRequestOpenLocaleMenu: () => void,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
+  onRequestSetFontFamily: string => void,
+  onRequestSetBackgroundColor: ColorRGBA => void,
+  onRequestSetTextColor: ColorRGBA => void,
+  onRequestSetTextAlignment: CaptionTextAlignment => void,
+  onRequestSetLineStyle: CaptionLineStyle => void,
+  onRequestSetWordStyle: CaptionWordStyle => void,
+  onRequestSetBackgroundStyle: CaptionBackgroundStyle => void,
 };
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -78,13 +91,13 @@ export default class HomeScreenCameraPreview extends Component<Props> {
   }
 
   render() {
-    const textSegments = this.props.speechTranscription
-      ? this.props.speechTranscription.segments.map(s => ({
-          duration: s.duration,
-          timestamp: s.timestamp,
-          text: s.substring,
-        }))
-      : [];
+    // const textSegments = this.props.speechTranscription
+    //   ? this.props.speechTranscription.segments.map(s => ({
+    //       duration: s.duration,
+    //       timestamp: s.timestamp,
+    //       text: s.substring,
+    //     }))
+    //   : [];
     return (
       <Animated.View
         style={[
@@ -124,6 +137,13 @@ export default class HomeScreenCameraPreview extends Component<Props> {
           onRequestOpenCameraRoll={this.props.onRequestOpenCameraRoll}
           onRequestSwitchCamera={Camera.switchToOppositeCamera}
           onRequestOpenLocaleMenu={this.props.onRequestOpenLocaleMenu}
+          onRequestSetFontFamily={this.props.onRequestSetFontFamily}
+          onRequestSetBackgroundColor={this.props.onRequestSetBackgroundColor}
+          onRequestSetTextColor={this.props.onRequestSetTextColor}
+          onRequestSetTextAlignment={this.props.onRequestSetTextAlignment}
+          onRequestSetLineStyle={this.props.onRequestSetLineStyle}
+          onRequestSetWordStyle={this.props.onRequestSetWordStyle}
+          onRequestSetBackgroundStyle={this.props.onRequestSetBackgroundStyle}
         />
       </Animated.View>
     );

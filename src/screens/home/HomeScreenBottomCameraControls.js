@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import uuid from 'uuid';
+import { autobind } from 'core-decorators';
 
 import {
   UI_COLORS,
@@ -17,19 +18,32 @@ import HomeScreenPresetStyles from './HomeScreenPresetStyles';
 import SlideUpAnimatedView from '../../components/animations/SlideUpAnimatedView';
 
 import type { Style } from '../../types/react';
-import type { VideoAssetIdentifier } from '../../types/media';
-import type { CaptionPresetStyleObject } from '../../types/video';
+import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
+import type {
+  CaptionPresetStyleObject,
+  CaptionTextAlignment,
+  CaptionLineStyle,
+  CaptionWordStyle,
+  CaptionBackgroundStyle,
+} from '../../types/video';
 
 type CaptionPresetStyleObjectWithId = CaptionPresetStyleObject & { id: string };
 
 type Props = {
   style?: ?Style,
   isVisible: boolean,
+  video: ?VideoAssetIdentifier,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
   onRequestSwitchCamera: () => void,
-  video: ?VideoAssetIdentifier,
+  onRequestSetFontFamily: string => void,
+  onRequestSetBackgroundColor: ColorRGBA => void,
+  onRequestSetTextColor: ColorRGBA => void,
+  onRequestSetTextAlignment: CaptionTextAlignment => void,
+  onRequestSetLineStyle: CaptionLineStyle => void,
+  onRequestSetWordStyle: CaptionWordStyle => void,
+  onRequestSetBackgroundStyle: CaptionBackgroundStyle => void,
 };
 
 type State = {
@@ -157,6 +171,8 @@ const styles = {
   },
 };
 
+// $FlowFixMe
+@autobind
 export default class HomeScreenBottomCameraControls extends Component<
   Props,
   State
@@ -165,6 +181,18 @@ export default class HomeScreenBottomCameraControls extends Component<
     isPresetSheetVisible: true,
     preset: PRESET_STYLES_WITH_ID[0],
   };
+
+  presetPickerDidSelectPreset(preset: CaptionPresetStyleObjectWithId) {
+    this.setState({ preset });
+    this.props.onRequestSetFontFamily(preset.fontFamily);
+    this.props.onRequestSetBackgroundColor(preset.backgroundColor);
+    this.props.onRequestSetTextAlignment(preset.textAlignment);
+    this.props.onRequestSetLineStyle(preset.lineStyle);
+    this.props.onRequestSetWordStyle(preset.wordStyle);
+    this.props.onRequestSetBackgroundStyle(preset.backgroundStyle);
+    this.props.onRequestSetBackgroundColor(preset.backgroundColor);
+    this.props.onRequestSetTextColor(preset.textColor);
+  }
 
   render() {
     return (
@@ -196,7 +224,7 @@ export default class HomeScreenBottomCameraControls extends Component<
           isVisible={this.state.isPresetSheetVisible}
           presets={PRESET_STYLES_WITH_ID}
           currentPreset={this.state.preset}
-          onRequestSelectPreset={preset => this.setState({ preset })}
+          onRequestSelectPreset={this.presetPickerDidSelectPreset}
         />
       </View>
     );

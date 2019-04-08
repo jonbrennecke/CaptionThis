@@ -1,23 +1,26 @@
 // @flow
 import type { ColorRGBA } from './media';
 
-export type LineStyle = 'oneLine' | 'twoLines';
+export type CaptionLineStyle = 'fadeInOut' | 'translateY';
+export type CaptionTextAlignment = 'center' | 'left' | 'right';
+export type CaptionWordStyle = 'animated' | 'none';
+export type CaptionBackgroundStyle = 'gradient' | 'solid';
 
 export type CaptionPresetStyleObject = {
-  textAlignment: 'center' | 'left' | 'right',
-  lineStyle: 'fadeInOut' | 'translateY',
-  wordStyle: 'animated' | 'none',
-  backgroundStyle: 'gradient' | 'solid',
+  textAlignment: CaptionTextAlignment,
+  lineStyle: CaptionLineStyle,
+  wordStyle: CaptionWordStyle,
+  backgroundStyle: CaptionBackgroundStyle,
   backgroundColor: ColorRGBA,
   fontFamily: string,
   textColor: ColorRGBA,
 };
 
 export type CaptionStyleObject = {
-  textAlignment: 'center' | 'left' | 'right',
-  lineStyle: 'fadeInOut' | 'translateY',
-  wordStyle: 'animated' | 'none',
-  backgroundStyle: 'gradient' | 'solid',
+  textAlignment: CaptionTextAlignment,
+  lineStyle: CaptionLineStyle,
+  wordStyle: CaptionWordStyle,
+  backgroundStyle: CaptionBackgroundStyle,
   backgroundColor: ColorRGBA,
   textColor: ColorRGBA,
   fontSize: number,

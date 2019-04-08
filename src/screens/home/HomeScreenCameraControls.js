@@ -6,18 +6,31 @@ import HomeScreenBottomCameraControls from './HomeScreenBottomCameraControls';
 import HomeScreenTopCameraControls from './HomeScreenTopCameraControls';
 
 import type { Style } from '../../types/react';
-import type { VideoAssetIdentifier } from '../../types/media';
+import type { VideoAssetIdentifier, ColorRGBA } from '../../types/media';
+import type {
+  CaptionTextAlignment,
+  CaptionLineStyle,
+  CaptionWordStyle,
+  CaptionBackgroundStyle,
+} from '../../types/video';
 
 type Props = {
   style?: ?Style,
   isVisible: boolean,
   countryCode: ?string,
+  video: ?VideoAssetIdentifier,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
   onRequestSwitchCamera: () => void,
   onRequestOpenLocaleMenu: () => void,
-  video: ?VideoAssetIdentifier,
+  onRequestSetFontFamily: string => void,
+  onRequestSetBackgroundColor: ColorRGBA => void,
+  onRequestSetTextColor: ColorRGBA => void,
+  onRequestSetTextAlignment: CaptionTextAlignment => void,
+  onRequestSetLineStyle: CaptionLineStyle => void,
+  onRequestSetWordStyle: CaptionWordStyle => void,
+  onRequestSetBackgroundStyle: CaptionBackgroundStyle => void,
 };
 
 const styles = {
@@ -46,6 +59,13 @@ export default function HomeScreenCameraControls({
   onRequestOpenCameraRoll,
   onRequestSwitchCamera,
   onRequestOpenLocaleMenu,
+  onRequestSetFontFamily,
+  onRequestSetBackgroundColor,
+  onRequestSetTextColor,
+  onRequestSetTextAlignment,
+  onRequestSetLineStyle,
+  onRequestSetWordStyle,
+  onRequestSetBackgroundStyle,
 }: Props) {
   return (
     <View style={[styles.container, style]} pointerEvents="box-none">
@@ -57,11 +77,18 @@ export default function HomeScreenCameraControls({
       <HomeScreenBottomCameraControls
         style={styles.bottomControls}
         isVisible={isVisible}
+        video={video}
         onRequestBeginCapture={onRequestBeginCapture}
         onRequestEndCapture={onRequestEndCapture}
         onRequestOpenCameraRoll={onRequestOpenCameraRoll}
         onRequestSwitchCamera={onRequestSwitchCamera}
-        video={video}
+        onRequestSetFontFamily={onRequestSetFontFamily}
+        onRequestSetBackgroundColor={onRequestSetBackgroundColor}
+        onRequestSetTextColor={onRequestSetTextColor}
+        onRequestSetTextAlignment={onRequestSetTextAlignment}
+        onRequestSetLineStyle={onRequestSetLineStyle}
+        onRequestSetWordStyle={onRequestSetWordStyle}
+        onRequestSetBackgroundStyle={onRequestSetBackgroundStyle}
       />
     </View>
   );
