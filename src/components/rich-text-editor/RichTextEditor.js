@@ -225,11 +225,13 @@ export default class RichTextEditor extends Component<Props, State> {
           style={styles.transcription}
           orientation="up"
           duration={this.props.duration}
-          textColor={this.state.textColor}
-          backgroundColor={this.state.backgroundColor}
-          fontFamily={this.state.fontFamily}
-          fontSize={this.state.fontSize}
-          backgroundStyle={this.props.captionStyle.backgroundStyle}
+          captionStyle={{
+            ...this.props.captionStyle,
+            textColor: this.state.textColor,
+            backgroundColor: this.state.backgroundColor,
+            fontFamily: this.state.fontFamily,
+            fontSize: this.state.fontSize,
+          }}
           speechTranscription={this.props.speechTranscription}
         />
         <View style={styles.mainContents}>

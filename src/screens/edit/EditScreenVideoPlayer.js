@@ -14,12 +14,9 @@ import VideoPlayerView from '../../components/video-player-view/VideoPlayerView'
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
 import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
 
-import type { Orientation, VideoObject, ColorRGBA } from '../../types/media';
+import type { Orientation, VideoObject } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
-import type {
-  CaptionLineStyle,
-  CaptionBackgroundStyle,
-} from '../../types/video';
+import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {
   video: VideoObject,
@@ -30,14 +27,8 @@ type Props = {
   isSpeechTranscriptionFinal: boolean,
   isExportingVideo: boolean,
   duration: number,
-  duration: number,
-  fontFamily: string,
-  fontSize: number,
-  textColor: ColorRGBA,
-  backgroundColor: ColorRGBA,
-  backgroundStyle: CaptionBackgroundStyle,
+  captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
-  lineStyle: CaptionLineStyle,
   orientation: Orientation,
   onRequestChangeDuration: number => void,
   onRequestChangePlaybackTime: number => void,
@@ -338,11 +329,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                 }
                 orientation={this.props.orientation}
                 duration={this.props.duration}
-                textColor={this.props.textColor}
-                backgroundColor={this.props.backgroundColor}
-                fontFamily={this.props.fontFamily}
-                fontSize={this.props.fontSize}
-                backgroundStyle={this.props.backgroundStyle}
+                captionStyle={this.props.captionStyle}
                 speechTranscription={this.props.speechTranscription}
                 onPress={this.props.onRequestShowRichTextEditor}
               />

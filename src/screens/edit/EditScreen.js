@@ -362,12 +362,7 @@ export default class EditScreen extends Component<Props, State> {
           isSpeechTranscriptionFinal={this.props.isSpeechTranscriptionFinal}
           duration={this.state.duration}
           orientation={this.state.orientation || 'up'}
-          lineStyle={this.props.captionStyle.lineStyle}
-          backgroundStyle={this.props.captionStyle.backgroundStyle}
-          textColor={this.props.captionStyle.textColor}
-          backgroundColor={this.props.captionStyle.backgroundColor}
-          fontFamily={this.props.captionStyle.fontFamily}
-          fontSize={this.props.captionStyle.fontSize}
+          captionStyle={this.props.captionStyle}
           speechTranscription={this.props.speechTranscription}
           onRequestChangeDuration={duration => this.setState({ duration })}
           onRequestChangePlaybackTime={this.seekRichTextEditorCaptionsToTime}

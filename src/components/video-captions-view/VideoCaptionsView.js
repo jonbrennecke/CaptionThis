@@ -6,8 +6,8 @@ import CaptionView from '../caption-view/CaptionView';
 
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
-import type { ColorRGBA, Orientation } from '../../types/media';
-import type { CaptionBackgroundStyle } from '../../types/video';
+import type { Orientation } from '../../types/media';
+import type { CaptionStyleObject } from '../../types/video';
 
 type ReactNativeFiberHostComponent = any;
 
@@ -15,11 +15,7 @@ type Props = {
   style?: ?Style,
   duration: number,
   orientation: Orientation,
-  backgroundColor: ColorRGBA,
-  textColor: ColorRGBA,
-  fontFamily: string,
-  fontSize: number,
-  backgroundStyle: CaptionBackgroundStyle,
+  captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
   isReadyToPlay: boolean,
   onPress?: () => void,
@@ -86,16 +82,7 @@ export default class VideoCaptionsView extends Component<Props> {
           style={styles.flex}
           duration={this.props.duration}
           textSegments={textSegments}
-          captionStyle={{
-            textAlignment: 'left',
-            lineStyle: 'translateY',
-            wordStyle: 'animated',
-            backgroundStyle: this.props.backgroundStyle,
-            backgroundColor: this.props.backgroundColor,
-            fontSize: this.props.fontSize,
-            fontFamily: this.props.fontFamily,
-            textColor: this.props.textColor,
-          }}
+          captionStyle={this.props.captionStyle}
         />
       </TouchableOpacity>
     );
