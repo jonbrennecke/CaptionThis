@@ -826,7 +826,6 @@
 				FC7A0F8621D8AB5D00751DBE /* HueGradientViewManager */,
 				FC7A0F6121D89CCC00751DBE /* SaturationAndBrightnessGradientViewManager */,
 				FCD5F7A521D8110F001F2068 /* seekbar */,
-				FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */,
 				FC9374E621DEED6700FD2700 /* TranscriptViewManager */,
 				FC6EA421221230CA009F3D7D /* DeviceBridgeModule */,
 			);
@@ -1155,6 +1154,7 @@
 		FC6FCF6222249860004772B9 /* captions */ = {
 			isa = PBXGroup;
 			children = (
+				FCCD0444225BDA2400D35E46 /* export */,
 				FCE8391B223A11D6002C85CA /* views */,
 				FC1492F822331A4600A753DD /* CaptionSizingUtil.swift */,
 				FC388F532230EBF1001CE3A3 /* TextSegment.swift */,
@@ -1309,6 +1309,15 @@
 				FCA3971B21DC969D00347CAB /* VideoExportBridgeModule.h */,
 			);
 			name = VideoExportBridgeModule;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		FCCD0444225BDA2400D35E46 /* export */ = {
+			isa = PBXGroup;
+			children = (
+				FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */,
+			);
+			path = export;
 			sourceTree = "<group>";
 		};
 		FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */ = {

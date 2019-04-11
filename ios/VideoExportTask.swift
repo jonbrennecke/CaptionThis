@@ -90,13 +90,29 @@ class VideoExportTask {
     let orientation = OrientationUtil.orientation(forAsset: asset)
     let dimensions = VideoDimensions(size: size, orientation: orientation)
     let layout = VideoAnimationLayerLayout.layoutForExport(dimensions: dimensions, model: model)
-    let animationLayer = VideoAnimationLayer(layout: layout, model: model)
-    animationLayer.frame = frame(forComposition: composition, layout: layout)
-    animationLayer.update(model: model, layout: layout)
-    animationLayer.beginTime = AVCoreAnimationBeginTimeAtZero
-    animationLayer.timeOffset = 0
-    animationLayer.speed = 1
-    composition.add(effectLayer: animationLayer)
+//    let animationLayer = VideoAnimationLayer(layout: layout, model: model)
+//    animationLayer.frame = frame(forComposition: composition, layout: layout)
+//    animationLayer.update(model: model, layout: layout)
+//    animationLayer.beginTime = AVCoreAnimationBeginTimeAtZero
+//    animationLayer.timeOffset = 0
+//    animationLayer.speed = 1
+//    composition.add(effectLayer: animationLayer)
+
+    let captionStyle = CaptionStyle(
+      wordStyle: .animated,
+      lineStyle: .translateY,
+      textAlignment: .left,
+      backgroundStyle: .gradient,
+      backgroundColor: model.backgroundColor,
+      font: UIFont.systemFont(ofSize: CGFloat(model.fontSize)),
+      textColor: model.textColor)
+    let captionLayer = CaptionLayer(style: captionStyle, textSegments: model.textSegments, duration: CFTimeInterval(model.duration))
+    captionLayer.frame = frame(forComposition: composition, layout: layout)
+    captionLayer.beginTime = AVCoreAnimationBeginTimeAtZero
+    captionLayer.timeOffset = 0
+    captionLayer.speed = 1
+    composition.add(effectLayer: captionLayer)
+    
     let exportSession = CaptionAnimationExportSession(composition: composition)
     exportSession.delegate = self
     exportSession.export()
