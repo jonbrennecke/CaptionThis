@@ -1,4 +1,4 @@
-import Foundation
+import AVFoundation
 
 @objc
 enum CaptionPresetLineStyle: Int {
@@ -16,8 +16,6 @@ class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
 
   func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer _: CALayer, map: CaptionStringsMap, duration: CFTimeInterval) {
     layer.removeAllAnimations()
-    let group = CAAnimationGroup()
-    group.repeatCount = .greatestFiniteMagnitude
     let builder = CaptionAnimation.Builder()
     let lines = map.getValues(byKey: key)!
     for (index, _) in lines.enumerated() {
@@ -29,6 +27,8 @@ class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
         key: key
       )
     }
+    let group = CAAnimationGroup()
+    group.repeatCount = .greatestFiniteMagnitude
     group.animations = builder.build(withMap: map)
     group.duration = duration
     layer.add(group, forKey: "lineStyleAnimation")
@@ -39,9 +39,7 @@ class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
   public let lineStyle: CaptionPresetLineStyle = .translateY
 
   func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer: CALayer, map: CaptionStringsMap, duration: CFTimeInterval) {
-    layer.removeAllAnimations()
-    let group = CAAnimationGroup()
-    group.repeatCount = .greatestFiniteMagnitude
+    layer.removeAnimation(forKey: "lineStyleAnimation")
     let positions = CaptionPresetLinePositions(layer: layer, parentLayer: parentLayer)
     let builder = CaptionAnimation.Builder()
     let lines = map.getValues(byKey: key)!
@@ -66,8 +64,13 @@ class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
         key: key
       )
     }
+    let group = CAAnimationGroup()
+    group.repeatCount = .greatestFiniteMagnitude
     group.animations = builder.build(withMap: map)
     group.duration = duration
+    group.isRemovedOnCompletion = false
+    group.fillMode = .forwards
+    group.beginTime = AVCoreAnimationBeginTimeAtZero
     layer.add(group, forKey: "lineStyleAnimation")
     layer.opacity = 0
   }

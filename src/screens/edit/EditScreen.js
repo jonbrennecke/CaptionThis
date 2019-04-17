@@ -18,12 +18,13 @@ import SpeechManager from '../../utils/SpeechManager';
 import LocaleMenu from '../../components/localization/LocaleMenu';
 import Container from './Container';
 
-import type { ColorRGBA, Orientation } from '../../types/media';
+import type { Size, ColorRGBA, Orientation } from '../../types/media';
 import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 import type { EmitterSubscription, ReactAppStateEnum } from '../../types/react';
 import type { Props } from './Container';
 
 type State = {
+  videoViewSize: Size,
   duration: number,
   orientation: ?Orientation,
   exportProgress: number,
@@ -46,6 +47,7 @@ const styles = {
 export default class EditScreen extends Component<Props, State> {
   richTextOverlay: ?EditScreenRichTextOverlay;
   state: State = {
+    videoViewSize: { width: 0, height: 0 },
     duration: 0,
     exportProgress: 0,
     orientation: null,
@@ -215,17 +217,25 @@ export default class EditScreen extends Component<Props, State> {
   async exportVideo() {
     this.props.willExportVideo();
     this.addExportListeners();
-    await VideoExportManager.exportVideo({
-      video: this.props.video.id,
-      textSegments: this.textOverlayParams(),
-      textColor: this.props.captionStyle.textColor,
-      backgroundColor: this.props.captionStyle.backgroundColor,
-      fontFamily: this.props.captionStyle.fontFamily,
-      fontSize: this.props.captionStyle.fontSize,
-      lineStyle: this.props.captionStyle.lineStyle,
-      duration: this.state.duration,
-      orientation: this.state.orientation || 'up',
-    });
+    const textSegments = this.props.speechTranscription
+      ? this.props.speechTranscription.segments.map(segment => ({
+          duration: segment.duration,
+          timestamp: segment.timestamp,
+          text: segment.substring,
+        }))
+      : [];
+    try {
+      await VideoExportManager.exportVideo({
+        video: this.props.video.id,
+        viewSize: this.state.videoViewSize,
+        duration: this.state.duration,
+        orientation: this.state.orientation || 'up',
+        captionStyle: this.props.captionStyle,
+        textSegments,
+      });
+    } catch (error) {
+      Debug.logError(error);
+    }
   }
 
   onExportDidUpdateProgress(progress: number) {
@@ -382,6 +392,7 @@ export default class EditScreen extends Component<Props, State> {
           onDidRestartCaptions={this.restartRichTextEditorCaptions}
           onDidPauseCaptions={this.pauseRichTextEditorCaptions}
           onLocaleButtonPress={this.showLocaleMenu}
+          onVideoViewDidUpdateSize={videoViewSize => this.setState({ videoViewSize })}
         />
         <EditScreenRichTextOverlay
           ref={ref => {

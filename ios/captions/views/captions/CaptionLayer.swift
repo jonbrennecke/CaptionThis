@@ -2,9 +2,11 @@ import AVFoundation
 
 class CaptionLayer: CALayer {
   private let impl: CaptionStyleImpl
+  private let layout: CaptionLayerLayout
 
-  init(style: CaptionStyle, textSegments: [TextSegment], duration: CFTimeInterval) {
-    impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
+  init(style: CaptionStyle, layout: CaptionLayerLayout, textSegments: [CaptionTextSegment], duration: CFTimeInterval) {
+    self.impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
+    self.layout = layout
     super.init()
     contentsScale = UIScreen.main.scale
     masksToBounds = false
@@ -14,6 +16,7 @@ class CaptionLayer: CALayer {
   override init(layer: Any) {
     let layer = layer as! CaptionLayer
     impl = layer.impl
+    layout = layer.layout
     super.init(layer: layer)
     contentsScale = UIScreen.main.scale
     masksToBounds = false
@@ -33,7 +36,7 @@ class CaptionLayer: CALayer {
     impl.setup(inParentLayer: self)
   }
 
-  private func resizeSublayers() {
-    impl.resize(inParentLayer: self)
+  public func resizeSublayers() {
+    impl.resize(inParentLayer: self, layout: layout)
   }
 }

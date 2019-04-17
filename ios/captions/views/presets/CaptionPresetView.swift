@@ -170,7 +170,7 @@ class CaptionPresetView: UIView {
   }
 
   @objc
-  public var textSegments = [TextSegment]() {
+  public var textSegments = [CaptionTextSegment]() {
     didSet {
       updatePresetLayer()
     }

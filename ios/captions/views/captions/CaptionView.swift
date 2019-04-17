@@ -170,14 +170,16 @@ class CaptionView: UIView {
   }
 
   @objc
-  public var textSegments = [TextSegment]() {
+  public var textSegments = [CaptionTextSegment]() {
     didSet {
       updateCaptionLayer()
     }
   }
 
   private func updateCaptionLayer() {
-    captionLayer = CaptionLayer(style: style, textSegments: textSegments, duration: duration)
+    // FIXME: cleanup or remove layout
+    let layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
+    captionLayer = CaptionLayer(style: style, layout: layout, textSegments: textSegments, duration: duration)
     guard let captionLayer = captionLayer else {
       return
     }
@@ -190,7 +192,9 @@ class CaptionView: UIView {
 
   init() {
     super.init(frame: .zero)
-    captionLayer = CaptionLayer(style: style, textSegments: textSegments, duration: duration)
+    // FIXME: cleanup or remove layout
+    let layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
+    captionLayer = CaptionLayer(style: style, layout: layout, textSegments: textSegments, duration: duration)
     captionLayer!.frame = bounds
     layer.addSublayer(captionLayer!)
   }

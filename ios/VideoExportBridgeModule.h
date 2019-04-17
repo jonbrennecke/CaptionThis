@@ -7,11 +7,6 @@
 @interface VideoExportBridgeModule : RCTEventEmitter <RCTBridgeModule>
 @end
 
-@interface VideoExportBridgeModule (Private)
-- (NSArray<VideoAnimationBridgeTextSegmentParams *> *)convertTextSegments:
-    (id)json;
-@end
-
 @interface VideoExportBridgeModule (
     VideoExportManagerDelegate) <VideoExportManagerDelegate>
 - (void)videoExportManagerDidFinishWithObjectPlaceholder:

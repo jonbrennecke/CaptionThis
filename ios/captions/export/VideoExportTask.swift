@@ -33,14 +33,18 @@ class VideoExportTask {
   }
 
   private var state: State = .unstarted
-  private let model: VideoAnimationLayerModel
+  private let style: CaptionExportStyle
+  private let textSegments: [CaptionTextSegment]
+  private let duration: CFTimeInterval
   private let localIdentifier: String
   private var requestID: PHImageRequestID?
   public var delegate: VideoExportTaskDelegate?
 
-  public init(localIdentifier: String, model: VideoAnimationLayerModel) {
+  public init(localIdentifier: String, style: CaptionExportStyle, textSegments: [CaptionTextSegment], duration: CFTimeInterval) {
     self.localIdentifier = localIdentifier
-    self.model = model
+    self.textSegments = textSegments
+    self.style = style
+    self.duration = duration
   }
 
   deinit {
@@ -89,30 +93,27 @@ class VideoExportTask {
     let size = CGSize(width: abs(rotatedSize.width), height: abs(rotatedSize.height))
     let orientation = OrientationUtil.orientation(forAsset: asset)
     let dimensions = VideoDimensions(size: size, orientation: orientation)
-    let layout = VideoAnimationLayerLayout.layoutForExport(dimensions: dimensions, model: model)
-//    let animationLayer = VideoAnimationLayer(layout: layout, model: model)
-//    animationLayer.frame = frame(forComposition: composition, layout: layout)
-//    animationLayer.update(model: model, layout: layout)
-//    animationLayer.beginTime = AVCoreAnimationBeginTimeAtZero
-//    animationLayer.timeOffset = 0
-//    animationLayer.speed = 1
-//    composition.add(effectLayer: animationLayer)
 
-    let captionStyle = CaptionStyle(
-      wordStyle: .animated,
-      lineStyle: .translateY,
-      textAlignment: .left,
-      backgroundStyle: .gradient,
-      backgroundColor: model.backgroundColor,
-      font: UIFont.systemFont(ofSize: CGFloat(model.fontSize)),
-      textColor: model.textColor)
-    let captionLayer = CaptionLayer(style: captionStyle, textSegments: model.textSegments, duration: CFTimeInterval(model.duration))
+    // TODO: cleanup
+    let layout = VideoAnimationLayerLayout.layoutForExport(dimensions: dimensions, style: style)
+    let exportStyle = CaptionExportStyle(
+      wordStyle: style.wordStyle,
+      lineStyle: style.lineStyle,
+      textAlignment: style.textAlignment,
+      backgroundStyle: style.backgroundStyle,
+      backgroundColor: style.backgroundColor,
+      font: style.font.withSize(CGFloat(layout.fontSize)),
+      textColor: style.textColor,
+      viewSize: style.viewSize)
+    
+    let captionLayer = CaptionLayer(style: exportStyle, layout: layout, textSegments: textSegments, duration: duration)
     captionLayer.frame = frame(forComposition: composition, layout: layout)
-    captionLayer.beginTime = AVCoreAnimationBeginTimeAtZero
+    captionLayer.resizeSublayers()
     captionLayer.timeOffset = 0
     captionLayer.speed = 1
+    captionLayer.beginTime = AVCoreAnimationBeginTimeAtZero
+    captionLayer.duration = duration
     composition.add(effectLayer: captionLayer)
-    
     let exportSession = CaptionAnimationExportSession(composition: composition)
     exportSession.delegate = self
     exportSession.export()
@@ -128,9 +129,9 @@ class VideoExportTask {
     default:
       break
     }
-    let height = layout.frameHeight
+    let height = CGFloat(layout.frameHeight)
     let width = composition.videoSize.width
-    return CGRect(x: 0, y: offsetFromBottom, width: width, height: CGFloat(height))
+    return CGRect(x: 0, y: composition.videoSize.height - offsetFromBottom - height, width: width, height: height)
   }
 
   private func createVideoAsset(forURL url: URL) {

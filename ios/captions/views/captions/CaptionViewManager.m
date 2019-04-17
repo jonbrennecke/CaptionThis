@@ -4,7 +4,7 @@
 #import "RCTConvert+CaptionPresetLineStyle.h"
 #import "RCTConvert+CaptionPresetTextAlignment.h"
 #import "RCTConvert+CaptionPresetWordStyle.h"
-#import "RCTConvert+TextSegment.h"
+#import "RCTConvert+CaptionTextSegment.h"
 #import <UIKit/UIKit.h>
 
 @implementation CaptionViewManager
@@ -90,9 +90,9 @@ RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionView) {
     return;
   }
   NSArray *jsonArray = [RCTConvert NSArray:json];
-  NSMutableArray<TextSegment*> *textSegments = [[NSMutableArray alloc] initWithCapacity:jsonArray.count];
+  NSMutableArray<CaptionTextSegment*> *textSegments = [[NSMutableArray alloc] initWithCapacity:jsonArray.count];
   for (id jsonTextSegment in jsonArray) {
-    TextSegment *textSegment = [RCTConvert TextSegment:jsonTextSegment];
+    CaptionTextSegment *textSegment = [RCTConvert CaptionTextSegment:jsonTextSegment];
     if (!textSegment) {
       // TODO: log error
       continue;

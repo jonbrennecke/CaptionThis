@@ -1,7 +1,7 @@
 import Foundation
 
 @objc
-class TextSegment: NSObject {
+class CaptionTextSegment: NSObject {
   // TODO: duration and timestamp should be CFTimeInterval
   let duration: Float
   let timestamp: Float

@@ -27,8 +27,8 @@ class VideoExportManager: NSObject {
   public static let shared = VideoExportManager()
 
   @objc
-  public func exportVideo(withLocalIdentifier localIdentifier: String, params: VideoAnimationBridgeParams) {
-    let task = VideoExportTask(localIdentifier: localIdentifier, model: params.model())
+  public func exportVideo(withLocalIdentifier localIdentifier: String, style: CaptionExportStyle, textSegments: [CaptionTextSegment], duration: CFTimeInterval) {
+    let task = VideoExportTask(localIdentifier: localIdentifier, style: style, textSegments: textSegments, duration: duration)
     task.delegate = self
     task.startTask()
     state = .pending(task)

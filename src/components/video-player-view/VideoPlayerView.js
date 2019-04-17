@@ -1,10 +1,11 @@
 // @flow
 import React, { Component } from 'react';
 import Bluebird from 'bluebird';
+import { autobind } from 'core-decorators';
 import { View, requireNativeComponent, NativeModules } from 'react-native';
 
 import type { Style } from '../../types/react';
-import type { VideoAssetIdentifier, Orientation } from '../../types/media';
+import type { Size, VideoAssetIdentifier, Orientation } from '../../types/media';
 
 const NativeVideoPlayerView = requireNativeComponent('VideoPlayerView');
 const { VideoPlayerViewManager: _VideoPlayerViewManager } = NativeModules;
@@ -26,6 +27,7 @@ type Props = {
     duration: number
   ) => void,
   onVideoDidRestart: () => void,
+  onViewDidResize: Size => void,
 };
 
 const styles = {
@@ -37,6 +39,8 @@ const styles = {
   },
 };
 
+// $FlowFixMe
+@autobind
 export default class VideoPlayerView extends Component<Props> {
   nativeComponentRef: ?ReactNativeFiberHostComponent;
 
@@ -71,9 +75,17 @@ export default class VideoPlayerView extends Component<Props> {
     VideoPlayerViewManager.play(this.nativeComponentRef._nativeTag);
   }
 
+  viewDidLayout({ nativeEvent: { layout } }: any) {
+    const viewSize = {
+      width: layout.width,
+      height: layout.height,
+    };
+    this.props.onViewDidResize(viewSize);
+  }
+
   render() {
     return (
-      <View style={[styles.container, this.props.style]}>
+      <View style={[styles.container, this.props.style]} onLayout={this.viewDidLayout}>
         <NativeVideoPlayerView
           ref={ref => {
             this.nativeComponentRef = ref;

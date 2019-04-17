@@ -2,6 +2,7 @@ import AVFoundation
 
 // NOTE: animations in Core Animation cannot be shorter than 0.25
 fileprivate let MINIMUM_ANIMATION_DURATION = CFTimeInterval(0.25)
+fileprivate let DEFAULT_ANIMATION_DURATION = CFTimeInterval(0.25)
 
 class AnimationUtil {
   public static func animatePosition(

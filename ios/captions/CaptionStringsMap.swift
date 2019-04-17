@@ -42,7 +42,7 @@ class CaptionStringsMap {
   }
 
   public static func byFitting(
-    textSegments: [TextSegment],
+    textSegments: [CaptionTextSegment],
     toLayersOfSize layerSizes: [Key: CGSize],
     style: CaptionPresetStyle,
     layout: VideoAnimationLayerLayout
@@ -82,14 +82,14 @@ class CaptionStringsMap {
   }
 
   // TODO: replace with `TextSegment.arrayByInterpolatingWords(segments: [TextSegments])`
-  private static func interpolate(segments: [TextSegment]) -> [TextSegment] {
-    var outputSegments = [TextSegment]()
+  private static func interpolate(segments: [CaptionTextSegment]) -> [CaptionTextSegment] {
+    var outputSegments = [CaptionTextSegment]()
     for segment in segments {
       let words = segment.text.components(separatedBy: .whitespacesAndNewlines).filter { !$0.isEmpty }
       let durationPerWord = segment.duration / Float(words.count)
       for (index, word) in words.enumerated() {
         let timestamp = segment.timestamp + Float(index) * durationPerWord
-        let outputSegment = TextSegment(text: word, duration: durationPerWord, timestamp: timestamp)
+        let outputSegment = CaptionTextSegment(text: word, duration: durationPerWord, timestamp: timestamp)
         outputSegments.append(outputSegment)
       }
     }
@@ -97,11 +97,11 @@ class CaptionStringsMap {
   }
 
   private static func fitNextLine(
-    textSegments: [TextSegment],
+    textSegments: [CaptionTextSegment],
     width: CGFloat,
     style: CaptionPresetStyle,
     layout: VideoAnimationLayerLayout
-  ) -> (line: TaggedLine?, remainingSegments: [TextSegment]) {
+  ) -> (line: TaggedLine?, remainingSegments: [CaptionTextSegment]) {
     let interpolatedSegments = interpolate(segments: textSegments)
     var textSegmentsMutableCopy = interpolatedSegments
     let attributes = getStringAttributes(style: style, layout: layout)

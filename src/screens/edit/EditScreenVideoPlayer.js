@@ -14,7 +14,7 @@ import VideoPlayerView from '../../components/video-player-view/VideoPlayerView'
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
 import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
 
-import type { Orientation, VideoObject } from '../../types/media';
+import type { Size, Orientation, VideoObject } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 import type { CaptionStyleObject } from '../../types/video';
 
@@ -40,6 +40,7 @@ type Props = {
   onDidPauseCaptions: () => void,
   onDidRestartCaptions: () => void,
   onLocaleButtonPress: () => void,
+  onVideoViewDidUpdateSize: Size => void,
 };
 
 type State = {
@@ -312,6 +313,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                 this.videoPlayerDidUpdatePlaybackTimeThrottled
               }
               onVideoDidRestart={this.videoPlayerDidRestart}
+              onViewDidResize={this.props.onVideoViewDidUpdateSize}
             />
             <ScreenGradients />
             <VideoCaptionsContainer

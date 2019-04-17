@@ -4,9 +4,11 @@ class CaptionPresetLayer: CALayer {
   public typealias Impl = CaptionStyleImpl
 
   private let impl: Impl
+  private let layout: CaptionLayerLayout
 
-  init(style: CaptionPresetStyle, textSegments: [TextSegment], duration: CFTimeInterval) {
-    impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
+  init(style: CaptionPresetStyle, textSegments: [CaptionTextSegment], duration: CFTimeInterval) {
+    self.impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
+    self.layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
     super.init()
     contentsScale = UIScreen.main.scale
     masksToBounds = true
@@ -16,6 +18,7 @@ class CaptionPresetLayer: CALayer {
   override init(layer: Any) {
     let layer = layer as! CaptionPresetLayer
     impl = layer.impl
+    layout = layer.layout
     super.init(layer: layer)
     contentsScale = UIScreen.main.scale
     masksToBounds = true
@@ -36,6 +39,6 @@ class CaptionPresetLayer: CALayer {
   }
 
   private func resizeSublayers() {
-    impl.resize(inParentLayer: self)
+    impl.resize(inParentLayer: self, layout: layout)
   }
 }

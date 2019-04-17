@@ -1,7 +1,7 @@
-#import "RCTConvert+TextSegment.h"
+#import "RCTConvert+CaptionTextSegment.h"
 
-@implementation RCTConvert (TextSegment)
-  + (TextSegment*)TextSegment:(id)json {
+@implementation RCTConvert (CaptionTextSegment)
+  + (CaptionTextSegment*)CaptionTextSegment:(id)json {
     NSDictionary *dict = [RCTConvert NSDictionary:json];
     if (!dict) {
       return nil;
@@ -12,6 +12,6 @@
     if (!text || !duration || !timestamp) {
       return nil;
     }
-    return [[TextSegment alloc] initWithText:text duration:[duration floatValue] timestamp:[timestamp floatValue]];
+    return [[CaptionTextSegment alloc] initWithText:text duration:[duration floatValue] timestamp:[timestamp floatValue]];
   }
 @end
