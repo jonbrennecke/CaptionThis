@@ -107,5 +107,4 @@ RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionView) {
   return (UIView *)view;
 }
 
-
 @end

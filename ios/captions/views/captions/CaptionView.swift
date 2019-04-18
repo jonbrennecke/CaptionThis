@@ -2,7 +2,7 @@ import UIKit
 
 @objc(CaptionView)
 class CaptionView: UIView {
-  private var captionLayer: CaptionLayer?
+  private var captionLayer: CaptionLayer
 
   private var style = CaptionStyle(
     wordStyle: .none,
@@ -180,9 +180,6 @@ class CaptionView: UIView {
     // FIXME: cleanup or remove layout
     let layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
     captionLayer = CaptionLayer(style: style, layout: layout, textSegments: textSegments, duration: duration)
-    guard let captionLayer = captionLayer else {
-      return
-    }
     captionLayer.frame = bounds
     layer.sublayers = nil
     layer.addSublayer(captionLayer)
@@ -191,12 +188,13 @@ class CaptionView: UIView {
   // MARK: UIView method implementations
 
   init() {
-    super.init(frame: .zero)
-    // FIXME: cleanup or remove layout
+    // TODO: fix orientation
     let layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
     captionLayer = CaptionLayer(style: style, layout: layout, textSegments: textSegments, duration: duration)
-    captionLayer!.frame = bounds
-    layer.addSublayer(captionLayer!)
+    super.init(frame: .zero)
+    // FIXME: cleanup or remove layout
+    captionLayer.frame = bounds
+    layer.addSublayer(captionLayer)
   }
 
   required init?(coder _: NSCoder) {
@@ -209,6 +207,14 @@ class CaptionView: UIView {
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    captionLayer?.frame = bounds
+    captionLayer.frame = bounds
+  }
+}
+
+extension CaptionView: PlaybackControls {
+  var playbackLayer: PlaybackControlLayer & CALayer {
+    get {
+      return captionLayer
+    }
   }
 }
