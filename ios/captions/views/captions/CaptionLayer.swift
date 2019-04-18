@@ -1,8 +1,9 @@
 import AVFoundation
 
-class CaptionLayer: CALayer {
+class CaptionLayer: CALayer, PlaybackControlLayer {
   private let impl: CaptionStyleImpl
   private let layout: CaptionLayerLayout
+  internal var state: PlaybackControlLayerState = .paused
 
   init(style: CaptionStyle, layout: CaptionLayerLayout, textSegments: [CaptionTextSegment], duration: CFTimeInterval) {
     self.impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
@@ -10,7 +11,7 @@ class CaptionLayer: CALayer {
     super.init()
     contentsScale = UIScreen.main.scale
     masksToBounds = false
-    initAnimation()
+    resetAnimation()
   }
 
   override init(layer: Any) {
@@ -20,7 +21,7 @@ class CaptionLayer: CALayer {
     super.init(layer: layer)
     contentsScale = UIScreen.main.scale
     masksToBounds = false
-    initAnimation()
+    resetAnimation()
   }
 
   required init?(coder _: NSCoder) {
@@ -32,11 +33,13 @@ class CaptionLayer: CALayer {
     resizeSublayers()
   }
 
-  private func initAnimation() {
-    impl.setup(inParentLayer: self)
-  }
-
   public func resizeSublayers() {
     impl.resize(inParentLayer: self, layout: layout)
+  }
+  
+  internal func resetAnimation() {
+    sublayers = nil
+    pause()
+    impl.layers.each { addSublayer($1) }
   }
 }

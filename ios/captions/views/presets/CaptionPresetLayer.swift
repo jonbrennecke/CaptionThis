@@ -35,7 +35,7 @@ class CaptionPresetLayer: CALayer {
   }
 
   private func initAnimation() {
-    impl.setup(inParentLayer: self)
+    impl.layers.each { addSublayer($1) }
   }
 
   private func resizeSublayers() {

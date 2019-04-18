@@ -31,10 +31,17 @@ class CaptionStyleImpl {
     }
   }
 
-  private struct Layers {
-    let a = CALayer()
-    let b = CALayer()
-    let c = CALayer()
+  public struct Layers {
+    let a = createLayer()
+    let b = createLayer()
+    let c = createLayer()
+    
+    private static func createLayer() -> CALayer {
+      let layer = CALayer()
+      layer.opacity = 0
+      layer.contentsScale = UIScreen.main.scale
+      return layer
+    }
 
     public func get(byKey key: LayerKey) -> CALayer {
       switch key {
@@ -46,9 +53,17 @@ class CaptionStyleImpl {
         return c
       }
     }
+    
+    public func each(_ callback: (_ key: LayerKey, _ layer: CALayer) -> Void) {
+      [LayerKey.a, LayerKey.b, LayerKey.c].forEach { key in
+        let layer = get(byKey: key)
+        callback(key, layer)
+      }
+    }
   }
 
-  private let layers = Layers()
+  public let layers = Layers()
+  
   private let wordStyleImpl: CaptionPresetWordStyleImpl
   private let lineStyleImpl: CaptionPresetLineStyleImpl
   private let textAlignmentImpl: CaptionPresetTextAlignmentImpl
@@ -73,18 +88,6 @@ class CaptionStyleImpl {
     self.textSegments = textSegments
     self.style = style
     self.duration = duration
-  }
-
-  func setup(inParentLayer parentLayer: CALayer) {
-    layers.a.opacity = 0
-    layers.a.contentsScale = UIScreen.main.scale
-    parentLayer.addSublayer(layers.a)
-    layers.b.opacity = 0
-    layers.b.contents = UIScreen.main.scale
-    parentLayer.addSublayer(layers.b)
-    layers.c.opacity = 0
-    layers.c.contents = UIScreen.main.scale
-    parentLayer.addSublayer(layers.c)
   }
 
   func resize(inParentLayer parentLayer: CALayer, layout: VideoAnimationLayerLayout) {

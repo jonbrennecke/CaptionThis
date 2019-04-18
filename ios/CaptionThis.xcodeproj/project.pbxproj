@@ -112,6 +112,7 @@
 		FCB8AF24222F1773002F30D8 /* CaptionAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB8AF23222F1773002F30D8 /* CaptionAnimation.swift */; };
 		FCBB1936221524F00014D41C /* CaptionAnimationExportSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */; };
 		FCBB1A16221E66820014D41C /* FlagKit.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCBB1A15221E66820014D41C /* FlagKit.xcassets */; };
+		FCC486602269048200719F69 /* PlaybackControlLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC4865F2269048200719F69 /* PlaybackControlLayer.swift */; };
 		FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */; };
 		FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */; };
 		FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */; };
@@ -639,6 +640,7 @@
 		FCB8AF23222F1773002F30D8 /* CaptionAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionAnimation.swift; sourceTree = "<group>"; };
 		FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionAnimationExportSession.swift; sourceTree = "<group>"; };
 		FCBB1A15221E66820014D41C /* FlagKit.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FlagKit.xcassets; sourceTree = "<group>"; };
+		FCC4865F2269048200719F69 /* PlaybackControlLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControlLayer.swift; sourceTree = "<group>"; };
 		FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewManager.m; sourceTree = "<group>"; };
 		FCD5F74C21D6BA25001F2068 /* VideoPlayerViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewManager.h; sourceTree = "<group>"; };
 		FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
@@ -1352,6 +1354,7 @@
 			children = (
 				FC691AF82251249B00A30AA6 /* captions */,
 				FC388F562230F063001CE3A3 /* presets */,
+				FCC4865F2269048200719F69 /* PlaybackControlLayer.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -2032,6 +2035,7 @@
 				FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */,
 				FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */,
 				FCA3971821DC93AF00347CAB /* constants.swift in Sources */,
+				FCC486602269048200719F69 /* PlaybackControlLayer.swift in Sources */,
 				FCB392F2220CCD0900403154 /* Result.swift in Sources */,
 				FCB393A72210E2C000403154 /* SpeechTranscriptionRequest.swift in Sources */,
 				FC19138C2262908D008C8BA0 /* VideoAnimationLayerLayout.swift in Sources */,
