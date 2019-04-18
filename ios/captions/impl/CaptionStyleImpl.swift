@@ -76,20 +76,15 @@ class CaptionStyleImpl {
   }
 
   func setup(inParentLayer parentLayer: CALayer) {
-//    layers.a.opacity = 0
+    layers.a.opacity = 0
     layers.a.contentsScale = UIScreen.main.scale
     parentLayer.addSublayer(layers.a)
-//    layers.b.opacity = 0
+    layers.b.opacity = 0
     layers.b.contents = UIScreen.main.scale
     parentLayer.addSublayer(layers.b)
-//    layers.c.opacity = 0
+    layers.c.opacity = 0
     layers.c.contents = UIScreen.main.scale
     parentLayer.addSublayer(layers.c)
-    
-    // TODO
-    layers.a.backgroundColor = UIColor.red.cgColor
-    layers.b.backgroundColor = UIColor.blue.cgColor
-    layers.c.backgroundColor = UIColor.green.cgColor
   }
 
   func resize(inParentLayer parentLayer: CALayer, layout: VideoAnimationLayerLayout) {
@@ -125,7 +120,7 @@ class CaptionStyleImpl {
   private func applyStyles(key: LayerKey, parentLayer: CALayer, map: CaptionStringsMap, layout: VideoAnimationLayerLayout) {
     let layer = layers.get(byKey: key)
     lineStyleImpl.applyLineStyle(key: key, layer: layer, parentLayer: parentLayer, map: map, duration: duration)
-//    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, map: map, layout: layout, duration: duration)
+    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, map: map, layout: layout, duration: duration)
   }
 
   private func layerOrigin(forKey key: LayerKey, parentLayer: CALayer) -> CGPoint {

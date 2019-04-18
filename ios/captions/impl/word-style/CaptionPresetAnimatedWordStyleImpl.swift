@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 fileprivate let ANIM_FADE_IN_OUT_DURATION = CFTimeInterval(0.25)
 
@@ -64,6 +65,8 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
       textLayer.shadowOffset = CGSize(width: 0.0, height: CGFloat(layout.shadowOffsetHeight))
       textLayer.string = substring.attributedString
       textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
+      textLayer.displayIfNeeded()
+      textLayer.layoutIfNeeded()
       parentLayer.addSublayer(textLayer)
       textLayer.opacity = 0
       let wordAnimations = createWordAnimations(key: key, index: index, timestamp: substring.timestamp, duration: duration)
@@ -71,6 +74,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     }
     parentLayer.opacity = 0
     let textAnimation = createTextAnimations(map: map, key: key, index: index, duration: duration)
+    parentLayer.removeAnimation(forKey: "textLayerLineAnimation")
     parentLayer.add(textAnimation, forKey: "textLayerLineAnimation")
     return parentLayer
   }
@@ -97,8 +101,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   }
 
   private static func createTextAnimations(map: CaptionStringsMap, key: CaptionStyleImpl.LayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
-    let group = CAAnimationGroup()
-    group.repeatCount = .greatestFiniteMagnitude
+    
     let builder = CaptionAnimation.Builder()
     builder.insert(
       in: [FadeInAnimationStep()],
@@ -107,8 +110,13 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
       index: index,
       key: key
     )
+    let group = CAAnimationGroup()
+    group.repeatCount = .greatestFiniteMagnitude
     group.animations = builder.build(withMap: map)
     group.duration = duration
+    group.isRemovedOnCompletion = false
+    group.fillMode = .forwards
+    group.beginTime = AVCoreAnimationBeginTimeAtZero
     return group
   }
 
@@ -120,6 +128,9 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     group.animations = [
       AnimationUtil.fadeIn(at: beginTime, duration: ANIM_FADE_IN_OUT_DURATION),
     ]
+    group.isRemovedOnCompletion = false
+    group.fillMode = .forwards
+    group.beginTime = AVCoreAnimationBeginTimeAtZero
     return group
   }
 }

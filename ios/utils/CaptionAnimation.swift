@@ -142,6 +142,7 @@ class PositionAnimationStep: AnimationBuilderStep {
   }
 
   func animate(at beginTime: CFTimeInterval, duration: CFTimeInterval) -> CAAnimation {
-    return AnimationUtil.animatePosition(from: fromPosition, to: toPosition, at: beginTime, duration: duration)
+    let begin = clamp(beginTime - duration, from: 0, to: beginTime)
+    return AnimationUtil.animatePosition(from: fromPosition, to: toPosition, at: begin, duration: duration)
   }
 }

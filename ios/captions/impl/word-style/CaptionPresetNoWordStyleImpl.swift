@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .none
@@ -22,6 +23,8 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
         textAlignment: textAlignment,
         duration: duration
       )
+      textLayer.displayIfNeeded()
+      textLayer.layoutIfNeeded()
       sublayer.addSublayer(textLayer)
     }
     layer.addSublayer(sublayer)
@@ -83,6 +86,9 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     )
     group.animations = builder.build(withMap: map)
     group.duration = duration
+    group.isRemovedOnCompletion = false
+    group.fillMode = .forwards
+    group.beginTime = AVCoreAnimationBeginTimeAtZero
     return group
   }
 }
