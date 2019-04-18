@@ -15,7 +15,6 @@ class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
   public let lineStyle: CaptionPresetLineStyle = .fadeInOut
 
   func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer _: CALayer, map: CaptionStringsMap, duration: CFTimeInterval) {
-    layer.removeAllAnimations()
     let builder = CaptionAnimation.Builder()
     let lines = map.getValues(byKey: key)!
     for (index, _) in lines.enumerated() {
@@ -31,6 +30,10 @@ class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
     group.repeatCount = .greatestFiniteMagnitude
     group.animations = builder.build(withMap: map)
     group.duration = duration
+    group.isRemovedOnCompletion = false
+    group.fillMode = .forwards
+    group.beginTime = AVCoreAnimationBeginTimeAtZero
+    layer.removeAnimation(forKey: "lineStyleAnimation")
     layer.add(group, forKey: "lineStyleAnimation")
   }
 }
