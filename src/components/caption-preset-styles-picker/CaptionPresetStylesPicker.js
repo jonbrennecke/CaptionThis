@@ -37,7 +37,7 @@ const RIGHT_PADDING = (SCREEN_WIDTH - PRESET_WIDTH) / 2;
 
 const PRESET_TEXT_SEGMENTS = 'The quick brown fox jumped over the lazy dog'
   .split(' ')
-  .map((text, i) => ({ text, duration: 0.5, timestamp: 0.5 * i }));
+  .map((text, i) => ({ text, duration: 0.75, timestamp: 0.75 * i }));
 
 const LAST_PRESET_TEXT_SEGMENTS =
   PRESET_TEXT_SEGMENTS[PRESET_TEXT_SEGMENTS.length - 1];
