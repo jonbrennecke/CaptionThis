@@ -104,8 +104,9 @@ class VideoExportTask {
       backgroundColor: style.backgroundColor,
       font: style.font.withSize(CGFloat(layout.fontSize)),
       textColor: style.textColor,
-      viewSize: style.viewSize)
-    
+      viewSize: style.viewSize
+    )
+
     let captionLayer = CaptionLayer(style: exportStyle, layout: layout, textSegments: textSegments, duration: duration)
     captionLayer.frame = frame(forComposition: composition, layout: layout)
     captionLayer.resizeSublayers()

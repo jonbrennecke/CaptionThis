@@ -1,5 +1,5 @@
-import UIKit
 import AVFoundation
+import UIKit
 
 fileprivate let ANIM_FADE_IN_OUT_DURATION = CFTimeInterval(0.25)
 
@@ -101,7 +101,6 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   }
 
   private static func createTextAnimations(map: CaptionStringsMap, key: CaptionStyleImpl.LayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
-    
     let builder = CaptionAnimation.Builder()
     builder.insert(
       in: [FadeInAnimationStep()],
@@ -121,10 +120,10 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   }
 
   private static func createWordAnimations(key _: CaptionStyleImpl.LayerKey, index _: Int, timestamp: CFTimeInterval, duration: CFTimeInterval) -> CAAnimationGroup {
+    let beginTime = clamp(timestamp - ANIM_FADE_IN_OUT_DURATION, from: 0, to: timestamp)
     let group = CAAnimationGroup()
     group.repeatCount = .greatestFiniteMagnitude
     group.duration = duration
-    let beginTime = clamp(timestamp - ANIM_FADE_IN_OUT_DURATION, from: 0, to: timestamp)
     group.animations = [
       AnimationUtil.fadeIn(at: beginTime, duration: ANIM_FADE_IN_OUT_DURATION),
     ]

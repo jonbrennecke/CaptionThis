@@ -5,7 +5,11 @@ import { autobind } from 'core-decorators';
 import { View, requireNativeComponent, NativeModules } from 'react-native';
 
 import type { Style } from '../../types/react';
-import type { Size, VideoAssetIdentifier, Orientation } from '../../types/media';
+import type {
+  Size,
+  VideoAssetIdentifier,
+  Orientation,
+} from '../../types/media';
 
 const NativeVideoPlayerView = requireNativeComponent('VideoPlayerView');
 const { VideoPlayerViewManager: _VideoPlayerViewManager } = NativeModules;
@@ -85,7 +89,10 @@ export default class VideoPlayerView extends Component<Props> {
 
   render() {
     return (
-      <View style={[styles.container, this.props.style]} onLayout={this.viewDidLayout}>
+      <View
+        style={[styles.container, this.props.style]}
+        onLayout={this.viewDidLayout}
+      >
         <NativeVideoPlayerView
           ref={ref => {
             this.nativeComponentRef = ref;

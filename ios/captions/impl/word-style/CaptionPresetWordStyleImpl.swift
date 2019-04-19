@@ -8,5 +8,6 @@ protocol CaptionPresetWordStyleImpl {
     textAlignment: CaptionPresetTextAlignment,
     map: CaptionStringsMap,
     layout: VideoAnimationLayerLayout,
-    duration: CFTimeInterval)
+    duration: CFTimeInterval
+  )
 }

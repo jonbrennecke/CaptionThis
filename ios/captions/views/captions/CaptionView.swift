@@ -188,11 +188,10 @@ class CaptionView: UIView {
   // MARK: UIView method implementations
 
   init() {
-    // TODO: fix orientation
+    // TODO: fix orientation + cleanup or remove need for layout object
     let layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
     captionLayer = CaptionLayer(style: style, layout: layout, textSegments: textSegments, duration: duration)
     super.init(frame: .zero)
-    // FIXME: cleanup or remove layout
     captionLayer.frame = bounds
     layer.addSublayer(captionLayer)
   }
@@ -213,8 +212,26 @@ class CaptionView: UIView {
 
 extension CaptionView: PlaybackControls {
   var playbackLayer: PlaybackControlLayer & CALayer {
-    get {
-      return captionLayer
-    }
+    return captionLayer
+  }
+
+  @objc
+  func resume() {
+    playbackLayer.resume()
+  }
+
+  @objc
+  func pause() {
+    playbackLayer.pause()
+  }
+
+  @objc
+  func restart() {
+    playbackLayer.restart()
+  }
+
+  @objc
+  func seekTo(time: CFTimeInterval) {
+    playbackLayer.seekTo(time: time)
   }
 }

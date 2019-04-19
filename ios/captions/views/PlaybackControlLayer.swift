@@ -1,18 +1,20 @@
 import UIKit
 
-enum PlaybackControlLayerState {
+@objc
+enum PlaybackControlLayerState: Int {
   case playing
   case paused
-  
+
   public var isPaused: Bool {
     return self == .paused
   }
-  
+
   public var isPlaying: Bool {
     return self == .playing
   }
 }
 
+@objc
 protocol PlaybackControlLayer: AnyObject {
   var state: PlaybackControlLayerState { get set }
   func resetAnimation()
@@ -40,7 +42,7 @@ extension PlaybackControlLayer where Self: CALayer {
     }
     seekTo(time: .leastNonzeroMagnitude)
   }
-  
+
   internal func seekTo(time: CFTimeInterval) {
     let stateBeforeReset = state
     Debug.log(format: "Animation seeking to %0.2fs", time)
@@ -61,7 +63,7 @@ extension PlaybackControlLayer where Self: CALayer {
     }
     state = stateBeforeReset
   }
-  
+
   internal func pause() {
     if state.isPaused {
       return

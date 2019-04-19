@@ -392,7 +392,9 @@ export default class EditScreen extends Component<Props, State> {
           onDidRestartCaptions={this.restartRichTextEditorCaptions}
           onDidPauseCaptions={this.pauseRichTextEditorCaptions}
           onLocaleButtonPress={this.showLocaleMenu}
-          onVideoViewDidUpdateSize={videoViewSize => this.setState({ videoViewSize })}
+          onVideoViewDidUpdateSize={videoViewSize =>
+            this.setState({ videoViewSize })
+          }
         />
         <EditScreenRichTextOverlay
           ref={ref => {

@@ -35,7 +35,7 @@ class CaptionStyleImpl {
     let a = createLayer()
     let b = createLayer()
     let c = createLayer()
-    
+
     private static func createLayer() -> CALayer {
       let layer = CALayer()
       layer.opacity = 0
@@ -53,7 +53,7 @@ class CaptionStyleImpl {
         return c
       }
     }
-    
+
     public func each(_ callback: (_ key: LayerKey, _ layer: CALayer) -> Void) {
       [LayerKey.a, LayerKey.b, LayerKey.c].forEach { key in
         let layer = get(byKey: key)
@@ -63,7 +63,7 @@ class CaptionStyleImpl {
   }
 
   public let layers = Layers()
-  
+
   private let wordStyleImpl: CaptionPresetWordStyleImpl
   private let lineStyleImpl: CaptionPresetLineStyleImpl
   private let textAlignmentImpl: CaptionPresetTextAlignmentImpl

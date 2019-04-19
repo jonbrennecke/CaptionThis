@@ -9,8 +9,6 @@ import type { SpeechTranscription } from '../../types/speech';
 import type { Orientation } from '../../types/media';
 import type { CaptionStyleObject } from '../../types/video';
 
-type ReactNativeFiberHostComponent = any;
-
 type Props = {
   style?: ?Style,
   duration: number,
@@ -31,34 +29,34 @@ const styles = {
 };
 
 export default class VideoCaptionsView extends Component<Props> {
-  nativeComponentRef: ?ReactNativeFiberHostComponent;
+  captionView: ?CaptionView;
 
   restart() {
-    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
+    if (!this.captionView || !this.props.isReadyToPlay) {
       return;
     }
-    // TODO: TranscriptViewManager.restart(this.nativeComponentRef._nativeTag);
+    this.captionView.restart();
   }
 
   pause() {
-    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
+    if (!this.captionView || !this.props.isReadyToPlay) {
       return;
     }
-    // TODO: TranscriptViewManager.pause(this.nativeComponentRef._nativeTag);
+    this.captionView.pause();
   }
 
   seekToTime(time: number) {
-    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
+    if (!this.captionView || !this.props.isReadyToPlay) {
       return;
     }
-    // TODO: TranscriptViewManager.seekToTime(this.nativeComponentRef._nativeTag, time);
+    this.captionView.seekToTime(time);
   }
 
   play() {
-    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
+    if (!this.captionView || !this.props.isReadyToPlay) {
       return;
     }
-    // TODO: TranscriptViewManager.play(this.nativeComponentRef._nativeTag);
+    this.captionView.play();
   }
 
   render() {
@@ -75,10 +73,10 @@ export default class VideoCaptionsView extends Component<Props> {
         style={[styles.container, this.props.style]}
         onPress={this.props.onPress}
       >
-        {/* ref={ref => {
-            this.nativeComponentRef = ref;
-          }} */}
         <CaptionView
+          ref={ref => {
+            this.captionView = ref;
+          }}
           style={styles.flex}
           duration={this.props.duration}
           textSegments={textSegments}

@@ -6,6 +6,8 @@
 #import "RCTConvert+CaptionPresetWordStyle.h"
 #import "RCTConvert+CaptionTextSegment.h"
 #import <UIKit/UIKit.h>
+#import <React/RCTBridge.h>
+#import <React/RCTUIManager.h>
 
 @implementation CaptionViewManager
 
@@ -100,6 +102,60 @@ RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionView) {
     [textSegments addObject:textSegment];
   }
   view.textSegments = textSegments;
+}
+
+RCT_EXPORT_METHOD(play : (nonnull NSNumber *)reactTag) {
+  [self.bridge.uiManager
+   addUIBlock:^(RCTUIManager *uiManager,
+                NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+     CaptionView *view = (CaptionView *)viewRegistry[reactTag];
+     if (!view || ![view isKindOfClass:[CaptionView class]]) {
+       RCTLogError(@"Cannot find CaptionView with tag #%@", reactTag);
+       return;
+     }
+     [view resume];
+   }];
+}
+
+RCT_EXPORT_METHOD(restart : (nonnull NSNumber *)reactTag) {
+  [self.bridge.uiManager
+   addUIBlock:^(RCTUIManager *uiManager,
+                NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+     CaptionView *view = (CaptionView *)viewRegistry[reactTag];
+     if (!view || ![view isKindOfClass:[CaptionView class]]) {
+       RCTLogError(@"Cannot find CaptionView with tag #%@", reactTag);
+       return;
+     }
+     [view restart];
+   }];
+}
+
+RCT_EXPORT_METHOD(pause : (nonnull NSNumber *)reactTag) {
+  [self.bridge.uiManager
+   addUIBlock:^(RCTUIManager *uiManager,
+                NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+     CaptionView *view = (CaptionView *)viewRegistry[reactTag];
+     if (!view || ![view isKindOfClass:[CaptionView class]]) {
+       RCTLogError(@"Cannot find CaptionView with tag #%@", reactTag);
+       return;
+     }
+     [view pause];
+   }];
+}
+
+RCT_EXPORT_METHOD(seekToTime
+                  : (nonnull NSNumber *)reactTag time
+                  : (nonnull NSNumber *)time) {
+  [self.bridge.uiManager
+   addUIBlock:^(RCTUIManager *uiManager,
+                NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+     CaptionView *view = (CaptionView *)viewRegistry[reactTag];
+     if (!view || ![view isKindOfClass:[CaptionView class]]) {
+       RCTLogError(@"Cannot find CaptionsView with tag #%@", reactTag);
+       return;
+     }
+     [view seekToTime:[time doubleValue]];
+   }];
 }
 
 - (UIView *)view {

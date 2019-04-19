@@ -66,7 +66,11 @@ export default class VideoExportManager {
     );
   }
 
-  static async exportVideo({ captionStyle, viewSize, ...etcParams }: ExportParams) {
+  static async exportVideo({
+    captionStyle,
+    viewSize,
+    ...etcParams
+  }: ExportParams) {
     const exportParams = {
       ...etcParams,
       captionStyle: {

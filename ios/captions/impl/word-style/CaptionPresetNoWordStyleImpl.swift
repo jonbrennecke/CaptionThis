@@ -1,5 +1,5 @@
-import UIKit
 import AVFoundation
+import UIKit
 
 class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .none

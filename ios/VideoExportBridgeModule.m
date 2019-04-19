@@ -51,7 +51,8 @@ RCT_EXPORT_METHOD(exportVideo
     ]);
     return;
   }
-  CaptionExportStyle *captionStyle = [RCTConvert CaptionExportStyle:captionStyleJson];
+  CaptionExportStyle *captionStyle =
+      [RCTConvert CaptionExportStyle:captionStyleJson];
   if (!captionStyle) {
     callback(@[
       RCTMakeError(@"Unable to convert caption style.", nil, nil), @(NO)
@@ -101,12 +102,12 @@ RCT_EXPORT_METHOD(exportVideo
     }
     [textSegments addObject:textSegment];
   }
-  
+
   id videoIdJson = [json objectForKey:@"video"];
   if (!videoIdJson) {
     callback(@[
-      RCTMakeError(@"JSON object is missing required parameter 'video'.",
-                   nil, nil),
+      RCTMakeError(@"JSON object is missing required parameter 'video'.", nil,
+                   nil),
       @(NO)
     ]);
     return;

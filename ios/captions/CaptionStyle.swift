@@ -43,7 +43,7 @@ typealias CaptionPresetStyle = CaptionStyle
 @objc
 class CaptionExportStyle: CaptionStyle {
   public let viewSize: CGSize
-  
+
   @objc
   init(wordStyle: CaptionPresetWordStyle,
        lineStyle: CaptionPresetLineStyle,
@@ -61,6 +61,7 @@ class CaptionExportStyle: CaptionStyle {
       backgroundStyle: backgroundStyle,
       backgroundColor: backgroundColor,
       font: font,
-      textColor: textColor)
+      textColor: textColor
+    )
   }
 }

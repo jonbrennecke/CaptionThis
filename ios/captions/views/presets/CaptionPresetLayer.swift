@@ -7,8 +7,8 @@ class CaptionPresetLayer: CALayer {
   private let layout: CaptionLayerLayout
 
   init(style: CaptionPresetStyle, textSegments: [CaptionTextSegment], duration: CFTimeInterval) {
-    self.impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
-    self.layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
+    impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
+    layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
     super.init()
     contentsScale = UIScreen.main.scale
     masksToBounds = true

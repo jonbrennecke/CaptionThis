@@ -70,8 +70,8 @@ struct VideoAnimationLayerLayout {
     let heightRatio = Float(dimensions.size.height) / Float(style.viewSize.height)
     let frameHeight = CAPTION_VIEW_HEIGHT * heightRatio
     let fontSize = heightRatio * Float(style.font.pointSize)
-    
-    // TODO
+
+    // TODO:
     let videoSizeRatio = dimensions.ratio
     let containerPaddingHorizontal = 45 * videoSizeRatio
     let containerPaddingVertical = 15 * videoSizeRatio
