@@ -25,7 +25,7 @@ import {
   getCurrentVideo,
 } from '../../redux/media/selectors';
 import { updateCaptionStyle } from '../../redux/video/actionCreators';
-import { getFontFamily } from '../../redux/video/selectors';
+import { getCaptionStyle } from '../../redux/video/selectors';
 import {
   getSpeechTranscriptions,
   getLocale,
@@ -35,6 +35,7 @@ import type { ComponentType } from 'react';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
+import type { CaptionStyleObject } from '../../types/video';
 
 type OwnProps = {|
   componentId: string,
@@ -45,7 +46,7 @@ type StateProps = {|
   arePermissionsGranted: boolean,
   isCameraRecording: boolean,
   currentVideo: ?VideoAssetIdentifier,
-  fontFamily: string,
+  captionStyle: CaptionStyleObject,
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
   locale: ?LocaleObject,
 |};
@@ -77,7 +78,7 @@ function mapStateToProps(state: AppState): StateProps {
     arePermissionsGranted: arePermissionsGranted(state),
     isCameraRecording: isCameraRecording(state),
     currentVideo: getCurrentVideo(state),
-    fontFamily: getFontFamily(state),
+    captionStyle: getCaptionStyle(state),
     speechTranscriptions: getSpeechTranscriptions(state),
     locale: getLocale(state),
   };

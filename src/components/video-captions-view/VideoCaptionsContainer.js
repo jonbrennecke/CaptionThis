@@ -23,7 +23,8 @@ type State = {
   viewSize: Size,
 };
 
-const CAPTION_VIEW_HEIGHT = 85;
+const CAPTION_VIEW_HEIGHT_HORIZONTAL = 85;
+const CAPTION_VIEW_HEIGHT_LANDSCAPE = 60;
 
 const styles = {
   container: {},
@@ -31,21 +32,20 @@ const styles = {
     if (isLandscape(orientation)) {
       const videoHeight = size.width * 9 / 16;
       const topOfVideo = (size.height - videoHeight) / 2;
-      const captionViewHeight = 60;
       return {
         position: 'absolute',
         left: 0,
         right: 0,
-        height: captionViewHeight,
-        top: topOfVideo + videoHeight - captionViewHeight - 11,
+        height: CAPTION_VIEW_HEIGHT_LANDSCAPE,
+        top: topOfVideo + videoHeight - CAPTION_VIEW_HEIGHT_LANDSCAPE - 11,
       };
     } else {
       return {
         position: 'absolute',
         left: 0,
         right: 0,
-        height: CAPTION_VIEW_HEIGHT,
-        bottom: 50,
+        height: CAPTION_VIEW_HEIGHT_HORIZONTAL,
+        bottom: 75,
       };
     }
   },

@@ -3,24 +3,23 @@ import React, { Component } from 'react';
 import { Animated, StyleSheet, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 
-// import * as Color from '../../utils/Color';
 import * as Camera from '../../utils/Camera';
-// import { USER_BACKGROUND_COLOR_CHOICES } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';
-// import CaptionView from '../../components/caption-view/CaptionView';
+import CaptionView from '../../components/caption-view/CaptionView';
+import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
 import type { Style } from '../../types/react';
-import type { CaptionPresetStyleObject } from '../../types/video';
+import type { CaptionStyleObject, CaptionPresetStyleObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
+  captionStyle: CaptionStyleObject,
   animatedScrollValue: Animated.Value,
-  fontFamily: string,
   thumbnailVideoID: ?VideoAssetIdentifier,
   speechTranscription: ?SpeechTranscription,
   isCameraRecording: boolean,
@@ -54,6 +53,13 @@ const styles = {
     left: 0,
     right: 0,
   },
+  captionsContainer: {
+    flex: 1,
+    marginBottom: 100,
+  },
+  captionView: {
+    flex: 1,
+  }
 };
 
 // $FlowFixMe
@@ -80,13 +86,13 @@ export default class HomeScreenCameraPreview extends Component<Props> {
   }
 
   render() {
-    // const textSegments = this.props.speechTranscription
-    //   ? this.props.speechTranscription.segments.map(s => ({
-    //       duration: s.duration,
-    //       timestamp: s.timestamp,
-    //       text: s.substring,
-    //     }))
-    //   : [];
+    const textSegments = this.props.speechTranscription
+      ? this.props.speechTranscription.segments.map(s => ({
+          duration: s.duration,
+          timestamp: s.timestamp,
+          text: s.substring,
+        }))
+      : [];
     return (
       <Animated.View
         style={[
@@ -105,17 +111,17 @@ export default class HomeScreenCameraPreview extends Component<Props> {
           onDidRequestFocusOnPoint={this.tapToFocusDidReceiveFocusPoint}
         />
         <ScreenGradients />
-        {/* <CaptionView
-          duration={10}
-          textSegments={textSegments}
-          captionStyle={{
-            textAlignment: 'center',
-            lineStyle: 'fadeInOut',
-            wordStyle: 'none',
-            backgroundStyle: 'solid',
-            backgroundColor: Color.hexToRgbaObject(USER_BACKGROUND_COLOR_CHOICES[1]),
-          }}
-        /> */}
+        <VideoCaptionsContainer
+          style={styles.captionsContainer}
+          orientation="up"
+        >
+          <CaptionView
+            style={styles.captionView}
+            duration={10}
+            textSegments={textSegments}
+            captionStyle={this.props.captionStyle}
+          />
+        </VideoCaptionsContainer>
         <HomeScreenCameraControls
           style={styles.absoluteFill}
           isVisible={this.props.hasCompletedSetupAfterOnboarding}
