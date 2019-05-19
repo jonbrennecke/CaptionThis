@@ -26,3 +26,9 @@ export type CaptionStyleObject = {|
   fontSize: number,
   fontFamily: string,
 |};
+
+export type CaptionTextSegment = {
+  duration: number,
+  timestamp: number,
+  text: string,
+};

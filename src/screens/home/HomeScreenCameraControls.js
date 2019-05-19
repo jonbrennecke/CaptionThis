@@ -7,13 +7,15 @@ import HomeScreenTopCameraControls from './HomeScreenTopCameraControls';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
-import type { CaptionPresetStyleObject } from '../../types/video';
+import type { CaptionStyleObject, CaptionPresetStyleObject, CaptionTextSegment } from '../../types/video';
 
 type Props = {
   style?: ?Style,
   isVisible: boolean,
   countryCode: ?string,
   video: ?VideoAssetIdentifier,
+  textSegments: CaptionTextSegment[],
+  captionStyle: CaptionStyleObject,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
@@ -43,6 +45,8 @@ export default function HomeScreenCameraControls({
   video,
   isVisible,
   countryCode,
+  textSegments,
+  captionStyle,
   onRequestBeginCapture,
   onRequestEndCapture,
   onRequestOpenCameraRoll,
@@ -61,6 +65,8 @@ export default function HomeScreenCameraControls({
         style={styles.bottomControls}
         isVisible={isVisible}
         video={video}
+        textSegments={textSegments}
+        captionStyle={captionStyle}
         onRequestBeginCapture={onRequestBeginCapture}
         onRequestEndCapture={onRequestEndCapture}
         onRequestOpenCameraRoll={onRequestOpenCameraRoll}

@@ -6,15 +6,16 @@ import { autobind } from 'core-decorators';
 import * as Camera from '../../utils/Camera';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';
-import CaptionView from '../../components/caption-view/CaptionView';
-import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
 import type { Style } from '../../types/react';
-import type { CaptionStyleObject, CaptionPresetStyleObject } from '../../types/video';
+import type {
+  CaptionStyleObject,
+  CaptionPresetStyleObject,
+} from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -46,20 +47,7 @@ const styles = {
   flex: {
     flex: 1,
   },
-  absoluteFill: StyleSheet.absoluteFillObject,
-  transcript: {
-    position: 'absolute',
-    bottom: 125,
-    left: 0,
-    right: 0,
-  },
-  captionsContainer: {
-    flex: 1,
-    marginBottom: 100,
-  },
-  captionView: {
-    flex: 1,
-  }
+  absoluteFill: StyleSheet.absoluteFillObject
 };
 
 // $FlowFixMe
@@ -111,22 +99,13 @@ export default class HomeScreenCameraPreview extends Component<Props> {
           onDidRequestFocusOnPoint={this.tapToFocusDidReceiveFocusPoint}
         />
         <ScreenGradients />
-        <VideoCaptionsContainer
-          style={styles.captionsContainer}
-          orientation="up"
-        >
-          <CaptionView
-            style={styles.captionView}
-            duration={10}
-            textSegments={textSegments}
-            captionStyle={this.props.captionStyle}
-          />
-        </VideoCaptionsContainer>
         <HomeScreenCameraControls
           style={styles.absoluteFill}
           isVisible={this.props.hasCompletedSetupAfterOnboarding}
           countryCode={this.props.locale?.country.code}
           video={this.props.thumbnailVideoID}
+          textSegments={textSegments}
+          captionStyle={this.props.captionStyle}
           onRequestBeginCapture={this.props.onRequestBeginCapture}
           onRequestEndCapture={this.props.onRequestEndCapture}
           onRequestOpenCameraRoll={this.props.onRequestOpenCameraRoll}

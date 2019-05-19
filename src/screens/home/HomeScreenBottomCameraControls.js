@@ -16,10 +16,17 @@ import SwitchCameraButton from '../../components/switch-camera-button/SwitchCame
 import HomeScreenCameraRollButton from './HomeScreenCameraRollButton';
 import HomeScreenPresetStyles from './HomeScreenPresetStyles';
 import SlideUpAnimatedView from '../../components/animations/SlideUpAnimatedView';
+import MeasureContentsView from '../../components/measure-contents-view/MeasureContentsView';
+import CaptionView from '../../components/caption-view/CaptionView';
+import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
-import type { CaptionPresetStyleObject } from '../../types/video';
+import type {
+  CaptionStyleObject,
+  CaptionPresetStyleObject,
+  CaptionTextSegment,
+} from '../../types/video';
 
 type CaptionPresetStyleObjectWithId = {|
   ...CaptionPresetStyleObject,
@@ -30,6 +37,8 @@ type Props = {
   style?: ?Style,
   isVisible: boolean,
   video: ?VideoAssetIdentifier,
+  textSegments: CaptionTextSegment[],
+  captionStyle: CaptionStyleObject,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
@@ -182,36 +191,52 @@ export default class HomeScreenBottomCameraControls extends Component<
   }
 
   render() {
+    const captionViewSize = ({ height, width }) => ({ width, height: height + 85 })
     return (
       <View style={[styles.container, this.props.style]}>
-        <SlideUpAnimatedView
-          style={styles.rowWrap}
-          isVisible={this.props.isVisible}
-          delay={1000}
-        >
-          <View style={styles.leftSideButtons}>
-            <HomeScreenCameraRollButton
-              id={this.props.video}
-              onPress={this.props.onRequestOpenCameraRoll}
-              style={styles.cameraRollButton}
-            />
-          </View>
-          <CaptureButton
-            onRequestBeginCapture={this.props.onRequestBeginCapture}
-            onRequestEndCapture={this.props.onRequestEndCapture}
-          />
-          <View style={styles.rightSideButtons}>
-            <SwitchCameraButton
-              style={styles.switchCameraButton}
-              onRequestSwitchCamera={this.props.onRequestSwitchCamera}
-            />
-          </View>
-        </SlideUpAnimatedView>
-        <HomeScreenPresetStyles
-          isVisible={this.state.isPresetSheetVisible}
-          presets={PRESET_STYLES_WITH_ID}
-          currentPreset={this.state.preset}
-          onRequestSelectPreset={this.presetPickerDidSelectPreset}
+        <MeasureContentsView
+          renderChildren={viewSize => (
+            <>
+              <VideoCaptionsContainer style={styles.flex} orientation="up">
+                <CaptionView
+                  style={styles.flex}
+                  duration={10}
+                  textSegments={this.props.textSegments}
+                  captionStyle={this.props.captionStyle}
+                  viewSize={captionViewSize(viewSize)}
+                />
+              </VideoCaptionsContainer>
+              <SlideUpAnimatedView
+                style={styles.rowWrap}
+                isVisible={this.props.isVisible}
+                delay={1000}
+              >
+                <View style={styles.leftSideButtons}>
+                  <HomeScreenCameraRollButton
+                    id={this.props.video}
+                    onPress={this.props.onRequestOpenCameraRoll}
+                    style={styles.cameraRollButton}
+                  />
+                </View>
+                <CaptureButton
+                  onRequestBeginCapture={this.props.onRequestBeginCapture}
+                  onRequestEndCapture={this.props.onRequestEndCapture}
+                />
+                <View style={styles.rightSideButtons}>
+                  <SwitchCameraButton
+                    style={styles.switchCameraButton}
+                    onRequestSwitchCamera={this.props.onRequestSwitchCamera}
+                  />
+                </View>
+              </SlideUpAnimatedView>
+              <HomeScreenPresetStyles
+                isVisible={this.state.isPresetSheetVisible}
+                presets={PRESET_STYLES_WITH_ID}
+                currentPreset={this.state.preset}
+                onRequestSelectPreset={this.presetPickerDidSelectPreset}
+              />
+            </>
+          )}
         />
       </View>
     );

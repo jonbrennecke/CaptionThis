@@ -90,7 +90,7 @@ class CaptionStyleImpl {
     self.duration = duration
   }
 
-  func resize(inParentLayer parentLayer: CALayer, layout: VideoAnimationLayerLayout) {
+  func resize(inParentLayer parentLayer: CALayer, layout: VideoAnimationLayerLayout, viewSize: CGSize) {
     let layerASize = resize(key: .a, parentLayer: parentLayer)
     let layerBSize = resize(key: .b, parentLayer: parentLayer)
     let layerCSize = resize(key: .c, parentLayer: parentLayer)
@@ -99,10 +99,10 @@ class CaptionStyleImpl {
     map.each { key, _ in
       applyStyles(key: key, parentLayer: parentLayer, map: map, layout: layout)
     }
-    backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor)
+    backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor, viewSize: viewSize)
   }
 
-  // TODO: this should be owned bt the LineStyleImpl
+  // TODO: this should be owned by the LineStyleImpl
   private static func listKeys(forLineStyle lineStyle: CaptionPresetLineStyle) -> [LayerKey] {
     switch lineStyle {
     case .fadeInOut:

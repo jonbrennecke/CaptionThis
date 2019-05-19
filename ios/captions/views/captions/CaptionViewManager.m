@@ -104,6 +104,14 @@ RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionView) {
   view.textSegments = textSegments;
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(viewSize, CGSize, CaptionView) {
+  if (![view isKindOfClass:[CaptionView class]]) {
+    return;
+  }
+  CGSize viewSize = [RCTConvert CGSize:json];
+  view.viewSize = viewSize;
+}
+
 RCT_EXPORT_METHOD(play : (nonnull NSNumber *)reactTag) {
   [self.bridge.uiManager
    addUIBlock:^(RCTUIManager *uiManager,

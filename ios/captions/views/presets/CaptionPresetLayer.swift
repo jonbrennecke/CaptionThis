@@ -39,6 +39,6 @@ class CaptionPresetLayer: CALayer {
   }
 
   private func resizeSublayers() {
-    impl.resize(inParentLayer: self, layout: layout)
+    impl.resize(inParentLayer: self, layout: layout, viewSize: frame.size)
   }
 }

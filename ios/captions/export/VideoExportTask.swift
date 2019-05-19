@@ -107,7 +107,7 @@ class VideoExportTask {
       viewSize: style.viewSize
     )
 
-    let captionLayer = CaptionLayer(style: exportStyle, layout: layout, textSegments: textSegments, duration: duration)
+    let captionLayer = CaptionLayer(style: exportStyle, layout: layout, textSegments: textSegments, duration: duration, viewSize: .zero)
     captionLayer.frame = frame(forComposition: composition, layout: layout)
     captionLayer.resizeSublayers()
     captionLayer.timeOffset = 0

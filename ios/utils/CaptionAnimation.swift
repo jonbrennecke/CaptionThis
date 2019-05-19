@@ -87,9 +87,9 @@ struct CaptionAnimation {
           }
           return line.timestamp + line.duration + ANIM_FINAL_LINE_DURATION
         }(lastKey, lastIndex, nextKey, nextIndex, line)
-        
+
         let clampFn = { timestamp in
-          return clamp(timestamp - ANIM_IN_OUT_DURATION, from: 0, to: timestamp)
+          clamp(timestamp - ANIM_IN_OUT_DURATION, from: 0, to: timestamp)
         }
 
         let animationsIn = animation.animationsIn.map { $0.animate(at: clampFn(line.timestamp), duration: ANIM_IN_OUT_DURATION) }

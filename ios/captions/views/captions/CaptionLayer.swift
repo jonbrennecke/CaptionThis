@@ -3,11 +3,13 @@ import AVFoundation
 class CaptionLayer: CALayer, PlaybackControlLayer {
   private let impl: CaptionStyleImpl
   private let layout: CaptionLayerLayout
+  private let viewSize: CGSize
   internal var state: PlaybackControlLayerState = .paused
 
-  init(style: CaptionStyle, layout: CaptionLayerLayout, textSegments: [CaptionTextSegment], duration: CFTimeInterval) {
+  init(style: CaptionStyle, layout: CaptionLayerLayout, textSegments: [CaptionTextSegment], duration: CFTimeInterval, viewSize: CGSize) {
     impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, duration: duration)
     self.layout = layout
+    self.viewSize = viewSize
     super.init()
     contentsScale = UIScreen.main.scale
     masksToBounds = false
@@ -18,6 +20,7 @@ class CaptionLayer: CALayer, PlaybackControlLayer {
     let layer = layer as! CaptionLayer
     impl = layer.impl
     layout = layer.layout
+    viewSize = layer.viewSize
     super.init(layer: layer)
     contentsScale = UIScreen.main.scale
     masksToBounds = false
@@ -34,7 +37,7 @@ class CaptionLayer: CALayer, PlaybackControlLayer {
   }
 
   public func resizeSublayers() {
-    impl.resize(inParentLayer: self, layout: layout)
+    impl.resize(inParentLayer: self, layout: layout, viewSize: viewSize)
   }
 
   internal func resetAnimation() {

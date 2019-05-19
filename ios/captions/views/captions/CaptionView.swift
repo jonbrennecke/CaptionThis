@@ -132,6 +132,13 @@ class CaptionView: UIView {
       updateCaptionLayer()
     }
   }
+  
+  @objc
+  public var viewSize = CGSize.zero {
+    didSet {
+      updateCaptionLayer()
+    }
+  }
 
   @objc
   public var fontSize: CGFloat {
@@ -179,7 +186,7 @@ class CaptionView: UIView {
   private func updateCaptionLayer() {
     // FIXME: cleanup or remove layout
     let layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
-    captionLayer = CaptionLayer(style: style, layout: layout, textSegments: textSegments, duration: duration)
+    captionLayer = CaptionLayer(style: style, layout: layout, textSegments: textSegments, duration: duration, viewSize: viewSize)
     captionLayer.frame = bounds
     layer.sublayers = nil
     layer.addSublayer(captionLayer)
@@ -190,7 +197,7 @@ class CaptionView: UIView {
   init() {
     // TODO: fix orientation + cleanup or remove need for layout object
     let layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
-    captionLayer = CaptionLayer(style: style, layout: layout, textSegments: textSegments, duration: duration)
+    captionLayer = CaptionLayer(style: style, layout: layout, textSegments: textSegments, duration: duration, viewSize: viewSize)
     super.init(frame: .zero)
     captionLayer.frame = bounds
     layer.addSublayer(captionLayer)

@@ -23,7 +23,7 @@ type State = {
   viewSize: Size,
 };
 
-const CAPTION_VIEW_HEIGHT_HORIZONTAL = 85;
+const CAPTION_VIEW_HEIGHT_PORTRAIT = 85;
 const CAPTION_VIEW_HEIGHT_LANDSCAPE = 60;
 
 const styles = {
@@ -44,8 +44,8 @@ const styles = {
         position: 'absolute',
         left: 0,
         right: 0,
-        height: CAPTION_VIEW_HEIGHT_HORIZONTAL,
-        bottom: 75,
+        height: CAPTION_VIEW_HEIGHT_PORTRAIT,
+        bottom: 0,
       };
     }
   },
