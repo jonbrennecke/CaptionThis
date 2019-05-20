@@ -28,7 +28,7 @@ class CaptionPresetSolidBackgroundStyleImpl: CaptionPresetBackgroundStyleImpl {
   let backgroundStyle: CaptionPresetBackgroundStyle = .solid
 
   func applyBackgroundStyle(parentLayer: CALayer, backgroundColor: UIColor, layout _: CaptionViewLayout) {
-    parentLayer.backgroundColor = backgroundColor.cgColor
+    parentLayer.backgroundColor = backgroundColor.withAlphaComponent(0.5).cgColor
     parentLayer.masksToBounds = true
   }
 }

@@ -1,26 +1,17 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import { autobind } from 'core-decorators';
 
 import { isLandscape } from '../../utils/Orientation';
 
 import type { Style, Children } from '../../types/react';
-import type { Orientation } from '../../types/media';
+import type { Orientation, Size } from '../../types/media';
 
 type Props = {
   style?: ?Style,
   children?: ?Children,
-  orientation: ?Orientation,
-};
-
-type Size = {
-  height: number,
-  width: number,
-};
-
-type State = {
-  viewSize: Size,
+  orientation?: Orientation,
+  videoPlayerViewSize?: Size,
 };
 
 const CAPTION_VIEW_HEIGHT_PORTRAIT = 85;
@@ -28,16 +19,16 @@ const CAPTION_VIEW_HEIGHT_LANDSCAPE = 60;
 
 const styles = {
   container: {},
-  captionsWrap: (orientation: Orientation, size: Size) => {
+  captionsWrap: (orientation: Orientation, videoPlayerViewSize: Size) => {
     if (isLandscape(orientation)) {
-      const videoHeight = size.width * 9 / 16;
-      const topOfVideo = (size.height - videoHeight) / 2;
+      const videoHeight = videoPlayerViewSize.width * 9 / 16;
+      const bottomOfVideo = (videoPlayerViewSize.height - videoHeight) / 2;
       return {
         position: 'absolute',
         left: 0,
         right: 0,
         height: CAPTION_VIEW_HEIGHT_LANDSCAPE,
-        top: topOfVideo + videoHeight - CAPTION_VIEW_HEIGHT_LANDSCAPE - 11,
+        bottom: bottomOfVideo + CAPTION_VIEW_HEIGHT_LANDSCAPE / 2 - 11,
       };
     } else {
       return {
@@ -51,44 +42,17 @@ const styles = {
   },
 };
 
-// $FlowFixMe
-@autobind
-export default class VideoCaptionsContainer extends Component<Props, State> {
-  view: ?View;
-  state = {
-    viewSize: {
-      height: 0,
-      width: 0,
-    },
-  };
-
-  viewDidLayout({ nativeEvent: { layout } }: any) {
-    this.setState({
-      viewSize: {
-        width: layout.width,
-        height: layout.height,
-      },
-    });
-  }
-
-  render() {
-    return (
-      <View
-        style={[styles.container, this.props.style]}
-        ref={ref => {
-          this.view = ref;
-        }}
-        onLayout={this.viewDidLayout}
-      >
-        <View
-          style={styles.captionsWrap(
-            this.props.orientation || 'up',
-            this.state.viewSize
-          )}
-        >
-          {this.props.children}
-        </View>
+export default function VideoCaptionsContainer({
+  style,
+  children,
+  orientation = 'up',
+  videoPlayerViewSize = { height: 0, width: 0 },
+}: Props) {
+  return (
+    <View style={[styles.container, style]}>
+      <View style={styles.captionsWrap(orientation, videoPlayerViewSize)}>
+        {children}
       </View>
-    );
-  }
+    </View>
+  );
 }

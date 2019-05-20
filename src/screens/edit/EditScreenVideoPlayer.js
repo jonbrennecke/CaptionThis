@@ -6,6 +6,7 @@ import { autobind } from 'core-decorators';
 
 import { UI_COLORS } from '../../constants';
 import * as Debug from '../../utils/Debug';
+import { isLandscape, isPortrait } from '../../utils/Orientation';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
 import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
@@ -20,6 +21,7 @@ import type { SpeechTranscription } from '../../types/speech';
 import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {
+  videoPlayerViewSize: Size,
   video: VideoObject,
   countryCode: ?string,
   isAppInForeground: boolean,
@@ -299,7 +301,9 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
 
   render() {
     const captionViewLayout = ({ height, width }) => ({
-      size: { width, height: height + 85 },
+      size: isLandscape(this.props.orientation)
+        ? { width, height: height }
+        : { width, height: height + 85 },
       origin: { x: 0, y: 0 },
     });
     const showSeekbar =
@@ -334,7 +338,10 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               style={styles.measuredContents}
               renderChildren={viewSize => (
                 <>
-                  <VideoCaptionsContainer orientation={this.props.orientation}>
+                  <VideoCaptionsContainer
+                    videoPlayerViewSize={this.props.videoPlayerViewSize}
+                    orientation={this.props.orientation}
+                  >
                     <VideoCaptionsView
                       ref={ref => {
                         this.captionsView = ref;
@@ -352,7 +359,8 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                       onPress={this.props.onRequestShowRichTextEditor}
                     />
                   </VideoCaptionsContainer>
-                  <View style={styles.captionPaddingView} />
+                  {isPortrait(this.props.orientation) && <View style={styles.captionPaddingView} />
+                  }
                 </>
               )}
             />

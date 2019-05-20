@@ -363,6 +363,7 @@ export default class EditScreen extends Component<Props, State> {
           <EditScreenLoadingBackground />
         )}
         <EditScreenVideoPlayer
+          videoPlayerViewSize={this.state.videoViewSize}
           countryCode={this.props.locale?.country.code}
           isAppInForeground={this.props.isAppInForeground}
           isDeviceLimitedByMemory={this.props.isDeviceLimitedByMemory}

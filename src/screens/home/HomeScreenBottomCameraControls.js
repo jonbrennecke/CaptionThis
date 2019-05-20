@@ -199,7 +199,7 @@ export default class HomeScreenBottomCameraControls extends Component<
         <MeasureContentsView
           renderChildren={viewSize => (
             <>
-              <VideoCaptionsContainer style={styles.flex} orientation="up">
+              <VideoCaptionsContainer style={styles.flex}>
                 <CaptionView
                   style={styles.flex}
                   duration={10}
