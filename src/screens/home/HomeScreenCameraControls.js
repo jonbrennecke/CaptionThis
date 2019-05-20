@@ -7,7 +7,11 @@ import HomeScreenTopCameraControls from './HomeScreenTopCameraControls';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
-import type { CaptionStyleObject, CaptionPresetStyleObject, CaptionTextSegment } from '../../types/video';
+import type {
+  CaptionStyleObject,
+  CaptionPresetStyleObject,
+  CaptionTextSegment,
+} from '../../types/video';
 
 type Props = {
   style?: ?Style,

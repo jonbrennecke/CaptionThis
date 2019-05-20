@@ -1,9 +1,10 @@
 import Foundation
 
+// TODO: replace this with a single function
 class CaptionPresetStyleImplFactory {
   private init() { /* unimplemented */ }
 
-  public static func impl(forStyle style: CaptionPresetStyle, textSegments: [CaptionTextSegment], duration: CFTimeInterval) -> CaptionStyleImpl {
+  public static func impl(forStyle style: CaptionPresetStyle, textSegments: [CaptionTextSegment], layout: CaptionViewLayout, duration: CFTimeInterval) -> CaptionStyleImpl {
     let lineStyleImpl = impl(forLineStyle: style.lineStyle)
     let textAlignmentImpl = impl(forTextAlignment: style.textAlignment)
     let wordStyleImpl = impl(forWordStyle: style.wordStyle)
@@ -15,6 +16,7 @@ class CaptionPresetStyleImplFactory {
       backgroundStyleImpl: backgroundStyleImpl,
       textSegments: textSegments,
       style: style,
+      layout: layout,
       duration: duration
     )
   }

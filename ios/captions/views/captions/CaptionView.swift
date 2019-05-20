@@ -2,7 +2,7 @@ import UIKit
 
 @objc(CaptionView)
 class CaptionView: UIView {
-  private var captionLayer: CaptionLayer
+  private var captionLayer: CaptionLayer!
 
   private var style = CaptionStyle(
     wordStyle: .none,
@@ -132,9 +132,9 @@ class CaptionView: UIView {
       updateCaptionLayer()
     }
   }
-  
+
   @objc
-  public var viewSize = CGSize.zero {
+  public var viewLayout = CaptionViewLayout.defaultLayout {
     didSet {
       updateCaptionLayer()
     }
@@ -183,10 +183,12 @@ class CaptionView: UIView {
     }
   }
 
+  private func createCaptionStyleImpl() -> CaptionStyleImpl {
+    return CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, layout: viewLayout, duration: duration)
+  }
+
   private func updateCaptionLayer() {
-    // FIXME: cleanup or remove layout
-    let layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
-    captionLayer = CaptionLayer(style: style, layout: layout, textSegments: textSegments, duration: duration, viewSize: viewSize)
+    captionLayer = CaptionLayer(impl: createCaptionStyleImpl())
     captionLayer.frame = bounds
     layer.sublayers = nil
     layer.addSublayer(captionLayer)
@@ -195,10 +197,8 @@ class CaptionView: UIView {
   // MARK: UIView method implementations
 
   init() {
-    // TODO: fix orientation + cleanup or remove need for layout object
-    let layout = CaptionLayerLayout.layoutForView(orientation: .up, style: style)
-    captionLayer = CaptionLayer(style: style, layout: layout, textSegments: textSegments, duration: duration, viewSize: viewSize)
     super.init(frame: .zero)
+    captionLayer = CaptionLayer(impl: createCaptionStyleImpl())
     captionLayer.frame = bounds
     layer.addSublayer(captionLayer)
   }

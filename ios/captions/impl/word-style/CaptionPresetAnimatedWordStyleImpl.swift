@@ -6,7 +6,7 @@ fileprivate let ANIM_FADE_IN_OUT_DURATION = CFTimeInterval(0.25)
 class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .animated
 
-  func applyWordStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, map: CaptionStringsMap, layout: VideoAnimationLayerLayout, duration: CFTimeInterval) {
+  func applyWordStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, map: CaptionStringsMap, duration: CFTimeInterval) {
     layer.sublayers = nil
     let sublayer = CALayer()
     let bounds = CaptionSizingUtil.layoutForText(originalBounds: layer.bounds, textAlignment: textAlignment)
@@ -21,7 +21,6 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
         map: map,
         index: index,
         parentLayer: sublayer,
-        layout: layout,
         textAlignment: textAlignment,
         duration: duration
       )
@@ -36,7 +35,6 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     map: CaptionStringsMap,
     index: Int,
     parentLayer: CALayer,
-    layout: VideoAnimationLayerLayout,
     textAlignment: CaptionPresetTextAlignment,
     duration: CFTimeInterval
   ) -> CALayer {
@@ -62,7 +60,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
       textLayer.shadowColor = UIColor.black.cgColor
       textLayer.shadowRadius = 0.5
       textLayer.shadowOpacity = 0.4
-      textLayer.shadowOffset = CGSize(width: 0.0, height: CGFloat(layout.shadowOffsetHeight))
+      textLayer.shadowOffset = CGSize(width: 0.0, height: 1)
       textLayer.string = substring.attributedString
       textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
       textLayer.displayIfNeeded()

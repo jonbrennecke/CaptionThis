@@ -5,6 +5,7 @@
 #import "RCTConvert+CaptionPresetTextAlignment.h"
 #import "RCTConvert+CaptionPresetWordStyle.h"
 #import "RCTConvert+CaptionTextSegment.h"
+#import "RCTConvert+CaptionViewLayout.h"
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
@@ -104,12 +105,15 @@ RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionView) {
   view.textSegments = textSegments;
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(viewSize, CGSize, CaptionView) {
+RCT_CUSTOM_VIEW_PROPERTY(viewLayout, NSDictionary *, CaptionView) {
   if (![view isKindOfClass:[CaptionView class]]) {
     return;
   }
-  CGSize viewSize = [RCTConvert CGSize:json];
-  view.viewSize = viewSize;
+  CaptionViewLayout * viewLayout = [RCTConvert CaptionViewLayout:json];
+  if (!viewLayout) {
+    return;
+  }
+  view.viewLayout = viewLayout;
 }
 
 RCT_EXPORT_METHOD(play : (nonnull NSNumber *)reactTag) {

@@ -70,6 +70,7 @@ class CaptionStyleImpl {
   private let backgroundStyleImpl: CaptionPresetBackgroundStyleImpl
   private let textSegments: [CaptionTextSegment]
   private let style: CaptionPresetStyle
+  private let layout: CaptionViewLayout
   private let duration: CFTimeInterval
 
   public init(
@@ -79,6 +80,7 @@ class CaptionStyleImpl {
     backgroundStyleImpl: CaptionPresetBackgroundStyleImpl,
     textSegments: [CaptionTextSegment],
     style: CaptionPresetStyle,
+    layout: CaptionViewLayout,
     duration: CFTimeInterval
   ) {
     self.lineStyleImpl = lineStyleImpl
@@ -87,19 +89,20 @@ class CaptionStyleImpl {
     self.backgroundStyleImpl = backgroundStyleImpl
     self.textSegments = textSegments
     self.style = style
+    self.layout = layout
     self.duration = duration
   }
 
-  func resize(inParentLayer parentLayer: CALayer, layout: VideoAnimationLayerLayout, viewSize: CGSize) {
+  func resize(inParentLayer parentLayer: CALayer) {
     let layerASize = resize(key: .a, parentLayer: parentLayer)
     let layerBSize = resize(key: .b, parentLayer: parentLayer)
     let layerCSize = resize(key: .c, parentLayer: parentLayer)
     let layerSizes: [LayerKey: CGSize] = [.a: layerASize, .b: layerBSize, .c: layerCSize]
-    let map = CaptionStringsMap.byFitting(textSegments: textSegments, toLayersOfSize: layerSizes, style: style, layout: layout)
+    let map = CaptionStringsMap.byFitting(textSegments: textSegments, toLayersOfSize: layerSizes, style: style)
     map.each { key, _ in
-      applyStyles(key: key, parentLayer: parentLayer, map: map, layout: layout)
+      applyStyles(key: key, parentLayer: parentLayer, map: map)
     }
-    backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor, viewSize: viewSize)
+    backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor, layout: layout)
   }
 
   // TODO: this should be owned by the LineStyleImpl
@@ -120,10 +123,10 @@ class CaptionStyleImpl {
     return size
   }
 
-  private func applyStyles(key: LayerKey, parentLayer: CALayer, map: CaptionStringsMap, layout: VideoAnimationLayerLayout) {
+  private func applyStyles(key: LayerKey, parentLayer: CALayer, map: CaptionStringsMap) {
     let layer = layers.get(byKey: key)
     lineStyleImpl.applyLineStyle(key: key, layer: layer, parentLayer: parentLayer, map: map, duration: duration)
-    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, map: map, layout: layout, duration: duration)
+    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, map: map, duration: duration)
   }
 
   private func layerOrigin(forKey key: LayerKey, parentLayer: CALayer) -> CGPoint {

@@ -191,7 +191,10 @@ export default class HomeScreenBottomCameraControls extends Component<
   }
 
   render() {
-    const captionViewSize = ({ height, width }) => ({ width, height: height + 85 })
+    const captionViewLayout = ({ height, width }) => ({
+      size: { width, height: height + 85 },
+      origin: { x: 0, y: 0 },
+    });
     return (
       <View style={[styles.container, this.props.style]}>
         <MeasureContentsView
@@ -203,7 +206,7 @@ export default class HomeScreenBottomCameraControls extends Component<
                   duration={10}
                   textSegments={this.props.textSegments}
                   captionStyle={this.props.captionStyle}
-                  viewSize={captionViewSize(viewSize)}
+                  viewLayout={captionViewLayout(viewSize)}
                 />
               </VideoCaptionsContainer>
               <SlideUpAnimatedView

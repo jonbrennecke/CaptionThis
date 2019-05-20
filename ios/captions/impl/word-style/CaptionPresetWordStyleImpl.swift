@@ -7,7 +7,6 @@ protocol CaptionPresetWordStyleImpl {
     layer: CALayer,
     textAlignment: CaptionPresetTextAlignment,
     map: CaptionStringsMap,
-    layout: VideoAnimationLayerLayout,
     duration: CFTimeInterval
   )
 }

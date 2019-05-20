@@ -4,7 +4,7 @@ import UIKit
 class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
   public var wordStyle: CaptionPresetWordStyle = .none
 
-  func applyWordStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, map: CaptionStringsMap, layout: VideoAnimationLayerLayout, duration: CFTimeInterval) {
+  func applyWordStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, textAlignment: CaptionPresetTextAlignment, map: CaptionStringsMap, duration: CFTimeInterval) {
     layer.sublayers = nil
     let sublayer = CALayer()
     let bounds = CaptionSizingUtil.layoutForText(originalBounds: layer.bounds, textAlignment: textAlignment)
@@ -19,7 +19,6 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
         string: line.string.attributedString,
         index: index,
         parentLayer: sublayer,
-        layout: layout,
         textAlignment: textAlignment,
         duration: duration
       )
@@ -36,7 +35,6 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     string: NSAttributedString,
     index: Int,
     parentLayer: CALayer,
-    layout: VideoAnimationLayerLayout,
     textAlignment: CaptionPresetTextAlignment,
     duration: CFTimeInterval
   ) -> CATextLayer {
@@ -53,7 +51,7 @@ class CaptionPresetNoWordStyleImpl: CaptionPresetWordStyleImpl {
     textLayer.shadowColor = UIColor.black.cgColor
     textLayer.shadowRadius = 0.5
     textLayer.shadowOpacity = 0.4
-    textLayer.shadowOffset = CGSize(width: 0.0, height: CGFloat(layout.shadowOffsetHeight))
+    textLayer.shadowOffset = CGSize(width: 0.0, height: 1)
     textLayer.string = string
     textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
     textLayer.opacity = 0

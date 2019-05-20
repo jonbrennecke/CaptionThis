@@ -47,7 +47,7 @@ const styles = {
   flex: {
     flex: 1,
   },
-  absoluteFill: StyleSheet.absoluteFillObject
+  absoluteFill: StyleSheet.absoluteFillObject,
 };
 
 // $FlowFixMe

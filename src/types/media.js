@@ -5,6 +5,11 @@ export type Size = {
   height: number,
 };
 
+export type Point = {
+  x: number,
+  y: number,
+};
+
 export type VideoAssetIdentifier = string;
 
 export type VideoObject = {

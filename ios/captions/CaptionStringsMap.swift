@@ -44,8 +44,7 @@ class CaptionStringsMap {
   public static func byFitting(
     textSegments: [CaptionTextSegment],
     toLayersOfSize layerSizes: [Key: CGSize],
-    style: CaptionPresetStyle,
-    layout: VideoAnimationLayerLayout
+    style: CaptionPresetStyle
   ) -> CaptionStringsMap {
     let keys = listKeys(forLineStyle: style.lineStyle)
     var segments = textSegments
@@ -56,7 +55,7 @@ class CaptionStringsMap {
           continue
         }
         let width = CaptionSizingUtil.textWidth(forLayerSize: size)
-        guard case let (line?, remainingSegments) = fitNextLine(textSegments: segments, width: width, style: style, layout: layout) else {
+        guard case let (line?, remainingSegments) = fitNextLine(textSegments: segments, width: width, style: style) else {
           continue
         }
         segments = remainingSegments
@@ -99,12 +98,11 @@ class CaptionStringsMap {
   private static func fitNextLine(
     textSegments: [CaptionTextSegment],
     width: CGFloat,
-    style: CaptionPresetStyle,
-    layout: VideoAnimationLayerLayout
+    style: CaptionPresetStyle
   ) -> (line: TaggedLine?, remainingSegments: [CaptionTextSegment]) {
     let interpolatedSegments = interpolate(segments: textSegments)
     var textSegmentsMutableCopy = interpolatedSegments
-    let attributes = getStringAttributes(style: style, layout: layout)
+    let attributes = getStringAttributes(style: style)
     var attributedString = NSAttributedString(string: "", attributes: attributes)
     var substrings = [TaggedString]()
     var endTimestamp = CFTimeInterval(0)
@@ -135,8 +133,10 @@ class CaptionStringsMap {
     return (line: line, remainingSegments: textSegmentsMutableCopy)
   }
 
-  private static func getStringAttributes(style: CaptionPresetStyle, layout: VideoAnimationLayerLayout) -> [NSAttributedString.Key: Any] {
-    let lineHeight = CGFloat(layout.textLineHeight)
+  private static let FONT_SIZE_LINE_HEIGHT_MULTIPLIER = CGFloat(1.5) // lineHeight is equal to this magic number multiplied by the font size
+
+  private static func getStringAttributes(style: CaptionPresetStyle) -> [NSAttributedString.Key: Any] {
+    let lineHeight = style.font.pointSize * FONT_SIZE_LINE_HEIGHT_MULTIPLIER
     let fontSize = style.font.pointSize
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.lineHeightMultiple = 1.2

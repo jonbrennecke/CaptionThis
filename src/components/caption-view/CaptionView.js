@@ -5,8 +5,8 @@ import { View, requireNativeComponent, NativeModules } from 'react-native';
 import * as Color from '../../utils/Color';
 
 import type { Style } from '../../types/react';
-import type { CaptionStyleObject } from '../../types/video';
-import type { TextSegmentObject, Size } from '../../types/media';
+import type { CaptionStyleObject, CaptionViewLayout } from '../../types/video';
+import type { TextSegmentObject } from '../../types/media';
 
 type ReactNativeFiberHostComponent = any;
 
@@ -18,7 +18,7 @@ type Props = {
   duration: number,
   textSegments: TextSegmentObject[],
   captionStyle: CaptionStyleObject,
-  viewSize?: Size
+  viewLayout?: CaptionViewLayout,
 };
 
 const styles = {
@@ -81,7 +81,7 @@ export default class CaptionView extends Component<Props> {
           textColor={Color.transformRgbaObjectForNativeBridge(
             this.props.captionStyle.textColor
           )}
-          viewSize={this.props.viewSize}
+          viewLayout={this.props.viewLayout}
         />
       </View>
     );

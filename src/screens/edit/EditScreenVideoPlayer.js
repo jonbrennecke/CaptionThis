@@ -62,7 +62,10 @@ const styles = {
     overflow: 'hidden',
     backgroundColor: UI_COLORS.DARK_GREY,
   },
-  captionsContainer: StyleSheet.absoluteFillObject,
+  captionsContainer: {
+    ...StyleSheet.absoluteFillObject,
+    bottom: 75,
+  },
   playbackControls: {
     position: 'absolute',
     left: 0,

@@ -177,7 +177,7 @@ class CaptionPresetView: UIView {
   }
 
   private func updatePresetLayer() {
-    presetLayer = CaptionPresetLayer(style: style, textSegments: textSegments, duration: duration)
+    presetLayer = CaptionPresetLayer(impl: createCaptionStyleImpl())
     guard let presetLayer = presetLayer else {
       return
     }
@@ -186,21 +186,24 @@ class CaptionPresetView: UIView {
     layer.addSublayer(presetLayer)
   }
 
+  private static let captionPresetFixedSize = CGSize(width: 75, height: 75)
+
+  private func createCaptionStyleImpl() -> CaptionStyleImpl {
+    let layout = CaptionViewLayout(size: CaptionPresetView.captionPresetFixedSize, origin: .zero)
+    return CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, layout: layout, duration: duration)
+  }
+
   // MARK: UIView method implementations
 
   init() {
     super.init(frame: .zero)
-    presetLayer = CaptionPresetLayer(style: style, textSegments: textSegments, duration: duration)
-    presetLayer!.frame = bounds
+    presetLayer = CaptionPresetLayer(impl: createCaptionStyleImpl())
+    presetLayer?.frame = bounds
     layer.addSublayer(presetLayer!)
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  override func didMoveToSuperview() {
-    super.didMoveToSuperview()
   }
 
   override func layoutSubviews() {
