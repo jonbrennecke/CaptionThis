@@ -18,7 +18,7 @@ type Props = {
   duration: number,
   textSegments: TextSegmentObject[],
   captionStyle: CaptionStyleObject,
-  viewLayout?: CaptionViewLayout,
+  viewLayout: CaptionViewLayout,
 };
 
 const styles = {

@@ -7,13 +7,14 @@ import CaptionView from '../caption-view/CaptionView';
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
 import type { Orientation } from '../../types/media';
-import type { CaptionStyleObject } from '../../types/video';
+import type { CaptionStyleObject, CaptionViewLayout } from '../../types/video';
 
 type Props = {
   style?: ?Style,
   duration: number,
   orientation: Orientation,
   captionStyle: CaptionStyleObject,
+  viewLayout: CaptionViewLayout,
   speechTranscription: ?SpeechTranscription,
   isReadyToPlay: boolean,
   onPress?: () => void,
@@ -81,6 +82,7 @@ export default class VideoCaptionsView extends Component<Props> {
           duration={this.props.duration}
           textSegments={textSegments}
           captionStyle={this.props.captionStyle}
+          viewLayout={this.props.viewLayout}
         />
       </TouchableOpacity>
     );

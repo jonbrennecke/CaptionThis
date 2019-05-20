@@ -129,9 +129,8 @@ const styles = {
   rowWrap: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 24,
     flexDirection: 'row',
-    paddingTop: 35,
+    paddingTop: 25,
     paddingHorizontal: 35,
     paddingBottom: 5,
   },

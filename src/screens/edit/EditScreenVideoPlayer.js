@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { SafeAreaView, Dimensions, StyleSheet } from 'react-native';
+import { View, SafeAreaView, Dimensions, StyleSheet } from 'react-native';
 import throttle from 'lodash/throttle';
 import { autobind } from 'core-decorators';
 
@@ -13,6 +13,7 @@ import EditScreenTopControls from './EditScreenTopControls';
 import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
 import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
+import MeasureContentsView from '../../components/measure-contents-view/MeasureContentsView';
 
 import type { Size, Orientation, VideoObject } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
@@ -55,6 +56,7 @@ const styles = {
   flex: {
     flex: 1,
   },
+  absoluteFill: StyleSheet.absoluteFillObject,
   videoWrap: {
     borderRadius: 10,
     flex: 1,
@@ -62,10 +64,13 @@ const styles = {
     overflow: 'hidden',
     backgroundColor: UI_COLORS.DARK_GREY,
   },
-  captionsContainer: {
-    ...StyleSheet.absoluteFillObject,
-    bottom: 75,
+  measuredContents: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
+  captionsContainer: {},
   playbackControls: {
     position: 'absolute',
     left: 0,
@@ -291,6 +296,10 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
   }
 
   render() {
+    const captionViewLayout = ({ height, width }) => ({
+      size: { width, height: height + 85 },
+      origin: { x: 0, y: 0 },
+    });
     const showSeekbar =
       this.props.isSpeechTranscriptionFinal &&
       !this.props.isDeviceLimitedByMemory;
@@ -305,7 +314,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               ref={ref => {
                 this.playerView = ref;
               }}
-              style={styles.flex}
+              style={styles.absoluteFill}
               videoAssetIdentifier={this.props.video.id}
               onVideoDidBecomeReadyToPlay={(...args) => {
                 this.videoPlayerDidBecomeReadyToPlay(...args);
@@ -319,26 +328,35 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               onViewDidResize={this.props.onVideoViewDidUpdateSize}
             />
             <ScreenGradients />
-            <VideoCaptionsContainer
-              style={styles.captionsContainer}
-              orientation={this.props.orientation}
-            >
-              <VideoCaptionsView
-                ref={ref => {
-                  this.captionsView = ref;
-                }}
-                style={styles.flex}
-                isReadyToPlay={
-                  this.state.isVideoReadyToPlay &&
-                  this.props.isSpeechTranscriptionFinal
-                }
-                orientation={this.props.orientation}
-                duration={this.props.duration}
-                captionStyle={this.props.captionStyle}
-                speechTranscription={this.props.speechTranscription}
-                onPress={this.props.onRequestShowRichTextEditor}
-              />
-            </VideoCaptionsContainer>
+            <MeasureContentsView
+              style={styles.measuredContents}
+              renderChildren={viewSize => (
+                <>
+                  <VideoCaptionsContainer
+                    style={styles.captionsContainer}
+                    orientation={this.props.orientation}
+                  >
+                    <VideoCaptionsView
+                      ref={ref => {
+                        this.captionsView = ref;
+                      }}
+                      style={styles.flex}
+                      isReadyToPlay={
+                        this.state.isVideoReadyToPlay &&
+                        this.props.isSpeechTranscriptionFinal
+                      }
+                      orientation={this.props.orientation}
+                      duration={this.props.duration}
+                      captionStyle={this.props.captionStyle}
+                      viewLayout={captionViewLayout(viewSize)}
+                      speechTranscription={this.props.speechTranscription}
+                      onPress={this.props.onRequestShowRichTextEditor}
+                    />
+                  </VideoCaptionsContainer>
+                  <View style={{ height: 75 }} />
+                </>
+              )}
+            />
             <EditScreenTopControls
               style={styles.editTopControls}
               countryCode={this.props.countryCode}
