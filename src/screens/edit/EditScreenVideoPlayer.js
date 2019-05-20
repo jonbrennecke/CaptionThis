@@ -70,7 +70,9 @@ const styles = {
     right: 0,
     bottom: 0,
   },
-  captionsContainer: {},
+  captionPaddingView: {
+    height: 75,
+  },
   playbackControls: {
     position: 'absolute',
     left: 0,
@@ -332,10 +334,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               style={styles.measuredContents}
               renderChildren={viewSize => (
                 <>
-                  <VideoCaptionsContainer
-                    style={styles.captionsContainer}
-                    orientation={this.props.orientation}
-                  >
+                  <VideoCaptionsContainer orientation={this.props.orientation}>
                     <VideoCaptionsView
                       ref={ref => {
                         this.captionsView = ref;
@@ -353,7 +352,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                       onPress={this.props.onRequestShowRichTextEditor}
                     />
                   </VideoCaptionsContainer>
-                  <View style={{ height: 75 }} />
+                  <View style={styles.captionPaddingView} />
                 </>
               )}
             />

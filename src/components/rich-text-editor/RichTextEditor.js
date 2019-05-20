@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Animated, StyleSheet, Easing } from 'react-native';
+import { View, Animated, StyleSheet, Easing, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import throttle from 'lodash/throttle';
 
@@ -12,6 +12,7 @@ import RichTextBackgroundColorControl from './RichTextBackgroundColorControl';
 import RichTextFontSizeControl from './RichTextFontSizeControl';
 import RichTextEditorColorPicker from './RichTextEditorColorPicker';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
+import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
 import Button from '../button/Button';
 import { UI_COLORS } from '../../constants';
 
@@ -44,6 +45,8 @@ type State = {
   fontFamily: string,
   fontSize: number,
 };
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const styles = {
   container: {},
@@ -86,7 +89,6 @@ const styles = {
       },
     ],
   }),
-  transcription: {},
 };
 
 // $FlowFixMe
@@ -217,23 +219,28 @@ export default class RichTextEditor extends Component<Props, State> {
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        <VideoCaptionsView
-          ref={ref => {
-            this.captionsView = ref;
-          }}
-          isReadyToPlay={this.props.isReadyToPlay}
-          style={styles.transcription}
-          orientation="up"
-          duration={this.props.duration}
-          captionStyle={{
-            ...this.props.captionStyle,
-            textColor: this.state.textColor,
-            backgroundColor: this.state.backgroundColor,
-            fontFamily: this.state.fontFamily,
-            fontSize: this.state.fontSize,
-          }}
-          speechTranscription={this.props.speechTranscription}
-        />
+        <VideoCaptionsContainer orientation="up">
+          <VideoCaptionsView
+            ref={ref => {
+              this.captionsView = ref;
+            }}
+            isReadyToPlay={this.props.isReadyToPlay}
+            orientation="up"
+            duration={this.props.duration}
+            captionStyle={{
+              ...this.props.captionStyle,
+              textColor: this.state.textColor,
+              backgroundColor: this.state.backgroundColor,
+              fontFamily: this.state.fontFamily,
+              fontSize: this.state.fontSize,
+            }}
+            speechTranscription={this.props.speechTranscription}
+            viewLayout={{
+              size: { height: 85, width: SCREEN_WIDTH },
+              origin: { x: 0, y: 0 },
+            }}
+          />
+        </VideoCaptionsContainer>
         <View style={styles.mainContents}>
           <View style={styles.mainContentsBackground} />
           <RichTextFontFamilyControl
