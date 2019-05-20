@@ -39,33 +39,6 @@ struct VideoAnimationLayerLayout {
     )
   }
 
-//  @available(*, deprecated, message: "use CaptionLayout.layoutForView(orientation:style:)")
-//  public static func layoutForView(orientation: UIImage.Orientation, model: VideoAnimationLayerModel) -> VideoAnimationLayerLayout {
-//    let orientationMultiplier = OrientationUtil.isLandscape(orientation: orientation) ? Float(9.0 / 16.0) : 1
-//    let containerPaddingHorizontal = 10 * orientationMultiplier
-//    let containerPaddingVertical = 5 * orientationMultiplier
-//    let textPaddingVertical = 5 * orientationMultiplier
-//    let fontSize = orientationMultiplier * model.fontSize
-//    let textLineHeight = fontSize * 1.50
-//    let lineMultiplier = Float(model.lineStyle == .oneLine ? 1.0 : 2.0)
-//    let textHeight = textLineHeight * lineMultiplier + textPaddingVertical * 2
-//    let frameHeight = textHeight + containerPaddingVertical * 2
-//    let maxCharactersPerLine = Int((Float(UIScreen.main.bounds.width) / (fontSize * 0.65)).rounded())
-//    return VideoAnimationLayerLayout(
-//      containerPaddingHorizontal: containerPaddingHorizontal,
-//      containerPaddingVertical: containerPaddingVertical,
-//      textPaddingVertical: textPaddingVertical,
-//      fontSize: fontSize,
-//      textLineHeight: textLineHeight,
-//      textHeight: textHeight,
-//      frameHeight: frameHeight,
-//      maxCharactersPerLine: maxCharactersPerLine,
-//      shadowOffsetHeight: 1,
-//      animationMultipler: -1,
-//      animationOffsetMultiplier: 1
-//    )
-//  }
-
   public static func layoutForExport(dimensions: VideoDimensions, style: CaptionExportStyle) -> VideoAnimationLayerLayout {
     let heightRatio = Float(dimensions.size.height) / Float(style.viewSize.height)
     let frameHeight = CAPTION_VIEW_HEIGHT * heightRatio

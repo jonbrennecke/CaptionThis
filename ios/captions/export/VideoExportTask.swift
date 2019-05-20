@@ -97,19 +97,19 @@ class VideoExportTask {
     // TODO: cleanup
     let layout = VideoAnimationLayerLayout.layoutForExport(dimensions: dimensions, style: style)
 
-//    let exportStyle = CaptionExportStyle(
-//      wordStyle: style.wordStyle,
-//      lineStyle: style.lineStyle,
-//      textAlignment: style.textAlignment,
-//      backgroundStyle: style.backgroundStyle,
-//      backgroundColor: style.backgroundColor,
-//      font: style.font.withSize(CGFloat(layout.fontSize)),
-//      textColor: style.textColor,
-//      viewSize: style.viewSize
-//    )
+    let exportStyle = CaptionExportStyle(
+      wordStyle: style.wordStyle,
+      lineStyle: style.lineStyle,
+      textAlignment: style.textAlignment,
+      backgroundStyle: style.backgroundStyle,
+      backgroundColor: style.backgroundColor,
+      font: style.font.withSize(CGFloat(layout.fontSize)),
+      textColor: style.textColor,
+      viewSize: style.viewSize
+    )
 
     let viewLayout = CaptionViewLayout.defaultLayout
-    let impl = CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, layout: viewLayout, duration: duration)
+    let impl = CaptionPresetStyleImplFactory.impl(forStyle: exportStyle, textSegments: textSegments, layout: viewLayout, duration: duration)
     let captionLayer = CaptionLayer(impl: impl)
     captionLayer.frame = frame(forComposition: composition, layout: layout)
     captionLayer.resizeSublayers()
