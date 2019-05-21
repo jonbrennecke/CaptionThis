@@ -15,7 +15,6 @@ type Props = {
 };
 
 const CAPTION_VIEW_HEIGHT_PORTRAIT = 85;
-const CAPTION_VIEW_HEIGHT_LANDSCAPE = 60;
 
 const styles = {
   container: {},
@@ -23,12 +22,13 @@ const styles = {
     if (isLandscape(orientation)) {
       const videoHeight = videoPlayerViewSize.width * 9 / 16;
       const bottomOfVideo = (videoPlayerViewSize.height - videoHeight) / 2;
+      const heightRatio = videoHeight / videoPlayerViewSize.height;
       return {
         position: 'absolute',
         left: 0,
         right: 0,
-        height: CAPTION_VIEW_HEIGHT_LANDSCAPE,
-        bottom: bottomOfVideo + CAPTION_VIEW_HEIGHT_LANDSCAPE / 2 - 11,
+        height: CAPTION_VIEW_HEIGHT_PORTRAIT * heightRatio,
+        bottom: bottomOfVideo + 75 * heightRatio,
       };
     } else {
       return {

@@ -1,5 +1,7 @@
 import Photos
 
+fileprivate let CAPTION_VIEW_HEIGHT = CGFloat(85)
+
 protocol VideoExportTaskDelegate {
   func videoExportTask(didEncounterError _: VideoExportTask.Error)
   func videoExportTask(didFinishTask placeholder: PHObjectPlaceholder)
@@ -93,25 +95,22 @@ class VideoExportTask {
     let size = CGSize(width: abs(rotatedSize.width), height: abs(rotatedSize.height))
     let orientation = OrientationUtil.orientation(forAsset: asset)
     let dimensions = VideoDimensions(size: size, orientation: orientation)
-
-    // TODO: cleanup
-    let layout = VideoAnimationLayerLayout.layoutForExport(dimensions: dimensions, style: style)
-
+    let heightRatio = dimensions.size.height / style.viewSize.height
+    let fontSize = heightRatio * style.font.pointSize * 1.5
     let exportStyle = CaptionExportStyle(
       wordStyle: style.wordStyle,
       lineStyle: style.lineStyle,
       textAlignment: style.textAlignment,
       backgroundStyle: style.backgroundStyle,
       backgroundColor: style.backgroundColor,
-      font: style.font.withSize(CGFloat(layout.fontSize)),
+      font: style.font.withSize(fontSize),
       textColor: style.textColor,
       viewSize: style.viewSize
     )
-
     let viewLayout = CaptionViewLayout.defaultLayout
     let impl = CaptionPresetStyleImplFactory.impl(forStyle: exportStyle, textSegments: textSegments, layout: viewLayout, duration: duration)
     let captionLayer = CaptionLayer(impl: impl)
-    captionLayer.frame = frame(forComposition: composition, layout: layout)
+    captionLayer.frame = frame(videoSize: composition.videoSize, dimensions: dimensions)
     captionLayer.resizeSublayers()
     captionLayer.timeOffset = 0
     captionLayer.speed = 1
@@ -123,19 +122,13 @@ class VideoExportTask {
     exportSession.export()
     state = .pending(.exportingCaptionAnimation(exportSession), startTime)
   }
-
-  private func frame(forComposition composition: VideoAnimationComposition, layout: VideoAnimationLayerLayout) -> CGRect {
-    var offsetFromBottom: CGFloat = composition.videoSize.height * 0.1
-    switch composition.orientation {
-    case .left, .right, .leftMirrored, .rightMirrored:
-      offsetFromBottom = 50
-      break
-    default:
-      break
-    }
-    let height = CGFloat(layout.frameHeight)
-    let width = composition.videoSize.width
-    return CGRect(x: 0, y: composition.videoSize.height - offsetFromBottom - height, width: width, height: height)
+  
+  private func frame(videoSize: CGSize, dimensions: VideoDimensions) -> CGRect {
+    let heightRatio = dimensions.size.height / style.viewSize.height
+    let height = CAPTION_VIEW_HEIGHT * heightRatio
+    print(videoSize.height - 75 * heightRatio)
+    print(videoSize.height)
+    return CGRect(x: 0, y: videoSize.height - 75 * heightRatio - height, width: videoSize.width, height: height)
   }
 
   private func createVideoAsset(forURL url: URL) {
