@@ -125,13 +125,15 @@ class BoundsAnimationStep: AnimationBuilderStep {
 }
 
 class FadeInAnimationStep: AnimationBuilderStep {
-  func animate(at beginTime: CFTimeInterval, duration: CFTimeInterval) -> CAAnimation {
-    return AnimationUtil.fadeIn(at: beginTime, duration: duration)
+  func animate(at beginTime: CFTimeInterval, duration stepDuration: CFTimeInterval) -> CAAnimation {
+    let duration = stepDuration * 0.5
+    return AnimationUtil.fadeIn(at: beginTime + duration, duration: duration)
   }
 }
 
 class FadeOutAnimationStep: AnimationBuilderStep {
-  func animate(at beginTime: CFTimeInterval, duration: CFTimeInterval) -> CAAnimation {
+  func animate(at beginTime: CFTimeInterval, duration stepDuration: CFTimeInterval) -> CAAnimation {
+    let duration = stepDuration * 0.5
     return AnimationUtil.fadeOut(at: beginTime, duration: duration)
   }
 }
