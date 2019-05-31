@@ -152,6 +152,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-haptic-feedback')
     compile project(':react-native-sentry')
     compile project(':react-native-splash-screen')
     compile project(':react-native-svg')

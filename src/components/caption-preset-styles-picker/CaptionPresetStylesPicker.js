@@ -6,6 +6,7 @@ import isEqual from 'lodash/isEqual';
 import clamp from 'lodash/clamp';
 import round from 'lodash/round';
 import omit from 'lodash/omit';
+import ReactNativeHaptic from 'react-native-haptic';
 
 import CaptionPresetView from './CaptionPresetView';
 import CaptionPresetAnimatedBorderView from './CaptionPresetAnimatedBorderView';
@@ -69,6 +70,12 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
   state = {
     isDragging: false,
   };
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.currentPreset.id !== prevProps.currentPreset.id) {
+      ReactNativeHaptic.generate('selection');
+    }
+  }
 
   onScrollViewDidScroll(event: any) {
     const { contentOffset } = event.nativeEvent;
