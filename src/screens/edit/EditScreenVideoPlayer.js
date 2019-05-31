@@ -132,7 +132,6 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     } else if (!this.props.isExportingVideo && prevProps.isExportingVideo) {
       this.onDidEndExport();
     }
-    // TODO: restart player and captions when speech transcription is finalized
   }
 
   appWillEnterBackground() {
@@ -197,7 +196,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     }
   );
 
-  async videoPlayerDidBecomeReadyToPlay(
+  videoPlayerDidBecomeReadyToPlay(
     duration: number,
     orientation: Orientation
   ) {
@@ -206,9 +205,10 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     if (!this.props.isSpeechTranscriptionFinal) {
       this.pausePlayerAndCaptions();
     } else {
-      this.restartPlayerAndCaptions();
       this.setState({
         isVideoReadyToPlay: true,
+      }, () => {
+        this.restartPlayerAndCaptions();
       });
     }
   }
