@@ -189,7 +189,7 @@ class CaptionView: UIView {
     layer.sublayers = nil
     layer.addSublayer(captionLayer)
   }
-  
+
   private func createCaptionStyleImpl() -> CaptionStyleImpl {
     return CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, layout: viewLayout, duration: duration)
   }

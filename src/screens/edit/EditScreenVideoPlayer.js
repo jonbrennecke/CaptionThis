@@ -196,20 +196,20 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     }
   );
 
-  videoPlayerDidBecomeReadyToPlay(
-    duration: number,
-    orientation: Orientation
-  ) {
+  videoPlayerDidBecomeReadyToPlay(duration: number, orientation: Orientation) {
     this.props.onRequestChangeDuration(duration);
     this.props.onRequestChangeOrientation(orientation);
     if (!this.props.isSpeechTranscriptionFinal) {
       this.pausePlayerAndCaptions();
     } else {
-      this.setState({
-        isVideoReadyToPlay: true,
-      }, () => {
-        this.restartPlayerAndCaptions();
-      });
+      this.setState(
+        {
+          isVideoReadyToPlay: true,
+        },
+        () => {
+          this.restartPlayerAndCaptions();
+        }
+      );
     }
   }
 

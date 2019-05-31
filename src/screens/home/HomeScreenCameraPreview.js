@@ -74,13 +74,14 @@ export default class HomeScreenCameraPreview extends Component<Props> {
   }
 
   render() {
-    const textSegments = this.props.speechTranscription
-      ? this.props.speechTranscription.segments.map(s => ({
-          duration: s.duration,
-          timestamp: s.timestamp,
-          text: s.substring,
-        }))
-      : [];
+    const textSegments =
+      this.props.speechTranscription && this.props.isCameraRecording
+        ? this.props.speechTranscription.segments.map(s => ({
+            duration: s.duration,
+            timestamp: s.timestamp,
+            text: s.substring,
+          }))
+        : [];
     return (
       <Animated.View
         style={[

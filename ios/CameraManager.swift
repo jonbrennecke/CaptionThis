@@ -271,14 +271,14 @@ class CameraManager: NSObject {
     }
     return .success
   }
-  
+
   private func setupAudioInput() -> CameraSetupResult {
     audioCaptureDevice = AVCaptureDevice.default(for: .audio)
     guard let audioCaptureDevice = audioCaptureDevice else {
       Debug.log(message: "Audio device is not available.")
       return .failure
     }
-    
+
     // setup audioCaptureDeviceInput
     audioCaptureDeviceInput = try? AVCaptureDeviceInput(device: audioCaptureDevice)
     guard let audioCaptureDeviceInput = audioCaptureDeviceInput else {
@@ -293,14 +293,14 @@ class CameraManager: NSObject {
     }
     return .success
   }
-  
+
   private func removeAudioInput() -> CameraSetupResult {
     audioCaptureDevice = AVCaptureDevice.default(for: .audio)
     guard let audioCaptureDevice = audioCaptureDevice else {
       Debug.log(message: "Audio device is not available.")
       return .failure
     }
-    
+
     // setup audioCaptureDeviceInput
     audioCaptureDeviceInput = try? AVCaptureDeviceInput(device: audioCaptureDevice)
     guard let audioCaptureDeviceInput = audioCaptureDeviceInput else {

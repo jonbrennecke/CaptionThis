@@ -2,22 +2,21 @@ import UIKit
 
 protocol CaptionPresetBackgroundStyleImpl {
   var backgroundStyle: CaptionPresetBackgroundStyle { get }
-  func applyBackgroundStyle(parentLayer: CALayer, backgroundColor: UIColor, layout: CaptionViewLayout)
+  func applyBackgroundStyle(parentLayer: CALayer, backgroundColor: UIColor, layout: CaptionViewLayout, map: CaptionStringsMap)
 }
 
 class CaptionPresetGradientBackgroundStyleImpl: CaptionPresetBackgroundStyleImpl {
   let backgroundStyle: CaptionPresetBackgroundStyle = .gradient
 
-  func applyBackgroundStyle(parentLayer: CALayer, backgroundColor: UIColor, layout: CaptionViewLayout) {
+  func applyBackgroundStyle(parentLayer: CALayer, backgroundColor: UIColor, layout: CaptionViewLayout, map _: CaptionStringsMap) {
     let size = CGSize(width: layout.size.width, height: layout.size.height)
     let gradientLayer = CAGradientLayer()
     gradientLayer.frame = CGRect(origin: layout.origin, size: size)
     gradientLayer.colors = [
-      backgroundColor.withAlphaComponent(0.20).cgColor,
-      backgroundColor.withAlphaComponent(0.20).cgColor,
+      backgroundColor.withAlphaComponent(0.8).cgColor,
       backgroundColor.withAlphaComponent(0).cgColor,
     ]
-    gradientLayer.locations = [0, 0.5, 1]
+    gradientLayer.locations = [0, 1]
     gradientLayer.startPoint = CGPoint(x: 0.5, y: 1)
     gradientLayer.endPoint = CGPoint(x: 0.5, y: 0)
     parentLayer.insertSublayer(gradientLayer, at: 0)
@@ -27,7 +26,13 @@ class CaptionPresetGradientBackgroundStyleImpl: CaptionPresetBackgroundStyleImpl
 class CaptionPresetSolidBackgroundStyleImpl: CaptionPresetBackgroundStyleImpl {
   let backgroundStyle: CaptionPresetBackgroundStyle = .solid
 
-  func applyBackgroundStyle(parentLayer: CALayer, backgroundColor: UIColor, layout _: CaptionViewLayout) {
+  func applyBackgroundStyle(parentLayer: CALayer, backgroundColor: UIColor, layout _: CaptionViewLayout, map: CaptionStringsMap) {
+    guard let beginTime = map.getLine(byKey: .a, index: 0)?.timestamp else {
+      return
+    }
+    let animation = AnimationUtil.fadeIn(at: beginTime)
+    parentLayer.opacity = 0
+    parentLayer.add(animation, forKey: nil)
     parentLayer.backgroundColor = backgroundColor.withAlphaComponent(0.9).cgColor
     parentLayer.masksToBounds = true
   }

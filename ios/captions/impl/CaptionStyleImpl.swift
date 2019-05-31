@@ -102,7 +102,7 @@ class CaptionStyleImpl {
     map.each { key, _ in
       applyStyles(key: key, parentLayer: parentLayer, map: map)
     }
-    backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor, layout: layout)
+    backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor, layout: layout, map: map)
   }
 
   // TODO: this should be owned by the LineStyleImpl

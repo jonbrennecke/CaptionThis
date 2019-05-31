@@ -51,7 +51,7 @@ export const exportVideo = async ({
         removeExportListeners();
         onExportDidFinish();
       },
-      onExportDidUpdateProgress
+      onExportDidUpdateProgress,
     });
     await VideoExportManager.exportVideo({
       video: videoID,
@@ -69,7 +69,7 @@ export const exportVideo = async ({
 const addExportListeners = ({
   onExportDidFail,
   onExportDidFinish,
-  onExportDidUpdateProgress
+  onExportDidUpdateProgress,
 }) => {
   exportDidFinishListener = VideoExportManager.addDidFinishListener(
     onExportDidFinish

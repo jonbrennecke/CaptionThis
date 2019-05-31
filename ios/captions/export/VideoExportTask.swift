@@ -1,7 +1,7 @@
 import Photos
 
 fileprivate let CAPTION_VIEW_HEIGHT_PORTRAIT = CGFloat(85)
-fileprivate let CAPTION_VIEW_OFFSET_FROM_BOTTOM = CGFloat(75);
+fileprivate let CAPTION_VIEW_OFFSET_FROM_BOTTOM = CGFloat(75)
 
 protocol VideoExportTaskDelegate {
   func videoExportTask(didEncounterError _: VideoExportTask.Error)
@@ -124,7 +124,7 @@ class VideoExportTask {
     exportSession.export()
     state = .pending(.exportingCaptionAnimation(exportSession), startTime)
   }
-  
+
   private func createCaptionViewLayout(videoSize: CGSize, heightRatio: CGFloat) -> CaptionViewLayout {
     let height = (CAPTION_VIEW_HEIGHT_PORTRAIT + CAPTION_VIEW_OFFSET_FROM_BOTTOM) * heightRatio
     let size = CGSize(width: videoSize.width, height: height)
