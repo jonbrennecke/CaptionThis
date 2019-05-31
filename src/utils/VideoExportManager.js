@@ -4,6 +4,7 @@ import Promise from 'bluebird';
 
 import * as Debug from './Debug';
 import * as Color from './Color';
+import { isLandscape } from './Orientation';
 
 import type {
   Size,
@@ -69,13 +70,16 @@ export default class VideoExportManager {
   static async exportVideo({
     captionStyle,
     viewSize,
-    ...etcParams
+    orientation,
+    ...etc
   }: ExportParams) {
     const exportParams = {
-      ...etcParams,
+      ...etc,
+      orientation,
       captionStyle: {
         ...captionStyle,
         viewSize,
+        fontSize: exportFontSize(captionStyle.fontSize, viewSize, orientation),
         textColor: Color.transformRgbaObjectForNativeBridge(
           captionStyle.textColor
         ),
@@ -90,3 +94,12 @@ export default class VideoExportManager {
     await NativeVideoExportModule.exportVideoAsync(exportParams);
   }
 }
+
+const exportFontSize = (
+  fontSize: number,
+  viewSize: Size,
+  orientation: Orientation
+): number =>
+  isLandscape(orientation)
+    ? fontSize * (viewSize.height / viewSize.width)
+    : fontSize;

@@ -306,11 +306,12 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
         : { width, height: height + 85 },
       origin: { x: 0, y: 0 },
     });
-    const captionStyleForOrientation = (orientation: Orientation, { fontSize, ...captionStyle }: CaptionStyleObject) => ({
+    const captionStyleForOrientation = (
+      orientation: Orientation,
+      { fontSize, ...captionStyle }: CaptionStyleObject
+    ) => ({
       ...captionStyle,
-      fontSize: isLandscape(orientation)
-        ? fontSize * 0.5
-        : fontSize
+      fontSize: isLandscape(orientation) ? fontSize * 0.5 : fontSize,
     });
     const showSeekbar =
       this.props.isSpeechTranscriptionFinal &&
@@ -359,14 +360,18 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                       }
                       orientation={this.props.orientation}
                       duration={this.props.duration}
-                      captionStyle={captionStyleForOrientation(this.props.orientation, this.props.captionStyle)}
+                      captionStyle={captionStyleForOrientation(
+                        this.props.orientation,
+                        this.props.captionStyle
+                      )}
                       viewLayout={captionViewLayout(viewSize)}
                       speechTranscription={this.props.speechTranscription}
                       onPress={this.props.onRequestShowRichTextEditor}
                     />
                   </VideoCaptionsContainer>
-                  {isPortrait(this.props.orientation) && <View style={styles.captionPaddingView} />
-                  }
+                  {isPortrait(this.props.orientation) && (
+                    <View style={styles.captionPaddingView} />
+                  )}
                 </>
               )}
             />

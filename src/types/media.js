@@ -11,10 +11,11 @@ export type Point = {
 };
 
 export type VideoAssetIdentifier = string;
+export type VideoID = VideoAssetIdentifier;
 
 export type VideoObject = {
   duration: number,
-  id: VideoAssetIdentifier,
+  id: VideoID,
 };
 
 export type ColorRGBA = {

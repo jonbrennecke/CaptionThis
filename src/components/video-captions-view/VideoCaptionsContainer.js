@@ -15,6 +15,7 @@ type Props = {
 };
 
 const CAPTION_VIEW_HEIGHT_PORTRAIT = 85;
+const CAPTION_VIEW_OFFSET_FROM_BOTTOM = 75;
 
 const styles = {
   container: {},
@@ -28,7 +29,7 @@ const styles = {
         left: 0,
         right: 0,
         height: CAPTION_VIEW_HEIGHT_PORTRAIT * heightRatio,
-        bottom: bottomOfVideo + 75 * heightRatio,
+        bottom: bottomOfVideo + CAPTION_VIEW_OFFSET_FROM_BOTTOM * heightRatio,
       };
     } else {
       return {

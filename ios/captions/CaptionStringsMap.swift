@@ -46,6 +46,7 @@ class CaptionStringsMap {
     toLayersOfSize layerSizes: [Key: CGSize],
     style: CaptionPresetStyle
   ) -> CaptionStringsMap {
+    let attributes = getStringAttributes(style: style)
     let keys = listKeys(forLineStyle: style.lineStyle)
     var segments = textSegments
     let map = CaptionStringsMap()
@@ -55,7 +56,7 @@ class CaptionStringsMap {
           continue
         }
         let width = CaptionSizingUtil.textWidth(forLayerSize: size)
-        guard case let (line?, remainingSegments) = fitNextLine(textSegments: segments, width: width, style: style) else {
+        guard case let (line?, remainingSegments) = fitNextLine(textSegments: segments, width: width, attributes: attributes) else {
           continue
         }
         segments = remainingSegments
@@ -98,11 +99,10 @@ class CaptionStringsMap {
   private static func fitNextLine(
     textSegments: [CaptionTextSegment],
     width: CGFloat,
-    style: CaptionPresetStyle
+    attributes: [NSAttributedString.Key: Any]
   ) -> (line: TaggedLine?, remainingSegments: [CaptionTextSegment]) {
     let interpolatedSegments = interpolate(segments: textSegments)
     var textSegmentsMutableCopy = interpolatedSegments
-    let attributes = getStringAttributes(style: style)
     var attributedString = NSAttributedString(string: "", attributes: attributes)
     var substrings = [TaggedString]()
     var endTimestamp = CFTimeInterval(0)
@@ -133,13 +133,13 @@ class CaptionStringsMap {
     return (line: line, remainingSegments: textSegmentsMutableCopy)
   }
 
-  private static let FONT_SIZE_LINE_HEIGHT_MULTIPLIER = CGFloat(1.5) // lineHeight is equal to this magic number multiplied by the font size
+  private static let FONT_SIZE_LINE_HEIGHT_MULTIPLE = CGFloat(1.5) // lineHeight is equal to this magic number multiplied by the font size
 
   private static func getStringAttributes(style: CaptionPresetStyle) -> [NSAttributedString.Key: Any] {
-    let lineHeight = style.font.pointSize * FONT_SIZE_LINE_HEIGHT_MULTIPLIER
+    let lineHeight = style.font.pointSize * FONT_SIZE_LINE_HEIGHT_MULTIPLE
     let fontSize = style.font.pointSize
     let paragraphStyle = NSMutableParagraphStyle()
-    paragraphStyle.lineHeightMultiple = 1.2
+    paragraphStyle.lineHeightMultiple = 1
     return [
       .foregroundColor: style.textColor.cgColor,
       .font: style.font,

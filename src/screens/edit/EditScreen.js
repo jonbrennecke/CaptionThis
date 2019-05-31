@@ -5,7 +5,6 @@ import { autobind } from 'core-decorators';
 import { Navigation } from 'react-native-navigation';
 
 import * as Debug from '../../utils/Debug';
-import VideoExportManager from '../../utils/VideoExportManager';
 import { UI_COLORS } from '../../constants';
 
 import EditScreenVideoPlayer from './EditScreenVideoPlayer';
@@ -17,6 +16,7 @@ import EditScreenEditCaptionsOverlay from './EditScreenEditCaptionsOverlay';
 import SpeechManager from '../../utils/SpeechManager';
 import LocaleMenu from '../../components/localization/LocaleMenu';
 import Container from './Container';
+import * as actions from './actions';
 
 import type { Size, ColorRGBA, Orientation } from '../../types/media';
 import type { SpeechTranscription, LocaleObject } from '../../types/speech';
@@ -61,9 +61,6 @@ export default class EditScreen extends Component<Props, State> {
   speechManagerDidEndListener: ?EmitterSubscription;
   speechManagerDidFailListener: ?EmitterSubscription;
   // speechManagerDidChangeLocaleListener: ?EmitterSubscription;
-  exportDidFinishListener: ?EmitterSubscription;
-  exportDidFailListener: ?EmitterSubscription;
-  exportDidUpdateProgressListener: ?EmitterSubscription;
 
   async componentDidMount() {
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
@@ -77,7 +74,6 @@ export default class EditScreen extends Component<Props, State> {
   componentWillUnmount() {
     ReactAppState.removeEventListener('change', this.handleAppStateWillChange);
     this.removeSpeechListeners();
-    this.removeExportListeners();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -216,26 +212,17 @@ export default class EditScreen extends Component<Props, State> {
 
   async exportVideo() {
     this.props.willExportVideo();
-    this.addExportListeners();
-    const textSegments = this.props.speechTranscription
-      ? this.props.speechTranscription.segments.map(segment => ({
-          duration: segment.duration,
-          timestamp: segment.timestamp,
-          text: segment.substring,
-        }))
-      : [];
-    try {
-      await VideoExportManager.exportVideo({
-        video: this.props.video.id,
-        viewSize: this.state.videoViewSize,
-        duration: this.state.duration,
-        orientation: this.state.orientation || 'up',
-        captionStyle: this.props.captionStyle,
-        textSegments,
-      });
-    } catch (error) {
-      Debug.logError(error);
-    }
+    await actions.exportVideo({
+      speechTranscription: this.props.speechTranscription,
+      videoID: this.props.video.id,
+      videoViewSize: this.state.videoViewSize,
+      duration: this.state.duration,
+      orientation: this.state.orientation,
+      captionStyle: this.props.captionStyle,
+      onExportDidFail: this.onExportDidFail,
+      onExportDidFinish: this.onExportDidFinish,
+      onExportDidUpdateProgress: this.onExportDidUpdateProgress,
+    });
   }
 
   onExportDidUpdateProgress(progress: number) {
@@ -248,35 +235,11 @@ export default class EditScreen extends Component<Props, State> {
   onExportDidFinish() {
     Debug.log('Video export finished');
     this.props.didExportVideo();
-    this.removeExportListeners();
   }
 
   onExportDidFail() {
     // TODO: update redux
     Debug.log('Video export failed');
-    this.removeExportListeners();
-  }
-
-  addExportListeners() {
-    this.exportDidFinishListener = VideoExportManager.addDidFinishListener(
-      this.onExportDidFinish
-    );
-    this.exportDidFailListener = VideoExportManager.addDidFailListener(
-      this.onExportDidFinish
-    );
-    this.exportDidUpdateProgressListener = VideoExportManager.addDidUpdateProgressListener(
-      this.onExportDidUpdateProgress
-    );
-  }
-
-  removeExportListeners() {
-    this.exportDidFinishListener && this.exportDidFinishListener.remove();
-    this.exportDidFinishListener = null;
-    this.exportDidFailListener && this.exportDidFailListener.remove();
-    this.exportDidFailListener = null;
-    this.exportDidUpdateProgressListener &&
-      this.exportDidUpdateProgressListener.remove();
-    this.exportDidUpdateProgressListener = null;
   }
 
   textOverlayParams() {

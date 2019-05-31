@@ -96,7 +96,7 @@ class VideoExportTask {
     let orientation = OrientationUtil.orientation(forAsset: asset)
     let dimensions = VideoDimensions(size: size, orientation: orientation)
     let heightRatio = dimensions.size.height / style.viewSize.height
-    let fontSize = heightRatio * style.font.pointSize * 1.5
+    let fontSize = heightRatio * style.font.pointSize
     let exportStyle = CaptionExportStyle(
       wordStyle: style.wordStyle,
       lineStyle: style.lineStyle,
@@ -122,7 +122,7 @@ class VideoExportTask {
     exportSession.export()
     state = .pending(.exportingCaptionAnimation(exportSession), startTime)
   }
-  
+
   private func frame(videoSize: CGSize, dimensions: VideoDimensions) -> CGRect {
     let heightRatio = dimensions.size.height / style.viewSize.height
     let height = CAPTION_VIEW_HEIGHT * heightRatio
