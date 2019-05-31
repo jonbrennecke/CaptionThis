@@ -57,7 +57,7 @@ const PRESET_STYLES: CaptionPresetStyleObject[] = [
     lineStyle: 'translateY',
     wordStyle: 'none',
     backgroundStyle: 'gradient',
-    backgroundColor: Color.hexToRgbaObject(UI_COLORS.DARK_GREY),
+    backgroundColor: Color.hexToRgbaObject(UI_COLORS.BLACK),
     fontFamily: FONT_FAMILIES.RIGHTEOUS,
     textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
   },
