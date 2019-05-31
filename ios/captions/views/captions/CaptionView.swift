@@ -183,15 +183,15 @@ class CaptionView: UIView {
     }
   }
 
-  private func createCaptionStyleImpl() -> CaptionStyleImpl {
-    return CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, layout: viewLayout, duration: duration)
-  }
-
   private func updateCaptionLayer() {
     captionLayer = CaptionLayer(impl: createCaptionStyleImpl())
     captionLayer.frame = bounds
     layer.sublayers = nil
     layer.addSublayer(captionLayer)
+  }
+  
+  private func createCaptionStyleImpl() -> CaptionStyleImpl {
+    return CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, layout: viewLayout, duration: duration)
   }
 
   // MARK: UIView method implementations

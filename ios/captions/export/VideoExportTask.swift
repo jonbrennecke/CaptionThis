@@ -1,6 +1,7 @@
 import Photos
 
-fileprivate let CAPTION_VIEW_HEIGHT = CGFloat(85)
+fileprivate let CAPTION_VIEW_HEIGHT_PORTRAIT = CGFloat(85)
+fileprivate let CAPTION_VIEW_OFFSET_FROM_BOTTOM = CGFloat(75);
 
 protocol VideoExportTaskDelegate {
   func videoExportTask(didEncounterError _: VideoExportTask.Error)
@@ -107,10 +108,11 @@ class VideoExportTask {
       textColor: style.textColor,
       viewSize: style.viewSize
     )
-    let viewLayout = CaptionViewLayout.defaultLayout
-    let impl = CaptionPresetStyleImplFactory.impl(forStyle: exportStyle, textSegments: textSegments, layout: viewLayout, duration: duration)
+    let frame = createCaptionLayerFrame(videoSize: composition.videoSize, heightRatio: heightRatio)
+    let layout = createCaptionViewLayout(videoSize: composition.videoSize, heightRatio: heightRatio)
+    let impl = CaptionPresetStyleImplFactory.impl(forStyle: exportStyle, textSegments: textSegments, layout: layout, duration: duration)
     let captionLayer = CaptionLayer(impl: impl)
-    captionLayer.frame = frame(videoSize: composition.videoSize, dimensions: dimensions)
+    captionLayer.frame = frame
     captionLayer.resizeSublayers()
     captionLayer.timeOffset = 0
     captionLayer.speed = 1
@@ -122,13 +124,17 @@ class VideoExportTask {
     exportSession.export()
     state = .pending(.exportingCaptionAnimation(exportSession), startTime)
   }
+  
+  private func createCaptionViewLayout(videoSize: CGSize, heightRatio: CGFloat) -> CaptionViewLayout {
+    let height = (CAPTION_VIEW_HEIGHT_PORTRAIT + CAPTION_VIEW_OFFSET_FROM_BOTTOM) * heightRatio
+    let size = CGSize(width: videoSize.width, height: height)
+    return CaptionViewLayout(size: size, origin: .zero)
+  }
 
-  private func frame(videoSize: CGSize, dimensions: VideoDimensions) -> CGRect {
-    let heightRatio = dimensions.size.height / style.viewSize.height
-    let height = CAPTION_VIEW_HEIGHT * heightRatio
-    print(videoSize.height - 75 * heightRatio)
-    print(videoSize.height)
-    return CGRect(x: 0, y: videoSize.height - 75 * heightRatio - height, width: videoSize.width, height: height)
+  private func createCaptionLayerFrame(videoSize: CGSize, heightRatio: CGFloat) -> CGRect {
+    let height = CAPTION_VIEW_HEIGHT_PORTRAIT * heightRatio
+    let y = videoSize.height - CAPTION_VIEW_OFFSET_FROM_BOTTOM * heightRatio - height
+    return CGRect(x: 0, y: y, width: videoSize.width, height: height)
   }
 
   private func createVideoAsset(forURL url: URL) {
