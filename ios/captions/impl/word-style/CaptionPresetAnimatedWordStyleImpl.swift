@@ -44,7 +44,7 @@ class CaptionPresetAnimatedWordStyleImpl: CaptionPresetWordStyleImpl {
     let textYOffset = (parentLayer.frame.height - textSize.height) / 2
     let textXOffset = textHorizontalOffset(textWidth: textSize.width, parentLayerWidth: parentLayer.frame.width, textAlignment: textAlignment)
     let textFrame = CGRect(origin: CGPoint(x: textXOffset, y: textYOffset), size: textSize)
-    let parentLayer = CALayer()
+    let parentLayer = CenteredTextLayer()
     parentLayer.contentsScale = UIScreen.main.scale
     parentLayer.frame = textFrame
     var xOffsetAcc = CGFloat(0)

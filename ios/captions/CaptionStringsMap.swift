@@ -133,18 +133,10 @@ class CaptionStringsMap {
     return (line: line, remainingSegments: textSegmentsMutableCopy)
   }
 
-  private static let FONT_SIZE_LINE_HEIGHT_MULTIPLE = CGFloat(1.5) // lineHeight is equal to this magic number multiplied by the font size
-
   private static func getStringAttributes(style: CaptionPresetStyle) -> [NSAttributedString.Key: Any] {
-    let lineHeight = style.font.pointSize * FONT_SIZE_LINE_HEIGHT_MULTIPLE
-    let fontSize = style.font.pointSize
-    let paragraphStyle = NSMutableParagraphStyle()
-    paragraphStyle.lineHeightMultiple = 1
     return [
       .foregroundColor: style.textColor.cgColor,
       .font: style.font,
-      .baselineOffset: -abs(fontSize - lineHeight) + (fontSize / 3),
-      .paragraphStyle: paragraphStyle,
     ]
   }
 }
