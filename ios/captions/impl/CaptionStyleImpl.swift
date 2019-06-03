@@ -63,7 +63,7 @@ class CaptionStyleImpl {
   }
 
   public let layers = Layers()
-
+  
   private let wordStyleImpl: CaptionPresetWordStyleImpl
   private let lineStyleImpl: CaptionPresetLineStyleImpl
   private let textAlignmentImpl: CaptionPresetTextAlignmentImpl
@@ -98,21 +98,11 @@ class CaptionStyleImpl {
     let layerBSize = resize(key: .b, parentLayer: parentLayer)
     let layerCSize = resize(key: .c, parentLayer: parentLayer)
     let layerSizes: [LayerKey: CGSize] = [.a: layerASize, .b: layerBSize, .c: layerCSize]
-    let map = CaptionStringsMap.byFitting(textSegments: textSegments, toLayersOfSize: layerSizes, style: style)
+    let map = CaptionStringsMap.byFitting(textSegments: textSegments, toLayersOfSize: layerSizes, style: style, keys: lineStyleImpl.keys)
     map.each { key, _ in
       applyStyles(key: key, parentLayer: parentLayer, map: map)
     }
     backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor, layout: layout, map: map)
-  }
-
-  // TODO: this should be owned by the LineStyleImpl
-  private static func listKeys(forLineStyle lineStyle: CaptionPresetLineStyle) -> [LayerKey] {
-    switch lineStyle {
-    case .fadeInOut:
-      return [.a, .b]
-    case .translateY:
-      return [.a, .b, .c]
-    }
   }
 
   private func resize(key: LayerKey, parentLayer: CALayer) -> CGSize {

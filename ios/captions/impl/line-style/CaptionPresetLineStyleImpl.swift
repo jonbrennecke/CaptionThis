@@ -8,11 +8,13 @@ enum CaptionPresetLineStyle: Int {
 
 protocol CaptionPresetLineStyleImpl {
   var lineStyle: CaptionPresetLineStyle { get }
+  var keys: [CaptionStyleImpl.LayerKey] { get }
   func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer: CALayer, map: CaptionStringsMap, duration: CFTimeInterval)
 }
 
 class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
   public let lineStyle: CaptionPresetLineStyle = .fadeInOut
+  public let keys: [CaptionStyleImpl.LayerKey] = [.a, .b]
 
   func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer _: CALayer, map: CaptionStringsMap, duration: CFTimeInterval) {
     let builder = CaptionAnimation.Builder()
@@ -40,6 +42,7 @@ class CaptionPresetLineStyleFadeInOutImpl: CaptionPresetLineStyleImpl {
 
 class CaptionPresetLineStyleTranslateYImpl: CaptionPresetLineStyleImpl {
   public let lineStyle: CaptionPresetLineStyle = .translateY
+  var keys: [CaptionStyleImpl.LayerKey] = [.a, .b, .c]
 
   func applyLineStyle(key: CaptionStyleImpl.LayerKey, layer: CALayer, parentLayer: CALayer, map: CaptionStringsMap, duration: CFTimeInterval) {
     layer.removeAnimation(forKey: "lineStyleAnimation")
