@@ -6,6 +6,8 @@ import isEqual from 'lodash/isEqual';
 import clamp from 'lodash/clamp';
 import round from 'lodash/round';
 import omit from 'lodash/omit';
+import throttle from 'lodash/throttle';
+import debounce from 'lodash/debounce';
 import ReactNativeHaptic from 'react-native-haptic';
 
 import CaptionPresetView from './CaptionPresetView';
@@ -77,15 +79,29 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
     }
   }
 
-  onScrollViewDidScroll(event: any) {
-    const { contentOffset } = event.nativeEvent;
+  onScrollViewDidScrollDebounced = debounce(this.onScrollViewDidScroll, 16, {
+    leading: true,
+    trailing: false,
+  });
+
+  onScrollViewDidScroll(nativeEvent: any) {
+    if (!nativeEvent) {
+      return;
+    }
+    const { contentOffset } = nativeEvent;
     const indexFloat = contentOffset.x / (PRESET_WIDTH + 10);
     const index = clamp(round(indexFloat), 0, this.props.presets.length);
     const preset = this.props.presets[index];
+    if (!preset) {
+      return;
+    }
     this.props.onRequestSelectPreset(preset);
   }
 
   onScrollViewDidEndMomentumScroll(event: any) {
+    if (!event || !event.nativeEvent) {
+      return;
+    }
     const { contentOffset } = event.nativeEvent;
     this.scrollToPresetAtScrollOffset(contentOffset.x);
   }
@@ -97,13 +113,11 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
   }
 
   scrollToPresetAtIndex(index: number) {
-    if (!this.scrollView) {
-      return;
-    }
-    this.scrollView.scrollTo({
-      x: index * (PRESET_WIDTH + 10),
-      animated: true,
-    });
+    this.scrollView &&
+      this.scrollView.scrollTo({
+        x: index * (PRESET_WIDTH + 10),
+        animated: !this.state.isDragging,
+      });
   }
 
   onScrollViewDidBeginDrag() {
@@ -116,6 +130,9 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
     this.setState({
       isDragging: false,
     });
+    if (!event || !event.nativeEvent) {
+      return;
+    }
     const { contentOffset } = event.nativeEvent;
     this.scrollToPresetAtScrollOffset(contentOffset.x);
   }
@@ -127,10 +144,14 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
           this.scrollView = ref;
         }}
         horizontal
-        style={[styles.container, this.props.style]}
+        directionalLockEnabled
         showsHorizontalScrollIndicator={false}
-        onScroll={this.onScrollViewDidScroll}
-        scrollEventThrottle={this.state.isDragging ? 16 : 0}
+        alwaysBounceHorizontal={false}
+        style={[styles.container, this.props.style]}
+        onScroll={({ nativeEvent }) =>
+          this.onScrollViewDidScrollDebounced(nativeEvent)
+        }
+        scrollEventThrottle={16}
         onMomentumScrollEnd={this.onScrollViewDidEndMomentumScroll}
         onScrollBeginDrag={this.onScrollViewDidBeginDrag}
         onScrollEndDrag={this.onScrollViewDidEndDrag}
