@@ -1,33 +1,20 @@
 import Foundation
 
-// TODO: replace this with a single function
+// TODO: replace this with a single function (or remove entirely)
 class CaptionPresetStyleImplFactory {
   private init() { /* unimplemented */ }
 
   public static func impl(forStyle style: CaptionPresetStyle, textSegments: [CaptionTextSegment], layout: CaptionViewLayout, duration: CFTimeInterval) -> CaptionStyleImpl {
-    let lineStyleImpl = impl(forLineStyle: style.lineStyle)
     let textAlignmentImpl = impl(forTextAlignment: style.textAlignment)
-    let wordStyleImpl = impl(forWordStyle: style.wordStyle)
     let backgroundStyleImpl = impl(forBackgroundStyle: style.backgroundStyle)
     return CaptionStyleImpl(
-      lineStyleImpl: lineStyleImpl,
       textAlignmentImpl: textAlignmentImpl,
-      wordStyleImpl: wordStyleImpl,
       backgroundStyleImpl: backgroundStyleImpl,
       textSegments: textSegments,
       style: style,
       layout: layout,
       duration: duration
     )
-  }
-
-  private static func impl(forLineStyle style: CaptionPresetLineStyle) -> CaptionPresetLineStyleImpl {
-    switch style {
-    case .fadeInOut:
-      return CaptionPresetLineStyleFadeInOutImpl()
-    case .translateY:
-      return CaptionPresetLineStyleTranslateYImpl()
-    }
   }
 
   private static func impl(forTextAlignment alignment: CaptionPresetTextAlignment) -> CaptionPresetTextAlignmentImpl {
@@ -38,15 +25,6 @@ class CaptionPresetStyleImplFactory {
       return CaptionPresetTextAlignmentLeftImpl()
     case .right:
       return CaptionPresetTextAlignmentRightImpl()
-    }
-  }
-
-  private static func impl(forWordStyle style: CaptionPresetWordStyle) -> CaptionPresetWordStyleImpl {
-    switch style {
-    case .animated:
-      return CaptionPresetAnimatedWordStyleImpl()
-    case .none:
-      return CaptionPresetNoWordStyleImpl()
     }
   }
 

@@ -63,9 +63,7 @@ class CaptionStyleImpl {
   }
 
   public let layers = Layers()
-  
-  private let wordStyleImpl: CaptionPresetWordStyleImpl
-  private let lineStyleImpl: CaptionPresetLineStyleImpl
+
   private let textAlignmentImpl: CaptionPresetTextAlignmentImpl
   private let backgroundStyleImpl: CaptionPresetBackgroundStyleImpl
   private let textSegments: [CaptionTextSegment]
@@ -74,18 +72,14 @@ class CaptionStyleImpl {
   private let duration: CFTimeInterval
 
   public init(
-    lineStyleImpl: CaptionPresetLineStyleImpl,
     textAlignmentImpl: CaptionPresetTextAlignmentImpl,
-    wordStyleImpl: CaptionPresetWordStyleImpl,
     backgroundStyleImpl: CaptionPresetBackgroundStyleImpl,
     textSegments: [CaptionTextSegment],
     style: CaptionPresetStyle,
     layout: CaptionViewLayout,
     duration: CFTimeInterval
   ) {
-    self.lineStyleImpl = lineStyleImpl
     self.textAlignmentImpl = textAlignmentImpl
-    self.wordStyleImpl = wordStyleImpl
     self.backgroundStyleImpl = backgroundStyleImpl
     self.textSegments = textSegments
     self.style = style
@@ -98,9 +92,19 @@ class CaptionStyleImpl {
     let layerBSize = resize(key: .b, parentLayer: parentLayer)
     let layerCSize = resize(key: .c, parentLayer: parentLayer)
     let layerSizes: [LayerKey: CGSize] = [.a: layerASize, .b: layerBSize, .c: layerCSize]
-    let map = CaptionStringsMap.byFitting(textSegments: textSegments, toLayersOfSize: layerSizes, style: style, keys: lineStyleImpl.keys)
+
+    let lineStyleEffectFactory = getLineStyleEffectFactory(style: style.lineStyle)
+    let wordStyleEffectFactory = getWordStyleEffectFactory(style: style.wordStyle)
+
+    let keys = lineStyleEffectFactory.allEffectedKeys
+    let map = CaptionStringsMap.byFitting(textSegments: textSegments, toLayersOfSize: layerSizes, style: style, keys: keys)
+
     map.each { key, _ in
-      applyStyles(key: key, parentLayer: parentLayer, map: map)
+      let effect = composeEffect(
+        lineStyleEffectFactory.createEffect(key: key, map: map, duration: duration),
+        wordStyleEffectFactory.createEffect(key: key, map: map, duration: duration, textAlignment: style.textAlignment)
+      )
+      effect.doEffect(layer: layers.get(byKey: key))
     }
     backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor, layout: layout, map: map)
   }
@@ -111,12 +115,6 @@ class CaptionStyleImpl {
     let size = textAlignmentImpl.layerSize(forKey: key, parentLayer: parentLayer, fontSize: style.font.lineHeight)
     layer.frame = CGRect(origin: origin, size: size)
     return size
-  }
-
-  private func applyStyles(key: LayerKey, parentLayer: CALayer, map: CaptionStringsMap) {
-    let layer = layers.get(byKey: key)
-    lineStyleImpl.applyLineStyle(key: key, layer: layer, parentLayer: parentLayer, map: map, duration: duration)
-    wordStyleImpl.applyWordStyle(key: key, layer: layer, textAlignment: style.textAlignment, map: map, duration: duration)
   }
 
   private func layerOrigin(forKey key: LayerKey, parentLayer: CALayer) -> CGPoint {

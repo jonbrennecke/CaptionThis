@@ -37,7 +37,7 @@ class CaptionPresetView: UIView {
   }
 
   @objc
-  public var lineStyle: CaptionPresetLineStyle {
+  public var lineStyle: CaptionLineStyle {
     get {
       return style.lineStyle
     }
@@ -55,7 +55,7 @@ class CaptionPresetView: UIView {
   }
 
   @objc
-  public var wordStyle: CaptionPresetWordStyle {
+  public var wordStyle: CaptionWordStyle {
     get {
       return style.wordStyle
     }

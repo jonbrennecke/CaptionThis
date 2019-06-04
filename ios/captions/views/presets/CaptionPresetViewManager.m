@@ -1,9 +1,9 @@
 #import "CaptionPresetViewManager.h"
 #import "CaptionThis-Swift.h"
 #import "RCTConvert+CaptionPresetBackgroundStyle.h"
-#import "RCTConvert+CaptionPresetLineStyle.h"
+#import "RCTConvert+CaptionLineStyle.h"
 #import "RCTConvert+CaptionPresetTextAlignment.h"
-#import "RCTConvert+CaptionPresetWordStyle.h"
+#import "RCTConvert+CaptionWordStyle.h"
 #import "RCTConvert+CaptionTextSegment.h"
 #import <UIKit/UIKit.h>
 
@@ -24,7 +24,7 @@ RCT_CUSTOM_VIEW_PROPERTY(lineStyle, NSString *, CaptionPresetView) {
   if (![view isKindOfClass:[CaptionPresetView class]]) {
     return;
   }
-  CaptionPresetLineStyle lineStyle = [RCTConvert CaptionPresetLineStyle:json];
+  CaptionLineStyle lineStyle = [RCTConvert CaptionLineStyle:json];
   view.lineStyle = lineStyle;
 }
 
@@ -32,7 +32,7 @@ RCT_CUSTOM_VIEW_PROPERTY(wordStyle, NSString *, CaptionPresetView) {
   if (![view isKindOfClass:[CaptionPresetView class]]) {
     return;
   }
-  CaptionPresetWordStyle wordStyle = [RCTConvert CaptionPresetWordStyle:json];
+  CaptionWordStyle wordStyle = [RCTConvert CaptionWordStyle:json];
   view.wordStyle = wordStyle;
 }
 

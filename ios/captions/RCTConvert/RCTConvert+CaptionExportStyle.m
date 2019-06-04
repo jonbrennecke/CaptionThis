@@ -1,7 +1,7 @@
 #import "RCTConvert+CaptionExportStyle.h"
 #import "RCTConvert+CaptionPresetTextAlignment.h"
-#import "RCTConvert+CaptionPresetLineStyle.h"
-#import "RCTConvert+CaptionPresetWordStyle.h"
+#import "RCTConvert+CaptionLineStyle.h"
+#import "RCTConvert+CaptionWordStyle.h"
 #import "RCTConvert+CaptionPresetBackgroundStyle.h"
 #import "RCTConvert+CaptionTextSegment.h"
 
@@ -27,7 +27,7 @@
     RCTLogWarn(@"JSON object is missing required key 'lineStyle'.");
     return nil;
   }
-  CaptionPresetLineStyle lineStyle = [RCTConvert CaptionPresetLineStyle:lineStyleJson];
+  CaptionLineStyle lineStyle = [RCTConvert CaptionLineStyle:lineStyleJson];
   
   // MARK - wordStyle
   id wordStyleJson = [json objectForKey:@"wordStyle"];
@@ -35,7 +35,7 @@
     RCTLogWarn(@"JSON object is missing required key 'wordStyle'.");
     return nil;
   }
-  CaptionPresetWordStyle wordStyle = [RCTConvert CaptionPresetWordStyle:wordStyleJson];
+  CaptionWordStyle wordStyle = [RCTConvert CaptionWordStyle:wordStyleJson];
   
   // MARK - backgroundStyle
   id backgroundStyleJson = [json objectForKey:@"backgroundStyle"];
