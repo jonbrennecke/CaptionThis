@@ -45,8 +45,6 @@ class CaptionLineStyleTranslateYEffectFactory: CaptionLineStyleEffectFactory {
       group.fillMode = .forwards
       group.beginTime = AVCoreAnimationBeginTimeAtZero
       layer.add(group, forKey: animationKey)
-    }, undoEffect: { layer in
-      layer.removeAnimation(forKey: animationKey)
-    })
+    }, undoEffect: createAnimationRemover(byKey: animationKey))
   }
 }

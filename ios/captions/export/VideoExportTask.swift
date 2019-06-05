@@ -110,7 +110,7 @@ class VideoExportTask {
     )
     let frame = createCaptionLayerFrame(videoSize: composition.videoSize, heightRatio: heightRatio)
     let layout = createCaptionViewLayout(videoSize: composition.videoSize, heightRatio: heightRatio)
-    let impl = CaptionPresetStyleImplFactory.impl(forStyle: exportStyle, textSegments: textSegments, layout: layout, duration: duration)
+    let impl = CaptionStyleImpl(textSegments: textSegments, style: exportStyle, layout: layout, duration: duration)
     let captionLayer = CaptionLayer(impl: impl)
     captionLayer.frame = frame
     captionLayer.resizeSublayers()

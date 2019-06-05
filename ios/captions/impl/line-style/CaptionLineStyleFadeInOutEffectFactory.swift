@@ -29,8 +29,6 @@ class CaptionLineStyleFadeInOutEffectFactory: CaptionLineStyleEffectFactory {
       group.beginTime = AVCoreAnimationBeginTimeAtZero
       layer.removeAnimation(forKey: animationKey)
       layer.add(group, forKey: animationKey)
-    }, undoEffect: { layer in
-      layer.removeAnimation(forKey: animationKey)
-    })
+    }, undoEffect: createAnimationRemover(byKey: animationKey))
   }
 }

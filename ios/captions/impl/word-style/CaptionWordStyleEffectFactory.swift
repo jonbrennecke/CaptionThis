@@ -7,7 +7,7 @@ protocol CaptionWordStyleEffectFactory {
     key: CaptionStyleImpl.LayerKey,
     map: CaptionStringsMap,
     duration: CFTimeInterval,
-    textAlignment: CaptionPresetTextAlignment
+    textAlignment: CaptionTextAlignment
   ) -> PresentationEffect
 }
 

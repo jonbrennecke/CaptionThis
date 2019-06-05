@@ -21,7 +21,7 @@ class CaptionSizingUtil {
     }
   }
 
-  public static func layoutForText(originalBounds: CGRect, textAlignment: CaptionPresetTextAlignment) -> CaptionLayerLayout {
+  public static func layoutForText(originalBounds: CGRect, textAlignment: CaptionTextAlignment) -> CaptionLayerLayout {
     switch textAlignment {
     case .center:
       let position = CGPoint(x: originalBounds.width / 2, y: 0)

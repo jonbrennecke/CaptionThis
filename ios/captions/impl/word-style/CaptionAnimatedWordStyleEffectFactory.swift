@@ -6,7 +6,12 @@ fileprivate let ANIM_FADE_IN_OUT_DURATION = CFTimeInterval(0.25)
 class CaptionAnimatedWordStyleEffectFactory: CaptionWordStyleEffectFactory {
   public var wordStyle: CaptionWordStyle = .animated
 
-  func createEffect(key: CaptionStyleImpl.LayerKey, map: CaptionStringsMap, duration: CFTimeInterval, textAlignment: CaptionPresetTextAlignment) -> PresentationEffect {
+  func createEffect(
+    key: CaptionStyleImpl.LayerKey,
+    map: CaptionStringsMap,
+    duration: CFTimeInterval,
+    textAlignment: CaptionTextAlignment
+  ) -> PresentationEffect {
     let layerName = "animatedWordStyleEffectLayer"
     return PresentationEffect(doEffect: { layer in
       let sublayer = CALayer()
@@ -33,26 +38,13 @@ class CaptionAnimatedWordStyleEffectFactory: CaptionWordStyleEffectFactory {
   }
 }
 
-func createSublayerRemover(byName name: String) -> (CALayer) -> Void {
-  return { (layer: CALayer) in
-    removeSublayer(byName: name, parentLayer: layer)
-  }
-}
-
-func removeSublayer(byName name: String, parentLayer layer: CALayer) {
-  guard let sublayer = layer.sublayers?.first(where: { lyr in lyr.name == name }) else {
-    return
-  }
-  sublayer.removeFromSuperlayer()
-}
-
 fileprivate func createTextLayer(
   key: CaptionStyleImpl.LayerKey,
   taggedLine: CaptionStringsMap.TaggedLine,
   map: CaptionStringsMap,
   index: Int,
   parentLayer: CALayer,
-  textAlignment: CaptionPresetTextAlignment,
+  textAlignment: CaptionTextAlignment,
   duration: CFTimeInterval
 ) -> CALayer {
   let attributedString = taggedLine.string.attributedString
@@ -104,7 +96,11 @@ fileprivate func stringSize(matchingAttributesOf attributedString: NSAttributedS
   return whiteSpaceString.size()
 }
 
-fileprivate func textHorizontalOffset(textWidth: CGFloat, parentLayerWidth parentWidth: CGFloat, textAlignment: CaptionPresetTextAlignment) -> CGFloat {
+fileprivate func textHorizontalOffset(
+  textWidth: CGFloat,
+  parentLayerWidth parentWidth: CGFloat,
+  textAlignment: CaptionTextAlignment
+) -> CGFloat {
   switch textAlignment {
   case .center:
     return (parentWidth - textWidth) / 2

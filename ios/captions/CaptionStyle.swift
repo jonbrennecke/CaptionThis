@@ -1,15 +1,9 @@
 @objc
-enum CaptionPresetBackgroundStyle: Int {
-  case solid
-  case gradient
-}
-
-@objc
 class CaptionStyle: NSObject {
   public let wordStyle: CaptionWordStyle
   public let lineStyle: CaptionLineStyle
-  public let textAlignment: CaptionPresetTextAlignment
-  public let backgroundStyle: CaptionPresetBackgroundStyle
+  public let textAlignment: CaptionTextAlignment
+  public let backgroundStyle: CaptionBackgroundStyle
   public let backgroundColor: UIColor
   public let font: UIFont
   public let textColor: UIColor
@@ -17,8 +11,8 @@ class CaptionStyle: NSObject {
   @objc
   init(wordStyle: CaptionWordStyle,
        lineStyle: CaptionLineStyle,
-       textAlignment: CaptionPresetTextAlignment,
-       backgroundStyle: CaptionPresetBackgroundStyle,
+       textAlignment: CaptionTextAlignment,
+       backgroundStyle: CaptionBackgroundStyle,
        backgroundColor: UIColor,
        font: UIFont,
        textColor: UIColor) {
@@ -41,8 +35,8 @@ class CaptionExportStyle: CaptionStyle {
   @objc
   init(wordStyle: CaptionWordStyle,
        lineStyle: CaptionLineStyle,
-       textAlignment: CaptionPresetTextAlignment,
-       backgroundStyle: CaptionPresetBackgroundStyle,
+       textAlignment: CaptionTextAlignment,
+       backgroundStyle: CaptionBackgroundStyle,
        backgroundColor: UIColor,
        font: UIFont,
        textColor: UIColor,

@@ -64,23 +64,17 @@ class CaptionStyleImpl {
 
   public let layers = Layers()
 
-  private let textAlignmentImpl: CaptionPresetTextAlignmentImpl
-  private let backgroundStyleImpl: CaptionPresetBackgroundStyleImpl
   private let textSegments: [CaptionTextSegment]
   private let style: CaptionPresetStyle
   private let layout: CaptionViewLayout
   private let duration: CFTimeInterval
 
   public init(
-    textAlignmentImpl: CaptionPresetTextAlignmentImpl,
-    backgroundStyleImpl: CaptionPresetBackgroundStyleImpl,
     textSegments: [CaptionTextSegment],
     style: CaptionPresetStyle,
     layout: CaptionViewLayout,
     duration: CFTimeInterval
   ) {
-    self.textAlignmentImpl = textAlignmentImpl
-    self.backgroundStyleImpl = backgroundStyleImpl
     self.textSegments = textSegments
     self.style = style
     self.layout = layout
@@ -95,6 +89,7 @@ class CaptionStyleImpl {
 
     let lineStyleEffectFactory = getLineStyleEffectFactory(style: style.lineStyle)
     let wordStyleEffectFactory = getWordStyleEffectFactory(style: style.wordStyle)
+    let backgroundStyleEffectFactory = getBackgroundStyleEffectFactory(style: style.backgroundStyle)
 
     let keys = lineStyleEffectFactory.allEffectedKeys
     let map = CaptionStringsMap.byFitting(textSegments: textSegments, toLayersOfSize: layerSizes, style: style, keys: keys)
@@ -106,15 +101,22 @@ class CaptionStyleImpl {
       )
       effect.doEffect(layer: layers.get(byKey: key))
     }
-    backgroundStyleImpl.applyBackgroundStyle(parentLayer: parentLayer, backgroundColor: style.backgroundColor, layout: layout, map: map)
+    let effect = backgroundStyleEffectFactory.createEffect(backgroundColor: style.backgroundColor, layout: layout, map: map)
+    effect.doEffect(layer: parentLayer)
   }
 
   private func resize(key: LayerKey, parentLayer: CALayer) -> CGSize {
     let layer = layers.get(byKey: key)
     let origin = layerOrigin(forKey: key, parentLayer: parentLayer)
-    let size = textAlignmentImpl.layerSize(forKey: key, parentLayer: parentLayer, fontSize: style.font.lineHeight)
+    let size = layerSize(parentLayer: parentLayer, fontSize: style.font.lineHeight)
     layer.frame = CGRect(origin: origin, size: size)
     return size
+  }
+
+  private func layerSize(parentLayer: CALayer, fontSize: CGFloat) -> CGSize {
+    let width = parentLayer.frame.width
+    let height = fontSize
+    return CGSize(width: width, height: height)
   }
 
   private func layerOrigin(forKey key: LayerKey, parentLayer: CALayer) -> CGPoint {

@@ -1,8 +1,8 @@
 #import "RCTConvert+CaptionExportStyle.h"
-#import "RCTConvert+CaptionPresetTextAlignment.h"
+#import "RCTConvert+CaptionTextAlignment.h"
 #import "RCTConvert+CaptionLineStyle.h"
 #import "RCTConvert+CaptionWordStyle.h"
-#import "RCTConvert+CaptionPresetBackgroundStyle.h"
+#import "RCTConvert+CaptionBackgroundStyle.h"
 #import "RCTConvert+CaptionTextSegment.h"
 
 @implementation RCTConvert (CaptionExportStyle)
@@ -19,7 +19,7 @@
     RCTLogWarn(@"JSON object is missing required key 'textAlignment'.");
     return nil;
   }
-  CaptionPresetTextAlignment textAlignment = [RCTConvert CaptionPresetTextAlignment:textAlignmentJson];
+  CaptionTextAlignment textAlignment = [RCTConvert CaptionTextAlignment:textAlignmentJson];
   
   // MARK - lineStyle
   id lineStyleJson = [json objectForKey:@"lineStyle"];
@@ -43,7 +43,7 @@
     RCTLogWarn(@"JSON object is missing required key 'backgroundStyle'.");
     return nil;
   }
-  CaptionPresetBackgroundStyle backgroundStyle = [RCTConvert CaptionPresetBackgroundStyle:backgroundStyleJson];
+  CaptionBackgroundStyle backgroundStyle = [RCTConvert CaptionBackgroundStyle:backgroundStyleJson];
   
   // MARK - backgroundColor
   id backgroundColorJson = [json objectForKey:@"backgroundColor"];

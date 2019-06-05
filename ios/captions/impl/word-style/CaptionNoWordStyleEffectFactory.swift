@@ -4,7 +4,12 @@ import UIKit
 class CaptionNoWordStyleEffectFactory: CaptionWordStyleEffectFactory {
   public var wordStyle: CaptionWordStyle = .none
 
-  func createEffect(key: CaptionStyleImpl.LayerKey, map: CaptionStringsMap, duration: CFTimeInterval, textAlignment: CaptionPresetTextAlignment) -> PresentationEffect {
+  func createEffect(
+    key: CaptionStyleImpl.LayerKey,
+    map: CaptionStringsMap,
+    duration: CFTimeInterval,
+    textAlignment: CaptionTextAlignment
+  ) -> PresentationEffect {
     let layerName = "noWordStyleLayer"
     return PresentationEffect(doEffect: { layer in
       let sublayer = CALayer()
@@ -29,12 +34,7 @@ class CaptionNoWordStyleEffectFactory: CaptionWordStyleEffectFactory {
         sublayer.addSublayer(textLayer)
       }
       layer.addSublayer(sublayer)
-    }, undoEffect: { layer in
-      guard let sublayer = layer.sublayers?.first(where: { lyr in lyr.name == layerName }) else {
-        return
-      }
-      sublayer.removeFromSuperlayer()
-    })
+    }, undoEffect: createSublayerRemover(byName: layerName))
   }
 }
 
@@ -44,7 +44,7 @@ fileprivate func createTextLayer(
   string: NSAttributedString,
   index: Int,
   parentLayer: CALayer,
-  textAlignment: CaptionPresetTextAlignment,
+  textAlignment: CaptionTextAlignment,
   duration: CFTimeInterval
 ) -> CATextLayer {
   let textLayer = CATextLayer()
@@ -69,7 +69,7 @@ fileprivate func createTextLayer(
   return textLayer
 }
 
-fileprivate func textHorizontalOffset(textWidth: CGFloat, parentLayerWidth parentWidth: CGFloat, textAlignment: CaptionPresetTextAlignment) -> CGFloat {
+fileprivate func textHorizontalOffset(textWidth: CGFloat, parentLayerWidth parentWidth: CGFloat, textAlignment: CaptionTextAlignment) -> CGFloat {
   switch textAlignment {
   case .center:
     return (parentWidth - textWidth) / 2

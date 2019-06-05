@@ -19,7 +19,7 @@ class CaptionView: UIView {
   }
 
   @objc
-  public var textAlignment: CaptionPresetTextAlignment {
+  public var textAlignment: CaptionTextAlignment {
     get {
       return style.textAlignment
     }
@@ -73,7 +73,7 @@ class CaptionView: UIView {
   }
 
   @objc
-  public var backgroundStyle: CaptionPresetBackgroundStyle {
+  public var backgroundStyle: CaptionBackgroundStyle {
     get {
       return style.backgroundStyle
     }
@@ -191,7 +191,7 @@ class CaptionView: UIView {
   }
 
   private func createCaptionStyleImpl() -> CaptionStyleImpl {
-    return CaptionPresetStyleImplFactory.impl(forStyle: style, textSegments: textSegments, layout: viewLayout, duration: duration)
+    return CaptionStyleImpl(textSegments: textSegments, style: style, layout: viewLayout, duration: duration)
   }
 
   // MARK: UIView method implementations

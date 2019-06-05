@@ -1,8 +1,8 @@
 #import "CaptionViewManager.h"
 #import "CaptionThis-Swift.h"
-#import "RCTConvert+CaptionPresetBackgroundStyle.h"
+#import "RCTConvert+CaptionBackgroundStyle.h"
 #import "RCTConvert+CaptionLineStyle.h"
-#import "RCTConvert+CaptionPresetTextAlignment.h"
+#import "RCTConvert+CaptionTextAlignment.h"
 #import "RCTConvert+CaptionWordStyle.h"
 #import "RCTConvert+CaptionTextSegment.h"
 #import "RCTConvert+CaptionViewLayout.h"
@@ -18,8 +18,7 @@ RCT_CUSTOM_VIEW_PROPERTY(textAlignment, NSString *, CaptionView) {
   if (![view isKindOfClass:[CaptionView class]]) {
     return;
   }
-  CaptionPresetTextAlignment textAlignment =
-  [RCTConvert CaptionPresetTextAlignment:json];
+  CaptionTextAlignment textAlignment = [RCTConvert CaptionTextAlignment:json];
   view.textAlignment = textAlignment;
 }
 
@@ -43,8 +42,8 @@ RCT_CUSTOM_VIEW_PROPERTY(backgroundStyle, NSString *, CaptionView) {
   if (![view isKindOfClass:[CaptionView class]]) {
     return;
   }
-  CaptionPresetBackgroundStyle backgroundStyle =
-  [RCTConvert CaptionPresetBackgroundStyle:json];
+  CaptionBackgroundStyle backgroundStyle =
+    [RCTConvert CaptionBackgroundStyle:json];
   view.backgroundStyle = backgroundStyle;
 }
 

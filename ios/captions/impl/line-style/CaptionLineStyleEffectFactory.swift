@@ -4,7 +4,11 @@ protocol CaptionLineStyleEffectFactory {
   var lineStyle: CaptionLineStyle { get }
   var allEffectedKeys: [CaptionStyleImpl.LayerKey] { get }
 
-  func createEffect(key: CaptionStyleImpl.LayerKey, map: CaptionStringsMap, duration: CFTimeInterval) -> PresentationEffect
+  func createEffect(
+    key: CaptionStyleImpl.LayerKey,
+    map: CaptionStringsMap,
+    duration: CFTimeInterval
+  ) -> PresentationEffect
 }
 
 func getLineStyleEffectFactory(style: CaptionLineStyle) -> CaptionLineStyleEffectFactory {
