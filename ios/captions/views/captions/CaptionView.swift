@@ -2,7 +2,6 @@ import UIKit
 
 @objc(CaptionView)
 class CaptionView: UIView {
-  private let captionLayer = CaptionLayer()
   private var rowLayers = CaptionRowLayers()
 
   internal var state: PlaybackControllerState = .paused
@@ -187,17 +186,15 @@ class CaptionView: UIView {
   }
 
   private func render() {
-    // sanity check, but there's probably a better way of doing this
+    // sanity check to fix a bug in renderCaptions, but there's probably a better way of doing this
     if frame == .zero {
       return
     }
-
+    layer.sublayers = nil
     rowLayers = CaptionRowLayers()
-    captionLayer.sublayers = nil
-    captionLayer.frame = bounds
-    rowLayers.each { captionLayer.addSublayer($1) }
+    rowLayers.each { layer.addSublayer($1) }
     renderCaptions(
-      layer: captionLayer,
+      layer: layer,
       rowLayers: rowLayers,
       style: style,
       textSegments: textSegments,
@@ -210,23 +207,16 @@ class CaptionView: UIView {
 
   init() {
     super.init(frame: .zero)
-    layer.addSublayer(captionLayer)
     render()
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    layer.addSublayer(captionLayer)
     render()
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    captionLayer.frame = bounds
   }
 }
 
