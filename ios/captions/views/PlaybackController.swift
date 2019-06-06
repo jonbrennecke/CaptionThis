@@ -3,7 +3,7 @@ import UIKit
 @objc
 protocol PlaybackController: AnyObject {
   var state: PlaybackControllerState { get set }
-  
+
   func resetAnimation()
 
   @objc func resume()

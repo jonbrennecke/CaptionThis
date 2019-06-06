@@ -4,7 +4,7 @@ import UIKit
 class CaptionView: UIView {
   private let captionLayer = CaptionLayer()
   private var rowLayers = CaptionRowLayers()
-  
+
   internal var state: PlaybackControllerState = .paused
 
   private var style = CaptionStyle(
@@ -188,9 +188,10 @@ class CaptionView: UIView {
 
   private func render() {
     // sanity check, but there's probably a better way of doing this
-    if (frame == .zero) {
+    if frame == .zero {
       return
     }
+
     rowLayers = CaptionRowLayers()
     captionLayer.sublayers = nil
     captionLayer.frame = bounds
@@ -212,7 +213,7 @@ class CaptionView: UIView {
     layer.addSublayer(captionLayer)
     render()
   }
-  
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     layer.addSublayer(captionLayer)
@@ -234,22 +235,22 @@ extension CaptionView: PlaybackController {
     render()
     pause()
   }
-  
+
   @objc
   func resume() {
     resume(layer: layer)
   }
-  
+
   @objc
   func pause() {
     pause(layer: layer)
   }
-  
+
   @objc
   func restart() {
     restart(layer: layer)
   }
-  
+
   @objc
   func seekTo(time: CFTimeInterval) {
     seekTo(layer: layer, time: time)

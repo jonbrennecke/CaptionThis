@@ -2,7 +2,7 @@ enum CaptionRowKey {
   case a
   case b
   case c
-  
+
   public var index: Int {
     switch self {
     case .a:
@@ -13,7 +13,7 @@ enum CaptionRowKey {
       return 2
     }
   }
-  
+
   public var nextKey: CaptionRowKey {
     switch self {
     case .a:

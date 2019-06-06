@@ -3,7 +3,7 @@ import Foundation
 fileprivate let BAR_SPACE_HEIGHT_FACTOR = CGFloat(1.25)
 
 /**
- 
+
  TODO: eventually the API should be
 
  ```
@@ -14,7 +14,7 @@ fileprivate let BAR_SPACE_HEIGHT_FACTOR = CGFloat(1.25)
  ...in order to prevent recreating much of the same information on each render
 
  @jonbrennecke 6/5/19
- 
+
  */
 func renderCaptions(
   layer: CALayer,
@@ -47,7 +47,7 @@ fileprivate func getCaptionRowFrames(style: CaptionStyle, layer: CALayer, rowLay
   return [
     .a: getCaptionFrame(byRowKey: .a, style: style, layer: layer, rowLayers: rowLayers),
     .b: getCaptionFrame(byRowKey: .b, style: style, layer: layer, rowLayers: rowLayers),
-    .c: getCaptionFrame(byRowKey: .c, style: style, layer: layer, rowLayers: rowLayers)
+    .c: getCaptionFrame(byRowKey: .c, style: style, layer: layer, rowLayers: rowLayers),
   ]
 }
 
