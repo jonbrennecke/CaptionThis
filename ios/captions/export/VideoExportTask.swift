@@ -113,7 +113,6 @@ class VideoExportTask {
     let captionLayer = CaptionLayer()
     let rowLayers = CaptionRowLayers()
     rowLayers.each { captionLayer.addSublayer($1) }
-    
     captionLayer.frame = frame
     renderCaptions(
       layer: captionLayer,

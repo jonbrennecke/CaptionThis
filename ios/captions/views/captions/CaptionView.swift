@@ -2,7 +2,7 @@ import UIKit
 
 @objc(CaptionView)
 class CaptionView: UIView {
-  private var captionLayer: CaptionLayer!
+  private let captionLayer = CaptionLayer()
   private var rowLayers = CaptionRowLayers()
   
   internal var state: PlaybackControllerState = .paused
@@ -17,7 +17,7 @@ class CaptionView: UIView {
     textColor: UIColor.white
   ) {
     didSet {
-      updateCaptionLayer()
+      render()
     }
   }
 
@@ -132,14 +132,14 @@ class CaptionView: UIView {
   @objc
   public var duration = CFTimeInterval(0) {
     didSet {
-      updateCaptionLayer()
+      render()
     }
   }
 
   @objc
   public var viewLayout = CaptionViewLayout.defaultLayout {
     didSet {
-      updateCaptionLayer()
+      render()
     }
   }
 
@@ -182,19 +182,19 @@ class CaptionView: UIView {
   @objc
   public var textSegments = [CaptionTextSegment]() {
     didSet {
-      updateCaptionLayer()
+      render()
     }
   }
 
-  private func updateCaptionLayer() {
-    captionLayer = CaptionLayer()
-    captionLayer.frame = bounds
-    layer.sublayers = nil
-    layer.addSublayer(captionLayer)
-    rowLayers.each { captionLayer.addSublayer($1) }
-  }
-
   private func render() {
+    // sanity check, but there's probably a better way of doing this
+    if (frame == .zero) {
+      return
+    }
+    rowLayers = CaptionRowLayers()
+    captionLayer.sublayers = nil
+    captionLayer.frame = bounds
+    rowLayers.each { captionLayer.addSublayer($1) }
     renderCaptions(
       layer: captionLayer,
       rowLayers: rowLayers,
@@ -209,7 +209,14 @@ class CaptionView: UIView {
 
   init() {
     super.init(frame: .zero)
-    updateCaptionLayer()
+    layer.addSublayer(captionLayer)
+    render()
+  }
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    layer.addSublayer(captionLayer)
+    render()
   }
 
   required init?(coder _: NSCoder) {
@@ -219,34 +226,32 @@ class CaptionView: UIView {
   override func layoutSubviews() {
     super.layoutSubviews()
     captionLayer.frame = bounds
-    render()
   }
 }
 
 extension CaptionView: PlaybackController {
   func resetAnimation() {
-    captionLayer.sublayers = nil
+    render()
     pause()
-    rowLayers.each { captionLayer.addSublayer($1) }
   }
   
   @objc
   func resume() {
-    resume(layer: captionLayer)
+    resume(layer: layer)
   }
   
   @objc
   func pause() {
-    pause(layer: captionLayer)
+    pause(layer: layer)
   }
   
   @objc
   func restart() {
-    restart(layer: captionLayer)
+    restart(layer: layer)
   }
   
   @objc
   func seekTo(time: CFTimeInterval) {
-    seekTo(layer: captionLayer, time: time)
+    seekTo(layer: layer, time: time)
   }
 }
