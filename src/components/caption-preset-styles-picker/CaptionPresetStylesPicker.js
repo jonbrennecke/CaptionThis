@@ -6,7 +6,6 @@ import isEqual from 'lodash/isEqual';
 import clamp from 'lodash/clamp';
 import round from 'lodash/round';
 import omit from 'lodash/omit';
-import throttle from 'lodash/throttle';
 import debounce from 'lodash/debounce';
 import ReactNativeHaptic from 'react-native-haptic';
 
@@ -102,8 +101,8 @@ export default class CaptionPresetStylesPicker extends Component<Props, State> {
     if (!event || !event.nativeEvent) {
       return;
     }
-    const { contentOffset } = event.nativeEvent;
-    this.scrollToPresetAtScrollOffset(contentOffset.x);
+    this.scrollToPresetAtScrollOffset(event.nativeEvent.contentOffset.x);
+    this.onScrollViewDidScroll(event.nativeEvent);
   }
 
   scrollToPresetAtScrollOffset(scrollOffset: number) {
