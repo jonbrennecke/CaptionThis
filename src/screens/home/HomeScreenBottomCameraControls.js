@@ -6,7 +6,6 @@ import { autobind } from 'core-decorators';
 
 import {
   UI_COLORS,
-  USER_BACKGROUND_COLOR_CHOICES,
   USER_TEXT_COLOR_CHOICES,
   FONT_FAMILIES,
 } from '../../constants';
@@ -50,6 +49,8 @@ type State = {
   isPresetSheetVisible: boolean,
   preset: CaptionPresetStyleObjectWithId,
 };
+
+const FIXED_DURATION = 1000;
 
 const PRESET_STYLES: CaptionPresetStyleObject[] = [
   {
@@ -203,8 +204,8 @@ export default class HomeScreenBottomCameraControls extends Component<
               <VideoCaptionsContainer style={styles.flex}>
                 <CaptionView
                   style={styles.flex}
-                  duration={10}
-                  textSegments={this.props.textSegments}
+                  duration={FIXED_DURATION}
+                  textSegments={transformTextSegments(this.props.textSegments, FIXED_DURATION)}
                   captionStyle={this.props.captionStyle}
                   viewLayout={captionViewLayout(viewSize)}
                 />
@@ -244,4 +245,12 @@ export default class HomeScreenBottomCameraControls extends Component<
       </View>
     );
   }
+}
+
+const transformTextSegments = (textSegments: CaptionTextSegment[], duration: number): CaptionTextSegment[] => {
+  return textSegments.map(segment => ({
+    ...segment,
+    duration: duration,
+    timestamp: 0
+  }));
 }
