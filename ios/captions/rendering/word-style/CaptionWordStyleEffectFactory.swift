@@ -4,7 +4,7 @@ protocol CaptionWordStyleEffectFactory {
   var wordStyle: CaptionWordStyle { get }
 
   func createEffect(
-    key: CaptionStyleImpl.LayerKey,
+    key: CaptionRowKey,
     map: CaptionStringsMap,
     duration: CFTimeInterval,
     textAlignment: CaptionTextAlignment

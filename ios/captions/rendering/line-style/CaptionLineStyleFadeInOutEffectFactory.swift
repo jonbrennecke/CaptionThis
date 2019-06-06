@@ -2,9 +2,9 @@ import AVFoundation
 
 class CaptionLineStyleFadeInOutEffectFactory: CaptionLineStyleEffectFactory {
   public let lineStyle: CaptionLineStyle = .fadeInOut
-  public let allEffectedKeys: [CaptionStyleImpl.LayerKey] = [.a, .b]
+  public let allEffectedRows: [CaptionRowKey] = [.a, .b]
 
-  func createEffect(key: CaptionStyleImpl.LayerKey, map: CaptionStringsMap, duration: CFTimeInterval) -> PresentationEffect {
+  func createEffect(key: CaptionRowKey, map: CaptionStringsMap, duration: CFTimeInterval) -> PresentationEffect {
     // create builder (TODO: abstract this in another function)
     let builder = CaptionAnimation.Builder()
     let lines = map.getValues(byKey: key)!

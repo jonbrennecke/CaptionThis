@@ -112,8 +112,7 @@
 		FCB8AF24222F1773002F30D8 /* CaptionAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB8AF23222F1773002F30D8 /* CaptionAnimation.swift */; };
 		FCBB1936221524F00014D41C /* CaptionAnimationExportSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */; };
 		FCBB1A16221E66820014D41C /* FlagKit.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCBB1A15221E66820014D41C /* FlagKit.xcassets */; };
-		FCC486602269048200719F69 /* PlaybackControlLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC4865F2269048200719F69 /* PlaybackControlLayer.swift */; };
-		FCC486952269164000719F69 /* PlaybackControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC486942269164000719F69 /* PlaybackControls.swift */; };
+		FCC486602269048200719F69 /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC4865F2269048200719F69 /* PlaybackController.swift */; };
 		FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */; };
 		FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */; };
 		FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */; };
@@ -130,7 +129,6 @@
 		FCF51F87222B4D550066D81B /* CaptionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51F86222B4D550066D81B /* CaptionStyle.swift */; };
 		FCF51FBC222B55480066D81B /* CaptionLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */; };
 		FCF51FC0222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBF222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m */; };
-		FCF51FC5222B5EC50066D81B /* CaptionStyleImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FC4222B5EC50066D81B /* CaptionStyleImpl.swift */; };
 		FCF51FC8222B62C60066D81B /* RCTConvert+CaptionLineStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FC7222B62C60066D81B /* RCTConvert+CaptionLineStyle.m */; };
 		FCFBDFA322A6D03F0059D452 /* effectUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFA222A6D03F0059D452 /* effectUtils.swift */; };
 		FCFBDFA522A715BA0059D452 /* CaptionWordStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFA422A715BA0059D452 /* CaptionWordStyle.swift */; };
@@ -143,6 +141,10 @@
 		FCFBDFB822A775B50059D452 /* CaptionSolidBackgroundStyleEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB722A775B50059D452 /* CaptionSolidBackgroundStyleEffectFactory.swift */; };
 		FCFBDFBA22A7768A0059D452 /* layerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB922A7768A0059D452 /* layerUtils.swift */; };
 		FCFBDFBC22A78C5D0059D452 /* CaptionTextAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFBB22A78C5D0059D452 /* CaptionTextAlignment.swift */; };
+		FCFBE02022A82A400059D452 /* renderCaptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE01F22A82A400059D452 /* renderCaptions.swift */; };
+		FCFBE02222A8324B0059D452 /* CaptionRowKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */; };
+		FCFBE02422A832AD0059D452 /* CaptionRowLayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02322A832AD0059D452 /* CaptionRowLayers.swift */; };
+		FCFBE02622A890A70059D452 /* PlaybackControllerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -669,8 +671,7 @@
 		FCB8AF23222F1773002F30D8 /* CaptionAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionAnimation.swift; sourceTree = "<group>"; };
 		FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionAnimationExportSession.swift; sourceTree = "<group>"; };
 		FCBB1A15221E66820014D41C /* FlagKit.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FlagKit.xcassets; sourceTree = "<group>"; };
-		FCC4865F2269048200719F69 /* PlaybackControlLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControlLayer.swift; sourceTree = "<group>"; };
-		FCC486942269164000719F69 /* PlaybackControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControls.swift; sourceTree = "<group>"; };
+		FCC4865F2269048200719F69 /* PlaybackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackController.swift; sourceTree = "<group>"; };
 		FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewManager.m; sourceTree = "<group>"; };
 		FCD5F74C21D6BA25001F2068 /* VideoPlayerViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewManager.h; sourceTree = "<group>"; };
 		FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
@@ -695,7 +696,6 @@
 		FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLineStyle.swift; sourceTree = "<group>"; };
 		FCF51FBF222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionTextAlignment.m"; sourceTree = "<group>"; };
 		FCF51FC1222B5AA30066D81B /* RCTConvert+CaptionTextAlignment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionTextAlignment.h"; sourceTree = "<group>"; };
-		FCF51FC4222B5EC50066D81B /* CaptionStyleImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionStyleImpl.swift; sourceTree = "<group>"; };
 		FCF51FC6222B62B90066D81B /* RCTConvert+CaptionLineStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionLineStyle.h"; sourceTree = "<group>"; };
 		FCF51FC7222B62C60066D81B /* RCTConvert+CaptionLineStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionLineStyle.m"; sourceTree = "<group>"; };
 		FCFBDFA222A6D03F0059D452 /* effectUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = effectUtils.swift; sourceTree = "<group>"; };
@@ -709,6 +709,10 @@
 		FCFBDFB722A775B50059D452 /* CaptionSolidBackgroundStyleEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionSolidBackgroundStyleEffectFactory.swift; sourceTree = "<group>"; };
 		FCFBDFB922A7768A0059D452 /* layerUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = layerUtils.swift; sourceTree = "<group>"; };
 		FCFBDFBB22A78C5D0059D452 /* CaptionTextAlignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTextAlignment.swift; sourceTree = "<group>"; };
+		FCFBE01F22A82A400059D452 /* renderCaptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = renderCaptions.swift; sourceTree = "<group>"; };
+		FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionRowKey.swift; sourceTree = "<group>"; };
+		FCFBE02322A832AD0059D452 /* CaptionRowLayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionRowLayers.swift; sourceTree = "<group>"; };
+		FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControllerState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1017,18 +1021,20 @@
 			path = RCTConvert;
 			sourceTree = "<group>";
 		};
-		FC388F5022309A36001CE3A3 /* impl */ = {
+		FC388F5022309A36001CE3A3 /* rendering */ = {
 			isa = PBXGroup;
 			children = (
 				FC4608392253CCB700E34AD4 /* background-style */,
 				FC4608052253CCA300E34AD4 /* line-style */,
 				FC4607D42252CA0A00E34AD4 /* word-style */,
-				FCF51FC4222B5EC50066D81B /* CaptionStyleImpl.swift */,
 				FCFBDFA222A6D03F0059D452 /* effectUtils.swift */,
 				FCFBDFB922A7768A0059D452 /* layerUtils.swift */,
+				FCFBE01F22A82A400059D452 /* renderCaptions.swift */,
 				FCFBDFBB22A78C5D0059D452 /* CaptionTextAlignment.swift */,
+				FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */,
+				FCFBE02322A832AD0059D452 /* CaptionRowLayers.swift */,
 			);
-			path = impl;
+			path = rendering;
 			sourceTree = "<group>";
 		};
 		FC388F562230F063001CE3A3 /* presets */ = {
@@ -1204,7 +1210,7 @@
 				FC388F8D2231B41C001CE3A3 /* CaptionStringsMap.swift */,
 				FC19138B2262908D008C8BA0 /* VideoAnimationLayerLayout.swift */,
 				FCDBE58022931ACF001DA3E7 /* CaptionViewLayout.swift */,
-				FC388F5022309A36001CE3A3 /* impl */,
+				FC388F5022309A36001CE3A3 /* rendering */,
 				FC388F172230983E001CE3A3 /* RCTConvert */,
 			);
 			path = captions;
@@ -1412,8 +1418,8 @@
 			children = (
 				FC691AF82251249B00A30AA6 /* captions */,
 				FC388F562230F063001CE3A3 /* presets */,
-				FCC4865F2269048200719F69 /* PlaybackControlLayer.swift */,
-				FCC486942269164000719F69 /* PlaybackControls.swift */,
+				FCC4865F2269048200719F69 /* PlaybackController.swift */,
+				FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -2084,7 +2090,6 @@
 			files = (
 				FCB8AF24222F1773002F30D8 /* CaptionAnimation.swift in Sources */,
 				FC6FCF9C22249B65004772B9 /* CaptionPresetLayer.swift in Sources */,
-				FCF51FC5222B5EC50066D81B /* CaptionStyleImpl.swift in Sources */,
 				FCFBDFAF22A72DF70059D452 /* CaptionLineStyleFadeInOutEffectFactory.swift in Sources */,
 				FCFBDFAD22A72DD10059D452 /* CaptionLineStyleTranslateYEffectFactory.swift in Sources */,
 				FCF51F87222B4D550066D81B /* CaptionStyle.swift in Sources */,
@@ -2119,6 +2124,7 @@
 				FCB0E5C12213F076002F320B /* VideoExportTask.swift in Sources */,
 				FCE83950223A172E002C85CA /* CaptionView.swift in Sources */,
 				FC388F522230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m in Sources */,
+				FCFBE02422A832AD0059D452 /* CaptionRowLayers.swift in Sources */,
 				FCF51FC8222B62C60066D81B /* RCTConvert+CaptionLineStyle.m in Sources */,
 				FCDBE58322931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m in Sources */,
 				FCF51FBC222B55480066D81B /* CaptionLineStyle.swift in Sources */,
@@ -2132,14 +2138,16 @@
 				FC388F8E2231B41C001CE3A3 /* CaptionStringsMap.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				FC1492F922331A4600A753DD /* CaptionSizingUtil.swift in Sources */,
+				FCFBE02022A82A400059D452 /* renderCaptions.swift in Sources */,
 				FCDBE58122931ACF001DA3E7 /* CaptionViewLayout.swift in Sources */,
 				FCBB1936221524F00014D41C /* CaptionAnimationExportSession.swift in Sources */,
 				FCB8AEBC222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m in Sources */,
 				FC880E0321D5DC4100856037 /* VideoThumbnailViewManager.m in Sources */,
 				FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */,
+				FCFBE02222A8324B0059D452 /* CaptionRowKey.swift in Sources */,
 				FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */,
 				FCA3971821DC93AF00347CAB /* constants.swift in Sources */,
-				FCC486602269048200719F69 /* PlaybackControlLayer.swift in Sources */,
+				FCC486602269048200719F69 /* PlaybackController.swift in Sources */,
 				FCB392F2220CCD0900403154 /* Result.swift in Sources */,
 				FCFBDFBA22A7768A0059D452 /* layerUtils.swift in Sources */,
 				FCB393A72210E2C000403154 /* SpeechTranscriptionRequest.swift in Sources */,
@@ -2148,6 +2156,7 @@
 				FC6EA41D221221BC009F3D7D /* VideoSeekbarView.swift in Sources */,
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,
 				FCFBDFB422A7749F0059D452 /* CaptionBackgroundStyleEffectFactory.swift in Sources */,
+				FCFBE02622A890A70059D452 /* PlaybackControllerState.swift in Sources */,
 				FCF51EC6222651220066D81B /* AnimationUtil.swift in Sources */,
 				FCF51FC0222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m in Sources */,
 				FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */,
@@ -2159,7 +2168,6 @@
 				FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */,
 				FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */,
 				FC19138A22628467008C8BA0 /* RCTConvert+CaptionExportStyle.m in Sources */,
-				FCC486952269164000719F69 /* PlaybackControls.swift in Sources */,
 				FC4607DA2252E1F800E34AD4 /* Pair.swift in Sources */,
 				FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */,
 				FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */,

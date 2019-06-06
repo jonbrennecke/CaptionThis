@@ -5,7 +5,7 @@ class CaptionNoWordStyleEffectFactory: CaptionWordStyleEffectFactory {
   public var wordStyle: CaptionWordStyle = .none
 
   func createEffect(
-    key: CaptionStyleImpl.LayerKey,
+    key: CaptionRowKey,
     map: CaptionStringsMap,
     duration: CFTimeInterval,
     textAlignment: CaptionTextAlignment
@@ -40,7 +40,7 @@ class CaptionNoWordStyleEffectFactory: CaptionWordStyleEffectFactory {
 
 fileprivate func createTextLayer(
   map: CaptionStringsMap,
-  key: CaptionStyleImpl.LayerKey,
+  key: CaptionRowKey,
   string: NSAttributedString,
   index: Int,
   parentLayer: CALayer,
@@ -80,7 +80,7 @@ fileprivate func textHorizontalOffset(textWidth: CGFloat, parentLayerWidth paren
   }
 }
 
-fileprivate func createTextAnimations(map: CaptionStringsMap, key: CaptionStyleImpl.LayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
+fileprivate func createTextAnimations(map: CaptionStringsMap, key: CaptionRowKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
   let group = CAAnimationGroup()
   group.repeatCount = .greatestFiniteMagnitude
   let builder = CaptionAnimation.Builder()

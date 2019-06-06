@@ -4,20 +4,18 @@ fileprivate let ANIM_IN_OUT_DURATION = CFTimeInterval(0.5)
 fileprivate let ANIM_FINAL_LINE_DURATION = CFTimeInterval(2)
 
 struct CaptionAnimation {
-  public typealias Key = CaptionStyleImpl.LayerKey
-
   private let animationsIn: [AnimationBuilderStep]
   private let animationsCenter: [AnimationBuilderStep]
   private let animationsOut: [AnimationBuilderStep]
   private let index: Int
-  private let key: Key
+  private let key: CaptionRowKey
 
   init(
     in animationsIn: [AnimationBuilderStep],
     center animationsCenter: [AnimationBuilderStep],
     out animationsOut: [AnimationBuilderStep],
     index: Int,
-    key: Key
+    key: CaptionRowKey
   ) {
     self.animationsIn = animationsIn
     self.animationsCenter = animationsCenter
@@ -27,8 +25,6 @@ struct CaptionAnimation {
   }
 
   public class Builder {
-    public typealias Key = CaptionAnimation.Key
-
     private var animations = [CaptionAnimation]()
 
     public func insert(
@@ -36,7 +32,7 @@ struct CaptionAnimation {
       center animationsCenter: [AnimationBuilderStep],
       out animationsOut: [AnimationBuilderStep],
       index: Int,
-      key: Key
+      key: CaptionRowKey
     ) {
       let animation = CaptionAnimation(
         in: animationsIn,
@@ -48,7 +44,7 @@ struct CaptionAnimation {
       animations.append(animation)
     }
 
-    public func next(key: Key, index: Int) -> (key: Key, index: Int) {
+    public func next(key: CaptionRowKey, index: Int) -> (key: CaptionRowKey, index: Int) {
       switch key.nextKey {
       case .a:
         return (key: .a, index: index + 1)

@@ -2,7 +2,8 @@ import UIKit
 
 @objc
 class CaptionPresetView: UIView {
-  private var presetLayer: CaptionPresetLayer?
+  private var presetLayer: CaptionPresetLayer!
+  private let rowLayers = CaptionRowLayers()
 
   private var style = CaptionPresetStyle(
     wordStyle: .none,
@@ -177,29 +178,34 @@ class CaptionPresetView: UIView {
   }
 
   private func updatePresetLayer() {
-    presetLayer = CaptionPresetLayer(impl: createCaptionStyleImpl())
-    guard let presetLayer = presetLayer else {
-      return
-    }
     presetLayer.frame = bounds
     layer.sublayers = nil
     layer.addSublayer(presetLayer)
+    rowLayers.each { presetLayer.addSublayer($1) }
   }
 
   private static let captionPresetFixedSize = CGSize(width: 75, height: 75)
 
-  private func createCaptionStyleImpl() -> CaptionStyleImpl {
-    let layout = CaptionViewLayout(size: CaptionPresetView.captionPresetFixedSize, origin: .zero)
-    return CaptionStyleImpl(textSegments: textSegments, style: style, layout: layout, duration: duration)
+  private func render() {
+    renderCaptions(
+      layer: presetLayer,
+      rowLayers: rowLayers,
+      style: style,
+      textSegments: textSegments,
+      layout: CaptionViewLayout(
+        size: CaptionPresetView.captionPresetFixedSize,
+        origin: .zero
+      ),
+      duration: duration
+    )
   }
 
   // MARK: UIView method implementations
 
   init() {
     super.init(frame: .zero)
-    presetLayer = CaptionPresetLayer(impl: createCaptionStyleImpl())
-    presetLayer?.frame = bounds
-    layer.addSublayer(presetLayer!)
+    presetLayer = CaptionPresetLayer()
+    updatePresetLayer()
   }
 
   required init?(coder _: NSCoder) {
@@ -209,5 +215,6 @@ class CaptionPresetView: UIView {
   override func layoutSubviews() {
     super.layoutSubviews()
     presetLayer?.frame = bounds
+    render()
   }
 }

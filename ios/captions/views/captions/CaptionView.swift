@@ -3,6 +3,9 @@ import UIKit
 @objc(CaptionView)
 class CaptionView: UIView {
   private var captionLayer: CaptionLayer!
+  private var rowLayers = CaptionRowLayers()
+  
+  internal var state: PlaybackControllerState = .paused
 
   private var style = CaptionStyle(
     wordStyle: .none,
@@ -184,61 +187,66 @@ class CaptionView: UIView {
   }
 
   private func updateCaptionLayer() {
-    captionLayer = CaptionLayer(impl: createCaptionStyleImpl())
+    captionLayer = CaptionLayer()
     captionLayer.frame = bounds
     layer.sublayers = nil
     layer.addSublayer(captionLayer)
+    rowLayers.each { captionLayer.addSublayer($1) }
   }
 
-  private func createCaptionStyleImpl() -> CaptionStyleImpl {
-    return CaptionStyleImpl(textSegments: textSegments, style: style, layout: viewLayout, duration: duration)
+  private func render() {
+    renderCaptions(
+      layer: captionLayer,
+      rowLayers: rowLayers,
+      style: style,
+      textSegments: textSegments,
+      layout: viewLayout,
+      duration: duration
+    )
   }
 
   // MARK: UIView method implementations
 
   init() {
     super.init(frame: .zero)
-    captionLayer = CaptionLayer(impl: createCaptionStyleImpl())
-    captionLayer.frame = bounds
-    layer.addSublayer(captionLayer)
+    updateCaptionLayer()
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func didMoveToSuperview() {
-    super.didMoveToSuperview()
-  }
-
   override func layoutSubviews() {
     super.layoutSubviews()
     captionLayer.frame = bounds
+    render()
   }
 }
 
-extension CaptionView: PlaybackControls {
-  var playbackLayer: PlaybackControlLayer & CALayer {
-    return captionLayer
+extension CaptionView: PlaybackController {
+  func resetAnimation() {
+    captionLayer.sublayers = nil
+    pause()
+    rowLayers.each { captionLayer.addSublayer($1) }
   }
-
+  
   @objc
   func resume() {
-    playbackLayer.resume()
+    resume(layer: captionLayer)
   }
-
+  
   @objc
   func pause() {
-    playbackLayer.pause()
+    pause(layer: captionLayer)
   }
-
+  
   @objc
   func restart() {
-    playbackLayer.restart()
+    restart(layer: captionLayer)
   }
-
+  
   @objc
   func seekTo(time: CFTimeInterval) {
-    playbackLayer.seekTo(time: time)
+    seekTo(layer: captionLayer, time: time)
   }
 }

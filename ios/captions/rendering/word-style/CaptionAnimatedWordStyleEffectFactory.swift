@@ -7,7 +7,7 @@ class CaptionAnimatedWordStyleEffectFactory: CaptionWordStyleEffectFactory {
   public var wordStyle: CaptionWordStyle = .animated
 
   func createEffect(
-    key: CaptionStyleImpl.LayerKey,
+    key: CaptionRowKey,
     map: CaptionStringsMap,
     duration: CFTimeInterval,
     textAlignment: CaptionTextAlignment
@@ -39,7 +39,7 @@ class CaptionAnimatedWordStyleEffectFactory: CaptionWordStyleEffectFactory {
 }
 
 fileprivate func createTextLayer(
-  key: CaptionStyleImpl.LayerKey,
+  key: CaptionRowKey,
   taggedLine: CaptionStringsMap.TaggedLine,
   map: CaptionStringsMap,
   index: Int,
@@ -111,7 +111,7 @@ fileprivate func textHorizontalOffset(
   }
 }
 
-fileprivate func createTextAnimations(map: CaptionStringsMap, key: CaptionStyleImpl.LayerKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
+fileprivate func createTextAnimations(map: CaptionStringsMap, key: CaptionRowKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
   let builder = CaptionAnimation.Builder()
   builder.insert(
     in: [FadeInAnimationStep()],
@@ -130,7 +130,7 @@ fileprivate func createTextAnimations(map: CaptionStringsMap, key: CaptionStyleI
   return group
 }
 
-fileprivate func createWordAnimations(key _: CaptionStyleImpl.LayerKey, index _: Int, timestamp: CFTimeInterval, duration: CFTimeInterval) -> CAAnimationGroup {
+fileprivate func createWordAnimations(key _: CaptionRowKey, index _: Int, timestamp: CFTimeInterval, duration: CFTimeInterval) -> CAAnimationGroup {
   let beginTime = clamp(timestamp - ANIM_FADE_IN_OUT_DURATION, from: 0, to: timestamp)
   let group = CAAnimationGroup()
   group.repeatCount = .greatestFiniteMagnitude

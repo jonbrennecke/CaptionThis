@@ -2,10 +2,10 @@ import Foundation
 
 protocol CaptionLineStyleEffectFactory {
   var lineStyle: CaptionLineStyle { get }
-  var allEffectedKeys: [CaptionStyleImpl.LayerKey] { get }
+  var allEffectedRows: [CaptionRowKey] { get }
 
   func createEffect(
-    key: CaptionStyleImpl.LayerKey,
+    key: CaptionRowKey,
     map: CaptionStringsMap,
     duration: CFTimeInterval
   ) -> PresentationEffect

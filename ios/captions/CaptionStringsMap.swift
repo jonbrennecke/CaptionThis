@@ -1,7 +1,6 @@
 import Foundation
 
 class CaptionStringsMap {
-  public typealias Key = CaptionStyleImpl.LayerKey
   public typealias Value = [TaggedLine]
 
   public struct TaggedString {
@@ -17,24 +16,24 @@ class CaptionStringsMap {
     let duration: CFTimeInterval
   }
 
-  private var data = [Key: Value]()
+  private var data = [CaptionRowKey: Value]()
 
-  public func getValues(byKey key: Key) -> Value? {
+  public func getValues(byKey key: CaptionRowKey) -> Value? {
     return data[key]
   }
 
-  public func setValues(byKey key: Key, values: Value) {
+  public func setValues(byKey key: CaptionRowKey, values: Value) {
     data[key] = values
   }
 
-  public func getLine(byKey key: Key, index: Int) -> TaggedLine? {
+  public func getLine(byKey key: CaptionRowKey, index: Int) -> TaggedLine? {
     guard let lines = getValues(byKey: key), index < lines.count else {
       return nil
     }
     return lines[index]
   }
 
-  public func each(_ callback: (_ key: Key, _ value: Value) -> Void) {
+  public func each(_ callback: (_ key: CaptionRowKey, _ value: Value) -> Void) {
     data.forEach { item in
       let (key, value) = item
       callback(key, value)
@@ -43,16 +42,16 @@ class CaptionStringsMap {
 
   public static func byFitting(
     textSegments: [CaptionTextSegment],
-    toLayersOfSize layerSizes: [Key: CGSize],
+    rowSizes: [CaptionRowKey: CGSize],
     style: CaptionStyle,
-    keys: [Key]
+    keys: [CaptionRowKey]
   ) -> CaptionStringsMap {
     let attributes = getStringAttributes(style: style)
     var segments = textSegments
     let map = CaptionStringsMap()
     while segments.count > 0 {
       for key in keys {
-        guard let size = layerSizes[key] else {
+        guard let size = rowSizes[key] else {
           continue
         }
         let width = CaptionSizingUtil.textWidth(forLayerSize: size)

@@ -2,9 +2,9 @@ import AVFoundation
 
 class CaptionLineStyleTranslateYEffectFactory: CaptionLineStyleEffectFactory {
   public let lineStyle: CaptionLineStyle = .translateY
-  public let allEffectedKeys: [CaptionStyleImpl.LayerKey] = [.a, .b, .c]
+  public let allEffectedRows: [CaptionRowKey] = [.a, .b, .c]
 
-  func createEffect(key: CaptionStyleImpl.LayerKey, map: CaptionStringsMap, duration: CFTimeInterval) -> PresentationEffect {
+  func createEffect(key: CaptionRowKey, map: CaptionStringsMap, duration: CFTimeInterval) -> PresentationEffect {
     let animationKey = "lineStyleAnimation"
     return PresentationEffect(doEffect: { layer in
       guard let parentLayer = layer.superlayer else {

@@ -110,10 +110,19 @@ class VideoExportTask {
     )
     let frame = createCaptionLayerFrame(videoSize: composition.videoSize, heightRatio: heightRatio)
     let layout = createCaptionViewLayout(videoSize: composition.videoSize, heightRatio: heightRatio)
-    let impl = CaptionStyleImpl(textSegments: textSegments, style: exportStyle, layout: layout, duration: duration)
-    let captionLayer = CaptionLayer(impl: impl)
+    let captionLayer = CaptionLayer()
+    let rowLayers = CaptionRowLayers()
+    rowLayers.each { captionLayer.addSublayer($1) }
+    
     captionLayer.frame = frame
-    captionLayer.resizeSublayers()
+    renderCaptions(
+      layer: captionLayer,
+      rowLayers: rowLayers,
+      style: exportStyle,
+      textSegments: textSegments,
+      layout: layout,
+      duration: duration
+    )
     captionLayer.timeOffset = 0
     captionLayer.speed = 1
     captionLayer.beginTime = AVCoreAnimationBeginTimeAtZero
