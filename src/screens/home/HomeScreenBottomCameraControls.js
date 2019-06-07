@@ -4,12 +4,6 @@ import { View } from 'react-native';
 import uuid from 'uuid';
 import { autobind } from 'core-decorators';
 
-import {
-  UI_COLORS,
-  USER_TEXT_COLOR_CHOICES,
-  FONT_FAMILIES,
-} from '../../constants';
-import * as Color from '../../utils/Color';
 import CaptureButton from '../../components/capture-button/CaptureButton';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
 import HomeScreenCameraRollButton from './HomeScreenCameraRollButton';
@@ -18,6 +12,7 @@ import SlideUpAnimatedView from '../../components/animations/SlideUpAnimatedView
 import MeasureContentsView from '../../components/measure-contents-view/MeasureContentsView';
 import CaptionView from '../../components/caption-view/CaptionView';
 import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
+import { PRESET_STYLES } from './presets';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
@@ -51,73 +46,6 @@ type State = {
 };
 
 const FIXED_DURATION = 1000;
-
-const PRESET_STYLES: CaptionPresetStyleObject[] = [
-  {
-    textAlignment: 'left',
-    lineStyle: 'translateY',
-    wordStyle: 'none',
-    backgroundStyle: 'gradient',
-    backgroundColor: Color.hexToRgbaObject(UI_COLORS.BLACK),
-    fontFamily: FONT_FAMILIES.RIGHTEOUS,
-    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
-  },
-  {
-    textAlignment: 'center',
-    lineStyle: 'translateY',
-    wordStyle: 'animated',
-    backgroundStyle: 'gradient',
-    backgroundColor: Color.hexToRgbaObject(UI_COLORS.MEDIUM_RED),
-    fontFamily: FONT_FAMILIES.BANGERS,
-    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
-  },
-  {
-    textAlignment: 'left',
-    lineStyle: 'translateY',
-    wordStyle: 'none',
-    backgroundStyle: 'solid',
-    backgroundColor: Color.hexToRgbaObject(UI_COLORS.WHITE),
-    fontFamily: FONT_FAMILIES.STAATLICHES,
-    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[1]),
-  },
-  {
-    textAlignment: 'center',
-    lineStyle: 'translateY',
-    wordStyle: 'none',
-    backgroundStyle: 'gradient',
-    backgroundColor: Color.hexToRgbaObject(UI_COLORS.DARK_GREY),
-    fontFamily: FONT_FAMILIES.ROBOTO,
-    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[2]),
-  },
-  // TODO
-  // {
-  //   textAlignment: 'center',
-  //   lineStyle: 'fadeInOut',
-  //   wordStyle: 'none',
-  //   backgroundStyle: 'solid',
-  //   backgroundColor: Color.hexToRgbaObject(USER_BACKGROUND_COLOR_CHOICES[1]),
-  //   fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
-  //   textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
-  // },
-  // {
-  //   textAlignment: 'left',
-  //   lineStyle: 'fadeInOut',
-  //   wordStyle: 'none',
-  //   backgroundStyle: 'solid',
-  //   backgroundColor: Color.Constants.transparent,
-  //   fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
-  //   textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
-  // },
-  // {
-  //   textAlignment: 'center',
-  //   lineStyle: 'fadeInOut',
-  //   wordStyle: 'none',
-  //   backgroundStyle: 'solid',
-  //   backgroundColor: Color.Constants.transparent,
-  //   fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
-  //   textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
-  // },
-];
 
 const PRESET_STYLES_WITH_ID: CaptionPresetStyleObjectWithId[] = PRESET_STYLES.map(
   p => ({
