@@ -233,7 +233,7 @@ class CameraManager: NSObject {
       Debug.log(message: "Camera input could not be added to capture session.")
       return .failure
     }
-    
+
     if case .failure = setupAudioInput() {
       return .failure
     }

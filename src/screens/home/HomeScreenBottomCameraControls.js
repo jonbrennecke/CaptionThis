@@ -133,7 +133,10 @@ export default class HomeScreenBottomCameraControls extends Component<
                 <CaptionView
                   style={styles.flex}
                   duration={FIXED_DURATION}
-                  textSegments={transformTextSegments(this.props.textSegments, FIXED_DURATION)}
+                  textSegments={transformTextSegments(
+                    this.props.textSegments,
+                    FIXED_DURATION
+                  )}
                   captionStyle={this.props.captionStyle}
                   viewLayout={captionViewLayout(viewSize)}
                 />
@@ -175,10 +178,13 @@ export default class HomeScreenBottomCameraControls extends Component<
   }
 }
 
-const transformTextSegments = (textSegments: CaptionTextSegment[], duration: number): CaptionTextSegment[] => {
+const transformTextSegments = (
+  textSegments: CaptionTextSegment[],
+  duration: number
+): CaptionTextSegment[] => {
   return textSegments.map(segment => ({
     ...segment,
     duration: duration,
-    timestamp: 0
+    timestamp: 0,
   }));
-}
+};

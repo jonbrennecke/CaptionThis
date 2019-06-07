@@ -3,7 +3,7 @@ import {
   UI_COLORS,
   USER_TEXT_COLOR_CHOICES,
   FONT_FAMILIES,
-  USER_BACKGROUND_COLOR_CHOICES
+  USER_BACKGROUND_COLOR_CHOICES,
 } from '../../constants';
 import * as Color from '../../utils/Color';
 

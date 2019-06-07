@@ -1,5 +1,5 @@
-import UIKit
 import AVFoundation
+import UIKit
 
 class CaptionSolidBackgroundStyleEffectFactory: CaptionBackgroundStyleEffectFactory {
   let backgroundStyle: CaptionBackgroundStyle = .solid
