@@ -152,11 +152,6 @@ class CameraManager: NSObject {
 
   @objc
   public func startCapture(completionHandler: @escaping (Error?, Bool) -> Void) {
-    captureSession.beginConfiguration()
-    if case .failure = setupAudioInput() {
-      Debug.log(message: "Failed to add audio input")
-    }
-    captureSession.commitConfiguration()
     sessionQueue.async {
       guard self.videoCaptureDevice != nil else {
         Debug.log(message: "Cannot start capture. No video capture device is set.")
@@ -179,11 +174,6 @@ class CameraManager: NSObject {
     if videoFileOutput.isRecording {
       Debug.log(message: "Stopping video file output.")
       videoFileOutput.stopRecording()
-      captureSession.beginConfiguration()
-      if case .failure = removeAudioInput() {
-        Debug.log(message: "Failed to remove audio input")
-      }
-      captureSession.commitConfiguration()
     }
   }
 
@@ -243,6 +233,10 @@ class CameraManager: NSObject {
       Debug.log(message: "Camera input could not be added to capture session.")
       return .failure
     }
+    
+    if case .failure = setupAudioInput() {
+      return .failure
+    }
 
     // setup videoOutput
     videoOutput.alwaysDiscardsLateVideoFrames = true
@@ -291,23 +285,6 @@ class CameraManager: NSObject {
       Debug.log(message: "Audio input could not be added to the capture session.")
       return .failure
     }
-    return .success
-  }
-
-  private func removeAudioInput() -> CameraSetupResult {
-    audioCaptureDevice = AVCaptureDevice.default(for: .audio)
-    guard let audioCaptureDevice = audioCaptureDevice else {
-      Debug.log(message: "Audio device is not available.")
-      return .failure
-    }
-
-    // setup audioCaptureDeviceInput
-    audioCaptureDeviceInput = try? AVCaptureDeviceInput(device: audioCaptureDevice)
-    guard let audioCaptureDeviceInput = audioCaptureDeviceInput else {
-      Debug.log(message: "Audio device could not be used as an input.")
-      return .failure
-    }
-    captureSession.removeInput(audioCaptureDeviceInput)
     return .success
   }
 
