@@ -86,7 +86,7 @@ export const USER_BACKGROUND_COLOR_CHOICES = [
   '#000000',
 ];
 
-export const USER_TEXT_COLOR_CHOICES = ['#FFFFFF', '#000000'];
+export const USER_TEXT_COLOR_CHOICES = ['#FFFFFF', '#000000', '#ffff00'];
 
 export const FONT_FAMILIES = {
   PASSION_ONE: 'PassionOne-Regular',

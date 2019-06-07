@@ -136,7 +136,9 @@ export default class EditScreenEditCaptionsOverlay extends Component<
           {this.props.isVisible ? (
             <KeyboardAvoidingView
               style={styles.flex}
-              keyboardVerticalOffset={-(this.state.bottomSafeAreaInset || 0) + 7}
+              keyboardVerticalOffset={
+                -(this.state.bottomSafeAreaInset || 0) + 7
+              }
             >
               <SafeAreaView style={styles.safeArea}>
                 <View style={styles.mainContentsBackground} />

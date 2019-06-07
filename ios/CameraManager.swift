@@ -233,24 +233,8 @@ class CameraManager: NSObject {
       Debug.log(message: "Camera input could not be added to capture session.")
       return .failure
     }
-
-    // setup audioCaptureDevice
-    audioCaptureDevice = AVCaptureDevice.default(for: .audio)
-    guard let audioCaptureDevice = audioCaptureDevice else {
-      Debug.log(message: "Audio device is not available.")
-      return .failure
-    }
-
-    // setup audioCaptureDeviceInput
-    audioCaptureDeviceInput = try? AVCaptureDeviceInput(device: audioCaptureDevice)
-    guard let audioCaptureDeviceInput = audioCaptureDeviceInput else {
-      Debug.log(message: "Audio device could not be used as an input.")
-      return .failure
-    }
-    if captureSession.canAddInput(audioCaptureDeviceInput) {
-      captureSession.addInput(audioCaptureDeviceInput)
-    } else {
-      Debug.log(message: "Audio input could not be added to the capture session.")
+    
+    if case .failure = setupAudioInput() {
       return .failure
     }
 
@@ -277,6 +261,28 @@ class CameraManager: NSObject {
       captureSession.addOutput(videoFileOutput)
     } else {
       Debug.log(message: "Video file output could not be added to the capture session.")
+      return .failure
+    }
+    return .success
+  }
+
+  private func setupAudioInput() -> CameraSetupResult {
+    audioCaptureDevice = AVCaptureDevice.default(for: .audio)
+    guard let audioCaptureDevice = audioCaptureDevice else {
+      Debug.log(message: "Audio device is not available.")
+      return .failure
+    }
+
+    // setup audioCaptureDeviceInput
+    audioCaptureDeviceInput = try? AVCaptureDeviceInput(device: audioCaptureDevice)
+    guard let audioCaptureDeviceInput = audioCaptureDeviceInput else {
+      Debug.log(message: "Audio device could not be used as an input.")
+      return .failure
+    }
+    if captureSession.canAddInput(audioCaptureDeviceInput) {
+      captureSession.addInput(audioCaptureDeviceInput)
+    } else {
+      Debug.log(message: "Audio input could not be added to the capture session.")
       return .failure
     }
     return .success

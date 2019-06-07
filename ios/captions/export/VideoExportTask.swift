@@ -1,8 +1,11 @@
 import Photos
 
+fileprivate let CAPTION_VIEW_HEIGHT_PORTRAIT = CGFloat(85)
+fileprivate let CAPTION_VIEW_OFFSET_FROM_BOTTOM = CGFloat(75)
+
 protocol VideoExportTaskDelegate {
   func videoExportTask(didEncounterError _: VideoExportTask.Error)
-  func videoExportTask(didFinishTask placeholder: PHObjectPlaceholder)
+  func videoExportTask(didFinishTask placeholder: PHObjectPlaceholder, time: CFAbsoluteTime)
   func videoExportTask(didUpdateProgress progress: Float, time: CFAbsoluteTime)
 }
 
@@ -10,7 +13,7 @@ class VideoExportTask {
   private enum State {
     case unstarted
     case pending(ExportTaskState, CFAbsoluteTime)
-    case finished
+    case finished(CFAbsoluteTime)
     case failed
   }
 
@@ -33,14 +36,18 @@ class VideoExportTask {
   }
 
   private var state: State = .unstarted
-  private let model: VideoAnimationLayerModel
+  private let style: CaptionExportStyle
+  private let textSegments: [CaptionTextSegment]
+  private let duration: CFTimeInterval
   private let localIdentifier: String
   private var requestID: PHImageRequestID?
   public var delegate: VideoExportTaskDelegate?
 
-  public init(localIdentifier: String, model: VideoAnimationLayerModel) {
+  public init(localIdentifier: String, style: CaptionExportStyle, textSegments: [CaptionTextSegment], duration: CFTimeInterval) {
     self.localIdentifier = localIdentifier
-    self.model = model
+    self.textSegments = textSegments
+    self.style = style
+    self.duration = duration
   }
 
   deinit {
@@ -89,32 +96,53 @@ class VideoExportTask {
     let size = CGSize(width: abs(rotatedSize.width), height: abs(rotatedSize.height))
     let orientation = OrientationUtil.orientation(forAsset: asset)
     let dimensions = VideoDimensions(size: size, orientation: orientation)
-    let layout = VideoAnimationLayerLayout.layoutForExport(dimensions: dimensions, model: model)
-    let animationLayer = VideoAnimationLayer(layout: layout, model: model)
-    animationLayer.frame = frame(forComposition: composition, layout: layout)
-    animationLayer.update(model: model, layout: layout)
-    animationLayer.beginTime = AVCoreAnimationBeginTimeAtZero
-    animationLayer.timeOffset = 0
-    animationLayer.speed = 1
-    composition.add(effectLayer: animationLayer)
+    let heightRatio = dimensions.size.height / style.viewSize.height
+    let fontSize = heightRatio * style.font.pointSize
+    let exportStyle = CaptionExportStyle(
+      wordStyle: style.wordStyle,
+      lineStyle: style.lineStyle,
+      textAlignment: style.textAlignment,
+      backgroundStyle: style.backgroundStyle,
+      backgroundColor: style.backgroundColor,
+      font: style.font.withSize(fontSize),
+      textColor: style.textColor,
+      viewSize: style.viewSize
+    )
+    let frame = createCaptionLayerFrame(videoSize: composition.videoSize, heightRatio: heightRatio)
+    let layout = createCaptionViewLayout(videoSize: composition.videoSize, heightRatio: heightRatio)
+    let captionLayer = CaptionLayer()
+    let rowLayers = CaptionRowLayers()
+    rowLayers.each { captionLayer.addSublayer($1) }
+    captionLayer.frame = frame
+    renderCaptions(
+      layer: captionLayer,
+      rowLayers: rowLayers,
+      style: exportStyle,
+      textSegments: textSegments,
+      layout: layout,
+      duration: duration
+    )
+    captionLayer.timeOffset = 0
+    captionLayer.speed = 1
+    captionLayer.beginTime = AVCoreAnimationBeginTimeAtZero
+    captionLayer.duration = duration
+    composition.add(effectLayer: captionLayer)
     let exportSession = CaptionAnimationExportSession(composition: composition)
     exportSession.delegate = self
     exportSession.export()
     state = .pending(.exportingCaptionAnimation(exportSession), startTime)
   }
 
-  private func frame(forComposition composition: VideoAnimationComposition, layout: VideoAnimationLayerLayout) -> CGRect {
-    var offsetFromBottom: CGFloat = composition.videoSize.height * 0.1
-    switch composition.orientation {
-    case .left, .right, .leftMirrored, .rightMirrored:
-      offsetFromBottom = 50
-      break
-    default:
-      break
-    }
-    let height = layout.frameHeight
-    let width = composition.videoSize.width
-    return CGRect(x: 0, y: offsetFromBottom, width: width, height: CGFloat(height))
+  private func createCaptionViewLayout(videoSize: CGSize, heightRatio: CGFloat) -> CaptionViewLayout {
+    let height = (CAPTION_VIEW_HEIGHT_PORTRAIT + CAPTION_VIEW_OFFSET_FROM_BOTTOM) * heightRatio
+    let size = CGSize(width: videoSize.width, height: height)
+    return CaptionViewLayout(size: size, origin: .zero)
+  }
+
+  private func createCaptionLayerFrame(videoSize: CGSize, heightRatio: CGFloat) -> CGRect {
+    let height = CAPTION_VIEW_HEIGHT_PORTRAIT * heightRatio
+    let y = videoSize.height - CAPTION_VIEW_OFFSET_FROM_BOTTOM * heightRatio - height
+    return CGRect(x: 0, y: y, width: videoSize.width, height: height)
   }
 
   private func createVideoAsset(forURL url: URL) {
@@ -153,7 +181,11 @@ class VideoExportTask {
             self.delegate?.videoExportTask(didEncounterError: .failedToCreateAsset)
             return
           }
-          self.delegate?.videoExportTask(didFinishTask: assetPlaceholder)
+          guard case let .finished(startTime) = self.state else {
+            return
+          }
+          let executionTime = CFAbsoluteTimeGetCurrent() - startTime
+          self.delegate?.videoExportTask(didFinishTask: assetPlaceholder, time: executionTime)
         }
         break
       }
@@ -173,8 +205,11 @@ extension VideoExportTask: CaptionAnimationExportSessionDelegate {
   }
 
   func captionAnimationExportSession(didFinish exportFileURL: URL) {
+    guard case let .pending(_, startTime) = state else {
+      return
+    }
+    state = .finished(startTime)
     createVideoAsset(forURL: exportFileURL)
-    state = .finished
   }
 
   func captionAnimationExportSession(didUpdateProgress progress: Float) {

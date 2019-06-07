@@ -1,10 +1,10 @@
 /* @flow */
 import typeof { LOADING_STATE, TRANSCRIPTION_STATE } from '../constants';
-import type { VideoAssetIdentifier, ColorRGBA, VideoObject } from './media';
+import type { VideoAssetIdentifier, VideoObject } from './media';
 import type { SpeechTranscription, LocaleObject } from './speech';
-import type { LineStyle } from './video';
 import type { ReactAppStateEnum } from './react';
 import type { DeviceInfoObject } from '../utils/Device';
+import type { CaptionStyleObject } from './video';
 
 export type Action<T> = {
   +type: string,
@@ -56,11 +56,7 @@ export type DeviceState = {|
 |};
 
 export type VideoState = {|
-  fontFamily: string,
-  fontSize: number,
-  backgroundColor: ColorRGBA,
-  textColor: ColorRGBA,
-  lineStyle: LineStyle,
+  captionStyle: CaptionStyleObject,
 |};
 
 export type SpeechState = {|
@@ -76,13 +72,10 @@ export type Payload =
   | ReceiveVideoAssetsPayload
   | ReceiveVideoAssetPayload
   | ReceiveSpeechTranscriptionPayload
-  | ReceiveFontFamilyPayload
-  | ReceiveBackgroundColorPayload
-  | ReceiveTextColorPayload
-  | ReceiveFontSizePayload
   | ReceiveAppStateChangePayload
   | ReceiveDeviceInfoPayload
-  | ReceiveLocalePayload;
+  | ReceiveLocalePayload
+  | ReceiveCaptionStylePayload;
 
 export type ReceiveLoginPayload = {|
   token: string,
@@ -111,22 +104,6 @@ export type ReceiveSpeechTranscriptionPayload = {|
   transcription: SpeechTranscription,
 |};
 
-export type ReceiveFontFamilyPayload = {|
-  fontFamily: string,
-|};
-
-export type ReceiveBackgroundColorPayload = {|
-  backgroundColor: ColorRGBA,
-|};
-
-export type ReceiveTextColorPayload = {|
-  textColor: ColorRGBA,
-|};
-
-export type ReceiveFontSizePayload = {|
-  fontSize: number,
-|};
-
 export type ReceiveAppStateChangePayload = {|
   appState: ReactAppStateEnum,
 |};
@@ -137,4 +114,8 @@ export type ReceiveDeviceInfoPayload = {|
 
 export type ReceiveLocalePayload = {|
   locale: LocaleObject,
+|};
+
+export type ReceiveCaptionStylePayload = {|
+  captionStyle: CaptionStyleObject,
 |};

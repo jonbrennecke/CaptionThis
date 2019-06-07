@@ -6,18 +6,21 @@ import { autobind } from 'core-decorators';
 import * as Camera from '../../utils/Camera';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';
-import LiveTranscriptionView from '../../components/live-transcription-view/LiveTranscriptionView';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
 import type { Style } from '../../types/react';
+import type {
+  CaptionStyleObject,
+  CaptionPresetStyleObject,
+} from '../../types/video';
 
 type Props = {
   style?: ?Style,
+  captionStyle: CaptionStyleObject,
   animatedScrollValue: Animated.Value,
-  fontFamily: string,
   thumbnailVideoID: ?VideoAssetIdentifier,
   speechTranscription: ?SpeechTranscription,
   isCameraRecording: boolean,
@@ -27,6 +30,7 @@ type Props = {
   onRequestOpenLocaleMenu: () => void,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
+  onRequestSetCaptionStyle: CaptionPresetStyleObject => void,
 };
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -44,12 +48,6 @@ const styles = {
     flex: 1,
   },
   absoluteFill: StyleSheet.absoluteFillObject,
-  transcript: {
-    position: 'absolute',
-    bottom: 125,
-    left: 0,
-    right: 0,
-  },
 };
 
 // $FlowFixMe
@@ -76,6 +74,14 @@ export default class HomeScreenCameraPreview extends Component<Props> {
   }
 
   render() {
+    const textSegments =
+      this.props.speechTranscription && this.props.isCameraRecording
+        ? this.props.speechTranscription.segments.map(s => ({
+            duration: s.duration,
+            timestamp: s.timestamp,
+            text: s.substring,
+          }))
+        : [];
     return (
       <Animated.View
         style={[
@@ -94,22 +100,19 @@ export default class HomeScreenCameraPreview extends Component<Props> {
           onDidRequestFocusOnPoint={this.tapToFocusDidReceiveFocusPoint}
         />
         <ScreenGradients />
-        <LiveTranscriptionView
-          style={styles.transcript}
-          fontFamily={this.props.fontFamily}
-          isCameraRecording={this.props.isCameraRecording}
-          speechTranscription={this.props.speechTranscription}
-        />
         <HomeScreenCameraControls
           style={styles.absoluteFill}
           isVisible={this.props.hasCompletedSetupAfterOnboarding}
           countryCode={this.props.locale?.country.code}
           video={this.props.thumbnailVideoID}
+          textSegments={textSegments}
+          captionStyle={this.props.captionStyle}
           onRequestBeginCapture={this.props.onRequestBeginCapture}
           onRequestEndCapture={this.props.onRequestEndCapture}
           onRequestOpenCameraRoll={this.props.onRequestOpenCameraRoll}
           onRequestSwitchCamera={Camera.switchToOppositeCamera}
           onRequestOpenLocaleMenu={this.props.onRequestOpenLocaleMenu}
+          onRequestSetCaptionStyle={this.props.onRequestSetCaptionStyle}
         />
       </Animated.View>
     );

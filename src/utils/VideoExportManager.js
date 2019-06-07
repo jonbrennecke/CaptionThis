@@ -3,14 +3,16 @@ import { NativeModules, NativeEventEmitter } from 'react-native';
 import Promise from 'bluebird';
 
 import * as Debug from './Debug';
+import * as Color from './Color';
+import { isLandscape } from './Orientation';
 
 import type {
+  Size,
   VideoAssetIdentifier,
-  TextOverlayParams,
-  ColorRGBA,
   Orientation,
+  TextSegmentObject,
 } from '../types/media';
-import type { LineStyle } from '../types/video';
+import type { CaptionStyleObject } from '../types/video';
 import type { Return } from '../types/util';
 
 const { VideoExport: _NativeVideoExportModule } = NativeModules;
@@ -31,14 +33,11 @@ const EVENTS = {
 };
 
 export type ExportParams = {
+  viewSize: Size,
   video: VideoAssetIdentifier,
-  fontSize: number,
-  textColor: ColorRGBA,
-  backgroundColor: ColorRGBA,
-  textSegments: TextOverlayParams[],
-  fontFamily: string,
   duration: number,
-  lineStyle: LineStyle,
+  captionStyle: CaptionStyleObject,
+  textSegments: TextSegmentObject[],
   orientation: Orientation,
 };
 
@@ -69,16 +68,25 @@ export default class VideoExportManager {
   }
 
   static async exportVideo({
-    textSegments,
-    textColor,
-    backgroundColor,
-    ...etcParams
+    captionStyle,
+    viewSize,
+    orientation,
+    ...etc
   }: ExportParams) {
     const exportParams = {
-      ...etcParams,
-      textSegments,
-      textColor: convertColorForNativeBridge(textColor),
-      backgroundColor: convertColorForNativeBridge(backgroundColor),
+      ...etc,
+      orientation,
+      captionStyle: {
+        ...captionStyle,
+        viewSize,
+        fontSize: exportFontSize(captionStyle.fontSize, viewSize, orientation),
+        textColor: Color.transformRgbaObjectForNativeBridge(
+          captionStyle.textColor
+        ),
+        backgroundColor: Color.transformRgbaObjectForNativeBridge(
+          captionStyle.backgroundColor
+        ),
+      },
     };
     Debug.log(
       `Exporting video. Params = ${JSON.stringify(exportParams, null, 2)}`
@@ -87,8 +95,11 @@ export default class VideoExportManager {
   }
 }
 
-function convertColorForNativeBridge(
-  color: ColorRGBA
-): [number, number, number, number] {
-  return [color.red / 255, color.green / 255, color.blue / 255, color.alpha];
-}
+const exportFontSize = (
+  fontSize: number,
+  viewSize: Size,
+  orientation: Orientation
+): number =>
+  isLandscape(orientation)
+    ? fontSize * (viewSize.height / viewSize.width)
+    : fontSize;

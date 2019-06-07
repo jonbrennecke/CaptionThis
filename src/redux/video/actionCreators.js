@@ -1,49 +1,36 @@
 // @flow
 import { ACTION_TYPES } from './constants';
+import { getCaptionStyle } from './selectors';
 
 import type {
   Dispatch,
-  ReceiveTextColorPayload,
-  ReceiveBackgroundColorPayload,
-  ReceiveFontFamilyPayload,
-  ReceiveFontSizePayload,
+  GetState,
+  ReceiveCaptionStylePayload,
 } from '../../types/redux';
-import type { ColorRGBA } from '../../types/media';
+import type { CaptionStyleObject } from '../../types/video';
 
-export const receiveUserSelectedFontSize = (fontSize: number) => {
-  return (dispatch: Dispatch<ReceiveFontSizePayload>) => {
-    dispatch({
-      type: ACTION_TYPES.DID_RECEIVE_FONT_SIZE,
-      payload: { fontSize },
-    });
-  };
-};
-
-export const receiveUserSelectedFontFamily = (fontFamily: string) => {
-  return (dispatch: Dispatch<ReceiveFontFamilyPayload>) => {
-    dispatch({
-      type: ACTION_TYPES.DID_RECEIVE_FONT_FAMILY,
-      payload: { fontFamily },
-    });
-  };
-};
-
-export const receiveUserSelectedBackgroundColor = (
-  backgroundColor: ColorRGBA
+export const updateCaptionStyle = (
+  partialCaptionStyle: $Shape<CaptionStyleObject>
 ) => {
-  return (dispatch: Dispatch<ReceiveBackgroundColorPayload>) => {
-    dispatch({
-      type: ACTION_TYPES.DID_RECEIVE_BACKGROUND_COLOR,
-      payload: { backgroundColor },
-    });
+  return (
+    dispatch: Dispatch<ReceiveCaptionStylePayload>,
+    getState: GetState
+  ) => {
+    const captionStyle = getCaptionStyle(getState());
+    dispatch(
+      setCaptionStyle({
+        ...captionStyle,
+        ...partialCaptionStyle,
+      })
+    );
   };
 };
 
-export const receiveUserSelectedTextColor = (textColor: ColorRGBA) => {
-  return (dispatch: Dispatch<ReceiveTextColorPayload>) => {
+export const setCaptionStyle = (captionStyle: CaptionStyleObject) => {
+  return (dispatch: Dispatch<ReceiveCaptionStylePayload>) => {
     dispatch({
-      type: ACTION_TYPES.DID_RECEIVE_TEXT_COLOR,
-      payload: { textColor },
+      type: ACTION_TYPES.DID_RECEIVE_CAPTION_STYLE,
+      payload: { captionStyle },
     });
   };
 };

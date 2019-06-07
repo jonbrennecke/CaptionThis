@@ -9,19 +9,15 @@ import BottomSheetModal from '../../components/bottom-sheet-modal/BottomSheetMod
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
-import type { LineStyle } from '../../types/video';
+import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
   isReadyToPlay: boolean,
   isVisible: boolean,
   duration: number,
-  fontFamily: string,
-  fontSize: number,
-  textColor: ColorRGBA,
-  backgroundColor: ColorRGBA,
+  captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
-  lineStyle: LineStyle,
   onRequestSave: ({
     fontSize: number,
     fontFamily: string,
@@ -81,11 +77,7 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
             isVisible={this.props.isVisible}
             isReadyToPlay={this.props.isReadyToPlay}
             speechTranscription={this.props.speechTranscription}
-            fontSize={this.props.fontSize}
-            fontFamily={this.props.fontFamily}
-            textColor={this.props.textColor}
-            backgroundColor={this.props.backgroundColor}
-            lineStyle={this.props.lineStyle}
+            captionStyle={this.props.captionStyle}
             onRequestSave={this.props.onRequestSave}
           />
         </SafeAreaView>

@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Animated, StyleSheet, Easing } from 'react-native';
+import { View, Animated, StyleSheet, Easing, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import throttle from 'lodash/throttle';
 
@@ -12,25 +12,22 @@ import RichTextBackgroundColorControl from './RichTextBackgroundColorControl';
 import RichTextFontSizeControl from './RichTextFontSizeControl';
 import RichTextEditorColorPicker from './RichTextEditorColorPicker';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
+import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
 import Button from '../button/Button';
 import { UI_COLORS } from '../../constants';
 
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
-import type { LineStyle } from '../../types/video';
+import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
   isReadyToPlay: boolean,
   isVisible: boolean,
-  fontSize: number,
-  fontFamily: string,
-  textColor: ColorRGBA,
-  backgroundColor: ColorRGBA,
+  captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
   duration: number,
-  lineStyle: LineStyle,
   onRequestLockScroll?: () => void,
   onRequestUnlockScroll?: () => void,
   onRequestSave: ({
@@ -47,8 +44,9 @@ type State = {
   backgroundColor: ColorRGBA,
   fontFamily: string,
   fontSize: number,
-  lineStyle: LineStyle,
 };
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const styles = {
   container: {},
@@ -91,7 +89,6 @@ const styles = {
       },
     ],
   }),
-  transcription: {},
 };
 
 // $FlowFixMe
@@ -105,11 +102,10 @@ export default class RichTextEditor extends Component<Props, State> {
     super(props);
     this.state = {
       isColorPickerVisible: false,
-      textColor: props.textColor,
-      backgroundColor: props.backgroundColor,
-      fontFamily: props.fontFamily,
-      fontSize: props.fontSize,
-      lineStyle: props.lineStyle,
+      textColor: props.captionStyle.textColor,
+      backgroundColor: props.captionStyle.backgroundColor,
+      fontFamily: props.captionStyle.fontFamily,
+      fontSize: props.captionStyle.fontSize,
     };
   }
 
@@ -223,21 +219,28 @@ export default class RichTextEditor extends Component<Props, State> {
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        <VideoCaptionsView
-          ref={ref => {
-            this.captionsView = ref;
-          }}
-          isReadyToPlay={this.props.isReadyToPlay}
-          style={styles.transcription}
-          orientation="up"
-          duration={this.props.duration}
-          textColor={this.state.textColor}
-          backgroundColor={this.state.backgroundColor}
-          fontFamily={this.state.fontFamily}
-          fontSize={this.state.fontSize}
-          speechTranscription={this.props.speechTranscription}
-          lineStyle={this.state.lineStyle}
-        />
+        <VideoCaptionsContainer orientation="up">
+          <VideoCaptionsView
+            ref={ref => {
+              this.captionsView = ref;
+            }}
+            isReadyToPlay={this.props.isReadyToPlay}
+            orientation="up"
+            duration={this.props.duration}
+            captionStyle={{
+              ...this.props.captionStyle,
+              textColor: this.state.textColor,
+              backgroundColor: this.state.backgroundColor,
+              fontFamily: this.state.fontFamily,
+              fontSize: this.state.fontSize,
+            }}
+            speechTranscription={this.props.speechTranscription}
+            viewLayout={{
+              size: { height: 85, width: SCREEN_WIDTH },
+              origin: { x: 0, y: 0 },
+            }}
+          />
+        </VideoCaptionsContainer>
         <View style={styles.mainContents}>
           <View style={styles.mainContentsBackground} />
           <RichTextFontFamilyControl

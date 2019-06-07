@@ -34,6 +34,7 @@ class VideoAnimationComposition: NSObject {
     super.init()
     let frame = CGRect(origin: .zero, size: videoSize)
     parentLayer.frame = frame
+    parentLayer.isGeometryFlipped = true
     parentLayer.contentsScale = UIScreen.main.scale
     effectLayer.frame = frame
     effectLayer.contentsScale = UIScreen.main.scale

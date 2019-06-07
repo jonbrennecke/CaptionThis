@@ -5,11 +5,17 @@ export type Size = {
   height: number,
 };
 
+export type Point = {
+  x: number,
+  y: number,
+};
+
 export type VideoAssetIdentifier = string;
+export type VideoID = VideoAssetIdentifier;
 
 export type VideoObject = {
   duration: number,
-  id: VideoAssetIdentifier,
+  id: VideoID,
 };
 
 export type ColorRGBA = {
@@ -24,6 +30,9 @@ export type TextOverlayParams = {
   timestamp: number,
   text: string,
 };
+
+// TODO rename `TextOverlayParams`
+export type TextSegmentObject = TextOverlayParams;
 
 export type Orientation =
   | 'left'

@@ -25,20 +25,32 @@
 		33C33D6F14064FD6A7A623A7 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFF2F3DB2EA4D6980D49A6A /* libRNSVG.a */; };
 		3732E5DBFC0B492A8E6B4B9A /* libRNSentry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA3289A720848BC816600CE /* libRNSentry.a */; };
 		45FD7683D86D4632A3B04D61 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0D8E9D50C44D7C928CE506 /* libz.tbd */; };
+		5CFEAE62C9A24B29984DD703 /* libReactNativeHaptic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70E12CA68E464F8995503A85 /* libReactNativeHaptic.a */; };
 		641F471343294C2ABF06F025 /* libRNSafeArea.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF9290E58A3E4E2F93660B3C /* libRNSafeArea.a */; };
 		6987EEC99C074A288E5666D1 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE51129C96194FA5BC0538FB /* libBVLinearGradient.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		83705F508DC44725A17C599A /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A2760C030124ED4AC724488 /* libSplashScreen.a */; };
 		ABFA7C95CB8D4C44962099F3 /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E05544985774B0FA5590447 /* libRNBlur.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		FC1492F922331A4600A753DD /* CaptionSizingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1492F822331A4600A753DD /* CaptionSizingUtil.swift */; };
+		FC19138A22628467008C8BA0 /* RCTConvert+CaptionExportStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FC19138922628467008C8BA0 /* RCTConvert+CaptionExportStyle.m */; };
+		FC19138C2262908D008C8BA0 /* VideoAnimationLayerLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC19138B2262908D008C8BA0 /* VideoAnimationLayerLayout.swift */; };
+		FC19138E226290F2008C8BA0 /* VideoDimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC19138D226290F2008C8BA0 /* VideoDimensions.swift */; };
 		FC1FE6C621E57C96005F657A /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1FE6C421E57C96005F657A /* Fabric.framework */; };
 		FC1FE6C721E57C96005F657A /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1FE6C521E57C96005F657A /* Crashlytics.framework */; };
 		FC1FE6ED21E5B8DE005F657A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */; };
 		FC254DFF21CDB03800A9C901 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC983DD521CDAF6800063476 /* libReactNativeNavigation.a */; };
-		FC4BCD15220432CF00822C0F /* VideoAnimationLayerLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4BCD14220432CF00822C0F /* VideoAnimationLayerLayout.swift */; };
-		FC4BCD182204345F00822C0F /* VideoAnimationLayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4BCD172204345F00822C0F /* VideoAnimationLayerModel.swift */; };
-		FC4BCD1A22043EBD00822C0F /* CaptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4BCD1922043EBD00822C0F /* CaptionsView.swift */; };
+		FC388F4C22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FC388F4B22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m */; };
+		FC388F4F22309A11001CE3A3 /* CaptionBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F4E22309A11001CE3A3 /* CaptionBackgroundStyle.swift */; };
+		FC388F522230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = FC388F512230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m */; };
+		FC388F542230EBF1001CE3A3 /* CaptionTextSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F532230EBF1001CE3A3 /* CaptionTextSegment.swift */; };
+		FC388F8E2231B41C001CE3A3 /* CaptionStringsMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F8D2231B41C001CE3A3 /* CaptionStringsMap.swift */; };
+		FC3A07D02256957800057426 /* clamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3A07CF2256957800057426 /* clamp.swift */; };
+		FC4607D62252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D52252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift */; };
+		FC4607D82252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D72252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift */; };
+		FC4607DA2252E1F800E34AD4 /* Pair.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D92252E1F800E34AD4 /* Pair.swift */; };
 		FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58D07521FA795F00E7956D /* AudioUtil.swift */; };
+		FC691AFA225124C900A30AA6 /* CaptionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC691AF9225124C900A30AA6 /* CaptionLayer.swift */; };
 		FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */; };
 		FC6EA41D221221BC009F3D7D /* VideoSeekbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA41C221221BC009F3D7D /* VideoSeekbarView.swift */; };
 		FC6EA41F221230A6009F3D7D /* DeviceBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA41E221230A6009F3D7D /* DeviceBridgeModule.m */; };
@@ -51,6 +63,9 @@
 		FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81521D45340007C3B3E /* PermissionsManager.swift */; };
 		FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */; };
 		FC6FCDA52220A2A9004772B9 /* LocaleUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */; };
+		FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9622249874004772B9 /* CaptionPresetView.swift */; };
+		FC6FCF9922249899004772B9 /* CaptionPresetViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9822249899004772B9 /* CaptionPresetViewManager.m */; };
+		FC6FCF9C22249B65004772B9 /* CaptionPresetLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9B22249B65004772B9 /* CaptionPresetLayer.swift */; };
 		FC7822C021E3FCB7007AA9B2 /* CutiveMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC78228B21E3FCB6007AA9B2 /* CutiveMono-Regular.ttf */; };
 		FC7822C121E3FCB7007AA9B2 /* DancingScript-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7822BC21E3FCB6007AA9B2 /* DancingScript-Regular.ttf */; };
 		FC7822C221E3FCB7007AA9B2 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC7822BD21E3FCB7007AA9B2 /* Montserrat-Regular.ttf */; };
@@ -73,17 +88,14 @@
 		FC8D50F821FE99FB009E114E /* IndieFlower.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50C721FE99FA009E114E /* IndieFlower.ttf */; };
 		FC8D50FA21FE9C82009E114E /* SpecialElite-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */; };
 		FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */; };
-		FC9374E421DEED4D00FD2700 /* TranscriptViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */; };
 		FC9374E821DEF02C00FD2700 /* VideoAnimationComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */; };
 		FC93753F21E0681800FD2700 /* SourceSerifPro-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC93750D21E0681700FD2700 /* SourceSerifPro-Semibold.ttf */; };
 		FC93754021E0681800FD2700 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC93753E21E0681800FD2700 /* SourceSansPro-Bold.ttf */; };
 		FC93759621E1499A00FD2700 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC93756521E1499900FD2700 /* Rubik-Regular.ttf */; };
 		FC93766621E3172600FD2700 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC93766421E3172500FD2700 /* Roboto-Regular.ttf */; };
 		FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971321DC933D00347CAB /* VideoExportManager.swift */; };
-		FCA3971621DC937C00347CAB /* VideoAnimationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971521DC937C00347CAB /* VideoAnimationLayer.swift */; };
 		FCA3971821DC93AF00347CAB /* constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971721DC93AF00347CAB /* constants.swift */; };
 		FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971921DC968E00347CAB /* VideoExportBridgeModule.m */; };
-		FCA3971E21DCB3B500347CAB /* VideoAnimationBridgeParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA3971D21DCB3B500347CAB /* VideoAnimationBridgeParams.swift */; };
 		FCB0E50922135EA7002F320B /* AmaticSC-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCB0E4D722135EA6002F320B /* AmaticSC-Bold.ttf */; };
 		FCB0E50B22136148002F320B /* Bangers-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCB0E50A22136148002F320B /* Bangers-Regular.ttf */; };
 		FCB0E55322136343002F320B /* Righteous-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCB0E52122136343002F320B /* Righteous-Regular.ttf */; };
@@ -95,16 +107,44 @@
 		FCB393A52210E0F900403154 /* LiveSpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */; };
 		FCB393A72210E2C000403154 /* SpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB393A62210E2C000403154 /* SpeechTranscriptionRequest.swift */; };
 		FCB3D2BF68D740C581A23323 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */; };
+		FCB8AE72222DBE26002F30D8 /* CaptionPresetLinePositions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB8AE71222DBE26002F30D8 /* CaptionPresetLinePositions.swift */; };
+		FCB8AEBC222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB8AEBB222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m */; };
+		FCB8AF24222F1773002F30D8 /* CaptionAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB8AF23222F1773002F30D8 /* CaptionAnimation.swift */; };
 		FCBB1936221524F00014D41C /* CaptionAnimationExportSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */; };
 		FCBB1A16221E66820014D41C /* FlagKit.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCBB1A15221E66820014D41C /* FlagKit.xcassets */; };
+		FCC486602269048200719F69 /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC4865F2269048200719F69 /* PlaybackController.swift */; };
 		FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */; };
 		FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */; };
 		FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */; };
 		FCD5F75821D73CA3001F2068 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75721D73CA2001F2068 /* Debug.m */; };
 		FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F77721D810FE001F2068 /* VideoSeekbarPreviewViewManager.m */; };
 		FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */; };
+		FCDBE58122931ACF001DA3E7 /* CaptionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDBE58022931ACF001DA3E7 /* CaptionViewLayout.swift */; };
+		FCDBE58322931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = FCDBE58222931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m */; };
 		FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8024921F84A640092B5E5 /* OrientationUtil.swift */; };
 		FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */; };
+		FCE83950223A172E002C85CA /* CaptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8394F223A172E002C85CA /* CaptionView.swift */; };
+		FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCE83952223A1795002C85CA /* CaptionViewManager.m */; };
+		FCF51EC6222651220066D81B /* AnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51EC5222651220066D81B /* AnimationUtil.swift */; };
+		FCF51F87222B4D550066D81B /* CaptionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51F86222B4D550066D81B /* CaptionStyle.swift */; };
+		FCF51FBC222B55480066D81B /* CaptionLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */; };
+		FCF51FC0222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBF222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m */; };
+		FCF51FC8222B62C60066D81B /* RCTConvert+CaptionLineStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FC7222B62C60066D81B /* RCTConvert+CaptionLineStyle.m */; };
+		FCFBDFA322A6D03F0059D452 /* effectUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFA222A6D03F0059D452 /* effectUtils.swift */; };
+		FCFBDFA522A715BA0059D452 /* CaptionWordStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFA422A715BA0059D452 /* CaptionWordStyle.swift */; };
+		FCFBDFAB22A719EB0059D452 /* CaptionLineStyleEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFAA22A719EB0059D452 /* CaptionLineStyleEffectFactory.swift */; };
+		FCFBDFAD22A72DD10059D452 /* CaptionLineStyleTranslateYEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFAC22A72DD10059D452 /* CaptionLineStyleTranslateYEffectFactory.swift */; };
+		FCFBDFAF22A72DF70059D452 /* CaptionLineStyleFadeInOutEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFAE22A72DF70059D452 /* CaptionLineStyleFadeInOutEffectFactory.swift */; };
+		FCFBDFB122A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB022A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift */; };
+		FCFBDFB422A7749F0059D452 /* CaptionBackgroundStyleEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB322A7749F0059D452 /* CaptionBackgroundStyleEffectFactory.swift */; };
+		FCFBDFB622A775870059D452 /* CaptionGradientBackgroundStyleEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB522A775870059D452 /* CaptionGradientBackgroundStyleEffectFactory.swift */; };
+		FCFBDFB822A775B50059D452 /* CaptionSolidBackgroundStyleEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB722A775B50059D452 /* CaptionSolidBackgroundStyleEffectFactory.swift */; };
+		FCFBDFBA22A7768A0059D452 /* layerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB922A7768A0059D452 /* layerUtils.swift */; };
+		FCFBDFBC22A78C5D0059D452 /* CaptionTextAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFBB22A78C5D0059D452 /* CaptionTextAlignment.swift */; };
+		FCFBE02022A82A400059D452 /* renderCaptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE01F22A82A400059D452 /* renderCaptions.swift */; };
+		FCFBE02222A8324B0059D452 /* CaptionRowKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */; };
+		FCFBE02422A832AD0059D452 /* CaptionRowLayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02322A832AD0059D452 /* CaptionRowLayers.swift */; };
+		FCFBE02622A890A70059D452 /* PlaybackControllerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -472,6 +512,20 @@
 			remoteGlobalIDString = 6DA7B8031F692C4C00FD1D50;
 			remoteInfo = RNSafeArea;
 		};
+		FCFBDF0422A1AABF0059D452 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNReactNativeHapticFeedback;
+		};
+		FCFBDF5322A1B45B0059D452 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20A5BBF73DFE404FBD9508A6 /* ReactNativeHaptic.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = ReactNativeHaptic;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -493,6 +547,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CaptionThis/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = CaptionThis/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		20A5BBF73DFE404FBD9508A6 /* ReactNativeHaptic.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeHaptic.xcodeproj; path = "../node_modules/react-native-haptic/ios/ReactNativeHaptic.xcodeproj"; sourceTree = "<group>"; };
+		2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNReactNativeHapticFeedback.xcodeproj; path = "../node_modules/react-native-haptic-feedback/ios/RNReactNativeHapticFeedback.xcodeproj"; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		4D9C800E0EBF4C11906CFDE3 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
@@ -503,6 +559,7 @@
 		60E66683EFEB4BF0996C113B /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		62570F57A9D94E2F94BD7B22 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		6975466A01974F6A906205BA /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
+		70E12CA68E464F8995503A85 /* libReactNativeHaptic.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeHaptic.a; sourceTree = "<group>"; };
 		755A11963AF5425BBB7CCC66 /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -515,16 +572,31 @@
 		BD50A92D35494C8A876C6C03 /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeNavigation.a; sourceTree = "<group>"; };
 		C9409A38306F4AA3B407FD5C /* RNSentry.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSentry.xcodeproj; path = "../node_modules/react-native-sentry/ios/RNSentry.xcodeproj"; sourceTree = "<group>"; };
 		D1A322132CEB40238AD3A6FC /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
+		DA8BB66DA4924063BD6C571D /* libRNReactNativeHapticFeedback.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNReactNativeHapticFeedback.a; sourceTree = "<group>"; };
 		DF9290E58A3E4E2F93660B3C /* libRNSafeArea.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSafeArea.a; sourceTree = "<group>"; };
 		EDA3289A720848BC816600CE /* libRNSentry.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSentry.a; sourceTree = "<group>"; };
 		F7CF70A3DDDD49158A603A1B /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
+		FC1492F822331A4600A753DD /* CaptionSizingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionSizingUtil.swift; sourceTree = "<group>"; };
+		FC1913882262845B008C8BA0 /* RCTConvert+CaptionExportStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionExportStyle.h"; sourceTree = "<group>"; };
+		FC19138922628467008C8BA0 /* RCTConvert+CaptionExportStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionExportStyle.m"; sourceTree = "<group>"; };
+		FC19138B2262908D008C8BA0 /* VideoAnimationLayerLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoAnimationLayerLayout.swift; path = captions/VideoAnimationLayerLayout.swift; sourceTree = SOURCE_ROOT; };
+		FC19138D226290F2008C8BA0 /* VideoDimensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoDimensions.swift; path = captions/VideoDimensions.swift; sourceTree = SOURCE_ROOT; };
 		FC1FE6C421E57C96005F657A /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FC1FE6C521E57C96005F657A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		FC4BCD14220432CF00822C0F /* VideoAnimationLayerLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationLayerLayout.swift; sourceTree = "<group>"; };
-		FC4BCD172204345F00822C0F /* VideoAnimationLayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationLayerModel.swift; sourceTree = "<group>"; };
-		FC4BCD1922043EBD00822C0F /* CaptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionsView.swift; sourceTree = "<group>"; };
+		FC388F4B22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionBackgroundStyle.m"; sourceTree = "<group>"; };
+		FC388F4D22309863001CE3A3 /* RCTConvert+CaptionBackgroundStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionBackgroundStyle.h"; sourceTree = "<group>"; };
+		FC388F4E22309A11001CE3A3 /* CaptionBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionBackgroundStyle.swift; sourceTree = "<group>"; };
+		FC388F512230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionTextSegment.m"; sourceTree = "<group>"; };
+		FC388F532230EBF1001CE3A3 /* CaptionTextSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTextSegment.swift; sourceTree = "<group>"; };
+		FC388F552230EC4B001CE3A3 /* RCTConvert+CaptionTextSegment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionTextSegment.h"; sourceTree = "<group>"; };
+		FC388F8D2231B41C001CE3A3 /* CaptionStringsMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionStringsMap.swift; sourceTree = "<group>"; };
+		FC3A07CF2256957800057426 /* clamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = clamp.swift; sourceTree = "<group>"; };
+		FC4607D52252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionAnimatedWordStyleEffectFactory.swift; sourceTree = "<group>"; };
+		FC4607D72252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionNoWordStyleEffectFactory.swift; sourceTree = "<group>"; };
+		FC4607D92252E1F800E34AD4 /* Pair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pair.swift; sourceTree = "<group>"; };
 		FC58D07521FA795F00E7956D /* AudioUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUtil.swift; sourceTree = "<group>"; };
+		FC691AF9225124C900A30AA6 /* CaptionLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLayer.swift; sourceTree = "<group>"; };
 		FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUtil.swift; sourceTree = "<group>"; };
 		FC6EA41C221221BC009F3D7D /* VideoSeekbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSeekbarView.swift; sourceTree = "<group>"; };
 		FC6EA41E221230A6009F3D7D /* DeviceBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceBridgeModule.m; sourceTree = "<group>"; };
@@ -541,6 +613,10 @@
 		FC6EA81921D45730007C3B3E /* PermissionsBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PermissionsBridgeModule.h; sourceTree = "<group>"; };
 		FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocaleUtil.m; sourceTree = "<group>"; };
 		FC6FCDD72220A2C7004772B9 /* LocaleUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocaleUtil.h; sourceTree = "<group>"; };
+		FC6FCF9622249874004772B9 /* CaptionPresetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetView.swift; sourceTree = "<group>"; };
+		FC6FCF9822249899004772B9 /* CaptionPresetViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptionPresetViewManager.m; sourceTree = "<group>"; };
+		FC6FCF9A222498A2004772B9 /* CaptionPresetViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptionPresetViewManager.h; sourceTree = "<group>"; };
+		FC6FCF9B22249B65004772B9 /* CaptionPresetLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetLayer.swift; sourceTree = "<group>"; };
 		FC78228B21E3FCB6007AA9B2 /* CutiveMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "CutiveMono-Regular.ttf"; path = "../assets/fonts/CutiveMono-Regular.ttf"; sourceTree = "<group>"; };
 		FC7822BC21E3FCB6007AA9B2 /* DancingScript-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DancingScript-Regular.ttf"; path = "../assets/fonts/DancingScript-Regular.ttf"; sourceTree = "<group>"; };
 		FC7822BD21E3FCB7007AA9B2 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
@@ -570,19 +646,15 @@
 		FC8D50C721FE99FA009E114E /* IndieFlower.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = IndieFlower.ttf; path = ../assets/fonts/IndieFlower.ttf; sourceTree = "<group>"; };
 		FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpecialElite-Regular.ttf"; path = "../assets/fonts/SpecialElite-Regular.ttf"; sourceTree = "<group>"; };
 		FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredTextLayer.swift; sourceTree = "<group>"; };
-		FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TranscriptViewManager.m; sourceTree = "<group>"; };
-		FC9374E521DEED5800FD2700 /* TranscriptViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TranscriptViewManager.h; sourceTree = "<group>"; };
 		FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationComposition.swift; sourceTree = "<group>"; };
 		FC93750D21E0681700FD2700 /* SourceSerifPro-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSerifPro-Semibold.ttf"; path = "../assets/fonts/SourceSerifPro-Semibold.ttf"; sourceTree = "<group>"; };
 		FC93753E21E0681800FD2700 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-Bold.ttf"; path = "../assets/fonts/SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
 		FC93756521E1499900FD2700 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rubik-Regular.ttf"; path = "../assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		FC93766421E3172500FD2700 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		FCA3971321DC933D00347CAB /* VideoExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExportManager.swift; sourceTree = "<group>"; };
-		FCA3971521DC937C00347CAB /* VideoAnimationLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationLayer.swift; sourceTree = "<group>"; };
 		FCA3971721DC93AF00347CAB /* constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constants.swift; sourceTree = "<group>"; };
 		FCA3971921DC968E00347CAB /* VideoExportBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoExportBridgeModule.m; sourceTree = "<group>"; };
 		FCA3971B21DC969D00347CAB /* VideoExportBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoExportBridgeModule.h; sourceTree = "<group>"; };
-		FCA3971D21DCB3B500347CAB /* VideoAnimationBridgeParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAnimationBridgeParams.swift; sourceTree = "<group>"; };
 		FCB0E4D722135EA6002F320B /* AmaticSC-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AmaticSC-Bold.ttf"; path = "../assets/fonts/AmaticSC-Bold.ttf"; sourceTree = "<group>"; };
 		FCB0E50A22136148002F320B /* Bangers-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Bangers-Regular.ttf"; path = "../assets/fonts/Bangers-Regular.ttf"; sourceTree = "<group>"; };
 		FCB0E52122136343002F320B /* Righteous-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Righteous-Regular.ttf"; path = "../assets/fonts/Righteous-Regular.ttf"; sourceTree = "<group>"; };
@@ -593,8 +665,13 @@
 		FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
 		FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
 		FCB393A62210E2C000403154 /* SpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
+		FCB8AE71222DBE26002F30D8 /* CaptionPresetLinePositions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetLinePositions.swift; sourceTree = "<group>"; };
+		FCB8AEBB222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionWordStyle.m"; sourceTree = "<group>"; };
+		FCB8AEF0222DDD77002F30D8 /* RCTConvert+CaptionWordStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionWordStyle.h"; sourceTree = "<group>"; };
+		FCB8AF23222F1773002F30D8 /* CaptionAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionAnimation.swift; sourceTree = "<group>"; };
 		FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionAnimationExportSession.swift; sourceTree = "<group>"; };
 		FCBB1A15221E66820014D41C /* FlagKit.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FlagKit.xcassets; sourceTree = "<group>"; };
+		FCC4865F2269048200719F69 /* PlaybackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackController.swift; sourceTree = "<group>"; };
 		FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewManager.m; sourceTree = "<group>"; };
 		FCD5F74C21D6BA25001F2068 /* VideoPlayerViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewManager.h; sourceTree = "<group>"; };
 		FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
@@ -606,8 +683,36 @@
 		FCD5F7A421D8110C001F2068 /* VideoSeekbarPreviewViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSeekbarPreviewViewManager.h; sourceTree = "<group>"; };
 		FCDA6EE221FD07BF00FA8345 /* RCTConvert+UIImageOrientation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+UIImageOrientation.h"; sourceTree = "<group>"; };
 		FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIImageOrientation.m"; sourceTree = "<group>"; };
+		FCDBE58022931ACF001DA3E7 /* CaptionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionViewLayout.swift; sourceTree = "<group>"; };
+		FCDBE58222931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionViewLayout.m"; sourceTree = "<group>"; };
+		FCDBE58422931DEE001DA3E7 /* RCTConvert+CaptionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionViewLayout.h"; sourceTree = "<group>"; };
 		FCE8024921F84A640092B5E5 /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
 		FCE8027B21F914E00092B5E5 /* VideoThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoThumbnailView.swift; sourceTree = "<group>"; };
+		FCE8394F223A172E002C85CA /* CaptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionView.swift; sourceTree = "<group>"; };
+		FCE83951223A1786002C85CA /* CaptionViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptionViewManager.h; sourceTree = "<group>"; };
+		FCE83952223A1795002C85CA /* CaptionViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptionViewManager.m; sourceTree = "<group>"; };
+		FCF51EC5222651220066D81B /* AnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtil.swift; sourceTree = "<group>"; };
+		FCF51F86222B4D550066D81B /* CaptionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionStyle.swift; sourceTree = "<group>"; };
+		FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLineStyle.swift; sourceTree = "<group>"; };
+		FCF51FBF222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionTextAlignment.m"; sourceTree = "<group>"; };
+		FCF51FC1222B5AA30066D81B /* RCTConvert+CaptionTextAlignment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionTextAlignment.h"; sourceTree = "<group>"; };
+		FCF51FC6222B62B90066D81B /* RCTConvert+CaptionLineStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionLineStyle.h"; sourceTree = "<group>"; };
+		FCF51FC7222B62C60066D81B /* RCTConvert+CaptionLineStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionLineStyle.m"; sourceTree = "<group>"; };
+		FCFBDFA222A6D03F0059D452 /* effectUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = effectUtils.swift; sourceTree = "<group>"; };
+		FCFBDFA422A715BA0059D452 /* CaptionWordStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionWordStyle.swift; sourceTree = "<group>"; };
+		FCFBDFAA22A719EB0059D452 /* CaptionLineStyleEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLineStyleEffectFactory.swift; sourceTree = "<group>"; };
+		FCFBDFAC22A72DD10059D452 /* CaptionLineStyleTranslateYEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLineStyleTranslateYEffectFactory.swift; sourceTree = "<group>"; };
+		FCFBDFAE22A72DF70059D452 /* CaptionLineStyleFadeInOutEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLineStyleFadeInOutEffectFactory.swift; sourceTree = "<group>"; };
+		FCFBDFB022A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionWordStyleEffectFactory.swift; sourceTree = "<group>"; };
+		FCFBDFB322A7749F0059D452 /* CaptionBackgroundStyleEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionBackgroundStyleEffectFactory.swift; sourceTree = "<group>"; };
+		FCFBDFB522A775870059D452 /* CaptionGradientBackgroundStyleEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionGradientBackgroundStyleEffectFactory.swift; sourceTree = "<group>"; };
+		FCFBDFB722A775B50059D452 /* CaptionSolidBackgroundStyleEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionSolidBackgroundStyleEffectFactory.swift; sourceTree = "<group>"; };
+		FCFBDFB922A7768A0059D452 /* layerUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = layerUtils.swift; sourceTree = "<group>"; };
+		FCFBDFBB22A78C5D0059D452 /* CaptionTextAlignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTextAlignment.swift; sourceTree = "<group>"; };
+		FCFBE01F22A82A400059D452 /* renderCaptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = renderCaptions.swift; sourceTree = "<group>"; };
+		FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionRowKey.swift; sourceTree = "<group>"; };
+		FCFBE02322A832AD0059D452 /* CaptionRowLayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionRowLayers.swift; sourceTree = "<group>"; };
+		FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControllerState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -646,6 +751,7 @@
 				83705F508DC44725A17C599A /* libSplashScreen.a in Frameworks */,
 				3732E5DBFC0B492A8E6B4B9A /* libRNSentry.a in Frameworks */,
 				45FD7683D86D4632A3B04D61 /* libz.tbd in Frameworks */,
+				5CFEAE62C9A24B29984DD703 /* libReactNativeHaptic.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -747,7 +853,7 @@
 				FC6EA81521D45340007C3B3E /* PermissionsManager.swift */,
 				FCA3971721DC93AF00347CAB /* constants.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
-				FC4BCD16220432DA00822C0F /* VideoAnimationLayer */,
+				FC6FCF6222249860004772B9 /* captions */,
 				FC58D11321FAED1A00E7956D /* utils */,
 				FCDA6F1521FD07E100FA8345 /* RCTConvert */,
 				FC6FCDD82220ACD7004772B9 /* camera */,
@@ -760,8 +866,6 @@
 				FC7A0F8621D8AB5D00751DBE /* HueGradientViewManager */,
 				FC7A0F6121D89CCC00751DBE /* SaturationAndBrightnessGradientViewManager */,
 				FCD5F7A521D8110F001F2068 /* seekbar */,
-				FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */,
-				FC9374E621DEED6700FD2700 /* TranscriptViewManager */,
 				FC6EA421221230CA009F3D7D /* DeviceBridgeModule */,
 			);
 			name = CaptionThis;
@@ -840,6 +944,8 @@
 				896272E6488044ABA31DCDA8 /* RNSafeArea.xcodeproj */,
 				F7CF70A3DDDD49158A603A1B /* SplashScreen.xcodeproj */,
 				C9409A38306F4AA3B407FD5C /* RNSentry.xcodeproj */,
+				2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */,
+				20A5BBF73DFE404FBD9508A6 /* ReactNativeHaptic.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -894,14 +1000,85 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FC4BCD16220432DA00822C0F /* VideoAnimationLayer */ = {
+		FC388F172230983E001CE3A3 /* RCTConvert */ = {
 			isa = PBXGroup;
 			children = (
-				FC4BCD172204345F00822C0F /* VideoAnimationLayerModel.swift */,
-				FC4BCD14220432CF00822C0F /* VideoAnimationLayerLayout.swift */,
-				FCA3971521DC937C00347CAB /* VideoAnimationLayer.swift */,
+				FCF51FBF222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m */,
+				FCF51FC1222B5AA30066D81B /* RCTConvert+CaptionTextAlignment.h */,
+				FCF51FC6222B62B90066D81B /* RCTConvert+CaptionLineStyle.h */,
+				FCF51FC7222B62C60066D81B /* RCTConvert+CaptionLineStyle.m */,
+				FCB8AEBB222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m */,
+				FCB8AEF0222DDD77002F30D8 /* RCTConvert+CaptionWordStyle.h */,
+				FC388F4B22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m */,
+				FC388F4D22309863001CE3A3 /* RCTConvert+CaptionBackgroundStyle.h */,
+				FC388F512230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m */,
+				FC388F552230EC4B001CE3A3 /* RCTConvert+CaptionTextSegment.h */,
+				FC1913882262845B008C8BA0 /* RCTConvert+CaptionExportStyle.h */,
+				FC19138922628467008C8BA0 /* RCTConvert+CaptionExportStyle.m */,
+				FCDBE58222931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m */,
+				FCDBE58422931DEE001DA3E7 /* RCTConvert+CaptionViewLayout.h */,
 			);
-			name = VideoAnimationLayer;
+			path = RCTConvert;
+			sourceTree = "<group>";
+		};
+		FC388F5022309A36001CE3A3 /* rendering */ = {
+			isa = PBXGroup;
+			children = (
+				FC4608392253CCB700E34AD4 /* background-style */,
+				FC4608052253CCA300E34AD4 /* line-style */,
+				FC4607D42252CA0A00E34AD4 /* word-style */,
+				FCFBDFA222A6D03F0059D452 /* effectUtils.swift */,
+				FCFBDFB922A7768A0059D452 /* layerUtils.swift */,
+				FCFBE01F22A82A400059D452 /* renderCaptions.swift */,
+				FCFBDFBB22A78C5D0059D452 /* CaptionTextAlignment.swift */,
+				FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */,
+				FCFBE02322A832AD0059D452 /* CaptionRowLayers.swift */,
+			);
+			path = rendering;
+			sourceTree = "<group>";
+		};
+		FC388F562230F063001CE3A3 /* presets */ = {
+			isa = PBXGroup;
+			children = (
+				FC6FCF9B22249B65004772B9 /* CaptionPresetLayer.swift */,
+				FC6FCF9622249874004772B9 /* CaptionPresetView.swift */,
+				FC6FCF9822249899004772B9 /* CaptionPresetViewManager.m */,
+				FC6FCF9A222498A2004772B9 /* CaptionPresetViewManager.h */,
+			);
+			path = presets;
+			sourceTree = "<group>";
+		};
+		FC4607D42252CA0A00E34AD4 /* word-style */ = {
+			isa = PBXGroup;
+			children = (
+				FC4607D52252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift */,
+				FC4607D72252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift */,
+				FCFBDFA422A715BA0059D452 /* CaptionWordStyle.swift */,
+				FCFBDFB022A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift */,
+			);
+			path = "word-style";
+			sourceTree = "<group>";
+		};
+		FC4608052253CCA300E34AD4 /* line-style */ = {
+			isa = PBXGroup;
+			children = (
+				FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */,
+				FCFBDFAA22A719EB0059D452 /* CaptionLineStyleEffectFactory.swift */,
+				FCFBDFAC22A72DD10059D452 /* CaptionLineStyleTranslateYEffectFactory.swift */,
+				FCFBDFAE22A72DF70059D452 /* CaptionLineStyleFadeInOutEffectFactory.swift */,
+			);
+			path = "line-style";
+			sourceTree = "<group>";
+		};
+		FC4608392253CCB700E34AD4 /* background-style */ = {
+			isa = PBXGroup;
+			children = (
+				FC388F4E22309A11001CE3A3 /* CaptionBackgroundStyle.swift */,
+				FCFBDFB322A7749F0059D452 /* CaptionBackgroundStyleEffectFactory.swift */,
+				FCFBDFB522A775870059D452 /* CaptionGradientBackgroundStyleEffectFactory.swift */,
+				FCFBDFB722A775B50059D452 /* CaptionSolidBackgroundStyleEffectFactory.swift */,
+			);
+			path = "background-style";
 			sourceTree = "<group>";
 		};
 		FC53C91821D69FB5003DEBE8 /* Products */ = {
@@ -929,6 +1106,8 @@
 				DF9290E58A3E4E2F93660B3C /* libRNSafeArea.a */,
 				8A2760C030124ED4AC724488 /* libSplashScreen.a */,
 				EDA3289A720848BC816600CE /* libRNSentry.a */,
+				DA8BB66DA4924063BD6C571D /* libRNReactNativeHapticFeedback.a */,
+				70E12CA68E464F8995503A85 /* libReactNativeHaptic.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -936,14 +1115,29 @@
 		FC58D11321FAED1A00E7956D /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				FCF51EC5222651220066D81B /* AnimationUtil.swift */,
 				FC58D07521FA795F00E7956D /* AudioUtil.swift */,
 				FCE8024921F84A640092B5E5 /* OrientationUtil.swift */,
 				FCB392F1220CCD0900403154 /* Result.swift */,
 				FCD5F75621D73C97001F2068 /* Debug */,
 				FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */,
 				FCB0E5C222149C03002F320B /* PhotosAlbumUtil.swift */,
+				FCB8AF23222F1773002F30D8 /* CaptionAnimation.swift */,
+				FC4607D92252E1F800E34AD4 /* Pair.swift */,
+				FC3A07CF2256957800057426 /* clamp.swift */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		FC691AF82251249B00A30AA6 /* captions */ = {
+			isa = PBXGroup;
+			children = (
+				FCE83951223A1786002C85CA /* CaptionViewManager.h */,
+				FCE83952223A1795002C85CA /* CaptionViewManager.m */,
+				FCE8394F223A172E002C85CA /* CaptionView.swift */,
+				FC691AF9225124C900A30AA6 /* CaptionLayer.swift */,
+			);
+			path = captions;
 			sourceTree = "<group>";
 		};
 		FC6EA421221230CA009F3D7D /* DeviceBridgeModule */ = {
@@ -1001,6 +1195,25 @@
 				FC6FCE4B2220B56B004772B9 /* libRNSentry-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FC6FCF6222249860004772B9 /* captions */ = {
+			isa = PBXGroup;
+			children = (
+				FCCD0444225BDA2400D35E46 /* export */,
+				FCE8391B223A11D6002C85CA /* views */,
+				FC19138D226290F2008C8BA0 /* VideoDimensions.swift */,
+				FC1492F822331A4600A753DD /* CaptionSizingUtil.swift */,
+				FC388F532230EBF1001CE3A3 /* CaptionTextSegment.swift */,
+				FCF51F86222B4D550066D81B /* CaptionStyle.swift */,
+				FCB8AE71222DBE26002F30D8 /* CaptionPresetLinePositions.swift */,
+				FC388F8D2231B41C001CE3A3 /* CaptionStringsMap.swift */,
+				FC19138B2262908D008C8BA0 /* VideoAnimationLayerLayout.swift */,
+				FCDBE58022931ACF001DA3E7 /* CaptionViewLayout.swift */,
+				FC388F5022309A36001CE3A3 /* rendering */,
+				FC388F172230983E001CE3A3 /* RCTConvert */,
+			);
+			path = captions;
 			sourceTree = "<group>";
 		};
 		FC7A0F4F21D876E500751DBE /* Products */ = {
@@ -1097,16 +1310,6 @@
 			name = VideoThumbnailViewManager;
 			sourceTree = "<group>";
 		};
-		FC9374E621DEED6700FD2700 /* TranscriptViewManager */ = {
-			isa = PBXGroup;
-			children = (
-				FC9374E321DEED4D00FD2700 /* TranscriptViewManager.m */,
-				FC9374E521DEED5800FD2700 /* TranscriptViewManager.h */,
-				FC4BCD1922043EBD00822C0F /* CaptionsView.swift */,
-			);
-			path = TranscriptViewManager;
-			sourceTree = "<group>";
-		};
 		FC983DD021CDAF6800063476 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1136,15 +1339,23 @@
 		FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */ = {
 			isa = PBXGroup;
 			children = (
-				FCA3971D21DCB3B500347CAB /* VideoAnimationBridgeParams.swift */,
-				FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */,
-				FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */,
-				FCB0E5C02213F076002F320B /* VideoExportTask.swift */,
-				FCA3971321DC933D00347CAB /* VideoExportManager.swift */,
 				FCA3971921DC968E00347CAB /* VideoExportBridgeModule.m */,
 				FCA3971B21DC969D00347CAB /* VideoExportBridgeModule.h */,
 			);
 			name = VideoExportBridgeModule;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		FCCD0444225BDA2400D35E46 /* export */ = {
+			isa = PBXGroup;
+			children = (
+				FC9374E721DEF02C00FD2700 /* VideoAnimationComposition.swift */,
+				FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */,
+				FCB0E5C02213F076002F320B /* VideoExportTask.swift */,
+				FCA3971321DC933D00347CAB /* VideoExportManager.swift */,
+				FCA3971C21DC96A500347CAB /* VideoExportBridgeModule */,
+			);
+			path = export;
 			sourceTree = "<group>";
 		};
 		FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */ = {
@@ -1200,6 +1411,33 @@
 				FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */,
 			);
 			path = RCTConvert;
+			sourceTree = "<group>";
+		};
+		FCE8391B223A11D6002C85CA /* views */ = {
+			isa = PBXGroup;
+			children = (
+				FC691AF82251249B00A30AA6 /* captions */,
+				FC388F562230F063001CE3A3 /* presets */,
+				FCC4865F2269048200719F69 /* PlaybackController.swift */,
+				FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		FCFBDF0122A1AABE0059D452 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FCFBDF0522A1AABF0059D452 /* libRNReactNativeHapticFeedback.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FCFBDF5022A1B45A0059D452 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FCFBDF5422A1B45B0059D452 /* libReactNativeHaptic.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1268,6 +1506,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1328,6 +1567,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = FCFBDF5022A1B45A0059D452 /* Products */;
+					ProjectRef = 20A5BBF73DFE404FBD9508A6 /* ReactNativeHaptic.xcodeproj */;
+				},
+				{
 					ProductGroup = FC983DD021CDAF6800063476 /* Products */;
 					ProjectRef = D1A322132CEB40238AD3A6FC /* ReactNativeNavigation.xcodeproj */;
 				},
@@ -1338,6 +1581,10 @@
 				{
 					ProductGroup = FC880DF321D4C7D300856037 /* Products */;
 					ProjectRef = A6FDB0CCE2B7434DA0856AFC /* RNDeviceInfo.xcodeproj */;
+				},
+				{
+					ProductGroup = FCFBDF0122A1AABE0059D452 /* Products */;
+					ProjectRef = 2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */;
 				},
 				{
 					ProductGroup = FCA3970E21DC4C7D00347CAB /* Products */;
@@ -1722,6 +1969,20 @@
 			remoteRef = FCA3971121DC4C7D00347CAB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FCFBDF0522A1AABF0059D452 /* libRNReactNativeHapticFeedback.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNReactNativeHapticFeedback.a;
+			remoteRef = FCFBDF0422A1AABF0059D452 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FCFBDF5422A1B45B0059D452 /* libReactNativeHaptic.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativeHaptic.a;
+			remoteRef = FCFBDF5322A1B45B0059D452 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1827,51 +2088,90 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCB8AF24222F1773002F30D8 /* CaptionAnimation.swift in Sources */,
+				FC6FCF9C22249B65004772B9 /* CaptionPresetLayer.swift in Sources */,
+				FCFBDFAF22A72DF70059D452 /* CaptionLineStyleFadeInOutEffectFactory.swift in Sources */,
+				FCFBDFAD22A72DD10059D452 /* CaptionLineStyleTranslateYEffectFactory.swift in Sources */,
+				FCF51F87222B4D550066D81B /* CaptionStyle.swift in Sources */,
 				FCB0E5C322149C03002F320B /* PhotosAlbumUtil.swift in Sources */,
 				FCB39371220EB45200403154 /* FileSpeechTranscriptionRequest.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				FCB393A52210E0F900403154 /* LiveSpeechTranscriptionRequest.swift in Sources */,
 				FC6EA81221D45123007C3B3E /* Debug.swift in Sources */,
+				FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */,
 				FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */,
+				FC388F4C22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m in Sources */,
 				FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */,
+				FC4607D62252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift in Sources */,
 				FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */,
+				FC388F4F22309A11001CE3A3 /* CaptionBackgroundStyle.swift in Sources */,
+				FCFBDFB622A775870059D452 /* CaptionGradientBackgroundStyleEffectFactory.swift in Sources */,
+				FC4607D82252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift in Sources */,
 				FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */,
 				FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */,
-				FC4BCD15220432CF00822C0F /* VideoAnimationLayerLayout.swift in Sources */,
 				FC6EA41F221230A6009F3D7D /* DeviceBridgeModule.m in Sources */,
 				FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */,
+				FCFBDFB822A775B50059D452 /* CaptionSolidBackgroundStyleEffectFactory.swift in Sources */,
 				FC6EA7E921D4508D007C3B3E /* CameraManager.swift in Sources */,
 				FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */,
-				FCA3971621DC937C00347CAB /* VideoAnimationLayer.swift in Sources */,
+				FCFBDFB122A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift in Sources */,
+				FC19138E226290F2008C8BA0 /* VideoDimensions.swift in Sources */,
+				FC6FCF9922249899004772B9 /* CaptionPresetViewManager.m in Sources */,
 				FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */,
 				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
+				FC388F542230EBF1001CE3A3 /* CaptionTextSegment.swift in Sources */,
 				FC7A0F6321D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m in Sources */,
 				FCB0E5C12213F076002F320B /* VideoExportTask.swift in Sources */,
-				FC9374E421DEED4D00FD2700 /* TranscriptViewManager.m in Sources */,
+				FCE83950223A172E002C85CA /* CaptionView.swift in Sources */,
+				FC388F522230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m in Sources */,
+				FCFBE02422A832AD0059D452 /* CaptionRowLayers.swift in Sources */,
+				FCF51FC8222B62C60066D81B /* RCTConvert+CaptionLineStyle.m in Sources */,
+				FCDBE58322931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m in Sources */,
+				FCF51FBC222B55480066D81B /* CaptionLineStyle.swift in Sources */,
+				FCFBDFA322A6D03F0059D452 /* effectUtils.swift in Sources */,
 				FCD5F77821D810FE001F2068 /* VideoSeekbarPreviewViewManager.m in Sources */,
 				FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */,
 				FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */,
 				FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */,
-				FC4BCD1A22043EBD00822C0F /* CaptionsView.swift in Sources */,
+				FC3A07D02256957800057426 /* clamp.swift in Sources */,
+				FCFBDFAB22A719EB0059D452 /* CaptionLineStyleEffectFactory.swift in Sources */,
+				FC388F8E2231B41C001CE3A3 /* CaptionStringsMap.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				FC1492F922331A4600A753DD /* CaptionSizingUtil.swift in Sources */,
+				FCFBE02022A82A400059D452 /* renderCaptions.swift in Sources */,
+				FCDBE58122931ACF001DA3E7 /* CaptionViewLayout.swift in Sources */,
 				FCBB1936221524F00014D41C /* CaptionAnimationExportSession.swift in Sources */,
+				FCB8AEBC222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m in Sources */,
 				FC880E0321D5DC4100856037 /* VideoThumbnailViewManager.m in Sources */,
 				FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */,
+				FCFBE02222A8324B0059D452 /* CaptionRowKey.swift in Sources */,
 				FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */,
 				FCA3971821DC93AF00347CAB /* constants.swift in Sources */,
-				FC4BCD182204345F00822C0F /* VideoAnimationLayerModel.swift in Sources */,
+				FCC486602269048200719F69 /* PlaybackController.swift in Sources */,
 				FCB392F2220CCD0900403154 /* Result.swift in Sources */,
+				FCFBDFBA22A7768A0059D452 /* layerUtils.swift in Sources */,
 				FCB393A72210E2C000403154 /* SpeechTranscriptionRequest.swift in Sources */,
+				FC19138C2262908D008C8BA0 /* VideoAnimationLayerLayout.swift in Sources */,
+				FCFBDFBC22A78C5D0059D452 /* CaptionTextAlignment.swift in Sources */,
 				FC6EA41D221221BC009F3D7D /* VideoSeekbarView.swift in Sources */,
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,
+				FCFBDFB422A7749F0059D452 /* CaptionBackgroundStyleEffectFactory.swift in Sources */,
+				FCFBE02622A890A70059D452 /* PlaybackControllerState.swift in Sources */,
+				FCF51EC6222651220066D81B /* AnimationUtil.swift in Sources */,
+				FCF51FC0222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m in Sources */,
 				FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */,
+				FC691AFA225124C900A30AA6 /* CaptionLayer.swift in Sources */,
 				FC6FCDA52220A2A9004772B9 /* LocaleUtil.m in Sources */,
 				FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */,
+				FCFBDFA522A715BA0059D452 /* CaptionWordStyle.swift in Sources */,
 				FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */,
-				FCA3971E21DCB3B500347CAB /* VideoAnimationBridgeParams.swift in Sources */,
 				FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */,
 				FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */,
+				FC19138A22628467008C8BA0 /* RCTConvert+CaptionExportStyle.m in Sources */,
+				FC4607DA2252E1F800E34AD4 /* Pair.swift in Sources */,
 				FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */,
+				FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */,
+				FCB8AE72222DBE26002F30D8 /* CaptionPresetLinePositions.swift in Sources */,
 				FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */,
 				FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */,
 				FC9374E821DEF02C00FD2700 /* VideoAnimationComposition.swift in Sources */,
@@ -1910,12 +2210,16 @@
 					"$(SRCROOT)/../node_modules/react-native-safe-area/ios/RNSafeArea",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
+					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1957,12 +2261,16 @@
 					"$(SRCROOT)/../node_modules/react-native-safe-area/ios/RNSafeArea",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
+					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2009,6 +2317,8 @@
 					"$(SRCROOT)/../node_modules/react-native-safe-area/ios/RNSafeArea",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
+					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThis/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2049,6 +2359,8 @@
 					"$(SRCROOT)/../node_modules/react-native-safe-area/ios/RNSafeArea",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
+					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThis/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

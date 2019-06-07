@@ -7,17 +7,25 @@ import HomeScreenTopCameraControls from './HomeScreenTopCameraControls';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
+import type {
+  CaptionStyleObject,
+  CaptionPresetStyleObject,
+  CaptionTextSegment,
+} from '../../types/video';
 
 type Props = {
   style?: ?Style,
   isVisible: boolean,
   countryCode: ?string,
+  video: ?VideoAssetIdentifier,
+  textSegments: CaptionTextSegment[],
+  captionStyle: CaptionStyleObject,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
   onRequestSwitchCamera: () => void,
   onRequestOpenLocaleMenu: () => void,
-  video: ?VideoAssetIdentifier,
+  onRequestSetCaptionStyle: CaptionPresetStyleObject => void,
 };
 
 const styles = {
@@ -41,11 +49,14 @@ export default function HomeScreenCameraControls({
   video,
   isVisible,
   countryCode,
+  textSegments,
+  captionStyle,
   onRequestBeginCapture,
   onRequestEndCapture,
   onRequestOpenCameraRoll,
   onRequestSwitchCamera,
   onRequestOpenLocaleMenu,
+  onRequestSetCaptionStyle,
 }: Props) {
   return (
     <View style={[styles.container, style]} pointerEvents="box-none">
@@ -57,11 +68,14 @@ export default function HomeScreenCameraControls({
       <HomeScreenBottomCameraControls
         style={styles.bottomControls}
         isVisible={isVisible}
+        video={video}
+        textSegments={textSegments}
+        captionStyle={captionStyle}
         onRequestBeginCapture={onRequestBeginCapture}
         onRequestEndCapture={onRequestEndCapture}
         onRequestOpenCameraRoll={onRequestOpenCameraRoll}
         onRequestSwitchCamera={onRequestSwitchCamera}
-        video={video}
+        onRequestSetCaptionStyle={onRequestSetCaptionStyle}
       />
     </View>
   );

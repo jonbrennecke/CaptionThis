@@ -28,13 +28,13 @@ class VideoThumbnailView: UIView {
       cancelLoadingThumbnail(requestID: id)
     }
   }
-  
+
   @objc(startCachingImages:)
   public static func startCaching(images: [PHAsset]) {
     imageManager.startCachingImages(for: images,
-                                                targetSize: THUMBNAIL_SIZE,
-                                                contentMode: .aspectFill,
-                                                options: nil)
+                                    targetSize: THUMBNAIL_SIZE,
+                                    contentMode: .aspectFill,
+                                    options: nil)
   }
 
   override func layoutSubviews() {
@@ -65,15 +65,17 @@ class VideoThumbnailView: UIView {
       guard let image = image else {
         return
       }
-      switch orientation {
-      case .right, .rightMirrored, .left, .leftMirrored:
-        self?.imageView.contentMode = .scaleAspectFit
-        self?.setLandscapeImageBackground(withImage: image)
-        break
-      default:
-        self?.imageView.contentMode = .scaleAspectFill
+      DispatchQueue.main.async {
+        switch orientation {
+        case .right, .rightMirrored, .left, .leftMirrored:
+          self?.imageView.contentMode = .scaleAspectFit
+          self?.setLandscapeImageBackground(withImage: image)
+          break
+        default:
+          self?.imageView.contentMode = .scaleAspectFill
+        }
+        self?.imageView.image = image
       }
-      self?.imageView.image = image
     }
   }
 

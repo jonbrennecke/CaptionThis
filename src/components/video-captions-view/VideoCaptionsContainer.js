@@ -1,94 +1,59 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import { autobind } from 'core-decorators';
 
 import { isLandscape } from '../../utils/Orientation';
 
 import type { Style, Children } from '../../types/react';
-import type { Orientation } from '../../types/media';
+import type { Orientation, Size } from '../../types/media';
 
 type Props = {
   style?: ?Style,
   children?: ?Children,
-  orientation: ?Orientation,
+  orientation?: Orientation,
+  videoPlayerViewSize?: Size,
 };
 
-type Size = {
-  height: number,
-  width: number,
-};
-
-type State = {
-  viewSize: Size,
-};
-
-const CAPTION_VIEW_HEIGHT = 85;
+const CAPTION_VIEW_HEIGHT_PORTRAIT = 85;
+const CAPTION_VIEW_OFFSET_FROM_BOTTOM = 75;
 
 const styles = {
   container: {},
-  captionsWrap: (orientation: Orientation, size: Size) => {
+  captionsWrap: (orientation: Orientation, videoPlayerViewSize: Size) => {
     if (isLandscape(orientation)) {
-      const videoHeight = size.width * 9 / 16;
-      const topOfVideo = (size.height - videoHeight) / 2;
-      const captionViewHeight = 60;
+      const videoHeight = videoPlayerViewSize.width * 9 / 16;
+      const bottomOfVideo = (videoPlayerViewSize.height - videoHeight) / 2;
+      const heightRatio = videoHeight / videoPlayerViewSize.height;
       return {
         position: 'absolute',
         left: 0,
         right: 0,
-        height: captionViewHeight,
-        top: topOfVideo + videoHeight - captionViewHeight - 11,
+        height: CAPTION_VIEW_HEIGHT_PORTRAIT * heightRatio,
+        bottom: bottomOfVideo + CAPTION_VIEW_OFFSET_FROM_BOTTOM * heightRatio,
       };
     } else {
       return {
         position: 'absolute',
         left: 0,
         right: 0,
-        height: CAPTION_VIEW_HEIGHT,
-        bottom: 50,
+        height: CAPTION_VIEW_HEIGHT_PORTRAIT,
+        bottom: 0,
       };
     }
   },
 };
 
-// $FlowFixMe
-@autobind
-export default class VideoCaptionsContainer extends Component<Props, State> {
-  view: ?View;
-  state = {
-    viewSize: {
-      height: 0,
-      width: 0,
-    },
-  };
-
-  viewDidLayout({ nativeEvent: { layout } }: any) {
-    this.setState({
-      viewSize: {
-        width: layout.width,
-        height: layout.height,
-      },
-    });
-  }
-
-  render() {
-    return (
-      <View
-        style={[styles.container, this.props.style]}
-        ref={ref => {
-          this.view = ref;
-        }}
-        onLayout={this.viewDidLayout}
-      >
-        <View
-          style={styles.captionsWrap(
-            this.props.orientation || 'up',
-            this.state.viewSize
-          )}
-        >
-          {this.props.children}
-        </View>
+export default function VideoCaptionsContainer({
+  style,
+  children,
+  orientation = 'up',
+  videoPlayerViewSize = { height: 0, width: 0 },
+}: Props) {
+  return (
+    <View style={[styles.container, style]}>
+      <View style={styles.captionsWrap(orientation, videoPlayerViewSize)}>
+        {children}
       </View>
-    );
-  }
+    </View>
+  );
 }

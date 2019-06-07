@@ -74,7 +74,10 @@ export default class LocaleMenu extends Component<Props, State> {
                   onDidSelectLocale={this.props.onRequestChangeLocale}
                 />
               </ScrollView>
-              <ScreenGradients colorHex={UI_COLORS.DARK_GREY} startOpacity={1} />
+              <ScreenGradients
+                colorHex={UI_COLORS.DARK_GREY}
+                startOpacity={1}
+              />
               <Button
                 style={styles.button}
                 text="Done"

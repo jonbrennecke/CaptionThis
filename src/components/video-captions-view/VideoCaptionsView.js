@@ -1,33 +1,24 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  TouchableOpacity,
-  requireNativeComponent,
-  NativeModules,
-} from 'react-native';
+import { TouchableOpacity } from 'react-native';
+
+import CaptionView from '../caption-view/CaptionView';
 
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
-import type { ColorRGBA, Orientation } from '../../types/media';
-
-type ReactNativeFiberHostComponent = any;
+import type { Orientation } from '../../types/media';
+import type { CaptionStyleObject, CaptionViewLayout } from '../../types/video';
 
 type Props = {
   style?: ?Style,
   duration: number,
   orientation: Orientation,
-  backgroundColor: ColorRGBA,
-  textColor: ColorRGBA,
-  fontFamily: string,
-  fontSize: number,
+  captionStyle: CaptionStyleObject,
+  viewLayout: CaptionViewLayout,
   speechTranscription: ?SpeechTranscription,
   isReadyToPlay: boolean,
-  lineStyle: 'oneLine' | 'twoLines',
   onPress?: () => void,
 };
-
-const NativeTranscriptView = requireNativeComponent('TranscriptView');
-const { TranscriptViewManager } = NativeModules;
 
 const styles = {
   container: {
@@ -39,34 +30,34 @@ const styles = {
 };
 
 export default class VideoCaptionsView extends Component<Props> {
-  nativeComponentRef: ?ReactNativeFiberHostComponent;
+  captionView: ?CaptionView;
 
   restart() {
-    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
+    if (!this.captionView || !this.props.isReadyToPlay) {
       return;
     }
-    TranscriptViewManager.restart(this.nativeComponentRef._nativeTag);
+    this.captionView.restart();
   }
 
   pause() {
-    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
+    if (!this.captionView || !this.props.isReadyToPlay) {
       return;
     }
-    TranscriptViewManager.pause(this.nativeComponentRef._nativeTag);
+    this.captionView.pause();
   }
 
   seekToTime(time: number) {
-    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
+    if (!this.captionView || !this.props.isReadyToPlay) {
       return;
     }
-    TranscriptViewManager.seekToTime(this.nativeComponentRef._nativeTag, time);
+    this.captionView.seekToTime(time);
   }
 
   play() {
-    if (!this.nativeComponentRef || !this.props.isReadyToPlay) {
+    if (!this.captionView || !this.props.isReadyToPlay) {
       return;
     }
-    TranscriptViewManager.play(this.nativeComponentRef._nativeTag);
+    this.captionView.play();
   }
 
   render() {
@@ -83,32 +74,15 @@ export default class VideoCaptionsView extends Component<Props> {
         style={[styles.container, this.props.style]}
         onPress={this.props.onPress}
       >
-        <NativeTranscriptView
+        <CaptionView
           ref={ref => {
-            this.nativeComponentRef = ref;
+            this.captionView = ref;
           }}
           style={styles.flex}
-          isReadyToPlay={this.props.isReadyToPlay}
-          animationParams={{
-            textSegments,
-            orientation: this.props.orientation,
-            duration: this.props.duration,
-            fontFamily: this.props.fontFamily,
-            fontSize: this.props.fontSize,
-            lineStyle: this.props.lineStyle,
-            textColor: [
-              this.props.textColor.red / 255,
-              this.props.textColor.green / 255,
-              this.props.textColor.blue / 255,
-              this.props.textColor.alpha,
-            ],
-            backgroundColor: [
-              this.props.backgroundColor.red / 255,
-              this.props.backgroundColor.green / 255,
-              this.props.backgroundColor.blue / 255,
-              this.props.backgroundColor.alpha,
-            ],
-          }}
+          duration={this.props.duration}
+          textSegments={textSegments}
+          captionStyle={this.props.captionStyle}
+          viewLayout={this.props.viewLayout}
         />
       </TouchableOpacity>
     );

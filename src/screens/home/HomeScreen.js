@@ -9,7 +9,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import { autobind } from 'core-decorators';
-import { connect } from 'react-redux';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 import uuid from 'uuid';
@@ -24,39 +23,13 @@ import { getLocaleID } from '../../utils/Localization';
 import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
 import requireOnboardedUser from '../onboarding/requireOnboardedUser';
-import { arePermissionsGranted } from '../../redux/onboarding/selectors';
-import {
-  receiveVideos,
-  beginCameraCapture,
-  endCameraCapture,
-  receiveFinishedVideo,
-} from '../../redux/media/actionCreators';
-import {
-  beginSpeechTranscriptionWithAudioSession,
-  endSpeechTranscriptionWithAudioSession,
-  receiveSpeechTranscriptionFailure,
-  receiveSpeechTranscriptionSuccess,
-  setLocale,
-  receiveLocale,
-  loadCurrentLocale,
-} from '../../redux/speech/actionCreators';
-import { loadDeviceInfo } from '../../redux/device/actionCreators';
-import {
-  getVideos,
-  isCameraRecording,
-  getCurrentVideo,
-} from '../../redux/media/selectors';
-import { getFontFamily } from '../../redux/video/selectors';
-import {
-  getSpeechTranscriptions,
-  getLocale,
-} from '../../redux/speech/selectors';
 import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
 import LocaleMenu from '../../components/localization/LocaleMenu';
 import HomeScreenCameraPreview from './HomeScreenCameraPreview';
+import Container from './Container';
 
 import type { EmitterSubscription } from '../../types/react';
-import type { Dispatch, AppState } from '../../types/redux';
+import type { Props } from './Container';
 import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
 import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 
@@ -65,40 +38,6 @@ type State = {
   hasCompletedSetupAfterOnboarding: boolean,
   isLocaleMenuVisible: boolean,
 };
-
-type OwnProps = {
-  componentId: string,
-};
-
-type StateProps = {
-  videos: VideoObject[],
-  arePermissionsGranted: boolean,
-  isCameraRecording: boolean,
-  currentVideo: ?VideoAssetIdentifier,
-  fontFamily: string,
-  speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
-  locale: ?LocaleObject,
-};
-
-type DispatchProps = {
-  receiveLocale: (locale: LocaleObject) => Promise<void>,
-  loadCurrentLocale: () => Promise<void>,
-  setLocale: (locale: LocaleObject) => Promise<void>,
-  loadDeviceInfo: () => Promise<void>,
-  receiveVideos: (videos: VideoObject[]) => Promise<void>,
-  beginCameraCapture: () => Promise<void>,
-  endCameraCapture: () => Promise<void>,
-  beginSpeechTranscriptionWithAudioSession: () => Promise<void>,
-  endSpeechTranscriptionWithAudioSession: () => Promise<void>,
-  receiveSpeechTranscriptionSuccess: (
-    VideoAssetIdentifier,
-    SpeechTranscription
-  ) => void,
-  receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
-  receiveFinishedVideo: VideoObject => void,
-};
-
-type Props = OwnProps & StateProps & DispatchProps;
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -129,45 +68,9 @@ const styles = {
   absoluteFill: StyleSheet.absoluteFill,
 };
 
-function mapStateToProps(state: AppState): StateProps {
-  return {
-    videos: getVideos(state),
-    arePermissionsGranted: arePermissionsGranted(state),
-    isCameraRecording: isCameraRecording(state),
-    currentVideo: getCurrentVideo(state),
-    fontFamily: getFontFamily(state),
-    speechTranscriptions: getSpeechTranscriptions(state),
-    locale: getLocale(state),
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
-  return {
-    loadCurrentLocale: () => dispatch(loadCurrentLocale()),
-    receiveLocale: (locale: LocaleObject) => dispatch(receiveLocale(locale)),
-    setLocale: (locale: LocaleObject) => dispatch(setLocale(locale)),
-    loadDeviceInfo: () => dispatch(loadDeviceInfo()),
-    receiveVideos: (videos: VideoObject[]) => dispatch(receiveVideos(videos)),
-    beginCameraCapture: () => dispatch(beginCameraCapture()),
-    endCameraCapture: () => dispatch(endCameraCapture()),
-    beginSpeechTranscriptionWithAudioSession: () =>
-      dispatch(beginSpeechTranscriptionWithAudioSession()),
-    endSpeechTranscriptionWithAudioSession: () =>
-      dispatch(endSpeechTranscriptionWithAudioSession()),
-    receiveSpeechTranscriptionSuccess: (
-      id: VideoAssetIdentifier,
-      transcription: SpeechTranscription
-    ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
-    receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
-      dispatch(receiveSpeechTranscriptionFailure(id)),
-    receiveFinishedVideo: (video: VideoObject) =>
-      dispatch(receiveFinishedVideo(video)),
-  };
-}
-
 // $FlowFixMe
 @requireOnboardedUser
-@connect(mapStateToProps, mapDispatchToProps)
+@Container
 @autobind
 export default class HomeScreen extends Component<Props, State> {
   state = {
@@ -415,7 +318,7 @@ export default class HomeScreen extends Component<Props, State> {
               <HomeScreenCameraPreview
                 style={styles.flex}
                 locale={this.props.locale}
-                fontFamily={this.props.fontFamily}
+                captionStyle={this.props.captionStyle}
                 animatedScrollValue={this.scrollAnim}
                 isCameraRecording={this.props.isCameraRecording}
                 thumbnailVideoID={this.props.videos[0]?.id}
@@ -434,6 +337,9 @@ export default class HomeScreen extends Component<Props, State> {
                 }}
                 onRequestEndCapture={() => {
                   this.captureButtonDidRequestEndCapture();
+                }}
+                onRequestSetCaptionStyle={captionStyle => {
+                  this.props.updateCaptionStyle(captionStyle);
                 }}
               />
             </SafeAreaView>
