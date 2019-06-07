@@ -1,7 +1,7 @@
 import AVFoundation
 
-func getOppositeCamera(session: AVCaptureSession) -> AVCaptureDevice {
-  let position = getOppositeCameraPosition(session: captureSession)
+func getOppositeCamera(session: AVCaptureSession) -> AVCaptureDevice? {
+  let position = getOppositeCameraPosition(session: session)
   return AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position)
 }
 

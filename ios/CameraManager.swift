@@ -306,8 +306,7 @@ class CameraManager: NSObject {
   }
 
   private func attemptToSwitchToOppositeCamera() -> CameraSetupResult {
-    guard let device = getOppositeCamera(session: session) else {
-      Debug.log(format: "Camera is not available. Requested camera position = %@", cameraPosition == .back ? "back" : "front")
+    guard let device = getOppositeCamera(session: captureSession) else {
       return .failure
     }
     captureSession.inputs.forEach { input in
