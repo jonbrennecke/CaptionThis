@@ -305,39 +305,29 @@ class CameraManager: NSObject {
     captureSession.commitConfiguration()
   }
 
-  private func getOppositeCameraPosition() -> AVCaptureDevice.Position {
-    switch videoCaptureDevice?.position {
-    case .some(.back):
-      return .front
-    case .some(.front):
-      return .back
-    default:
-      return .front // default to front camera
-    }
-  }
-
   private func attemptToSwitchToOppositeCamera() -> CameraSetupResult {
-    let cameraPosition = getOppositeCameraPosition()
-    videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: cameraPosition)
-    Debug.log(format: "Switching to %@ camera", cameraPosition == .back ? "back" : "front")
-    guard let videoCaptureDevice = videoCaptureDevice else {
+    guard let device = getOppositeCamera(session: session) else {
       Debug.log(format: "Camera is not available. Requested camera position = %@", cameraPosition == .back ? "back" : "front")
       return .failure
     }
-    if let videoCaptureDeviceInput = videoCaptureDeviceInput {
-      captureSession.removeInput(videoCaptureDeviceInput)
+    captureSession.inputs.forEach { input in
+      if input.isEqual(audioCaptureDeviceInput) {
+        return
+      }
+      captureSession.removeInput(input)
     }
-    guard let deviceInput = try? AVCaptureDeviceInput(device: videoCaptureDevice) else {
+    guard let deviceInput = try? AVCaptureDeviceInput(device: device) else {
       Debug.log(message: "Camera capture device could not be used as an input.")
       return .failure
     }
-    videoCaptureDeviceInput = deviceInput
     if captureSession.canAddInput(deviceInput) {
       captureSession.addInput(deviceInput)
     } else {
       Debug.log(message: "Camera input could not be added to capture session.")
       return .failure
     }
+    videoCaptureDevice = device
+    videoCaptureDeviceInput = deviceInput
     return .success
   }
 
