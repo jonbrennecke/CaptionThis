@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.19</string>
+	<string>1.0.21</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>25</string>
+	<string>27</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -57,8 +57,10 @@
 	<string>We use the camera to record videos</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright 2019, Jonathan Brennecke, All Rights Reserved</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Features of this app require access to your location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Features of this app require access to your location.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We use the microphone to caption your videos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
