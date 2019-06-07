@@ -5,7 +5,7 @@ fileprivate let CAPTION_VIEW_OFFSET_FROM_BOTTOM = CGFloat(75)
 
 protocol VideoExportTaskDelegate {
   func videoExportTask(didEncounterError _: VideoExportTask.Error)
-  func videoExportTask(didFinishTask placeholder: PHObjectPlaceholder)
+  func videoExportTask(didFinishTask placeholder: PHObjectPlaceholder, time: CFAbsoluteTime)
   func videoExportTask(didUpdateProgress progress: Float, time: CFAbsoluteTime)
 }
 
@@ -13,7 +13,7 @@ class VideoExportTask {
   private enum State {
     case unstarted
     case pending(ExportTaskState, CFAbsoluteTime)
-    case finished
+    case finished(CFAbsoluteTime)
     case failed
   }
 
@@ -181,7 +181,11 @@ class VideoExportTask {
             self.delegate?.videoExportTask(didEncounterError: .failedToCreateAsset)
             return
           }
-          self.delegate?.videoExportTask(didFinishTask: assetPlaceholder)
+          guard case let .finished(startTime) = self.state else {
+            return
+          }
+          let executionTime = CFAbsoluteTimeGetCurrent() - startTime
+          self.delegate?.videoExportTask(didFinishTask: assetPlaceholder, time: executionTime)
         }
         break
       }
@@ -201,8 +205,11 @@ extension VideoExportTask: CaptionAnimationExportSessionDelegate {
   }
 
   func captionAnimationExportSession(didFinish exportFileURL: URL) {
+    guard case let .pending(_, startTime) = state else {
+      return
+    }
+    state = .finished(startTime)
     createVideoAsset(forURL: exportFileURL)
-    state = .finished
   }
 
   func captionAnimationExportSession(didUpdateProgress progress: Float) {

@@ -45,7 +45,8 @@ extension VideoExportManager: VideoExportTaskDelegate {
     state = .ready
   }
 
-  func videoExportTask(didFinishTask placeholder: PHObjectPlaceholder) {
+  func videoExportTask(didFinishTask placeholder: PHObjectPlaceholder, time: CFAbsoluteTime) {
+    Debug.log(format: "Finished export in %0.2fs", time)
     delegate?.videoExportManager(didFinish: placeholder)
     state = .ready
   }
