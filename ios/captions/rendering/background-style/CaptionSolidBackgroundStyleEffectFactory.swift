@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 class CaptionSolidBackgroundStyleEffectFactory: CaptionBackgroundStyleEffectFactory {
   let backgroundStyle: CaptionBackgroundStyle = .solid
@@ -9,11 +10,14 @@ class CaptionSolidBackgroundStyleEffectFactory: CaptionBackgroundStyleEffectFact
       guard let beginTime = map.getLine(byKey: .a, index: 0)?.timestamp else {
         return
       }
-      let animation = AnimationUtil.fadeIn(at: beginTime)
-      layer.opacity = 0
-      layer.add(animation, forKey: animationKey)
-      layer.backgroundColor = backgroundColor.withAlphaComponent(0.9).cgColor
-      layer.masksToBounds = true
+      let backgroundLayer = CALayer()
+      backgroundLayer.frame = layer.frame
+      backgroundLayer.opacity = 0
+      backgroundLayer.backgroundColor = backgroundColor.withAlphaComponent(0.9).cgColor
+      backgroundLayer.masksToBounds = true
+      layer.insertSublayer(backgroundLayer, at: 0)
+      let animation = AnimationUtil.fadeIn(at: beginTime - 0.25)
+      backgroundLayer.add(animation, forKey: animationKey)
     }, undoEffect: createAnimationRemover(byKey: animationKey))
   }
 }
