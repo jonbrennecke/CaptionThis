@@ -1,13 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  Animated,
-  View,
-  ScrollView,
-  Dimensions,
-  Text,
-  StyleSheet,
-} from 'react-native';
+import { Animated, View, ScrollView, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
@@ -15,7 +8,6 @@ import uuid from 'uuid';
 import { Navigation } from 'react-native-navigation';
 
 import { UI_COLORS } from '../../constants';
-import * as Fonts from '../../utils/Fonts';
 import * as Screens from '../../utils/Screens';
 import * as Camera from '../../utils/Camera';
 import * as Debug from '../../utils/Debug';
@@ -23,7 +15,7 @@ import { getLocaleID } from '../../utils/Localization';
 import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
 import requireOnboardedUser from '../onboarding/requireOnboardedUser';
-import VideoThumbnailGrid from '../../components/video-thumbnail-grid/VideoThumbnailGrid';
+import { MediaExplorer } from '../../components/media-explorer';
 import LocaleMenu from '../../components/localization/LocaleMenu';
 import HomeScreenCameraPreview from './HomeScreenCameraPreview';
 import Container from './Container';
@@ -48,12 +40,6 @@ const styles = {
     flex: 1,
     backgroundColor: UI_COLORS.BLACK,
   },
-  mediaHeader: {
-    paddingVertical: 5,
-    paddingHorizontal: 7,
-    alignItems: 'flex-start',
-  },
-  mediaText: Fonts.getFontStyle('title', { contentStyle: 'lightContent' }),
   flex: {
     flex: 1,
   },
@@ -65,7 +51,6 @@ const styles = {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT * 2,
   },
-  absoluteFill: StyleSheet.absoluteFill,
 };
 
 // $FlowFixMe
@@ -152,7 +137,7 @@ export default class HomeScreen extends Component<Props, State> {
     await this.props.receiveVideos(videos);
   }
 
-  async onDidPressVideoThumbnail(video: VideoObject) {
+  async onSelectVideo(video: VideoObject) {
     await this.pushEditScreen(video);
   }
 
@@ -343,27 +328,11 @@ export default class HomeScreen extends Component<Props, State> {
                 }}
               />
             </SafeAreaView>
-            <SafeAreaView style={styles.flex}>
-              <View style={styles.mediaHeader}>
-                <Text style={styles.mediaText}>Camera Roll</Text>
-              </View>
-              <ScrollView
-                style={styles.flex}
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps="always"
-                contentInsetAdjustmentBehavior="never"
-                overScrollMode="always"
-                alwaysBounceVertical
-              >
-                <VideoThumbnailGrid
-                  style={styles.flex}
-                  videos={this.props.videos}
-                  onPressThumbnail={video => {
-                    this.onDidPressVideoThumbnail(video);
-                  }}
-                />
-              </ScrollView>
-            </SafeAreaView>
+            <MediaExplorer
+              onSelectVideo={video => {
+                this.onSelectVideo(video);
+              }}
+            />
           </ScrollView>
         </View>
         <LocaleMenu

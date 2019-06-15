@@ -2,7 +2,11 @@
 import StyleSheetPropType from 'react-native/Libraries/StyleSheet/StyleSheetPropType';
 import ViewStylePropTypes from 'react-native/Libraries/Components/View/ViewStylePropTypes';
 
-import type { Element, ChildrenArray } from 'react';
+import type {
+  Element,
+  ChildrenArray,
+  StatelessFunctionalComponent,
+} from 'react';
 import type { NativeEventEmitter } from 'react-native';
 import type { Return } from './util';
 
@@ -11,6 +15,8 @@ export type Children = ChildrenArray<?Element<*>> | string;
 const stylePropType = StyleSheetPropType(ViewStylePropTypes);
 
 export type Style = stylePropType;
+
+export type SFC<P> = StatelessFunctionalComponent<P>;
 
 export type Gesture = {
   moveX: number,
