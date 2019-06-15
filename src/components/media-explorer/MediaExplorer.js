@@ -4,7 +4,7 @@ import { View } from 'react-native';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 
-import { MediaGrid } from './MediaGrid';
+import { MediaGrid } from './components';
 
 import type { SFC } from '../../types/react';
 

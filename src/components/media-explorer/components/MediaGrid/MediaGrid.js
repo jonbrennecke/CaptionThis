@@ -4,17 +4,17 @@ import React from 'react';
 import { View } from 'react-native';
 import { ThumbnailLoadMoreGrid } from '@jonbrennecke/react-native-media';
 
-import { UI_COLORS } from '../../constants';
+import { UI_COLORS } from '../../../../constants';
 
 import {
   MediaGridHeader,
   MediaGridHeaderLabel,
   MediaGridHeaderAlbumsButton,
-} from './components';
-import { wrapWithMediaExplorerState } from './mediaExplorerState';
+} from '../MediaGridHeader';
+import { wrapWithMediaExplorerState } from '../../mediaExplorerState';
 
-import type { SFC } from '../../types/react';
-import type { MediaStateExtraProps } from './mediaExplorerState';
+import type { SFC } from '../../../../types/react';
+import type { MediaStateExtraProps } from '../../mediaExplorerState';
 import type { MediaStateHOCProps } from '@jonbrennecke/react-native-media';
 
 type MediaGridProps = {
