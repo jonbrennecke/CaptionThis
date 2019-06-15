@@ -4,6 +4,7 @@ import {
   AlbumExplorer,
   MediaStateContainer,
 } from '@jonbrennecke/react-native-media';
+import noop from 'lodash/noop';
 
 const styles = {
   container: {
