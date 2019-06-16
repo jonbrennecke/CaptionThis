@@ -11,10 +11,10 @@ import {
   MediaGridHeaderLabel,
   MediaGridHeaderAlbumsButton,
 } from '../MediaGridHeader';
-import { wrapWithMediaExplorerState } from '../../mediaExplorerState';
+import { wrapWithMediaGridState } from './mediaGridState';
 
 import type { SFC } from '../../../../types/react';
-import type { MediaStateExtraProps } from '../../mediaExplorerState';
+import type { MediaGridStateExtraProps } from './mediaGridState';
 import type { MediaStateHOCProps } from '@jonbrennecke/react-native-media';
 
 type MediaGridProps = {
@@ -35,7 +35,7 @@ const styles = {
 };
 
 const Component: SFC<
-  MediaStateExtraProps & MediaGridProps & MediaStateHOCProps
+  MediaGridStateExtraProps & MediaGridProps & MediaStateHOCProps
 > = ({ assetsArray, loadNextAssets, onPressAlbumsButton }) => {
   return (
     <View style={styles.container}>
@@ -56,4 +56,4 @@ const Component: SFC<
   );
 };
 
-export const MediaGrid = wrapWithMediaExplorerState(Component);
+export const MediaGrid = wrapWithMediaGridState(Component);
