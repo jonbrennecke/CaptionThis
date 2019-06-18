@@ -98,7 +98,7 @@ export default class EditScreen extends Component<Props, State> {
   async beginSpeechTranscription() {
     this.addSpeechListeners();
     await this.props.beginSpeechTranscriptionWithVideoAsset(
-      this.props.video.id
+      this.props.video.assetID
     );
   }
 
@@ -163,11 +163,11 @@ export default class EditScreen extends Component<Props, State> {
     transcription: SpeechTranscription
   ) {
     if (!transcription) {
-      this.props.receiveSpeechTranscriptionFailure(this.props.video.id);
+      this.props.receiveSpeechTranscriptionFailure(this.props.video.assetID);
       return;
     }
     this.props.receiveSpeechTranscriptionSuccess(
-      this.props.video.id,
+      this.props.video.assetID,
       transcription
     );
   }
@@ -177,7 +177,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   speechManagerDidNotDetectSpeech() {
-    this.props.receiveSpeechTranscriptionFailure(this.props.video.id);
+    this.props.receiveSpeechTranscriptionFailure(this.props.video.assetID);
   }
 
   async richTextEditorDidRequestSave({
@@ -214,7 +214,7 @@ export default class EditScreen extends Component<Props, State> {
     this.props.willExportVideo();
     await actions.exportVideo({
       speechTranscription: this.props.speechTranscription,
-      videoID: this.props.video.id,
+      videoID: this.props.video.assetID,
       videoViewSize: this.state.videoViewSize,
       duration: this.state.duration,
       orientation: this.state.orientation,
@@ -380,10 +380,10 @@ export default class EditScreen extends Component<Props, State> {
         />
         <EditScreenLoadingOverlay
           isVisible={!this.props.isSpeechTranscriptionFinal}
-          video={this.props.video}
+          duration={this.props.video.duration}
         />
         <EditScreenEditCaptionsOverlay
-          videoID={this.props.video.id}
+          videoID={this.props.video.assetID}
           speechTranscription={this.props.speechTranscription}
           isVisible={this.state.isCaptionsEditorVisible}
           onRequestDismissModal={this.dismissCaptionsEditor}

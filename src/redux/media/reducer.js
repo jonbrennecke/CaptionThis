@@ -6,24 +6,16 @@ import { LOADING_STATE } from '../../constants';
 import type {
   Action,
   MediaState,
-  ReceiveVideoAssetsPayload,
   ReceiveVideoAssetPayload,
 } from '../../types/redux';
 
 const initialState: MediaState = {
-  cameraRecordingState: {
-    isRecording: false,
-    videoAssetIdentifier: null,
-  },
-  videos: [],
-  mediaLoadingState: LOADING_STATE.NOT_LOADED,
+  isCameraRecording: false,
+  recordedVideoID: null,
   videoExportState: LOADING_STATE.NOT_LOADED,
 };
 
 const actions = {
-  [ACTION_TYPES.WILL_RECEIVE_VIDEOS]: willLoadVideos,
-  [ACTION_TYPES.DID_RECEIVE_VIDEOS]: didLoadVideos,
-  [ACTION_TYPES.DID_FAIL_TO_RECEIVE_VIDEOS]: didFailToLoadVideos,
   [ACTION_TYPES.DID_SUCCESSFULLY_START_CAMERA_CAPTURE]: didSuccessfullyStartCameraCapture,
   [ACTION_TYPES.DID_SUCCESSFULLY_STOP_CAMERA_CAPTURE]: didSuccessfullyStopCameraCapture,
   [ACTION_TYPES.DID_RECEIVE_FINISHED_VIDEO]: didReceiveFinishedVideo,
@@ -32,51 +24,19 @@ const actions = {
   [ACTION_TYPES.DID_NOT_SUCCESSFULLY_EXPORT_VIDEO]: didNotSuccessfullyExportVideo,
 };
 
-function willLoadVideos(state: MediaState): MediaState {
-  return {
-    ...state,
-    mediaLoadingState: LOADING_STATE.IS_LOADING,
-  };
-}
-
-function didLoadVideos(
-  state: MediaState,
-  { payload }: Action<ReceiveVideoAssetsPayload>
-): MediaState {
-  if (!payload) {
-    return state;
-  }
-  return {
-    ...state,
-    videos: payload.videos,
-    mediaLoadingState: LOADING_STATE.WAS_LOADED_SUCCESSFULLY,
-  };
-}
-
-function didFailToLoadVideos(state: MediaState): MediaState {
-  return {
-    ...state,
-    mediaLoadingState: LOADING_STATE.WAS_LOADED_UNSUCCESSFULLY,
-  };
-}
-
 function didSuccessfullyStartCameraCapture(state: MediaState): MediaState {
   return {
     ...state,
-    cameraRecordingState: {
-      isRecording: true,
-      videoAssetIdentifier: null,
-    },
+    isCameraRecording: true,
+    recordedVideoID: null,
   };
 }
 
 function didSuccessfullyStopCameraCapture(state: MediaState): MediaState {
   return {
     ...state,
-    cameraRecordingState: {
-      isRecording: false,
-      videoAssetIdentifier: null,
-    },
+    isCameraRecording: false,
+    recordedVideoID: null,
   };
 }
 
@@ -89,11 +49,8 @@ function didReceiveFinishedVideo(
   }
   return {
     ...state,
-    videos: [...state.videos, payload.video],
-    cameraRecordingState: {
-      isRecording: false,
-      videoAssetIdentifier: payload.video.id,
-    },
+    isCameraRecording: false,
+    recordedVideoID: payload.video.id,
   };
 }
 

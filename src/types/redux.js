@@ -41,13 +41,9 @@ export type OnboardingState = {|
 |};
 
 export type MediaState = {|
-  videos: VideoObject[],
-  mediaLoadingState: $Keys<LOADING_STATE>,
   videoExportState: $Keys<LOADING_STATE>,
-  cameraRecordingState: {
-    isRecording: boolean,
-    videoAssetIdentifier: ?VideoAssetIdentifier,
-  },
+  isCameraRecording: boolean,
+  recordedVideoID: ?VideoAssetIdentifier,
 |};
 
 export type DeviceState = {|

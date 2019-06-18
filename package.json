@@ -25,6 +25,7 @@
     "core-decorators": "0.20.0",
     "hex2rgb": "2.2.0",
     "isomorphic-fetch": "^2.2.1",
+    "moment": "2.24.0",
     "querystring": "0.2.0",
     "react": "16.6.3",
     "react-native": "0.57.8",

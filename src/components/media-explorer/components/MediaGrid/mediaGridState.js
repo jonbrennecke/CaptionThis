@@ -1,4 +1,5 @@
 // @flow
+/* eslint flowtype/generic-spacing: 0 */
 import React, { PureComponent } from 'react';
 import {
   createMediaStateHOC,

@@ -26,8 +26,10 @@ import {
   isDeviceLimitedByMemory,
 } from '../../redux/device/selectors';
 
+import type { MediaObject } from '@jonbrennecke/react-native-media';
+
 import type { ComponentType } from 'react';
-import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
+import type { VideoAssetIdentifier } from '../../types/media';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { CaptionStyleObject } from '../../types/video';
 import type { SpeechTranscription, LocaleObject } from '../../types/speech';
@@ -35,7 +37,7 @@ import type { ReactAppStateEnum } from '../../types/react';
 
 type OwnProps = {|
   componentId: string,
-  video: VideoObject,
+  video: MediaObject,
 |};
 
 type StateProps = {|
@@ -76,9 +78,9 @@ function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
     locale: getLocale(state),
     isSpeechTranscriptionFinal: isSpeechTranscriptionFinal(
       state,
-      ownProps.video.id
+      ownProps.video.assetID
     ),
-    speechTranscription: getSpeechTranscriptionByID(state, ownProps.video.id),
+    speechTranscription: getSpeechTranscriptionByID(state, ownProps.video.assetID),
     captionStyle: getCaptionStyle(state),
   };
 }

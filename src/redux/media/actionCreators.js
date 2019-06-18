@@ -3,35 +3,12 @@ import * as Debug from '../../utils/Debug';
 import { ACTION_TYPES } from './constants';
 import * as Camera from '../../utils/Camera';
 
-import type {
-  Dispatch,
-  ReceiveVideoAssetsPayload,
-  ReceiveVideoAssetPayload,
-} from '../../types/redux';
-import type { VideoObject } from '../../types/media';
+import type { Dispatch } from '../../types/redux';
 
-export const receiveVideos = (videos: VideoObject[]) => {
-  return async (dispatch: Dispatch<ReceiveVideoAssetsPayload>) => {
-    dispatch({ type: ACTION_TYPES.WILL_RECEIVE_VIDEOS });
-    try {
-      dispatch({
-        type: ACTION_TYPES.DID_RECEIVE_VIDEOS,
-        payload: {
-          videos,
-        },
-      });
-    } catch (error) {
-      await Debug.logError(error);
-      dispatch({ type: ACTION_TYPES.DID_FAIL_TO_RECEIVE_VIDEOS });
-    }
-  };
-};
-
-export const receiveFinishedVideo = (video: VideoObject) => {
-  return (dispatch: Dispatch<ReceiveVideoAssetPayload>) => {
+export const receiveFinishedVideo = () => {
+  return (dispatch: Dispatch<*>) => {
     dispatch({
       type: ACTION_TYPES.DID_RECEIVE_FINISHED_VIDEO,
-      payload: { video },
     });
   };
 };

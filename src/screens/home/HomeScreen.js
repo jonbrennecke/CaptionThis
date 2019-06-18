@@ -6,13 +6,13 @@ import { autobind } from 'core-decorators';
 import { withSafeArea } from 'react-native-safe-area';
 import uuid from 'uuid';
 import { Navigation } from 'react-native-navigation';
+import moment from 'moment';
 
 import { UI_COLORS } from '../../constants';
 import * as Screens from '../../utils/Screens';
 import * as Camera from '../../utils/Camera';
 import * as Debug from '../../utils/Debug';
 import { getLocaleID } from '../../utils/Localization';
-import MediaManager from '../../utils/MediaManager';
 import SpeechManager from '../../utils/SpeechManager';
 import requireOnboardedUser from '../onboarding/requireOnboardedUser';
 import { MediaExplorer } from '../../components/media-explorer';
@@ -20,9 +20,11 @@ import LocaleMenu from '../../components/localization/LocaleMenu';
 import HomeScreenCameraPreview from './HomeScreenCameraPreview';
 import Container from './Container';
 
+import type { MediaObject } from '@jonbrennecke/react-native-media';
+
 import type { EmitterSubscription } from '../../types/react';
 import type { Props } from './Container';
-import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
+import type { VideoAssetIdentifier } from '../../types/media';
 import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 
 type State = {
@@ -66,7 +68,6 @@ export default class HomeScreen extends Component<Props, State> {
   navigationEventListener: ?any;
   scrollView: ?ScrollView;
   scrollAnim = new Animated.Value(0);
-  mediaLibrarySubscription: ?EmitterSubscription;
   speechManagerDidReceiveTranscriptionListener: EmitterSubscription;
   speechManagerDidNotDetectSpeechListener: ?EmitterSubscription;
   speechManagerDidChangeLocaleListener: ?EmitterSubscription;
@@ -81,7 +82,6 @@ export default class HomeScreen extends Component<Props, State> {
 
   async componentWillUnmount() {
     await this.props.endCameraCapture();
-    MediaManager.stopObservingVideos();
     if (this.cameraManagerDidFinishFileOutputListener) {
       this.cameraManagerDidFinishFileOutputListener.remove();
     }
@@ -113,32 +113,10 @@ export default class HomeScreen extends Component<Props, State> {
       return;
     }
     Camera.startPreview();
-    await this.loadMediaLibrary();
     await this.props.loadDeviceInfo();
     this.setState({
       hasCompletedSetupAfterOnboarding: true,
     });
-  }
-
-  async loadMediaLibrary() {
-    if (this.mediaLibrarySubscription) {
-      return;
-    }
-    this.mediaLibrarySubscription = MediaManager.startObservingVideos(
-      videos => {
-        this.mediaManagerDidUpdateVideos(videos);
-      }
-    );
-    const videos = await MediaManager.getVideoAssets();
-    await this.props.receiveVideos(videos);
-  }
-
-  async mediaManagerDidUpdateVideos({ videos }: { videos: VideoObject[] }) {
-    await this.props.receiveVideos(videos);
-  }
-
-  async onSelectVideo(video: VideoObject) {
-    await this.pushEditScreen(video);
   }
 
   async captureButtonDidRequestBeginCapture() {
@@ -152,8 +130,14 @@ export default class HomeScreen extends Component<Props, State> {
   async startCapture() {
     this.setState({ videoID: uuid.v4() });
     this.cameraManagerDidFinishFileOutputListener = Camera.addDidFinishFileOutputListener(
-      (...args) => {
-        this.cameraManagerDidFinishFileOutput(...args);
+      video => {
+        // TODO
+        this.cameraManagerDidFinishFileOutput({
+          mediaType: 'video',
+          creationDate: moment().toISOString(),
+          duration: video.duration,
+          assetID: video.id
+        });
       }
     );
     await this.props.beginCameraCapture();
@@ -231,7 +215,7 @@ export default class HomeScreen extends Component<Props, State> {
     await this.props.endSpeechTranscriptionWithAudioSession();
   }
 
-  async cameraManagerDidFinishFileOutput(video: VideoObject) {
+  async cameraManagerDidFinishFileOutput(video: MediaObject) {
     Debug.log('Camera finished saving video file.');
     this.props.receiveFinishedVideo(video);
     if (this.cameraManagerDidFinishFileOutputListener) {
@@ -240,7 +224,7 @@ export default class HomeScreen extends Component<Props, State> {
     await this.pushEditScreen(video);
   }
 
-  async pushEditScreen(video: VideoObject) {
+  async pushEditScreen(video: MediaObject) {
     await Screens.pushEditScreen(this.props.componentId, video);
   }
 
@@ -306,7 +290,7 @@ export default class HomeScreen extends Component<Props, State> {
                 captionStyle={this.props.captionStyle}
                 animatedScrollValue={this.scrollAnim}
                 isCameraRecording={this.props.isCameraRecording}
-                thumbnailVideoID={this.props.videos[0]?.id}
+                thumbnailVideoID={null /* TODO */}
                 hasCompletedSetupAfterOnboarding={
                   this.state.hasCompletedSetupAfterOnboarding
                 }
@@ -330,7 +314,7 @@ export default class HomeScreen extends Component<Props, State> {
             </SafeAreaView>
             <MediaExplorer
               onSelectVideo={video => {
-                this.onSelectVideo(video);
+                this.pushEditScreen(video)
               }}
             />
           </ScrollView>
