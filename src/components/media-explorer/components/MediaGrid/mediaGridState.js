@@ -18,19 +18,49 @@ export type MediaGridStateExtraProps = {
   loadNextAssets: () => void,
 };
 
+export type MediaGridStateInputProps = {
+  albumID: ?string,
+};
+
 export function wrapWithMediaGridState<
   PassThroughProps: Object,
-  C: ComponentType<MediaGridStateExtraProps & MediaStateHOCProps & PassThroughProps>
->(WrappedComponent: C): ComponentType<PassThroughProps> {
+  C: ComponentType<
+    MediaGridStateExtraProps & MediaStateHOCProps & PassThroughProps
+  >
+>(
+  WrappedComponent: C
+): ComponentType<MediaGridStateInputProps & PassThroughProps> {
   // $FlowFixMe
   @autobind
   class ExplorerState extends PureComponent<
-    MediaStateHOCProps & PassThroughProps
+    MediaGridStateInputProps & MediaStateHOCProps & PassThroughProps
   > {
     async componentDidMount() {
       await authorizeMediaLibrary();
       await this.props.queryMedia({
         mediaType: 'video',
+        ...(this.props.albumID
+          ? {
+              albumID: this.props.albumID,
+            }
+          : {}),
+      });
+    }
+
+    componentDidUpdate(prevProps) {
+      if (this.props.albumID !== prevProps.albumID) {
+        this.reloadAssets();
+      }
+    }
+
+    async reloadAssets() {
+      await this.props.queryMedia({
+        mediaType: 'video',
+        ...(this.props.albumID
+          ? {
+              albumID: this.props.albumID,
+            }
+          : {}),
       });
     }
 
@@ -39,9 +69,7 @@ export function wrapWithMediaGridState<
     }
 
     async loadNextAssetsAsync() {
-      const assetsSorted = this.props.assets
-        .sortBy(assets => assets.creationDate)
-        .reverse();
+      const assetsSorted = this.getSortedAssets();
       const lastAsset = assetsSorted.last();
       if (!lastAsset) {
         return;
@@ -52,13 +80,34 @@ export function wrapWithMediaGridState<
           date: lastAsset.creationDate,
           equation: 'lessThan',
         },
+        ...(this.props.albumID
+          ? {
+              albumID: this.props.albumID,
+            }
+          : {}),
       });
     }
 
-    render() {
-      const assetsSorted = this.props.assets
+    getAssets() {
+      if (this.props.albumID) {
+        const albumAssets = this.props.albumAssets.get(this.props.albumID);
+        if (albumAssets) {
+          return this.props.assets.filter(a =>
+            albumAssets.assetIDs.includes(a.assetID)
+          );
+        }
+      }
+      return this.props.assets;
+    }
+
+    getSortedAssets() {
+      return this.getAssets()
         .sortBy(assets => assets.creationDate)
         .reverse();
+    }
+
+    render() {
+      const assetsSorted = this.getSortedAssets();
       const uniqueAssets = uniqBy(assetsSorted.toJSON(), 'assetID');
       return (
         <WrappedComponent

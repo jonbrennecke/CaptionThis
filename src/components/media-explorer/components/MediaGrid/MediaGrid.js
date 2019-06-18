@@ -13,12 +13,16 @@ import {
 } from '../MediaGridHeader';
 import { wrapWithMediaGridState } from './mediaGridState';
 
+import type {
+  MediaStateHOCProps,
+  MediaObject,
+} from '@jonbrennecke/react-native-media';
+
 import type { SFC } from '../../../../types/react';
 import type { MediaGridStateExtraProps } from './mediaGridState';
-import type { MediaStateHOCProps } from '@jonbrennecke/react-native-media';
 
 type MediaGridProps = {
-  onSelectVideo: (assetID: string) => void,
+  onSelectVideo: (video: MediaObject) => void,
   onPressAlbumsButton: () => void,
 };
 
@@ -36,7 +40,13 @@ const styles = {
 
 const Component: SFC<
   MediaGridStateExtraProps & MediaGridProps & MediaStateHOCProps
-> = ({ assetsArray, loadNextAssets, onPressAlbumsButton }) => {
+> = ({
+  assets,
+  assetsArray,
+  loadNextAssets,
+  onPressAlbumsButton,
+  onSelectVideo,
+}) => {
   return (
     <View style={styles.container}>
       <MediaGridHeader>
@@ -51,6 +61,10 @@ const Component: SFC<
         assets={assetsArray}
         extraDurationStyle={styles.duration}
         onRequestLoadMore={loadNextAssets}
+        onPressThumbnail={assetID => {
+          const video = assets.find(a => a.assetID === assetID);
+          video && onSelectVideo(video);
+        }}
       />
     </View>
   );

@@ -20,7 +20,9 @@ export type AlbumGridStateExtraProps = {
 
 export function wrapWithAlbumGridState<
   PassThroughProps: Object,
-  C: ComponentType<AlbumGridStateExtraProps & MediaStateHOCProps & PassThroughProps>
+  C: ComponentType<
+    AlbumGridStateExtraProps & MediaStateHOCProps & PassThroughProps
+  >
 >(WrappedComponent: C): ComponentType<PassThroughProps> {
   // $FlowFixMe
   @autobind
