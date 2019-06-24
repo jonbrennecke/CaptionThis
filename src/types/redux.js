@@ -1,4 +1,6 @@
 /* @flow */
+import type { IMediaState } from '@jonbrennecke/react-native-media';
+
 import typeof { LOADING_STATE, TRANSCRIPTION_STATE } from '../constants';
 import type { VideoAssetIdentifier, VideoObject } from './media';
 import type { SpeechTranscription, LocaleObject } from './speech';
@@ -26,6 +28,7 @@ export type AppState = {
   device: DeviceState,
   video: VideoState,
   speech: SpeechState,
+  newMedia: IMediaState
 };
 
 export type GetState = () => AppState;
@@ -41,13 +44,9 @@ export type OnboardingState = {|
 |};
 
 export type MediaState = {|
-  videos: VideoObject[],
-  mediaLoadingState: $Keys<LOADING_STATE>,
   videoExportState: $Keys<LOADING_STATE>,
-  cameraRecordingState: {
-    isRecording: boolean,
-    videoAssetIdentifier: ?VideoAssetIdentifier,
-  },
+  isCameraRecording: boolean,
+  recordedVideoID: ?VideoAssetIdentifier,
 |};
 
 export type DeviceState = {|

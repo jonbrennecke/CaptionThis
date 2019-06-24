@@ -16,13 +16,15 @@ import VideoCaptionsView from '../../components/video-captions-view/VideoCaption
 import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
 import MeasureContentsView from '../../components/measure-contents-view/MeasureContentsView';
 
-import type { Size, Orientation, VideoObject } from '../../types/media';
+import type { MediaObject } from '@jonbrennecke/react-native-media';
+
+import type { Size, Orientation } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {
   videoPlayerViewSize: Size,
-  video: VideoObject,
+  video: MediaObject,
   countryCode: ?string,
   isAppInForeground: boolean,
   isDeviceLimitedByMemory: boolean,
@@ -328,7 +330,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                 this.playerView = ref;
               }}
               style={styles.absoluteFill}
-              videoAssetIdentifier={this.props.video.id}
+              videoAssetIdentifier={this.props.video.assetID}
               onVideoDidBecomeReadyToPlay={(...args) => {
                 this.videoPlayerDidBecomeReadyToPlay(...args);
               }}
@@ -392,11 +394,12 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
             isVisible={this.state.isVideoReadyToPlay}
             style={styles.editControls}
           >
+            {/* TODO: Replace with Seekbar from @jonbrennecke/react-native-media */}
             <VideoSeekbar
               style={styles.flex}
               duration={this.props.duration}
               playbackTime={this.state.playbackTime}
-              videoAssetIdentifier={this.props.video.id}
+              videoAssetIdentifier={this.props.video.assetID}
               onSeekToTime={this.seekBarDidSeekToTimeThrottled}
               onDidBeginDrag={this.seekBarDidStartSeeking}
               onDidEndDrag={this.seekBarDidStopSeeking}

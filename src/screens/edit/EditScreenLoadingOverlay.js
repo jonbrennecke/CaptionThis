@@ -11,12 +11,11 @@ import ProgressCircleContainer from '../../components/progress-circle/ProgressCi
 import FadeInOutAnimatedView from '../../components/animations/FadeInOutAnimatedView';
 
 import type { Style } from '../../types/react';
-import type { VideoObject } from '../../types/media';
 
 type Props = {
   style?: ?Style,
   isVisible: boolean,
-  video: VideoObject,
+  duration: number
 };
 
 type State = {
@@ -105,7 +104,7 @@ export default class EditScreenExportingOverlay extends Component<
 
   animateIn() {
     this.startCountdown();
-    const videoLoadingTime = estimateVideoLoadingTime(this.props.video);
+    const videoLoadingTime = estimateVideoLoadingTime(this.props.duration);
     Animated.parallel([
       Animated.timing(this.anim, {
         toValue: 1,
@@ -154,7 +153,7 @@ export default class EditScreenExportingOverlay extends Component<
   updateCountdown() {
     const currentTime = Date.now();
     const ellapsedTime = currentTime - this.state.startTime;
-    const videoLoadingTime = estimateVideoLoadingTime(this.props.video);
+    const videoLoadingTime = estimateVideoLoadingTime(this.props.duration);
     const percent = Math.min(ellapsedTime / videoLoadingTime * 100, 100);
     this.setState({
       countdown: `${percent.toFixed(0)}%`,
@@ -199,6 +198,6 @@ export default class EditScreenExportingOverlay extends Component<
   }
 }
 
-function estimateVideoLoadingTime(video: VideoObject): number {
-  return video.duration * 1000 * 0.9;
+function estimateVideoLoadingTime(duration: number): number {
+  return duration * 1000 * 0.9;
 }

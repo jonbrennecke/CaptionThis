@@ -15,6 +15,7 @@ import type { SFC } from '../../../../types/react';
 
 export type AlbumExplorerModalProps = {
   isVisible: boolean,
+  onSelectAlbum: (albumID: string) => void,
   onRequestDismiss: () => void,
 };
 
@@ -33,15 +34,14 @@ const styles = {
   },
   test: {
     flex: 1,
-    backgroundColor: 'red'
-  }
+    backgroundColor: 'red',
+  },
 };
 
-export const AlbumExplorerModal: SFC<
-  AlbumExplorerModalProps
-> = ({
+export const AlbumExplorerModal: SFC<AlbumExplorerModalProps> = ({
   isVisible,
-  onRequestDismiss
+  onSelectAlbum,
+  onRequestDismiss,
 }) => {
   return (
     <BottomSheetModal
@@ -50,9 +50,10 @@ export const AlbumExplorerModal: SFC<
     >
       <View style={styles.fill}>
         {isVisible ? (
-          <SafeAreaView style={styles.flex}>          
+          <SafeAreaView style={styles.flex}>
             <AlbumGrid
-              onSelectAlbum={() => { /* TODO */}}
+              onSelectAlbum={onSelectAlbum}
+              onPressCloseButton={onRequestDismiss}
             />
           </SafeAreaView>
         ) : null}

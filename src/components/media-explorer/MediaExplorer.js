@@ -10,9 +10,10 @@ import { wrapWithMediaExplorerState } from './mediaExplorerState';
 
 import type { MediaStateExtraProps } from './mediaExplorerState';
 import type { SFC } from '../../types/react';
+import type { MediaObject } from '@jonbrennecke/react-native-media';
 
 export type MediaExplorerProps = {
-  onSelectVideo: (assetID: string) => void,
+  onSelectVideo: (video: MediaObject) => void,
 };
 
 const SafeAreaView = withSafeArea(View, 'padding', 'vertical');
@@ -26,16 +27,20 @@ const styles = {
 const Component: SFC<MediaStateExtraProps & MediaExplorerProps> = ({
   isAlbumModalVisible,
   onSelectVideo,
+  albumID,
+  onRequestFilterByAlbum,
   onRequestShowAlbumModal,
-  onRequestHideAlbumModal
+  onRequestHideAlbumModal,
 }) => (
   <SafeAreaView style={styles.flex}>
     <MediaGrid
+      albumID={albumID}
       onSelectVideo={onSelectVideo}
       onPressAlbumsButton={onRequestShowAlbumModal}
     />
     <AlbumExplorerModal
       isVisible={isAlbumModalVisible}
+      onSelectAlbum={onRequestFilterByAlbum}
       onRequestDismiss={onRequestHideAlbumModal}
     />
   </SafeAreaView>

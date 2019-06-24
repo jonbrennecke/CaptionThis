@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
+import { selectAssets } from '@jonbrennecke/react-native-media';
 
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import {
-  receiveVideos,
   beginCameraCapture,
   endCameraCapture,
   receiveFinishedVideo,
@@ -20,7 +20,6 @@ import {
 } from '../../redux/speech/actionCreators';
 import { loadDeviceInfo } from '../../redux/device/actionCreators';
 import {
-  getVideos,
   isCameraRecording,
   getCurrentVideo,
 } from '../../redux/media/selectors';
@@ -31,9 +30,11 @@ import {
   getLocale,
 } from '../../redux/speech/selectors';
 
+import type { MediaObject } from '@jonbrennecke/react-native-media';
+
 import type { ComponentType } from 'react';
 import type { Dispatch, AppState } from '../../types/redux';
-import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
+import type { VideoAssetIdentifier } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
 import type { CaptionStyleObject } from '../../types/video';
 
@@ -42,7 +43,7 @@ type OwnProps = {|
 |};
 
 type StateProps = {|
-  videos: VideoObject[],
+  thumbnailVideoID: ?string,
   arePermissionsGranted: boolean,
   isCameraRecording: boolean,
   currentVideo: ?VideoAssetIdentifier,
@@ -56,7 +57,6 @@ type DispatchProps = {|
   loadCurrentLocale: () => Promise<void>,
   setLocale: (locale: LocaleObject) => Promise<void>,
   loadDeviceInfo: () => Promise<void>,
-  receiveVideos: (videos: VideoObject[]) => Promise<void>,
   beginCameraCapture: () => Promise<void>,
   endCameraCapture: () => Promise<void>,
   beginSpeechTranscriptionWithAudioSession: () => Promise<void>,
@@ -66,15 +66,17 @@ type DispatchProps = {|
     SpeechTranscription
   ) => void,
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
-  receiveFinishedVideo: VideoObject => void,
+  receiveFinishedVideo: MediaObject => void,
   updateCaptionStyle: typeof updateCaptionStyle,
 |};
 
 export type Props = {| ...OwnProps, ...StateProps, ...DispatchProps |};
 
 function mapStateToProps(state: AppState): StateProps {
+  const assets = selectAssets(state.newMedia);
+  const thumbnailVideoID = assets.first()?.assetID;
   return {
-    videos: getVideos(state),
+    thumbnailVideoID,
     arePermissionsGranted: arePermissionsGranted(state),
     isCameraRecording: isCameraRecording(state),
     currentVideo: getCurrentVideo(state),
@@ -90,7 +92,6 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
     receiveLocale: (locale: LocaleObject) => dispatch(receiveLocale(locale)),
     setLocale: (locale: LocaleObject) => dispatch(setLocale(locale)),
     loadDeviceInfo: () => dispatch(loadDeviceInfo()),
-    receiveVideos: (videos: VideoObject[]) => dispatch(receiveVideos(videos)),
     beginCameraCapture: () => dispatch(beginCameraCapture()),
     endCameraCapture: () => dispatch(endCameraCapture()),
     beginSpeechTranscriptionWithAudioSession: () =>
@@ -103,8 +104,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
     ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
     receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
-    receiveFinishedVideo: (video: VideoObject) =>
-      dispatch(receiveFinishedVideo(video)),
+    receiveFinishedVideo: () =>
+      dispatch(receiveFinishedVideo()),
     updateCaptionStyle: partialCaptionStyle =>
       dispatch(updateCaptionStyle(partialCaptionStyle)),
   };

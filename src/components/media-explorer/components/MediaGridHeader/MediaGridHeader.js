@@ -15,6 +15,7 @@ const styles = {
     paddingVertical: 5,
     paddingHorizontal: 7,
     justifyContent: 'space-between',
+    alignItems: 'center',
     flexDirection: 'row',
   },
   mediaText: Fonts.getFontStyle('title', { contentStyle: 'lightContent' }),

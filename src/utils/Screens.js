@@ -4,7 +4,7 @@ import merge from 'lodash/merge';
 
 import { SCREEN_PARAMS, SCREENS, APP_BUNDLE_ID } from '../constants';
 
-import type { VideoObject } from '../types/media';
+import type { MediaObject } from '@jonbrennecke/react-native-media';
 
 const ROOT_NAVIGATION_STACK_ID = `${APP_BUNDLE_ID}.RootStack`;
 
@@ -22,7 +22,7 @@ export const dismissLoginModal = async () => {
 
 export const pushEditScreen = async (
   currentComponentId: string,
-  video: VideoObject
+  video: MediaObject
 ) => {
   await Navigation.push(
     currentComponentId,

@@ -2,22 +2,14 @@
 import { LOADING_STATE } from '../../constants';
 
 import type { AppState } from '../../types/redux';
-import type { VideoAssetIdentifier, VideoObject } from '../../types/media';
-
-export function getVideos(state: AppState): VideoObject[] {
-  return state.media.videos;
-}
-
-export function isLoadingMedia(state: AppState): boolean {
-  return state.media.mediaLoadingState === LOADING_STATE.IS_LOADING;
-}
+import type { VideoAssetIdentifier } from '../../types/media';
 
 export function isCameraRecording(state: AppState): boolean {
-  return state.media.cameraRecordingState.isRecording;
+  return state.media.isCameraRecording;
 }
 
 export function getCurrentVideo(state: AppState): ?VideoAssetIdentifier {
-  return state.media.cameraRecordingState.videoAssetIdentifier;
+  return state.media.recordedVideoID;
 }
 
 export function isExportingVideo(state: AppState): boolean {

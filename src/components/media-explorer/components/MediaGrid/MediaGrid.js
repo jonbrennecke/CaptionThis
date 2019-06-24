@@ -13,12 +13,17 @@ import {
 } from '../MediaGridHeader';
 import { wrapWithMediaGridState } from './mediaGridState';
 
+import type {
+  AlbumObject,
+  MediaStateHOCProps,
+  MediaObject,
+} from '@jonbrennecke/react-native-media';
+
 import type { SFC } from '../../../../types/react';
 import type { MediaGridStateExtraProps } from './mediaGridState';
-import type { MediaStateHOCProps } from '@jonbrennecke/react-native-media';
 
 type MediaGridProps = {
-  onSelectVideo: (assetID: string) => void,
+  onSelectVideo: (video: MediaObject) => void,
   onPressAlbumsButton: () => void,
 };
 
@@ -36,11 +41,19 @@ const styles = {
 
 const Component: SFC<
   MediaGridStateExtraProps & MediaGridProps & MediaStateHOCProps
-> = ({ assetsArray, loadNextAssets, onPressAlbumsButton }) => {
+> = ({
+  albumID,
+  assets,
+  assetsArray,
+  albums,
+  loadNextAssets,
+  onPressAlbumsButton,
+  onSelectVideo,
+}) => {
   return (
     <View style={styles.container}>
       <MediaGridHeader>
-        <MediaGridHeaderLabel text="Camera Roll" />
+        <MediaGridHeaderLabel text={formatLabel(albumID, albums)} />
         <MediaGridHeaderAlbumsButton
           text="Albums"
           onPress={onPressAlbumsButton}
@@ -51,9 +64,18 @@ const Component: SFC<
         assets={assetsArray}
         extraDurationStyle={styles.duration}
         onRequestLoadMore={loadNextAssets}
+        onPressThumbnail={assetID => {
+          const video = assets.find(a => a.assetID === assetID);
+          video && onSelectVideo(video);
+        }}
       />
     </View>
   );
 };
+
+const formatLabel = (albumID: ?string, albums: any): string => {
+  const album: ?AlbumObject = albums.find(album => album.albumID === albumID);
+  return album?.title || 'Camera Roll';
+}
 
 export const MediaGrid = wrapWithMediaGridState(Component);
