@@ -104,8 +104,7 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
     ) => dispatch(receiveSpeechTranscriptionSuccess(id, transcription)),
     receiveSpeechTranscriptionFailure: (id: VideoAssetIdentifier) =>
       dispatch(receiveSpeechTranscriptionFailure(id)),
-    receiveFinishedVideo: () =>
-      dispatch(receiveFinishedVideo()),
+    receiveFinishedVideo: () => dispatch(receiveFinishedVideo()),
     updateCaptionStyle: partialCaptionStyle =>
       dispatch(updateCaptionStyle(partialCaptionStyle)),
   };

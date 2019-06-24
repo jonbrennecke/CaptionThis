@@ -76,6 +76,6 @@ const Component: SFC<
 const formatLabel = (albumID: ?string, albums: any): string => {
   const album: ?AlbumObject = albums.find(album => album.albumID === albumID);
   return album?.title || 'Camera Roll';
-}
+};
 
 export const MediaGrid = wrapWithMediaGridState(Component);

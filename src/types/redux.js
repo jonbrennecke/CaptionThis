@@ -28,7 +28,7 @@ export type AppState = {
   device: DeviceState,
   video: VideoState,
   speech: SpeechState,
-  newMedia: IMediaState
+  newMedia: IMediaState,
 };
 
 export type GetState = () => AppState;

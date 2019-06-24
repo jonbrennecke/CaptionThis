@@ -80,7 +80,10 @@ function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
       state,
       ownProps.video.assetID
     ),
-    speechTranscription: getSpeechTranscriptionByID(state, ownProps.video.assetID),
+    speechTranscription: getSpeechTranscriptionByID(
+      state,
+      ownProps.video.assetID
+    ),
     captionStyle: getCaptionStyle(state),
   };
 }

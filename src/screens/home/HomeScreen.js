@@ -136,7 +136,7 @@ export default class HomeScreen extends Component<Props, State> {
           mediaType: 'video',
           creationDate: moment().toISOString(),
           duration: video.duration,
-          assetID: video.id
+          assetID: video.id,
         });
       }
     );
@@ -314,7 +314,7 @@ export default class HomeScreen extends Component<Props, State> {
             </SafeAreaView>
             <MediaExplorer
               onSelectVideo={video => {
-                this.pushEditScreen(video)
+                this.pushEditScreen(video);
               }}
             />
           </ScrollView>

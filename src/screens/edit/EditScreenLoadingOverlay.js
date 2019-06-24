@@ -15,7 +15,7 @@ import type { Style } from '../../types/react';
 type Props = {
   style?: ?Style,
   isVisible: boolean,
-  duration: number
+  duration: number,
 };
 
 type State = {

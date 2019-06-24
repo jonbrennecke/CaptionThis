@@ -5,7 +5,7 @@ import {
   createMediaStateHOC,
   authorizeMediaLibrary,
   startObservingVideos,
-  stopObservingVideos
+  stopObservingVideos,
 } from '@jonbrennecke/react-native-media';
 import { autobind } from 'core-decorators';
 import uniqBy from 'lodash/uniqBy';
@@ -14,7 +14,7 @@ import type { ComponentType } from 'react';
 import type {
   MediaStateHOCProps,
   MediaObject,
-  MediaEventEmitterSubscription
+  MediaEventEmitterSubscription,
 } from '@jonbrennecke/react-native-media';
 
 export type MediaGridStateExtraProps = {
