@@ -4,6 +4,8 @@ import React, { PureComponent } from 'react';
 import {
   createMediaStateHOC,
   authorizeMediaLibrary,
+  startObservingVideos,
+  stopObservingVideos
 } from '@jonbrennecke/react-native-media';
 import { autobind } from 'core-decorators';
 import uniqBy from 'lodash/uniqBy';
@@ -12,6 +14,7 @@ import type { ComponentType } from 'react';
 import type {
   MediaStateHOCProps,
   MediaObject,
+  MediaEventEmitterSubscription
 } from '@jonbrennecke/react-native-media';
 
 export type MediaGridStateExtraProps = {
@@ -37,6 +40,8 @@ export function wrapWithMediaGridState<
   class ExplorerState extends PureComponent<
     MediaGridStateInputProps & MediaStateHOCProps & PassThroughProps
   > {
+    subscription: ?MediaEventEmitterSubscription;
+
     async componentDidMount() {
       await authorizeMediaLibrary();
       await this.props.queryMedia({
@@ -47,12 +52,24 @@ export function wrapWithMediaGridState<
             }
           : {}),
       });
+      this.subscription = startObservingVideos(this.onMediaChanged);
     }
 
     componentDidUpdate(prevProps) {
       if (this.props.albumID !== prevProps.albumID) {
         this.reloadAssets();
       }
+    }
+
+    componentWillUnmount() {
+      if (this.subscription) {
+        stopObservingVideos(this.subscription);
+      }
+    }
+
+    onMediaChanged() {
+      console.log('media changed');
+      this.reloadAssets();
     }
 
     async reloadAssets() {
