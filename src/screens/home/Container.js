@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
+import { selectAssets } from '@jonbrennecke/react-native-media';
 
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import {
@@ -42,6 +43,7 @@ type OwnProps = {|
 |};
 
 type StateProps = {|
+  thumbnailVideoID: ?string,
   arePermissionsGranted: boolean,
   isCameraRecording: boolean,
   currentVideo: ?VideoAssetIdentifier,
@@ -71,7 +73,10 @@ type DispatchProps = {|
 export type Props = {| ...OwnProps, ...StateProps, ...DispatchProps |};
 
 function mapStateToProps(state: AppState): StateProps {
+  const assets = selectAssets(state.newMedia);
+  const thumbnailVideoID = assets.first()?.assetID;
   return {
+    thumbnailVideoID,
     arePermissionsGranted: arePermissionsGranted(state),
     isCameraRecording: isCameraRecording(state),
     currentVideo: getCurrentVideo(state),

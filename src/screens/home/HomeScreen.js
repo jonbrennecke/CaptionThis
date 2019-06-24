@@ -290,7 +290,7 @@ export default class HomeScreen extends Component<Props, State> {
                 captionStyle={this.props.captionStyle}
                 animatedScrollValue={this.scrollAnim}
                 isCameraRecording={this.props.isCameraRecording}
-                thumbnailVideoID={null /* TODO */}
+                thumbnailVideoID={this.props.thumbnailVideoID}
                 hasCompletedSetupAfterOnboarding={
                   this.state.hasCompletedSetupAfterOnboarding
                 }
