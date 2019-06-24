@@ -14,6 +14,7 @@ import {
 import { wrapWithMediaGridState } from './mediaGridState';
 
 import type {
+  AlbumObject,
   MediaStateHOCProps,
   MediaObject,
 } from '@jonbrennecke/react-native-media';
@@ -41,8 +42,10 @@ const styles = {
 const Component: SFC<
   MediaGridStateExtraProps & MediaGridProps & MediaStateHOCProps
 > = ({
+  albumID,
   assets,
   assetsArray,
+  albums,
   loadNextAssets,
   onPressAlbumsButton,
   onSelectVideo,
@@ -50,7 +53,7 @@ const Component: SFC<
   return (
     <View style={styles.container}>
       <MediaGridHeader>
-        <MediaGridHeaderLabel text="Camera Roll" />
+        <MediaGridHeaderLabel text={formatLabel(albumID, albums)} />
         <MediaGridHeaderAlbumsButton
           text="Albums"
           onPress={onPressAlbumsButton}
@@ -69,5 +72,10 @@ const Component: SFC<
     </View>
   );
 };
+
+const formatLabel = (albumID: ?string, albums: any): string => {
+  const album: ?AlbumObject = albums.find(album => album.albumID === albumID);
+  return album?.title || 'Camera Roll';
+}
 
 export const MediaGrid = wrapWithMediaGridState(Component);

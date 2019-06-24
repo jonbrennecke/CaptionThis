@@ -15,6 +15,7 @@ import type {
 } from '@jonbrennecke/react-native-media';
 
 export type MediaGridStateExtraProps = {
+  albumID: ?string,
   assetsArray: Array<MediaObject>,
   loadNextAssets: () => void,
 };
