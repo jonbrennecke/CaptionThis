@@ -11,7 +11,7 @@ class CaptionSolidBackgroundStyleEffectFactory: CaptionBackgroundStyleEffectFact
         return
       }
       let backgroundLayer = CALayer()
-      backgroundLayer.frame = layer.frame
+      backgroundLayer.frame = layer.bounds
       backgroundLayer.opacity = 0
       backgroundLayer.backgroundColor = backgroundColor.withAlphaComponent(0.9).cgColor
       backgroundLayer.masksToBounds = true
