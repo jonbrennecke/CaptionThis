@@ -82,8 +82,6 @@
 		FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */; };
 		FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9021D49E8900856037 /* CameraBridgeModule.m */; };
 		FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9621D4A4B000856037 /* CameraPreviewView.m */; };
-		FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */; };
-		FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */; };
 		FC880E0321D5DC4100856037 /* VideoThumbnailViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */; };
 		FC8D50F821FE99FB009E114E /* IndieFlower.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50C721FE99FA009E114E /* IndieFlower.ttf */; };
 		FC8D50FA21FE9C82009E114E /* SpecialElite-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */; };
@@ -646,9 +644,6 @@
 		FC880D9221D49E9B00856037 /* CameraBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraBridgeModule.h; sourceTree = "<group>"; };
 		FC880D9521D4A4B000856037 /* CameraPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraPreviewView.h; sourceTree = "<group>"; };
 		FC880D9621D4A4B000856037 /* CameraPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraPreviewView.m; sourceTree = "<group>"; };
-		FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryManager.swift; sourceTree = "<group>"; };
-		FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaLibraryBridgeModule.m; sourceTree = "<group>"; };
-		FC880DFF21D54B3A00856037 /* MediaLibraryBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaLibraryBridgeModule.h; sourceTree = "<group>"; };
 		FC880E0121D5DC3500856037 /* VideoThumbnailViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoThumbnailViewManager.h; sourceTree = "<group>"; };
 		FC880E0221D5DC4100856037 /* VideoThumbnailViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoThumbnailViewManager.m; sourceTree = "<group>"; };
 		FC8D50C721FE99FA009E114E /* IndieFlower.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = IndieFlower.ttf; path = ../assets/fonts/IndieFlower.ttf; sourceTree = "<group>"; };
@@ -867,7 +862,6 @@
 				FC6FCDD82220ACD7004772B9 /* camera */,
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
 				FC880D8E21D49AD400856037 /* CameraPreviewViewManager */,
-				FC880E0021D54B3F00856037 /* media */,
 				FC880E0421D5DC4600856037 /* VideoThumbnailViewManager */,
 				FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */,
 				FCD5F75321D6EA55001F2068 /* speech */,
@@ -1306,16 +1300,6 @@
 				FC880DFA21D4C7D300856037 /* libRNDeviceInfo-tvOS.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		FC880E0021D54B3F00856037 /* media */ = {
-			isa = PBXGroup;
-			children = (
-				FC880DFB21D4D6DE00856037 /* MediaLibraryManager.swift */,
-				FC880DFF21D54B3A00856037 /* MediaLibraryBridgeModule.h */,
-				FC880DFD21D54B2900856037 /* MediaLibraryBridgeModule.m */,
-			);
-			path = media;
 			sourceTree = "<group>";
 		};
 		FC880E0421D5DC4600856037 /* VideoThumbnailViewManager */ = {
@@ -2118,7 +2102,6 @@
 				FCB393A52210E0F900403154 /* LiveSpeechTranscriptionRequest.swift in Sources */,
 				FC6EA81221D45123007C3B3E /* Debug.swift in Sources */,
 				FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */,
-				FC880DFC21D4D6DE00856037 /* MediaLibraryManager.swift in Sources */,
 				FC388F4C22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m in Sources */,
 				FCE8027C21F914E00092B5E5 /* VideoThumbnailView.swift in Sources */,
 				FC4607D62252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift in Sources */,
@@ -2148,7 +2131,6 @@
 				FCDBE58322931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m in Sources */,
 				FCF51FBC222B55480066D81B /* CaptionLineStyle.swift in Sources */,
 				FCFBDFA322A6D03F0059D452 /* effectUtils.swift in Sources */,
-				FC880DFE21D54B2900856037 /* MediaLibraryBridgeModule.m in Sources */,
 				FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */,
 				FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */,
 				FC3A07D02256957800057426 /* clamp.swift in Sources */,
