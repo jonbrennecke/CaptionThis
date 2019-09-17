@@ -39,6 +39,21 @@ platform :ios do |options|
     upload_symbols_to_crashlytics(dsym_path: './CaptionThis.app.dSYM.zip')
   end
 
+  private_lane :set_version_number do |options|
+    packageJson = JSON.parse(open('../package.json').read)
+    version = packageJson['version']
+    sh("cd ../ios && xcrun agvtool new-version -all #{version}")
+    sh("cd ../ios && xcrun agvtool new-marketing-version #{version}")
+  end
+
+  lane :deploy_testflight do |options|
+    set_version_number
+    build(release: true, export_method: 'app-store')
+    pilot(
+      username: 'jpbrennecke@gmail.com'
+    )
+  end
+
   lane :deploy_appstore do |options|
     increment_build_number(
       xcodeproj: './ios/CaptionThis.xcodeproj',
