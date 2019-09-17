@@ -27,7 +27,7 @@ class AudioUtil {
           .appendingPathComponent("mono_output")
           .appendingPathExtension("mov")
         try? FileManager.default.removeItem(at: outputURL)
-        let assetWriter = try AVAssetWriter(outputURL: outputURL, fileType: AVFileType.mov)
+        let assetWriter = try AVAssetWriter(outputURL: outputURL, fileType: .mov)
         let assetReader = try AVAssetReader(asset: asset)
         var channelLayout = AudioChannelLayout()
         channelLayout.mChannelLayoutTag = kAudioChannelLayoutTag_Mono
