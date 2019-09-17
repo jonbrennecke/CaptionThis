@@ -20,7 +20,7 @@
     "deploy-beta": "npm run fastlane ios beta"
   },
   "dependencies": {
-    "@jonbrennecke/react-native-media": "1.0.13",
+    "@jonbrennecke/react-native-media": "1.0.27",
     "bluebird": "^3.5.3",
     "core-decorators": "0.20.0",
     "hex2rgb": "2.2.0",

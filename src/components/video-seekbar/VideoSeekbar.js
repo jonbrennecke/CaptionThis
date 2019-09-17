@@ -4,10 +4,10 @@ import { View, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 import isFinite from 'lodash/isFinite';
 import clamp from 'lodash/clamp';
+import { SeekbarBackground } from '@jonbrennecke/react-native-media';
 
 import { UI_COLORS } from '../../constants';
 import DragInteractionContainer from '../drag-and-drop/DragInteractionContainer';
-import VideoSeekbarPreviewView from './VideoSeekbarPreviewView';
 
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { Style } from '../../types/react';
@@ -101,9 +101,9 @@ export default class VideoSeekbar extends Component<Props, State> {
         }}
         onLayout={this.viewDidLayout}
       >
-        <VideoSeekbarPreviewView
+        <SeekbarBackground
           style={styles.preview}
-          videoAssetIdentifier={this.props.videoAssetIdentifier}
+          assetID={this.props.videoAssetIdentifier}
         />
         <DragInteractionContainer
           style={styles.dragContainer}

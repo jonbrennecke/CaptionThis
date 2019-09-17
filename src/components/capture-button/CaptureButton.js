@@ -115,8 +115,8 @@ export default class ColorPicker extends Component<Props> {
         <Animated.View style={styles.outerViewAnim(this.outerViewAnim)}>
           <View style={styles.blurViewContainer}>
             <AnimatedBlurView
-              style={[styles.blurView, this.props.style]}
               blurType="light"
+              style={[styles.blurView, this.props.style]}
             />
           </View>
           <MaskedViewIOS

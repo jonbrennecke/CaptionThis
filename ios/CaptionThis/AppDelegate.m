@@ -24,13 +24,16 @@
 
 static SpeechManager *_sharedSpeechManager;
 static PermissionsManager *_sharedPermissionsManager;
-static MediaLibraryManager *_sharedMediaLibraryManager;
 
 + (SpeechManager *)sharedSpeechManager {
   if (_sharedSpeechManager == nil) {
     _sharedSpeechManager = [[SpeechManager alloc] init];
   }
   return _sharedSpeechManager;
+}
+
++ (void)setSharedSpeechManager:(SpeechManager *)sharedSpeechManager {
+  _sharedSpeechManager = sharedSpeechManager;
 }
 
 + (PermissionsManager *)sharedPermissionsManager {
@@ -40,25 +43,9 @@ static MediaLibraryManager *_sharedMediaLibraryManager;
   return _sharedPermissionsManager;
 }
 
-+ (MediaLibraryManager *)sharedMediaLibraryManager {
-  if (_sharedMediaLibraryManager == nil) {
-    _sharedMediaLibraryManager = [[MediaLibraryManager alloc] init];
-  }
-  return _sharedMediaLibraryManager;
-}
-
-+ (void)setSharedSpeechManager:(SpeechManager *)sharedSpeechManager {
-  _sharedSpeechManager = sharedSpeechManager;
-}
-
 + (void)setSharedPermissionsManager:
     (PermissionsManager *)sharedPermissionsManager {
   _sharedPermissionsManager = sharedPermissionsManager;
-}
-
-+ (void)setSharedMediaLibraryManager:
-    (MediaLibraryManager *)sharedMediaLibraryManager {
-  _sharedMediaLibraryManager = sharedMediaLibraryManager;
 }
 
 - (BOOL)application:(UIApplication *)application
