@@ -68,7 +68,6 @@ export function wrapWithMediaGridState<
     }
 
     onMediaChanged() {
-      console.log('media changed');
       this.reloadAssets();
     }
 
