@@ -39,6 +39,11 @@ fastlane ios build
 fastlane ios deploy_beta
 ```
 
+### ios deploy_testflight
+```
+fastlane ios deploy_testflight
+```
+
 ### ios deploy_appstore
 ```
 fastlane ios deploy_appstore
