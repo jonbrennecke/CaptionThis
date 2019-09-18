@@ -2,12 +2,11 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
+import { Camera, startCameraPreview } from '@jonbrennecke/react-native-camera';
 
-import * as Camera from '../../utils/Camera';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
-import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
 
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
@@ -53,16 +52,14 @@ const styles = {
 // $FlowFixMe
 @autobind
 export default class HomeScreenCameraPreview extends Component<Props> {
-  cameraView: ?CameraPreviewView;
+  cameraView: ?Camera;
 
   componentDidUpdate(prevProps: Props) {
     if (
       this.props.hasCompletedSetupAfterOnboarding &&
       !prevProps.hasCompletedSetupAfterOnboarding
     ) {
-      if (this.cameraView) {
-        this.cameraView.setUp();
-      }
+      // startCameraPreview();
     }
   }
 
@@ -89,11 +86,14 @@ export default class HomeScreenCameraPreview extends Component<Props> {
           this.props.style,
         ]}
       >
-        <CameraPreviewView
+        <Camera
+          style={styles.flex}
           ref={ref => {
             this.cameraView = ref;
           }}
-          style={styles.flex}
+          cameraPosition="front"
+          previewMode="normal"
+          resizeMode="scaleAspectFill"
         />
         <CameraTapToFocusView
           style={styles.absoluteFill}

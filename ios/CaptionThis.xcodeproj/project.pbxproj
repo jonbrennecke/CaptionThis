@@ -141,6 +141,7 @@
 		FCFBE02222A8324B0059D452 /* CaptionRowKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */; };
 		FCFBE02422A832AD0059D452 /* CaptionRowLayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02322A832AD0059D452 /* CaptionRowLayers.swift */; };
 		FCFBE02622A890A70059D452 /* PlaybackControllerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */; };
+		FF81AC8B89144FB9AFCA8928 /* libHSReactNativeCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4BF1A0F40D94988BDBDA2E6 /* libHSReactNativeCamera.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -515,6 +516,20 @@
 			remoteGlobalIDString = 6DA7B8031F692C4C00FD1D50;
 			remoteInfo = RNSafeArea;
 		};
+		FCD998B12332BB80008B82B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FC75EB2B22CAE84A003AB14E;
+			remoteInfo = HSReactNativeCamera;
+		};
+		FCD998D42332BBE7008B82B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FCD998D02332BBE7008B82B2 /* HSCameraUtils.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FC664F3022CADBF800FD8AE7;
+			remoteInfo = HSCameraUtils;
+		};
 		FCFBDF0422A1AABF0059D452 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */;
@@ -555,6 +570,7 @@
 		2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNReactNativeHapticFeedback.xcodeproj; path = "../node_modules/react-native-haptic-feedback/ios/RNReactNativeHapticFeedback.xcodeproj"; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
+		41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = HSReactNativeCamera.xcodeproj; path = "../node_modules/@jonbrennecke/react-native-camera/ios/HSReactNativeCamera.xcodeproj"; sourceTree = "<group>"; };
 		4D9C800E0EBF4C11906CFDE3 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
 		4E05544985774B0FA5590447 /* libRNBlur.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBlur.a; sourceTree = "<group>"; };
 		5AC3AC84D4E24EDA91E08877 /* ReactNativeNavigationTests.xctest */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ReactNativeNavigationTests.xctest; sourceTree = "<group>"; };
@@ -575,6 +591,7 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE51129C96194FA5BC0538FB /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		BD50A92D35494C8A876C6C03 /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeNavigation.a; sourceTree = "<group>"; };
+		C4BF1A0F40D94988BDBDA2E6 /* libHSReactNativeCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libHSReactNativeCamera.a; sourceTree = "<group>"; };
 		C9409A38306F4AA3B407FD5C /* RNSentry.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSentry.xcodeproj; path = "../node_modules/react-native-sentry/ios/RNSentry.xcodeproj"; sourceTree = "<group>"; };
 		D1A322132CEB40238AD3A6FC /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		DA8BB66DA4924063BD6C571D /* libRNReactNativeHapticFeedback.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNReactNativeHapticFeedback.a; sourceTree = "<group>"; };
@@ -678,6 +695,7 @@
 		FCD5F75421D6EA68001F2068 /* SpeechBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpeechBridgeModule.h; sourceTree = "<group>"; };
 		FCD5F75521D73C8C001F2068 /* Debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
 		FCD5F75721D73CA2001F2068 /* Debug.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Debug.m; sourceTree = "<group>"; };
+		FCD998D02332BBE7008B82B2 /* HSCameraUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HSCameraUtils.xcodeproj; path = "../../highstreet/backflip-camera-utils/HSCameraUtils.xcodeproj"; sourceTree = "<group>"; };
 		FCDA6EE221FD07BF00FA8345 /* RCTConvert+UIImageOrientation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+UIImageOrientation.h"; sourceTree = "<group>"; };
 		FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIImageOrientation.m"; sourceTree = "<group>"; };
 		FCDBE58022931ACF001DA3E7 /* CaptionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionViewLayout.swift; sourceTree = "<group>"; };
@@ -750,6 +768,7 @@
 				45FD7683D86D4632A3B04D61 /* libz.tbd in Frameworks */,
 				5CFEAE62C9A24B29984DD703 /* libReactNativeHaptic.a in Frameworks */,
 				BD9CE76AC4824D4398B1E28F /* libHSReactNativeMedia.a in Frameworks */,
+				FF81AC8B89144FB9AFCA8928 /* libHSReactNativeCamera.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -919,6 +938,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				FCD998D02332BBE7008B82B2 /* HSCameraUtils.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -942,6 +962,7 @@
 				2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */,
 				20A5BBF73DFE404FBD9508A6 /* ReactNativeHaptic.xcodeproj */,
 				2A48C2E922F841C9992B86EA /* HSReactNativeMedia.xcodeproj */,
+				41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1105,6 +1126,7 @@
 				DA8BB66DA4924063BD6C571D /* libRNReactNativeHapticFeedback.a */,
 				70E12CA68E464F8995503A85 /* libReactNativeHaptic.a */,
 				8A6B0F82929A447687194078 /* libHSReactNativeMedia.a */,
+				C4BF1A0F40D94988BDBDA2E6 /* libHSReactNativeCamera.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1380,6 +1402,22 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		FCD998AE2332BB80008B82B2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FCD998B22332BB80008B82B2 /* libHSReactNativeCamera.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FCD998D12332BBE7008B82B2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FCD998D52332BBE7008B82B2 /* libHSCameraUtils.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FCDA6F1521FD07E100FA8345 /* RCTConvert */ = {
 			isa = PBXGroup;
 			children = (
@@ -1493,6 +1531,14 @@
 				{
 					ProductGroup = FC53C91821D69FB5003DEBE8 /* Products */;
 					ProjectRef = 62570F57A9D94E2F94BD7B22 /* BVLinearGradient.xcodeproj */;
+				},
+				{
+					ProductGroup = FCD998D12332BBE7008B82B2 /* Products */;
+					ProjectRef = FCD998D02332BBE7008B82B2 /* HSCameraUtils.xcodeproj */;
+				},
+				{
+					ProductGroup = FCD998AE2332BB80008B82B2 /* Products */;
+					ProjectRef = 41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */;
 				},
 				{
 					ProductGroup = FC728B2522B361F9005A15DA /* Products */;
@@ -1956,6 +2002,20 @@
 			remoteRef = FCA3971121DC4C7D00347CAB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FCD998B22332BB80008B82B2 /* libHSReactNativeCamera.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libHSReactNativeCamera.a;
+			remoteRef = FCD998B12332BB80008B82B2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FCD998D52332BBE7008B82B2 /* libHSCameraUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libHSCameraUtils.a;
+			remoteRef = FCD998D42332BBE7008B82B2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FCFBDF0522A1AABF0059D452 /* libRNReactNativeHapticFeedback.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2195,12 +2255,14 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2248,12 +2310,14 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2306,6 +2370,7 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThis/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2349,6 +2414,7 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThis/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

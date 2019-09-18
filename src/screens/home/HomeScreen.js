@@ -7,6 +7,7 @@ import { withSafeArea } from 'react-native-safe-area';
 import uuid from 'uuid';
 import { Navigation } from 'react-native-navigation';
 import moment from 'moment';
+import { startCameraPreview, stopCameraPreview } from '@jonbrennecke/react-native-camera';
 
 import { UI_COLORS } from '../../constants';
 import * as Screens from '../../utils/Screens';
@@ -99,12 +100,12 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   async componentDidAppear() {
-    Camera.startPreview();
+    startCameraPreview();
     await this.setUpSpeechRecognizer();
   }
 
   async componentDidDisappear() {
-    Camera.stopPreview();
+    stopCameraPreview();
     await this.shutDownSpeechRecognizer();
   }
 
@@ -112,7 +113,7 @@ export default class HomeScreen extends Component<Props, State> {
     if (this.state.hasCompletedSetupAfterOnboarding) {
       return;
     }
-    Camera.startPreview();
+    startCameraPreview();
     await this.props.loadDeviceInfo();
     this.setState({
       hasCompletedSetupAfterOnboarding: true,
