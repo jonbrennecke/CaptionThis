@@ -1,5 +1,6 @@
 // @flow
 import { reducer as newMediaReducer } from '@jonbrennecke/react-native-media';
+import { reducer as cameraReducer } from '@jonbrennecke/react-native-camera';
 import authReducer from './auth/reducer';
 import onboardingReducer from './onboarding/reducer';
 import mediaReducer from './media/reducer';
@@ -15,4 +16,5 @@ export default {
   device: deviceReducer,
   video: videoReducer,
   speech: speechReducer,
+  camera: cameraReducer,
 };

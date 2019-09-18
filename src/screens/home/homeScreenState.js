@@ -29,20 +29,22 @@ import {
   getSpeechTranscriptions,
   getLocale,
 } from '../../redux/speech/selectors';
+import { wrapWithCameraState } from './cameraState';
 
 import type { MediaObject } from '@jonbrennecke/react-native-media';
 
+import type { CameraStateProps } from './cameraState';
 import type { ComponentType } from 'react';
 import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
 import type { CaptionStyleObject } from '../../types/video';
 
-type OwnProps = {|
+type OwnProps = {
   componentId: string,
-|};
+};
 
-type StateProps = {|
+type StateProps = {
   thumbnailVideoID: ?string,
   arePermissionsGranted: boolean,
   isCameraRecording: boolean,
@@ -50,9 +52,9 @@ type StateProps = {|
   captionStyle: CaptionStyleObject,
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
   locale: ?LocaleObject,
-|};
+};
 
-type DispatchProps = {|
+type DispatchProps = {
   receiveLocale: (locale: LocaleObject) => Promise<void>,
   loadCurrentLocale: () => Promise<void>,
   setLocale: (locale: LocaleObject) => Promise<void>,
@@ -68,9 +70,11 @@ type DispatchProps = {|
   receiveSpeechTranscriptionFailure: VideoAssetIdentifier => void,
   receiveFinishedVideo: MediaObject => void,
   updateCaptionStyle: typeof updateCaptionStyle,
-|};
+};
 
-export type Props = {| ...OwnProps, ...StateProps, ...DispatchProps |};
+export type HomeScreenStateReduxProps = OwnProps & StateProps & DispatchProps;
+
+export type HomeScreenStateProps = HomeScreenStateReduxProps & CameraStateProps;
 
 function mapStateToProps(state: AppState): StateProps {
   const assets = selectAssets(state.newMedia);
@@ -110,9 +114,13 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   };
 }
 
-export default function Container<C: ComponentType<Props>>(
-  Component: C
-): ComponentType<Props> {
-  const fn = (props: Props) => <Component {...props} />;
+export function wrapWithHomeScreenState<
+  PassThroughProps: Object,
+  C: ComponentType<HomeScreenStateProps & PassThroughProps>
+>(Component: C): ComponentType<PassThroughProps> {
+  const ComponentWithCameraState = wrapWithCameraState(Component);
+  const fn = (props: HomeScreenStateProps) => (
+    <ComponentWithCameraState {...props} />
+  );
   return connect(mapStateToProps, mapDispatchToProps)(fn);
 }

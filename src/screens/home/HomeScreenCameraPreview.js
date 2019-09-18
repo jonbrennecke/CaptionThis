@@ -29,6 +29,7 @@ type Props = {
   onRequestOpenLocaleMenu: () => void,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
+  onRequestSwitchToOppositeCamera: () => void,
   onRequestSetCaptionStyle: CaptionPresetStyleObject => void,
 };
 
@@ -53,15 +54,6 @@ const styles = {
 @autobind
 export default class HomeScreenCameraPreview extends Component<Props> {
   cameraView: ?Camera;
-
-  componentDidUpdate(prevProps: Props) {
-    if (
-      this.props.hasCompletedSetupAfterOnboarding &&
-      !prevProps.hasCompletedSetupAfterOnboarding
-    ) {
-      // startCameraPreview();
-    }
-  }
 
   tapToFocusDidReceiveFocusPoint(focusPoint: { x: number, y: number }) {
     if (!this.cameraView) {
@@ -110,7 +102,7 @@ export default class HomeScreenCameraPreview extends Component<Props> {
           onRequestBeginCapture={this.props.onRequestBeginCapture}
           onRequestEndCapture={this.props.onRequestEndCapture}
           onRequestOpenCameraRoll={this.props.onRequestOpenCameraRoll}
-          onRequestSwitchCamera={Camera.switchToOppositeCamera}
+          onRequestSwitchCamera={this.props.onRequestSwitchToOppositeCamera}
           onRequestOpenLocaleMenu={this.props.onRequestOpenLocaleMenu}
           onRequestSetCaptionStyle={this.props.onRequestSetCaptionStyle}
         />

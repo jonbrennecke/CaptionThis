@@ -22,12 +22,12 @@ import requireOnboardedUser from '../onboarding/requireOnboardedUser';
 import { MediaExplorer } from '../../components/media-explorer';
 import LocaleMenu from '../../components/localization/LocaleMenu';
 import HomeScreenCameraPreview from './HomeScreenCameraPreview';
-import Container from './Container';
+import { wrapWithHomeScreenState } from './homeScreenState';
 
 import type { MediaObject } from '@jonbrennecke/react-native-media';
 
 import type { EmitterSubscription } from '../../types/react';
-import type { Props } from './Container';
+import type { HomeScreenStateProps } from './homeScreenState';
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 
@@ -61,9 +61,9 @@ const styles = {
 
 // $FlowFixMe
 @requireOnboardedUser
-@Container
+@wrapWithHomeScreenState
 @autobind
-export default class HomeScreen extends Component<Props, State> {
+export default class HomeScreen extends Component<HomeScreenStateProps, State> {
   state = {
     videoID: null,
     hasCompletedSetupAfterOnboarding: false,
@@ -96,7 +96,7 @@ export default class HomeScreen extends Component<Props, State> {
     this.shutDownSpeechRecognizer();
   }
 
-  async componentDidUpdate(prevProps: Props) {
+  async componentDidUpdate(prevProps: HomeScreenStateProps) {
     if (!prevProps.arePermissionsGranted && this.props.arePermissionsGranted) {
       await this.setupAfterOnboarding();
     }
@@ -313,6 +313,9 @@ export default class HomeScreen extends Component<Props, State> {
                 }}
                 onRequestSetCaptionStyle={captionStyle => {
                   this.props.updateCaptionStyle(captionStyle);
+                }}
+                onRequestSwitchToOppositeCamera={() => {
+                  this.props.switchCameraPosition();
                 }}
               />
             </SafeAreaView>
