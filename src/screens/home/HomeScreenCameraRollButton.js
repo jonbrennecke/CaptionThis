@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import { View, MaskedViewIOS, TouchableOpacity } from 'react-native';
+import { Thumbnail } from '@jonbrennecke/react-native-media';
 
-import VideoThumbnailView from '../../components/video-thumbnail-view/VideoThumbnailView';
 import { UI_COLORS } from '../../constants';
 
 import type { Style } from '../../types/react';
@@ -62,7 +62,7 @@ export default function HomeScreenCameraRollButton({
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <View style={styles.buttonInside}>
-        {id && <VideoThumbnailView style={styles.flex} id={id} />}
+        {id && <Thumbnail style={styles.flex} assetID={id} />}
       </View>
       <MaskedViewIOS
         style={styles.absoluteFill}
