@@ -7,7 +7,10 @@ import { withSafeArea } from 'react-native-safe-area';
 import uuid from 'uuid';
 import { Navigation } from 'react-native-navigation';
 import moment from 'moment';
-import { startCameraPreview, stopCameraPreview } from '@jonbrennecke/react-native-camera';
+import {
+  startCameraPreview,
+  stopCameraPreview,
+} from '@jonbrennecke/react-native-camera';
 
 import { UI_COLORS } from '../../constants';
 import * as Screens from '../../utils/Screens';
