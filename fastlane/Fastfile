@@ -50,7 +50,8 @@ platform :ios do |options|
     set_version_number
     build(release: true, export_method: 'app-store')
     pilot(
-      username: 'jpbrennecke@gmail.com'
+      username: 'jpbrennecke@gmail.com',
+      skip_waiting_for_build_processing: true
     )
   end
 
