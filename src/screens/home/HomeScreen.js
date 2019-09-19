@@ -162,7 +162,7 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
     await this.props.endSpeechTranscriptionWithAudioSession();
     this.removeSpeechListeners();
     this.props.stopCapture({
-      saveToCameraRoll: false
+      saveToCameraRoll: false,
     });
   }
 
@@ -313,7 +313,9 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
                 onRequestSetCaptionStyle={captionStyle => {
                   this.props.updateCaptionStyle(captionStyle);
                 }}
-                onRequestSwitchToOppositeCamera={this.props.switchCameraPosition}
+                onRequestSwitchToOppositeCamera={
+                  this.props.switchCameraPosition
+                }
               />
             </SafeAreaView>
             <MediaExplorer

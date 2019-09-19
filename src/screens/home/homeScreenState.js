@@ -1,12 +1,13 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import { selectAssets, createMediaStateHOC } from '@jonbrennecke/react-native-media';
+import {
+  selectAssets,
+  createMediaStateHOC,
+} from '@jonbrennecke/react-native-media';
 
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
-import {
-  receiveFinishedVideo,
-} from '../../redux/media/actionCreators';
+import { receiveFinishedVideo } from '../../redux/media/actionCreators';
 import {
   beginSpeechTranscriptionWithAudioSession,
   endSpeechTranscriptionWithAudioSession,
@@ -17,9 +18,7 @@ import {
   loadCurrentLocale,
 } from '../../redux/speech/actionCreators';
 import { loadDeviceInfo } from '../../redux/device/actionCreators';
-import {
-  getCurrentVideo,
-} from '../../redux/media/selectors';
+import { getCurrentVideo } from '../../redux/media/selectors';
 import { updateCaptionStyle } from '../../redux/video/actionCreators';
 import { getCaptionStyle } from '../../redux/video/selectors';
 import {
@@ -28,7 +27,10 @@ import {
 } from '../../redux/speech/selectors';
 import { wrapWithCameraState } from './cameraState';
 
-import type { MediaObject, MediaStateHOCProps } from '@jonbrennecke/react-native-media';
+import type {
+  MediaObject,
+  MediaStateHOCProps,
+} from '@jonbrennecke/react-native-media';
 
 import type { CameraStateProps } from './cameraState';
 import type { ComponentType } from 'react';
@@ -68,7 +70,9 @@ type DispatchProps = {
 
 export type HomeScreenStateReduxProps = OwnProps & StateProps & DispatchProps;
 
-export type HomeScreenStateProps = HomeScreenStateReduxProps & CameraStateProps & MediaStateHOCProps;
+export type HomeScreenStateProps = HomeScreenStateReduxProps &
+  CameraStateProps &
+  MediaStateHOCProps;
 
 function mapStateToProps(state: AppState): StateProps {
   const assets = selectAssets(state.newMedia);
