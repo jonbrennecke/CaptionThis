@@ -1,12 +1,10 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import { selectAssets } from '@jonbrennecke/react-native-media';
+import { selectAssets, createMediaStateHOC } from '@jonbrennecke/react-native-media';
 
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import {
-  beginCameraCapture,
-  endCameraCapture,
   receiveFinishedVideo,
 } from '../../redux/media/actionCreators';
 import {
@@ -30,7 +28,7 @@ import {
 } from '../../redux/speech/selectors';
 import { wrapWithCameraState } from './cameraState';
 
-import type { MediaObject } from '@jonbrennecke/react-native-media';
+import type { MediaObject, MediaStateHOCProps } from '@jonbrennecke/react-native-media';
 
 import type { CameraStateProps } from './cameraState';
 import type { ComponentType } from 'react';
@@ -57,8 +55,6 @@ type DispatchProps = {
   loadCurrentLocale: () => Promise<void>,
   setLocale: (locale: LocaleObject) => Promise<void>,
   loadDeviceInfo: () => Promise<void>,
-  beginCameraCapture: () => Promise<void>,
-  endCameraCapture: () => Promise<void>,
   beginSpeechTranscriptionWithAudioSession: () => Promise<void>,
   endSpeechTranscriptionWithAudioSession: () => Promise<void>,
   receiveSpeechTranscriptionSuccess: (
@@ -72,7 +68,7 @@ type DispatchProps = {
 
 export type HomeScreenStateReduxProps = OwnProps & StateProps & DispatchProps;
 
-export type HomeScreenStateProps = HomeScreenStateReduxProps & CameraStateProps;
+export type HomeScreenStateProps = HomeScreenStateReduxProps & CameraStateProps & MediaStateHOCProps;
 
 function mapStateToProps(state: AppState): StateProps {
   const assets = selectAssets(state.newMedia);
@@ -93,8 +89,6 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
     receiveLocale: (locale: LocaleObject) => dispatch(receiveLocale(locale)),
     setLocale: (locale: LocaleObject) => dispatch(setLocale(locale)),
     loadDeviceInfo: () => dispatch(loadDeviceInfo()),
-    beginCameraCapture: () => dispatch(beginCameraCapture()),
-    endCameraCapture: () => dispatch(endCameraCapture()),
     beginSpeechTranscriptionWithAudioSession: () =>
       dispatch(beginSpeechTranscriptionWithAudioSession()),
     endSpeechTranscriptionWithAudioSession: () =>
@@ -115,9 +109,11 @@ export function wrapWithHomeScreenState<
   PassThroughProps: Object,
   C: ComponentType<HomeScreenStateProps & PassThroughProps>
 >(Component: C): ComponentType<PassThroughProps> {
+  const wrapWithMediaState = createMediaStateHOC(state => state.newMedia);
   const ComponentWithCameraState = wrapWithCameraState(Component);
+  const ComponentWithMediaState = wrapWithMediaState(ComponentWithCameraState);
   const fn = (props: HomeScreenStateReduxProps & PassThroughProps) => (
-    <ComponentWithCameraState {...props} />
+    <ComponentWithMediaState {...props} />
   );
   return connect(mapStateToProps, mapDispatchToProps)(fn);
 }

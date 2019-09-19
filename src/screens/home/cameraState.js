@@ -7,6 +7,7 @@ import {
   startCameraPreview,
   addVolumeButtonListener,
 } from '@jonbrennecke/react-native-camera';
+import { createMediaStateHOC } from '@jonbrennecke/react-native-media';
 import { autobind } from 'core-decorators';
 
 import { wrapWithAppState } from './appState';
@@ -74,9 +75,7 @@ export function wrapWithCameraState<
     }
 
     componentWillUnmount() {
-      if (this.volumeButtonListener) {
-        this.volumeButtonListener.remove();
-      }
+      this.removeVolumeButtonListener();
       if (this.initInteractionHandle) {
         // $FlowFixMe
         InteractionManager.clearInteractionHandle(this.initInteractionHandle);
@@ -92,12 +91,6 @@ export function wrapWithCameraState<
     async componentDidUpdate(prevProps: CameraStateProps & PassThroughProps) {
       if (this.props.hasCameraPermissions && !prevProps.hasCameraPermissions) {
         await this.initialize();
-      }
-      if (
-        this.props.lastCapturedVideoURL &&
-        this.props.lastCapturedVideoURL !== prevProps.lastCapturedVideoURL
-      ) {
-        await this.saveCapturedVideo(this.props.lastCapturedVideoURL);
       }
 
       if (this.props.appState !== prevProps.appState) {
@@ -132,17 +125,19 @@ export function wrapWithCameraState<
     }
 
     addVolumeButtonListener() {
-      this.removeVolumeButtonListener();
-      this.volumeButtonListener = addVolumeButtonListener(
-        this.handleVolumeButtonPress
-      );
+      // TODO: add this back when issues are fixed
+      // this.removeVolumeButtonListener();
+      // this.volumeButtonListener = addVolumeButtonListener(
+      //   this.handleVolumeButtonPress
+      // );
     }
 
     removeVolumeButtonListener() {
-      if (this.volumeButtonListener) {
-        this.volumeButtonListener.remove();
-        this.volumeButtonListener = null;
-      }
+      // TODO: add this back when issues are fixed
+      // if (this.volumeButtonListener) {
+      //   this.volumeButtonListener.remove();
+      //   this.volumeButtonListener = null;
+      // }
     }
 
     initialize() {
@@ -224,18 +219,12 @@ export function wrapWithCameraState<
       }
     }
 
-    async saveCapturedVideo(videoURL: string) {
-      // TODO:
-      // await this.props.createAssetWithVideoFileAtURL(videoURL);
-    }
-
     switchCameraPosition = () =>
       this.setState(
         {
           cameraPosition:
             this.state.cameraPosition === 'front' ? 'back' : 'front',
-        },
-        () => {}
+        }
       );
 
     render() {
@@ -250,9 +239,10 @@ export function wrapWithCameraState<
     }
   }
 
+  const withMediaState = createMediaStateHOC(state => state.newMedia);
   const withCameraState = createCameraStateHOC(state => state.camera);
   const Component = wrapWithAppState(
-    withCameraState(CameraScreenStateContainer)
+    withMediaState(withCameraState(CameraScreenStateContainer))
   );
   const WrappedWithCameraState = props => <Component {...props} />;
   return WrappedWithCameraState;

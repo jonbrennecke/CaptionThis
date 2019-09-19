@@ -6,11 +6,11 @@ import { autobind } from 'core-decorators';
 import { withSafeArea } from 'react-native-safe-area';
 import uuid from 'uuid';
 import { Navigation } from 'react-native-navigation';
-import moment from 'moment';
 import {
   startCameraPreview,
   stopCameraPreview,
 } from '@jonbrennecke/react-native-camera';
+import { createAssetWithVideoFileAtURL } from '@jonbrennecke/react-native-media';
 
 import { UI_COLORS } from '../../constants';
 import * as Screens from '../../utils/Screens';
@@ -74,7 +74,6 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
   speechManagerDidReceiveTranscriptionListener: EmitterSubscription;
   speechManagerDidNotDetectSpeechListener: ?EmitterSubscription;
   speechManagerDidChangeLocaleListener: ?EmitterSubscription;
-  cameraManagerDidFinishFileOutputListener: ?EmitterSubscription;
 
   async componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
@@ -84,9 +83,8 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
   }
 
   async componentWillUnmount() {
-    await this.props.endCameraCapture();
-    if (this.cameraManagerDidFinishFileOutputListener) {
-      this.cameraManagerDidFinishFileOutputListener.remove();
+    if (this.props.captureStatus === 'started') {
+      await this.stopCapture();
     }
     if (this.navigationEventListener) {
       this.navigationEventListener.remove();
@@ -98,6 +96,13 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
   async componentDidUpdate(prevProps: HomeScreenStateProps) {
     if (!prevProps.arePermissionsGranted && this.props.arePermissionsGranted) {
       await this.setupAfterOnboarding();
+    }
+
+    if (
+      this.props.lastCapturedVideoURL &&
+      this.props.lastCapturedVideoURL !== prevProps.lastCapturedVideoURL
+    ) {
+      await this.saveCapturedVideo(this.props.lastCapturedVideoURL);
     }
   }
 
@@ -122,6 +127,18 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
     });
   }
 
+  async saveCapturedVideo(videoURL: string) {
+    const asset = await createAssetWithVideoFileAtURL(videoURL);
+    if (!asset) {
+      Debug.logErrorMessage(`Failed create asset. URL = ${videoURL}`);
+      return;
+    }
+    // TODO:
+    // this.props.appendAssets({ assets: [asset] }));
+    this.props.receiveFinishedVideo(asset);
+    await this.pushEditScreen(asset);
+  }
+
   async captureButtonDidRequestBeginCapture() {
     await this.startCapture();
   }
@@ -131,20 +148,10 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
   }
 
   async startCapture() {
-    // this.cameraManagerDidFinishFileOutputListener = Camera.addDidFinishFileOutputListener(
-    //   video => {
-    //     // TODO
-    //     this.cameraManagerDidFinishFileOutput({
-    //       mediaType: 'video',
-    //       creationDate: moment().toISOString(),
-    //       duration: video.duration,
-    //       assetID: video.id,
-    //     });
-    //   }
-    // );
+    this.setState({ videoID: uuid.v4() });
     await this.props.startCapture({});
-    // this.addSpeechListeners();
-    // await this.props.beginSpeechTranscriptionWithAudioSession();
+    this.addSpeechListeners();
+    await this.props.beginSpeechTranscriptionWithAudioSession();
   }
 
   async stopCapture() {
@@ -152,10 +159,10 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
       Debug.logErrorMessage('Failed to stop capture, camera is not recording.');
       return;
     }
-    // await this.props.endSpeechTranscriptionWithAudioSession();
-    // this.removeSpeechListeners();
+    await this.props.endSpeechTranscriptionWithAudioSession();
+    this.removeSpeechListeners();
     this.props.stopCapture({
-      saveToCameraRoll: true
+      saveToCameraRoll: false
     });
   }
 
@@ -217,15 +224,6 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
 
   async speechManagerDidNotDetectSpeech() {
     await this.props.endSpeechTranscriptionWithAudioSession();
-  }
-
-  async cameraManagerDidFinishFileOutput(video: MediaObject) {
-    Debug.log('Camera finished saving video file.');
-    this.props.receiveFinishedVideo(video);
-    if (this.cameraManagerDidFinishFileOutputListener) {
-      this.cameraManagerDidFinishFileOutputListener.remove();
-    }
-    await this.pushEditScreen(video);
   }
 
   async pushEditScreen(video: MediaObject) {
@@ -291,6 +289,7 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
               <HomeScreenCameraPreview
                 style={styles.flex}
                 locale={this.props.locale}
+                cameraPosition={this.props.cameraPosition}
                 captionStyle={this.props.captionStyle}
                 animatedScrollValue={this.scrollAnim}
                 isCameraRecording={this.props.captureStatus === 'started'}
@@ -314,9 +313,7 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
                 onRequestSetCaptionStyle={captionStyle => {
                   this.props.updateCaptionStyle(captionStyle);
                 }}
-                onRequestSwitchToOppositeCamera={() => {
-                  this.props.switchCameraPosition();
-                }}
+                onRequestSwitchToOppositeCamera={this.props.switchCameraPosition}
               />
             </SafeAreaView>
             <MediaExplorer

@@ -8,6 +8,8 @@ import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 
+import type { CameraPosition } from '@jonbrennecke/react-native-camera';
+
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
 import type { Style } from '../../types/react';
@@ -19,6 +21,7 @@ import type {
 type Props = {
   style?: ?Style,
   captionStyle: CaptionStyleObject,
+  cameraPosition: ?CameraPosition,
   animatedScrollValue: Animated.Value,
   thumbnailVideoID: ?VideoAssetIdentifier,
   speechTranscription: ?SpeechTranscription,
@@ -44,9 +47,6 @@ const styles = {
       outputRange: [1, 0],
     }),
   }),
-  flex: {
-    flex: 1,
-  },
   absoluteFill: StyleSheet.absoluteFillObject,
 };
 
@@ -79,11 +79,11 @@ export default class HomeScreenCameraPreview extends Component<Props> {
         ]}
       >
         <Camera
-          style={styles.flex}
+          style={styles.absoluteFill}
           ref={ref => {
             this.cameraView = ref;
           }}
-          cameraPosition="front"
+          cameraPosition={this.props.cameraPosition || 'front'}
           previewMode="normal"
           resizeMode="scaleAspectFill"
         />
