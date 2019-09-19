@@ -14,7 +14,6 @@ import {
 
 import { UI_COLORS } from '../../constants';
 import * as Screens from '../../utils/Screens';
-import * as Camera from '../../utils/Camera';
 import * as Debug from '../../utils/Debug';
 import { getLocaleID } from '../../utils/Localization';
 import SpeechManager from '../../utils/SpeechManager';
@@ -132,31 +131,32 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
   }
 
   async startCapture() {
-    this.setState({ videoID: uuid.v4() });
-    this.cameraManagerDidFinishFileOutputListener = Camera.addDidFinishFileOutputListener(
-      video => {
-        // TODO
-        this.cameraManagerDidFinishFileOutput({
-          mediaType: 'video',
-          creationDate: moment().toISOString(),
-          duration: video.duration,
-          assetID: video.id,
-        });
-      }
-    );
-    await this.props.beginCameraCapture();
-    this.addSpeechListeners();
-    await this.props.beginSpeechTranscriptionWithAudioSession();
+    // this.cameraManagerDidFinishFileOutputListener = Camera.addDidFinishFileOutputListener(
+    //   video => {
+    //     // TODO
+    //     this.cameraManagerDidFinishFileOutput({
+    //       mediaType: 'video',
+    //       creationDate: moment().toISOString(),
+    //       duration: video.duration,
+    //       assetID: video.id,
+    //     });
+    //   }
+    // );
+    await this.props.startCapture({});
+    // this.addSpeechListeners();
+    // await this.props.beginSpeechTranscriptionWithAudioSession();
   }
 
   async stopCapture() {
-    if (!this.props.isCameraRecording) {
+    if (this.props.captureStatus !== 'started') {
       Debug.logErrorMessage('Failed to stop capture, camera is not recording.');
       return;
     }
-    await this.props.endSpeechTranscriptionWithAudioSession();
-    await this.props.endCameraCapture();
-    this.removeSpeechListeners();
+    // await this.props.endSpeechTranscriptionWithAudioSession();
+    // this.removeSpeechListeners();
+    this.props.stopCapture({
+      saveToCameraRoll: true
+    });
   }
 
   async setUpSpeechRecognizer() {
@@ -293,7 +293,7 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
                 locale={this.props.locale}
                 captionStyle={this.props.captionStyle}
                 animatedScrollValue={this.scrollAnim}
-                isCameraRecording={this.props.isCameraRecording}
+                isCameraRecording={this.props.captureStatus === 'started'}
                 thumbnailVideoID={this.props.thumbnailVideoID}
                 hasCompletedSetupAfterOnboarding={
                   this.state.hasCompletedSetupAfterOnboarding

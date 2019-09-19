@@ -89,9 +89,7 @@ export function wrapWithCameraState<
       }
     }
 
-    async componentDidUpdate(
-      prevProps: CameraStateProps & PassThroughProps
-    ) {
+    async componentDidUpdate(prevProps: CameraStateProps & PassThroughProps) {
       if (this.props.hasCameraPermissions && !prevProps.hasCameraPermissions) {
         await this.initialize();
       }

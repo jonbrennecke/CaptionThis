@@ -20,7 +20,6 @@ import {
 } from '../../redux/speech/actionCreators';
 import { loadDeviceInfo } from '../../redux/device/actionCreators';
 import {
-  isCameraRecording,
   getCurrentVideo,
 } from '../../redux/media/selectors';
 import { updateCaptionStyle } from '../../redux/video/actionCreators';
@@ -47,7 +46,6 @@ type OwnProps = {
 type StateProps = {
   thumbnailVideoID: ?string,
   arePermissionsGranted: boolean,
-  isCameraRecording: boolean,
   currentVideo: ?VideoAssetIdentifier,
   captionStyle: CaptionStyleObject,
   speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
@@ -82,7 +80,6 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     thumbnailVideoID,
     arePermissionsGranted: arePermissionsGranted(state),
-    isCameraRecording: isCameraRecording(state),
     currentVideo: getCurrentVideo(state),
     captionStyle: getCaptionStyle(state),
     speechTranscriptions: getSpeechTranscriptions(state),
@@ -119,7 +116,7 @@ export function wrapWithHomeScreenState<
   C: ComponentType<HomeScreenStateProps & PassThroughProps>
 >(Component: C): ComponentType<PassThroughProps> {
   const ComponentWithCameraState = wrapWithCameraState(Component);
-  const fn = (props: HomeScreenStateProps) => (
+  const fn = (props: HomeScreenStateReduxProps & PassThroughProps) => (
     <ComponentWithCameraState {...props} />
   );
   return connect(mapStateToProps, mapDispatchToProps)(fn);

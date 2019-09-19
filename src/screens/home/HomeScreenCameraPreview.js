@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
-import { Camera, startCameraPreview } from '@jonbrennecke/react-native-camera';
+import { Camera } from '@jonbrennecke/react-native-camera';
 
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';

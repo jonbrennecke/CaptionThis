@@ -10,7 +10,6 @@ import type {
 } from '../../types/redux';
 
 const initialState: MediaState = {
-  isCameraRecording: false,
   recordedVideoID: null,
   videoExportState: LOADING_STATE.NOT_LOADED,
 };
@@ -27,7 +26,6 @@ const actions = {
 function didSuccessfullyStartCameraCapture(state: MediaState): MediaState {
   return {
     ...state,
-    isCameraRecording: true,
     recordedVideoID: null,
   };
 }
@@ -35,7 +33,6 @@ function didSuccessfullyStartCameraCapture(state: MediaState): MediaState {
 function didSuccessfullyStopCameraCapture(state: MediaState): MediaState {
   return {
     ...state,
-    isCameraRecording: false,
     recordedVideoID: null,
   };
 }
@@ -49,7 +46,6 @@ function didReceiveFinishedVideo(
   }
   return {
     ...state,
-    isCameraRecording: false,
     recordedVideoID: payload.video.id,
   };
 }
