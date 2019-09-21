@@ -79,9 +79,7 @@
 		FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0F6521D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift */; };
 		FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0FB421D8AB8B00751DBE /* HueGradientViewManager.m */; };
 		FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0FB721D8AB9E00751DBE /* HueGradientView.swift */; };
-		FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */; };
 		FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9021D49E8900856037 /* CameraBridgeModule.m */; };
-		FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9621D4A4B000856037 /* CameraPreviewView.m */; };
 		FC8D50F821FE99FB009E114E /* IndieFlower.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50C721FE99FA009E114E /* IndieFlower.ttf */; };
 		FC8D50FA21FE9C82009E114E /* SpecialElite-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */; };
 		FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */; };
@@ -653,12 +651,8 @@
 		FC7A0FB421D8AB8B00751DBE /* HueGradientViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HueGradientViewManager.m; sourceTree = "<group>"; };
 		FC7A0FB621D8AB9300751DBE /* HueGradientViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HueGradientViewManager.h; sourceTree = "<group>"; };
 		FC7A0FB721D8AB9E00751DBE /* HueGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HueGradientView.swift; sourceTree = "<group>"; };
-		FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraPreviewViewManager.m; sourceTree = "<group>"; };
-		FC880D7F21D49A5100856037 /* CameraPreviewViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraPreviewViewManager.h; sourceTree = "<group>"; };
 		FC880D9021D49E8900856037 /* CameraBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraBridgeModule.m; sourceTree = "<group>"; };
 		FC880D9221D49E9B00856037 /* CameraBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraBridgeModule.h; sourceTree = "<group>"; };
-		FC880D9521D4A4B000856037 /* CameraPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraPreviewView.h; sourceTree = "<group>"; };
-		FC880D9621D4A4B000856037 /* CameraPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraPreviewView.m; sourceTree = "<group>"; };
 		FC8D50C721FE99FA009E114E /* IndieFlower.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = IndieFlower.ttf; path = ../assets/fonts/IndieFlower.ttf; sourceTree = "<group>"; };
 		FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpecialElite-Regular.ttf"; path = "../assets/fonts/SpecialElite-Regular.ttf"; sourceTree = "<group>"; };
 		FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredTextLayer.swift; sourceTree = "<group>"; };
@@ -875,7 +869,6 @@
 				FCDA6F1521FD07E100FA8345 /* RCTConvert */,
 				FC6FCDD82220ACD7004772B9 /* camera */,
 				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
-				FC880D8E21D49AD400856037 /* CameraPreviewViewManager */,
 				FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */,
 				FCD5F75321D6EA55001F2068 /* speech */,
 				FC7A0F8621D8AB5D00751DBE /* HueGradientViewManager */,
@@ -1202,7 +1195,6 @@
 			children = (
 				FCF0CF9422AA21EF006BF364 /* cameraUtils.swift */,
 				FC6EA7E821D4508D007C3B3E /* CameraManager.swift */,
-				FC880D9421D4A48E00856037 /* CameraPreviewView */,
 				FC880D9321D49EA900856037 /* CameraBridgeModule */,
 			);
 			name = camera;
@@ -1273,15 +1265,6 @@
 			name = HueGradientViewManager;
 			sourceTree = "<group>";
 		};
-		FC880D8E21D49AD400856037 /* CameraPreviewViewManager */ = {
-			isa = PBXGroup;
-			children = (
-				FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */,
-				FC880D7F21D49A5100856037 /* CameraPreviewViewManager.h */,
-			);
-			name = CameraPreviewViewManager;
-			sourceTree = "<group>";
-		};
 		FC880D8F21D49AE000856037 /* PermissionsBridgeModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -1298,15 +1281,6 @@
 				FC880D9221D49E9B00856037 /* CameraBridgeModule.h */,
 			);
 			name = CameraBridgeModule;
-			sourceTree = "<group>";
-		};
-		FC880D9421D4A48E00856037 /* CameraPreviewView */ = {
-			isa = PBXGroup;
-			children = (
-				FC880D9521D4A4B000856037 /* CameraPreviewView.h */,
-				FC880D9621D4A4B000856037 /* CameraPreviewView.m */,
-			);
-			name = CameraPreviewView;
 			sourceTree = "<group>";
 		};
 		FC880DF321D4C7D300856037 /* Products */ = {
@@ -2155,14 +2129,12 @@
 				FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */,
 				FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */,
 				FC6EA41F221230A6009F3D7D /* DeviceBridgeModule.m in Sources */,
-				FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */,
 				FCFBDFB822A775B50059D452 /* CaptionSolidBackgroundStyleEffectFactory.swift in Sources */,
 				FC6EA7E921D4508D007C3B3E /* CameraManager.swift in Sources */,
 				FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */,
 				FCFBDFB122A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift in Sources */,
 				FC19138E226290F2008C8BA0 /* VideoDimensions.swift in Sources */,
 				FC6FCF9922249899004772B9 /* CaptionPresetViewManager.m in Sources */,
-				FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */,
 				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
 				FC388F542230EBF1001CE3A3 /* CaptionTextSegment.swift in Sources */,
 				FC7A0F6321D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m in Sources */,
