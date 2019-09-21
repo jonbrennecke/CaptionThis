@@ -26,6 +26,14 @@ const EVENTS = {
   DID_BECOME_UNAVAILABLE: 'speechManagerDidBecomeUnavailable',
 };
 
+export const requestSpeechPermissions = async (): Promise<boolean> => {
+  return NativeSpeechManager.requestSpeechPermissionsAsync();
+};
+
+export const hasSpeechPermissions = async (): Promise<boolean> => {
+  return NativeSpeechManager.hasSpeechPermissionsAsync();
+};
+
 export default class SpeechManager {
   static addDidReceiveSpeechTranscriptionListener(
     listener: (transcription: SpeechTranscription) => void

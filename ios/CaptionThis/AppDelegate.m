@@ -23,7 +23,6 @@
 @implementation AppDelegate
 
 static SpeechManager *_sharedSpeechManager;
-static PermissionsManager *_sharedPermissionsManager;
 
 + (SpeechManager *)sharedSpeechManager {
   if (_sharedSpeechManager == nil) {
@@ -34,18 +33,6 @@ static PermissionsManager *_sharedPermissionsManager;
 
 + (void)setSharedSpeechManager:(SpeechManager *)sharedSpeechManager {
   _sharedSpeechManager = sharedSpeechManager;
-}
-
-+ (PermissionsManager *)sharedPermissionsManager {
-  if (_sharedPermissionsManager == nil) {
-    _sharedPermissionsManager = [[PermissionsManager alloc] init];
-  }
-  return _sharedPermissionsManager;
-}
-
-+ (void)setSharedPermissionsManager:
-    (PermissionsManager *)sharedPermissionsManager {
-  _sharedPermissionsManager = sharedPermissionsManager;
 }
 
 - (BOOL)application:(UIApplication *)application

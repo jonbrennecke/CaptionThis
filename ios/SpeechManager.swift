@@ -136,6 +136,7 @@ class SpeechManager: NSObject {
     return SFSpeechRecognizer.supportedLocales()
   }
 
+  @objc
   public func authorize(_ callback: @escaping (Bool) -> Void) {
     SFSpeechRecognizer.requestAuthorization { status in
       switch status {

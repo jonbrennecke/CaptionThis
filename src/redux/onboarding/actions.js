@@ -1,15 +1,20 @@
 // @flow
 import Promise from 'bluebird';
-import { NativeModules } from 'react-native';
+import { authorizeMediaLibrary } from '@jonbrennecke/react-native-media';
+import { requestCameraPermissions, hasCameraPermissions } from '@jonbrennecke/react-native-camera';
 
-const { Permissons: _Permissons } = NativeModules;
-
-const Permissons = Promise.promisifyAll(_Permissons);
+import { requestSpeechPermissions, hasSpeechPermissions } from '../../utils/SpeechManager';
 
 export const arePermissionsGranted = async (): Promise<boolean> => {
-  return await Permissons.arePermissionsGrantedAsync();
+  const areCameraPermissionsGranted = await hasCameraPermissions();
+  const areSpeechPermissionsGranted = await hasSpeechPermissions();
+  const areMediaPermissionsGranted = await authorizeMediaLibrary(); // TODO
+  return areCameraPermissionsGranted && areSpeechPermissionsGranted && areMediaPermissionsGranted;
 };
 
 export const requestAppPermissions = async (): Promise<boolean> => {
-  return await Permissons.requestAppPermissionsAsync();
+  const areCameraPermissionsGranted = await requestCameraPermissions();
+  const areSpeechPermissionsGranted = await requestSpeechPermissions();
+  const areMediaPermissionsGranted = await authorizeMediaLibrary();
+  return areCameraPermissionsGranted && areSpeechPermissionsGranted && areMediaPermissionsGranted;
 };

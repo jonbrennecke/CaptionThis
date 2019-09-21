@@ -57,11 +57,8 @@
 		FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */; };
 		FC6EA7D721CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */; };
 		FC6EA7D821CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */; };
-		FC6EA7E921D4508D007C3B3E /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA7E821D4508D007C3B3E /* CameraManager.swift */; };
 		FC6EA81221D45123007C3B3E /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81121D45123007C3B3E /* Debug.swift */; };
 		FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81321D45266007C3B3E /* SpeechManager.swift */; };
-		FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81521D45340007C3B3E /* PermissionsManager.swift */; };
-		FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */; };
 		FC6FCDA52220A2A9004772B9 /* LocaleUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */; };
 		FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9622249874004772B9 /* CaptionPresetView.swift */; };
 		FC6FCF9922249899004772B9 /* CaptionPresetViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9822249899004772B9 /* CaptionPresetViewManager.m */; };
@@ -79,7 +76,6 @@
 		FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0F6521D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift */; };
 		FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0FB421D8AB8B00751DBE /* HueGradientViewManager.m */; };
 		FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0FB721D8AB9E00751DBE /* HueGradientView.swift */; };
-		FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9021D49E8900856037 /* CameraBridgeModule.m */; };
 		FC8D50F821FE99FB009E114E /* IndieFlower.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50C721FE99FA009E114E /* IndieFlower.ttf */; };
 		FC8D50FA21FE9C82009E114E /* SpecialElite-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */; };
 		FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */; };
@@ -118,7 +114,6 @@
 		FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8024921F84A640092B5E5 /* OrientationUtil.swift */; };
 		FCE83950223A172E002C85CA /* CaptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8394F223A172E002C85CA /* CaptionView.swift */; };
 		FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCE83952223A1795002C85CA /* CaptionViewManager.m */; };
-		FCF0CF9522AA21EF006BF364 /* cameraUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF0CF9422AA21EF006BF364 /* cameraUtils.swift */; };
 		FCF51EC6222651220066D81B /* AnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51EC5222651220066D81B /* AnimationUtil.swift */; };
 		FCF51F87222B4D550066D81B /* CaptionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51F86222B4D550066D81B /* CaptionStyle.swift */; };
 		FCF51FBC222B55480066D81B /* CaptionLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */; };
@@ -624,12 +619,8 @@
 		FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Bold.ttf"; path = "../assets/fonts/PT_Sans-Web-Bold.ttf"; sourceTree = "<group>"; };
 		FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Regular.ttf"; path = "../assets/fonts/PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
 		FC6EA7E721D4508D007C3B3E /* CaptionThis-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CaptionThis-Bridging-Header.h"; sourceTree = "<group>"; };
-		FC6EA7E821D4508D007C3B3E /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		FC6EA81121D45123007C3B3E /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		FC6EA81321D45266007C3B3E /* SpeechManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechManager.swift; sourceTree = "<group>"; };
-		FC6EA81521D45340007C3B3E /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
-		FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PermissionsBridgeModule.m; sourceTree = "<group>"; };
-		FC6EA81921D45730007C3B3E /* PermissionsBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PermissionsBridgeModule.h; sourceTree = "<group>"; };
 		FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocaleUtil.m; sourceTree = "<group>"; };
 		FC6FCDD72220A2C7004772B9 /* LocaleUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocaleUtil.h; sourceTree = "<group>"; };
 		FC6FCF9622249874004772B9 /* CaptionPresetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetView.swift; sourceTree = "<group>"; };
@@ -651,8 +642,6 @@
 		FC7A0FB421D8AB8B00751DBE /* HueGradientViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HueGradientViewManager.m; sourceTree = "<group>"; };
 		FC7A0FB621D8AB9300751DBE /* HueGradientViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HueGradientViewManager.h; sourceTree = "<group>"; };
 		FC7A0FB721D8AB9E00751DBE /* HueGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HueGradientView.swift; sourceTree = "<group>"; };
-		FC880D9021D49E8900856037 /* CameraBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraBridgeModule.m; sourceTree = "<group>"; };
-		FC880D9221D49E9B00856037 /* CameraBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraBridgeModule.h; sourceTree = "<group>"; };
 		FC8D50C721FE99FA009E114E /* IndieFlower.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = IndieFlower.ttf; path = ../assets/fonts/IndieFlower.ttf; sourceTree = "<group>"; };
 		FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpecialElite-Regular.ttf"; path = "../assets/fonts/SpecialElite-Regular.ttf"; sourceTree = "<group>"; };
 		FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredTextLayer.swift; sourceTree = "<group>"; };
@@ -699,7 +688,6 @@
 		FCE8394F223A172E002C85CA /* CaptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionView.swift; sourceTree = "<group>"; };
 		FCE83951223A1786002C85CA /* CaptionViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptionViewManager.h; sourceTree = "<group>"; };
 		FCE83952223A1795002C85CA /* CaptionViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptionViewManager.m; sourceTree = "<group>"; };
-		FCF0CF9422AA21EF006BF364 /* cameraUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cameraUtils.swift; sourceTree = "<group>"; };
 		FCF51EC5222651220066D81B /* AnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtil.swift; sourceTree = "<group>"; };
 		FCF51F86222B4D550066D81B /* CaptionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionStyle.swift; sourceTree = "<group>"; };
 		FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLineStyle.swift; sourceTree = "<group>"; };
@@ -861,14 +849,11 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				FC6EA7E721D4508D007C3B3E /* CaptionThis-Bridging-Header.h */,
-				FC6EA81521D45340007C3B3E /* PermissionsManager.swift */,
 				FCA3971721DC93AF00347CAB /* constants.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
 				FC6FCF6222249860004772B9 /* captions */,
 				FC58D11321FAED1A00E7956D /* utils */,
 				FCDA6F1521FD07E100FA8345 /* RCTConvert */,
-				FC6FCDD82220ACD7004772B9 /* camera */,
-				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
 				FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */,
 				FCD5F75321D6EA55001F2068 /* speech */,
 				FC7A0F8621D8AB5D00751DBE /* HueGradientViewManager */,
@@ -1190,16 +1175,6 @@
 			name = fonts;
 			sourceTree = "<group>";
 		};
-		FC6FCDD82220ACD7004772B9 /* camera */ = {
-			isa = PBXGroup;
-			children = (
-				FCF0CF9422AA21EF006BF364 /* cameraUtils.swift */,
-				FC6EA7E821D4508D007C3B3E /* CameraManager.swift */,
-				FC880D9321D49EA900856037 /* CameraBridgeModule */,
-			);
-			name = camera;
-			sourceTree = "<group>";
-		};
 		FC6FCE442220B56B004772B9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1263,24 +1238,6 @@
 				FC7A0FB721D8AB9E00751DBE /* HueGradientView.swift */,
 			);
 			name = HueGradientViewManager;
-			sourceTree = "<group>";
-		};
-		FC880D8F21D49AE000856037 /* PermissionsBridgeModule */ = {
-			isa = PBXGroup;
-			children = (
-				FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */,
-				FC6EA81921D45730007C3B3E /* PermissionsBridgeModule.h */,
-			);
-			name = PermissionsBridgeModule;
-			sourceTree = "<group>";
-		};
-		FC880D9321D49EA900856037 /* CameraBridgeModule */ = {
-			isa = PBXGroup;
-			children = (
-				FC880D9021D49E8900856037 /* CameraBridgeModule.m */,
-				FC880D9221D49E9B00856037 /* CameraBridgeModule.h */,
-			);
-			name = CameraBridgeModule;
 			sourceTree = "<group>";
 		};
 		FC880DF321D4C7D300856037 /* Products */ = {
@@ -2122,20 +2079,16 @@
 				FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */,
 				FC388F4C22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m in Sources */,
 				FC4607D62252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift in Sources */,
-				FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */,
 				FC388F4F22309A11001CE3A3 /* CaptionBackgroundStyle.swift in Sources */,
 				FCFBDFB622A775870059D452 /* CaptionGradientBackgroundStyleEffectFactory.swift in Sources */,
 				FC4607D82252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift in Sources */,
 				FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */,
-				FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */,
 				FC6EA41F221230A6009F3D7D /* DeviceBridgeModule.m in Sources */,
 				FCFBDFB822A775B50059D452 /* CaptionSolidBackgroundStyleEffectFactory.swift in Sources */,
-				FC6EA7E921D4508D007C3B3E /* CameraManager.swift in Sources */,
 				FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */,
 				FCFBDFB122A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift in Sources */,
 				FC19138E226290F2008C8BA0 /* VideoDimensions.swift in Sources */,
 				FC6FCF9922249899004772B9 /* CaptionPresetViewManager.m in Sources */,
-				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
 				FC388F542230EBF1001CE3A3 /* CaptionTextSegment.swift in Sources */,
 				FC7A0F6321D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m in Sources */,
 				FCB0E5C12213F076002F320B /* VideoExportTask.swift in Sources */,
@@ -2179,7 +2132,6 @@
 				FCFBDFA522A715BA0059D452 /* CaptionWordStyle.swift in Sources */,
 				FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */,
 				FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */,
-				FCF0CF9522AA21EF006BF364 /* cameraUtils.swift in Sources */,
 				FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */,
 				FC19138A22628467008C8BA0 /* RCTConvert+CaptionExportStyle.m in Sources */,
 				FC4607DA2252E1F800E34AD4 /* Pair.swift in Sources */,
