@@ -353,6 +353,7 @@ export const SCREEN_PARAMS = {
       id: SCREENS.HOME_SCREEN,
       passProps: {},
       options: {
+        popGesture: false,
         statusBar: {
           style: 'light',
         },
@@ -372,6 +373,7 @@ export const SCREEN_PARAMS = {
       id: SCREENS.EDIT_SCREEN,
       passProps: {},
       options: {
+        popGesture: false,
         statusBar: {
           style: 'light',
         },
