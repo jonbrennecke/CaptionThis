@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, SafeAreaView, Dimensions, StyleSheet } from 'react-native';
 import throttle from 'lodash/throttle';
 import { autobind } from 'core-decorators';
+import { VideoPlayer } from '@jonbrennecke/react-native-media';
 
 import { UI_COLORS } from '../../constants';
 import * as Debug from '../../utils/Debug';
@@ -11,7 +12,6 @@ import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
 import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
-import VideoPlayerView from '../../components/video-player-view/VideoPlayerView';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
 import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
 import MeasureContentsView from '../../components/measure-contents-view/MeasureContentsView';
@@ -105,7 +105,7 @@ const styles = {
 @autobind
 export default class EditScreenVideoPlayer extends Component<Props, State> {
   captionsView: ?VideoCaptionsView;
-  playerView: ?VideoPlayerView;
+  playerView: ?VideoPlayer;
   state = {
     playbackTime: 0,
     isDraggingSeekbar: false,
@@ -325,12 +325,12 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
             style={styles.videoWrap}
             isVisible={this.state.isVideoReadyToPlay}
           >
-            <VideoPlayerView
+            <VideoPlayer
               ref={ref => {
                 this.playerView = ref;
               }}
               style={styles.absoluteFill}
-              videoAssetIdentifier={this.props.video.assetID}
+              videoID={this.props.video.assetID}
               onVideoDidBecomeReadyToPlay={(...args) => {
                 this.videoPlayerDidBecomeReadyToPlay(...args);
               }}
