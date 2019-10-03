@@ -289,6 +289,7 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
               <HomeScreenCameraPreview
                 style={styles.flex}
                 locale={this.props.locale}
+                cameraFormat={this.props.format}
                 cameraPosition={this.props.cameraPosition}
                 captionStyle={this.props.captionStyle}
                 animatedScrollValue={this.scrollAnim}
