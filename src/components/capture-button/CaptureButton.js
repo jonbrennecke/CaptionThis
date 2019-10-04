@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   View,
   Animated,
@@ -83,7 +83,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class ColorPicker extends Component<Props> {
+export default class CaptureButton extends PureComponent<Props> {
   outerViewAnim: Animated.Value = new Animated.Value(1);
 
   touchableOnPressIn() {

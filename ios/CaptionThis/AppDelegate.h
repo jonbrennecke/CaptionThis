@@ -8,7 +8,6 @@
 #import <UIKit/UIKit.h>
 
 @class SpeechManager;
-@class PermissionsManager;
 @class VideoExportManager;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
@@ -16,6 +15,5 @@
 @property(nonatomic, strong) UIWindow *window;
 
 @property(class) SpeechManager *sharedSpeechManager;
-@property(class) PermissionsManager *sharedPermissionsManager;
 
 @end

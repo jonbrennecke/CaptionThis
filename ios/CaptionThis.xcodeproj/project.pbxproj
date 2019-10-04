@@ -57,11 +57,8 @@
 		FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */; };
 		FC6EA7D721CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */; };
 		FC6EA7D821CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */; };
-		FC6EA7E921D4508D007C3B3E /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA7E821D4508D007C3B3E /* CameraManager.swift */; };
 		FC6EA81221D45123007C3B3E /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81121D45123007C3B3E /* Debug.swift */; };
 		FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81321D45266007C3B3E /* SpeechManager.swift */; };
-		FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81521D45340007C3B3E /* PermissionsManager.swift */; };
-		FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */; };
 		FC6FCDA52220A2A9004772B9 /* LocaleUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */; };
 		FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9622249874004772B9 /* CaptionPresetView.swift */; };
 		FC6FCF9922249899004772B9 /* CaptionPresetViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9822249899004772B9 /* CaptionPresetViewManager.m */; };
@@ -79,9 +76,6 @@
 		FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0F6521D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift */; };
 		FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0FB421D8AB8B00751DBE /* HueGradientViewManager.m */; };
 		FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0FB721D8AB9E00751DBE /* HueGradientView.swift */; };
-		FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */; };
-		FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9021D49E8900856037 /* CameraBridgeModule.m */; };
-		FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC880D9621D4A4B000856037 /* CameraPreviewView.m */; };
 		FC8D50F821FE99FB009E114E /* IndieFlower.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50C721FE99FA009E114E /* IndieFlower.ttf */; };
 		FC8D50FA21FE9C82009E114E /* SpecialElite-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */; };
 		FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */; };
@@ -110,8 +104,6 @@
 		FCBB1936221524F00014D41C /* CaptionAnimationExportSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */; };
 		FCBB1A16221E66820014D41C /* FlagKit.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCBB1A15221E66820014D41C /* FlagKit.xcassets */; };
 		FCC486602269048200719F69 /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC4865F2269048200719F69 /* PlaybackController.swift */; };
-		FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */; };
-		FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */; };
 		FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */; };
 		FCD5F75821D73CA3001F2068 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75721D73CA2001F2068 /* Debug.m */; };
 		FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */; };
@@ -120,7 +112,6 @@
 		FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8024921F84A640092B5E5 /* OrientationUtil.swift */; };
 		FCE83950223A172E002C85CA /* CaptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8394F223A172E002C85CA /* CaptionView.swift */; };
 		FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCE83952223A1795002C85CA /* CaptionViewManager.m */; };
-		FCF0CF9522AA21EF006BF364 /* cameraUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF0CF9422AA21EF006BF364 /* cameraUtils.swift */; };
 		FCF51EC6222651220066D81B /* AnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51EC5222651220066D81B /* AnimationUtil.swift */; };
 		FCF51F87222B4D550066D81B /* CaptionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51F86222B4D550066D81B /* CaptionStyle.swift */; };
 		FCF51FBC222B55480066D81B /* CaptionLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */; };
@@ -141,6 +132,7 @@
 		FCFBE02222A8324B0059D452 /* CaptionRowKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */; };
 		FCFBE02422A832AD0059D452 /* CaptionRowLayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02322A832AD0059D452 /* CaptionRowLayers.swift */; };
 		FCFBE02622A890A70059D452 /* PlaybackControllerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */; };
+		FF81AC8B89144FB9AFCA8928 /* libHSReactNativeCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4BF1A0F40D94988BDBDA2E6 /* libHSReactNativeCamera.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -515,6 +507,20 @@
 			remoteGlobalIDString = 6DA7B8031F692C4C00FD1D50;
 			remoteInfo = RNSafeArea;
 		};
+		FCD998B12332BB80008B82B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FC75EB2B22CAE84A003AB14E;
+			remoteInfo = HSReactNativeCamera;
+		};
+		FCD998D42332BBE7008B82B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FCD998D02332BBE7008B82B2 /* HSCameraUtils.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FC664F3022CADBF800FD8AE7;
+			remoteInfo = HSCameraUtils;
+		};
 		FCFBDF0422A1AABF0059D452 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */;
@@ -555,6 +561,7 @@
 		2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNReactNativeHapticFeedback.xcodeproj; path = "../node_modules/react-native-haptic-feedback/ios/RNReactNativeHapticFeedback.xcodeproj"; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
+		41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = HSReactNativeCamera.xcodeproj; path = "../node_modules/@jonbrennecke/react-native-camera/ios/HSReactNativeCamera.xcodeproj"; sourceTree = "<group>"; };
 		4D9C800E0EBF4C11906CFDE3 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
 		4E05544985774B0FA5590447 /* libRNBlur.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBlur.a; sourceTree = "<group>"; };
 		5AC3AC84D4E24EDA91E08877 /* ReactNativeNavigationTests.xctest */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ReactNativeNavigationTests.xctest; sourceTree = "<group>"; };
@@ -575,6 +582,7 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE51129C96194FA5BC0538FB /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		BD50A92D35494C8A876C6C03 /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeNavigation.a; sourceTree = "<group>"; };
+		C4BF1A0F40D94988BDBDA2E6 /* libHSReactNativeCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libHSReactNativeCamera.a; sourceTree = "<group>"; };
 		C9409A38306F4AA3B407FD5C /* RNSentry.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSentry.xcodeproj; path = "../node_modules/react-native-sentry/ios/RNSentry.xcodeproj"; sourceTree = "<group>"; };
 		D1A322132CEB40238AD3A6FC /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		DA8BB66DA4924063BD6C571D /* libRNReactNativeHapticFeedback.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNReactNativeHapticFeedback.a; sourceTree = "<group>"; };
@@ -609,12 +617,8 @@
 		FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Bold.ttf"; path = "../assets/fonts/PT_Sans-Web-Bold.ttf"; sourceTree = "<group>"; };
 		FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Regular.ttf"; path = "../assets/fonts/PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
 		FC6EA7E721D4508D007C3B3E /* CaptionThis-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CaptionThis-Bridging-Header.h"; sourceTree = "<group>"; };
-		FC6EA7E821D4508D007C3B3E /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		FC6EA81121D45123007C3B3E /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		FC6EA81321D45266007C3B3E /* SpeechManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechManager.swift; sourceTree = "<group>"; };
-		FC6EA81521D45340007C3B3E /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
-		FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PermissionsBridgeModule.m; sourceTree = "<group>"; };
-		FC6EA81921D45730007C3B3E /* PermissionsBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PermissionsBridgeModule.h; sourceTree = "<group>"; };
 		FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocaleUtil.m; sourceTree = "<group>"; };
 		FC6FCDD72220A2C7004772B9 /* LocaleUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocaleUtil.h; sourceTree = "<group>"; };
 		FC6FCF9622249874004772B9 /* CaptionPresetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetView.swift; sourceTree = "<group>"; };
@@ -636,12 +640,6 @@
 		FC7A0FB421D8AB8B00751DBE /* HueGradientViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HueGradientViewManager.m; sourceTree = "<group>"; };
 		FC7A0FB621D8AB9300751DBE /* HueGradientViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HueGradientViewManager.h; sourceTree = "<group>"; };
 		FC7A0FB721D8AB9E00751DBE /* HueGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HueGradientView.swift; sourceTree = "<group>"; };
-		FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraPreviewViewManager.m; sourceTree = "<group>"; };
-		FC880D7F21D49A5100856037 /* CameraPreviewViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraPreviewViewManager.h; sourceTree = "<group>"; };
-		FC880D9021D49E8900856037 /* CameraBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraBridgeModule.m; sourceTree = "<group>"; };
-		FC880D9221D49E9B00856037 /* CameraBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraBridgeModule.h; sourceTree = "<group>"; };
-		FC880D9521D4A4B000856037 /* CameraPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraPreviewView.h; sourceTree = "<group>"; };
-		FC880D9621D4A4B000856037 /* CameraPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraPreviewView.m; sourceTree = "<group>"; };
 		FC8D50C721FE99FA009E114E /* IndieFlower.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = IndieFlower.ttf; path = ../assets/fonts/IndieFlower.ttf; sourceTree = "<group>"; };
 		FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpecialElite-Regular.ttf"; path = "../assets/fonts/SpecialElite-Regular.ttf"; sourceTree = "<group>"; };
 		FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredTextLayer.swift; sourceTree = "<group>"; };
@@ -671,13 +669,11 @@
 		FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionAnimationExportSession.swift; sourceTree = "<group>"; };
 		FCBB1A15221E66820014D41C /* FlagKit.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FlagKit.xcassets; sourceTree = "<group>"; };
 		FCC4865F2269048200719F69 /* PlaybackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackController.swift; sourceTree = "<group>"; };
-		FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewManager.m; sourceTree = "<group>"; };
-		FCD5F74C21D6BA25001F2068 /* VideoPlayerViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewManager.h; sourceTree = "<group>"; };
-		FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpeechBridgeModule.m; sourceTree = "<group>"; };
 		FCD5F75421D6EA68001F2068 /* SpeechBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpeechBridgeModule.h; sourceTree = "<group>"; };
 		FCD5F75521D73C8C001F2068 /* Debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
 		FCD5F75721D73CA2001F2068 /* Debug.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Debug.m; sourceTree = "<group>"; };
+		FCD998D02332BBE7008B82B2 /* HSCameraUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HSCameraUtils.xcodeproj; path = "../../highstreet/backflip-camera-utils/HSCameraUtils.xcodeproj"; sourceTree = "<group>"; };
 		FCDA6EE221FD07BF00FA8345 /* RCTConvert+UIImageOrientation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+UIImageOrientation.h"; sourceTree = "<group>"; };
 		FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIImageOrientation.m"; sourceTree = "<group>"; };
 		FCDBE58022931ACF001DA3E7 /* CaptionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionViewLayout.swift; sourceTree = "<group>"; };
@@ -687,7 +683,6 @@
 		FCE8394F223A172E002C85CA /* CaptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionView.swift; sourceTree = "<group>"; };
 		FCE83951223A1786002C85CA /* CaptionViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptionViewManager.h; sourceTree = "<group>"; };
 		FCE83952223A1795002C85CA /* CaptionViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptionViewManager.m; sourceTree = "<group>"; };
-		FCF0CF9422AA21EF006BF364 /* cameraUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cameraUtils.swift; sourceTree = "<group>"; };
 		FCF51EC5222651220066D81B /* AnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtil.swift; sourceTree = "<group>"; };
 		FCF51F86222B4D550066D81B /* CaptionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionStyle.swift; sourceTree = "<group>"; };
 		FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLineStyle.swift; sourceTree = "<group>"; };
@@ -750,6 +745,7 @@
 				45FD7683D86D4632A3B04D61 /* libz.tbd in Frameworks */,
 				5CFEAE62C9A24B29984DD703 /* libReactNativeHaptic.a in Frameworks */,
 				BD9CE76AC4824D4398B1E28F /* libHSReactNativeMedia.a in Frameworks */,
+				FF81AC8B89144FB9AFCA8928 /* libHSReactNativeCamera.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -848,16 +844,11 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				FC6EA7E721D4508D007C3B3E /* CaptionThis-Bridging-Header.h */,
-				FC6EA81521D45340007C3B3E /* PermissionsManager.swift */,
 				FCA3971721DC93AF00347CAB /* constants.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
 				FC6FCF6222249860004772B9 /* captions */,
 				FC58D11321FAED1A00E7956D /* utils */,
 				FCDA6F1521FD07E100FA8345 /* RCTConvert */,
-				FC6FCDD82220ACD7004772B9 /* camera */,
-				FC880D8F21D49AE000856037 /* PermissionsBridgeModule */,
-				FC880D8E21D49AD400856037 /* CameraPreviewViewManager */,
-				FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */,
 				FCD5F75321D6EA55001F2068 /* speech */,
 				FC7A0F8621D8AB5D00751DBE /* HueGradientViewManager */,
 				FC7A0F6121D89CCC00751DBE /* SaturationAndBrightnessGradientViewManager */,
@@ -919,6 +910,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				FCD998D02332BBE7008B82B2 /* HSCameraUtils.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -942,6 +934,7 @@
 				2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */,
 				20A5BBF73DFE404FBD9508A6 /* ReactNativeHaptic.xcodeproj */,
 				2A48C2E922F841C9992B86EA /* HSReactNativeMedia.xcodeproj */,
+				41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1105,6 +1098,7 @@
 				DA8BB66DA4924063BD6C571D /* libRNReactNativeHapticFeedback.a */,
 				70E12CA68E464F8995503A85 /* libReactNativeHaptic.a */,
 				8A6B0F82929A447687194078 /* libHSReactNativeMedia.a */,
+				C4BF1A0F40D94988BDBDA2E6 /* libHSReactNativeCamera.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1175,17 +1169,6 @@
 			name = fonts;
 			sourceTree = "<group>";
 		};
-		FC6FCDD82220ACD7004772B9 /* camera */ = {
-			isa = PBXGroup;
-			children = (
-				FCF0CF9422AA21EF006BF364 /* cameraUtils.swift */,
-				FC6EA7E821D4508D007C3B3E /* CameraManager.swift */,
-				FC880D9421D4A48E00856037 /* CameraPreviewView */,
-				FC880D9321D49EA900856037 /* CameraBridgeModule */,
-			);
-			name = camera;
-			sourceTree = "<group>";
-		};
 		FC6FCE442220B56B004772B9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1251,42 +1234,6 @@
 			name = HueGradientViewManager;
 			sourceTree = "<group>";
 		};
-		FC880D8E21D49AD400856037 /* CameraPreviewViewManager */ = {
-			isa = PBXGroup;
-			children = (
-				FC880D5621D49A3800856037 /* CameraPreviewViewManager.m */,
-				FC880D7F21D49A5100856037 /* CameraPreviewViewManager.h */,
-			);
-			name = CameraPreviewViewManager;
-			sourceTree = "<group>";
-		};
-		FC880D8F21D49AE000856037 /* PermissionsBridgeModule */ = {
-			isa = PBXGroup;
-			children = (
-				FC6EA81721D4570A007C3B3E /* PermissionsBridgeModule.m */,
-				FC6EA81921D45730007C3B3E /* PermissionsBridgeModule.h */,
-			);
-			name = PermissionsBridgeModule;
-			sourceTree = "<group>";
-		};
-		FC880D9321D49EA900856037 /* CameraBridgeModule */ = {
-			isa = PBXGroup;
-			children = (
-				FC880D9021D49E8900856037 /* CameraBridgeModule.m */,
-				FC880D9221D49E9B00856037 /* CameraBridgeModule.h */,
-			);
-			name = CameraBridgeModule;
-			sourceTree = "<group>";
-		};
-		FC880D9421D4A48E00856037 /* CameraPreviewView */ = {
-			isa = PBXGroup;
-			children = (
-				FC880D9521D4A4B000856037 /* CameraPreviewView.h */,
-				FC880D9621D4A4B000856037 /* CameraPreviewView.m */,
-			);
-			name = CameraPreviewView;
-			sourceTree = "<group>";
-		};
 		FC880DF321D4C7D300856037 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1344,16 +1291,6 @@
 			path = export;
 			sourceTree = "<group>";
 		};
-		FCD5F74D21D6BA2A001F2068 /* VideoPlayerViewManager */ = {
-			isa = PBXGroup;
-			children = (
-				FCD5F71F21D6BA1B001F2068 /* VideoPlayerViewManager.m */,
-				FCD5F74C21D6BA25001F2068 /* VideoPlayerViewManager.h */,
-				FCD5F74F21D6BEA3001F2068 /* VideoPlayerView.swift */,
-			);
-			name = VideoPlayerViewManager;
-			sourceTree = "<group>";
-		};
 		FCD5F75321D6EA55001F2068 /* speech */ = {
 			isa = PBXGroup;
 			children = (
@@ -1378,6 +1315,22 @@
 			);
 			name = Debug;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		FCD998AE2332BB80008B82B2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FCD998B22332BB80008B82B2 /* libHSReactNativeCamera.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FCD998D12332BBE7008B82B2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FCD998D52332BBE7008B82B2 /* libHSCameraUtils.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FCDA6F1521FD07E100FA8345 /* RCTConvert */ = {
@@ -1493,6 +1446,14 @@
 				{
 					ProductGroup = FC53C91821D69FB5003DEBE8 /* Products */;
 					ProjectRef = 62570F57A9D94E2F94BD7B22 /* BVLinearGradient.xcodeproj */;
+				},
+				{
+					ProductGroup = FCD998D12332BBE7008B82B2 /* Products */;
+					ProjectRef = FCD998D02332BBE7008B82B2 /* HSCameraUtils.xcodeproj */;
+				},
+				{
+					ProductGroup = FCD998AE2332BB80008B82B2 /* Products */;
+					ProjectRef = 41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */;
 				},
 				{
 					ProductGroup = FC728B2522B361F9005A15DA /* Products */;
@@ -1956,6 +1917,20 @@
 			remoteRef = FCA3971121DC4C7D00347CAB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FCD998B22332BB80008B82B2 /* libHSReactNativeCamera.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libHSReactNativeCamera.a;
+			remoteRef = FCD998B12332BB80008B82B2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FCD998D52332BBE7008B82B2 /* libHSCameraUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libHSCameraUtils.a;
+			remoteRef = FCD998D42332BBE7008B82B2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FCFBDF0522A1AABF0059D452 /* libRNReactNativeHapticFeedback.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2088,22 +2063,16 @@
 				FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */,
 				FC388F4C22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m in Sources */,
 				FC4607D62252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift in Sources */,
-				FC6EA81821D4570A007C3B3E /* PermissionsBridgeModule.m in Sources */,
 				FC388F4F22309A11001CE3A3 /* CaptionBackgroundStyle.swift in Sources */,
 				FCFBDFB622A775870059D452 /* CaptionGradientBackgroundStyleEffectFactory.swift in Sources */,
 				FC4607D82252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift in Sources */,
 				FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */,
-				FC6EA81621D45340007C3B3E /* PermissionsManager.swift in Sources */,
 				FC6EA41F221230A6009F3D7D /* DeviceBridgeModule.m in Sources */,
-				FC880D5721D49A3800856037 /* CameraPreviewViewManager.m in Sources */,
 				FCFBDFB822A775B50059D452 /* CaptionSolidBackgroundStyleEffectFactory.swift in Sources */,
-				FC6EA7E921D4508D007C3B3E /* CameraManager.swift in Sources */,
 				FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */,
 				FCFBDFB122A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift in Sources */,
 				FC19138E226290F2008C8BA0 /* VideoDimensions.swift in Sources */,
 				FC6FCF9922249899004772B9 /* CaptionPresetViewManager.m in Sources */,
-				FC880D9721D4A4B000856037 /* CameraPreviewView.m in Sources */,
-				FC880D9121D49E8900856037 /* CameraBridgeModule.m in Sources */,
 				FC388F542230EBF1001CE3A3 /* CaptionTextSegment.swift in Sources */,
 				FC7A0F6321D89D4D00751DBE /* SaturationAndBrightnessGradientViewManager.m in Sources */,
 				FCB0E5C12213F076002F320B /* VideoExportTask.swift in Sources */,
@@ -2140,14 +2109,11 @@
 				FCFBE02622A890A70059D452 /* PlaybackControllerState.swift in Sources */,
 				FCF51EC6222651220066D81B /* AnimationUtil.swift in Sources */,
 				FCF51FC0222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m in Sources */,
-				FCD5F72021D6BA1B001F2068 /* VideoPlayerViewManager.m in Sources */,
 				FC691AFA225124C900A30AA6 /* CaptionLayer.swift in Sources */,
 				FC6FCDA52220A2A9004772B9 /* LocaleUtil.m in Sources */,
-				FCD5F75021D6BEA3001F2068 /* VideoPlayerView.swift in Sources */,
 				FCFBDFA522A715BA0059D452 /* CaptionWordStyle.swift in Sources */,
 				FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */,
 				FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */,
-				FCF0CF9522AA21EF006BF364 /* cameraUtils.swift in Sources */,
 				FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */,
 				FC19138A22628467008C8BA0 /* RCTConvert+CaptionExportStyle.m in Sources */,
 				FC4607DA2252E1F800E34AD4 /* Pair.swift in Sources */,
@@ -2195,12 +2161,14 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2248,12 +2216,14 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2285,7 +2255,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1.0.32;
+				CURRENT_PROJECT_VERSION = 1.0.34;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 6DUV3UU8M8;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2306,6 +2276,7 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThis/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2329,7 +2300,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1.0.32;
+				CURRENT_PROJECT_VERSION = 1.0.34;
 				DEVELOPMENT_TEAM = 6DUV3UU8M8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2349,6 +2320,7 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 				);
 				INFOPLIST_FILE = CaptionThis/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

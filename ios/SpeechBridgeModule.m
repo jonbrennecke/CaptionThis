@@ -205,4 +205,15 @@ RCT_EXPORT_METHOD(setLocale
   callback(@[ [NSNull null], @(success) ]);
 }
 
+RCT_EXPORT_METHOD(hasSpeechPermissions : (RCTResponseSenderBlock)callback) {
+  BOOL isAuthorized = [AppDelegate.sharedSpeechManager isAuthorized];
+  callback(@[ [NSNull null], @(isAuthorized) ]);
+}
+
+RCT_EXPORT_METHOD(requestSpeechPermissions : (RCTResponseSenderBlock)callback) {
+  [AppDelegate.sharedSpeechManager authorize:^(BOOL isAuthorized) {
+    callback(@[ [NSNull null], @(isAuthorized) ]);
+  }];
+}
+
 @end

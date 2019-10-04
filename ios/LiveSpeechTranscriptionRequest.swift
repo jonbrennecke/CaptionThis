@@ -32,6 +32,9 @@ class LiveSpeechTranscriptionRequest: NSObject, SpeechTranscriptionRequest {
   }
 
   public func startTranscription() -> Result<(), SpeechTranscriptionError> {
+    let audioSession = AVAudioSession.sharedInstance()
+    try? audioSession.setCategory(.playAndRecord)
+    try? audioSession.setActive(true, options: AVAudioSession.SetActiveOptions())
     guard let audioEngine = audioEngine else {
       state = .failed
       return .err(.invalidAudioEngine)

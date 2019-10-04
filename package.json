@@ -1,6 +1,6 @@
 {
   "name": "CaptionThis",
-  "version": "1.0.32",
+  "version": "1.0.34",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -22,7 +22,8 @@
     "deploy:appstore": "npm run fastlane ios deploy_appstore"
   },
   "dependencies": {
-    "@jonbrennecke/react-native-media": "1.0.27",
+    "@jonbrennecke/react-native-camera": "1.0.75",
+    "@jonbrennecke/react-native-media": "1.0.28",
     "bluebird": "^3.5.3",
     "core-decorators": "0.20.0",
     "hex2rgb": "2.2.0",
@@ -35,7 +36,7 @@
     "react-native-device-info": "0.24.3",
     "react-native-haptic": "1.0.1",
     "react-native-linear-gradient": "2.5.3",
-    "react-native-navigation": "2.2.5",
+    "react-native-navigation": "2.27.9",
     "react-native-safe-area": "0.5.0",
     "react-native-sentry": "^0.42.0",
     "react-native-splash-screen": "3.1.1",

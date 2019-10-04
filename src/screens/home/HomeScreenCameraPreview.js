@@ -1,13 +1,18 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Animated, StyleSheet, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
+import { Camera } from '@jonbrennecke/react-native-camera';
 
-import * as Camera from '../../utils/Camera';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
-import CameraPreviewView from '../../components/camera-preview-view/CameraPreviewView';
+import { CameraPreviewDimensions } from './CameraPreviewDimensions'; // TODO
+
+import type {
+  CameraPosition,
+  CameraFormat,
+} from '@jonbrennecke/react-native-camera';
 
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
@@ -20,20 +25,24 @@ import type {
 type Props = {
   style?: ?Style,
   captionStyle: CaptionStyleObject,
+  cameraFormat: ?CameraFormat,
+  cameraPosition: ?CameraPosition,
   animatedScrollValue: Animated.Value,
   thumbnailVideoID: ?VideoAssetIdentifier,
   speechTranscription: ?SpeechTranscription,
   isCameraRecording: boolean,
+  isCameraPaused: boolean,
   hasCompletedSetupAfterOnboarding: boolean,
   locale: ?LocaleObject,
   onRequestOpenCameraRoll: () => void,
   onRequestOpenLocaleMenu: () => void,
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
+  onRequestSwitchToOppositeCamera: () => void,
   onRequestSetCaptionStyle: CaptionPresetStyleObject => void,
 };
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const styles = {
   cameraPreview: (anim: Animated.Value) => ({
@@ -43,28 +52,19 @@ const styles = {
       inputRange: [0, SCREEN_HEIGHT],
       outputRange: [1, 0],
     }),
+    width: SCREEN_WIDTH,
   }),
-  flex: {
+  cameraDimensionWrap: {
     flex: 1,
+    overflow: 'hidden',
   },
   absoluteFill: StyleSheet.absoluteFillObject,
 };
 
 // $FlowFixMe
 @autobind
-export default class HomeScreenCameraPreview extends Component<Props> {
-  cameraView: ?CameraPreviewView;
-
-  componentDidUpdate(prevProps: Props) {
-    if (
-      this.props.hasCompletedSetupAfterOnboarding &&
-      !prevProps.hasCompletedSetupAfterOnboarding
-    ) {
-      if (this.cameraView) {
-        this.cameraView.setUp();
-      }
-    }
-  }
+export default class HomeScreenCameraPreview extends PureComponent<Props> {
+  cameraView: ?Camera;
 
   tapToFocusDidReceiveFocusPoint(focusPoint: { x: number, y: number }) {
     if (!this.cameraView) {
@@ -85,16 +85,25 @@ export default class HomeScreenCameraPreview extends Component<Props> {
     return (
       <Animated.View
         style={[
-          styles.cameraPreview(this.props.animatedScrollValue),
           this.props.style,
+          styles.cameraPreview(this.props.animatedScrollValue),
         ]}
       >
-        <CameraPreviewView
-          ref={ref => {
-            this.cameraView = ref;
-          }}
-          style={styles.flex}
-        />
+        <CameraPreviewDimensions
+          style={styles.cameraDimensionWrap}
+          cameraFormat={this.props.cameraFormat}
+        >
+          <Camera
+            style={styles.absoluteFill}
+            ref={ref => {
+              this.cameraView = ref;
+            }}
+            cameraPosition={this.props.cameraPosition || 'front'}
+            previewMode="normal"
+            resizeMode="scaleAspectFill"
+            isPaused={this.props.isCameraPaused}
+          />
+        </CameraPreviewDimensions>
         <CameraTapToFocusView
           style={styles.absoluteFill}
           onDidRequestFocusOnPoint={this.tapToFocusDidReceiveFocusPoint}
@@ -110,7 +119,7 @@ export default class HomeScreenCameraPreview extends Component<Props> {
           onRequestBeginCapture={this.props.onRequestBeginCapture}
           onRequestEndCapture={this.props.onRequestEndCapture}
           onRequestOpenCameraRoll={this.props.onRequestOpenCameraRoll}
-          onRequestSwitchCamera={Camera.switchToOppositeCamera}
+          onRequestSwitchCamera={this.props.onRequestSwitchToOppositeCamera}
           onRequestOpenLocaleMenu={this.props.onRequestOpenLocaleMenu}
           onRequestSetCaptionStyle={this.props.onRequestSetCaptionStyle}
         />
