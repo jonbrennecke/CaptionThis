@@ -12,7 +12,6 @@ import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenLoadingBackground from './EditScreenLoadingBackground';
-import EditScreenEditCaptionsOverlay from './EditScreenEditCaptionsOverlay';
 import SpeechManager from '../../utils/SpeechManager';
 import LocaleMenu from '../../components/localization/LocaleMenu';
 import Container from './Container';
@@ -394,6 +393,7 @@ export default class EditScreen extends Component<Props, State> {
         /> */}
         <TranscriptionReviewModal
           isVisible={this.state.isCaptionsEditorVisible}
+          speechTranscription={this.props.speechTranscription}
           onRequestDismiss={this.dismissCaptionsEditor}
         />
         <LocaleMenu

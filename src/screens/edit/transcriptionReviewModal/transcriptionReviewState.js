@@ -2,12 +2,16 @@
 /* eslint flowtype/generic-spacing: 0 */
 import React, { PureComponent } from 'react';
 import { autobind } from 'core-decorators';
+// $FlowFixMe
+import SafeArea from 'react-native-safe-area';
 
 import type { ComponentType } from 'react';
 
 export type TranscriptionReviewStateHOCProps = {};
 
-export type TranscriptionReviewStateHOCState = {};
+export type TranscriptionReviewStateHOCState = {
+  bottomSafeAreaInset: ?number,
+};
 
 export function wrapWithTranscriptionReviewState<
   PassThroughProps: Object,
@@ -25,6 +29,30 @@ export function wrapWithTranscriptionReviewState<
     TranscriptionReviewStateHOCProps & PassThroughProps,
     TranscriptionReviewStateHOCState
   > {
+    state: $Exact<TranscriptionReviewStateHOCState> = {
+      bottomSafeAreaInset: null,
+    };
+
+    componentDidMount() {
+      SafeArea.addEventListener(
+        'safeAreaInsetsForRootViewDidChange',
+        this.safeAreaInsetsForRootViewDidChange
+      );
+    }
+
+    componentWillUnmount() {
+      SafeArea.removeEventListener(
+        'safeAreaInsetsForRootViewDidChange',
+        this.safeAreaInsetsForRootViewDidChange
+      );
+    }
+
+    safeAreaInsetsForRootViewDidChange({ safeAreaInsets: insets }: any) {
+      this.setState({
+        bottomSafeAreaInset: insets.bottom,
+      });
+    }
+
     render() {
       return <WrappedComponent {...this.props} {...this.state} />;
     }
