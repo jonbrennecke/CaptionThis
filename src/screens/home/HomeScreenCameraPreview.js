@@ -9,7 +9,10 @@ import HomeScreenCameraControls from './HomeScreenCameraControls';
 import CameraTapToFocusView from '../../components/camera-tap-to-focus-view/CameraTapToFocusView';
 import { CameraPreviewDimensions } from './CameraPreviewDimensions'; // TODO
 
-import type { CameraPosition, CameraFormat } from '@jonbrennecke/react-native-camera';
+import type {
+  CameraPosition,
+  CameraFormat,
+} from '@jonbrennecke/react-native-camera';
 
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { LocaleObject, SpeechTranscription } from '../../types/speech';
@@ -49,7 +52,7 @@ const styles = {
       inputRange: [0, SCREEN_HEIGHT],
       outputRange: [1, 0],
     }),
-    width: SCREEN_WIDTH
+    width: SCREEN_WIDTH,
   }),
   cameraDimensionWrap: {
     flex: 1,
@@ -83,10 +86,13 @@ export default class HomeScreenCameraPreview extends PureComponent<Props> {
       <Animated.View
         style={[
           this.props.style,
-          styles.cameraPreview(this.props.animatedScrollValue)
+          styles.cameraPreview(this.props.animatedScrollValue),
         ]}
       >
-        <CameraPreviewDimensions style={styles.cameraDimensionWrap} cameraFormat={this.props.cameraFormat}>
+        <CameraPreviewDimensions
+          style={styles.cameraDimensionWrap}
+          cameraFormat={this.props.cameraFormat}
+        >
           <Camera
             style={styles.absoluteFill}
             ref={ref => {

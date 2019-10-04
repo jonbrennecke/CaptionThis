@@ -223,15 +223,18 @@ export function wrapWithCameraState<
     }
 
     switchCameraPosition = () =>
-      this.setState({
-        isCameraPaused: true,
-      }, () => {
-        this.setState({
-          isCameraPaused: false,
-          cameraPosition:
-            this.state.cameraPosition === 'front' ? 'back' : 'front',
-        });
-      });
+      this.setState(
+        {
+          isCameraPaused: true,
+        },
+        () => {
+          this.setState({
+            isCameraPaused: false,
+            cameraPosition:
+              this.state.cameraPosition === 'front' ? 'back' : 'front',
+          });
+        }
+      );
 
     render() {
       return (
