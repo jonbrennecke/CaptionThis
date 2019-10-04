@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Animated, StyleSheet, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import { Camera } from '@jonbrennecke/react-native-camera';
@@ -28,6 +28,7 @@ type Props = {
   thumbnailVideoID: ?VideoAssetIdentifier,
   speechTranscription: ?SpeechTranscription,
   isCameraRecording: boolean,
+  isCameraPaused: boolean,
   hasCompletedSetupAfterOnboarding: boolean,
   locale: ?LocaleObject,
   onRequestOpenCameraRoll: () => void,
@@ -59,7 +60,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class HomeScreenCameraPreview extends Component<Props> {
+export default class HomeScreenCameraPreview extends PureComponent<Props> {
   cameraView: ?Camera;
 
   tapToFocusDidReceiveFocusPoint(focusPoint: { x: number, y: number }) {
@@ -94,6 +95,7 @@ export default class HomeScreenCameraPreview extends Component<Props> {
             cameraPosition={this.props.cameraPosition || 'front'}
             previewMode="normal"
             resizeMode="scaleAspectFill"
+            isPaused={this.props.isCameraPaused}
           />
         </CameraPreviewDimensions>
         <CameraTapToFocusView

@@ -294,6 +294,7 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
                 captionStyle={this.props.captionStyle}
                 animatedScrollValue={this.scrollAnim}
                 isCameraRecording={this.props.captureStatus === 'started'}
+                isCameraPaused={this.props.isCameraPaused}
                 thumbnailVideoID={this.props.thumbnailVideoID}
                 hasCompletedSetupAfterOnboarding={
                   this.state.hasCompletedSetupAfterOnboarding

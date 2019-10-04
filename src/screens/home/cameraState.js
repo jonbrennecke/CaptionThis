@@ -25,6 +25,7 @@ export type InitializationStatus = 'loading' | 'loaded' | 'none';
 export type CameraScreenStateExtraProps = {
   cameraRef: ReturnType<typeof createRef>,
   isSwitchCameraEnabled: boolean,
+  isCameraPaused: boolean,
   initializationStatus: InitializationStatus,
   cameraPosition: ?CameraPosition,
   switchCameraPosition: () => void,
@@ -32,6 +33,7 @@ export type CameraScreenStateExtraProps = {
 
 export type CameraScreenState = {
   isSwitchCameraEnabled: boolean,
+  isCameraPaused: boolean,
   cameraPosition: ?CameraPosition,
   initializationStatus: InitializationStatus,
 };
@@ -61,6 +63,7 @@ export function wrapWithCameraState<
 
     state: $Exact<CameraScreenState> = {
       isSwitchCameraEnabled: false,
+      isCameraPaused: false,
       cameraPosition: null,
       initializationStatus: 'none',
     };
@@ -221,8 +224,13 @@ export function wrapWithCameraState<
 
     switchCameraPosition = () =>
       this.setState({
-        cameraPosition:
-          this.state.cameraPosition === 'front' ? 'back' : 'front',
+        isCameraPaused: true,
+      }, () => {
+        this.setState({
+          isCameraPaused: false,
+          cameraPosition:
+            this.state.cameraPosition === 'front' ? 'back' : 'front',
+        });
       });
 
     render() {
