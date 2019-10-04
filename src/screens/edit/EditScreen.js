@@ -17,6 +17,7 @@ import SpeechManager from '../../utils/SpeechManager';
 import LocaleMenu from '../../components/localization/LocaleMenu';
 import Container from './Container';
 import * as actions from './actions';
+import { TranscriptionReviewModal } from './transcriptionReviewModal';
 
 import type { Size, ColorRGBA, Orientation } from '../../types/media';
 import type { SpeechTranscription, LocaleObject } from '../../types/speech';
@@ -382,7 +383,7 @@ export default class EditScreen extends Component<Props, State> {
           isVisible={!this.props.isSpeechTranscriptionFinal}
           duration={this.props.video.duration}
         />
-        <EditScreenEditCaptionsOverlay
+        {/* <EditScreenEditCaptionsOverlay
           videoID={this.props.video.assetID}
           speechTranscription={this.props.speechTranscription}
           isVisible={this.state.isCaptionsEditorVisible}
@@ -390,6 +391,10 @@ export default class EditScreen extends Component<Props, State> {
           receiveSpeechTranscriptionSuccess={
             this.props.receiveSpeechTranscriptionSuccess
           }
+        /> */}
+        <TranscriptionReviewModal
+          isVisible={this.state.isCaptionsEditorVisible}
+          onRequestDismiss={this.dismissCaptionsEditor}
         />
         <LocaleMenu
           isVisible={this.state.isLocaleMenuVisible}
