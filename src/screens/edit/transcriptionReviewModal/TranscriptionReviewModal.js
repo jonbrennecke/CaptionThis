@@ -7,6 +7,7 @@ import { withSafeArea } from 'react-native-safe-area';
 import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/KeyboardAvoidingView';
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
 import { TranscriptionTextInput } from './TranscriptionTextInput';
+import { TranscriptionReviewModalPlaybackSlider } from './TranscriptionReviewModalPlaybackSlider';
 import { Units } from '../../../constants';
 
 import type { ComponentType } from 'react';
@@ -18,6 +19,7 @@ import type {
 
 export type TranscriptionReviewModalProps = {
   isVisible: boolean,
+  duration: number,
   speechTranscription: ?SpeechTranscription,
   onRequestDismiss: () => void,
 };
@@ -33,6 +35,9 @@ const styles = {
     paddingVertical: Units.extraLarge,
     paddingHorizontal: Units.extraLarge,
   },
+  playbackControlsContainer: {
+    
+  }
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
@@ -41,6 +46,8 @@ export const TranscriptionReviewModal: ComponentType<
 > = wrapWithTranscriptionReviewState(
   ({
     isVisible,
+    playbackTime,
+    duration,
     onRequestDismiss,
     speechTranscription,
     speechTranscriptionSegmentSelection,
@@ -54,6 +61,16 @@ export const TranscriptionReviewModal: ComponentType<
         keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
       >
         <SafeAreaView style={styles.flex}>
+          <View style={styles.playbackControlsContainer}>
+            <TranscriptionReviewModalPlaybackSlider
+              value={playbackTime}
+              min={0}
+              max={duration}
+              onSelectValue={() => {
+                // TODO
+              }}
+            />
+          </View>
           <View style={styles.transcriptionContainer}>
             <TranscriptionTextInput
               speechTranscriptionSegments={

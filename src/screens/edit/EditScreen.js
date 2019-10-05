@@ -394,6 +394,7 @@ export default class EditScreen extends Component<Props, State> {
         <TranscriptionReviewModal
           isVisible={this.state.isCaptionsEditorVisible}
           speechTranscription={this.props.speechTranscription}
+          duration={this.props.video.duration}
           onRequestDismiss={this.dismissCaptionsEditor}
         />
         <LocaleMenu
