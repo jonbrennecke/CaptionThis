@@ -5,6 +5,7 @@ import first from 'lodash/first';
 import last from 'lodash/last';
 
 import * as Fonts from '../../../utils/Fonts';
+import { Units } from '../../../constants';
 
 import type { SFC, SpeechTranscriptionSegment, Style } from '../../../types';
 
@@ -32,6 +33,9 @@ const styles = {
   },
   text: (isSelected: boolean) => ({
     backgroundColor: isSelected ? 'blue' : null,
+    ...Fonts.getFontStyle('formInput', {
+      contentStyle: isSelected ? 'lightContent' : 'darkContent',
+    }),
   }),
 };
 
