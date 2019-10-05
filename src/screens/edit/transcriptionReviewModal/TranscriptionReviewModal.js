@@ -11,7 +11,10 @@ import { Units } from '../../../constants';
 
 import type { ComponentType } from 'react';
 
-import type { SpeechTranscription } from '../../../types';
+import type {
+  SpeechTranscription,
+  SpeechTranscriptionSegment,
+} from '../../../types';
 
 export type TranscriptionReviewModalProps = {
   isVisible: boolean,
@@ -53,7 +56,11 @@ export const TranscriptionReviewModal: ComponentType<
         <SafeAreaView style={styles.flex}>
           <View style={styles.transcriptionContainer}>
             <TranscriptionTextInput
-              speechTranscriptionSegments={speechTranscription?.segments}
+              speechTranscriptionSegments={
+                speechTranscription
+                  ? interpolateSegments(speechTranscription.segments)
+                  : null
+              }
               speechTranscriptionSegmentSelection={
                 speechTranscriptionSegmentSelection
               }
@@ -65,3 +72,30 @@ export const TranscriptionReviewModal: ComponentType<
     </Modal>
   )
 );
+
+function interpolateSegments(
+  segments: Array<SpeechTranscriptionSegment>
+): Array<SpeechTranscriptionSegment> {
+  let outputSegments: Array<SpeechTranscriptionSegment> = [];
+  segments.forEach(segment => {
+    const words = segment.substring.split(/\s+/).filter(s => !!s);
+    const durationPerWord = segment.duration / words.length;
+    words.forEach((word, index) => {
+      outputSegments.push({
+        duration: durationPerWord,
+        timestamp: segment.timestamp + index * durationPerWord,
+        substring: word,
+        confidence: segment.confidence,
+        alternativeSubstrings: [],
+      });
+      outputSegments.push({
+        duration: durationPerWord,
+        timestamp: segment.timestamp + index * durationPerWord,
+        substring: ' ',
+        confidence: segment.confidence,
+        alternativeSubstrings: [],
+      });
+    });
+  });
+  return outputSegments;
+}

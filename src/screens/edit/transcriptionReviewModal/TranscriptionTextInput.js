@@ -5,7 +5,6 @@ import first from 'lodash/first';
 import last from 'lodash/last';
 
 import * as Fonts from '../../../utils/Fonts';
-import { Units } from '../../../constants';
 
 import type { SFC, SpeechTranscriptionSegment, Style } from '../../../types';
 
@@ -77,10 +76,7 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
             <Text
               key={`${segment.duration}-${index}`}
               style={styles.text(
-                segmentSelection
-                  ? index >= segmentSelection.startIndex &&
-                    index <= segmentSelection.endIndex
-                  : false
+                isSegmentSelected(segment, index, segmentSelection)
               )}
             >
               {segment.substring}
@@ -90,6 +86,19 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
     </TextInput>
   </View>
 );
+
+function isSegmentSelected(
+  segment: SpeechTranscriptionSegment,
+  index: number,
+  selection: ?{ endIndex: number, startIndex: number }
+): boolean {
+  if (/\s+/.test(segment.substring)) {
+    return false;
+  }
+  return selection
+    ? index >= selection.startIndex && index <= selection.endIndex
+    : false;
+}
 
 function findSegmentsInSelection(
   segments: Array<SpeechTranscriptionSegment>,
