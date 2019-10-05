@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { Animated, View, StyleSheet } from 'react-native';
+import ReactNativeHaptic from 'react-native-haptic';
 
 import { Slider } from '../../../components';
 
@@ -42,8 +43,7 @@ const styles = {
 };
 
 function hapticFeedback() {
-  // TODO
-  // ReactNativeHaptic.generate('selection');
+  ReactNativeHaptic.generate('selection');
 }
 
 // eslint-disable-next-line flowtype/generic-spacing
