@@ -65,52 +65,7 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
         if (!segments) {
           return onSelectionChange(null);
         }
-        let formattedStringCharLength = 0;
-        const segmentPositions = segments.map((segment, index) => {
-          const firstCharIndex = formattedStringCharLength;
-          const lastCharIndex = firstCharIndex + segment.substring.length;
-          formattedStringCharLength = lastCharIndex;
-          return {
-            segment,
-            index,
-            lastCharIndex,
-            firstCharIndex,
-          };
-        });
-        const selectedSegments = segmentPositions.filter(
-          ({ firstCharIndex, lastCharIndex }) => {
-            const selectionIsInsideSegment =
-              selection.start >= firstCharIndex &&
-              selection.end < lastCharIndex;
-            const selectionContainsSegment =
-              selection.start <= firstCharIndex &&
-              selection.end >= lastCharIndex;
-            const multiwordSelectionBeginsInsideSegment =
-              selection.start >= firstCharIndex &&
-              selection.start < lastCharIndex &&
-              selection.end >= selection.start;
-            const multiwordSelectionEndsInsideSegment =
-              selection.end > firstCharIndex &&
-              selection.end < lastCharIndex &&
-              selection.start <= firstCharIndex;
-            return (
-              selectionIsInsideSegment ||
-              selectionContainsSegment ||
-              multiwordSelectionBeginsInsideSegment ||
-              multiwordSelectionEndsInsideSegment
-            );
-          }
-        );
-        const firstSelectedSegment = first(selectedSegments);
-        const lastSelectedSegment = last(selectedSegments);
-        onSelectionChange(
-          selectedSegments.length
-            ? {
-                startIndex: firstSelectedSegment.index,
-                endIndex: lastSelectedSegment.index,
-              }
-            : null
-        );
+        onSelectionChange(findSegmentsInSelection(segments, selection));
       }}
     >
       {segments
@@ -131,3 +86,51 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
     </TextInput>
   </View>
 );
+
+function findSegmentsInSelection(
+  segments: Array<SpeechTranscriptionSegment>,
+  selection: { start: number, end: number }
+) {
+  let formattedStringCharLength = 0;
+  const segmentPositions = segments.map((segment, index) => {
+    const firstCharIndex = formattedStringCharLength;
+    const lastCharIndex = firstCharIndex + segment.substring.length;
+    formattedStringCharLength = lastCharIndex;
+    return {
+      segment,
+      index,
+      lastCharIndex,
+      firstCharIndex,
+    };
+  });
+  const selectedSegments = segmentPositions.filter(
+    ({ firstCharIndex, lastCharIndex }) => {
+      const selectionIsInsideSegment =
+        selection.start >= firstCharIndex && selection.end < lastCharIndex;
+      const selectionContainsSegment =
+        selection.start <= firstCharIndex && selection.end >= lastCharIndex;
+      const multiwordSelectionBeginsInsideSegment =
+        selection.start >= firstCharIndex &&
+        selection.start < lastCharIndex &&
+        selection.end >= selection.start;
+      const multiwordSelectionEndsInsideSegment =
+        selection.end > firstCharIndex &&
+        selection.end < lastCharIndex &&
+        selection.start <= firstCharIndex;
+      return (
+        selectionIsInsideSegment ||
+        selectionContainsSegment ||
+        multiwordSelectionBeginsInsideSegment ||
+        multiwordSelectionEndsInsideSegment
+      );
+    }
+  );
+  const firstSelectedSegment = first(selectedSegments);
+  const lastSelectedSegment = last(selectedSegments);
+  return selectedSegments.length
+    ? {
+        startIndex: firstSelectedSegment.index,
+        endIndex: lastSelectedSegment.index,
+      }
+    : null;
+}
