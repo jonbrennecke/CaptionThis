@@ -7,6 +7,7 @@ import { withSafeArea } from 'react-native-safe-area';
 import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/KeyboardAvoidingView';
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
 import { TranscriptionTextInput } from './TranscriptionTextInput';
+import { Units } from '../../../constants';
 
 import type { ComponentType } from 'react';
 
@@ -24,6 +25,11 @@ const styles = {
   flex: {
     flex: 1,
   },
+  transcriptionContainer: {
+    flex: 1,
+    paddingVertical: Units.extraLarge,
+    paddingHorizontal: Units.extraLarge,
+  },
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
@@ -34,6 +40,8 @@ export const TranscriptionReviewModal: ComponentType<
     isVisible,
     onRequestDismiss,
     speechTranscription,
+    speechTranscriptionSegmentSelection,
+    setSpeechTranscriptionSegmentSelection,
     bottomSafeAreaInset,
   }) => (
     <Modal visible={isVisible} onRequestDismissModal={onRequestDismiss}>
@@ -43,7 +51,15 @@ export const TranscriptionReviewModal: ComponentType<
         keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
       >
         <SafeAreaView style={styles.flex}>
-          <TranscriptionTextInput segments={speechTranscription?.segments} />
+          <View style={styles.transcriptionContainer}>
+            <TranscriptionTextInput
+              speechTranscriptionSegments={speechTranscription?.segments}
+              speechTranscriptionSegmentSelection={
+                speechTranscriptionSegmentSelection
+              }
+              onSelectionChange={setSpeechTranscriptionSegmentSelection}
+            />
+          </View>
         </SafeAreaView>
       </KeyboardAvoidingView>
     </Modal>

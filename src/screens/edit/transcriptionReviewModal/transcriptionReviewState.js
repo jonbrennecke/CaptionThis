@@ -9,14 +9,26 @@ import type { ComponentType } from 'react';
 
 export type TranscriptionReviewStateHOCProps = {};
 
+export type TranscriptionReviewStateHOCExtraProps = {
+  setSpeechTranscriptionSegmentSelection: (
+    ?{ startIndex: number, endIndex: number }
+  ) => void,
+};
+
 export type TranscriptionReviewStateHOCState = {
   bottomSafeAreaInset: ?number,
+  playbackTime: number,
+  speechTranscriptionSegmentSelection: ?{
+    startIndex: number,
+    endIndex: number,
+  },
 };
 
 export function wrapWithTranscriptionReviewState<
   PassThroughProps: Object,
   C: ComponentType<
     TranscriptionReviewStateHOCProps &
+      TranscriptionReviewStateHOCExtraProps &
       TranscriptionReviewStateHOCState &
       PassThroughProps
   >
@@ -31,6 +43,8 @@ export function wrapWithTranscriptionReviewState<
   > {
     state: $Exact<TranscriptionReviewStateHOCState> = {
       bottomSafeAreaInset: null,
+      playbackTime: 0,
+      speechTranscriptionSegmentSelection: null,
     };
 
     componentDidMount() {
@@ -53,8 +67,27 @@ export function wrapWithTranscriptionReviewState<
       });
     }
 
+    setSpeechTranscriptionSegmentSelection(
+      speechTranscriptionSegmentSelection: ?{
+        startIndex: number,
+        endIndex: number,
+      }
+    ) {
+      this.setState({
+        speechTranscriptionSegmentSelection,
+      });
+    }
+
     render() {
-      return <WrappedComponent {...this.props} {...this.state} />;
+      return (
+        <WrappedComponent
+          {...this.props}
+          {...this.state}
+          setSpeechTranscriptionSegmentSelection={
+            this.setSpeechTranscriptionSegmentSelection
+          }
+        />
+      );
     }
   }
 

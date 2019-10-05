@@ -2,7 +2,7 @@
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-import type { FontRole, FontStyle } from './types/fonts';
+import type { FontRole, FontStyle } from '../types';
 
 export const APP_BUNDLE_ID = DeviceInfo.getBundleId();
 

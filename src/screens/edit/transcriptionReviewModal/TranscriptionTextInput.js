@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 import { View, TextInput, Text } from 'react-native';
+import first from 'lodash/first';
+import last from 'lodash/last';
 
 import * as Fonts from '../../../utils/Fonts';
 
@@ -8,7 +10,12 @@ import type { SFC, SpeechTranscriptionSegment, Style } from '../../../types';
 
 export type TranscriptionTextInputProps = {
   style?: ?Style,
-  segments: ?Array<SpeechTranscriptionSegment>,
+  speechTranscriptionSegments: ?Array<SpeechTranscriptionSegment>,
+  speechTranscriptionSegmentSelection: ?{
+    startIndex: number,
+    endIndex: number,
+  },
+  onSelectionChange: (?{ startIndex: number, endIndex: number }) => void,
 };
 
 const styles = {
@@ -23,12 +30,17 @@ const styles = {
     flex: 1,
     flexGrow: 1,
   },
+  text: (isSelected: boolean) => ({
+    backgroundColor: isSelected ? 'blue' : null,
+  }),
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
 export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
   style,
-  segments,
+  speechTranscriptionSegments: segments,
+  speechTranscriptionSegmentSelection: segmentSelection,
+  onSelectionChange,
 }: TranscriptionTextInputProps) => (
   <View style={[styles.container, style]}>
     <TextInput
@@ -38,16 +50,80 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
       autoCapitalize="none"
       returnKeyType="done"
       onChangeText={value => {
+        console.log('onChangeText', value);
         // TODO
         // this.props.onEditSegment({
         //   ...this.props.segment,
         //   substring: value,
         // });
       }}
+      onSelectionChange={event => {
+        if (!event.nativeEvent || !event.nativeEvent.selection) {
+          return onSelectionChange(null);
+        }
+        const { selection } = event.nativeEvent;
+        if (!segments) {
+          return onSelectionChange(null);
+        }
+        let formattedStringCharLength = 0;
+        const segmentPositions = segments.map((segment, index) => {
+          const firstCharIndex = formattedStringCharLength;
+          const lastCharIndex = firstCharIndex + segment.substring.length;
+          formattedStringCharLength = lastCharIndex;
+          return {
+            segment,
+            index,
+            lastCharIndex,
+            firstCharIndex,
+          };
+        });
+        const selectedSegments = segmentPositions.filter(
+          ({ firstCharIndex, lastCharIndex }) => {
+            const selectionIsInsideSegment =
+              selection.start >= firstCharIndex &&
+              selection.end < lastCharIndex;
+            const selectionContainsSegment =
+              selection.start <= firstCharIndex &&
+              selection.end >= lastCharIndex;
+            const multiwordSelectionBeginsInsideSegment =
+              selection.start >= firstCharIndex &&
+              selection.start < lastCharIndex &&
+              selection.end >= selection.start;
+            const multiwordSelectionEndsInsideSegment =
+              selection.end > firstCharIndex &&
+              selection.end < lastCharIndex &&
+              selection.start <= firstCharIndex;
+            return (
+              selectionIsInsideSegment ||
+              selectionContainsSegment ||
+              multiwordSelectionBeginsInsideSegment ||
+              multiwordSelectionEndsInsideSegment
+            );
+          }
+        );
+        const firstSelectedSegment = first(selectedSegments);
+        const lastSelectedSegment = last(selectedSegments);
+        onSelectionChange(
+          selectedSegments.length
+            ? {
+                startIndex: firstSelectedSegment.index,
+                endIndex: lastSelectedSegment.index,
+              }
+            : null
+        );
+      }}
     >
       {segments
         ? segments.map((segment, index) => (
-            <Text key={`${segment.duration}-${index}`}>
+            <Text
+              key={`${segment.duration}-${index}`}
+              style={styles.text(
+                segmentSelection
+                  ? index >= segmentSelection.startIndex &&
+                    index <= segmentSelection.endIndex
+                  : false
+              )}
+            >
               {segment.substring}
             </Text>
           ))
