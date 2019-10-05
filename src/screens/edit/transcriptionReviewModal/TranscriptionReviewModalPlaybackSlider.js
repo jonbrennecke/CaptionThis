@@ -46,6 +46,7 @@ function hapticFeedback() {
   // ReactNativeHaptic.generate('selection');
 }
 
+// eslint-disable-next-line flowtype/generic-spacing
 export const TranscriptionReviewModalPlaybackSlider: SFC<
   TranscriptionReviewModalPlaybackSliderProps
 > = ({
