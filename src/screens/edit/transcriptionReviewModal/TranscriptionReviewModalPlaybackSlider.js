@@ -37,8 +37,8 @@ const styles = {
     top: (CONTAINER_HEIGHT - SLIDER_HEIGHT) / 2,
     height: SLIDER_HEIGHT,
     overflow: 'hidden',
-    backgroundColor: 'red'
-  }
+    backgroundColor: 'red',
+  },
 };
 
 function hapticFeedback() {
@@ -46,7 +46,9 @@ function hapticFeedback() {
   // ReactNativeHaptic.generate('selection');
 }
 
-export const TranscriptionReviewModalPlaybackSlider: SFC<TranscriptionReviewModalPlaybackSliderProps> = ({
+export const TranscriptionReviewModalPlaybackSlider: SFC<
+  TranscriptionReviewModalPlaybackSliderProps
+> = ({
   style,
   value,
   min,
@@ -54,7 +56,7 @@ export const TranscriptionReviewModalPlaybackSlider: SFC<TranscriptionReviewModa
   onSelectValue,
 }: TranscriptionReviewModalPlaybackSliderProps) => (
   <View style={[styles.container, style]}>
-    <View style={styles.border} pointerEvents="none"/>
+    <View style={styles.border} pointerEvents="none" />
     <Slider
       style={styles.absoluteFill}
       progress={(value - min) / (max - min)}
@@ -66,12 +68,10 @@ export const TranscriptionReviewModalPlaybackSlider: SFC<TranscriptionReviewModa
           pointerEvents="none"
         />
       )}
-      onSeekToProgress={p =>
-        onSelectValue(p * (max - min) + min)
-      }
+      onSeekToProgress={p => onSelectValue(p * (max - min) + min)}
       onDidBeginDrag={hapticFeedback}
       onDidEndDrag={p => {
-        hapticFeedback()
+        hapticFeedback();
         onSelectValue(p * (max - min) + min);
       }}
     />

@@ -35,9 +35,7 @@ const styles = {
     paddingVertical: Units.extraLarge,
     paddingHorizontal: Units.extraLarge,
   },
-  playbackControlsContainer: {
-    
-  }
+  playbackControlsContainer: {},
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
