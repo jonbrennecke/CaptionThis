@@ -8,7 +8,7 @@ import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/Key
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
 import { TranscriptionTextInput } from './TranscriptionTextInput';
 import { TranscriptionReviewModalPlaybackSlider } from './TranscriptionReviewModalPlaybackSlider';
-import { Units } from '../../../constants';
+import { Units, Colors } from '../../../constants';
 
 import type { ComponentType } from 'react';
 
@@ -34,8 +34,18 @@ const styles = {
     flex: 1,
     paddingVertical: Units.extraLarge,
     paddingHorizontal: Units.extraLarge,
+    backgroundColor: Colors.solid.extraLightGray,
+    // shadowColor: Colors.solid.darkGray,
+    // shadowOpacity: 1,
+    // shadowRadius: 25,
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 10,
+    // },
   },
-  playbackControlsContainer: {},
+  playbackControlsContainer: {
+    zIndex: 1000,
+  },
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
