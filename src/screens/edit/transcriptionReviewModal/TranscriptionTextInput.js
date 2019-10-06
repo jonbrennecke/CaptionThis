@@ -5,6 +5,7 @@ import first from 'lodash/first';
 import last from 'lodash/last';
 
 import * as Fonts from '../../../utils/Fonts';
+import { Colors } from '../../../constants';
 
 import type { SFC, SpeechTranscriptionSegment, Style } from '../../../types';
 
@@ -31,7 +32,7 @@ const styles = {
     flexGrow: 1,
   },
   text: (isSelected: boolean) => ({
-    backgroundColor: isSelected ? 'blue' : null,
+    backgroundColor: isSelected ? Colors.solid.nimbus : null,
     ...Fonts.getFontStyle('formInput', {
       contentStyle: isSelected ? 'lightContent' : 'darkContent',
     }),
