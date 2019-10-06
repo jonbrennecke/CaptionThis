@@ -45,48 +45,76 @@ export const TranscriptionReviewModal: ComponentType<
   ({
     isVisible,
     playbackTime,
+    setPlaybackTime,
     duration,
     onRequestDismiss,
     speechTranscription,
     speechTranscriptionSegmentSelection,
     setSpeechTranscriptionSegmentSelection,
     bottomSafeAreaInset,
-  }) => (
-    <Modal visible={isVisible} onRequestDismissModal={onRequestDismiss}>
-      {isVisible && <StatusBar barStyle="dark-content" />}
-      <KeyboardAvoidingView
-        style={styles.flex}
-        keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
-      >
-        <SafeAreaView style={styles.flex}>
-          <View style={styles.playbackControlsContainer}>
-            <TranscriptionReviewModalPlaybackSlider
-              value={playbackTime}
-              min={0}
-              max={duration}
-              onSelectValue={() => {
-                // TODO
-              }}
-            />
-          </View>
-          <View style={styles.transcriptionContainer}>
-            <TranscriptionTextInput
-              speechTranscriptionSegments={
-                speechTranscription
-                  ? interpolateSegments(speechTranscription.segments)
-                  : null
-              }
-              speechTranscriptionSegmentSelection={
-                speechTranscriptionSegmentSelection
-              }
-              onSelectionChange={setSpeechTranscriptionSegmentSelection}
-            />
-          </View>
-        </SafeAreaView>
-      </KeyboardAvoidingView>
-    </Modal>
-  )
+  }) => {
+    const segments = speechTranscription
+      ? interpolateSegments(speechTranscription.segments)
+      : null;
+    return (
+      <Modal visible={isVisible} onRequestDismissModal={onRequestDismiss}>
+        {isVisible && <StatusBar barStyle="dark-content" />}
+        <KeyboardAvoidingView
+          style={styles.flex}
+          keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
+        >
+          <SafeAreaView style={styles.flex}>
+            <View style={styles.playbackControlsContainer}>
+              <TranscriptionReviewModalPlaybackSlider
+                value={playbackTime}
+                min={0}
+                max={duration}
+                onSelectValue={playbackTime => {
+                  setPlaybackTime(playbackTime);
+                  if (segments) {
+                    const index = findIndexOfSegmentAtPlaybackTime(
+                      segments,
+                      playbackTime
+                    );
+                    if (index >= 0) {
+                      setSpeechTranscriptionSegmentSelection({
+                        startIndex: index,
+                        endIndex: index,
+                      });
+                    }
+                  }
+                }}
+              />
+            </View>
+            <View style={styles.transcriptionContainer}>
+              <TranscriptionTextInput
+                speechTranscriptionSegments={segments}
+                speechTranscriptionSegmentSelection={
+                  speechTranscriptionSegmentSelection
+                }
+                onSelectionChange={
+                  setSpeechTranscriptionSegmentSelection
+                  // TODO: set playbackTime to match first segment in selection
+                }
+              />
+            </View>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
+      </Modal>
+    );
+  }
 );
+
+function findIndexOfSegmentAtPlaybackTime(
+  segments: Array<SpeechTranscriptionSegment>,
+  playbackTime: number
+) {
+  return segments.findIndex(s => {
+    return (
+      playbackTime >= s.timestamp && playbackTime <= s.timestamp + s.duration
+    );
+  });
+}
 
 function interpolateSegments(
   segments: Array<SpeechTranscriptionSegment>

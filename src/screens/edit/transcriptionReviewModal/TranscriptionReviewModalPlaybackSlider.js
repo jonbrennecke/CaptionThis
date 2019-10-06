@@ -22,6 +22,7 @@ const SLIDER_HEIGHT = 7;
 const styles = {
   container: {
     height: 50,
+    backgroundColor: 'pink',
   },
   absoluteFill: StyleSheet.absoluteFill,
   handle: {
@@ -32,13 +33,31 @@ const styles = {
     top: CONTAINER_HEIGHT * 0.5 - HANDLE_RADIUS,
     left: -HANDLE_RADIUS,
   },
-  border: {
+  handleContainer: {
+    height: HANDLE_RADIUS * 2,
+    width: HANDLE_RADIUS * 2,
+  },
+  background: {
     position: 'absolute',
     width: '100%',
     top: (CONTAINER_HEIGHT - SLIDER_HEIGHT) / 2,
     height: SLIDER_HEIGHT,
     overflow: 'hidden',
     backgroundColor: 'red',
+  },
+  maskedBarBackground: {
+    position: 'absolute',
+    top: CONTAINER_HEIGHT * 0.5 - SLIDER_HEIGHT / 2,
+    bottom: 0,
+    left: 0,
+    width: 1000,
+    height: SLIDER_HEIGHT,
+    transform: [
+      {
+        translateX: -1000,
+      },
+    ],
+    backgroundColor: 'blue',
   },
 };
 
@@ -57,17 +76,22 @@ export const TranscriptionReviewModalPlaybackSlider: SFC<
   onSelectValue,
 }: TranscriptionReviewModalPlaybackSliderProps) => (
   <View style={[styles.container, style]}>
-    <View style={styles.border} pointerEvents="none" />
+    <View style={styles.background} pointerEvents="none" />
     <Slider
       style={styles.absoluteFill}
       progress={(value - min) / (max - min)}
       initialProgress={(value - min) / (max - min)}
       renderHandle={props => (
-        <Animated.View
-          {...props}
-          style={[props.style, styles.handle]}
-          pointerEvents="none"
-        />
+        <>
+          <Animated.View
+            {...props}
+            style={[props.style, styles.handleContainer]}
+            pointerEvents="none"
+          >
+            <View style={styles.maskedBarBackground} />
+            <View style={styles.handle} />
+          </Animated.View>
+        </>
       )}
       onSeekToProgress={p => onSelectValue(p * (max - min) + min)}
       onDidBeginDrag={hapticFeedback}

@@ -13,6 +13,7 @@ export type TranscriptionReviewStateHOCExtraProps = {
   setSpeechTranscriptionSegmentSelection: (
     ?{ startIndex: number, endIndex: number }
   ) => void,
+  setPlaybackTime: (playbackTime: number) => void,
 };
 
 export type TranscriptionReviewStateHOCState = {
@@ -78,6 +79,12 @@ export function wrapWithTranscriptionReviewState<
       });
     }
 
+    setPlaybackTime(playbackTime: number) {
+      this.setState({
+        playbackTime,
+      });
+    }
+
     render() {
       return (
         <WrappedComponent
@@ -86,6 +93,7 @@ export function wrapWithTranscriptionReviewState<
           setSpeechTranscriptionSegmentSelection={
             this.setSpeechTranscriptionSegmentSelection
           }
+          setPlaybackTime={this.setPlaybackTime}
         />
       );
     }
