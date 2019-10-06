@@ -9,19 +9,21 @@ import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
 import { TranscriptionTextInput } from './TranscriptionTextInput';
 import { TranscriptionReviewModalPlaybackSlider } from './TranscriptionReviewModalPlaybackSlider';
 import { Units, Colors } from '../../../constants';
+import {
+  interpolateSegments,
+  findIndexOfSegmentAtPlaybackTime,
+} from './transcriptionReviewUtils';
 
 import type { ComponentType } from 'react';
 
-import type {
-  SpeechTranscription,
-  SpeechTranscriptionSegment,
-} from '../../../types';
+import type { SpeechTranscription } from '../../../types';
 
 export type TranscriptionReviewModalProps = {
   isVisible: boolean,
   duration: number,
   speechTranscription: ?SpeechTranscription,
   onRequestDismiss: () => void,
+  onSpeechTranscriptionChange: SpeechTranscription => void,
 };
 
 const SafeAreaView = withSafeArea(View, 'padding', 'vertical');
@@ -46,6 +48,8 @@ const styles = {
   playbackControlsContainer: {
     zIndex: 1000,
   },
+  navigationControlsContainer: {},
+  playbackControls: {},
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
@@ -62,6 +66,7 @@ export const TranscriptionReviewModal: ComponentType<
     speechTranscriptionSegmentSelection,
     setSpeechTranscriptionSegmentSelection,
     bottomSafeAreaInset,
+    onSpeechTranscriptionChange,
   }) => {
     const segments = speechTranscription
       ? interpolateSegments(speechTranscription.segments)
@@ -74,7 +79,11 @@ export const TranscriptionReviewModal: ComponentType<
           keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
         >
           <SafeAreaView style={styles.flex}>
+            <View style={styles.navigationControlsContainer}>
+              {/* Back button */}
+            </View>
             <View style={styles.playbackControlsContainer}>
+              <View style={styles.playbackControls}>{/* Play button */}</View>
               <TranscriptionReviewModalPlaybackSlider
                 value={playbackTime}
                 min={0}
@@ -106,6 +115,15 @@ export const TranscriptionReviewModal: ComponentType<
                   setSpeechTranscriptionSegmentSelection
                   // TODO: set playbackTime to match first segment in selection
                 }
+                onSpeechTranscriptionSegmentsChange={segments => {
+                  if (!segments || !speechTranscription) {
+                    return;
+                  }
+                  onSpeechTranscriptionChange({
+                    ...speechTranscription,
+                    segments,
+                  });
+                }}
               />
             </View>
           </SafeAreaView>
@@ -114,41 +132,3 @@ export const TranscriptionReviewModal: ComponentType<
     );
   }
 );
-
-function findIndexOfSegmentAtPlaybackTime(
-  segments: Array<SpeechTranscriptionSegment>,
-  playbackTime: number
-) {
-  return segments.findIndex(s => {
-    return (
-      playbackTime >= s.timestamp && playbackTime <= s.timestamp + s.duration
-    );
-  });
-}
-
-function interpolateSegments(
-  segments: Array<SpeechTranscriptionSegment>
-): Array<SpeechTranscriptionSegment> {
-  let outputSegments: Array<SpeechTranscriptionSegment> = [];
-  segments.forEach(segment => {
-    const words = segment.substring.split(/\s+/).filter(s => !!s);
-    const durationPerWord = segment.duration / words.length;
-    words.forEach((word, index) => {
-      outputSegments.push({
-        duration: durationPerWord,
-        timestamp: segment.timestamp + index * durationPerWord,
-        substring: word,
-        confidence: segment.confidence,
-        alternativeSubstrings: [],
-      });
-      outputSegments.push({
-        duration: durationPerWord,
-        timestamp: segment.timestamp + index * durationPerWord,
-        substring: ' ',
-        confidence: segment.confidence,
-        alternativeSubstrings: [],
-      });
-    });
-  });
-  return outputSegments;
-}

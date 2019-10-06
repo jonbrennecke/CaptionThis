@@ -396,6 +396,12 @@ export default class EditScreen extends Component<Props, State> {
           speechTranscription={this.props.speechTranscription}
           duration={this.props.video.duration}
           onRequestDismiss={this.dismissCaptionsEditor}
+          onSpeechTranscriptionChange={speechTranscription =>
+            this.props.receiveSpeechTranscriptionSuccess(
+              this.props.video.assetID,
+              speechTranscription
+            )
+          }
         />
         <LocaleMenu
           isVisible={this.state.isLocaleMenuVisible}

@@ -1,11 +1,13 @@
 // @flow
 import React from 'react';
 import { View, TextInput, Text } from 'react-native';
-import first from 'lodash/first';
-import last from 'lodash/last';
 
 import * as Fonts from '../../../utils/Fonts';
 import { Colors } from '../../../constants';
+import {
+  findSegmentsInSelection,
+  transformSegmentsByTextDiff,
+} from './transcriptionReviewUtils';
 
 import type { SFC, SpeechTranscriptionSegment, Style } from '../../../types';
 
@@ -17,6 +19,9 @@ export type TranscriptionTextInputProps = {
     endIndex: number,
   },
   onSelectionChange: (?{ startIndex: number, endIndex: number }) => void,
+  onSpeechTranscriptionSegmentsChange: (
+    ?Array<SpeechTranscriptionSegment>
+  ) => void,
 };
 
 const styles = {
@@ -45,6 +50,7 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
   speechTranscriptionSegments: segments,
   speechTranscriptionSegmentSelection: segmentSelection,
   onSelectionChange,
+  onSpeechTranscriptionSegmentsChange,
 }: TranscriptionTextInputProps) => (
   <View style={[styles.container, style]}>
     <TextInput
@@ -53,13 +59,12 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
       autoFocus
       autoCapitalize="none"
       returnKeyType="done"
-      onChangeText={value => {
-        console.log('onChangeText', value);
-        // TODO
-        // this.props.onEditSegment({
-        //   ...this.props.segment,
-        //   substring: value,
-        // });
+      onChangeText={(text: string) => {
+        if (!segments) {
+          return onSpeechTranscriptionSegmentsChange(null);
+        }
+        const updatedSegments = transformSegmentsByTextDiff(text, segments);
+        onSpeechTranscriptionSegmentsChange(updatedSegments);
       }}
       onSelectionChange={event => {
         if (!event.nativeEvent || !event.nativeEvent.selection) {
@@ -75,7 +80,7 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
       {segments
         ? segments.map((segment, index) => (
             <Text
-              key={`${segment.duration}-${index}`}
+              key={`${segment.timestamp}-${index}`}
               style={styles.text(
                 isSegmentSelected(segment, index, segmentSelection)
               )}
@@ -99,52 +104,4 @@ function isSegmentSelected(
   return selection
     ? index >= selection.startIndex && index <= selection.endIndex
     : false;
-}
-
-function findSegmentsInSelection(
-  segments: Array<SpeechTranscriptionSegment>,
-  selection: { start: number, end: number }
-) {
-  let formattedStringCharLength = 0;
-  const segmentPositions = segments.map((segment, index) => {
-    const firstCharIndex = formattedStringCharLength;
-    const lastCharIndex = firstCharIndex + segment.substring.length;
-    formattedStringCharLength = lastCharIndex;
-    return {
-      segment,
-      index,
-      lastCharIndex,
-      firstCharIndex,
-    };
-  });
-  const selectedSegments = segmentPositions.filter(
-    ({ firstCharIndex, lastCharIndex }) => {
-      const selectionIsInsideSegment =
-        selection.start >= firstCharIndex && selection.end < lastCharIndex;
-      const selectionContainsSegment =
-        selection.start <= firstCharIndex && selection.end >= lastCharIndex;
-      const multiwordSelectionBeginsInsideSegment =
-        selection.start >= firstCharIndex &&
-        selection.start < lastCharIndex &&
-        selection.end >= selection.start;
-      const multiwordSelectionEndsInsideSegment =
-        selection.end > firstCharIndex &&
-        selection.end < lastCharIndex &&
-        selection.start <= firstCharIndex;
-      return (
-        selectionIsInsideSegment ||
-        selectionContainsSegment ||
-        multiwordSelectionBeginsInsideSegment ||
-        multiwordSelectionEndsInsideSegment
-      );
-    }
-  );
-  const firstSelectedSegment = first(selectedSegments);
-  const lastSelectedSegment = last(selectedSegments);
-  return selectedSegments.length
-    ? {
-        startIndex: firstSelectedSegment.index,
-        endIndex: lastSelectedSegment.index,
-      }
-    : null;
 }
