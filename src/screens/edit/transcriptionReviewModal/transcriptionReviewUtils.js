@@ -136,7 +136,7 @@ export function transformSegmentsByTextDiff(
         const segment = originalSegments[index];
         return {
           ...segment,
-          substring: `${substring} ${segment.substring}`,
+          substring,
         };
       });
       return interpolateSegments([
@@ -165,6 +165,14 @@ export function transformSegmentsByTextDiff(
     newSegment,
     ...unchangedSegmentsRight,
   ]);
+}
+
+export function renderTextFromSegments(
+  segments: Array<SpeechTranscriptionSegment>
+): string {
+  return segments.reduce((acc, segment) => {
+    return (acc += segment.substring);
+  }, '');
 }
 
 function isWhitespaceOrNewline(str: string): boolean {

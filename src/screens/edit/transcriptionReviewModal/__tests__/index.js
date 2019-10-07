@@ -5,6 +5,7 @@ import first from 'lodash/first';
 import {
   transformSegmentsByTextDiff,
   interpolateSegments,
+  renderTextFromSegments,
 } from '../transcriptionReviewUtils';
 
 const segments = interpolateSegments([
@@ -40,72 +41,99 @@ const segments = interpolateSegments([
 
 describe('transformSegmentsByTextDiff', () => {
   it('produces the expected result when a single word/segment is changed', () => {
+    const changedText = 'the quick blue fox';
     const transformedSegments = transformSegmentsByTextDiff(
-      'the quick blue fox',
+      changedText,
       segments
     );
     expect(transformedSegments[4].substring).toBe('blue');
+    expect(renderTextFromSegments(transformedSegments)).toBe(changedText);
   });
 
   it('produces the expected result when multiple words/segments are changed', () => {
+    const changedText = 'the slow blue fox';
     const transformedSegments = transformSegmentsByTextDiff(
-      'the slow blue fox',
+      changedText,
       segments
     );
     expect(transformedSegments[2].substring).toBe('slow');
     expect(transformedSegments[4].substring).toBe('blue');
+    expect(renderTextFromSegments(transformedSegments)).toBe(changedText);
   });
 
   it('produces the expected result when the first word/segment is changed', () => {
+    const changedText = 'a quick brown fox';
     const transformedSegments = transformSegmentsByTextDiff(
-      'a quick brown fox',
+      changedText,
       segments
     );
     expect(transformedSegments[0].substring).toBe('a');
+    expect(renderTextFromSegments(transformedSegments)).toBe(changedText);
   });
 
   it('produces the expected result when the last word/segment is changed', () => {
+    const changedText = 'the quick brown cat';
     const transformedSegments = transformSegmentsByTextDiff(
-      'the quick brown cat',
+      changedText,
       segments
     );
     expect(last(transformedSegments).substring).toBe('cat');
+    expect(renderTextFromSegments(transformedSegments)).toBe(changedText);
   });
 
   it('produces the expected result when a new segment is inserted at the beginning', () => {
+    const changedText = 'when the quick brown fox';
     const transformedSegments = transformSegmentsByTextDiff(
-      'when the quick brown fox',
+      changedText,
       segments
     );
     expect(first(transformedSegments).substring).toBe('when');
     expect(last(transformedSegments).substring).toBe('fox');
+    expect(renderTextFromSegments(transformedSegments)).toBe(changedText);
   });
 
   it('produces the expected result when a segment is deleted from the beginning', () => {
+    const changedText = 'quick brown fox';
     const transformedSegments = transformSegmentsByTextDiff(
-      'quick brown fox',
+      changedText,
       segments
     );
     expect(first(transformedSegments).substring).toBe('quick');
     expect(last(transformedSegments).substring).toBe('fox');
+    expect(renderTextFromSegments(transformedSegments)).toBe(changedText);
   });
 
   it('produces the expected result when a segment is deleted from the middle', () => {
+    const changedText = 'the quick fox';
     const transformedSegments = transformSegmentsByTextDiff(
-      'the quick fox',
+      changedText,
       segments
     );
     expect(first(transformedSegments).substring).toBe('the');
     expect(transformedSegments[2].substring).toBe('quick');
     expect(last(transformedSegments).substring).toBe('fox');
+    expect(renderTextFromSegments(transformedSegments)).toBe(changedText);
   });
 
   it('produces the expected result with no changes', () => {
+    const changedText = 'the quick brown fox';
     const transformedSegments = transformSegmentsByTextDiff(
-      'the quick brown fox',
+      changedText,
       segments
     );
     expect(first(transformedSegments).substring).toBe('the');
     expect(last(transformedSegments).substring).toBe('fox');
+    expect(renderTextFromSegments(transformedSegments)).toBe(changedText);
+  });
+
+  it('produces the expected result when two segments are merged', () => {
+    const changedText = 'the fox';
+    const transformedSegments = transformSegmentsByTextDiff(
+      changedText,
+      segments
+    );
+    expect(first(transformedSegments).substring).toBe('the');
+    expect(last(transformedSegments).substring).toBe('fox');
+    expect(renderTextFromSegments(transformedSegments)).toBe(changedText);
   });
 });
