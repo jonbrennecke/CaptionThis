@@ -44,7 +44,7 @@ export function interpolateSegments(
       });
     });
   });
-  return sortBy(trimSegments(outputSegments), s => s.timestamp);
+  return trimSegments(sortBy(outputSegments, s => s.timestamp));
 }
 
 export function trimSegments(
@@ -106,13 +106,15 @@ export function transformSegmentsByTextDiff(
   originalSegments: Array<SpeechTranscriptionSegment>
 ) {
   const mutableSegments = Array.from(originalSegments);
-  let words = text.split(/\s+/);
+  let words = text
+    .split(/\s+/)
+    .map((substring, index) => ({ index, substring }));
 
   let expectedSubstringLeft = '';
   const unchangedSegmentsLeft = remove(mutableSegments, segment => {
     expectedSubstringLeft += segment.substring;
     const segmentIsUnchanged = text.startsWith(expectedSubstringLeft);
-    if (isWhitespaceOrNewline(segment.substring) && segmentIsUnchanged) {
+    if (!isWhitespaceOrNewline(segment.substring) && segmentIsUnchanged) {
       words = drop(words, 1);
     }
     return segmentIsUnchanged;
@@ -122,15 +124,32 @@ export function transformSegmentsByTextDiff(
   const unchangedSegmentsRight = remove(mutableSegments.reverse(), segment => {
     expectedSubstringRight = `${segment.substring}${expectedSubstringRight}`;
     const segmentIsUnchanged = text.endsWith(expectedSubstringRight);
-    if (isWhitespaceOrNewline(segment.substring) && segmentIsUnchanged) {
+    if (!isWhitespaceOrNewline(segment.substring) && segmentIsUnchanged) {
       words = dropRight(words, 1);
     }
     return segmentIsUnchanged;
   });
-  // TODO: if words is empty (or contains fewer elements than changedSegments) then segments where deleted.
-  // TODO: check if changedSegments is empty
+  // TODO: if `words` contains fewer elements than changedSegments then segments where deleted.
+  // TODO: if `words` is nonempty (and contains more elements than changedSegments) then segments where deleted.
   const changedSegments = mutableSegments;
-  const substring = words.join(' ');
+  if (!changedSegments.length) {
+    if (words.length > changedSegments.length) {
+      const newSegments = words.map(({ substring, index }) => {
+        const segment = originalSegments[index];
+        return {
+          ...segment,
+          substring: `${substring} ${segment.substring}`,
+        };
+      });
+      return interpolateSegments([
+        ...unchangedSegmentsLeft,
+        ...newSegments,
+        ...unchangedSegmentsRight,
+      ]);
+    }
+    return originalSegments;
+  }
+  const substring = words.map(w => w.substring).join(' ');
   const firstChangedSegment = first(changedSegments);
   const lastChangedSegment = last(changedSegments);
   const timestamp = firstChangedSegment.timestamp;
@@ -151,5 +170,5 @@ export function transformSegmentsByTextDiff(
 }
 
 function isWhitespaceOrNewline(str: string): boolean {
-  return !/\s+/.test(str);
+  return /\s+/.test(str);
 }

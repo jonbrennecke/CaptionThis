@@ -1,14 +1,13 @@
 // @flow
 import last from 'lodash/last';
+import first from 'lodash/first';
 
 import {
   transformSegmentsByTextDiff,
   interpolateSegments,
 } from '../transcriptionReviewUtils';
 
-import type { SpeechTranscriptionSegment } from '../../../../types';
-
-const segments: Array<SpeechTranscriptionSegment> = interpolateSegments([
+const segments = interpolateSegments([
   {
     substring: 'the',
     duration: 0.25,
@@ -71,5 +70,42 @@ describe('transformSegmentsByTextDiff', () => {
       segments
     );
     expect(last(transformedSegments).substring).toBe('cat');
+  });
+
+  it('produces the expected result when a new segment is inserted at the beginning', () => {
+    const transformedSegments = transformSegmentsByTextDiff(
+      'when the quick brown fox',
+      segments
+    );
+    expect(first(transformedSegments).substring).toBe('when');
+    expect(last(transformedSegments).substring).toBe('fox');
+  });
+
+  it('produces the expected result when a segment is deleted from the beginning', () => {
+    const transformedSegments = transformSegmentsByTextDiff(
+      'quick brown fox',
+      segments
+    );
+    expect(first(transformedSegments).substring).toBe('quick');
+    expect(last(transformedSegments).substring).toBe('fox');
+  });
+
+  it('produces the expected result when a segment is deleted from the middle', () => {
+    const transformedSegments = transformSegmentsByTextDiff(
+      'the quick fox',
+      segments
+    );
+    expect(first(transformedSegments).substring).toBe('the');
+    expect(transformedSegments[2].substring).toBe('quick');
+    expect(last(transformedSegments).substring).toBe('fox');
+  });
+
+  it('produces the expected result with no changes', () => {
+    const transformedSegments = transformSegmentsByTextDiff(
+      'the quick brown fox',
+      segments
+    );
+    expect(first(transformedSegments).substring).toBe('the');
+    expect(last(transformedSegments).substring).toBe('fox');
   });
 });
