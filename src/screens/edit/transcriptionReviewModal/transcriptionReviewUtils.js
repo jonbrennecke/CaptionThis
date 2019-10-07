@@ -129,8 +129,6 @@ export function transformSegmentsByTextDiff(
     }
     return segmentIsUnchanged;
   });
-  // TODO: if `words` contains fewer elements than changedSegments then segments where deleted.
-  // TODO: if `words` is nonempty (and contains more elements than changedSegments) then segments where deleted.
   const changedSegments = mutableSegments;
   if (!changedSegments.length) {
     if (words.length > changedSegments.length) {
