@@ -6,8 +6,14 @@ import remove from 'lodash/remove';
 import drop from 'lodash/drop';
 import dropRight from 'lodash/dropRight';
 import sortBy from 'lodash/sortBy';
+import { List } from 'immutable';
 
 import type { SpeechTranscriptionSegment } from '../../../types';
+
+export type IndexedSpeechTranscriptionSegment = {
+  index: number,
+  segment: SpeechTranscriptionSegment,
+};
 
 export function findIndexOfSegmentAtPlaybackTime(
   segments: Array<SpeechTranscriptionSegment>,
@@ -105,51 +111,99 @@ export function transformSegmentsByTextDiff(
   text: string,
   originalSegments: Array<SpeechTranscriptionSegment>
 ) {
-  const mutableSegments = Array.from(originalSegments);
-  let words = text
+  const indexedSegments = Array.from(originalSegments).map(
+    (segment, index) => ({ index, segment })
+  );
+  let indexedWords = text
     .split(/\s+/)
     .map((substring, index) => ({ index, substring }));
 
   let expectedSubstringLeft = '';
-  const unchangedSegmentsLeft = remove(mutableSegments, segment => {
+  const unchangedSegmentsLeft = remove(indexedSegments, ({ segment }) => {
     expectedSubstringLeft += segment.substring;
-    const segmentIsUnchanged = text.startsWith(expectedSubstringLeft);
+    const segmentIsUnchanged = text.startsWith(
+      `${expectedSubstringLeft.trimRight()} `
+    );
     if (!isWhitespaceOrNewline(segment.substring) && segmentIsUnchanged) {
-      words = drop(words, 1);
+      indexedWords = drop(indexedWords, 1);
     }
     return segmentIsUnchanged;
-  });
+  }).map(({ segment }) => segment);
 
   let expectedSubstringRight = '';
-  const unchangedSegmentsRight = remove(mutableSegments.reverse(), segment => {
-    expectedSubstringRight = `${segment.substring}${expectedSubstringRight}`;
-    const segmentIsUnchanged = text.endsWith(expectedSubstringRight);
-    if (!isWhitespaceOrNewline(segment.substring) && segmentIsUnchanged) {
-      words = dropRight(words, 1);
+  const unchangedSegmentsRight = remove(
+    indexedSegments.reverse(),
+    ({ segment }) => {
+      expectedSubstringRight = `${segment.substring}${expectedSubstringRight}`;
+      const segmentIsUnchanged = text.endsWith(
+        ` ${expectedSubstringRight.trimLeft()}`
+      );
+      if (!isWhitespaceOrNewline(segment.substring) && segmentIsUnchanged) {
+        indexedWords = dropRight(indexedWords, 1);
+      }
+      return segmentIsUnchanged;
     }
-    return segmentIsUnchanged;
-  });
-  const changedSegments = mutableSegments;
-  if (!changedSegments.length) {
-    if (words.length > changedSegments.length) {
-      const newSegments = words.map(({ substring, index }) => {
-        const segment = originalSegments[index];
-        return {
-          ...segment,
-          substring,
-        };
+  ).map(({ segment }) => segment);
+
+  if (!indexedSegments.length) {
+    if (indexedWords.length > indexedSegments.length) {
+      const originalSegmentsWithoutWhitespace = originalSegments.filter(
+        s => !isWhitespaceOrNewline(s.substring)
+      );
+      const diff = new SpeechTranscriptionSegmentDiff(
+        originalSegmentsWithoutWhitespace
+      );
+      indexedWords.forEach(({ substring, index }) => {
+        if (index >= diff.size) {
+          const segment = diff.last;
+          if (segment) {
+            diff.set(index - 1, {
+              ...segment,
+              substring: `${segment.substring} ${substring}`,
+            });
+          }
+        } else if (index === 0) {
+          const segment = diff.first;
+          if (segment) {
+            diff.set(0, {
+              ...segment,
+              substring: `${substring} ${segment.substring}`,
+            });
+          }
+        } else {
+          const leftSegment = diff.get(index - 1);
+          const rightSegment = diff.get(index);
+          if (leftSegment && rightSegment) {
+            const timestamp =
+              (leftSegment.timestamp + rightSegment.timestamp) / 2;
+            const duration = leftSegment.duration / 2;
+            diff.set(index - 1, {
+              ...leftSegment,
+              duration: leftSegment.duration - duration,
+            });
+            diff.insert(index, {
+              duration,
+              confidence: 1,
+              timestamp,
+              substring,
+              alternativeSubstrings: [],
+            });
+          }
+        }
       });
-      return interpolateSegments([
-        ...unchangedSegmentsLeft,
-        ...newSegments,
-        ...unchangedSegmentsRight,
-      ]);
+      return interpolateSegments(diff.segments.toArray());
     }
     return originalSegments;
   }
-  const substring = words.map(w => w.substring).join(' ');
-  const firstChangedSegment = first(changedSegments);
-  const lastChangedSegment = last(changedSegments);
+  const substring = indexedWords.map(w => w.substring).join(' ');
+  const firstChangedSegment: ?SpeechTranscriptionSegment = first(
+    indexedSegments
+  ).segment;
+  const lastChangedSegment: ?SpeechTranscriptionSegment = last(indexedSegments)
+    .segment;
+  if (!firstChangedSegment || !lastChangedSegment) {
+    return originalSegments;
+  }
   const timestamp = firstChangedSegment.timestamp;
   const duration =
     lastChangedSegment.timestamp - timestamp + lastChangedSegment.duration;
@@ -165,6 +219,38 @@ export function transformSegmentsByTextDiff(
     newSegment,
     ...unchangedSegmentsRight,
   ]);
+}
+
+class SpeechTranscriptionSegmentDiff {
+  segments: List<SpeechTranscriptionSegment>;
+
+  constructor(segments: Iterable<SpeechTranscriptionSegment>) {
+    this.segments = List(segments);
+  }
+
+  insert(index: number, segment: SpeechTranscriptionSegment) {
+    this.segments = this.segments.insert(index, segment);
+  }
+
+  set(index: number, segment: SpeechTranscriptionSegment) {
+    this.segments = this.segments.set(index, segment);
+  }
+
+  get(index: number): ?SpeechTranscriptionSegment {
+    return this.segments.get(index);
+  }
+
+  get size(): number {
+    return this.segments.size;
+  }
+
+  get first(): ?SpeechTranscriptionSegment {
+    return this.segments.first();
+  }
+
+  get last(): ?SpeechTranscriptionSegment {
+    return this.segments.last();
+  }
 }
 
 export function renderTextFromSegments(
