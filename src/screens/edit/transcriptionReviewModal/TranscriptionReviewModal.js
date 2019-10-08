@@ -149,9 +149,7 @@ export const TranscriptionReviewModal: ComponentType<
                 videoID={video.assetID}
                 videoPlayerRef={videoPlayerRef}
                 onVideoDidUpdatePlaybackTime={setPlaybackTime}
-                onVideoDidBecomeReadyToPlay={() => setPlaybackState('readyToPlay')}
-                onVideoDidPause={() => setPlaybackState('paused')}
-                onVideoDidRestart={() => setPlaybackState('playing')}
+                onPlaybackStateChange={setPlaybackState}
               />
             </View>
           </SafeAreaView>

@@ -16,7 +16,7 @@ import VideoCaptionsView from '../../components/video-captions-view/VideoCaption
 import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
 import MeasureContentsView from '../../components/measure-contents-view/MeasureContentsView';
 
-import type { MediaObject } from '@jonbrennecke/react-native-media';
+import type { MediaObject, PlaybackState } from '@jonbrennecke/react-native-media';
 
 import type { Size, Orientation } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
@@ -51,7 +51,7 @@ type Props = {
 type State = {
   playbackTime: number,
   isDraggingSeekbar: boolean,
-  isVideoReadyToPlay: boolean,
+  playbackState: PlaybackState
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -109,7 +109,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
   state = {
     playbackTime: 0,
     isDraggingSeekbar: false,
-    isVideoReadyToPlay: false,
+    playbackState: 'waiting',
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -198,9 +198,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     }
   );
 
-  videoPlayerDidBecomeReadyToPlay(duration: number, orientation: Orientation) {
-    this.props.onRequestChangeDuration(duration);
-    this.props.onRequestChangeOrientation(orientation);
+  videoPlayerDidBecomeReadyToPlay() {
     if (!this.props.isSpeechTranscriptionFinal) {
       this.pausePlayerAndCaptions();
     } else {
@@ -323,7 +321,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
         {this.props.isSpeechTranscriptionFinal && (
           <ScaleAnimatedView
             style={styles.videoWrap}
-            isVisible={this.state.isVideoReadyToPlay}
+            isVisible={this.state.playbackState !== 'waiting'}
           >
             <VideoPlayer
               ref={ref => {
@@ -331,16 +329,15 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               }}
               style={styles.absoluteFill}
               videoID={this.props.video.assetID}
-              onVideoDidBecomeReadyToPlay={(...args) => {
-                this.videoPlayerDidBecomeReadyToPlay(...args);
-              }}
               onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
-              onVideoDidPause={this.videoPlayerDidPause}
               onVideoDidUpdatePlaybackTime={
                 this.videoPlayerDidUpdatePlaybackTimeThrottled
               }
               onVideoDidRestart={this.videoPlayerDidRestart}
               onViewDidResize={this.props.onVideoViewDidUpdateSize}
+              onPlaybackStateChange={playbackState => this.setState({
+                playbackState
+              })}
             />
             <ScreenGradients />
             <MeasureContentsView
@@ -357,7 +354,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                       }}
                       style={styles.flex}
                       isReadyToPlay={
-                        this.state.isVideoReadyToPlay &&
+                        this.state.playbackState !== 'waiting' &&
                         this.props.isSpeechTranscriptionFinal
                       }
                       orientation={this.props.orientation}
@@ -391,7 +388,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
         )}
         {showSeekbar && (
           <ScaleAnimatedView
-            isVisible={this.state.isVideoReadyToPlay}
+            isVisible={this.state.playbackState !== 'waiting'}
             style={styles.editControls}
           >
             {/* TODO: Replace with Seekbar from @jonbrennecke/react-native-media */}
