@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
-import { View, Animated, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 
-import { PanGestureHandler } from '../gesture-handlers';
+import { Draggable } from '../draggable';
 import { Units, Colors } from '../../constants';
 
 import type { SFC, Style } from '../../types';
@@ -12,14 +12,11 @@ export type FloatingVideoPlayerProps = {
 };
 
 const styles = {
-  container: StyleSheet.absoluteFillObject,
-  panContainer: {
-    position: 'absolute',
+  draggable: {
     width: 100,
     height: 16 / 9 * 100,
   },
-  videoPlayerContainer: {
-    ...StyleSheet.absoluteFillObject,
+  draggableContentContainer: {
     backgroundColor: Colors.solid.white,
     borderRadius: Units.extraSmall,
     shadowColor: Colors.solid.darkGray,
@@ -35,19 +32,10 @@ const styles = {
 export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
   style,
 }: FloatingVideoPlayerProps) => (
-  <View style={[styles.container, style]} pointerEvents="box-none">
-    <PanGestureHandler
-      style={styles.panContainer}
-      returnToOriginalPosition={false}
-      attachPanHandlersToChildren
-      jumpToGrantedPosition={false}
-      clampToBounds={false}
-      renderChildren={props => (
-        <Animated.View
-          {...props}
-          style={[styles.videoPlayerContainer, style, props.style]}
-        />
-      )}
-    />
-  </View>
+  <Draggable
+    style={styles.draggable}
+    contentContainerStyle={styles.draggableContentContainer}
+  >
+    <View />
+  </Draggable>
 );
