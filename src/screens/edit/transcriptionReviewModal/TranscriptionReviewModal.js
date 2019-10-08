@@ -8,6 +8,7 @@ import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/Key
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
 import { TranscriptionTextInput } from './TranscriptionTextInput';
 import { TranscriptionReviewModalPlaybackSlider } from './TranscriptionReviewModalPlaybackSlider';
+import { FloatingVideoPlayer } from '../../../components';
 import { Units, Colors } from '../../../constants';
 import {
   interpolateSegments,
@@ -50,6 +51,9 @@ const styles = {
   },
   navigationControlsContainer: {},
   playbackControls: {},
+  floatingVideoPlayer: {
+    zIndex: 1000,
+  }
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
@@ -125,6 +129,7 @@ export const TranscriptionReviewModal: ComponentType<
                   });
                 }}
               />
+              <FloatingVideoPlayer style={styles.floatingVideoPlayer} />
             </View>
           </SafeAreaView>
         </KeyboardAvoidingView>

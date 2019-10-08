@@ -143,11 +143,6 @@ export class PanGestureHandler extends PureComponent<
     this.panOffset = panOffset;
   }
 
-  isValidEventTarget(event: any): boolean {
-    const nodeHandle = findNodeHandle(this.panResponderRef.current);
-    return !!event.nativeEvent && event.nativeEvent.target === nodeHandle;
-  }
-
   handleMove(event: Event, gesture: Gesture) {
     Animated.event([
       null,
@@ -184,7 +179,7 @@ export class PanGestureHandler extends PureComponent<
   handleRelease(event: Event, gesture: Gesture) {
     this.panOffset = {
       x: gesture.x0 + gesture.dx - this.state.viewPageX,
-      y: gesture.x0 + gesture.dy - this.state.viewPageY,
+      y: gesture.y0 + gesture.dy - this.state.viewPageY,
     };
     this.pan.setOffset(this.panOffset);
     this.pan.setValue({ x: 0, y: 0 });
@@ -232,12 +227,20 @@ export class PanGestureHandler extends PureComponent<
           transform: compact([
             this.props.horizontal && {
               translateX: this.props.clampToBounds
-                ? Animated.diffClamp(this.pan.x, 0, this.state.viewWidth)
+                ? this.pan.x.interpolate({
+                  inputRange: [0, this.state.viewWidth],
+                  outputRange: [0, this.state.viewWidth],
+                  extrapolate: 'clamp',
+                })
                 : this.pan.x,
             },
             this.props.vertical && {
               translateY: this.props.clampToBounds
-                ? Animated.diffClamp(this.pan.y, 0, this.state.viewHeight)
+                ? this.pan.y.interpolate({
+                  inputRange: [0, this.state.viewHeight],
+                  outputRange: [0, this.state.viewHeight],
+                  extrapolate: 'clamp',
+                })
                 : this.pan.y,
             },
           ]),
