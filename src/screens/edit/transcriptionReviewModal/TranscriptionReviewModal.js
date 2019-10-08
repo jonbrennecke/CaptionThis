@@ -14,9 +14,10 @@ import {
   interpolateSegments,
   findIndexOfSegmentAtPlaybackTime,
 } from './transcriptionReviewUtils';
+import { PlayButton } from './PlayButton';
 
 import type { ComponentType } from 'react';
-import { MediaObject } from '@jonbrennecke/react-native-media';
+import type { MediaObject } from '@jonbrennecke/react-native-media';
 
 import type { SpeechTranscription } from '../../../types';
 
@@ -44,7 +45,13 @@ const styles = {
     zIndex: 1000,
   },
   navigationControlsContainer: {},
-  playbackControls: {},
+  playbackControls: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: Units.extraSmall,
+  },
+  playButton: {},
   floatingVideoPlayer: {
     zIndex: 1000,
   },
@@ -56,6 +63,12 @@ export const TranscriptionReviewModal: ComponentType<
 > = wrapWithTranscriptionReviewState(
   ({
     video,
+    videoPlayerRef,
+    playVideo,
+    seekVideoToTime,
+    playbackState,
+    setPlaybackState,
+    pauseVideo,
     isVisible,
     playbackTime,
     setPlaybackTime,
@@ -81,13 +94,21 @@ export const TranscriptionReviewModal: ComponentType<
               {/* Back button */}
             </View>
             <View style={styles.playbackControlsContainer}>
-              <View style={styles.playbackControls}>{/* Play button */}</View>
+              <View style={styles.playbackControls}>
+                <PlayButton
+                  style={styles.playButton}
+                  playbackState={playbackState}
+                  onPressPlay={playVideo}
+                  onPressPause={pauseVideo}
+                />
+              </View>
               <TranscriptionReviewModalPlaybackSlider
                 value={playbackTime}
                 min={0}
                 max={video.duration}
                 onSelectValue={playbackTime => {
                   setPlaybackTime(playbackTime);
+                  seekVideoToTime(playbackTime);
                   if (segments) {
                     const index = findIndexOfSegmentAtPlaybackTime(
                       segments,
@@ -126,6 +147,11 @@ export const TranscriptionReviewModal: ComponentType<
               <FloatingVideoPlayer
                 style={styles.floatingVideoPlayer}
                 videoID={video.assetID}
+                videoPlayerRef={videoPlayerRef}
+                onVideoDidUpdatePlaybackTime={setPlaybackTime}
+                onVideoDidBecomeReadyToPlay={() => setPlaybackState('readyToPlay')}
+                onVideoDidPause={() => setPlaybackState('paused')}
+                onVideoDidRestart={() => setPlaybackState('playing')}
               />
             </View>
           </SafeAreaView>

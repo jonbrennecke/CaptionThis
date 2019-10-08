@@ -7,11 +7,27 @@ import noop from 'lodash/noop';
 import { Draggable } from '../draggable';
 import { Units, Colors } from '../../constants';
 
-import type { SFC, Style } from '../../types';
+import type { createRef } from 'react';
+import type { Orientation, Size } from '@jonbrennecke/react-native-media';
+
+import type { SFC, Style, Return } from '../../types';
 
 export type FloatingVideoPlayerProps = {
   style?: ?Style,
   videoID: string,
+  videoPlayerRef?: Return<createRef<VideoPlayer>>,
+  onVideoDidFailToLoad?: () => void,
+  onVideoDidBecomeReadyToPlay?: (
+    duration: number,
+    orientation: Orientation
+  ) => void,
+  onVideoDidPause?: () => void,
+  onVideoDidUpdatePlaybackTime?: (
+    playbackTime: number,
+    duration: number
+  ) => void,
+  onVideoDidRestart?: () => void,
+  onViewDidResize?: Size => void,
 };
 
 const styles = {
@@ -42,6 +58,13 @@ const styles = {
 export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
   style,
   videoID,
+  videoPlayerRef,
+  onVideoDidBecomeReadyToPlay = noop,
+  onVideoDidFailToLoad = noop,
+  onVideoDidPause = noop,
+  onVideoDidRestart = noop,
+  onVideoDidUpdatePlaybackTime = noop,
+  onViewDidResize = noop,
 }: FloatingVideoPlayerProps) => (
   <Draggable
     style={[styles.draggable, style]}
@@ -50,12 +73,13 @@ export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
     <VideoPlayer
       style={styles.videoPlayer}
       videoID={videoID}
-      onVideoDidBecomeReadyToPlay={noop}
-      onVideoDidFailToLoad={noop}
-      onVideoDidPause={noop}
-      onVideoDidRestart={noop}
-      onVideoDidUpdatePlaybackTime={noop}
-      onViewDidResize={noop}
+      ref={videoPlayerRef}
+      onVideoDidBecomeReadyToPlay={onVideoDidBecomeReadyToPlay}
+      onVideoDidFailToLoad={onVideoDidFailToLoad}
+      onVideoDidPause={onVideoDidPause}
+      onVideoDidRestart={onVideoDidRestart}
+      onVideoDidUpdatePlaybackTime={onVideoDidUpdatePlaybackTime}
+      onViewDidResize={onViewDidResize}
     />
   </Draggable>
 );

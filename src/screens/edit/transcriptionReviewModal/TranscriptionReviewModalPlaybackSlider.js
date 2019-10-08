@@ -116,7 +116,16 @@ export const TranscriptionReviewModalPlaybackSlider: SFC<
           </>
         )}
         onSeekToProgress={p => onSelectValue(p * (max - min) + min)}
-        onDidBeginDrag={hapticFeedback}
+        onDidBeginDrag={() => {
+          hapticFeedback();
+          // TODO
+          // this.setState({
+          //   playbackStateOnDragStart: playbackState,
+          // });
+          // if (playbackState === 'playing') {
+          //   onRequestPause();
+          // }
+        }}
         onDidEndDrag={p => {
           hapticFeedback();
           onSelectValue(p * (max - min) + min);
