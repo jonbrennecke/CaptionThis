@@ -2,6 +2,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { VideoPlayer } from '@jonbrennecke/react-native-media';
+import ReactNativeHaptic from 'react-native-haptic';
 import noop from 'lodash/noop';
 
 import { Draggable } from '../draggable';
@@ -51,6 +52,10 @@ const styles = {
   },
 };
 
+function hapticFeedback() {
+  ReactNativeHaptic.generate('selection');
+}
+
 export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
   style,
   videoID,
@@ -62,6 +67,8 @@ export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
   <Draggable
     style={[styles.draggable, style]}
     contentContainerStyle={styles.draggableContentContainer}
+    onDragStart={hapticFeedback}
+    onDragEnd={hapticFeedback}
   >
     <VideoPlayer
       style={styles.videoPlayer}

@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { View, Animated, StyleSheet } from 'react-native';
+import noop from 'lodash/noop';
 
 import { PanGestureHandler } from '../gesture-handlers';
 
@@ -10,6 +11,8 @@ export type DraggableProps = {
   style?: ?Style,
   contentContainerStyle?: ?Style,
   children?: ?Children,
+  onDragStart?: () => void,
+  onDragEnd?: () => void,
 };
 
 const styles = {
@@ -23,6 +26,8 @@ export const Draggable: SFC<DraggableProps> = ({
   style,
   contentContainerStyle,
   children,
+  onDragStart = noop,
+  onDragEnd = noop,
 }: DraggableProps) => (
   <View style={[styles.absoluteFill, style]} pointerEvents="box-none">
     <PanGestureHandler
@@ -44,6 +49,8 @@ export const Draggable: SFC<DraggableProps> = ({
           {children}
         </Animated.View>
       )}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
     />
   </View>
 );
