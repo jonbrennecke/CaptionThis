@@ -38,13 +38,6 @@ const styles = {
     paddingVertical: Units.extraLarge,
     paddingHorizontal: Units.extraLarge,
     backgroundColor: Colors.solid.extraLightGray,
-    // shadowColor: Colors.solid.darkGray,
-    // shadowOpacity: 1,
-    // shadowRadius: 25,
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 10,
-    // },
   },
   playbackControlsContainer: {
     zIndex: 1000,

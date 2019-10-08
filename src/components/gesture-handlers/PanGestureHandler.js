@@ -1,16 +1,8 @@
 // @flow
 import React, { PureComponent, createRef } from 'react';
-import {
-  PanResponder,
-  Animated,
-  View,
-  Easing,
-  StyleSheet,
-  findNodeHandle,
-} from 'react-native';
+import { PanResponder, Animated, View, Easing, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 import stubTrue from 'lodash/stubTrue';
-import stubFalse from 'lodash/stubFalse';
 import compact from 'lodash/compact';
 import clamp from 'lodash/clamp';
 import throttle from 'lodash/throttle';
@@ -91,7 +83,7 @@ export class PanGestureHandler extends PureComponent<
     this.pan.addListener(this.panListenerThrottled);
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: stubTrue,
-      onStartShouldSetPanResponderCapture: stubFalse,
+      // onStartShouldSetPanResponderCapture: stubFalse,
       onMoveShouldSetPanResponder: (event, gesture) => {
         const { dx, dy } = gesture;
         if (this.props.vertical && !this.props.horizontal) {
@@ -176,11 +168,24 @@ export class PanGestureHandler extends PureComponent<
     this.props.onDragStart && this.props.onDragStart(this.panOffset, this.pan);
   }
 
-  handleRelease(event: Event, gesture: Gesture) {
-    this.panOffset = {
-      x: gesture.x0 + gesture.dx - this.state.viewPageX,
-      y: gesture.y0 + gesture.dy - this.state.viewPageY,
-    };
+  handleRelease(event: any, gesture: Gesture) {
+    this.panOffset = this.props.jumpToGrantedPosition
+      ? {
+          x: gesture.x0 + gesture.dx - this.state.viewPageX,
+          y: gesture.y0 + gesture.dy - this.state.viewPageY,
+        }
+      : {
+          x:
+            gesture.x0 +
+            gesture.dx -
+            this.state.viewPageX -
+            event.nativeEvent.locationX,
+          y:
+            gesture.y0 +
+            gesture.dy -
+            this.state.viewPageY -
+            event.nativeEvent.locationY,
+        };
     this.pan.setOffset(this.panOffset);
     this.pan.setValue({ x: 0, y: 0 });
     this.pan.removeAllListeners();
@@ -260,6 +265,7 @@ export class PanGestureHandler extends PureComponent<
           {this.props.renderChildren({
             isDragging: this.state.isDragging,
             style,
+            // TODO: onLayout: this.childrenDidLayout
           })}
         </View>
       </View>
