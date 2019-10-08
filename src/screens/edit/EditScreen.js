@@ -382,15 +382,6 @@ export default class EditScreen extends Component<Props, State> {
           isVisible={!this.props.isSpeechTranscriptionFinal}
           duration={this.props.video.duration}
         />
-        {/* <EditScreenEditCaptionsOverlay
-          videoID={this.props.video.assetID}
-          speechTranscription={this.props.speechTranscription}
-          isVisible={this.state.isCaptionsEditorVisible}
-          onRequestDismissModal={this.dismissCaptionsEditor}
-          receiveSpeechTranscriptionSuccess={
-            this.props.receiveSpeechTranscriptionSuccess
-          }
-        /> */}
         <TranscriptionReviewModal
           isVisible={this.state.isCaptionsEditorVisible}
           speechTranscription={this.props.speechTranscription}
