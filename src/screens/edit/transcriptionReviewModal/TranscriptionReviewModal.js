@@ -16,12 +16,13 @@ import {
 } from './transcriptionReviewUtils';
 
 import type { ComponentType } from 'react';
+import { MediaObject } from '@jonbrennecke/react-native-media';
 
 import type { SpeechTranscription } from '../../../types';
 
 export type TranscriptionReviewModalProps = {
+  video: MediaObject,
   isVisible: boolean,
-  duration: number,
   speechTranscription: ?SpeechTranscription,
   onRequestDismiss: () => void,
   onSpeechTranscriptionChange: SpeechTranscription => void,
@@ -54,10 +55,10 @@ export const TranscriptionReviewModal: ComponentType<
   TranscriptionReviewModalProps
 > = wrapWithTranscriptionReviewState(
   ({
+    video,
     isVisible,
     playbackTime,
     setPlaybackTime,
-    duration,
     onRequestDismiss,
     speechTranscription,
     speechTranscriptionSegmentSelection,
@@ -84,7 +85,7 @@ export const TranscriptionReviewModal: ComponentType<
               <TranscriptionReviewModalPlaybackSlider
                 value={playbackTime}
                 min={0}
-                max={duration}
+                max={video.duration}
                 onSelectValue={playbackTime => {
                   setPlaybackTime(playbackTime);
                   if (segments) {
@@ -122,7 +123,10 @@ export const TranscriptionReviewModal: ComponentType<
                   });
                 }}
               />
-              <FloatingVideoPlayer style={styles.floatingVideoPlayer} />
+              <FloatingVideoPlayer
+                style={styles.floatingVideoPlayer}
+                videoID={video.assetID}
+              />
             </View>
           </SafeAreaView>
         </KeyboardAvoidingView>

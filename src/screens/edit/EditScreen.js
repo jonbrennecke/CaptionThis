@@ -383,9 +383,9 @@ export default class EditScreen extends Component<Props, State> {
           duration={this.props.video.duration}
         />
         <TranscriptionReviewModal
+          video={this.props.video}
           isVisible={this.state.isCaptionsEditorVisible}
           speechTranscription={this.props.speechTranscription}
-          duration={this.props.video.duration}
           onRequestDismiss={this.dismissCaptionsEditor}
           onSpeechTranscriptionChange={speechTranscription =>
             this.props.receiveSpeechTranscriptionSuccess(
