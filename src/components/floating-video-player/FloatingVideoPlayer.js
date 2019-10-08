@@ -20,10 +20,12 @@ const styles = {
     backgroundColor: 'red',
     height: 100,
     width: 50,
-  }
+  },
 };
 
-export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({ style }: FloatingVideoPlayerProps) => (
+export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
+  style,
+}: FloatingVideoPlayerProps) => (
   <View style={[styles.container, style]}>
     <PanGestureHandler
       style={styles.panContainer}

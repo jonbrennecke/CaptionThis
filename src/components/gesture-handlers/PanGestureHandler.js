@@ -228,19 +228,19 @@ export class PanGestureHandler extends PureComponent<
             this.props.horizontal && {
               translateX: this.props.clampToBounds
                 ? this.pan.x.interpolate({
-                  inputRange: [0, this.state.viewWidth],
-                  outputRange: [0, this.state.viewWidth],
-                  extrapolate: 'clamp',
-                })
+                    inputRange: [0, this.state.viewWidth],
+                    outputRange: [0, this.state.viewWidth],
+                    extrapolate: 'clamp',
+                  })
                 : this.pan.x,
             },
             this.props.vertical && {
               translateY: this.props.clampToBounds
                 ? this.pan.y.interpolate({
-                  inputRange: [0, this.state.viewHeight],
-                  outputRange: [0, this.state.viewHeight],
-                  extrapolate: 'clamp',
-                })
+                    inputRange: [0, this.state.viewHeight],
+                    outputRange: [0, this.state.viewHeight],
+                    extrapolate: 'clamp',
+                  })
                 : this.pan.y,
             },
           ]),

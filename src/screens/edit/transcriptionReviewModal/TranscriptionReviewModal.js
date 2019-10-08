@@ -53,7 +53,7 @@ const styles = {
   playbackControls: {},
   floatingVideoPlayer: {
     zIndex: 1000,
-  }
+  },
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
