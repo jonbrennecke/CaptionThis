@@ -203,7 +203,7 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   formInput: {
     style: {
       color: TEXT_COLORS.DARK_GREY,
-      fontFamily: FONT_FAMILIES.ROBOTO,
+      fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
       fontSize: 17,
     },
     modifiers: [
