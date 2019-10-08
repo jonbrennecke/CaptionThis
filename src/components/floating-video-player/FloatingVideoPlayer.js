@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { VideoPlayer } from '@jonbrennecke/react-native-media';
 import noop from 'lodash/noop';
 
@@ -36,7 +36,7 @@ const styles = {
     borderWidth: 3,
     borderColor: Colors.solid.white,
     borderRadius: Units.extraSmall,
-  }
+  },
 };
 
 export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({

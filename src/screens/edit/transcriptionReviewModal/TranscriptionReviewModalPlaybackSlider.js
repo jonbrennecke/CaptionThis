@@ -1,10 +1,11 @@
 // @flow
 import React from 'react';
-import { Animated, View, StyleSheet } from 'react-native';
+import { Animated, View, Text, StyleSheet } from 'react-native';
 import ReactNativeHaptic from 'react-native-haptic';
 
 import { Slider } from '../../../components';
-import { Colors } from '../../../constants';
+import { Colors, Units } from '../../../constants';
+import * as Fonts from '../../../utils/Fonts';
 
 import type { SFC, Style } from '../../../types';
 
@@ -66,6 +67,15 @@ const styles = {
     ],
     backgroundColor: Colors.solid.nimbus,
   },
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: Units.medium,
+  },
+  durationText: {
+    ...Fonts.getFontStyle('default', { contentStyle: 'darkContent' }),
+    color: Colors.solid.darkGray,
+  },
 };
 
 function hapticFeedback() {
@@ -83,6 +93,10 @@ export const TranscriptionReviewModalPlaybackSlider: SFC<
   onSelectValue,
 }: TranscriptionReviewModalPlaybackSliderProps) => (
   <View style={[styles.container, style]}>
+    <View style={styles.infoContainer}>
+      <Text style={styles.durationText}>{formatTime(value)}</Text>
+      <Text style={styles.durationText}>{formatTime(max - value)}</Text>
+    </View>
     <View style={styles.sliderContainer}>
       <View style={styles.background} pointerEvents="none" />
       <Slider
@@ -111,3 +125,11 @@ export const TranscriptionReviewModalPlaybackSlider: SFC<
     </View>
   </View>
 );
+
+function formatTime(time: number): string {
+  const minutes = parseInt(time / 60).toFixed(0);
+  const seconds = parseInt(time % 60)
+    .toFixed(0)
+    .padStart(2, '0');
+  return `${minutes}:${seconds}`;
+}
