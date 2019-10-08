@@ -22,7 +22,7 @@ export type FloatingVideoPlayerProps = {
     playbackTime: number,
     duration: number
   ) => void,
-  onVideoDidRestart?: () => void,
+  onVideoWillRestart?: () => void,
   onViewDidResize?: Size => void,
   onPlaybackStateChange?: PlaybackState => void,
 };
@@ -62,7 +62,7 @@ export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
   videoPlayerRef,
   onVideoDidUpdatePlaybackTime = noop,
   onPlaybackStateChange = noop,
-  onVideoDidRestart = noop,
+  onVideoWillRestart = noop,
 }: FloatingVideoPlayerProps) => (
   <Draggable
     style={[styles.draggable, style]}
@@ -76,7 +76,7 @@ export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
       ref={videoPlayerRef}
       onPlaybackStateChange={onPlaybackStateChange}
       onVideoDidUpdatePlaybackTime={onVideoDidUpdatePlaybackTime}
-      onVideoDidRestart={onVideoDidRestart}
+      onVideoWillRestart={onVideoWillRestart}
     />
   </Draggable>
 );

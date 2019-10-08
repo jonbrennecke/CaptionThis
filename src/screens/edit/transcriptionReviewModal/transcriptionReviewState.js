@@ -82,14 +82,24 @@ export function wrapWithTranscriptionReviewState<
       });
     }
 
+    /// MARK - segment selection controls
+
+    setSpeechTranscriptionSegmentSelectionThrottled = throttle(
+      this.setSpeechTranscriptionSegmentSelection,
+      1000 / 60
+    );
+
     setSpeechTranscriptionSegmentSelection(
-      speechTranscriptionSegmentSelection: ?{
+      selection: ?{
         startIndex: number,
         endIndex: number,
       }
     ) {
       this.setState({
-        speechTranscriptionSegmentSelection,
+        speechTranscriptionSegmentSelection: selection || {
+          startIndex: 0,
+          endIndex: 0,
+        },
       });
     }
 
@@ -150,7 +160,7 @@ export function wrapWithTranscriptionReviewState<
           restartVideo={this.restartVideo}
           seekVideoToTime={this.seekVideoToTime}
           setSpeechTranscriptionSegmentSelection={
-            this.setSpeechTranscriptionSegmentSelection
+            this.setSpeechTranscriptionSegmentSelectionThrottled
           }
           setPlaybackTime={this.setPlaybackTimeThrottled}
           setPlaybackState={this.setPlaybackState}

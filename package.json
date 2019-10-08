@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@jonbrennecke/react-native-camera": "1.0.75",
-    "@jonbrennecke/react-native-media": "1.0.30",
+    "@jonbrennecke/react-native-media": "1.0.31",
     "bluebird": "^3.5.3",
     "core-decorators": "0.20.0",
     "hex2rgb": "2.2.0",

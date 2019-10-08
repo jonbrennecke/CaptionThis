@@ -82,6 +82,15 @@ export const TranscriptionReviewModal: ComponentType<
     const segments = speechTranscription
       ? interpolateSegments(speechTranscription.segments)
       : null;
+    const setSegmentSelection = (playbackTime: number) => {
+      if (segments) {
+        const index = Math.max(findIndexOfSegmentAtPlaybackTime(segments, playbackTime), 0);
+        setSpeechTranscriptionSegmentSelection({
+          startIndex: index,
+          endIndex: index,
+        });
+      }
+    };
     return (
       <Modal visible={isVisible} onRequestDismissModal={onRequestDismiss}>
         {isVisible && <StatusBar barStyle="dark-content" />}
@@ -109,18 +118,7 @@ export const TranscriptionReviewModal: ComponentType<
                 onSelectValue={playbackTime => {
                   setPlaybackTime(playbackTime);
                   seekVideoToTime(playbackTime);
-                  if (segments) {
-                    const index = findIndexOfSegmentAtPlaybackTime(
-                      segments,
-                      playbackTime
-                    );
-                    if (index >= 0) {
-                      setSpeechTranscriptionSegmentSelection({
-                        startIndex: index,
-                        endIndex: index,
-                      });
-                    }
-                  }
+                  setSegmentSelection(playbackTime);
                 }}
               />
             </View>
@@ -148,8 +146,15 @@ export const TranscriptionReviewModal: ComponentType<
                 style={styles.floatingVideoPlayer}
                 videoID={video.assetID}
                 videoPlayerRef={videoPlayerRef}
-                onVideoDidUpdatePlaybackTime={setPlaybackTime}
+                onVideoDidUpdatePlaybackTime={playbackTime => {
+                  setPlaybackTime(playbackTime);
+                  setSegmentSelection(playbackTime);
+                }}
                 onPlaybackStateChange={setPlaybackState}
+                onVideoWillRestart={() => {
+                  setPlaybackTime(0);
+                  setSegmentSelection(0);
+                }}
               />
             </View>
           </SafeAreaView>
