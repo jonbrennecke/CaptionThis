@@ -3,6 +3,7 @@ import React, { PureComponent, createRef } from 'react';
 import { PanResponder, Animated, View, Easing, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 import stubTrue from 'lodash/stubTrue';
+import stubFalse from 'lodash/stubFalse';
 import compact from 'lodash/compact';
 import clamp from 'lodash/clamp';
 import throttle from 'lodash/throttle';
@@ -19,6 +20,7 @@ export type PanGestureHandlerProps = {
   clampToBounds?: boolean,
   jumpToGrantedPosition?: boolean,
   returnToOriginalPosition?: boolean,
+  attachPanHandlersToChildren?: boolean,
   initialValue?: { x: number, y: number },
   disabled?: boolean,
   vertical?: boolean,
@@ -59,6 +61,7 @@ export class PanGestureHandler extends PureComponent<
     clampToBounds: true,
     jumpToGrantedPosition: true,
     returnToOriginalPosition: true,
+    attachPanHandlersToChildren: false,
     horizontal: true,
     vertical: true,
     shouldApplyTransformStyles: true,
@@ -83,7 +86,7 @@ export class PanGestureHandler extends PureComponent<
     this.pan.addListener(this.panListenerThrottled);
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: stubTrue,
-      // onStartShouldSetPanResponderCapture: stubFalse,
+      onStartShouldSetPanResponderCapture: stubFalse,
       onMoveShouldSetPanResponder: (event, gesture) => {
         const { dx, dy } = gesture;
         if (this.props.vertical && !this.props.horizontal) {
@@ -256,18 +259,28 @@ export class PanGestureHandler extends PureComponent<
         style={this.props.style}
         ref={this.containerRef}
         onLayout={this.viewDidLayout}
+        pointerEvents="box-none"
       >
-        <View
-          style={StyleSheet.absoluteFill}
-          ref={this.panResponderRef}
-          {...this.panResponder?.panHandlers}
-        >
-          {this.props.renderChildren({
+        {this.props.attachPanHandlersToChildren ? (
+          this.props.renderChildren({
             isDragging: this.state.isDragging,
             style,
+            ...this.panResponder?.panHandlers,
             // TODO: onLayout: this.childrenDidLayout
-          })}
-        </View>
+          })
+        ) : (
+          <View
+            style={StyleSheet.absoluteFill}
+            ref={this.panResponderRef}
+            {...this.panResponder?.panHandlers}
+          >
+            {this.props.renderChildren({
+              isDragging: this.state.isDragging,
+              style,
+              // TODO: onLayout: this.childrenDidLayout
+            })}
+          </View>
+        )}
       </View>
     );
   }

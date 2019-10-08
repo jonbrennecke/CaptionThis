@@ -12,7 +12,7 @@ export type FloatingVideoPlayerProps = {
 };
 
 const styles = {
-  container: StyleSheet.absoluteFill,
+  container: StyleSheet.absoluteFillObject,
   panContainer: {
     position: 'absolute',
     width: 100,
@@ -39,12 +39,12 @@ export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
     <PanGestureHandler
       style={styles.panContainer}
       returnToOriginalPosition={false}
+      attachPanHandlersToChildren
       jumpToGrantedPosition={false}
       clampToBounds={false}
       renderChildren={props => (
         <Animated.View
           {...props}
-          pointerEvents="box-none"
           style={[styles.videoPlayerContainer, style, props.style]}
         />
       )}
