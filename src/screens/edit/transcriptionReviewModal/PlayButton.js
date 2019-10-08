@@ -42,7 +42,7 @@ export const PlayButton: SFC<PlayButtonProps> = ({
   disabled = false,
   playbackState,
   onPressPlay,
-  onPressPause
+  onPressPause,
 }: PlayButtonProps) => (
   <TouchableOpacity
     disabled={disabled}
@@ -60,6 +60,5 @@ export const PlayButton: SFC<PlayButtonProps> = ({
     ) : (
       <PauseIcon style={styles.icon} color={Colors.solid.white} />
     )}
-    
   </TouchableOpacity>
 );

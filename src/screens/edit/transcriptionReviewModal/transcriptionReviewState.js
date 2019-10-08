@@ -95,13 +95,9 @@ export function wrapWithTranscriptionReviewState<
 
     /// MARK - playback controls
 
-    setPlaybackTimeThrottled = throttle(
-      this.setPlaybackTime,
-      1000 / 60,
-      {
-        leading: true,
-      }
-    );
+    setPlaybackTimeThrottled = throttle(this.setPlaybackTime, 1000 / 60, {
+      leading: true,
+    });
 
     setPlaybackTime(playbackTime: number) {
       this.setState({

@@ -16,7 +16,10 @@ import VideoCaptionsView from '../../components/video-captions-view/VideoCaption
 import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
 import MeasureContentsView from '../../components/measure-contents-view/MeasureContentsView';
 
-import type { MediaObject, PlaybackState } from '@jonbrennecke/react-native-media';
+import type {
+  MediaObject,
+  PlaybackState,
+} from '@jonbrennecke/react-native-media';
 
 import type { Size, Orientation } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
@@ -51,7 +54,7 @@ type Props = {
 type State = {
   playbackTime: number,
   isDraggingSeekbar: boolean,
-  playbackState: PlaybackState
+  playbackState: PlaybackState,
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -335,9 +338,11 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               }
               onVideoDidRestart={this.videoPlayerDidRestart}
               onViewDidResize={this.props.onVideoViewDidUpdateSize}
-              onPlaybackStateChange={playbackState => this.setState({
-                playbackState
-              })}
+              onPlaybackStateChange={playbackState =>
+                this.setState({
+                  playbackState,
+                })
+              }
             />
             <ScreenGradients />
             <MeasureContentsView
