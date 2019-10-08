@@ -24,13 +24,19 @@ const styles = {
     backgroundColor: Colors.solid.white,
     borderRadius: Units.extraSmall,
     shadowColor: Colors.solid.darkGray,
-    shadowOpacity: 0.1,
-    shadowRadius: 25,
+    shadowOpacity: 0.35,
+    shadowRadius: 7,
     shadowOffset: {
       width: 1,
       height: 1,
     },
   },
+  videoPlayer: {
+    flex: 1,
+    borderWidth: 3,
+    borderColor: Colors.solid.white,
+    borderRadius: Units.extraSmall,
+  }
 };
 
 export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
@@ -42,7 +48,7 @@ export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
     contentContainerStyle={styles.draggableContentContainer}
   >
     <VideoPlayer
-      style={styles.absoluteFill}
+      style={styles.videoPlayer}
       videoID={videoID}
       onVideoDidBecomeReadyToPlay={noop}
       onVideoDidFailToLoad={noop}
