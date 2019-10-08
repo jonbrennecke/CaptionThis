@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
+import ReactNativeHaptic from 'react-native-haptic';
 
 import { PlayIcon, PauseIcon } from '../../../components/icons';
 import { Units, Colors } from '../../../constants';
@@ -37,6 +38,10 @@ const styles = {
   },
 };
 
+function hapticFeedback() {
+  ReactNativeHaptic.generate('selection');
+}
+
 export const PlayButton: SFC<PlayButtonProps> = ({
   style,
   disabled = false,
@@ -48,6 +53,7 @@ export const PlayButton: SFC<PlayButtonProps> = ({
     disabled={disabled}
     style={[styles.button, style]}
     onPress={() => {
+      hapticFeedback();
       if (playbackState !== 'playing') {
         onPressPlay();
         return;
