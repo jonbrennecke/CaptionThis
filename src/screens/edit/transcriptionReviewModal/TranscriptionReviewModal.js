@@ -10,6 +10,8 @@ import { TranscriptionTextInput } from './TranscriptionTextInput';
 import { TranscriptionReviewModalPlaybackSlider } from './TranscriptionReviewModalPlaybackSlider';
 import { FloatingVideoPlayer, MeasureContentsView } from '../../../components';
 import { DoneButton } from './DoneButton';
+import { RewindButton } from './RewindButton';
+import { FastForwardButton } from './FastForwardButton';
 import { Units, Colors } from '../../../constants';
 import {
   interpolateSegments,
@@ -55,21 +57,35 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: Units.extraSmall,
+    paddingTop: Units.extraSmall,
+    paddingBottom: Units.small,
     paddingHorizontal: Units.small,
   },
   playButtonContainer: {
     flex: 1,
+    flexGrow: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  playButton: {},
+  playButton: {
+    marginHorizontal: Units.medium,
+  },
   floatingVideoPlayer: {
     zIndex: 1000,
   },
   floatingVideoPlayerContainer: {
     ...StyleSheet.absoluteFillObject,
+  },
+  rewindButton: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  fastForwardButton: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
 };
 
@@ -127,11 +143,23 @@ export const TranscriptionReviewModal: ComponentType<
                   }}
                 />
                 <View style={styles.playButtonContainer}>
+                  <RewindButton
+                    style={styles.rewindButton}
+                    onPress={() => {
+                      /* TODO */
+                    }}
+                  />
                   <PlayButton
                     style={styles.playButton}
                     playbackState={playbackState}
                     onPressPlay={playVideo}
                     onPressPause={pauseVideo}
+                  />
+                  <FastForwardButton
+                    style={styles.fastForwardButton}
+                    onPress={() => {
+                      /* TODO */
+                    }}
                   />
                 </View>
                 <View style={styles.flex} />
