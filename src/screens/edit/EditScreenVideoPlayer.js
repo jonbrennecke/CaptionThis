@@ -370,9 +370,15 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
             <PlaybackSeekbar
               style={styles.flex}
               assetID={this.props.video.assetID}
-              playbackProgress={this.state.playbackTime / this.props.video.duration}
+              playbackProgress={
+                this.state.playbackTime / this.props.video.duration
+              }
               playbackState={this.state.playbackState}
-              onSeekToProgress={progress => this.seekBarDidSeekToTimeThrottled(this.props.video.duration * progress)}
+              onSeekToProgress={progress =>
+                this.seekBarDidSeekToTimeThrottled(
+                  this.props.video.duration * progress
+                )
+              }
               onRequestPause={this.pausePlayerAndCaptions}
               onRequestPlay={this.startPlayerAndCaptions}
             />
