@@ -1,11 +1,11 @@
 // @flow
-import React from 'react';
+import React, { PureComponent, createRef } from 'react';
 import { View, Animated, StyleSheet } from 'react-native';
 import noop from 'lodash/noop';
 
 import { PanGestureHandler } from '../gesture-handlers';
 
-import type { SFC, Style, Children } from '../../types';
+import type { Style, Children } from '../../types';
 
 export type DraggableProps = {
   style?: ?Style,
@@ -23,37 +23,53 @@ const styles = {
   absoluteFill: StyleSheet.absoluteFillObject,
 };
 
-export const Draggable: SFC<DraggableProps> = ({
-  style,
-  contentContainerStyle,
-  children,
-  initialPosition,
-  onDragStart = noop,
-  onDragEnd = noop,
-}: DraggableProps) => (
-  <View style={[styles.absoluteFill, style]} pointerEvents="box-none">
-    <PanGestureHandler
-      style={styles.panContainer}
-      initialValue={initialPosition}
-      returnToOriginalPosition={false}
-      attachPanHandlersToChildren
-      jumpToGrantedPosition={false}
-      clampToBounds
-      renderChildren={props => (
-        <Animated.View
-          {...props}
-          style={[
-            styles.absoluteFill,
-            style,
-            props.style,
-            contentContainerStyle,
-          ]}
-        >
-          {children}
-        </Animated.View>
-      )}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-    />
-  </View>
-);
+export class Draggable extends PureComponent<DraggableProps> {
+  panGestureHandlerRef = createRef();
+
+  returnToInitialPosition() {
+    if (this.panGestureHandlerRef.current && this.props.initialPosition) {
+      this.panGestureHandlerRef.current.setPanValueAnimated(
+        this.props.initialPosition
+      );
+    }
+  }
+
+  render() {
+    const {
+      style,
+      contentContainerStyle,
+      children,
+      initialPosition,
+      onDragStart = noop,
+      onDragEnd = noop,
+    } = this.props;
+    return (
+      <View style={[styles.absoluteFill, style]} pointerEvents="box-none">
+        <PanGestureHandler
+          style={styles.panContainer}
+          ref={this.panGestureHandlerRef}
+          initialValue={initialPosition}
+          returnToOriginalPosition={false}
+          attachPanHandlersToChildren
+          jumpToGrantedPosition={false}
+          clampToBounds
+          renderChildren={props => (
+            <Animated.View
+              {...props}
+              style={[
+                styles.absoluteFill,
+                style,
+                props.style,
+                contentContainerStyle,
+              ]}
+            >
+              {children}
+            </Animated.View>
+          )}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+        />
+      </View>
+    );
+  }
+}

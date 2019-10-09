@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, createRef } from 'react';
 import { View, Animated, TouchableWithoutFeedback, Easing } from 'react-native';
 import { VideoPlayer } from '@jonbrennecke/react-native-media';
 import ReactNativeHaptic from 'react-native-haptic';
@@ -10,7 +10,6 @@ import { Draggable } from '../draggable';
 import { Units, Colors } from '../../constants';
 import { ResizeIcon } from '../icons';
 
-import type { createRef } from 'react';
 import type { Size, PlaybackState } from '@jonbrennecke/react-native-media';
 
 import type { Style, Return } from '../../types';
@@ -106,8 +105,12 @@ export class FloatingVideoPlayer extends PureComponent<
     isMinimized: false,
   };
   resizeAnim = new Animated.Value(1);
+  draggableRef = createRef();
 
   minimize() {
+    if (this.draggableRef.current) {
+      this.draggableRef.current.returnToInitialPosition();
+    }
     Animated.timing(this.resizeAnim, {
       toValue: 0,
       easing: Easing.inOut(Easing.quad),
@@ -143,6 +146,7 @@ export class FloatingVideoPlayer extends PureComponent<
     } = this.props;
     return (
       <Draggable
+        ref={this.draggableRef}
         style={[styles.draggable, style]}
         initialPosition={initialPosition}
         contentContainerStyle={styles.draggableContentContainer}

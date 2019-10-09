@@ -132,6 +132,18 @@ export class PanGestureHandler extends PureComponent<
     this.pan.setValue(value);
   }
 
+  setPanValueAnimated(value: { x: number, y: number }) {
+    if (this.state.isDragging) {
+      return;
+    }
+    this.pan.flattenOffset();
+    Animated.timing(this.pan, {
+      toValue: value,
+      easing: Easing.out(Easing.quad),
+      duration: 150,
+    }).start();
+  }
+
   panListenerThrottled = throttle(this.panListener, 100, {
     leading: true,
   });
