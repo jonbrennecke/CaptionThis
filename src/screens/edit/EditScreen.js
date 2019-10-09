@@ -261,7 +261,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   async dismissCaptionsEditor() {
-    await Screens.dismissTranscriptionReviewScreen(this.props.componentId);
+    await Screens.dismissTranscriptionReviewScreen();
   }
 
   showRichTextEditor() {

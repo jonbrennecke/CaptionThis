@@ -4,8 +4,8 @@ import { StatusBar, View, StyleSheet, ScrollView } from 'react-native';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 import ReactNativeHaptic from 'react-native-haptic';
+import { FadeInOutAnimatedView } from '@jonbrennecke/react-native-animated-ui';
 
-import * as Screens from '../../../utils/Screens';
 import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/KeyboardAvoidingView';
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
 import { TranscriptionTextInput } from './TranscriptionTextInput';
@@ -24,13 +24,9 @@ import { PlayButton } from './PlayButton';
 import type { ComponentType } from 'react';
 import type { MediaObject } from '@jonbrennecke/react-native-media';
 
-import type { SpeechTranscription } from '../../../types';
-
 export type TranscriptionReviewModalProps = {
   componentId: string,
   video: MediaObject,
-  speechTranscription: ?SpeechTranscription,
-  onSpeechTranscriptionChange: SpeechTranscription => void,
 };
 
 function hapticFeedback() {
@@ -116,12 +112,10 @@ export const TranscriptionReviewModal: ComponentType<
     speechTranscriptionSegmentSelection,
     setSpeechTranscriptionSegmentSelection,
     bottomSafeAreaInset,
-    onSpeechTranscriptionChange,
+    receiveSpeechTranscriptionSuccess,
     componentIsVisible,
+    dismissScreen,
   }) => {
-    const dismiss = async () => {
-      await Screens.dismissTranscriptionReviewScreen();
-    };
     const segments = speechTranscription
       ? interpolateSegments(speechTranscription.segments)
       : null;
@@ -140,114 +134,114 @@ export const TranscriptionReviewModal: ComponentType<
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
-        <KeyboardAvoidingView
-          style={styles.flex}
-          keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
-        >
-          <SafeAreaView style={styles.flex}>
-            <View style={styles.playbackControlsContainer}>
-              <View style={styles.playbackControls}>
-                <DoneButton
-                  style={styles.flex}
-                  onPress={() => {
-                    dismiss();
-                  }}
-                />
-                <View style={styles.playButtonContainer}>
-                  <RewindButton
-                    style={styles.rewindButton}
-                    onPress={() => {
-                      const time = Math.max(playbackTime - 5, 0);
-                      setPlaybackTime(time);
-                      seekVideoToTime(time);
-                      setSegmentSelection(time);
-                      hapticFeedback();
-                    }}
+        <FadeInOutAnimatedView isVisible={componentIsVisible} style={StyleSheet.absoluteFill}>
+          <KeyboardAvoidingView
+            style={styles.flex}
+            keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
+          >
+            <SafeAreaView style={styles.flex}>
+              <View style={styles.playbackControlsContainer}>
+                <View style={styles.playbackControls}>
+                  <DoneButton
+                    style={styles.flex}
+                    onPress={dismissScreen}
                   />
-                  <PlayButton
-                    style={styles.playButton}
-                    playbackState={playbackState}
-                    onPressPlay={playVideo}
-                    onPressPause={pauseVideo}
-                  />
-                  <FastForwardButton
-                    style={styles.fastForwardButton}
-                    onPress={() => {
-                      const time = Math.min(playbackTime + 5, video.duration);
-                      setPlaybackTime(time);
-                      seekVideoToTime(time);
-                      setSegmentSelection(time);
-                      hapticFeedback();
-                    }}
-                  />
-                </View>
-                <View style={styles.flex} />
-              </View>
-              <PlaybackSlider
-                value={playbackTime}
-                min={0}
-                max={video.duration}
-                onSelectValue={playbackTime => {
-                  setPlaybackTime(playbackTime);
-                  seekVideoToTime(playbackTime);
-                  setSegmentSelection(playbackTime);
-                }}
-              />
-            </View>
-            <View style={styles.transcriptionContainer}>
-              <ScrollView contentContainerStyle={styles.scrollViewContents}>
-                <TranscriptionTextInput
-                  speechTranscriptionSegments={segments}
-                  speechTranscriptionSegmentSelection={
-                    speechTranscriptionSegmentSelection
-                  }
-                  onSelectionChange={
-                    setSpeechTranscriptionSegmentSelection
-                    // TODO: set playbackTime to match first segment in selection
-                  }
-                  onSpeechTranscriptionSegmentsChange={segments => {
-                    if (!segments || !speechTranscription) {
-                      return;
-                    }
-                    onSpeechTranscriptionChange({
-                      ...speechTranscription,
-                      segments,
-                    });
-                  }}
-                />
-              </ScrollView>
-              <MeasureContentsView
-                style={styles.floatingVideoPlayerContainer}
-                renderChildren={size => {
-                  const width = 100;
-                  const height = 16 / 9 * width;
-                  const padding = { bottom: Units.small, left: Units.small };
-                  const initialPosition = {
-                    x: padding.left,
-                    y: size.height - Units.small - height,
-                  };
-                  return (
-                    <FloatingVideoPlayer
-                      style={styles.floatingVideoPlayer}
-                      initialPosition={initialPosition}
-                      videoID={video.assetID}
-                      videoPlayerRef={videoPlayerRef}
-                      onVideoDidUpdatePlaybackTime={playbackTime => {
-                        setPlaybackTime(playbackTime);
-                        setSegmentSelection(playbackTime);
-                      }}
-                      onPlaybackStateChange={setPlaybackState}
-                      onVideoWillRestart={() => {
-                        setPlaybackTime(0);
-                        setSegmentSelection(0);
+                  <View style={styles.playButtonContainer}>
+                    <RewindButton
+                      style={styles.rewindButton}
+                      onPress={() => {
+                        const time = Math.max(playbackTime - 5, 0);
+                        setPlaybackTime(time);
+                        seekVideoToTime(time);
+                        setSegmentSelection(time);
+                        hapticFeedback();
                       }}
                     />
-                  );
-                }}
-              />
-            </View>
-          </SafeAreaView>
-        </KeyboardAvoidingView>
+                    <PlayButton
+                      style={styles.playButton}
+                      playbackState={playbackState}
+                      onPressPlay={playVideo}
+                      onPressPause={pauseVideo}
+                    />
+                    <FastForwardButton
+                      style={styles.fastForwardButton}
+                      onPress={() => {
+                        const time = Math.min(playbackTime + 5, video.duration);
+                        setPlaybackTime(time);
+                        seekVideoToTime(time);
+                        setSegmentSelection(time);
+                        hapticFeedback();
+                      }}
+                    />
+                  </View>
+                  <View style={styles.flex} />
+                </View>
+                <PlaybackSlider
+                  value={playbackTime}
+                  min={0}
+                  max={video.duration}
+                  onSelectValue={playbackTime => {
+                    setPlaybackTime(playbackTime);
+                    seekVideoToTime(playbackTime);
+                    setSegmentSelection(playbackTime);
+                  }}
+                />
+              </View>
+              <View style={styles.transcriptionContainer}>
+                <ScrollView contentContainerStyle={styles.scrollViewContents}>
+                  <TranscriptionTextInput
+                    speechTranscriptionSegments={segments}
+                    speechTranscriptionSegmentSelection={
+                      speechTranscriptionSegmentSelection
+                    }
+                    onSelectionChange={
+                      setSpeechTranscriptionSegmentSelection
+                      // TODO: set playbackTime to match first segment in selection
+                    }
+                    onSpeechTranscriptionSegmentsChange={segments => {
+                      if (!segments || !speechTranscription) {
+                        return;
+                      }
+                      receiveSpeechTranscriptionSuccess(video.assetID, {
+                        ...speechTranscription,
+                        segments,
+                      });
+                    }}
+                  />
+                </ScrollView>
+                <MeasureContentsView
+                  style={styles.floatingVideoPlayerContainer}
+                  renderChildren={size => {
+                    const width = 100;
+                    const height = 16 / 9 * width;
+                    const padding = { bottom: Units.small, left: Units.small };
+                    const initialPosition = {
+                      x: padding.left,
+                      y: size.height - Units.small - height,
+                    };
+                    return (
+                      <FloatingVideoPlayer
+                        style={styles.floatingVideoPlayer}
+                        initialPosition={initialPosition}
+                        videoID={video.assetID}
+                        videoPlayerRef={videoPlayerRef}
+                        onVideoDidUpdatePlaybackTime={playbackTime => {
+                          setPlaybackTime(playbackTime);
+                          setSegmentSelection(playbackTime);
+                        }}
+                        onPlaybackStateChange={setPlaybackState}
+                        onVideoWillRestart={() => {
+                          setPlaybackTime(0);
+                          setSegmentSelection(0);
+                        }}
+                      />
+                    );
+                  }}
+                />
+              </View>
+            </SafeAreaView>
+          </KeyboardAvoidingView>
+        </FadeInOutAnimatedView>
       </View>
     );
   }

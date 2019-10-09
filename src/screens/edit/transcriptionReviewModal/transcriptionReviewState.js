@@ -7,6 +7,7 @@ import SafeArea from 'react-native-safe-area';
 import throttle from 'lodash/throttle';
 import { Navigation } from 'react-native-navigation';
 
+import * as Screens from '../../../utils/Screens';
 import { wrapWithSpeechTranscriptionState } from './speechTranscriptionState';
 
 import type { ComponentType } from 'react';
@@ -29,6 +30,7 @@ export type TranscriptionReviewStateHOCExtraProps = {
   ) => void,
   setPlaybackTime: (playbackTime: number) => void,
   setPlaybackState: (playbackState: PlaybackState) => void,
+  dismissScreen: () => void,
 };
 
 export type TranscriptionReviewStateHOCState = {
@@ -99,6 +101,16 @@ export function wrapWithTranscriptionReviewState<
     componentDidDisappear() {
       this.setState({
         componentIsVisible: false,
+      });
+    }
+
+    async dismissScreen() {
+      this.setState({
+        componentIsVisible: false,
+      }, () => {
+        setTimeout(async () => {
+          await Screens.dismissTranscriptionReviewScreen();          
+        }, 300);
       });
     }
 
@@ -192,6 +204,7 @@ export function wrapWithTranscriptionReviewState<
           }
           setPlaybackTime={this.setPlaybackTimeThrottled}
           setPlaybackState={this.setPlaybackState}
+          dismissScreen={this.dismissScreen}
         />
       );
     }

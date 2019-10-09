@@ -25,12 +25,12 @@
 		33C33D6F14064FD6A7A623A7 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFF2F3DB2EA4D6980D49A6A /* libRNSVG.a */; };
 		3732E5DBFC0B492A8E6B4B9A /* libRNSentry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA3289A720848BC816600CE /* libRNSentry.a */; };
 		45FD7683D86D4632A3B04D61 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0D8E9D50C44D7C928CE506 /* libz.tbd */; };
+		5B900974E96C484BA97E963A /* libHSAnimatedUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B3E4F5B1E2D438DA023ABD2 /* libHSAnimatedUI.a */; };
 		5CFEAE62C9A24B29984DD703 /* libReactNativeHaptic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70E12CA68E464F8995503A85 /* libReactNativeHaptic.a */; };
 		641F471343294C2ABF06F025 /* libRNSafeArea.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF9290E58A3E4E2F93660B3C /* libRNSafeArea.a */; };
 		6987EEC99C074A288E5666D1 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE51129C96194FA5BC0538FB /* libBVLinearGradient.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		83705F508DC44725A17C599A /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A2760C030124ED4AC724488 /* libSplashScreen.a */; };
-		ABFA7C95CB8D4C44962099F3 /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E05544985774B0FA5590447 /* libRNBlur.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		BD9CE76AC4824D4398B1E28F /* libHSReactNativeMedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6B0F82929A447687194078 /* libHSReactNativeMedia.a */; };
 		FC1492F922331A4600A753DD /* CaptionSizingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1492F822331A4600A753DD /* CaptionSizingUtil.swift */; };
@@ -40,6 +40,7 @@
 		FC1FE6C621E57C96005F657A /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1FE6C421E57C96005F657A /* Fabric.framework */; };
 		FC1FE6C721E57C96005F657A /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1FE6C521E57C96005F657A /* Crashlytics.framework */; };
 		FC1FE6ED21E5B8DE005F657A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */; };
+		FC234C53234E901D00DB2EE2 /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC234C48234E900000DB2EE2 /* libRNBlur.a */; };
 		FC254DFF21CDB03800A9C901 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC983DD521CDAF6800063476 /* libReactNativeNavigation.a */; };
 		FC388F4C22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FC388F4B22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m */; };
 		FC388F4F22309A11001CE3A3 /* CaptionBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F4E22309A11001CE3A3 /* CaptionBackgroundStyle.swift */; };
@@ -409,6 +410,27 @@
 			remoteGlobalIDString = 3D7682761D8E76B80014119E;
 			remoteInfo = SplashScreen;
 		};
+		FC234BBB234E8BFD00DB2EE2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 324BC612AE2D4F2D9554E7A4 /* HSAnimatedUI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = HSAnimatedUI;
+		};
+		FC234C47234E900000DB2EE2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE3F542488AE4D8AB5B43279 /* RNBlur.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A68BD7BC1BC31318005F02DF;
+			remoteInfo = RNBlur;
+		};
+		FC234C49234E900000DB2EE2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE3F542488AE4D8AB5B43279 /* RNBlur.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64D1BD361EEFE88700F3F219;
+			remoteInfo = "RNBlur-tvOS";
+		};
 		FC53C91C21D69FB5003DEBE8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 62570F57A9D94E2F94BD7B22 /* BVLinearGradient.xcodeproj */;
@@ -443,20 +465,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = HSReactNativeMedia;
-		};
-		FC7A0F5321D876E500751DBE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4D9C800E0EBF4C11906CFDE3 /* RNBlur.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A68BD7BC1BC31318005F02DF;
-			remoteInfo = RNBlur;
-		};
-		FC7A0F5521D876E500751DBE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4D9C800E0EBF4C11906CFDE3 /* RNBlur.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 64D1BD361EEFE88700F3F219;
-			remoteInfo = "RNBlur-tvOS";
 		};
 		FC880DF721D4C7D300856037 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -547,6 +555,7 @@
 		00E356EE1AD99517003FC87E /* CaptionThisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CaptionThisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* CaptionThisTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptionThisTests.m; sourceTree = "<group>"; };
+		0B3E4F5B1E2D438DA023ABD2 /* libHSAnimatedUI.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libHSAnimatedUI.a; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* CaptionThis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaptionThis.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -560,9 +569,9 @@
 		2A48C2E922F841C9992B86EA /* HSReactNativeMedia.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = HSReactNativeMedia.xcodeproj; path = "../node_modules/@jonbrennecke/react-native-media/ios/HSReactNativeMedia.xcodeproj"; sourceTree = "<group>"; };
 		2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNReactNativeHapticFeedback.xcodeproj; path = "../node_modules/react-native-haptic-feedback/ios/RNReactNativeHapticFeedback.xcodeproj"; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		324BC612AE2D4F2D9554E7A4 /* HSAnimatedUI.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = HSAnimatedUI.xcodeproj; path = "../node_modules/@jonbrennecke/react-native-animated-ui/ios/HSAnimatedUI.xcodeproj"; sourceTree = "<group>"; };
 		3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = HSReactNativeCamera.xcodeproj; path = "../node_modules/@jonbrennecke/react-native-camera/ios/HSReactNativeCamera.xcodeproj"; sourceTree = "<group>"; };
-		4D9C800E0EBF4C11906CFDE3 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
 		4E05544985774B0FA5590447 /* libRNBlur.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBlur.a; sourceTree = "<group>"; };
 		5AC3AC84D4E24EDA91E08877 /* ReactNativeNavigationTests.xctest */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ReactNativeNavigationTests.xctest; sourceTree = "<group>"; };
 		5BFF2F3DB2EA4D6980D49A6A /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
@@ -705,6 +714,7 @@
 		FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionRowKey.swift; sourceTree = "<group>"; };
 		FCFBE02322A832AD0059D452 /* CaptionRowLayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionRowLayers.swift; sourceTree = "<group>"; };
 		FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControllerState.swift; sourceTree = "<group>"; };
+		FE3F542488AE4D8AB5B43279 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -720,6 +730,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC234C53234E901D00DB2EE2 /* libRNBlur.a in Frameworks */,
 				FC254DFF21CDB03800A9C901 /* libReactNativeNavigation.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
@@ -737,7 +748,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				FCB3D2BF68D740C581A23323 /* libRNDeviceInfo.a in Frameworks */,
 				6987EEC99C074A288E5666D1 /* libBVLinearGradient.a in Frameworks */,
-				ABFA7C95CB8D4C44962099F3 /* libRNBlur.a in Frameworks */,
 				33C33D6F14064FD6A7A623A7 /* libRNSVG.a in Frameworks */,
 				641F471343294C2ABF06F025 /* libRNSafeArea.a in Frameworks */,
 				83705F508DC44725A17C599A /* libSplashScreen.a in Frameworks */,
@@ -746,6 +756,7 @@
 				5CFEAE62C9A24B29984DD703 /* libReactNativeHaptic.a in Frameworks */,
 				BD9CE76AC4824D4398B1E28F /* libHSReactNativeMedia.a in Frameworks */,
 				FF81AC8B89144FB9AFCA8928 /* libHSReactNativeCamera.a in Frameworks */,
+				5B900974E96C484BA97E963A /* libHSAnimatedUI.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -926,7 +937,6 @@
 				D1A322132CEB40238AD3A6FC /* ReactNativeNavigation.xcodeproj */,
 				A6FDB0CCE2B7434DA0856AFC /* RNDeviceInfo.xcodeproj */,
 				62570F57A9D94E2F94BD7B22 /* BVLinearGradient.xcodeproj */,
-				4D9C800E0EBF4C11906CFDE3 /* RNBlur.xcodeproj */,
 				60E66683EFEB4BF0996C113B /* RNSVG.xcodeproj */,
 				896272E6488044ABA31DCDA8 /* RNSafeArea.xcodeproj */,
 				F7CF70A3DDDD49158A603A1B /* SplashScreen.xcodeproj */,
@@ -935,6 +945,8 @@
 				20A5BBF73DFE404FBD9508A6 /* ReactNativeHaptic.xcodeproj */,
 				2A48C2E922F841C9992B86EA /* HSReactNativeMedia.xcodeproj */,
 				41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */,
+				324BC612AE2D4F2D9554E7A4 /* HSAnimatedUI.xcodeproj */,
+				FE3F542488AE4D8AB5B43279 /* RNBlur.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -985,6 +997,23 @@
 			isa = PBXGroup;
 			children = (
 				FC16E1D62207A6E500C031DA /* libSplashScreen.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FC234BB8234E8BFD00DB2EE2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FC234BBC234E8BFD00DB2EE2 /* libHSAnimatedUI.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FC234C15234E8FFF00DB2EE2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FC234C48234E900000DB2EE2 /* libRNBlur.a */,
+				FC234C4A234E900000DB2EE2 /* libRNBlur.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1099,6 +1128,7 @@
 				70E12CA68E464F8995503A85 /* libReactNativeHaptic.a */,
 				8A6B0F82929A447687194078 /* libHSReactNativeMedia.a */,
 				C4BF1A0F40D94988BDBDA2E6 /* libHSReactNativeCamera.a */,
+				0B3E4F5B1E2D438DA023ABD2 /* libHSAnimatedUI.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1201,15 +1231,6 @@
 			isa = PBXGroup;
 			children = (
 				FC728B2922B361F9005A15DA /* libHSReactNativeMedia.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		FC7A0F4F21D876E500751DBE /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FC7A0F5421D876E500751DBE /* libRNBlur.a */,
-				FC7A0F5621D876E500751DBE /* libRNBlur.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1448,6 +1469,10 @@
 					ProjectRef = 62570F57A9D94E2F94BD7B22 /* BVLinearGradient.xcodeproj */;
 				},
 				{
+					ProductGroup = FC234BB8234E8BFD00DB2EE2 /* Products */;
+					ProjectRef = 324BC612AE2D4F2D9554E7A4 /* HSAnimatedUI.xcodeproj */;
+				},
+				{
 					ProductGroup = FCD998D12332BBE7008B82B2 /* Products */;
 					ProjectRef = FCD998D02332BBE7008B82B2 /* HSCameraUtils.xcodeproj */;
 				},
@@ -1516,8 +1541,8 @@
 					ProjectRef = D1A322132CEB40238AD3A6FC /* ReactNativeNavigation.xcodeproj */;
 				},
 				{
-					ProductGroup = FC7A0F4F21D876E500751DBE /* Products */;
-					ProjectRef = 4D9C800E0EBF4C11906CFDE3 /* RNBlur.xcodeproj */;
+					ProductGroup = FC234C15234E8FFF00DB2EE2 /* Products */;
+					ProjectRef = FE3F542488AE4D8AB5B43279 /* RNBlur.xcodeproj */;
 				},
 				{
 					ProductGroup = FC880DF321D4C7D300856037 /* Products */;
@@ -1819,6 +1844,27 @@
 			remoteRef = FC16E1D52207A6E500C031DA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FC234BBC234E8BFD00DB2EE2 /* libHSAnimatedUI.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libHSAnimatedUI.a;
+			remoteRef = FC234BBB234E8BFD00DB2EE2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FC234C48234E900000DB2EE2 /* libRNBlur.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBlur.a;
+			remoteRef = FC234C47234E900000DB2EE2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FC234C4A234E900000DB2EE2 /* libRNBlur.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBlur.a;
+			remoteRef = FC234C49234E900000DB2EE2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FC53C91D21D69FB5003DEBE8 /* libBVLinearGradient.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1852,20 +1898,6 @@
 			fileType = archive.ar;
 			path = libHSReactNativeMedia.a;
 			remoteRef = FC728B2822B361F9005A15DA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FC7A0F5421D876E500751DBE /* libRNBlur.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNBlur.a;
-			remoteRef = FC7A0F5321D876E500751DBE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FC7A0F5621D876E500751DBE /* libRNBlur.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNBlur.a;
-			remoteRef = FC7A0F5521D876E500751DBE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FC880DF821D4C7D300856037 /* libRNDeviceInfo.a */ = {
@@ -2162,12 +2194,15 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-animated-ui/ios",
+					"$(SRCROOT)/../node_modules/react-native-blur/ios",
 				);
 				INFOPLIST_FILE = CaptionThisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2217,12 +2252,15 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-animated-ui/ios",
+					"$(SRCROOT)/../node_modules/react-native-blur/ios",
 				);
 				INFOPLIST_FILE = CaptionThisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2277,6 +2315,8 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-animated-ui/ios",
+					"$(SRCROOT)/../node_modules/react-native-blur/ios",
 				);
 				INFOPLIST_FILE = CaptionThis/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2321,6 +2361,8 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-media/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-animated-ui/ios",
+					"$(SRCROOT)/../node_modules/react-native-blur/ios",
 				);
 				INFOPLIST_FILE = CaptionThis/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
