@@ -64,7 +64,6 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
           return onSpeechTranscriptionSegmentsChange(null);
         }
         const updatedSegments = transformSegmentsByTextDiff(text, segments);
-        console.log({ text, updatedSegments, segments });
         onSpeechTranscriptionSegmentsChange(updatedSegments);
       }}
       onSelectionChange={event => {
