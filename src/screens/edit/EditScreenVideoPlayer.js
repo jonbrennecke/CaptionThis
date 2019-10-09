@@ -8,7 +8,6 @@ import { VideoPlayer } from '@jonbrennecke/react-native-media';
 import { UI_COLORS } from '../../constants';
 import * as Debug from '../../utils/Debug';
 import { isLandscape, isPortrait } from '../../utils/Orientation';
-import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
 import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
@@ -329,7 +328,6 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                 })
               }
             />
-            <ScreenGradients />
             <MeasureContentsView
               style={styles.measuredContents}
               renderChildren={viewSize => (
