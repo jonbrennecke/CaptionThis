@@ -201,21 +201,6 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     }
   );
 
-  videoPlayerDidBecomeReadyToPlay() {
-    if (!this.props.isSpeechTranscriptionFinal) {
-      this.pausePlayerAndCaptions();
-    } else {
-      this.setState(
-        {
-          isVideoReadyToPlay: true,
-        },
-        () => {
-          this.restartPlayerAndCaptions();
-        }
-      );
-    }
-  }
-
   videoPlayerDidFailToLoad() {
     Debug.log('Video player failed to load');
     this.pausePlayerAndCaptions();
