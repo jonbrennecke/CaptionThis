@@ -120,7 +120,12 @@ export const TranscriptionReviewModal: ComponentType<
           <SafeAreaView style={styles.flex}>
             <View style={styles.playbackControlsContainer}>
               <View style={styles.playbackControls}>
-                <DoneButton style={styles.flex} onPress={() => { /* TODO */}} />
+                <DoneButton
+                  style={styles.flex}
+                  onPress={() => {
+                    /* TODO */
+                  }}
+                />
                 <View style={styles.playButtonContainer}>
                   <PlayButton
                     style={styles.playButton}
