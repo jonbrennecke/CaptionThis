@@ -9,11 +9,10 @@ import { UI_COLORS } from '../../constants';
 import * as Debug from '../../utils/Debug';
 import { isLandscape, isPortrait } from '../../utils/Orientation';
 import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
-import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
 import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
-import { MeasureContentsView } from '../../components';
+import { MeasureContentsView, PlaybackSeekbar } from '../../components';
 
 import type {
   MediaObject,
@@ -52,7 +51,6 @@ type Props = {
 
 type State = {
   playbackTime: number,
-  isDraggingSeekbar: boolean,
   playbackState: PlaybackState,
 };
 
@@ -110,7 +108,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
   playerView: ?VideoPlayer;
   state = {
     playbackTime: 0,
-    isDraggingSeekbar: false,
     playbackState: 'waiting',
   };
 
@@ -169,18 +166,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
   seekBarDidSeekToTime(time: number) {
     this.seekToTime(time);
     this.onRequestChangePlaybackTimeThrottled(time);
-  }
-
-  seekBarDidStartSeeking() {
-    this.pausePlayerAndCaptions();
-    this.setState({ isDraggingSeekbar: true });
-  }
-
-  seekBarDidStopSeeking(time: number) {
-    this.setState({ isDraggingSeekbar: false });
-    this.startPlayerAndCaptions();
-    this.onRequestChangePlaybackTimeThrottled(time);
-    this.props.onDidRestartCaptions();
   }
 
   async seekToTime(time: number) {
@@ -322,11 +307,14 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
               }
               onVideoDidRestart={this.videoPlayerDidRestart}
               onViewDidResize={this.props.onVideoViewDidUpdateSize}
-              onPlaybackStateChange={playbackState =>
+              onPlaybackStateChange={playbackState => {
                 this.setState({
                   playbackState,
-                })
-              }
+                });
+                if (playbackState === 'readyToPlay') {
+                  this.startPlayerAndCaptions();
+                }
+              }}
             />
             <MeasureContentsView
               style={styles.measuredContents}
@@ -379,15 +367,14 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
             isVisible={this.state.playbackState !== 'waiting'}
             style={styles.editControls}
           >
-            {/* TODO: Replace with Seekbar from @jonbrennecke/react-native-media */}
-            <VideoSeekbar
+            <PlaybackSeekbar
               style={styles.flex}
-              duration={this.props.duration}
-              playbackTime={this.state.playbackTime}
-              videoAssetIdentifier={this.props.video.assetID}
-              onSeekToTime={this.seekBarDidSeekToTimeThrottled}
-              onDidBeginDrag={this.seekBarDidStartSeeking}
-              onDidEndDrag={this.seekBarDidStopSeeking}
+              assetID={this.props.video.assetID}
+              playbackProgress={this.state.playbackTime / this.props.video.duration}
+              playbackState={this.state.playbackState}
+              onSeekToProgress={progress => this.seekBarDidSeekToTimeThrottled(this.props.video.duration * progress)}
+              onRequestPause={this.pausePlayerAndCaptions}
+              onRequestPlay={this.startPlayerAndCaptions}
             />
           </ScaleAnimatedView>
         )}
