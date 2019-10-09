@@ -157,6 +157,7 @@ export class FloatingVideoPlayer extends PureComponent<
         <Animated.View style={styles.resizeAnimation(this.resizeAnim)}>
           <TouchableWithoutFeedback
             onPress={() => {
+              hapticFeedback();
               this.state.isMinimized ? this.maximize() : this.minimize();
             }}
           >
