@@ -9,7 +9,7 @@ import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
 import { TranscriptionTextInput } from './TranscriptionTextInput';
 import { TranscriptionReviewModalPlaybackSlider } from './TranscriptionReviewModalPlaybackSlider';
 import { FloatingVideoPlayer, MeasureContentsView } from '../../../components';
-import { BackIcon } from '../../../components/icons';
+import { DoneButton } from './DoneButton';
 import { Units, Colors } from '../../../constants';
 import {
   interpolateSegments,
@@ -71,19 +71,6 @@ const styles = {
   floatingVideoPlayerContainer: {
     ...StyleSheet.absoluteFillObject,
   },
-  backButtonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  backIcon: {
-    height: Units.extraLarge,
-    width: Units.extraLarge,
-  },
-  spacer: {
-    flex: 1,
-  },
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
@@ -133,12 +120,7 @@ export const TranscriptionReviewModal: ComponentType<
           <SafeAreaView style={styles.flex}>
             <View style={styles.playbackControlsContainer}>
               <View style={styles.playbackControls}>
-                <View style={styles.backButtonContainer}>
-                  <BackIcon
-                    style={styles.backIcon}
-                    color={Colors.solid.nimbus}
-                  />
-                </View>
+                <DoneButton style={styles.flex} onPress={() => { /* TODO */}} />
                 <View style={styles.playButtonContainer}>
                   <PlayButton
                     style={styles.playButton}
@@ -147,7 +129,7 @@ export const TranscriptionReviewModal: ComponentType<
                     onPressPause={pauseVideo}
                   />
                 </View>
-                <View style={styles.spacer} />
+                <View style={styles.flex} />
               </View>
               <TranscriptionReviewModalPlaybackSlider
                 value={playbackTime}
