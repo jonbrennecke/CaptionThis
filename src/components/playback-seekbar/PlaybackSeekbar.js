@@ -44,7 +44,7 @@ const styles = {
   seekbarBackground: {
     ...StyleSheet.absoluteFillObject,
     borderRadius: Units.extraSmall,
-  }
+  },
 };
 
 export class PlaybackSeekbar extends PureComponent<
@@ -89,7 +89,10 @@ export class PlaybackSeekbar extends PureComponent<
         }}
       >
         {assetID && (
-          <SeekbarBackground assetID={assetID} style={styles.seekbarBackground} />
+          <SeekbarBackground
+            assetID={assetID}
+            style={styles.seekbarBackground}
+          />
         )}
       </Slider>
     );
