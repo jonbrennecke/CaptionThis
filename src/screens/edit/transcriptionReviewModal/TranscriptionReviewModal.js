@@ -9,7 +9,7 @@ import * as Screens from '../../../utils/Screens';
 import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/KeyboardAvoidingView';
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
 import { TranscriptionTextInput } from './TranscriptionTextInput';
-import { TranscriptionReviewModalPlaybackSlider } from './TranscriptionReviewModalPlaybackSlider';
+import { PlaybackSlider } from './PlaybackSlider';
 import { FloatingVideoPlayer, MeasureContentsView } from '../../../components';
 import { DoneButton } from './DoneButton';
 import { RewindButton } from './RewindButton';
@@ -183,7 +183,7 @@ export const TranscriptionReviewModal: ComponentType<
                 </View>
                 <View style={styles.flex} />
               </View>
-              <TranscriptionReviewModalPlaybackSlider
+              <PlaybackSlider
                 value={playbackTime}
                 min={0}
                 max={video.duration}

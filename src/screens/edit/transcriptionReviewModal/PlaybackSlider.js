@@ -9,7 +9,7 @@ import * as Fonts from '../../../utils/Fonts';
 
 import type { SFC, Style } from '../../../types';
 
-export type TranscriptionReviewModalPlaybackSliderProps = {
+export type PlaybackSliderProps = {
   style?: ?Style,
   value: number,
   min: number,
@@ -83,15 +83,15 @@ function hapticFeedback() {
 }
 
 // eslint-disable-next-line flowtype/generic-spacing
-export const TranscriptionReviewModalPlaybackSlider: SFC<
-  TranscriptionReviewModalPlaybackSliderProps
+export const PlaybackSlider: SFC<
+  PlaybackSliderProps
 > = ({
   style,
   value,
   min,
   max,
   onSelectValue,
-}: TranscriptionReviewModalPlaybackSliderProps) => (
+}: PlaybackSliderProps) => (
   <View style={[styles.container, style]}>
     <View style={styles.infoContainer}>
       <Text style={styles.durationText}>{formatTime(value)}</Text>
