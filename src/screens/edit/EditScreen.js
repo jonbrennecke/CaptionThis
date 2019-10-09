@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Alert, AppState as ReactAppState } from 'react-native';
 import { autobind } from 'core-decorators';
 import { Navigation } from 'react-native-navigation';
@@ -44,7 +44,7 @@ const styles = {
 // $FlowFixMe
 @Container
 @autobind
-export default class EditScreen extends Component<Props, State> {
+export default class EditScreen extends PureComponent<Props, State> {
   richTextOverlay: ?EditScreenRichTextOverlay;
   state: State = {
     videoViewSize: { width: 0, height: 0 },

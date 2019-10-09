@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, SafeAreaView, Dimensions, StyleSheet } from 'react-native';
 import throttle from 'lodash/throttle';
 import { autobind } from 'core-decorators';
@@ -105,7 +105,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class EditScreenVideoPlayer extends Component<Props, State> {
+export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
   captionsView: ?VideoCaptionsView;
   playerView: ?VideoPlayer;
   state = {
