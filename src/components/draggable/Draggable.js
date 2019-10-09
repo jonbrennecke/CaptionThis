@@ -9,8 +9,9 @@ import type { SFC, Style, Children } from '../../types';
 
 export type DraggableProps = {
   style?: ?Style,
-  contentContainerStyle?: ?Style,
   children?: ?Children,
+  contentContainerStyle?: ?Style,
+  initialPosition?: { x: number, y: number },
   onDragStart?: () => void,
   onDragEnd?: () => void,
 };
@@ -26,16 +27,18 @@ export const Draggable: SFC<DraggableProps> = ({
   style,
   contentContainerStyle,
   children,
+  initialPosition,
   onDragStart = noop,
   onDragEnd = noop,
 }: DraggableProps) => (
   <View style={[styles.absoluteFill, style]} pointerEvents="box-none">
     <PanGestureHandler
       style={styles.panContainer}
+      initialValue={initialPosition}
       returnToOriginalPosition={false}
       attachPanHandlersToChildren
       jumpToGrantedPosition={false}
-      clampToBounds={false}
+      clampToBounds
       renderChildren={props => (
         <Animated.View
           {...props}

@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { VideoPlayer } from '@jonbrennecke/react-native-media';
 import ReactNativeHaptic from 'react-native-haptic';
 import noop from 'lodash/noop';
@@ -18,6 +17,7 @@ export type FloatingVideoPlayerProps = {
   videoID: string,
   // $FlowFixMe
   videoPlayerRef?: Return<createRef<VideoPlayer>>,
+  initialPosition?: { x: number, y: number },
   onVideoDidUpdatePlaybackTime?: (
     playbackTime: number,
     duration: number
@@ -28,11 +28,7 @@ export type FloatingVideoPlayerProps = {
 };
 
 const styles = {
-  absoluteFill: StyleSheet.absoluteFillObject,
-  draggable: {
-    width: 100,
-    height: 16 / 9 * 100,
-  },
+  draggable: {},
   draggableContentContainer: {
     backgroundColor: Colors.solid.white,
     borderRadius: Units.extraSmall,
@@ -43,6 +39,8 @@ const styles = {
       width: 1,
       height: 1,
     },
+    width: 100,
+    height: 16 / 9 * 100,
   },
   videoPlayer: {
     flex: 1,
@@ -60,12 +58,14 @@ export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
   style,
   videoID,
   videoPlayerRef,
+  initialPosition,
   onVideoDidUpdatePlaybackTime = noop,
   onPlaybackStateChange = noop,
   onVideoWillRestart = noop,
 }: FloatingVideoPlayerProps) => (
   <Draggable
     style={[styles.draggable, style]}
+    initialPosition={initialPosition}
     contentContainerStyle={styles.draggableContentContainer}
     onDragStart={hapticFeedback}
     onDragEnd={hapticFeedback}

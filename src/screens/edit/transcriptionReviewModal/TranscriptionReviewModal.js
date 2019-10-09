@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Modal, StatusBar, View } from 'react-native';
+import { Modal, StatusBar, View, StyleSheet } from 'react-native';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 
@@ -8,7 +8,7 @@ import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/Key
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
 import { TranscriptionTextInput } from './TranscriptionTextInput';
 import { TranscriptionReviewModalPlaybackSlider } from './TranscriptionReviewModalPlaybackSlider';
-import { FloatingVideoPlayer } from '../../../components';
+import { FloatingVideoPlayer, MeasureContentsView } from '../../../components';
 import { Units, Colors } from '../../../constants';
 import {
   interpolateSegments,
@@ -55,6 +55,9 @@ const styles = {
   floatingVideoPlayer: {
     zIndex: 1000,
   },
+  floatingVideoPlayerContainer: {
+    ...StyleSheet.absoluteFillObject,
+  },
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
@@ -84,7 +87,10 @@ export const TranscriptionReviewModal: ComponentType<
       : null;
     const setSegmentSelection = (playbackTime: number) => {
       if (segments) {
-        const index = Math.max(findIndexOfSegmentAtPlaybackTime(segments, playbackTime), 0);
+        const index = Math.max(
+          findIndexOfSegmentAtPlaybackTime(segments, playbackTime),
+          0
+        );
         setSpeechTranscriptionSegmentSelection({
           startIndex: index,
           endIndex: index,
@@ -142,18 +148,28 @@ export const TranscriptionReviewModal: ComponentType<
                   });
                 }}
               />
-              <FloatingVideoPlayer
-                style={styles.floatingVideoPlayer}
-                videoID={video.assetID}
-                videoPlayerRef={videoPlayerRef}
-                onVideoDidUpdatePlaybackTime={playbackTime => {
-                  setPlaybackTime(playbackTime);
-                  setSegmentSelection(playbackTime);
-                }}
-                onPlaybackStateChange={setPlaybackState}
-                onVideoWillRestart={() => {
-                  setPlaybackTime(0);
-                  setSegmentSelection(0);
+              <MeasureContentsView
+                style={styles.floatingVideoPlayerContainer}
+                renderChildren={size => {
+                  const padding = { bottom: Units.small, left: Units.small };
+                  const initialPosition = { x: padding.left, y: size.height };
+                  return (
+                    <FloatingVideoPlayer
+                      style={styles.floatingVideoPlayer}
+                      initialPosition={initialPosition}
+                      videoID={video.assetID}
+                      videoPlayerRef={videoPlayerRef}
+                      onVideoDidUpdatePlaybackTime={playbackTime => {
+                        setPlaybackTime(playbackTime);
+                        setSegmentSelection(playbackTime);
+                      }}
+                      onPlaybackStateChange={setPlaybackState}
+                      onVideoWillRestart={() => {
+                        setPlaybackTime(0);
+                        setSegmentSelection(0);
+                      }}
+                    />
+                  );
                 }}
               />
             </View>

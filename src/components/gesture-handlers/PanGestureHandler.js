@@ -41,6 +41,8 @@ export type PanGestureHandlerState = {
   viewHeight: number,
   viewPageX: number,
   viewPageY: number,
+  childViewWidth: number,
+  childViewHeight: number,
 };
 
 // $FlowFixMe
@@ -79,6 +81,8 @@ export class PanGestureHandler extends PureComponent<
       viewHeight: 0,
       viewPageX: 0,
       viewPageY: 0,
+      childViewHeight: 0,
+      childViewWidth: 0,
     };
   }
 
@@ -229,6 +233,16 @@ export class PanGestureHandler extends PureComponent<
     );
   }
 
+  childViewDidLayout({ nativeEvent }: any) {
+    const {
+      layout: { width, height },
+    } = nativeEvent;
+    this.setState({
+      childViewWidth: width,
+      childViewHeight: height,
+    });
+  }
+
   render() {
     const style = this.props.shouldApplyTransformStyles
       ? {
@@ -236,8 +250,20 @@ export class PanGestureHandler extends PureComponent<
             this.props.horizontal && {
               translateX: this.props.clampToBounds
                 ? this.pan.x.interpolate({
-                    inputRange: [0, this.state.viewWidth],
-                    outputRange: [0, this.state.viewWidth],
+                    inputRange: [
+                      0,
+                      Math.max(
+                        this.state.viewWidth - this.state.childViewWidth,
+                        0
+                      ),
+                    ],
+                    outputRange: [
+                      0,
+                      Math.max(
+                        this.state.viewWidth - this.state.childViewWidth,
+                        0
+                      ),
+                    ],
                     extrapolate: 'clamp',
                   })
                 : this.pan.x,
@@ -245,8 +271,20 @@ export class PanGestureHandler extends PureComponent<
             this.props.vertical && {
               translateY: this.props.clampToBounds
                 ? this.pan.y.interpolate({
-                    inputRange: [0, this.state.viewHeight],
-                    outputRange: [0, this.state.viewHeight],
+                    inputRange: [
+                      0,
+                      Math.max(
+                        this.state.viewHeight - this.state.childViewHeight,
+                        0
+                      ),
+                    ],
+                    outputRange: [
+                      0,
+                      Math.max(
+                        this.state.viewHeight - this.state.childViewHeight,
+                        0
+                      ),
+                    ],
                     extrapolate: 'clamp',
                   })
                 : this.pan.y,
@@ -256,7 +294,7 @@ export class PanGestureHandler extends PureComponent<
       : {};
     return (
       <View
-        style={this.props.style}
+        style={[this.props.style, StyleSheet.absoluteFillObject]}
         ref={this.containerRef}
         onLayout={this.viewDidLayout}
         pointerEvents="box-none"
@@ -266,7 +304,7 @@ export class PanGestureHandler extends PureComponent<
             isDragging: this.state.isDragging,
             style,
             ...this.panResponder?.panHandlers,
-            // TODO: onLayout: this.childrenDidLayout
+            onLayout: this.childViewDidLayout,
           })
         ) : (
           <View
@@ -277,7 +315,7 @@ export class PanGestureHandler extends PureComponent<
             {this.props.renderChildren({
               isDragging: this.state.isDragging,
               style,
-              // TODO: onLayout: this.childrenDidLayout
+              onLayout: this.childViewDidLayout,
             })}
           </View>
         )}

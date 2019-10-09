@@ -14,7 +14,7 @@ import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
 import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
-import MeasureContentsView from '../../components/measure-contents-view/MeasureContentsView';
+import { MeasureContentsView } from '../../components';
 
 import type {
   MediaObject,

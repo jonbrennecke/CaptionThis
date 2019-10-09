@@ -9,7 +9,7 @@ import SwitchCameraButton from '../../components/switch-camera-button/SwitchCame
 import HomeScreenCameraRollButton from './HomeScreenCameraRollButton';
 import HomeScreenPresetStyles from './HomeScreenPresetStyles';
 import SlideUpAnimatedView from '../../components/animations/SlideUpAnimatedView';
-import MeasureContentsView from '../../components/measure-contents-view/MeasureContentsView';
+import { MeasureContentsView } from '../../components';
 import CaptionView from '../../components/caption-view/CaptionView';
 import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
 import { PRESET_STYLES } from './presets';
