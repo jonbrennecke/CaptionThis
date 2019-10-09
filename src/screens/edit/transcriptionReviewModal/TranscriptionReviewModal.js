@@ -3,6 +3,7 @@ import React from 'react';
 import { Modal, StatusBar, View, StyleSheet, ScrollView } from 'react-native';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
+import ReactNativeHaptic from 'react-native-haptic';
 
 import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/KeyboardAvoidingView';
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
@@ -31,6 +32,10 @@ export type TranscriptionReviewModalProps = {
   onRequestDismiss: () => void,
   onSpeechTranscriptionChange: SpeechTranscription => void,
 };
+
+function hapticFeedback() {
+  ReactNativeHaptic.generate('selection');
+}
 
 const SafeAreaView = withSafeArea(View, 'padding', 'vertical');
 
@@ -146,7 +151,11 @@ export const TranscriptionReviewModal: ComponentType<
                   <RewindButton
                     style={styles.rewindButton}
                     onPress={() => {
-                      /* TODO */
+                      const time = Math.max(playbackTime - 5, 0);
+                      setPlaybackTime(time);
+                      seekVideoToTime(time);
+                      setSegmentSelection(time);
+                      hapticFeedback();
                     }}
                   />
                   <PlayButton
@@ -158,7 +167,11 @@ export const TranscriptionReviewModal: ComponentType<
                   <FastForwardButton
                     style={styles.fastForwardButton}
                     onPress={() => {
-                      /* TODO */
+                      const time = Math.min(playbackTime + 5, video.duration);
+                      setPlaybackTime(time);
+                      seekVideoToTime(time);
+                      setSegmentSelection(time);
+                      hapticFeedback();
                     }}
                   />
                 </View>
