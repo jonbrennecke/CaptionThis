@@ -83,9 +83,7 @@ function hapticFeedback() {
 }
 
 // eslint-disable-next-line flowtype/generic-spacing
-export const PlaybackSlider: SFC<
-  PlaybackSliderProps
-> = ({
+export const PlaybackSlider: SFC<PlaybackSliderProps> = ({
   style,
   value,
   min,

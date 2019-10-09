@@ -6,7 +6,7 @@ import { Navigation } from 'react-native-navigation';
 
 import * as Screens from '../../utils/Screens';
 import * as Debug from '../../utils/Debug';
-import { UI_COLORS } from '../../constants';
+import { UI_COLORS, SCREENS } from '../../constants';
 
 import EditScreenVideoPlayer from './EditScreenVideoPlayer';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
@@ -30,7 +30,7 @@ type State = {
   exportProgress: number,
   isDraggingSeekbar: boolean,
   isRichTextEditorVisible: boolean,
-  isCaptionsEditorVisible: boolean,
+  transcriptionReviewScreenIsVisible: boolean,
   isLocaleMenuVisible: boolean,
 };
 
@@ -53,7 +53,7 @@ export default class EditScreen extends Component<Props, State> {
     orientation: null,
     isDraggingSeekbar: false,
     isRichTextEditorVisible: false,
-    isCaptionsEditorVisible: false,
+    transcriptionReviewScreenIsVisible: false,
     isLocaleMenuVisible: false,
   };
   speechManagerDidReceiveTranscriptionListener: ?EmitterSubscription;
@@ -61,6 +61,8 @@ export default class EditScreen extends Component<Props, State> {
   speechManagerDidEndListener: ?EmitterSubscription;
   speechManagerDidFailListener: ?EmitterSubscription;
   // speechManagerDidChangeLocaleListener: ?EmitterSubscription;
+  transcriptionReviewScreenDidAppearEventListener: any;
+  transcriptionReviewScreenDidDisappearEventListener: any;
 
   async componentDidMount() {
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
@@ -69,11 +71,13 @@ export default class EditScreen extends Component<Props, State> {
     } else {
       await this.beginSpeechTranscription();
     }
+    this.addNavigationListeners();
   }
 
   componentWillUnmount() {
     ReactAppState.removeEventListener('change', this.handleAppStateWillChange);
     this.removeSpeechListeners();
+    this.removeNavigationListeners();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -91,9 +95,45 @@ export default class EditScreen extends Component<Props, State> {
     }
   }
 
+  /// MARK -- app state listeners
+
   handleAppStateWillChange(nextAppState: ReactAppStateEnum) {
     this.props.receiveAppStateChange(nextAppState);
   }
+
+  /// MARK -- navigation listeners
+
+  addNavigationListeners() {
+    this.transcriptionReviewScreenDidAppearEventListener = Navigation.events().registerComponentDidAppearListener(
+      ({ componentId }) => {
+        if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
+          this.setState({
+            transcriptionReviewScreenIsVisible: true,
+          });
+        }
+      }
+    );
+    this.transcriptionReviewScreenDidDisappearEventListener = Navigation.events().registerComponentDidDisappearListener(
+      ({ componentId }) => {
+        if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
+          this.setState({
+            transcriptionReviewScreenIsVisible: false,
+          });
+        }
+      }
+    );
+  }
+
+  removeNavigationListeners() {
+    if (this.transcriptionReviewScreenDidAppearEventListener) {
+      this.transcriptionReviewScreenDidAppearEventListener.remove();
+    }
+    if (this.transcriptionReviewScreenDidDisappearEventListener) {
+      this.transcriptionReviewScreenDidDisappearEventListener.remove();
+    }
+  }
+
+  /// MARK -- speech event listeners
 
   async beginSpeechTranscription() {
     this.addSpeechListeners();
@@ -254,6 +294,7 @@ export default class EditScreen extends Component<Props, State> {
   }
 
   async showCaptionsEditor() {
+    this.pauseRichTextEditorCaptions();
     await Screens.pushTranscriptionReviewScreen(
       this.props.componentId,
       this.props.video
@@ -329,7 +370,9 @@ export default class EditScreen extends Component<Props, State> {
           countryCode={this.props.locale?.country.code}
           isAppInForeground={this.props.isAppInForeground}
           isDeviceLimitedByMemory={this.props.isDeviceLimitedByMemory}
-          isCaptionsEditorVisible={this.state.isCaptionsEditorVisible}
+          isCaptionsEditorVisible={
+            this.state.transcriptionReviewScreenIsVisible
+          }
           isExportingVideo={this.props.isExportingVideo}
           video={this.props.video}
           isSpeechTranscriptionFinal={this.props.isSpeechTranscriptionFinal}

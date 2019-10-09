@@ -134,7 +134,10 @@ export const TranscriptionReviewModal: ComponentType<
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
-        <FadeInOutAnimatedView isVisible={componentIsVisible} style={StyleSheet.absoluteFill}>
+        <FadeInOutAnimatedView
+          isVisible={componentIsVisible}
+          style={StyleSheet.absoluteFill}
+        >
           <KeyboardAvoidingView
             style={styles.flex}
             keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
@@ -142,10 +145,7 @@ export const TranscriptionReviewModal: ComponentType<
             <SafeAreaView style={styles.flex}>
               <View style={styles.playbackControlsContainer}>
                 <View style={styles.playbackControls}>
-                  <DoneButton
-                    style={styles.flex}
-                    onPress={dismissScreen}
-                  />
+                  <DoneButton style={styles.flex} onPress={dismissScreen} />
                   <View style={styles.playButtonContainer}>
                     <RewindButton
                       style={styles.rewindButton}

@@ -105,13 +105,16 @@ export function wrapWithTranscriptionReviewState<
     }
 
     async dismissScreen() {
-      this.setState({
-        componentIsVisible: false,
-      }, () => {
-        setTimeout(async () => {
-          await Screens.dismissTranscriptionReviewScreen();          
-        }, 300);
-      });
+      this.setState(
+        {
+          componentIsVisible: false,
+        },
+        () => {
+          setTimeout(async () => {
+            await Screens.dismissTranscriptionReviewScreen();
+          }, 300);
+        }
+      );
     }
 
     /// MARK - safe area events
