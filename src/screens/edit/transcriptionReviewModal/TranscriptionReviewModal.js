@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Modal, StatusBar, View, StyleSheet } from 'react-native';
+import { Modal, StatusBar, View, StyleSheet, ScrollView } from 'react-native';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 
@@ -38,9 +38,11 @@ const styles = {
   },
   transcriptionContainer: {
     flex: 1,
+    backgroundColor: Colors.solid.extraLightGray,
+  },
+  scrollViewContents: {
     paddingVertical: Units.extraLarge,
     paddingHorizontal: Units.extraLarge,
-    backgroundColor: Colors.solid.extraLightGray,
   },
   playbackControlsContainer: {
     zIndex: 1000,
@@ -51,9 +53,16 @@ const styles = {
   },
   playbackControls: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: Units.extraSmall,
+    paddingHorizontal: Units.small,
+  },
+  playButtonContainer: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: Units.extraSmall,
   },
   playButton: {},
   floatingVideoPlayer: {
@@ -62,10 +71,19 @@ const styles = {
   floatingVideoPlayerContainer: {
     ...StyleSheet.absoluteFillObject,
   },
+  backButtonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
   backIcon: {
     height: Units.extraLarge,
     width: Units.extraLarge,
-  }
+  },
+  spacer: {
+    flex: 1,
+  },
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
@@ -113,17 +131,23 @@ export const TranscriptionReviewModal: ComponentType<
           keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
         >
           <SafeAreaView style={styles.flex}>
-            <View style={styles.navigationControlsContainer}>
-              <BackIcon style={styles.backIcon} color={Colors.solid.nimbus} />
-            </View>
             <View style={styles.playbackControlsContainer}>
               <View style={styles.playbackControls}>
-                <PlayButton
-                  style={styles.playButton}
-                  playbackState={playbackState}
-                  onPressPlay={playVideo}
-                  onPressPause={pauseVideo}
-                />
+                <View style={styles.backButtonContainer}>
+                  <BackIcon
+                    style={styles.backIcon}
+                    color={Colors.solid.nimbus}
+                  />
+                </View>
+                <View style={styles.playButtonContainer}>
+                  <PlayButton
+                    style={styles.playButton}
+                    playbackState={playbackState}
+                    onPressPlay={playVideo}
+                    onPressPause={pauseVideo}
+                  />
+                </View>
+                <View style={styles.spacer} />
               </View>
               <TranscriptionReviewModalPlaybackSlider
                 value={playbackTime}
@@ -137,25 +161,27 @@ export const TranscriptionReviewModal: ComponentType<
               />
             </View>
             <View style={styles.transcriptionContainer}>
-              <TranscriptionTextInput
-                speechTranscriptionSegments={segments}
-                speechTranscriptionSegmentSelection={
-                  speechTranscriptionSegmentSelection
-                }
-                onSelectionChange={
-                  setSpeechTranscriptionSegmentSelection
-                  // TODO: set playbackTime to match first segment in selection
-                }
-                onSpeechTranscriptionSegmentsChange={segments => {
-                  if (!segments || !speechTranscription) {
-                    return;
+              <ScrollView contentContainerStyle={styles.scrollViewContents}>
+                <TranscriptionTextInput
+                  speechTranscriptionSegments={segments}
+                  speechTranscriptionSegmentSelection={
+                    speechTranscriptionSegmentSelection
                   }
-                  onSpeechTranscriptionChange({
-                    ...speechTranscription,
-                    segments,
-                  });
-                }}
-              />
+                  onSelectionChange={
+                    setSpeechTranscriptionSegmentSelection
+                    // TODO: set playbackTime to match first segment in selection
+                  }
+                  onSpeechTranscriptionSegmentsChange={segments => {
+                    if (!segments || !speechTranscription) {
+                      return;
+                    }
+                    onSpeechTranscriptionChange({
+                      ...speechTranscription,
+                      segments,
+                    });
+                  }}
+                />
+              </ScrollView>
               <MeasureContentsView
                 style={styles.floatingVideoPlayerContainer}
                 renderChildren={size => {

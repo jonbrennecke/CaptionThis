@@ -57,6 +57,7 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
       style={styles.textInput}
       multiline
       autoFocus
+      scrollEnabled={false}
       autoCapitalize="none"
       returnKeyType="done"
       onChangeText={(text: string) => {
