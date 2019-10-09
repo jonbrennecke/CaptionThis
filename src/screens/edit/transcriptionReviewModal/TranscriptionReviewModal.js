@@ -103,7 +103,6 @@ export const TranscriptionReviewModal: ComponentType<
   TranscriptionReviewModalProps
 > = wrapWithTranscriptionReviewState(
   ({
-    componentId,
     video,
     videoPlayerRef,
     playVideo,
@@ -118,9 +117,10 @@ export const TranscriptionReviewModal: ComponentType<
     setSpeechTranscriptionSegmentSelection,
     bottomSafeAreaInset,
     onSpeechTranscriptionChange,
+    componentIsVisible,
   }) => {
     const dismiss = async () => {
-      await Screens.dismissTranscriptionReviewScreen(componentId);
+      await Screens.dismissTranscriptionReviewScreen();
     };
     const segments = speechTranscription
       ? interpolateSegments(speechTranscription.segments)

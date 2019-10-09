@@ -5,6 +5,7 @@ import { autobind } from 'core-decorators';
 // $FlowFixMe
 import SafeArea from 'react-native-safe-area';
 import throttle from 'lodash/throttle';
+import { Navigation } from 'react-native-navigation';
 
 import { wrapWithSpeechTranscriptionState } from './speechTranscriptionState';
 
@@ -38,6 +39,7 @@ export type TranscriptionReviewStateHOCState = {
     startIndex: number,
     endIndex: number,
   },
+  componentIsVisible: boolean,
 };
 
 export function wrapWithTranscriptionReviewState<
@@ -64,13 +66,16 @@ export function wrapWithTranscriptionReviewState<
       playbackTime: 0,
       playbackState: 'waiting',
       speechTranscriptionSegmentSelection: null,
+      componentIsVisible: false,
     };
+    navigationEventListener: any;
 
     componentDidMount() {
       SafeArea.addEventListener(
         'safeAreaInsetsForRootViewDidChange',
         this.safeAreaInsetsForRootViewDidChange
       );
+      this.navigationEventListener = Navigation.events().bindComponent(this);
     }
 
     componentWillUnmount() {
@@ -78,7 +83,26 @@ export function wrapWithTranscriptionReviewState<
         'safeAreaInsetsForRootViewDidChange',
         this.safeAreaInsetsForRootViewDidChange
       );
+      if (this.navigationEventListener) {
+        this.navigationEventListener.remove();
+      }
     }
+
+    /// MARK - navigation events
+
+    componentDidAppear() {
+      this.setState({
+        componentIsVisible: true,
+      });
+    }
+
+    componentDidDisappear() {
+      this.setState({
+        componentIsVisible: false,
+      });
+    }
+
+    /// MARK - safe area events
 
     safeAreaInsetsForRootViewDidChange({ safeAreaInsets: insets }: any) {
       this.setState({

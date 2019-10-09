@@ -65,8 +65,6 @@ export const pushTranscriptionReviewScreen = async (
   );
 };
 
-export const dismissTranscriptionReviewScreen = async (
-  currentComponentId: string
-) => {
+export const dismissTranscriptionReviewScreen = async () => {
   await Navigation.pop(SCREENS.TRANSCRIPTION_REVIEW_SCREEN);
 };
