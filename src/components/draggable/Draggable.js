@@ -10,6 +10,7 @@ import type { Style, Children } from '../../types';
 export type DraggableProps = {
   style?: ?Style,
   children?: ?Children,
+  disabled?: boolean,
   contentContainerStyle?: ?Style,
   initialPosition?: { x: number, y: number },
   onDragStart?: () => void,
@@ -39,6 +40,7 @@ export class Draggable extends PureComponent<DraggableProps> {
       style,
       contentContainerStyle,
       children,
+      disabled = false,
       initialPosition,
       onDragStart = noop,
       onDragEnd = noop,
@@ -48,6 +50,7 @@ export class Draggable extends PureComponent<DraggableProps> {
         <PanGestureHandler
           style={styles.panContainer}
           ref={this.panGestureHandlerRef}
+          disabled={disabled}
           initialValue={initialPosition}
           returnToOriginalPosition={false}
           attachPanHandlersToChildren

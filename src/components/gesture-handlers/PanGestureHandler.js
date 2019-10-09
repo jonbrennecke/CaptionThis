@@ -168,6 +168,9 @@ export class PanGestureHandler extends PureComponent<
   }
 
   handleMove(event: Event, gesture: Gesture) {
+    if (this.props.disabled) {
+      return;
+    }
     Animated.event([
       null,
       {
@@ -201,6 +204,9 @@ export class PanGestureHandler extends PureComponent<
   }
 
   handleRelease(event: any, gesture: Gesture) {
+    if (this.props.disabled) {
+      return;
+    }
     this.panOffset = this.props.jumpToGrantedPosition
       ? {
           x: gesture.x0 + gesture.dx - this.state.viewPageX,

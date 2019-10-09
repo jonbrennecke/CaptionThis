@@ -148,6 +148,7 @@ export class FloatingVideoPlayer extends PureComponent<
       <Draggable
         ref={this.draggableRef}
         style={[styles.draggable, style]}
+        disabled={this.state.isMinimized}
         initialPosition={initialPosition}
         contentContainerStyle={styles.draggableContentContainer}
         onDragStart={hapticFeedback}
