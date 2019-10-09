@@ -9,6 +9,7 @@ import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
 import { TranscriptionTextInput } from './TranscriptionTextInput';
 import { TranscriptionReviewModalPlaybackSlider } from './TranscriptionReviewModalPlaybackSlider';
 import { FloatingVideoPlayer, MeasureContentsView } from '../../../components';
+import { BackIcon } from '../../../components/icons';
 import { Units, Colors } from '../../../constants';
 import {
   interpolateSegments,
@@ -44,7 +45,10 @@ const styles = {
   playbackControlsContainer: {
     zIndex: 1000,
   },
-  navigationControlsContainer: {},
+  navigationControlsContainer: {
+    paddingVertical: Units.small,
+    paddingHorizontal: Units.small,
+  },
   playbackControls: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -58,6 +62,10 @@ const styles = {
   floatingVideoPlayerContainer: {
     ...StyleSheet.absoluteFillObject,
   },
+  backIcon: {
+    height: Units.extraLarge,
+    width: Units.extraLarge,
+  }
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
@@ -106,7 +114,7 @@ export const TranscriptionReviewModal: ComponentType<
         >
           <SafeAreaView style={styles.flex}>
             <View style={styles.navigationControlsContainer}>
-              {/* Back button */}
+              <BackIcon style={styles.backIcon} color={Colors.solid.nimbus} />
             </View>
             <View style={styles.playbackControlsContainer}>
               <View style={styles.playbackControls}>
