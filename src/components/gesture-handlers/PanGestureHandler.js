@@ -94,6 +94,9 @@ export class PanGestureHandler extends PureComponent<
       onStartShouldSetPanResponderCapture: stubFalse,
       onMoveShouldSetPanResponder: (event, gesture) => {
         const { dx, dy } = gesture;
+        if (dx === 0 && dy === 0) {
+          return false;
+        }
         if (this.props.vertical && !this.props.horizontal) {
           return Math.abs(dy) > Math.abs(dx);
         } else if (this.props.horizontal && !this.props.vertical) {

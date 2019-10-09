@@ -1,18 +1,19 @@
 // @flow
-import React from 'react';
-import { View } from 'react-native';
+import React, { PureComponent } from 'react';
+import { View, Animated, TouchableWithoutFeedback, Easing } from 'react-native';
 import { VideoPlayer } from '@jonbrennecke/react-native-media';
 import ReactNativeHaptic from 'react-native-haptic';
 import noop from 'lodash/noop';
+import { autobind } from 'core-decorators';
 
 import { Draggable } from '../draggable';
 import { Units, Colors } from '../../constants';
-import { MinimizeButton } from './MinimizeButton';
+import { ResizeIcon } from '../icons';
 
 import type { createRef } from 'react';
 import type { Size, PlaybackState } from '@jonbrennecke/react-native-media';
 
-import type { SFC, Style, Return } from '../../types';
+import type { Style, Return } from '../../types';
 
 export type FloatingVideoPlayerProps = {
   style?: ?Style,
@@ -29,14 +30,54 @@ export type FloatingVideoPlayerProps = {
   onPlaybackStateChange?: PlaybackState => void,
 };
 
+export type FloatingVideoPlayerState = {
+  isMinimized: boolean,
+};
+
 const styles = {
   flex: {
     flex: 1,
   },
   draggable: {},
   draggableContentContainer: {
-    backgroundColor: Colors.solid.white,
+    width: 100,
+    height: 16 / 9 * 100,
+  },
+  videoPlayerAndButtonContainer: {
+    flex: 1,
+  },
+  videoPlayerContainer: (resizeAnim: Animated.Value) => ({
+    flex: 1,
+    borderWidth: 3,
+    borderColor: Colors.solid.white,
     borderRadius: Units.extraSmall,
+    opacity: resizeAnim,
+  }),
+  minimizeButton: (resizeAnim: Animated.Value) => ({
+    position: 'absolute',
+    bottom: Units.small,
+    left: Units.small,
+    backgroundColor: resizeAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [Colors.solid.nimbus, Colors.solid.white],
+    }),
+    width: Units.extraLarge,
+    height: Units.extraLarge,
+    borderRadius: Units.extraLarge * 0.5,
+    padding: Units.extraSmall,
+  }),
+  resizeAnimation: (resizeAnim: Animated.Value) => ({
+    width: resizeAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [Units.extraLarge, 100],
+    }),
+    height: resizeAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [Units.extraLarge, 16 / 9 * 100],
+    }),
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
     shadowColor: Colors.solid.darkGray,
     shadowOpacity: 0.35,
     shadowRadius: 7,
@@ -44,57 +85,103 @@ const styles = {
       width: 1,
       height: 1,
     },
-    width: 100,
-    height: 16 / 9 * 100,
-  },
-  videoPlayerContainer: {
-    flex: 1,
-    borderWidth: 3,
-    borderColor: Colors.solid.white,
-    borderRadius: Units.extraSmall,
-  },
-  minimizeButton: {
-    position: 'absolute',
-    top: Units.extraSmall,
-    right: Units.extraSmall,
-  },
+    borderRadius: resizeAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [Units.extraLarge * 0.5, Units.extraSmall],
+    }),
+  }),
 };
 
 function hapticFeedback() {
   ReactNativeHaptic.generate('selection');
 }
 
-export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
-  style,
-  videoID,
-  videoPlayerRef,
-  initialPosition,
-  onVideoDidUpdatePlaybackTime = noop,
-  onPlaybackStateChange = noop,
-  onVideoWillRestart = noop,
-}: FloatingVideoPlayerProps) => (
-  <Draggable
-    style={[styles.draggable, style]}
-    initialPosition={initialPosition}
-    contentContainerStyle={styles.draggableContentContainer}
-    onDragStart={hapticFeedback}
-    onDragEnd={hapticFeedback}
-  >
-    <View style={styles.videoPlayerContainer}>
-      <VideoPlayer
-        style={styles.flex}
-        videoID={videoID}
-        ref={videoPlayerRef}
-        onPlaybackStateChange={onPlaybackStateChange}
-        onVideoDidUpdatePlaybackTime={onVideoDidUpdatePlaybackTime}
-        onVideoWillRestart={onVideoWillRestart}
-      />
-      <MinimizeButton
-        style={styles.minimizeButton}
-        onPress={() => {
-          /* TODO */
-        }}
-      />
-    </View>
-  </Draggable>
-);
+// $FlowFixMe
+@autobind
+export class FloatingVideoPlayer extends PureComponent<
+  FloatingVideoPlayerProps,
+  FloatingVideoPlayerState
+> {
+  state: FloatingVideoPlayerState = {
+    isMinimized: false,
+  };
+  resizeAnim = new Animated.Value(1);
+
+  minimize() {
+    Animated.timing(this.resizeAnim, {
+      toValue: 0,
+      easing: Easing.inOut(Easing.quad),
+      duration: 150,
+    }).start(() => {
+      this.setState({
+        isMinimized: true,
+      });
+    });
+  }
+
+  maximize() {
+    Animated.timing(this.resizeAnim, {
+      toValue: 1,
+      easing: Easing.inOut(Easing.quad),
+      duration: 150,
+    }).start(() => {
+      this.setState({
+        isMinimized: false,
+      });
+    });
+  }
+
+  render() {
+    const {
+      style,
+      videoID,
+      videoPlayerRef,
+      initialPosition,
+      onVideoDidUpdatePlaybackTime = noop,
+      onPlaybackStateChange = noop,
+      onVideoWillRestart = noop,
+    } = this.props;
+    return (
+      <Draggable
+        style={[styles.draggable, style]}
+        initialPosition={initialPosition}
+        contentContainerStyle={styles.draggableContentContainer}
+        onDragStart={hapticFeedback}
+        onDragEnd={hapticFeedback}
+      >
+        <Animated.View style={styles.resizeAnimation(this.resizeAnim)}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              this.state.isMinimized ? this.maximize() : this.minimize();
+            }}
+          >
+            <View style={styles.videoPlayerAndButtonContainer}>
+              <Animated.View
+                style={styles.videoPlayerContainer(this.resizeAnim)}
+              >
+                <VideoPlayer
+                  style={styles.flex}
+                  videoID={videoID}
+                  ref={videoPlayerRef}
+                  onPlaybackStateChange={onPlaybackStateChange}
+                  onVideoDidUpdatePlaybackTime={onVideoDidUpdatePlaybackTime}
+                  onVideoWillRestart={onVideoWillRestart}
+                />
+              </Animated.View>
+              <Animated.View style={styles.minimizeButton(this.resizeAnim)}>
+                <ResizeIcon
+                  style={styles.flex}
+                  color={
+                    this.state.isMinimized
+                      ? Colors.solid.white
+                      : Colors.solid.nimbus
+                  }
+                />
+              </Animated.View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Animated.View>
+      </Draggable>
+    );
+  }
+}

@@ -14,12 +14,11 @@ export type MinimizeButtonProps = {
 
 const styles = {
   container: {
-    width: Units.large,
-    height: Units.large,
-    backgroundColor: Colors.solid.white,
-    borderRadius: Units.large * 0.5,
+    width: Units.extraLarge,
+    height: Units.extraLarge,
+    // backgroundColor: Colors.solid.white,
+    borderRadius: Units.extraLarge * 0.5,
     padding: Units.extraSmall,
-    borderWidth: 1,
   },
   icon: {
     flex: 1,
@@ -30,7 +29,11 @@ export const MinimizeButton: SFC<MinimizeButtonProps> = ({
   style,
   onPress,
 }: MinimizeButtonProps) => (
-  <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
+  <TouchableOpacity
+    disabled
+    style={[styles.container, style]}
+    onPress={onPress}
+  >
     <ResizeIcon style={styles.icon} color={Colors.solid.nimbus} />
   </TouchableOpacity>
 );
