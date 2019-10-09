@@ -151,8 +151,13 @@ export const TranscriptionReviewModal: ComponentType<
               <MeasureContentsView
                 style={styles.floatingVideoPlayerContainer}
                 renderChildren={size => {
+                  const width = 100;
+                  const height = 16 / 9 * width;
                   const padding = { bottom: Units.small, left: Units.small };
-                  const initialPosition = { x: padding.left, y: size.height };
+                  const initialPosition = {
+                    x: padding.left,
+                    y: size.height - Units.small - height,
+                  };
                   return (
                     <FloatingVideoPlayer
                       style={styles.floatingVideoPlayer}

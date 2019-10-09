@@ -7,6 +7,7 @@ import stubFalse from 'lodash/stubFalse';
 import compact from 'lodash/compact';
 import clamp from 'lodash/clamp';
 import throttle from 'lodash/throttle';
+import isEqual from 'lodash/isEqual';
 
 import type { Gesture, Style } from '../../types/react';
 import type { Element } from 'react';
@@ -109,6 +110,12 @@ export class PanGestureHandler extends PureComponent<
 
   componentWillUnmount() {
     this.pan.removeAllListeners();
+  }
+
+  componentDidUpdate(prevProps: PanGestureHandlerProps) {
+    if (!isEqual(this.props.initialValue, prevProps.initialValue)) {
+      this.setPanValue(this.props.initialValue);
+    }
   }
 
   setPanValue(value: { x: number, y: number }) {
