@@ -4,6 +4,7 @@ import { View, Alert, AppState as ReactAppState } from 'react-native';
 import { autobind } from 'core-decorators';
 import { Navigation } from 'react-native-navigation';
 
+import * as Screens from '../../utils/Screens';
 import * as Debug from '../../utils/Debug';
 import { UI_COLORS } from '../../constants';
 
@@ -16,7 +17,6 @@ import SpeechManager from '../../utils/SpeechManager';
 import LocaleMenu from '../../components/localization/LocaleMenu';
 import Container from './Container';
 import * as actions from './actions';
-import { TranscriptionReviewModal } from './transcriptionReviewModal';
 
 import type { Size, ColorRGBA, Orientation } from '../../types/media';
 import type { SpeechTranscription, LocaleObject } from '../../types/speech';
@@ -253,16 +253,15 @@ export default class EditScreen extends Component<Props, State> {
     }));
   }
 
-  showCaptionsEditor() {
-    this.setState({
-      isCaptionsEditorVisible: true,
-    });
+  async showCaptionsEditor() {
+    await Screens.pushTranscriptionReviewScreen(
+      this.props.componentId,
+      this.props.video
+    );
   }
 
-  dismissCaptionsEditor() {
-    this.setState({
-      isCaptionsEditorVisible: false,
-    });
+  async dismissCaptionsEditor() {
+    await Screens.dismissTranscriptionReviewScreen(this.props.componentId);
   }
 
   showRichTextEditor() {
@@ -344,7 +343,9 @@ export default class EditScreen extends Component<Props, State> {
             this.setState({ orientation })
           }
           onRequestShowRichTextEditor={this.showRichTextEditor}
-          onRequestShowCaptionsEditor={this.showCaptionsEditor}
+          onRequestShowCaptionsEditor={() => {
+            this.showCaptionsEditor();
+          }}
           onRequestPopToHomeScreen={() => {
             // TODO: handle awaiting this promise
             this.popToHomeScreen();
@@ -381,18 +382,6 @@ export default class EditScreen extends Component<Props, State> {
         <EditScreenLoadingOverlay
           isVisible={!this.props.isSpeechTranscriptionFinal}
           duration={this.props.video.duration}
-        />
-        <TranscriptionReviewModal
-          video={this.props.video}
-          isVisible={this.state.isCaptionsEditorVisible}
-          speechTranscription={this.props.speechTranscription}
-          onRequestDismiss={this.dismissCaptionsEditor}
-          onSpeechTranscriptionChange={speechTranscription =>
-            this.props.receiveSpeechTranscriptionSuccess(
-              this.props.video.assetID,
-              speechTranscription
-            )
-          }
         />
         <LocaleMenu
           isVisible={this.state.isLocaleMenuVisible}

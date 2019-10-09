@@ -1,10 +1,11 @@
 // @flow
 import React from 'react';
-import { Modal, StatusBar, View, StyleSheet, ScrollView } from 'react-native';
+import { StatusBar, View, StyleSheet, ScrollView } from 'react-native';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 import ReactNativeHaptic from 'react-native-haptic';
 
+import * as Screens from '../../../utils/Screens';
 import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/KeyboardAvoidingView';
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
 import { TranscriptionTextInput } from './TranscriptionTextInput';
@@ -26,10 +27,9 @@ import type { MediaObject } from '@jonbrennecke/react-native-media';
 import type { SpeechTranscription } from '../../../types';
 
 export type TranscriptionReviewModalProps = {
+  componentId: string,
   video: MediaObject,
-  isVisible: boolean,
   speechTranscription: ?SpeechTranscription,
-  onRequestDismiss: () => void,
   onSpeechTranscriptionChange: SpeechTranscription => void,
 };
 
@@ -42,6 +42,10 @@ const SafeAreaView = withSafeArea(View, 'padding', 'vertical');
 const styles = {
   flex: {
     flex: 1,
+  },
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: Colors.solid.white,
   },
   transcriptionContainer: {
     flex: 1,
@@ -99,6 +103,7 @@ export const TranscriptionReviewModal: ComponentType<
   TranscriptionReviewModalProps
 > = wrapWithTranscriptionReviewState(
   ({
+    componentId,
     video,
     videoPlayerRef,
     playVideo,
@@ -106,16 +111,17 @@ export const TranscriptionReviewModal: ComponentType<
     playbackState,
     setPlaybackState,
     pauseVideo,
-    isVisible,
     playbackTime,
     setPlaybackTime,
-    onRequestDismiss,
     speechTranscription,
     speechTranscriptionSegmentSelection,
     setSpeechTranscriptionSegmentSelection,
     bottomSafeAreaInset,
     onSpeechTranscriptionChange,
   }) => {
+    const dismiss = async () => {
+      await Screens.dismissTranscriptionReviewScreen(componentId);
+    };
     const segments = speechTranscription
       ? interpolateSegments(speechTranscription.segments)
       : null;
@@ -132,8 +138,8 @@ export const TranscriptionReviewModal: ComponentType<
       }
     };
     return (
-      <Modal visible={isVisible} onRequestDismissModal={onRequestDismiss}>
-        {isVisible && <StatusBar barStyle="dark-content" />}
+      <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
         <KeyboardAvoidingView
           style={styles.flex}
           keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
@@ -144,7 +150,7 @@ export const TranscriptionReviewModal: ComponentType<
                 <DoneButton
                   style={styles.flex}
                   onPress={() => {
-                    /* TODO */
+                    dismiss();
                   }}
                 />
                 <View style={styles.playButtonContainer}>
@@ -242,7 +248,7 @@ export const TranscriptionReviewModal: ComponentType<
             </View>
           </SafeAreaView>
         </KeyboardAvoidingView>
-      </Modal>
+      </View>
     );
   }
 );

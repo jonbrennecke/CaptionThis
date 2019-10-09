@@ -318,6 +318,7 @@ export const SCREENS = {
   HOME_SCREEN: `${APP_BUNDLE_ID}.HomeScreen`,
   EDIT_SCREEN: `${APP_BUNDLE_ID}.EditScreen`,
   LOGIN_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
+  TRANSCRIPTION_REVIEW_SCREEN: `${APP_BUNDLE_ID}.TranscriptionReviewScreen`,
 };
 
 export const APP_ORIENTATIONS = ['portrait'];
@@ -376,6 +377,27 @@ export const SCREEN_PARAMS = {
         popGesture: false,
         statusBar: {
           style: 'light',
+        },
+        topBar: {
+          visible: false,
+          animate: false,
+        },
+        layout: {
+          backgroundColor: UI_COLORS.BLACK,
+          orientation: APP_ORIENTATIONS,
+        },
+      },
+    },
+  },
+  [SCREENS.TRANSCRIPTION_REVIEW_SCREEN]: {
+    component: {
+      name: SCREENS.TRANSCRIPTION_REVIEW_SCREEN,
+      id: SCREENS.TRANSCRIPTION_REVIEW_SCREEN,
+      passProps: {},
+      options: {
+        popGesture: true,
+        statusBar: {
+          style: 'dark',
         },
         topBar: {
           visible: false,

@@ -51,3 +51,22 @@ function passPropsComponentMergeParams(props: { [key: string]: any }) {
     },
   };
 }
+
+export const pushTranscriptionReviewScreen = async (
+  currentComponentId: string,
+  video: MediaObject
+) => {
+  await Navigation.push(
+    currentComponentId,
+    merge(
+      { ...SCREEN_PARAMS[SCREENS.TRANSCRIPTION_REVIEW_SCREEN] },
+      passPropsComponentMergeParams({ video })
+    )
+  );
+};
+
+export const dismissTranscriptionReviewScreen = async (
+  currentComponentId: string
+) => {
+  await Navigation.pop(SCREENS.TRANSCRIPTION_REVIEW_SCREEN);
+};

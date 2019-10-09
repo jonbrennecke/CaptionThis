@@ -6,10 +6,13 @@ import { autobind } from 'core-decorators';
 import SafeArea from 'react-native-safe-area';
 import throttle from 'lodash/throttle';
 
+import { wrapWithSpeechTranscriptionState } from './speechTranscriptionState';
+
 import type { ComponentType } from 'react';
 import typeof { VideoPlayer } from '@jonbrennecke/react-native-media';
 import type { PlaybackState } from '@jonbrennecke/react-native-camera';
 
+import type { SpeechTranscriptionHOCProps } from './speechTranscriptionState';
 import type { Return } from '../../../types';
 
 export type TranscriptionReviewStateHOCProps = {};
@@ -43,6 +46,7 @@ export function wrapWithTranscriptionReviewState<
     TranscriptionReviewStateHOCProps &
       TranscriptionReviewStateHOCExtraProps &
       TranscriptionReviewStateHOCState &
+      SpeechTranscriptionHOCProps &
       PassThroughProps
   >
 >(
@@ -169,8 +173,11 @@ export function wrapWithTranscriptionReviewState<
     }
   }
 
+  const Component = wrapWithSpeechTranscriptionState(
+    TranscriptionReviewStateHOC
+  );
   const WrappedWithTranscriptionReviewStateHOC = props => (
-    <TranscriptionReviewStateHOC {...props} />
+    <Component {...props} />
   );
   return WrappedWithTranscriptionReviewStateHOC;
 }
