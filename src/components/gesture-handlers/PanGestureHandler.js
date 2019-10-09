@@ -113,7 +113,10 @@ export class PanGestureHandler extends PureComponent<
   }
 
   componentDidUpdate(prevProps: PanGestureHandlerProps) {
-    if (!isEqual(this.props.initialValue, prevProps.initialValue) && this.props.initialValue) {
+    if (
+      !isEqual(this.props.initialValue, prevProps.initialValue) &&
+      this.props.initialValue
+    ) {
       this.setPanValue(this.props.initialValue);
     }
   }

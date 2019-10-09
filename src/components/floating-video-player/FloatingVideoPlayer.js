@@ -31,7 +31,7 @@ export type FloatingVideoPlayerProps = {
 
 const styles = {
   flex: {
-    flex: 1
+    flex: 1,
   },
   draggable: {},
   draggableContentContainer: {
@@ -57,7 +57,7 @@ const styles = {
     position: 'absolute',
     top: Units.extraSmall,
     right: Units.extraSmall,
-  }
+  },
 };
 
 function hapticFeedback() {
@@ -91,7 +91,9 @@ export const FloatingVideoPlayer: SFC<FloatingVideoPlayerProps> = ({
       />
       <MinimizeButton
         style={styles.minimizeButton}
-        onPress={() => { /* TODO */}}
+        onPress={() => {
+          /* TODO */
+        }}
       />
     </View>
   </Draggable>

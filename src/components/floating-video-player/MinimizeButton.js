@@ -20,14 +20,16 @@ const styles = {
     borderRadius: Units.large * 0.5,
     padding: Units.extraSmall,
     borderWidth: 1,
-    borderColor: Colors.solid.darkGray,
   },
   icon: {
     flex: 1,
-  }
+  },
 };
 
-export const MinimizeButton: SFC<MinimizeButtonProps> = ({ style, onPress }: MinimizeButtonProps) => (
+export const MinimizeButton: SFC<MinimizeButtonProps> = ({
+  style,
+  onPress,
+}: MinimizeButtonProps) => (
   <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
     <ResizeIcon style={styles.icon} color={Colors.solid.nimbus} />
   </TouchableOpacity>
