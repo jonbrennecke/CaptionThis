@@ -5,6 +5,7 @@ import { StatusBar, View, StyleSheet, ScrollView } from 'react-native';
 import { withSafeArea } from 'react-native-safe-area';
 import ReactNativeHaptic from 'react-native-haptic';
 import { FadeInOutAnimatedView } from '@jonbrennecke/react-native-animated-ui';
+import first from 'lodash/first';
 
 import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/KeyboardAvoidingView';
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
@@ -16,6 +17,7 @@ import { RewindButton } from './RewindButton';
 import { FastForwardButton } from './FastForwardButton';
 import { Units, Colors } from '../../../constants';
 import {
+  findSegmentsInSelectedSegmentRange,
   interpolateSegments,
   findIndexOfSegmentAtPlaybackTime,
 } from './transcriptionReviewUtils';
@@ -194,10 +196,18 @@ export const TranscriptionReviewModal: ComponentType<
                     speechTranscriptionSegmentSelection={
                       speechTranscriptionSegmentSelection
                     }
-                    onSelectionChange={
-                      setSpeechTranscriptionSegmentSelection
-                      // TODO: set playbackTime to match first segment in selection
-                    }
+                    onSelectionChange={selection => {
+                      setSpeechTranscriptionSegmentSelection(selection);
+                      if (selection && segments) {
+                        const firstSelectedSegment = findSegmentsInSelectedSegmentRange(
+                          segments,
+                          selection
+                        )[0];
+                        if (firstSelectedSegment) {
+                          setPlaybackTime(firstSelectedSegment.timestamp);
+                        }
+                      }
+                    }}
                     onSpeechTranscriptionSegmentsChange={segments => {
                       if (!segments || !speechTranscription) {
                         return;

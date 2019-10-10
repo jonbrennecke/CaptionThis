@@ -5,7 +5,8 @@ import { View, TextInput, Text } from 'react-native';
 import * as Fonts from '../../../utils/Fonts';
 import { Colors } from '../../../constants';
 import {
-  findSegmentsInSelection,
+  isSegmentSelected,
+  findSegmentsInSelectedTextRange,
   transformSegmentsByTextDiff,
 } from './transcriptionReviewUtils';
 
@@ -74,7 +75,7 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
         if (!segments) {
           return onSelectionChange(null);
         }
-        onSelectionChange(findSegmentsInSelection(segments, selection));
+        onSelectionChange(findSegmentsInSelectedTextRange(segments, selection));
       }}
     >
       {segments
@@ -92,16 +93,3 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
     </TextInput>
   </View>
 );
-
-function isSegmentSelected(
-  segment: SpeechTranscriptionSegment,
-  index: number,
-  selection: ?{ endIndex: number, startIndex: number }
-): boolean {
-  if (/\s+/.test(segment.substring)) {
-    return false;
-  }
-  return selection
-    ? index >= selection.startIndex && index <= selection.endIndex
-    : false;
-}

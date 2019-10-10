@@ -59,7 +59,7 @@ export function trimSegments(
   return dropRightWhile(segments, segment => /\s+/.test(segment.substring));
 }
 
-export function findSegmentsInSelection(
+export function findSegmentsInSelectedTextRange(
   segments: Array<SpeechTranscriptionSegment>,
   selection: { start: number, end: number }
 ) {
@@ -105,6 +105,28 @@ export function findSegmentsInSelection(
         endIndex: lastSelectedSegment.index,
       }
     : null;
+}
+
+export function findSegmentsInSelectedSegmentRange(
+  segments: Array<SpeechTranscriptionSegment>,
+  segmentSelection: { startIndex: number, endIndex: number }
+): Array<SpeechTranscriptionSegment> {
+  return segments.filter((s, index) =>
+    isSegmentSelected(s, index, segmentSelection)
+  );
+}
+
+export function isSegmentSelected(
+  segment: SpeechTranscriptionSegment,
+  index: number,
+  selection: ?{ endIndex: number, startIndex: number }
+): boolean {
+  if (/\s+/.test(segment.substring)) {
+    return false;
+  }
+  return selection
+    ? index >= selection.startIndex && index <= selection.endIndex
+    : false;
 }
 
 export function transformSegmentsByTextDiff(
