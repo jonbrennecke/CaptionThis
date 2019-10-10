@@ -38,7 +38,10 @@ const styles = {
     flex: 1,
     flexGrow: 1,
   },
-  text: (isSelected: boolean, backgroundColor: $Values<typeof Colors.solid>) => ({
+  text: (
+    isSelected: boolean,
+    backgroundColor: $Values<typeof Colors.solid>
+  ) => ({
     backgroundColor: isSelected ? backgroundColor : null,
     ...Fonts.getFontStyle('formInput', {
       contentStyle: isSelected ? 'lightContent' : 'darkContent',

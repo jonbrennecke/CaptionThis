@@ -146,7 +146,11 @@ export const TranscriptionReviewModal: ComponentType<
             <SafeAreaView style={styles.flex}>
               <View style={styles.playbackControlsContainer}>
                 <View style={styles.playbackControls}>
-                  <DoneButton style={styles.flex} onPress={dismissScreen} color={Colors.solid.heliotrope} />
+                  <DoneButton
+                    style={styles.flex}
+                    onPress={dismissScreen}
+                    color={Colors.solid.heliotrope}
+                  />
                   <View style={styles.playButtonContainer}>
                     <RewindButton
                       style={styles.rewindButton}

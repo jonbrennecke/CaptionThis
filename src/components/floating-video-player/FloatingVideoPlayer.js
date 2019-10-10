@@ -53,7 +53,10 @@ const styles = {
     borderRadius: Units.extraSmall,
     opacity: resizeAnim,
   }),
-  minimizeButton: (resizeAnim: Animated.Value, backgroundColor: $Values<typeof Colors.solid>) => ({
+  minimizeButton: (
+    resizeAnim: Animated.Value,
+    backgroundColor: $Values<typeof Colors.solid>
+  ) => ({
     position: 'absolute',
     bottom: Units.small,
     left: Units.small,
