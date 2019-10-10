@@ -203,6 +203,7 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
 
   videoPlayerDidUpdatePlaybackTime(playbackTime: number) {
     this.setState({ playbackTime });
+    this.props.onRequestChangePlaybackTime(playbackTime);
   }
 
   videoPlayerDidRestart() {

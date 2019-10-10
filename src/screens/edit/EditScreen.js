@@ -47,7 +47,6 @@ export default class EditScreen extends PureComponent<Props, State> {
   richTextOverlay: ?EditScreenRichTextOverlay;
   state: State = {
     videoViewSize: { width: 0, height: 0 },
-    duration: 0,
     exportProgress: 0,
     orientation: null,
     isDraggingSeekbar: false,
@@ -405,7 +404,6 @@ export default class EditScreen extends PureComponent<Props, State> {
           ref={ref => {
             this.richTextOverlay = ref;
           }}
-          isReadyToPlay={this.props.isSpeechTranscriptionFinal}
           duration={this.props.video.duration}
           isVisible={this.state.isRichTextEditorVisible}
           captionStyle={this.props.captionStyle}
