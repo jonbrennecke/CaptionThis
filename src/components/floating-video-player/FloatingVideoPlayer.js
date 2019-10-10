@@ -16,6 +16,7 @@ import type { Style, Return } from '../../types';
 
 export type FloatingVideoPlayerProps = {
   style?: ?Style,
+  iconAccentColor: $Values<typeof Colors.solid>,
   videoID: string,
   // $FlowFixMe
   videoPlayerRef?: Return<createRef<VideoPlayer>>,
@@ -52,13 +53,13 @@ const styles = {
     borderRadius: Units.extraSmall,
     opacity: resizeAnim,
   }),
-  minimizeButton: (resizeAnim: Animated.Value) => ({
+  minimizeButton: (resizeAnim: Animated.Value, backgroundColor: $Values<typeof Colors.solid>) => ({
     position: 'absolute',
     bottom: Units.small,
     left: Units.small,
     backgroundColor: resizeAnim.interpolate({
       inputRange: [0, 1],
-      outputRange: [Colors.solid.nimbus, Colors.solid.white],
+      outputRange: [backgroundColor, Colors.solid.white],
     }),
     width: Units.extraLarge,
     height: Units.extraLarge,
@@ -137,6 +138,7 @@ export class FloatingVideoPlayer extends PureComponent<
   render() {
     const {
       style,
+      iconAccentColor,
       videoID,
       videoPlayerRef,
       initialPosition,
@@ -182,7 +184,7 @@ export class FloatingVideoPlayer extends PureComponent<
                 />
               </Animated.View>
               <Animated.View
-                style={styles.minimizeButton(this.resizeAnim)}
+                style={styles.minimizeButton(this.resizeAnim, iconAccentColor)}
                 pointerEvents="box-none"
               >
                 <ResizeIcon
@@ -190,7 +192,7 @@ export class FloatingVideoPlayer extends PureComponent<
                   color={
                     this.state.isMinimized
                       ? Colors.solid.white
-                      : Colors.solid.nimbus
+                      : iconAccentColor
                   }
                 />
               </Animated.View>

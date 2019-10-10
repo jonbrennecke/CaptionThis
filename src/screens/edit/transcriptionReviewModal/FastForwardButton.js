@@ -10,6 +10,7 @@ import type { SFC, Style } from '../../../types';
 
 export type FastForwardButtonProps = {
   style?: ?Style,
+  color: $Values<typeof Colors.solid>,
   onPress: () => void,
 };
 
@@ -28,19 +29,20 @@ const styles = {
       },
     ],
   },
-  text: {
+  text: (color: $Values<typeof Colors.solid>) => ({
     ...Fonts.getFontStyle('default'),
-    color: Colors.solid.nimbus,
+    color,
     marginLeft: Units.extraSmall,
-  },
+  }),
 };
 
 export const FastForwardButton: SFC<FastForwardButtonProps> = ({
   style,
+  color,
   onPress,
 }: FastForwardButtonProps) => (
   <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
-    <RewindIcon style={styles.icon} color={Colors.solid.nimbus} />
-    <Text style={styles.text}>5s</Text>
+    <RewindIcon style={styles.icon} color={color} />
+    <Text style={styles.text(color)}>5s</Text>
   </TouchableOpacity>
 );

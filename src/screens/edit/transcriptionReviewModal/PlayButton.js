@@ -14,6 +14,7 @@ export type PlayButtonProps = {
   style?: ?Style,
   disabled?: boolean,
   playbackState: PlaybackState,
+  color: $Values<typeof Colors.solid>,
   onPressPlay: () => void,
   onPressPause: () => void,
 };
@@ -23,10 +24,10 @@ const styles = {
     height: Units.extraLarge,
     width: Units.extraLarge,
   },
-  button: {
+  button: (backgroundColor: $Values<typeof Colors.solid>) => ({
     paddingVertical: Units.extraSmall,
     paddingHorizontal: Units.medium,
-    backgroundColor: Colors.solid.nimbus,
+    backgroundColor,
     borderRadius: Units.extraSmall,
     shadowColor: Colors.solid.darkGray,
     shadowOpacity: 0.35,
@@ -35,7 +36,7 @@ const styles = {
       width: 0,
       height: 1,
     },
-  },
+  }),
 };
 
 function hapticFeedback() {
@@ -48,10 +49,11 @@ export const PlayButton: SFC<PlayButtonProps> = ({
   playbackState,
   onPressPlay,
   onPressPause,
+  color,
 }: PlayButtonProps) => (
   <TouchableOpacity
     disabled={disabled}
-    style={[styles.button, style]}
+    style={[styles.button(color), style]}
     onPress={() => {
       hapticFeedback();
       if (playbackState !== 'playing') {

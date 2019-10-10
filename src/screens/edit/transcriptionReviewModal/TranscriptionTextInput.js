@@ -14,6 +14,7 @@ import type { SFC, SpeechTranscriptionSegment, Style } from '../../../types';
 
 export type TranscriptionTextInputProps = {
   style?: ?Style,
+  textHighlightColor: $Values<typeof Colors.solid>,
   speechTranscriptionSegments: ?Array<SpeechTranscriptionSegment>,
   speechTranscriptionSegmentSelection: ?{
     startIndex: number,
@@ -37,8 +38,8 @@ const styles = {
     flex: 1,
     flexGrow: 1,
   },
-  text: (isSelected: boolean) => ({
-    backgroundColor: isSelected ? Colors.solid.nimbus : null,
+  text: (isSelected: boolean, backgroundColor: $Values<typeof Colors.solid>) => ({
+    backgroundColor: isSelected ? backgroundColor : null,
     ...Fonts.getFontStyle('formInput', {
       contentStyle: isSelected ? 'lightContent' : 'darkContent',
     }),
@@ -48,6 +49,7 @@ const styles = {
 // eslint-disable-next-line flowtype/generic-spacing
 export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
   style,
+  textHighlightColor,
   speechTranscriptionSegments: segments,
   speechTranscriptionSegmentSelection: segmentSelection,
   onSelectionChange,
@@ -83,7 +85,8 @@ export const TranscriptionTextInput: SFC<TranscriptionTextInputProps> = ({
             <Text
               key={`${segment.timestamp}-${index}`}
               style={styles.text(
-                isSegmentSelected(segment, index, segmentSelection)
+                isSegmentSelected(segment, index, segmentSelection),
+                textHighlightColor
               )}
             >
               {segment.substring}

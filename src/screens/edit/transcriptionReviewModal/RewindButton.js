@@ -10,6 +10,7 @@ import type { SFC, Style } from '../../../types';
 
 export type RewindButtonProps = {
   style?: ?Style,
+  color: $Values<typeof Colors.solid>,
   onPress: () => void,
 };
 
@@ -31,19 +32,20 @@ const styles = {
       },
     ],
   },
-  text: {
+  text: (color: $Values<typeof Colors.solid>) => ({
     ...Fonts.getFontStyle('default'),
-    color: Colors.solid.nimbus,
+    color,
     marginRight: Units.extraSmall,
-  },
+  }),
 };
 
 export const RewindButton: SFC<RewindButtonProps> = ({
   style,
+  color,
   onPress,
 }: RewindButtonProps) => (
   <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
-    <Text style={styles.text}>5s</Text>
-    <RewindIcon style={styles.icon} color={Colors.solid.nimbus} />
+    <Text style={styles.text(color)}>5s</Text>
+    <RewindIcon style={styles.icon} color={color} />
   </TouchableOpacity>
 );
