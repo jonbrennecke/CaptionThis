@@ -317,37 +317,12 @@ export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
 export const SCREENS = {
   HOME_SCREEN: `${APP_BUNDLE_ID}.HomeScreen`,
   EDIT_SCREEN: `${APP_BUNDLE_ID}.EditScreen`,
-  LOGIN_MODAL: `${APP_BUNDLE_ID}.LoginModal`,
   TRANSCRIPTION_REVIEW_SCREEN: `${APP_BUNDLE_ID}.TranscriptionReviewScreen`,
 };
 
 export const APP_ORIENTATIONS = ['portrait'];
 
 export const SCREEN_PARAMS = {
-  [SCREENS.LOGIN_MODAL]: {
-    component: {
-      name: SCREENS.LOGIN_MODAL,
-      id: SCREENS.LOGIN_MODAL,
-      passProps: {},
-      options: {
-        topBar: {
-          title: {
-            text: 'Login',
-            color: TEXT_COLORS.DARK_GREY,
-            fontFamily: FONT_FAMILIES.PT_SANS_REGULAR,
-            fontWeight: 'bold',
-            fontSize: 15,
-          },
-        },
-        overlay: {
-          interceptTouchOutside: true,
-        },
-        layout: {
-          orientation: APP_ORIENTATIONS,
-        },
-      },
-    },
-  },
   [SCREENS.HOME_SCREEN]: {
     component: {
       name: SCREENS.HOME_SCREEN,
