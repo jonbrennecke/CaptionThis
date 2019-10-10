@@ -154,16 +154,17 @@ export class FloatingVideoPlayer extends PureComponent<
         onDragStart={hapticFeedback}
         onDragEnd={hapticFeedback}
       >
-        <Animated.View style={styles.resizeAnimation(this.resizeAnim)}>
+        <Animated.View style={styles.resizeAnimation(this.resizeAnim)} pointerEvents="box-none">
           <TouchableWithoutFeedback
             onPress={() => {
               hapticFeedback();
               this.state.isMinimized ? this.maximize() : this.minimize();
             }}
           >
-            <View style={styles.videoPlayerAndButtonContainer}>
+            <View style={styles.videoPlayerAndButtonContainer} pointerEvents="box-none">
               <Animated.View
                 style={styles.videoPlayerContainer(this.resizeAnim)}
+                pointerEvents="box-none"
               >
                 <VideoPlayer
                   style={styles.flex}
@@ -174,7 +175,7 @@ export class FloatingVideoPlayer extends PureComponent<
                   onVideoWillRestart={onVideoWillRestart}
                 />
               </Animated.View>
-              <Animated.View style={styles.minimizeButton(this.resizeAnim)}>
+              <Animated.View style={styles.minimizeButton(this.resizeAnim)} pointerEvents="box-none">
                 <ResizeIcon
                   style={styles.flex}
                   color={
