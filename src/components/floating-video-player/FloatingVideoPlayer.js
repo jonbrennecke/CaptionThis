@@ -50,6 +50,7 @@ const styles = {
     flex: 1,
     borderWidth: 3,
     borderColor: Colors.solid.white,
+    backgroundColor: Colors.solid.white,
     borderRadius: Units.extraSmall,
     opacity: resizeAnim,
   }),
