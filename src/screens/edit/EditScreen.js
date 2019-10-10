@@ -25,7 +25,6 @@ import type { Props } from './Container';
 
 type State = {
   videoViewSize: Size,
-  duration: number,
   orientation: ?Orientation,
   exportProgress: number,
   isDraggingSeekbar: boolean,
@@ -256,7 +255,7 @@ export default class EditScreen extends PureComponent<Props, State> {
       speechTranscription: this.props.speechTranscription,
       videoID: this.props.video.assetID,
       videoViewSize: this.state.videoViewSize,
-      duration: this.state.duration,
+      duration: this.props.video.duration,
       orientation: this.state.orientation,
       captionStyle: this.props.captionStyle,
       onExportDidFail: this.onExportDidFail,
@@ -376,11 +375,9 @@ export default class EditScreen extends PureComponent<Props, State> {
           isExportingVideo={this.props.isExportingVideo}
           video={this.props.video}
           isSpeechTranscriptionFinal={this.props.isSpeechTranscriptionFinal}
-          duration={this.state.duration}
           orientation={this.state.orientation || 'up'}
           captionStyle={this.props.captionStyle}
           speechTranscription={this.props.speechTranscription}
-          onRequestChangeDuration={duration => this.setState({ duration })}
           onRequestChangePlaybackTime={this.seekRichTextEditorCaptionsToTime}
           onRequestChangeOrientation={orientation =>
             this.setState({ orientation })
@@ -409,7 +406,7 @@ export default class EditScreen extends PureComponent<Props, State> {
             this.richTextOverlay = ref;
           }}
           isReadyToPlay={this.props.isSpeechTranscriptionFinal}
-          duration={this.state.duration}
+          duration={this.props.video.duration}
           isVisible={this.state.isRichTextEditorVisible}
           captionStyle={this.props.captionStyle}
           speechTranscription={this.props.speechTranscription}

@@ -16,7 +16,6 @@ type Props = {
   captionStyle: CaptionStyleObject,
   viewLayout: CaptionViewLayout,
   speechTranscription: ?SpeechTranscription,
-  isReadyToPlay: boolean,
   onPress?: () => void,
 };
 
@@ -33,28 +32,28 @@ export default class VideoCaptionsView extends Component<Props> {
   captionView: ?CaptionView;
 
   restart() {
-    if (!this.captionView || !this.props.isReadyToPlay) {
+    if (!this.captionView) {
       return;
     }
     this.captionView.restart();
   }
 
   pause() {
-    if (!this.captionView || !this.props.isReadyToPlay) {
+    if (!this.captionView) {
       return;
     }
     this.captionView.pause();
   }
 
   seekToTime(time: number) {
-    if (!this.captionView || !this.props.isReadyToPlay) {
+    if (!this.captionView) {
       return;
     }
     this.captionView.seekToTime(time);
   }
 
   play() {
-    if (!this.captionView || !this.props.isReadyToPlay) {
+    if (!this.captionView) {
       return;
     }
     this.captionView.play();

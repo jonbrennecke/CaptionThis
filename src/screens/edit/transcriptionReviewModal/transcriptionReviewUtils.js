@@ -120,7 +120,7 @@ export function isSegmentSelected(
   segment: SpeechTranscriptionSegment,
   index: number,
   selection: ?{ endIndex: number, startIndex: number },
-  ignoreWhitespace?: boolean = true,
+  ignoreWhitespace?: boolean = true
 ): boolean {
   if (ignoreWhitespace && /\s+/.test(segment.substring)) {
     return false;

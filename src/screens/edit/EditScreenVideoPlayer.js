@@ -32,11 +32,9 @@ type Props = {
   isCaptionsEditorVisible: boolean,
   isSpeechTranscriptionFinal: boolean,
   isExportingVideo: boolean,
-  duration: number,
   captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
   orientation: Orientation,
-  onRequestChangeDuration: number => void,
   onRequestChangePlaybackTime: number => void,
   onRequestChangeOrientation: Orientation => void,
   onRequestShowRichTextEditor: () => void,
@@ -285,9 +283,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
       ...captionStyle,
       fontSize: isLandscape(orientation) ? fontSize * 0.5 : fontSize,
     });
-    const showSeekbar =
-      this.props.isSpeechTranscriptionFinal &&
-      !this.props.isDeviceLimitedByMemory;
     return (
       <SafeAreaView style={styles.flex}>
         {this.props.isSpeechTranscriptionFinal && (
@@ -329,12 +324,8 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
                         this.captionsView = ref;
                       }}
                       style={styles.flex}
-                      isReadyToPlay={
-                        this.state.playbackState !== 'waiting' &&
-                        this.props.isSpeechTranscriptionFinal
-                      }
                       orientation={this.props.orientation}
-                      duration={this.props.duration}
+                      duration={this.props.video.duration}
                       captionStyle={captionStyleForOrientation(
                         this.props.orientation,
                         this.props.captionStyle
@@ -362,28 +353,26 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
             />
           </ScaleAnimatedView>
         )}
-        {showSeekbar && (
-          <ScaleAnimatedView
-            isVisible={this.state.playbackState !== 'waiting'}
-            style={styles.editControls}
-          >
-            <PlaybackSeekbar
-              style={styles.flex}
-              assetID={this.props.video.assetID}
-              playbackProgress={
-                this.state.playbackTime / this.props.video.duration
-              }
-              playbackState={this.state.playbackState}
-              onSeekToProgress={progress =>
-                this.seekBarDidSeekToTimeThrottled(
-                  this.props.video.duration * progress
-                )
-              }
-              onRequestPause={this.pausePlayerAndCaptions}
-              onRequestPlay={this.startPlayerAndCaptions}
-            />
-          </ScaleAnimatedView>
-        )}
+        <ScaleAnimatedView
+          isVisible={this.state.playbackState !== 'waiting'}
+          style={styles.editControls}
+        >
+          <PlaybackSeekbar
+            style={styles.flex}
+            assetID={this.props.video.assetID}
+            playbackProgress={
+              this.state.playbackTime / this.props.video.duration
+            }
+            playbackState={this.state.playbackState}
+            onSeekToProgress={progress =>
+              this.seekBarDidSeekToTimeThrottled(
+                this.props.video.duration * progress
+              )
+            }
+            onRequestPause={this.pausePlayerAndCaptions}
+            onRequestPlay={this.startPlayerAndCaptions}
+          />
+        </ScaleAnimatedView>
       </SafeAreaView>
     );
   }
