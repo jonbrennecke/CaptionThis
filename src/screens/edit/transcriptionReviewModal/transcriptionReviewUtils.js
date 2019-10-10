@@ -112,16 +112,17 @@ export function findSegmentsInSelectedSegmentRange(
   segmentSelection: { startIndex: number, endIndex: number }
 ): Array<SpeechTranscriptionSegment> {
   return segments.filter((s, index) =>
-    isSegmentSelected(s, index, segmentSelection)
+    isSegmentSelected(s, index, segmentSelection, true)
   );
 }
 
 export function isSegmentSelected(
   segment: SpeechTranscriptionSegment,
   index: number,
-  selection: ?{ endIndex: number, startIndex: number }
+  selection: ?{ endIndex: number, startIndex: number },
+  ignoreWhitespace?: boolean = true,
 ): boolean {
-  if (/\s+/.test(segment.substring)) {
+  if (ignoreWhitespace && /\s+/.test(segment.substring)) {
     return false;
   }
   return selection

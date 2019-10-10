@@ -5,7 +5,6 @@ import { StatusBar, View, StyleSheet, ScrollView } from 'react-native';
 import { withSafeArea } from 'react-native-safe-area';
 import ReactNativeHaptic from 'react-native-haptic';
 import { FadeInOutAnimatedView } from '@jonbrennecke/react-native-animated-ui';
-import first from 'lodash/first';
 
 import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/KeyboardAvoidingView';
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';
@@ -204,7 +203,9 @@ export const TranscriptionReviewModal: ComponentType<
                           selection
                         )[0];
                         if (firstSelectedSegment) {
-                          setPlaybackTime(firstSelectedSegment.timestamp);
+                          const time = firstSelectedSegment.timestamp;
+                          setPlaybackTime(time);
+                          seekVideoToTime(time);
                         }
                       }
                     }}
