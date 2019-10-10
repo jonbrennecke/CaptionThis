@@ -14,6 +14,7 @@ export type PlaybackSliderProps = {
   value: number,
   min: number,
   max: number,
+  color: $Values<typeof Colors.solid>,
   onSelectValue: number => void,
 };
 
@@ -33,14 +34,14 @@ const styles = {
     bottom: -CONTAINER_HEIGHT * 0.5,
   },
   absoluteFill: StyleSheet.absoluteFill,
-  handle: {
+  handle: (backgroundColor: $Values<typeof Colors.solid>) => ({
     height: HANDLE_RADIUS * 2,
     width: HANDLE_RADIUS * 2,
     borderRadius: HANDLE_RADIUS,
-    backgroundColor: Colors.solid.nimbus,
+    backgroundColor,
     top: CONTAINER_HEIGHT * 0.5 - HANDLE_RADIUS,
     left: -HANDLE_RADIUS,
-  },
+  }),
   handleContainer: {
     height: HANDLE_RADIUS * 2,
     width: HANDLE_RADIUS * 2,
@@ -53,7 +54,7 @@ const styles = {
     overflow: 'hidden',
     backgroundColor: Colors.solid.lightGray,
   },
-  maskedBarBackground: {
+  maskedBarBackground: (backgroundColor: $Values<typeof Colors.solid>) => ({
     position: 'absolute',
     top: CONTAINER_HEIGHT * 0.5 - SLIDER_HEIGHT / 2,
     bottom: 0,
@@ -65,8 +66,8 @@ const styles = {
         translateX: -1000,
       },
     ],
-    backgroundColor: Colors.solid.nimbus,
-  },
+    backgroundColor,
+  }),
   infoContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -88,6 +89,7 @@ export const PlaybackSlider: SFC<PlaybackSliderProps> = ({
   value,
   min,
   max,
+  color,
   onSelectValue,
 }: PlaybackSliderProps) => (
   <View style={[styles.container, style]}>
@@ -108,22 +110,13 @@ export const PlaybackSlider: SFC<PlaybackSliderProps> = ({
               style={[props.style, styles.handleContainer]}
               pointerEvents="none"
             >
-              <View style={styles.maskedBarBackground} />
-              <View style={styles.handle} />
+              <View style={styles.maskedBarBackground(color)} />
+              <View style={styles.handle(color)} />
             </Animated.View>
           </>
         )}
         onSeekToProgress={p => onSelectValue(p * (max - min) + min)}
-        onDidBeginDrag={() => {
-          hapticFeedback();
-          // TODO
-          // this.setState({
-          //   playbackStateOnDragStart: playbackState,
-          // });
-          // if (playbackState === 'playing') {
-          //   onRequestPause();
-          // }
-        }}
+        onDidBeginDrag={hapticFeedback}
         onDidEndDrag={p => {
           hapticFeedback();
           onSelectValue(p * (max - min) + min);

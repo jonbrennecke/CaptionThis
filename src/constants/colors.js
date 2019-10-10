@@ -13,7 +13,7 @@ export const Colors = {
     sunrise: '#FAE08E',
     cloud: '#ECF3FE',
     sky: '#B6DCFF',
-    nimbus: '#334F68',
+    heliotrope: '#4F5BD5',
     lavender: '#9D99DC',
   },
 };

@@ -10,6 +10,7 @@ import type { SFC, Style } from '../../../types';
 
 export type DoneButtonProps = {
   style?: ?Style,
+  color: $Values<typeof Colors.solid>,
   onPress: () => void,
 };
 
@@ -23,19 +24,20 @@ const styles = {
     height: Units.extraLarge,
     width: Units.extraLarge,
   },
-  text: {
+  text: (color: $Values<typeof Colors.solid>) => ({
     ...Fonts.getFontStyle('default'),
-    color: Colors.solid.nimbus,
+    color,
     fontSize: 17,
-  },
+  }),
 };
 
 export const DoneButton: SFC<DoneButtonProps> = ({
   style,
+  color,
   onPress,
 }: DoneButtonProps) => (
   <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
-    <BackIcon style={styles.icon} color={Colors.solid.nimbus} />
-    <Text style={styles.text}>Done</Text>
+    <BackIcon style={styles.icon} color={color} />
+    <Text style={styles.text(color)}>Done</Text>
   </TouchableOpacity>
 );

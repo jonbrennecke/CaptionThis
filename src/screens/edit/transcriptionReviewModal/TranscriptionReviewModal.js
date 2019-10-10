@@ -146,10 +146,15 @@ export const TranscriptionReviewModal: ComponentType<
             <SafeAreaView style={styles.flex}>
               <View style={styles.playbackControlsContainer}>
                 <View style={styles.playbackControls}>
-                  <DoneButton style={styles.flex} onPress={dismissScreen} />
+                  <DoneButton
+                    style={styles.flex}
+                    onPress={dismissScreen}
+                    color={Colors.solid.heliotrope}
+                  />
                   <View style={styles.playButtonContainer}>
                     <RewindButton
                       style={styles.rewindButton}
+                      color={Colors.solid.heliotrope}
                       onPress={() => {
                         const time = Math.max(playbackTime - 5, 0);
                         setPlaybackTime(time);
@@ -161,11 +166,13 @@ export const TranscriptionReviewModal: ComponentType<
                     <PlayButton
                       style={styles.playButton}
                       playbackState={playbackState}
+                      color={Colors.solid.heliotrope}
                       onPressPlay={playVideo}
                       onPressPause={pauseVideo}
                     />
                     <FastForwardButton
                       style={styles.fastForwardButton}
+                      color={Colors.solid.heliotrope}
                       onPress={() => {
                         const time = Math.min(playbackTime + 5, video.duration);
                         setPlaybackTime(time);
@@ -181,6 +188,7 @@ export const TranscriptionReviewModal: ComponentType<
                   value={playbackTime}
                   min={0}
                   max={video.duration}
+                  color={Colors.solid.heliotrope}
                   onSelectValue={playbackTime => {
                     setPlaybackTime(playbackTime);
                     seekVideoToTime(playbackTime);
@@ -191,6 +199,7 @@ export const TranscriptionReviewModal: ComponentType<
               <View style={styles.transcriptionContainer}>
                 <ScrollView contentContainerStyle={styles.scrollViewContents}>
                   <TranscriptionTextInput
+                    textHighlightColor={Colors.solid.heliotrope}
                     speechTranscriptionSegments={segments}
                     speechTranscriptionSegmentSelection={
                       speechTranscriptionSegmentSelection
@@ -233,6 +242,7 @@ export const TranscriptionReviewModal: ComponentType<
                     return (
                       <FloatingVideoPlayer
                         style={styles.floatingVideoPlayer}
+                        iconAccentColor={Colors.solid.heliotrope}
                         initialPosition={initialPosition}
                         videoID={video.assetID}
                         videoPlayerRef={videoPlayerRef}
