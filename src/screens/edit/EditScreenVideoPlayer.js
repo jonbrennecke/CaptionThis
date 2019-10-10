@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, SafeAreaView, Dimensions, StyleSheet } from 'react-native';
 import throttle from 'lodash/throttle';
 import { autobind } from 'core-decorators';
@@ -8,15 +8,16 @@ import { VideoPlayer } from '@jonbrennecke/react-native-media';
 import { UI_COLORS } from '../../constants';
 import * as Debug from '../../utils/Debug';
 import { isLandscape, isPortrait } from '../../utils/Orientation';
-import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
-import VideoSeekbar from '../../components/video-seekbar/VideoSeekbar';
 import EditScreenTopControls from './EditScreenTopControls';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
 import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
-import MeasureContentsView from '../../components/measure-contents-view/MeasureContentsView';
+import { MeasureContentsView, PlaybackSeekbar } from '../../components';
 
-import type { MediaObject } from '@jonbrennecke/react-native-media';
+import type {
+  MediaObject,
+  PlaybackState,
+} from '@jonbrennecke/react-native-media';
 
 import type { Size, Orientation } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
@@ -31,11 +32,9 @@ type Props = {
   isCaptionsEditorVisible: boolean,
   isSpeechTranscriptionFinal: boolean,
   isExportingVideo: boolean,
-  duration: number,
   captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
   orientation: Orientation,
-  onRequestChangeDuration: number => void,
   onRequestChangePlaybackTime: number => void,
   onRequestChangeOrientation: Orientation => void,
   onRequestShowRichTextEditor: () => void,
@@ -50,8 +49,7 @@ type Props = {
 
 type State = {
   playbackTime: number,
-  isDraggingSeekbar: boolean,
-  isVideoReadyToPlay: boolean,
+  playbackState: PlaybackState,
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -103,13 +101,12 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class EditScreenVideoPlayer extends Component<Props, State> {
+export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
   captionsView: ?VideoCaptionsView;
   playerView: ?VideoPlayer;
   state = {
     playbackTime: 0,
-    isDraggingSeekbar: false,
-    isVideoReadyToPlay: false,
+    playbackState: 'waiting',
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -169,18 +166,6 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
     this.onRequestChangePlaybackTimeThrottled(time);
   }
 
-  seekBarDidStartSeeking() {
-    this.pausePlayerAndCaptions();
-    this.setState({ isDraggingSeekbar: true });
-  }
-
-  seekBarDidStopSeeking(time: number) {
-    this.setState({ isDraggingSeekbar: false });
-    this.startPlayerAndCaptions();
-    this.onRequestChangePlaybackTimeThrottled(time);
-    this.props.onDidRestartCaptions();
-  }
-
   async seekToTime(time: number) {
     if (this.playerView) {
       await this.playerView.seekToTime(time);
@@ -197,23 +182,6 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
       leading: true,
     }
   );
-
-  videoPlayerDidBecomeReadyToPlay(duration: number, orientation: Orientation) {
-    this.props.onRequestChangeDuration(duration);
-    this.props.onRequestChangeOrientation(orientation);
-    if (!this.props.isSpeechTranscriptionFinal) {
-      this.pausePlayerAndCaptions();
-    } else {
-      this.setState(
-        {
-          isVideoReadyToPlay: true,
-        },
-        () => {
-          this.restartPlayerAndCaptions();
-        }
-      );
-    }
-  }
 
   videoPlayerDidFailToLoad() {
     Debug.log('Video player failed to load');
@@ -235,6 +203,7 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
 
   videoPlayerDidUpdatePlaybackTime(playbackTime: number) {
     this.setState({ playbackTime });
+    this.props.onRequestChangePlaybackTime(playbackTime);
   }
 
   videoPlayerDidRestart() {
@@ -315,15 +284,12 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
       ...captionStyle,
       fontSize: isLandscape(orientation) ? fontSize * 0.5 : fontSize,
     });
-    const showSeekbar =
-      this.props.isSpeechTranscriptionFinal &&
-      !this.props.isDeviceLimitedByMemory;
     return (
       <SafeAreaView style={styles.flex}>
         {this.props.isSpeechTranscriptionFinal && (
           <ScaleAnimatedView
             style={styles.videoWrap}
-            isVisible={this.state.isVideoReadyToPlay}
+            isVisible={this.state.playbackState !== 'waiting'}
           >
             <VideoPlayer
               ref={ref => {
@@ -331,18 +297,21 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
               }}
               style={styles.absoluteFill}
               videoID={this.props.video.assetID}
-              onVideoDidBecomeReadyToPlay={(...args) => {
-                this.videoPlayerDidBecomeReadyToPlay(...args);
-              }}
               onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
-              onVideoDidPause={this.videoPlayerDidPause}
               onVideoDidUpdatePlaybackTime={
                 this.videoPlayerDidUpdatePlaybackTimeThrottled
               }
               onVideoDidRestart={this.videoPlayerDidRestart}
               onViewDidResize={this.props.onVideoViewDidUpdateSize}
+              onPlaybackStateChange={playbackState => {
+                this.setState({
+                  playbackState,
+                });
+                if (playbackState === 'readyToPlay') {
+                  this.startPlayerAndCaptions();
+                }
+              }}
             />
-            <ScreenGradients />
             <MeasureContentsView
               style={styles.measuredContents}
               renderChildren={viewSize => (
@@ -356,12 +325,8 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
                         this.captionsView = ref;
                       }}
                       style={styles.flex}
-                      isReadyToPlay={
-                        this.state.isVideoReadyToPlay &&
-                        this.props.isSpeechTranscriptionFinal
-                      }
                       orientation={this.props.orientation}
-                      duration={this.props.duration}
+                      duration={this.props.video.duration}
                       captionStyle={captionStyleForOrientation(
                         this.props.orientation,
                         this.props.captionStyle
@@ -389,23 +354,26 @@ export default class EditScreenVideoPlayer extends Component<Props, State> {
             />
           </ScaleAnimatedView>
         )}
-        {showSeekbar && (
-          <ScaleAnimatedView
-            isVisible={this.state.isVideoReadyToPlay}
-            style={styles.editControls}
-          >
-            {/* TODO: Replace with Seekbar from @jonbrennecke/react-native-media */}
-            <VideoSeekbar
-              style={styles.flex}
-              duration={this.props.duration}
-              playbackTime={this.state.playbackTime}
-              videoAssetIdentifier={this.props.video.assetID}
-              onSeekToTime={this.seekBarDidSeekToTimeThrottled}
-              onDidBeginDrag={this.seekBarDidStartSeeking}
-              onDidEndDrag={this.seekBarDidStopSeeking}
-            />
-          </ScaleAnimatedView>
-        )}
+        <ScaleAnimatedView
+          isVisible={this.state.playbackState !== 'waiting'}
+          style={styles.editControls}
+        >
+          <PlaybackSeekbar
+            style={styles.flex}
+            assetID={this.props.video.assetID}
+            playbackProgress={
+              this.state.playbackTime / this.props.video.duration
+            }
+            playbackState={this.state.playbackState}
+            onSeekToProgress={progress =>
+              this.seekBarDidSeekToTimeThrottled(
+                this.props.video.duration * progress
+              )
+            }
+            onRequestPause={this.pausePlayerAndCaptions}
+            onRequestPlay={this.startPlayerAndCaptions}
+          />
+        </ScaleAnimatedView>
       </SafeAreaView>
     );
   }

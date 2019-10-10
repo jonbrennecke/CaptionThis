@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { SafeAreaView } from 'react-native';
 import { autobind } from 'core-decorators';
 
@@ -11,9 +11,8 @@ import type { ColorRGBA } from '../../types/media';
 import type { SpeechTranscription } from '../../types/speech';
 import type { CaptionStyleObject } from '../../types/video';
 
-type Props = {
+type EditScreenRichTextOverlayProps = {
   style?: ?Style,
-  isReadyToPlay: boolean,
   isVisible: boolean,
   duration: number,
   captionStyle: CaptionStyleObject,
@@ -34,8 +33,22 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class EditScreenRichTextOverlay extends Component<Props> {
+export default class EditScreenRichTextOverlay extends PureComponent<
+  EditScreenRichTextOverlayProps
+> {
   richTextEditor: ?RichTextEditor;
+
+  componentDidUpdate(prevProps: EditScreenRichTextOverlayProps) {
+    if (this.props.isVisible !== prevProps.isVisible) {
+      this.props.isVisible ? this.playCaptions() : this.pauseCaptions();
+    }
+  }
+
+  playCaptions() {
+    if (this.richTextEditor) {
+      this.richTextEditor.playCaptions();
+    }
+  }
 
   restartCaptions() {
     if (this.richTextEditor) {
@@ -50,6 +63,7 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
   }
 
   seekCaptionsToTime(time: number) {
+    console.log('seek to time', time);
     if (this.richTextEditor) {
       this.richTextEditor.seekCaptionsToTime(time);
     }
@@ -75,7 +89,6 @@ export default class EditScreenRichTextOverlay extends Component<Props> {
             style={styles.flex}
             duration={this.props.duration}
             isVisible={this.props.isVisible}
-            isReadyToPlay={this.props.isReadyToPlay}
             speechTranscription={this.props.speechTranscription}
             captionStyle={this.props.captionStyle}
             onRequestSave={this.props.onRequestSave}

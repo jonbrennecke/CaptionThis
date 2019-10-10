@@ -1,18 +1,18 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Alert, AppState as ReactAppState } from 'react-native';
 import { autobind } from 'core-decorators';
 import { Navigation } from 'react-native-navigation';
 
+import * as Screens from '../../utils/Screens';
 import * as Debug from '../../utils/Debug';
-import { UI_COLORS } from '../../constants';
+import { UI_COLORS, SCREENS } from '../../constants';
 
 import EditScreenVideoPlayer from './EditScreenVideoPlayer';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenLoadingBackground from './EditScreenLoadingBackground';
-import EditScreenEditCaptionsOverlay from './EditScreenEditCaptionsOverlay';
 import SpeechManager from '../../utils/SpeechManager';
 import LocaleMenu from '../../components/localization/LocaleMenu';
 import Container from './Container';
@@ -25,12 +25,11 @@ import type { Props } from './Container';
 
 type State = {
   videoViewSize: Size,
-  duration: number,
   orientation: ?Orientation,
   exportProgress: number,
   isDraggingSeekbar: boolean,
   isRichTextEditorVisible: boolean,
-  isCaptionsEditorVisible: boolean,
+  transcriptionReviewScreenIsVisible: boolean,
   isLocaleMenuVisible: boolean,
 };
 
@@ -44,16 +43,15 @@ const styles = {
 // $FlowFixMe
 @Container
 @autobind
-export default class EditScreen extends Component<Props, State> {
+export default class EditScreen extends PureComponent<Props, State> {
   richTextOverlay: ?EditScreenRichTextOverlay;
   state: State = {
     videoViewSize: { width: 0, height: 0 },
-    duration: 0,
     exportProgress: 0,
     orientation: null,
     isDraggingSeekbar: false,
     isRichTextEditorVisible: false,
-    isCaptionsEditorVisible: false,
+    transcriptionReviewScreenIsVisible: false,
     isLocaleMenuVisible: false,
   };
   speechManagerDidReceiveTranscriptionListener: ?EmitterSubscription;
@@ -61,6 +59,8 @@ export default class EditScreen extends Component<Props, State> {
   speechManagerDidEndListener: ?EmitterSubscription;
   speechManagerDidFailListener: ?EmitterSubscription;
   // speechManagerDidChangeLocaleListener: ?EmitterSubscription;
+  transcriptionReviewScreenDidAppearEventListener: any;
+  transcriptionReviewScreenDidDisappearEventListener: any;
 
   async componentDidMount() {
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
@@ -69,11 +69,13 @@ export default class EditScreen extends Component<Props, State> {
     } else {
       await this.beginSpeechTranscription();
     }
+    this.addNavigationListeners();
   }
 
   componentWillUnmount() {
     ReactAppState.removeEventListener('change', this.handleAppStateWillChange);
     this.removeSpeechListeners();
+    this.removeNavigationListeners();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -91,9 +93,45 @@ export default class EditScreen extends Component<Props, State> {
     }
   }
 
+  /// MARK -- app state listeners
+
   handleAppStateWillChange(nextAppState: ReactAppStateEnum) {
     this.props.receiveAppStateChange(nextAppState);
   }
+
+  /// MARK -- navigation listeners
+
+  addNavigationListeners() {
+    this.transcriptionReviewScreenDidAppearEventListener = Navigation.events().registerComponentDidAppearListener(
+      ({ componentId }) => {
+        if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
+          this.setState({
+            transcriptionReviewScreenIsVisible: true,
+          });
+        }
+      }
+    );
+    this.transcriptionReviewScreenDidDisappearEventListener = Navigation.events().registerComponentDidDisappearListener(
+      ({ componentId }) => {
+        if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
+          this.setState({
+            transcriptionReviewScreenIsVisible: false,
+          });
+        }
+      }
+    );
+  }
+
+  removeNavigationListeners() {
+    if (this.transcriptionReviewScreenDidAppearEventListener) {
+      this.transcriptionReviewScreenDidAppearEventListener.remove();
+    }
+    if (this.transcriptionReviewScreenDidDisappearEventListener) {
+      this.transcriptionReviewScreenDidDisappearEventListener.remove();
+    }
+  }
+
+  /// MARK -- speech event listeners
 
   async beginSpeechTranscription() {
     this.addSpeechListeners();
@@ -216,7 +254,7 @@ export default class EditScreen extends Component<Props, State> {
       speechTranscription: this.props.speechTranscription,
       videoID: this.props.video.assetID,
       videoViewSize: this.state.videoViewSize,
-      duration: this.state.duration,
+      duration: this.props.video.duration,
       orientation: this.state.orientation,
       captionStyle: this.props.captionStyle,
       onExportDidFail: this.onExportDidFail,
@@ -253,16 +291,16 @@ export default class EditScreen extends Component<Props, State> {
     }));
   }
 
-  showCaptionsEditor() {
-    this.setState({
-      isCaptionsEditorVisible: true,
-    });
+  async showCaptionsEditor() {
+    this.pauseRichTextEditorCaptions();
+    await Screens.pushTranscriptionReviewScreen(
+      this.props.componentId,
+      this.props.video
+    );
   }
 
-  dismissCaptionsEditor() {
-    this.setState({
-      isCaptionsEditorVisible: false,
-    });
+  async dismissCaptionsEditor() {
+    await Screens.dismissTranscriptionReviewScreen();
   }
 
   showRichTextEditor() {
@@ -330,21 +368,23 @@ export default class EditScreen extends Component<Props, State> {
           countryCode={this.props.locale?.country.code}
           isAppInForeground={this.props.isAppInForeground}
           isDeviceLimitedByMemory={this.props.isDeviceLimitedByMemory}
-          isCaptionsEditorVisible={this.state.isCaptionsEditorVisible}
+          isCaptionsEditorVisible={
+            this.state.transcriptionReviewScreenIsVisible
+          }
           isExportingVideo={this.props.isExportingVideo}
           video={this.props.video}
           isSpeechTranscriptionFinal={this.props.isSpeechTranscriptionFinal}
-          duration={this.state.duration}
           orientation={this.state.orientation || 'up'}
           captionStyle={this.props.captionStyle}
           speechTranscription={this.props.speechTranscription}
-          onRequestChangeDuration={duration => this.setState({ duration })}
           onRequestChangePlaybackTime={this.seekRichTextEditorCaptionsToTime}
           onRequestChangeOrientation={orientation =>
             this.setState({ orientation })
           }
           onRequestShowRichTextEditor={this.showRichTextEditor}
-          onRequestShowCaptionsEditor={this.showCaptionsEditor}
+          onRequestShowCaptionsEditor={() => {
+            this.showCaptionsEditor();
+          }}
           onRequestPopToHomeScreen={() => {
             // TODO: handle awaiting this promise
             this.popToHomeScreen();
@@ -364,8 +404,7 @@ export default class EditScreen extends Component<Props, State> {
           ref={ref => {
             this.richTextOverlay = ref;
           }}
-          isReadyToPlay={this.props.isSpeechTranscriptionFinal}
-          duration={this.state.duration}
+          duration={this.props.video.duration}
           isVisible={this.state.isRichTextEditorVisible}
           captionStyle={this.props.captionStyle}
           speechTranscription={this.props.speechTranscription}
@@ -381,15 +420,6 @@ export default class EditScreen extends Component<Props, State> {
         <EditScreenLoadingOverlay
           isVisible={!this.props.isSpeechTranscriptionFinal}
           duration={this.props.video.duration}
-        />
-        <EditScreenEditCaptionsOverlay
-          videoID={this.props.video.assetID}
-          speechTranscription={this.props.speechTranscription}
-          isVisible={this.state.isCaptionsEditorVisible}
-          onRequestDismissModal={this.dismissCaptionsEditor}
-          receiveSpeechTranscriptionSuccess={
-            this.props.receiveSpeechTranscriptionSuccess
-          }
         />
         <LocaleMenu
           isVisible={this.state.isLocaleMenuVisible}

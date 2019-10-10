@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { autobind } from 'core-decorators';
 
@@ -21,7 +21,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class MeasureContentsView extends Component<Props, State> {
+export class MeasureContentsView extends PureComponent<Props, State> {
   state = {
     viewSize: { width: 0, height: 0 },
   };
@@ -37,6 +37,7 @@ export default class MeasureContentsView extends Component<Props, State> {
       <View
         onLayout={this.viewDidLayout}
         style={[styles.container, this.props.style]}
+        pointerEvents="box-none"
       >
         {this.props.renderChildren(this.state.viewSize)}
       </View>

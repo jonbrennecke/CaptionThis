@@ -8,7 +8,7 @@ import {
   Easing,
 } from 'react-native';
 import { autobind } from 'core-decorators';
-import { BlurView } from 'react-native-blur';
+import { BlurView } from '@jonbrennecke/react-native-animated-ui';
 
 import { UI_COLORS } from '../../constants';
 

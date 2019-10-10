@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { TouchableWithoutFeedback, StyleSheet } from 'react-native';
-import { BlurView } from 'react-native-blur';
+import { BlurView } from '@jonbrennecke/react-native-animated-ui';
 
 import FadeInOutAnimatedView from '../animations/FadeInOutAnimatedView';
 import BottomSheetAnimatedView from '../animations/BottomSheetAnimatedView';

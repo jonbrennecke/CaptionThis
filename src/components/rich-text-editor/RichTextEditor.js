@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Animated, StyleSheet, Easing, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import throttle from 'lodash/throttle';
@@ -23,7 +23,6 @@ import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
-  isReadyToPlay: boolean,
   isVisible: boolean,
   captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
@@ -93,7 +92,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class RichTextEditor extends Component<Props, State> {
+export default class RichTextEditor extends PureComponent<Props, State> {
   colorPickerAnim: Animated.Value = new Animated.Value(0);
   mainContentsAnim: Animated.Value = new Animated.Value(0);
   captionsView: ?VideoCaptionsView;
@@ -195,6 +194,13 @@ export default class RichTextEditor extends Component<Props, State> {
     });
   }
 
+  playCaptions() {
+    Debug.log('Starting RTE captions');
+    if (this.captionsView) {
+      this.captionsView.play();
+    }
+  }
+
   restartCaptions() {
     Debug.log('Restarting RTE captions');
     if (this.captionsView) {
@@ -224,7 +230,6 @@ export default class RichTextEditor extends Component<Props, State> {
             ref={ref => {
               this.captionsView = ref;
             }}
-            isReadyToPlay={this.props.isReadyToPlay}
             orientation="up"
             duration={this.props.duration}
             captionStyle={{
