@@ -8,18 +8,6 @@ import type { MediaObject } from '@jonbrennecke/react-native-media';
 
 const ROOT_NAVIGATION_STACK_ID = `${APP_BUNDLE_ID}.RootStack`;
 
-export const showLoginModal = async () => {
-  await Navigation.showModal({
-    stack: {
-      children: [SCREEN_PARAMS[SCREENS.LOGIN_MODAL]],
-    },
-  });
-};
-
-export const dismissLoginModal = async () => {
-  await Navigation.dismissModal(SCREENS.LOGIN_MODAL);
-};
-
 export const pushEditScreen = async (
   currentComponentId: string,
   video: MediaObject
