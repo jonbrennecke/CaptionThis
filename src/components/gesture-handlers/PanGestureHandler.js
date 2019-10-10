@@ -323,6 +323,14 @@ export class PanGestureHandler extends PureComponent<
           ]),
         }
       : {};
+    let childrenProps = {
+      isDragging: this.state.isDragging,
+      style,
+      onLayout: this.childViewDidLayout,
+    };
+    if (!this.props.disabled && this.props.attachPanHandlersToChildren) {
+      childrenProps = { ...childrenProps, ...this.panResponder?.panHandlers };
+    }
     return (
       <View
         style={[this.props.style, StyleSheet.absoluteFillObject]}
@@ -331,23 +339,14 @@ export class PanGestureHandler extends PureComponent<
         pointerEvents="box-none"
       >
         {this.props.attachPanHandlersToChildren ? (
-          this.props.renderChildren({
-            isDragging: this.state.isDragging,
-            style,
-            ...this.panResponder?.panHandlers,
-            onLayout: this.childViewDidLayout,
-          })
+          this.props.renderChildren(childrenProps)
         ) : (
           <View
             style={StyleSheet.absoluteFill}
             ref={this.panResponderRef}
-            {...this.panResponder?.panHandlers}
+            {...(this.props.disabled ? {} : this.panResponder?.panHandlers)}
           >
-            {this.props.renderChildren({
-              isDragging: this.state.isDragging,
-              style,
-              onLayout: this.childViewDidLayout,
-            })}
+            {this.props.renderChildren(childrenProps)}
           </View>
         )}
       </View>
