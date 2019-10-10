@@ -180,10 +180,10 @@ export class FloatingVideoPlayer extends PureComponent<
               >
                 <VideoPlayer
                   style={styles.flex}
-                  videoID={videoID}
+                  assetID={videoID}
                   ref={videoPlayerRef}
                   onPlaybackStateChange={onPlaybackStateChange}
-                  onVideoDidUpdatePlaybackTime={onVideoDidUpdatePlaybackTime}
+                  onPlaybackTimeDidUpdate={onVideoDidUpdatePlaybackTime}
                   onVideoWillRestart={onVideoWillRestart}
                 />
               </Animated.View>

@@ -296,14 +296,11 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
                 this.playerView = ref;
               }}
               style={styles.absoluteFill}
-              videoID={this.props.video.assetID}
+              assetID={this.props.video.assetID}
               onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
-              onVideoDidUpdatePlaybackTime={
-                this.videoPlayerDidUpdatePlaybackTimeThrottled
-              }
-              onVideoDidRestart={this.videoPlayerDidRestart}
+              onVideoWillRestart={this.videoPlayerDidRestart}
               onViewDidResize={this.props.onVideoViewDidUpdateSize}
-              onPlaybackStateChange={playbackState => {
+              onPlaybackStateDidChange={playbackState => {
                 this.setState({
                   playbackState,
                 });
@@ -311,6 +308,12 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
                   this.startPlayerAndCaptions();
                 }
               }}
+              onPlaybackTimeDidUpdate={
+                this.videoPlayerDidUpdatePlaybackTimeThrottled
+              }
+              onOrientationDidLoad={
+                this.props.onRequestChangeOrientation
+              }
             />
             <MeasureContentsView
               style={styles.measuredContents}

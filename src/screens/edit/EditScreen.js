@@ -358,6 +358,7 @@ export default class EditScreen extends PureComponent<Props, State> {
   }
 
   render() {
+    console.log(this.state.orientation);
     return (
       <View style={styles.container}>
         {!this.props.isSpeechTranscriptionFinal && (
