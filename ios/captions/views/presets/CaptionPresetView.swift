@@ -193,7 +193,7 @@ class CaptionPresetView: UIView {
       style: style,
       textSegments: textSegments,
       duration: duration,
-      backgroundHeight: 0
+      backgroundHeight: Float(presetLayer.bounds.height)
     )
   }
 
