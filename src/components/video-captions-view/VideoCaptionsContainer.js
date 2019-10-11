@@ -38,7 +38,7 @@ const styles = {
         left: 0,
         right: 0,
         height: pixelSize.height,
-        bottom: 0,
+        bottom: CAPTION_VIEW_OFFSET_FROM_BOTTOM,
       };
     }
   },
