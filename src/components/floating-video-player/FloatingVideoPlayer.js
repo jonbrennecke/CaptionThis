@@ -182,7 +182,7 @@ export class FloatingVideoPlayer extends PureComponent<
                   style={styles.flex}
                   assetID={videoID}
                   ref={videoPlayerRef}
-                  onPlaybackStateChange={onPlaybackStateChange}
+                  onPlaybackStateDidChange={onPlaybackStateChange}
                   onPlaybackTimeDidUpdate={onVideoDidUpdatePlaybackTime}
                   onVideoWillRestart={onVideoWillRestart}
                 />
