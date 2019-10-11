@@ -136,13 +136,6 @@ class CaptionView: UIView {
   }
 
   @objc
-  public var viewLayout = CaptionViewLayout.defaultLayout {
-    didSet {
-      render()
-    }
-  }
-
-  @objc
   public var fontSize: CGFloat {
     get {
       return style.font.pointSize
@@ -198,7 +191,6 @@ class CaptionView: UIView {
       rowLayers: rowLayers,
       style: style,
       textSegments: textSegments,
-      layout: viewLayout,
       duration: duration
     )
   }
@@ -217,6 +209,16 @@ class CaptionView: UIView {
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
+    render()
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    render()
   }
 }
 

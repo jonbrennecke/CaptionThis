@@ -1,18 +1,18 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { View, SafeAreaView, Dimensions, StyleSheet } from 'react-native';
+import { SafeAreaView, Dimensions, StyleSheet } from 'react-native';
 import throttle from 'lodash/throttle';
 import { autobind } from 'core-decorators';
 import { VideoPlayer } from '@jonbrennecke/react-native-media';
 
 import { UI_COLORS } from '../../constants';
 import * as Debug from '../../utils/Debug';
-import { isLandscape, isPortrait } from '../../utils/Orientation';
-import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
+import { isLandscape } from '../../utils/Orientation';
+import { VideoCaptionsContainer } from '../../components/video-captions-view/VideoCaptionsContainer';
 import EditScreenTopControls from './EditScreenTopControls';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
 import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
-import { MeasureContentsView, PlaybackSeekbar } from '../../components';
+import { PlaybackSeekbar } from '../../components';
 
 import type {
   MediaObject,
@@ -24,7 +24,7 @@ import type { SpeechTranscription } from '../../types/speech';
 import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {
-  videoPlayerViewSize: Size,
+  videoPlayerParentViewSize: Size,
   video: MediaObject,
   countryCode: ?string,
   isAppInForeground: boolean,
@@ -271,12 +271,14 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
   }
 
   render() {
-    const captionViewLayout = ({ height, width }) => ({
-      size: isLandscape(this.props.orientation)
-        ? { width, height: height }
-        : { width, height: height + 85 },
-      origin: { x: 0, y: 0 },
-    });
+    const captionViewLayout = ({ height, width }) => {
+      return {
+        size: isLandscape(this.props.orientation)
+          ? { width, height }
+          : { width, height: height + 85 },
+        origin: { x: 0, y: 0 },
+      };
+    }
     const captionStyleForOrientation = (
       orientation: Orientation,
       { fontSize, ...captionStyle }: CaptionStyleObject
@@ -315,34 +317,26 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
                 this.props.onRequestChangeOrientation
               }
             />
-            <MeasureContentsView
-              style={styles.measuredContents}
-              renderChildren={viewSize => (
-                <>
-                  <VideoCaptionsContainer
-                    videoPlayerViewSize={this.props.videoPlayerViewSize}
-                    orientation={this.props.orientation}
-                  >
-                    <VideoCaptionsView
-                      ref={ref => {
-                        this.captionsView = ref;
-                      }}
-                      style={styles.flex}
-                      orientation={this.props.orientation}
-                      duration={this.props.video.duration}
-                      captionStyle={captionStyleForOrientation(
-                        this.props.orientation,
-                        this.props.captionStyle
-                      )}
-                      viewLayout={captionViewLayout(viewSize)}
-                      speechTranscription={this.props.speechTranscription}
-                      onPress={this.props.onRequestShowRichTextEditor}
-                    />
-                  </VideoCaptionsContainer>
-                  {isPortrait(this.props.orientation) && (
-                    <View style={styles.captionPaddingView} />
+            <VideoCaptionsContainer
+              videoDimensions={this.props.video.size}
+              videoPlayerParentViewSize={this.props.videoPlayerParentViewSize}
+              orientation={this.props.orientation}
+              renderChildren={captionViewSize => (
+                <VideoCaptionsView
+                  ref={ref => {
+                    this.captionsView = ref;
+                  }}
+                  style={styles.flex}
+                  orientation={this.props.orientation}
+                  duration={this.props.video.duration}
+                  captionStyle={captionStyleForOrientation(
+                    this.props.orientation,
+                    this.props.captionStyle
                   )}
-                </>
+                  viewLayout={captionViewLayout(captionViewSize)}
+                  speechTranscription={this.props.speechTranscription}
+                  onPress={this.props.onRequestShowRichTextEditor}
+                />
               )}
             />
             <EditScreenTopControls

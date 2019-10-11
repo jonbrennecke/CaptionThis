@@ -109,7 +109,6 @@
 		FCD5F75821D73CA3001F2068 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75721D73CA2001F2068 /* Debug.m */; };
 		FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */; };
 		FCDBE58122931ACF001DA3E7 /* CaptionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDBE58022931ACF001DA3E7 /* CaptionViewLayout.swift */; };
-		FCDBE58322931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = FCDBE58222931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m */; };
 		FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8024921F84A640092B5E5 /* OrientationUtil.swift */; };
 		FCE83950223A172E002C85CA /* CaptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8394F223A172E002C85CA /* CaptionView.swift */; };
 		FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCE83952223A1795002C85CA /* CaptionViewManager.m */; };
@@ -686,8 +685,6 @@
 		FCDA6EE221FD07BF00FA8345 /* RCTConvert+UIImageOrientation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+UIImageOrientation.h"; sourceTree = "<group>"; };
 		FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIImageOrientation.m"; sourceTree = "<group>"; };
 		FCDBE58022931ACF001DA3E7 /* CaptionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionViewLayout.swift; sourceTree = "<group>"; };
-		FCDBE58222931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionViewLayout.m"; sourceTree = "<group>"; };
-		FCDBE58422931DEE001DA3E7 /* RCTConvert+CaptionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionViewLayout.h"; sourceTree = "<group>"; };
 		FCE8024921F84A640092B5E5 /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
 		FCE8394F223A172E002C85CA /* CaptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionView.swift; sourceTree = "<group>"; };
 		FCE83951223A1786002C85CA /* CaptionViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptionViewManager.h; sourceTree = "<group>"; };
@@ -1033,8 +1030,6 @@
 				FC388F552230EC4B001CE3A3 /* RCTConvert+CaptionTextSegment.h */,
 				FC1913882262845B008C8BA0 /* RCTConvert+CaptionExportStyle.h */,
 				FC19138922628467008C8BA0 /* RCTConvert+CaptionExportStyle.m */,
-				FCDBE58222931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m */,
-				FCDBE58422931DEE001DA3E7 /* RCTConvert+CaptionViewLayout.h */,
 			);
 			path = RCTConvert;
 			sourceTree = "<group>";
@@ -2112,7 +2107,6 @@
 				FC388F522230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m in Sources */,
 				FCFBE02422A832AD0059D452 /* CaptionRowLayers.swift in Sources */,
 				FCF51FC8222B62C60066D81B /* RCTConvert+CaptionLineStyle.m in Sources */,
-				FCDBE58322931DE2001DA3E7 /* RCTConvert+CaptionViewLayout.m in Sources */,
 				FCF51FBC222B55480066D81B /* CaptionLineStyle.swift in Sources */,
 				FCFBDFA322A6D03F0059D452 /* effectUtils.swift in Sources */,
 				FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */,

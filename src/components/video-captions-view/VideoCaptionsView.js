@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import CaptionView from '../caption-view/CaptionView';
@@ -7,14 +7,13 @@ import CaptionView from '../caption-view/CaptionView';
 import type { Style } from '../../types/react';
 import type { SpeechTranscription } from '../../types/speech';
 import type { Orientation } from '../../types/media';
-import type { CaptionStyleObject, CaptionViewLayout } from '../../types/video';
+import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {
   style?: ?Style,
   duration: number,
   orientation: Orientation,
   captionStyle: CaptionStyleObject,
-  viewLayout: CaptionViewLayout,
   speechTranscription: ?SpeechTranscription,
   onPress?: () => void,
 };
@@ -28,7 +27,7 @@ const styles = {
   },
 };
 
-export default class VideoCaptionsView extends Component<Props> {
+export default class VideoCaptionsView extends PureComponent<Props> {
   captionView: ?CaptionView;
 
   restart() {
@@ -81,7 +80,6 @@ export default class VideoCaptionsView extends Component<Props> {
           duration={this.props.duration}
           textSegments={textSegments}
           captionStyle={this.props.captionStyle}
-          viewLayout={this.props.viewLayout}
         />
       </TouchableOpacity>
     );

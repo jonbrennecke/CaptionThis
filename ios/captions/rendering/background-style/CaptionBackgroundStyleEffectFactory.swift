@@ -5,7 +5,6 @@ protocol CaptionBackgroundStyleEffectFactory {
 
   func createEffect(
     backgroundColor: UIColor,
-    layout: CaptionViewLayout,
     map: CaptionStringsMap
   ) -> PresentationEffect
 }

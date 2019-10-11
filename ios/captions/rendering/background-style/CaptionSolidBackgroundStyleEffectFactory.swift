@@ -4,7 +4,7 @@ import UIKit
 class CaptionSolidBackgroundStyleEffectFactory: CaptionBackgroundStyleEffectFactory {
   let backgroundStyle: CaptionBackgroundStyle = .solid
 
-  func createEffect(backgroundColor: UIColor, layout _: CaptionViewLayout, map: CaptionStringsMap) -> PresentationEffect {
+  func createEffect(backgroundColor: UIColor, map: CaptionStringsMap) -> PresentationEffect {
     let animationKey = "solidBackgroundStyleEffectAnimation"
     return PresentationEffect(doEffect: { layer in
       guard let beginTime = map.getLine(byKey: .a, index: 0)?.timestamp else {

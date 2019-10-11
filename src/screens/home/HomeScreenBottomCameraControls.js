@@ -11,7 +11,7 @@ import HomeScreenPresetStyles from './HomeScreenPresetStyles';
 import SlideUpAnimatedView from '../../components/animations/SlideUpAnimatedView';
 import { MeasureContentsView } from '../../components';
 import CaptionView from '../../components/caption-view/CaptionView';
-import VideoCaptionsContainer from '../../components/video-captions-view/VideoCaptionsContainer';
+import { VideoCaptionsContainer } from '../../components/video-captions-view/VideoCaptionsContainer';
 import { PRESET_STYLES } from './presets';
 
 import type { Style } from '../../types/react';
@@ -126,7 +126,7 @@ export default class HomeScreenBottomCameraControls extends Component<
     });
     return (
       <View style={[styles.container, this.props.style]}>
-        <MeasureContentsView
+        {/* <MeasureContentsView
           renderChildren={viewSize => (
             <>
               <VideoCaptionsContainer style={styles.flex}>
@@ -172,7 +172,7 @@ export default class HomeScreenBottomCameraControls extends Component<
               />
             </>
           )}
-        />
+        /> */}
       </View>
     );
   }

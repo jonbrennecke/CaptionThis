@@ -109,7 +109,6 @@ class VideoExportTask {
       viewSize: style.viewSize
     )
     let frame = createCaptionLayerFrame(videoSize: composition.videoSize, heightRatio: heightRatio)
-    let layout = createCaptionViewLayout(videoSize: composition.videoSize, heightRatio: heightRatio)
     let captionLayer = CaptionLayer()
     let rowLayers = CaptionRowLayers()
     rowLayers.each { captionLayer.addSublayer($1) }
@@ -119,7 +118,6 @@ class VideoExportTask {
       rowLayers: rowLayers,
       style: exportStyle,
       textSegments: textSegments,
-      layout: layout,
       duration: duration
     )
     captionLayer.timeOffset = 0
@@ -131,12 +129,6 @@ class VideoExportTask {
     exportSession.delegate = self
     exportSession.export()
     state = .pending(.exportingCaptionAnimation(exportSession), startTime)
-  }
-
-  private func createCaptionViewLayout(videoSize: CGSize, heightRatio: CGFloat) -> CaptionViewLayout {
-    let height = (CAPTION_VIEW_HEIGHT_PORTRAIT + CAPTION_VIEW_OFFSET_FROM_BOTTOM) * heightRatio
-    let size = CGSize(width: videoSize.width, height: height)
-    return CaptionViewLayout(size: size, origin: .zero)
   }
 
   private func createCaptionLayerFrame(videoSize: CGSize, heightRatio: CGFloat) -> CGRect {

@@ -1,5 +1,5 @@
 // @flow
-import type { ColorRGBA, Size, Point } from './media';
+import type { ColorRGBA } from './media';
 
 export type CaptionLineStyle = 'fadeInOut' | 'translateY';
 export type CaptionTextAlignment = 'center' | 'left' | 'right';
@@ -31,9 +31,4 @@ export type CaptionTextSegment = {
   duration: number,
   timestamp: number,
   text: string,
-};
-
-export type CaptionViewLayout = {
-  size: Size,
-  origin: Point,
 };
