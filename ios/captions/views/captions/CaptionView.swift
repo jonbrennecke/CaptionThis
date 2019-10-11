@@ -136,13 +136,6 @@ class CaptionView: UIView {
   }
 
   @objc
-  public var viewLayout = CaptionViewLayout.defaultLayout {
-    didSet {
-      render()
-    }
-  }
-
-  @objc
   public var fontSize: CGFloat {
     get {
       return style.font.pointSize
@@ -185,6 +178,13 @@ class CaptionView: UIView {
     }
   }
 
+  @objc
+  public var backgroundHeight = Float(0) {
+    didSet {
+      render()
+    }
+  }
+
   private func render() {
     // sanity check to fix a bug in renderCaptions, but there's probably a better way of doing this
     if frame == .zero {
@@ -198,8 +198,8 @@ class CaptionView: UIView {
       rowLayers: rowLayers,
       style: style,
       textSegments: textSegments,
-      layout: viewLayout,
-      duration: duration
+      duration: duration,
+      backgroundHeight: backgroundHeight
     )
   }
 
@@ -217,6 +217,16 @@ class CaptionView: UIView {
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
+    render()
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    render()
   }
 }
 

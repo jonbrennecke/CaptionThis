@@ -4,31 +4,43 @@ import { View } from 'react-native';
 
 import { isLandscape } from '../../utils/Orientation';
 
-import type { Style, Children } from '../../types/react';
-import type { Orientation, Size } from '../../types/media';
+import type { Orientation, Size, SFC, Style, Children } from '../../types';
 
-type Props = {
+type VideoCaptionsContainerProps = {
   style?: ?Style,
-  children?: ?Children,
+  renderChildren: (size: Size, backgroundHeight: number) => Children,
   orientation?: Orientation,
-  videoPlayerViewSize?: Size,
+  videoDimensions: Size,
+  videoPlayerParentViewSize: Size,
 };
 
 const CAPTION_VIEW_HEIGHT_PORTRAIT = 85;
 const CAPTION_VIEW_OFFSET_FROM_BOTTOM = 75;
 
 const styles = {
-  container: {},
-  captionsWrap: (orientation: Orientation, videoPlayerViewSize: Size) => {
+  captionsWrap: (
+    orientation: Orientation,
+    videoPlayerParentViewSize: Size,
+    videoDimensions: Size
+  ) => {
+    const pixelSize = pixelSizeForCaptionView(
+      orientation,
+      videoPlayerParentViewSize,
+      videoDimensions
+    );
     if (isLandscape(orientation)) {
-      const videoHeight = videoPlayerViewSize.width * 9 / 16;
-      const bottomOfVideo = (videoPlayerViewSize.height - videoHeight) / 2;
-      const heightRatio = videoHeight / videoPlayerViewSize.height;
+      const aspectRatio = videoDimensions.height / videoDimensions.width;
+      const videoPlayerViewHeight =
+        videoPlayerParentViewSize.width * aspectRatio;
+      const bottomOfVideo =
+        (videoPlayerParentViewSize.height - videoPlayerViewHeight) / 2;
+      const heightRatio =
+        videoPlayerViewHeight / videoPlayerParentViewSize.height;
       return {
         position: 'absolute',
         left: 0,
         right: 0,
-        height: CAPTION_VIEW_HEIGHT_PORTRAIT * heightRatio,
+        height: pixelSize.height,
         bottom: bottomOfVideo + CAPTION_VIEW_OFFSET_FROM_BOTTOM * heightRatio,
       };
     } else {
@@ -36,24 +48,80 @@ const styles = {
         position: 'absolute',
         left: 0,
         right: 0,
-        height: CAPTION_VIEW_HEIGHT_PORTRAIT,
-        bottom: 0,
+        height: pixelSize.height,
+        bottom: CAPTION_VIEW_OFFSET_FROM_BOTTOM,
       };
     }
   },
 };
 
-export default function VideoCaptionsContainer({
+function pixelSizeForCaptionView(
+  orientation: Orientation,
+  videoPlayerParentViewSize: Size,
+  videoDimensions: Size
+): Size {
+  if (isLandscape(orientation)) {
+    const aspectRatio = videoDimensions.height / videoDimensions.width;
+    const videoPlayerViewHeight = videoPlayerParentViewSize.width * aspectRatio;
+    const heightRatio =
+      videoPlayerViewHeight / videoPlayerParentViewSize.height;
+    return {
+      width: videoPlayerParentViewSize.width,
+      height: CAPTION_VIEW_HEIGHT_PORTRAIT * heightRatio,
+    };
+  }
+  return {
+    width: videoPlayerParentViewSize.width,
+    height: CAPTION_VIEW_HEIGHT_PORTRAIT,
+  };
+}
+
+function bottomMarginForCaptionView(
+  orientation: Orientation,
+  videoPlayerParentViewSize: Size,
+  videoDimensions: Size
+): number {
+  if (isLandscape(orientation)) {
+    const aspectRatio = videoDimensions.height / videoDimensions.width;
+    const videoPlayerViewHeight = videoPlayerParentViewSize.width * aspectRatio;
+    const heightRatio =
+      videoPlayerViewHeight / videoPlayerParentViewSize.height;
+    return CAPTION_VIEW_OFFSET_FROM_BOTTOM * heightRatio;
+  } else {
+    return CAPTION_VIEW_OFFSET_FROM_BOTTOM;
+  }
+}
+
+export const VideoCaptionsContainer: SFC<VideoCaptionsContainerProps> = ({
   style,
-  children,
+  renderChildren,
   orientation = 'up',
-  videoPlayerViewSize = { height: 0, width: 0 },
-}: Props) {
+  videoDimensions,
+  videoPlayerParentViewSize,
+}: VideoCaptionsContainerProps) => {
+  const pixelSize = pixelSizeForCaptionView(
+    orientation,
+    videoPlayerParentViewSize,
+    videoDimensions
+  );
+  const bottomMargin = bottomMarginForCaptionView(
+    orientation,
+    videoPlayerParentViewSize,
+    videoDimensions
+  );
+  const backgroundHeight = bottomMargin + pixelSize.height;
   return (
-    <View style={[styles.container, style]}>
-      <View style={styles.captionsWrap(orientation, videoPlayerViewSize)}>
-        {children}
-      </View>
+    <View
+      style={[
+        styles.captionsWrap(
+          orientation,
+          videoPlayerParentViewSize,
+          videoDimensions
+        ),
+        style,
+      ]}
+    >
+      {renderChildren(pixelSize, backgroundHeight)}
     </View>
   );
-}
+};

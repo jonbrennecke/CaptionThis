@@ -358,14 +358,13 @@ export default class EditScreen extends PureComponent<Props, State> {
   }
 
   render() {
-    console.log(this.state.orientation);
     return (
       <View style={styles.container}>
         {!this.props.isSpeechTranscriptionFinal && (
           <EditScreenLoadingBackground />
         )}
         <EditScreenVideoPlayer
-          videoPlayerViewSize={this.state.videoViewSize}
+          videoPlayerParentViewSize={this.state.videoViewSize}
           countryCode={this.props.locale?.country.code}
           isAppInForeground={this.props.isAppInForeground}
           isDeviceLimitedByMemory={this.props.isDeviceLimitedByMemory}

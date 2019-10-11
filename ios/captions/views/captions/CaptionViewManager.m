@@ -5,7 +5,6 @@
 #import "RCTConvert+CaptionTextAlignment.h"
 #import "RCTConvert+CaptionWordStyle.h"
 #import "RCTConvert+CaptionTextSegment.h"
-#import "RCTConvert+CaptionViewLayout.h"
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
@@ -46,6 +45,8 @@ RCT_CUSTOM_VIEW_PROPERTY(backgroundStyle, NSString *, CaptionView) {
     [RCTConvert CaptionBackgroundStyle:json];
   view.backgroundStyle = backgroundStyle;
 }
+
+RCT_EXPORT_VIEW_PROPERTY(backgroundHeight, float)
 
 RCT_CUSTOM_VIEW_PROPERTY(backgroundColor, UIColor *, CaptionView) {
   if (![view isKindOfClass:[CaptionView class]]) {
@@ -102,17 +103,6 @@ RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, CaptionView) {
     [textSegments addObject:textSegment];
   }
   view.textSegments = textSegments;
-}
-
-RCT_CUSTOM_VIEW_PROPERTY(viewLayout, NSDictionary *, CaptionView) {
-  if (![view isKindOfClass:[CaptionView class]]) {
-    return;
-  }
-  CaptionViewLayout * viewLayout = [RCTConvert CaptionViewLayout:json];
-  if (!viewLayout) {
-    return;
-  }
-  view.viewLayout = viewLayout;
 }
 
 RCT_EXPORT_METHOD(play : (nonnull NSNumber *)reactTag) {

@@ -192,11 +192,8 @@ class CaptionPresetView: UIView {
       rowLayers: rowLayers,
       style: style,
       textSegments: textSegments,
-      layout: CaptionViewLayout(
-        size: CaptionPresetView.captionPresetFixedSize,
-        origin: .zero
-      ),
-      duration: duration
+      duration: duration,
+      backgroundHeight: 0
     )
   }
 

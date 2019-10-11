@@ -21,8 +21,8 @@ func renderCaptions(
   rowLayers: CaptionRowLayers,
   style: CaptionStyle,
   textSegments: [CaptionTextSegment],
-  layout: CaptionViewLayout,
-  duration: CFTimeInterval
+  duration: CFTimeInterval,
+  backgroundHeight: Float
 ) {
   let lineStyleEffectFactory = getLineStyleEffectFactory(style: style.lineStyle)
   let wordStyleEffectFactory = getWordStyleEffectFactory(style: style.wordStyle)
@@ -39,7 +39,11 @@ func renderCaptions(
     )
     effect.doEffect(layer: rowLayers.get(byKey: key))
   }
-  let effect = backgroundStyleEffectFactory.createEffect(backgroundColor: style.backgroundColor, layout: layout, map: map)
+  let effect = backgroundStyleEffectFactory.createEffect(
+    backgroundColor: style.backgroundColor,
+    backgroundHeight: backgroundHeight,
+    map: map
+  )
   effect.doEffect(layer: layer)
 }
 
