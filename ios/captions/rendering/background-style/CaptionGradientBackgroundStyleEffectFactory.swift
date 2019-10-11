@@ -3,7 +3,7 @@ import UIKit
 class CaptionGradientBackgroundStyleEffectFactory: CaptionBackgroundStyleEffectFactory {
   let backgroundStyle: CaptionBackgroundStyle = .gradient
 
-  func createEffect(backgroundColor: UIColor, backgroundHeight: Float, map: CaptionStringsMap) -> PresentationEffect {
+  func createEffect(backgroundColor: UIColor, backgroundHeight: Float, map _: CaptionStringsMap) -> PresentationEffect {
     let layerName = "layerName"
     return PresentationEffect(doEffect: { layer in
       let beginTime = CFTimeInterval(0)

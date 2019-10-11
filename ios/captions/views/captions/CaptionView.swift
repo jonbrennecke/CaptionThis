@@ -177,7 +177,7 @@ class CaptionView: UIView {
       render()
     }
   }
-  
+
   @objc
   public var backgroundHeight = Float(0) {
     didSet {
@@ -218,12 +218,12 @@ class CaptionView: UIView {
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     render()
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
     render()

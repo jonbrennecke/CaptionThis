@@ -133,7 +133,6 @@ class VideoExportTask {
     state = .pending(.exportingCaptionAnimation(exportSession), startTime)
   }
 
-
   private func createCaptionLayerFrame(videoSize: CGSize, heightRatio: CGFloat) -> CGRect {
     let height = CAPTION_VIEW_HEIGHT_PORTRAIT * heightRatio
     let y = videoSize.height - CAPTION_VIEW_OFFSET_FROM_BOTTOM * heightRatio - height

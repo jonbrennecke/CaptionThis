@@ -278,7 +278,7 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
           : { width, height: height + 85 },
         origin: { x: 0, y: 0 },
       };
-    }
+    };
     const captionStyleForOrientation = (
       orientation: Orientation,
       { fontSize, ...captionStyle }: CaptionStyleObject
@@ -313,9 +313,7 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
               onPlaybackTimeDidUpdate={
                 this.videoPlayerDidUpdatePlaybackTimeThrottled
               }
-              onOrientationDidLoad={
-                this.props.onRequestChangeOrientation
-              }
+              onOrientationDidLoad={this.props.onRequestChangeOrientation}
             />
             <VideoCaptionsContainer
               videoDimensions={this.props.video.size}

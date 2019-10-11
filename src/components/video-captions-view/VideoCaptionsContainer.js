@@ -18,13 +18,24 @@ const CAPTION_VIEW_HEIGHT_PORTRAIT = 85;
 const CAPTION_VIEW_OFFSET_FROM_BOTTOM = 75;
 
 const styles = {
-  captionsWrap: (orientation: Orientation, videoPlayerParentViewSize: Size, videoDimensions: Size) => {
-    const pixelSize = pixelSizeForCaptionView(orientation, videoPlayerParentViewSize, videoDimensions);
+  captionsWrap: (
+    orientation: Orientation,
+    videoPlayerParentViewSize: Size,
+    videoDimensions: Size
+  ) => {
+    const pixelSize = pixelSizeForCaptionView(
+      orientation,
+      videoPlayerParentViewSize,
+      videoDimensions
+    );
     if (isLandscape(orientation)) {
       const aspectRatio = videoDimensions.height / videoDimensions.width;
-      const videoPlayerViewHeight = videoPlayerParentViewSize.width * aspectRatio;
-      const bottomOfVideo = (videoPlayerParentViewSize.height - videoPlayerViewHeight) / 2;
-      const heightRatio = videoPlayerViewHeight / videoPlayerParentViewSize.height;
+      const videoPlayerViewHeight =
+        videoPlayerParentViewSize.width * aspectRatio;
+      const bottomOfVideo =
+        (videoPlayerParentViewSize.height - videoPlayerViewHeight) / 2;
+      const heightRatio =
+        videoPlayerViewHeight / videoPlayerParentViewSize.height;
       return {
         position: 'absolute',
         left: 0,
@@ -44,11 +55,16 @@ const styles = {
   },
 };
 
-function pixelSizeForCaptionView(orientation: Orientation, videoPlayerParentViewSize: Size, videoDimensions: Size): Size {
+function pixelSizeForCaptionView(
+  orientation: Orientation,
+  videoPlayerParentViewSize: Size,
+  videoDimensions: Size
+): Size {
   if (isLandscape(orientation)) {
     const aspectRatio = videoDimensions.height / videoDimensions.width;
     const videoPlayerViewHeight = videoPlayerParentViewSize.width * aspectRatio;
-    const heightRatio = videoPlayerViewHeight / videoPlayerParentViewSize.height;
+    const heightRatio =
+      videoPlayerViewHeight / videoPlayerParentViewSize.height;
     return {
       width: videoPlayerParentViewSize.width,
       height: CAPTION_VIEW_HEIGHT_PORTRAIT * heightRatio,
@@ -60,11 +76,16 @@ function pixelSizeForCaptionView(orientation: Orientation, videoPlayerParentView
   };
 }
 
-function bottomMarginForCaptionView(orientation: Orientation, videoPlayerParentViewSize: Size, videoDimensions: Size): number {
+function bottomMarginForCaptionView(
+  orientation: Orientation,
+  videoPlayerParentViewSize: Size,
+  videoDimensions: Size
+): number {
   if (isLandscape(orientation)) {
     const aspectRatio = videoDimensions.height / videoDimensions.width;
     const videoPlayerViewHeight = videoPlayerParentViewSize.width * aspectRatio;
-    const heightRatio = videoPlayerViewHeight / videoPlayerParentViewSize.height;
+    const heightRatio =
+      videoPlayerViewHeight / videoPlayerParentViewSize.height;
     return CAPTION_VIEW_OFFSET_FROM_BOTTOM * heightRatio;
   } else {
     return CAPTION_VIEW_OFFSET_FROM_BOTTOM;
@@ -78,14 +99,29 @@ export const VideoCaptionsContainer: SFC<VideoCaptionsContainerProps> = ({
   videoDimensions,
   videoPlayerParentViewSize,
 }: VideoCaptionsContainerProps) => {
-  const pixelSize = pixelSizeForCaptionView(orientation, videoPlayerParentViewSize, videoDimensions);
-  const bottomMargin = bottomMarginForCaptionView(orientation, videoPlayerParentViewSize, videoDimensions);
+  const pixelSize = pixelSizeForCaptionView(
+    orientation,
+    videoPlayerParentViewSize,
+    videoDimensions
+  );
+  const bottomMargin = bottomMarginForCaptionView(
+    orientation,
+    videoPlayerParentViewSize,
+    videoDimensions
+  );
   const backgroundHeight = bottomMargin + pixelSize.height;
   return (
     <View
-      style={[styles.captionsWrap(orientation, videoPlayerParentViewSize, videoDimensions), style]}
+      style={[
+        styles.captionsWrap(
+          orientation,
+          videoPlayerParentViewSize,
+          videoDimensions
+        ),
+        style,
+      ]}
     >
       {renderChildren(pixelSize, backgroundHeight)}
     </View>
   );
-}
+};
