@@ -46,6 +46,8 @@ RCT_CUSTOM_VIEW_PROPERTY(backgroundStyle, NSString *, CaptionView) {
   view.backgroundStyle = backgroundStyle;
 }
 
+RCT_EXPORT_VIEW_PROPERTY(backgroundHeight, float)
+
 RCT_CUSTOM_VIEW_PROPERTY(backgroundColor, UIColor *, CaptionView) {
   if (![view isKindOfClass:[CaptionView class]]) {
     return;

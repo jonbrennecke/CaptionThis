@@ -321,19 +321,19 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
               videoDimensions={this.props.video.size}
               videoPlayerParentViewSize={this.props.videoPlayerParentViewSize}
               orientation={this.props.orientation}
-              renderChildren={captionViewSize => (
+              renderChildren={(captionViewSize, backgroundHeight) => (
                 <VideoCaptionsView
                   ref={ref => {
                     this.captionsView = ref;
                   }}
                   style={styles.flex}
+                  backgroundHeight={backgroundHeight}
                   orientation={this.props.orientation}
                   duration={this.props.video.duration}
                   captionStyle={captionStyleForOrientation(
                     this.props.orientation,
                     this.props.captionStyle
                   )}
-                  viewLayout={captionViewLayout(captionViewSize)}
                   speechTranscription={this.props.speechTranscription}
                   onPress={this.props.onRequestShowRichTextEditor}
                 />

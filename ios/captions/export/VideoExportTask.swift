@@ -113,12 +113,14 @@ class VideoExportTask {
     let rowLayers = CaptionRowLayers()
     rowLayers.each { captionLayer.addSublayer($1) }
     captionLayer.frame = frame
+    let backgroundHeight = Float((CAPTION_VIEW_HEIGHT_PORTRAIT + CAPTION_VIEW_OFFSET_FROM_BOTTOM) * heightRatio)
     renderCaptions(
       layer: captionLayer,
       rowLayers: rowLayers,
       style: exportStyle,
       textSegments: textSegments,
-      duration: duration
+      duration: duration,
+      backgroundHeight: backgroundHeight
     )
     captionLayer.timeOffset = 0
     captionLayer.speed = 1
@@ -130,6 +132,7 @@ class VideoExportTask {
     exportSession.export()
     state = .pending(.exportingCaptionAnimation(exportSession), startTime)
   }
+
 
   private func createCaptionLayerFrame(videoSize: CGSize, heightRatio: CGFloat) -> CGRect {
     let height = CAPTION_VIEW_HEIGHT_PORTRAIT * heightRatio

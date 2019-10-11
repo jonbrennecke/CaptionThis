@@ -8,7 +8,7 @@ import type { Orientation, Size, SFC, Style, Children } from '../../types';
 
 type VideoCaptionsContainerProps = {
   style?: ?Style,
-  renderChildren: Size => Children,
+  renderChildren: (size: Size, backgroundHeight: number) => Children,
   orientation?: Orientation,
   videoDimensions: Size,
   videoPlayerParentViewSize: Size,
@@ -31,7 +31,6 @@ const styles = {
         right: 0,
         height: pixelSize.height,
         bottom: bottomOfVideo + CAPTION_VIEW_OFFSET_FROM_BOTTOM * heightRatio,
-        backgroundColor: 'red',
       };
     } else {
       return {
@@ -61,6 +60,17 @@ function pixelSizeForCaptionView(orientation: Orientation, videoPlayerParentView
   };
 }
 
+function bottomMarginForCaptionView(orientation: Orientation, videoPlayerParentViewSize: Size, videoDimensions: Size): number {
+  if (isLandscape(orientation)) {
+    const aspectRatio = videoDimensions.height / videoDimensions.width;
+    const videoPlayerViewHeight = videoPlayerParentViewSize.width * aspectRatio;
+    const heightRatio = videoPlayerViewHeight / videoPlayerParentViewSize.height;
+    return CAPTION_VIEW_OFFSET_FROM_BOTTOM * heightRatio;
+  } else {
+    return CAPTION_VIEW_OFFSET_FROM_BOTTOM;
+  }
+}
+
 export const VideoCaptionsContainer: SFC<VideoCaptionsContainerProps> = ({
   style,
   renderChildren,
@@ -69,11 +79,13 @@ export const VideoCaptionsContainer: SFC<VideoCaptionsContainerProps> = ({
   videoPlayerParentViewSize,
 }: VideoCaptionsContainerProps) => {
   const pixelSize = pixelSizeForCaptionView(orientation, videoPlayerParentViewSize, videoDimensions);
+  const bottomMargin = bottomMarginForCaptionView(orientation, videoPlayerParentViewSize, videoDimensions);
+  const backgroundHeight = bottomMargin + pixelSize.height;
   return (
     <View
       style={[styles.captionsWrap(orientation, videoPlayerParentViewSize, videoDimensions), style]}
     >
-      {renderChildren(pixelSize)}
+      {renderChildren(pixelSize, backgroundHeight)}
     </View>
   );
 }

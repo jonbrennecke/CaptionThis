@@ -177,6 +177,13 @@ class CaptionView: UIView {
       render()
     }
   }
+  
+  @objc
+  public var backgroundHeight = Float(0) {
+    didSet {
+      render()
+    }
+  }
 
   private func render() {
     // sanity check to fix a bug in renderCaptions, but there's probably a better way of doing this
@@ -191,7 +198,8 @@ class CaptionView: UIView {
       rowLayers: rowLayers,
       style: style,
       textSegments: textSegments,
-      duration: duration
+      duration: duration,
+      backgroundHeight: backgroundHeight
     )
   }
 

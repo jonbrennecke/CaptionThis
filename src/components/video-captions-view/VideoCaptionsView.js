@@ -15,6 +15,7 @@ type Props = {
   orientation: Orientation,
   captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
+  backgroundHeight: number,
   onPress?: () => void,
 };
 
@@ -80,6 +81,7 @@ export default class VideoCaptionsView extends PureComponent<Props> {
           duration={this.props.duration}
           textSegments={textSegments}
           captionStyle={this.props.captionStyle}
+          backgroundHeight={this.props.backgroundHeight}
         />
       </TouchableOpacity>
     );
