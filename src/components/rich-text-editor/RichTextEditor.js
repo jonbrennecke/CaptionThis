@@ -12,7 +12,6 @@ import RichTextBackgroundColorControl from './RichTextBackgroundColorControl';
 import RichTextFontSizeControl from './RichTextFontSizeControl';
 import RichTextEditorColorPicker from './RichTextEditorColorPicker';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
-import { VideoCaptionsContainer } from '../../components/video-captions-view/VideoCaptionsContainer';
 import Button from '../button/Button';
 import { UI_COLORS } from '../../constants';
 
@@ -225,32 +224,26 @@ export default class RichTextEditor extends PureComponent<Props, State> {
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        {/* <VideoCaptionsContainer
+        <VideoCaptionsView
+          ref={ref => {
+            this.captionsView = ref;
+          }}
           orientation="up"
-          videoDimensions
-          videoPlayerParentViewSize
-          renderChildren={captionViewSize => ( */}
-            <VideoCaptionsView
-              ref={ref => {
-                this.captionsView = ref;
-              }}
-              orientation="up"
-              duration={this.props.duration}
-              captionStyle={{
-                ...this.props.captionStyle,
-                textColor: this.state.textColor,
-                backgroundColor: this.state.backgroundColor,
-                fontFamily: this.state.fontFamily,
-                fontSize: this.state.fontSize,
-              }}
-              speechTranscription={this.props.speechTranscription}
-              viewLayout={{
-                size: { height: 85, width: SCREEN_WIDTH },
-                origin: { x: 0, y: 0 },
-              }}
-            />
-          {/* )}
-        /> */}
+          duration={this.props.duration}
+          captionStyle={{
+            ...this.props.captionStyle,
+            textColor: this.state.textColor,
+            backgroundColor: this.state.backgroundColor,
+            fontFamily: this.state.fontFamily,
+            fontSize: this.state.fontSize,
+          }}
+          speechTranscription={this.props.speechTranscription}
+          viewLayout={{
+            size: { height: 85, width: SCREEN_WIDTH },
+            origin: { x: 0, y: 0 },
+          }}
+          backgroundHeight={85}
+        />
         <View style={styles.mainContents}>
           <View style={styles.mainContentsBackground} />
           <RichTextFontFamilyControl
