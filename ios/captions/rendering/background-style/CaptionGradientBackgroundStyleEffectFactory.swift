@@ -4,7 +4,7 @@ class CaptionGradientBackgroundStyleEffectFactory: CaptionBackgroundStyleEffectF
   let backgroundStyle: CaptionBackgroundStyle = .gradient
 
   func createEffect(backgroundColor: UIColor, backgroundHeight: Float, map _: CaptionStringsMap) -> PresentationEffect {
-    let layerName = "layerName"
+    let layerName = "gradientBackgroundLayer"
     return PresentationEffect(doEffect: { layer in
       let beginTime = CFTimeInterval(0)
       let backgroundLayer = CALayer()
