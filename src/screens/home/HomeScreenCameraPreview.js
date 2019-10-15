@@ -2,7 +2,10 @@
 import React, { PureComponent } from 'react';
 import { Animated, StyleSheet, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
-import { Camera, CameraResolutionPresets } from '@jonbrennecke/react-native-camera';
+import {
+  Camera,
+  CameraResolutionPresets,
+} from '@jonbrennecke/react-native-camera';
 
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';
@@ -96,17 +99,19 @@ export default class HomeScreenCameraPreview extends PureComponent<Props> {
           style={styles.cameraDimensionWrap}
           cameraFormat={this.props.cameraFormat}
         >
-          {this.props.cameraInitializationStatus === 'loaded' ? <Camera
-            style={styles.absoluteFill}
-            ref={ref => {
-              this.cameraView = ref;
-            }}
-            resolutionPrest={this.props.cameraResolutionPreset}
-            cameraPosition={this.props.cameraPosition || 'front'}
-            previewMode="normal"
-            resizeMode="scaleAspectFill"
-            isPaused={this.props.isCameraPaused}
-          /> : null}
+          {this.props.cameraInitializationStatus === 'loaded' ? (
+            <Camera
+              style={styles.absoluteFill}
+              ref={ref => {
+                this.cameraView = ref;
+              }}
+              resolutionPrest={this.props.cameraResolutionPreset}
+              cameraPosition={this.props.cameraPosition || 'front'}
+              previewMode="normal"
+              resizeMode="scaleAspectFill"
+              isPaused={this.props.isCameraPaused}
+            />
+          ) : null}
         </CameraPreviewDimensions>
         <CameraTapToFocusView
           style={styles.absoluteFill}

@@ -31,7 +31,7 @@ export type CameraScreenState = {
   initializationStatus: InitializationStatus,
   cameraResolutionPreset: {
     front: $Keys<typeof CameraResolutionPresets>,
-    back: $Keys<typeof CameraResolutionPresets>
+    back: $Keys<typeof CameraResolutionPresets>,
   },
 };
 
@@ -40,7 +40,10 @@ export type CameraScreenStateExtraProps = {
   switchCameraPosition: () => void,
 };
 
-export type CameraStateProps = CameraStateHOCProps & AppStateHOCProps & CameraScreenStateExtraProps & CameraScreenState;
+export type CameraStateProps = CameraStateHOCProps &
+  AppStateHOCProps &
+  CameraScreenStateExtraProps &
+  CameraScreenState;
 
 export function wrapWithCameraState<
   PassThroughProps: Object,
@@ -67,7 +70,7 @@ export function wrapWithCameraState<
       cameraPosition: null,
       initializationStatus: 'none',
       cameraResolutionPreset: {
-        front: CameraResolutionPresets.hd720p, 
+        front: CameraResolutionPresets.hd720p,
         back: CameraResolutionPresets.hd1080p,
       },
     };
@@ -163,7 +166,7 @@ export function wrapWithCameraState<
         async () => {
           try {
             await this.props.loadSupportedFeatures();
-            
+
             // TODO: set this.state.cameraResolutionPreset with the best preset option
             // Currently, the "bestFormat" always returns 4K, even if this isn't supported on the camera.
             // const supportedFormats = await getSupportedFormats(false, this.state.cameraPosition || 'front');
@@ -177,14 +180,12 @@ export function wrapWithCameraState<
             // eslint-disable-next-line no-console
             console.warn(error);
           } finally {
-            this.setState(
-              {
-                initializationStatus: 'loaded',
-                cameraPosition: 'front',
-                isSwitchCameraEnabled: this.hasMultipleSupportedCameras(),
-                isCameraPaused: false,
-              }
-            );
+            this.setState({
+              initializationStatus: 'loaded',
+              cameraPosition: 'front',
+              isSwitchCameraEnabled: this.hasMultipleSupportedCameras(),
+              isCameraPaused: false,
+            });
           }
         }
       );

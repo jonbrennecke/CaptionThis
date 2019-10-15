@@ -284,7 +284,11 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
                 locale={this.props.locale}
                 cameraFormat={this.props.format}
                 cameraPosition={this.props.cameraPosition}
-                cameraResolutionPreset={this.props.cameraResolutionPreset[this.props.cameraPosition || 'front']}
+                cameraResolutionPreset={
+                  this.props.cameraResolutionPreset[
+                    this.props.cameraPosition || 'front'
+                  ]
+                }
                 cameraInitializationStatus={this.props.initializationStatus}
                 captionStyle={this.props.captionStyle}
                 animatedScrollValue={this.scrollAnim}
