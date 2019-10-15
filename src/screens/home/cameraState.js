@@ -5,9 +5,12 @@ import { InteractionManager } from 'react-native';
 import {
   createCameraStateHOC,
   addVolumeButtonListener,
+  getSupportedFormats,
+  CameraResolutionPresets,
 } from '@jonbrennecke/react-native-camera';
 import { createMediaStateHOC } from '@jonbrennecke/react-native-media';
 import { autobind } from 'core-decorators';
+import maxBy from 'lodash/maxBy';
 
 import { wrapWithAppState } from './appState';
 
@@ -21,25 +24,23 @@ import type { ReturnType } from '../../types';
 
 export type InitializationStatus = 'loading' | 'loaded' | 'none';
 
-export type CameraScreenStateExtraProps = {
-  cameraRef: ReturnType<typeof createRef>,
-  isSwitchCameraEnabled: boolean,
-  isCameraPaused: boolean,
-  initializationStatus: InitializationStatus,
-  cameraPosition: ?CameraPosition,
-  switchCameraPosition: () => void,
-};
-
 export type CameraScreenState = {
   isSwitchCameraEnabled: boolean,
   isCameraPaused: boolean,
   cameraPosition: ?CameraPosition,
   initializationStatus: InitializationStatus,
+  cameraResolutionPreset: {
+    front: $Keys<typeof CameraResolutionPresets>,
+    back: $Keys<typeof CameraResolutionPresets>
+  },
 };
 
-export type CameraStateProps = CameraScreenStateExtraProps &
-  CameraStateHOCProps &
-  AppStateHOCProps;
+export type CameraScreenStateExtraProps = {
+  cameraRef: ReturnType<typeof createRef>,
+  switchCameraPosition: () => void,
+};
+
+export type CameraStateProps = CameraStateHOCProps & AppStateHOCProps & CameraScreenStateExtraProps & CameraScreenState;
 
 export function wrapWithCameraState<
   PassThroughProps: Object,
@@ -65,6 +66,10 @@ export function wrapWithCameraState<
       isCameraPaused: false,
       cameraPosition: null,
       initializationStatus: 'none',
+      cameraResolutionPreset: {
+        front: CameraResolutionPresets.hd720p, 
+        back: CameraResolutionPresets.hd1080p,
+      },
     };
 
     async componentDidMount() {
@@ -148,6 +153,7 @@ export function wrapWithCameraState<
       }
       this.setState({
         initializationStatus: 'loading',
+        isCameraPaused: true,
       });
       if (this.initInteractionHandle) {
         // $FlowFixMe
@@ -157,6 +163,15 @@ export function wrapWithCameraState<
         async () => {
           try {
             await this.props.loadSupportedFeatures();
+            
+            // TODO: set this.state.cameraResolutionPreset with the best preset option
+            // Currently, the "bestFormat" always returns 4K, even if this isn't supported on the camera.
+            // const supportedFormats = await getSupportedFormats(false, this.state.cameraPosition || 'front');
+            // const videoFormats = supportedFormats
+            //   .filter(fmt => fmt.mediaType === 'vide')
+            //   .filter(fmt => fmt.dimensions.width >= 1280);
+            // const bestFormats = maxBy(videoFormats, fmt => fmt.dimensions.width);
+
             this.addVolumeButtonListener();
           } catch (error) {
             // eslint-disable-next-line no-console
@@ -167,6 +182,7 @@ export function wrapWithCameraState<
                 initializationStatus: 'loaded',
                 cameraPosition: 'front',
                 isSwitchCameraEnabled: this.hasMultipleSupportedCameras(),
+                isCameraPaused: false,
               }
             );
           }

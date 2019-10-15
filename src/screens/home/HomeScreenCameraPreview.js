@@ -21,12 +21,15 @@ import type {
   CaptionStyleObject,
   CaptionPresetStyleObject,
 } from '../../types/video';
+import type { InitializationStatus } from './cameraState';
 
 type Props = {
   style?: ?Style,
   captionStyle: CaptionStyleObject,
   cameraFormat: ?CameraFormat,
   cameraPosition: ?CameraPosition,
+  cameraResolutionPreset: $Keys<typeof CameraResolutionPresets>,
+  cameraInitializationStatus: InitializationStatus,
   animatedScrollValue: Animated.Value,
   thumbnailVideoID: ?VideoAssetIdentifier,
   speechTranscription: ?SpeechTranscription,
@@ -93,17 +96,17 @@ export default class HomeScreenCameraPreview extends PureComponent<Props> {
           style={styles.cameraDimensionWrap}
           cameraFormat={this.props.cameraFormat}
         >
-          <Camera
+          {this.props.cameraInitializationStatus === 'loaded' ? <Camera
             style={styles.absoluteFill}
             ref={ref => {
               this.cameraView = ref;
             }}
-            resolutionPrest={CameraResolutionPresets.hd720p}
+            resolutionPrest={this.props.cameraResolutionPreset}
             cameraPosition={this.props.cameraPosition || 'front'}
             previewMode="normal"
             resizeMode="scaleAspectFill"
             isPaused={this.props.isCameraPaused}
-          />
+          /> : null}
         </CameraPreviewDimensions>
         <CameraTapToFocusView
           style={styles.absoluteFill}
