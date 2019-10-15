@@ -4,7 +4,6 @@ import React, { PureComponent, createRef } from 'react';
 import { InteractionManager } from 'react-native';
 import {
   createCameraStateHOC,
-  startCameraPreview,
   addVolumeButtonListener,
 } from '@jonbrennecke/react-native-camera';
 import { createMediaStateHOC } from '@jonbrennecke/react-native-media';
@@ -163,21 +162,13 @@ export function wrapWithCameraState<
             // eslint-disable-next-line no-console
             console.warn(error);
           } finally {
-            const cameraPosition = this.getInitialCameraPosition();
-            if (!cameraPosition) {
-              alert('Device has no supported cameras');
-            } else {
-              this.setState(
-                {
-                  initializationStatus: 'loaded',
-                  cameraPosition: cameraPosition,
-                  isSwitchCameraEnabled: this.hasMultipleSupportedCameras(),
-                },
-                () => {
-                  startCameraPreview();
-                }
-              );
-            }
+            this.setState(
+              {
+                initializationStatus: 'loaded',
+                cameraPosition: 'front',
+                isSwitchCameraEnabled: this.hasMultipleSupportedCameras(),
+              }
+            );
           }
         }
       );
@@ -192,20 +183,6 @@ export function wrapWithCameraState<
         cameraDeviceSupport.hasSupportedBackCamera &&
         cameraDeviceSupport.hasSupportedBackCamera
       );
-    }
-
-    getInitialCameraPosition(): ?CameraPosition {
-      const cameraDeviceSupport = this.props.cameraDeviceSupport;
-      if (!cameraDeviceSupport) {
-        return null;
-      }
-      if (
-        !cameraDeviceSupport.hasSupportedFrontCamera &&
-        !cameraDeviceSupport.hasSupportedBackCamera
-      ) {
-        return null;
-      }
-      return cameraDeviceSupport.hasSupportedFrontCamera ? 'front' : 'back';
     }
 
     handleVolumeButtonPress() {

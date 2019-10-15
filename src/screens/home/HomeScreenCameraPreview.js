@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import { Animated, StyleSheet, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
-import { Camera } from '@jonbrennecke/react-native-camera';
+import { Camera, CameraResolutionPresets } from '@jonbrennecke/react-native-camera';
 
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
 import HomeScreenCameraControls from './HomeScreenCameraControls';
@@ -98,6 +98,7 @@ export default class HomeScreenCameraPreview extends PureComponent<Props> {
             ref={ref => {
               this.cameraView = ref;
             }}
+            resolutionPrest={CameraResolutionPresets.hd720p}
             cameraPosition={this.props.cameraPosition || 'front'}
             previewMode="normal"
             resizeMode="scaleAspectFill"

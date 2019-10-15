@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@jonbrennecke/react-native-animated-ui": "1.0.11",
-    "@jonbrennecke/react-native-camera": "1.0.75",
+    "@jonbrennecke/react-native-camera": "1.0.76",
     "@jonbrennecke/react-native-media": "1.0.33",
     "bluebird": "^3.5.3",
     "core-decorators": "0.20.0",
