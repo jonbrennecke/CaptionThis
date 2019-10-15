@@ -6,10 +6,6 @@ import { autobind } from 'core-decorators';
 import { withSafeArea } from 'react-native-safe-area';
 import uuid from 'uuid';
 import { Navigation } from 'react-native-navigation';
-import {
-  startCameraPreview,
-  stopCameraPreview,
-} from '@jonbrennecke/react-native-camera';
 import { createAssetWithVideoFileAtURL } from '@jonbrennecke/react-native-media';
 
 import { UI_COLORS } from '../../constants';
@@ -107,12 +103,10 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
   }
 
   async componentDidAppear() {
-    startCameraPreview();
     await this.setUpSpeechRecognizer();
   }
 
   async componentDidDisappear() {
-    stopCameraPreview();
     await this.shutDownSpeechRecognizer();
   }
 
@@ -120,7 +114,6 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
     if (this.state.hasCompletedSetupAfterOnboarding) {
       return;
     }
-    startCameraPreview();
     await this.props.loadDeviceInfo();
     this.setState({
       hasCompletedSetupAfterOnboarding: true,
@@ -291,6 +284,12 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
                 locale={this.props.locale}
                 cameraFormat={this.props.format}
                 cameraPosition={this.props.cameraPosition}
+                cameraResolutionPreset={
+                  this.props.cameraResolutionPreset[
+                    this.props.cameraPosition || 'front'
+                  ]
+                }
+                cameraInitializationStatus={this.props.initializationStatus}
                 captionStyle={this.props.captionStyle}
                 animatedScrollValue={this.scrollAnim}
                 isCameraRecording={this.props.captureStatus === 'started'}
