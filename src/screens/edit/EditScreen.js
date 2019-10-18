@@ -63,8 +63,9 @@ export default class EditScreen extends PureComponent<
 
   async componentDidMount() {
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
-    await beginSpeechTranscriptionOfAsset(this.props.video.assetID);
     this.addNavigationListeners();
+    await beginSpeechTranscriptionOfAsset(this.props.video.assetID);
+
   }
 
   componentWillUnmount() {

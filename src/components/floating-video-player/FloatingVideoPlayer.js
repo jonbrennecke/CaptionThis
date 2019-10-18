@@ -25,7 +25,7 @@ export type FloatingVideoPlayerProps = {
     playbackTime: number,
     duration: number
   ) => void,
-  onVideoWillRestart?: () => void,
+  onVideoDidPlayToEnd?: () => void,
   onViewDidResize?: Size => void,
   onPlaybackStateChange?: PlaybackState => void,
 };
@@ -148,7 +148,7 @@ export class FloatingVideoPlayer extends PureComponent<
       initialPosition,
       onVideoDidUpdatePlaybackTime = noop,
       onPlaybackStateChange = noop,
-      onVideoWillRestart = noop,
+      onVideoDidPlayToEnd = noop,
     } = this.props;
     return (
       <Draggable
@@ -184,7 +184,7 @@ export class FloatingVideoPlayer extends PureComponent<
                   ref={videoPlayerRef}
                   onPlaybackStateDidChange={onPlaybackStateChange}
                   onPlaybackTimeDidUpdate={onVideoDidUpdatePlaybackTime}
-                  onVideoWillRestart={onVideoWillRestart}
+                  onVideoDidPlayToEnd={onVideoDidPlayToEnd}
                 />
               </Animated.View>
               <Animated.View

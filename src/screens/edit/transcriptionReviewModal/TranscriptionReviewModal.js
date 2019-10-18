@@ -252,7 +252,7 @@ export const TranscriptionReviewModal: ComponentType<
                           setSegmentSelection(playbackTime);
                         }}
                         onPlaybackStateChange={setPlaybackState}
-                        onVideoWillRestart={() => {
+                        onVideoDidPlayToEnd={() => {
                           setPlaybackTime(0);
                           setSegmentSelection(0);
                         }}
