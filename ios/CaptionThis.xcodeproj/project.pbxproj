@@ -22,6 +22,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		3334C213C3C44CADB5F49B67 /* libHSReactNativeSpeech.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CEE9A6EFC624C6ABB014F72 /* libHSReactNativeSpeech.a */; };
 		33C33D6F14064FD6A7A623A7 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFF2F3DB2EA4D6980D49A6A /* libRNSVG.a */; };
 		3732E5DBFC0B492A8E6B4B9A /* libRNSentry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA3289A720848BC816600CE /* libRNSentry.a */; };
 		45FD7683D86D4632A3B04D61 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0D8E9D50C44D7C928CE506 /* libz.tbd */; };
@@ -59,8 +60,6 @@
 		FC6EA7D721CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */; };
 		FC6EA7D821CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */; };
 		FC6EA81221D45123007C3B3E /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81121D45123007C3B3E /* Debug.swift */; };
-		FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA81321D45266007C3B3E /* SpeechManager.swift */; };
-		FC6FCDA52220A2A9004772B9 /* LocaleUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */; };
 		FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9622249874004772B9 /* CaptionPresetView.swift */; };
 		FC6FCF9922249899004772B9 /* CaptionPresetViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9822249899004772B9 /* CaptionPresetViewManager.m */; };
 		FC6FCF9C22249B65004772B9 /* CaptionPresetLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6FCF9B22249B65004772B9 /* CaptionPresetLayer.swift */; };
@@ -95,9 +94,6 @@
 		FCB0E5C12213F076002F320B /* VideoExportTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB0E5C02213F076002F320B /* VideoExportTask.swift */; };
 		FCB0E5C322149C03002F320B /* PhotosAlbumUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB0E5C222149C03002F320B /* PhotosAlbumUtil.swift */; };
 		FCB392F2220CCD0900403154 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB392F1220CCD0900403154 /* Result.swift */; };
-		FCB39371220EB45200403154 /* FileSpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */; };
-		FCB393A52210E0F900403154 /* LiveSpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */; };
-		FCB393A72210E2C000403154 /* SpeechTranscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB393A62210E2C000403154 /* SpeechTranscriptionRequest.swift */; };
 		FCB3D2BF68D740C581A23323 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */; };
 		FCB8AE72222DBE26002F30D8 /* CaptionPresetLinePositions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB8AE71222DBE26002F30D8 /* CaptionPresetLinePositions.swift */; };
 		FCB8AEBC222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB8AEBB222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m */; };
@@ -105,7 +101,6 @@
 		FCBB1936221524F00014D41C /* CaptionAnimationExportSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */; };
 		FCBB1A16221E66820014D41C /* FlagKit.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCBB1A15221E66820014D41C /* FlagKit.xcassets */; };
 		FCC486602269048200719F69 /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC4865F2269048200719F69 /* PlaybackController.swift */; };
-		FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */; };
 		FCD5F75821D73CA3001F2068 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5F75721D73CA2001F2068 /* Debug.m */; };
 		FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = FCDA6F1321FD07D800FA8345 /* RCTConvert+UIImageOrientation.m */; };
 		FCDBE58122931ACF001DA3E7 /* CaptionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDBE58022931ACF001DA3E7 /* CaptionViewLayout.swift */; };
@@ -409,6 +404,13 @@
 			remoteGlobalIDString = 3D7682761D8E76B80014119E;
 			remoteInfo = SplashScreen;
 		};
+		FC1DD48323596FD600BDDDA4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 818AC33F1A714CE6B77CA623 /* HSReactNativeSpeech.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FC1FC2B323568D390014BEA2;
+			remoteInfo = HSReactNativeSpeech;
+		};
 		FC234BBB234E8BFD00DB2EE2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 324BC612AE2D4F2D9554E7A4 /* HSAnimatedUI.xcodeproj */;
@@ -581,10 +583,12 @@
 		70E12CA68E464F8995503A85 /* libReactNativeHaptic.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeHaptic.a; sourceTree = "<group>"; };
 		755A11963AF5425BBB7CCC66 /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		818AC33F1A714CE6B77CA623 /* HSReactNativeSpeech.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = HSReactNativeSpeech.xcodeproj; path = "../node_modules/@jonbrennecke/react-native-speech/ios/HSReactNativeSpeech.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		896272E6488044ABA31DCDA8 /* RNSafeArea.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSafeArea.xcodeproj; path = "../node_modules/react-native-safe-area/ios/RNSafeArea.xcodeproj"; sourceTree = "<group>"; };
 		8A2760C030124ED4AC724488 /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
 		8A6B0F82929A447687194078 /* libHSReactNativeMedia.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libHSReactNativeMedia.a; sourceTree = "<group>"; };
+		9CEE9A6EFC624C6ABB014F72 /* libHSReactNativeSpeech.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libHSReactNativeSpeech.a; sourceTree = "<group>"; };
 		A6FDB0CCE2B7434DA0856AFC /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		AA0D8E9D50C44D7C928CE506 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
@@ -626,9 +630,6 @@
 		FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Regular.ttf"; path = "../assets/fonts/PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
 		FC6EA7E721D4508D007C3B3E /* CaptionThis-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CaptionThis-Bridging-Header.h"; sourceTree = "<group>"; };
 		FC6EA81121D45123007C3B3E /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
-		FC6EA81321D45266007C3B3E /* SpeechManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechManager.swift; sourceTree = "<group>"; };
-		FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocaleUtil.m; sourceTree = "<group>"; };
-		FC6FCDD72220A2C7004772B9 /* LocaleUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocaleUtil.h; sourceTree = "<group>"; };
 		FC6FCF9622249874004772B9 /* CaptionPresetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetView.swift; sourceTree = "<group>"; };
 		FC6FCF9822249899004772B9 /* CaptionPresetViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptionPresetViewManager.m; sourceTree = "<group>"; };
 		FC6FCF9A222498A2004772B9 /* CaptionPresetViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptionPresetViewManager.h; sourceTree = "<group>"; };
@@ -667,9 +668,6 @@
 		FCB0E5C02213F076002F320B /* VideoExportTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExportTask.swift; sourceTree = "<group>"; };
 		FCB0E5C222149C03002F320B /* PhotosAlbumUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosAlbumUtil.swift; sourceTree = "<group>"; };
 		FCB392F1220CCD0900403154 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
-		FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
-		FCB393A62210E2C000403154 /* SpeechTranscriptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechTranscriptionRequest.swift; sourceTree = "<group>"; };
 		FCB8AE71222DBE26002F30D8 /* CaptionPresetLinePositions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetLinePositions.swift; sourceTree = "<group>"; };
 		FCB8AEBB222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionWordStyle.m"; sourceTree = "<group>"; };
 		FCB8AEF0222DDD77002F30D8 /* RCTConvert+CaptionWordStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionWordStyle.h"; sourceTree = "<group>"; };
@@ -677,8 +675,6 @@
 		FCBB1935221524F00014D41C /* CaptionAnimationExportSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionAnimationExportSession.swift; sourceTree = "<group>"; };
 		FCBB1A15221E66820014D41C /* FlagKit.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FlagKit.xcassets; sourceTree = "<group>"; };
 		FCC4865F2269048200719F69 /* PlaybackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackController.swift; sourceTree = "<group>"; };
-		FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpeechBridgeModule.m; sourceTree = "<group>"; };
-		FCD5F75421D6EA68001F2068 /* SpeechBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpeechBridgeModule.h; sourceTree = "<group>"; };
 		FCD5F75521D73C8C001F2068 /* Debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
 		FCD5F75721D73CA2001F2068 /* Debug.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Debug.m; sourceTree = "<group>"; };
 		FCD998D02332BBE7008B82B2 /* HSCameraUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HSCameraUtils.xcodeproj; path = "../../highstreet/backflip-camera-utils/HSCameraUtils.xcodeproj"; sourceTree = "<group>"; };
@@ -753,6 +749,7 @@
 				5CFEAE62C9A24B29984DD703 /* libReactNativeHaptic.a in Frameworks */,
 				BD9CE76AC4824D4398B1E28F /* libHSReactNativeMedia.a in Frameworks */,
 				FF81AC8B89144FB9AFCA8928 /* libHSReactNativeCamera.a in Frameworks */,
+				3334C213C3C44CADB5F49B67 /* libHSReactNativeSpeech.a in Frameworks */,
 				5B900974E96C484BA97E963A /* libHSAnimatedUI.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -857,7 +854,6 @@
 				FC6FCF6222249860004772B9 /* captions */,
 				FC58D11321FAED1A00E7956D /* utils */,
 				FCDA6F1521FD07E100FA8345 /* RCTConvert */,
-				FCD5F75321D6EA55001F2068 /* speech */,
 				FC7A0F8621D8AB5D00751DBE /* HueGradientViewManager */,
 				FC7A0F6121D89CCC00751DBE /* SaturationAndBrightnessGradientViewManager */,
 				FC6EA421221230CA009F3D7D /* DeviceBridgeModule */,
@@ -944,6 +940,7 @@
 				41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */,
 				324BC612AE2D4F2D9554E7A4 /* HSAnimatedUI.xcodeproj */,
 				FE3F542488AE4D8AB5B43279 /* RNBlur.xcodeproj */,
+				818AC33F1A714CE6B77CA623 /* HSReactNativeSpeech.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -994,6 +991,14 @@
 			isa = PBXGroup;
 			children = (
 				FC16E1D62207A6E500C031DA /* libSplashScreen.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FC1DD48023596FD600BDDDA4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FC1DD48423596FD600BDDDA4 /* libHSReactNativeSpeech.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1124,6 +1129,7 @@
 				8A6B0F82929A447687194078 /* libHSReactNativeMedia.a */,
 				C4BF1A0F40D94988BDBDA2E6 /* libHSReactNativeCamera.a */,
 				0B3E4F5B1E2D438DA023ABD2 /* libHSAnimatedUI.a */,
+				9CEE9A6EFC624C6ABB014F72 /* libHSReactNativeSpeech.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1307,21 +1313,6 @@
 			path = export;
 			sourceTree = "<group>";
 		};
-		FCD5F75321D6EA55001F2068 /* speech */ = {
-			isa = PBXGroup;
-			children = (
-				FC6EA81321D45266007C3B3E /* SpeechManager.swift */,
-				FCB393A62210E2C000403154 /* SpeechTranscriptionRequest.swift */,
-				FCB39370220EB45200403154 /* FileSpeechTranscriptionRequest.swift */,
-				FCB393A42210E0F900403154 /* LiveSpeechTranscriptionRequest.swift */,
-				FCD5F75121D6EA50001F2068 /* SpeechBridgeModule.m */,
-				FCD5F75421D6EA68001F2068 /* SpeechBridgeModule.h */,
-				FC6FCDA42220A2A9004772B9 /* LocaleUtil.m */,
-				FC6FCDD72220A2C7004772B9 /* LocaleUtil.h */,
-			);
-			name = speech;
-			sourceTree = "<group>";
-		};
 		FCD5F75621D73C97001F2068 /* Debug */ = {
 			isa = PBXGroup;
 			children = (
@@ -1478,6 +1469,10 @@
 				{
 					ProductGroup = FC728B2522B361F9005A15DA /* Products */;
 					ProjectRef = 2A48C2E922F841C9992B86EA /* HSReactNativeMedia.xcodeproj */;
+				},
+				{
+					ProductGroup = FC1DD48023596FD600BDDDA4 /* Products */;
+					ProjectRef = 818AC33F1A714CE6B77CA623 /* HSReactNativeSpeech.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1839,6 +1834,13 @@
 			remoteRef = FC16E1D52207A6E500C031DA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FC1DD48423596FD600BDDDA4 /* libHSReactNativeSpeech.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libHSReactNativeSpeech.a;
+			remoteRef = FC1DD48323596FD600BDDDA4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FC234BBC234E8BFD00DB2EE2 /* libHSAnimatedUI.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2083,9 +2085,7 @@
 				FCFBDFAD22A72DD10059D452 /* CaptionLineStyleTranslateYEffectFactory.swift in Sources */,
 				FCF51F87222B4D550066D81B /* CaptionStyle.swift in Sources */,
 				FCB0E5C322149C03002F320B /* PhotosAlbumUtil.swift in Sources */,
-				FCB39371220EB45200403154 /* FileSpeechTranscriptionRequest.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				FCB393A52210E0F900403154 /* LiveSpeechTranscriptionRequest.swift in Sources */,
 				FC6EA81221D45123007C3B3E /* Debug.swift in Sources */,
 				FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */,
 				FC388F4C22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m in Sources */,
@@ -2110,7 +2110,6 @@
 				FCF51FBC222B55480066D81B /* CaptionLineStyle.swift in Sources */,
 				FCFBDFA322A6D03F0059D452 /* effectUtils.swift in Sources */,
 				FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */,
-				FCD5F75221D6EA50001F2068 /* SpeechBridgeModule.m in Sources */,
 				FC3A07D02256957800057426 /* clamp.swift in Sources */,
 				FCFBDFAB22A719EB0059D452 /* CaptionLineStyleEffectFactory.swift in Sources */,
 				FC388F8E2231B41C001CE3A3 /* CaptionStringsMap.swift in Sources */,
@@ -2120,14 +2119,12 @@
 				FCDBE58122931ACF001DA3E7 /* CaptionViewLayout.swift in Sources */,
 				FCBB1936221524F00014D41C /* CaptionAnimationExportSession.swift in Sources */,
 				FCB8AEBC222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m in Sources */,
-				FC6EA81421D45266007C3B3E /* SpeechManager.swift in Sources */,
 				FCFBE02222A8324B0059D452 /* CaptionRowKey.swift in Sources */,
 				FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */,
 				FCA3971821DC93AF00347CAB /* constants.swift in Sources */,
 				FCC486602269048200719F69 /* PlaybackController.swift in Sources */,
 				FCB392F2220CCD0900403154 /* Result.swift in Sources */,
 				FCFBDFBA22A7768A0059D452 /* layerUtils.swift in Sources */,
-				FCB393A72210E2C000403154 /* SpeechTranscriptionRequest.swift in Sources */,
 				FC19138C2262908D008C8BA0 /* VideoAnimationLayerLayout.swift in Sources */,
 				FCFBDFBC22A78C5D0059D452 /* CaptionTextAlignment.swift in Sources */,
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,
@@ -2136,7 +2133,6 @@
 				FCF51EC6222651220066D81B /* AnimationUtil.swift in Sources */,
 				FCF51FC0222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m in Sources */,
 				FC691AFA225124C900A30AA6 /* CaptionLayer.swift in Sources */,
-				FC6FCDA52220A2A9004772B9 /* LocaleUtil.m in Sources */,
 				FCFBDFA522A715BA0059D452 /* CaptionWordStyle.swift in Sources */,
 				FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */,
 				FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */,
@@ -2190,12 +2186,14 @@
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-animated-ui/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-speech/ios",
 				);
 				INFOPLIST_FILE = CaptionThisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2248,12 +2246,14 @@
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-animated-ui/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-speech/ios",
 				);
 				INFOPLIST_FILE = CaptionThisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2311,10 +2311,15 @@
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-animated-ui/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-speech/ios",
 				);
 				INFOPLIST_FILE = CaptionThis/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2357,10 +2362,15 @@
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-animated-ui/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/@jonbrennecke/react-native-speech/ios",
 				);
 				INFOPLIST_FILE = CaptionThis/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

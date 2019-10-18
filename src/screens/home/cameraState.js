@@ -5,12 +5,10 @@ import { InteractionManager } from 'react-native';
 import {
   createCameraStateHOC,
   addVolumeButtonListener,
-  getSupportedFormats,
   CameraResolutionPresets,
 } from '@jonbrennecke/react-native-camera';
 import { createMediaStateHOC } from '@jonbrennecke/react-native-media';
 import { autobind } from 'core-decorators';
-import maxBy from 'lodash/maxBy';
 
 import { wrapWithAppState } from './appState';
 
