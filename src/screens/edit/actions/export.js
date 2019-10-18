@@ -2,7 +2,8 @@
 import VideoExportManager from '../../../utils/VideoExportManager';
 import * as Debug from '../../../utils/Debug';
 
-import type { SpeechTranscription } from '../../../types/speech';
+import type { SpeechTranscription } from '@jonbrennecke/react-native-speech';
+
 import type { VideoID, Size, Orientation } from '../../../types/media';
 import type { CaptionStyleObject } from '../../../types/video';
 import type { EmitterSubscription } from '../../../types/react';

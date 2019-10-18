@@ -65,7 +65,6 @@ export type Payload =
   | ReceiveVideoAssetPayload
   | ReceiveAppStateChangePayload
   | ReceiveDeviceInfoPayload
-  | ReceiveLocalePayload
   | ReceiveCaptionStylePayload;
 
 export type ReceiveLoginPayload = {|

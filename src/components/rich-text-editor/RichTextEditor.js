@@ -15,9 +15,9 @@ import VideoCaptionsView from '../../components/video-captions-view/VideoCaption
 import Button from '../button/Button';
 import { UI_COLORS } from '../../constants';
 
-import type { Style } from '../../types/react';
-import type { ColorRGBA } from '../../types/media';
-import type { SpeechTranscription } from '../../types/speech';
+import type { SpeechTranscription } from '@jonbrennecke/react-native-speech';
+
+import type { Style, ColorRGBA } from '../../types';
 import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {

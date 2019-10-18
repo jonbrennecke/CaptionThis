@@ -74,14 +74,14 @@ function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
 export function wrapWithHomeScreenState<
   PassThroughProps: Object,
   C: ComponentType<HomeScreenStateProps & PassThroughProps>
->(Component: C): ComponentType<PassThroughProps> {
+>(wrappedComponent: C): ComponentType<PassThroughProps> {
   const wrapWithMediaState = createMediaStateHOC(state => state.newMedia);
-  const wrapWithSpeechState = createSpeechStateHOC(state => state.newSpeech);
-  const ComponentWithSpeechState = wrapWithSpeechState(Component);
-  const ComponentWithCameraState = wrapWithCameraState(
-    ComponentWithSpeechState
+  const wrapWithSpeechState = createSpeechStateHOC(state => state.speech);
+  const componentWithSpeechState = wrapWithSpeechState(wrappedComponent);
+  const componentWithCameraState = wrapWithCameraState(
+    componentWithSpeechState
   );
-  const ComponentWithMediaState = wrapWithMediaState(ComponentWithCameraState);
+  const ComponentWithMediaState = wrapWithMediaState(componentWithCameraState);
   const fn = (props: HomeScreenStateReduxProps & PassThroughProps) => (
     <ComponentWithMediaState {...props} />
   );

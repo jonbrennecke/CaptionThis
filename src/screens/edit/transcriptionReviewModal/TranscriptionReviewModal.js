@@ -109,14 +109,15 @@ export const TranscriptionReviewModal: ComponentType<
     pauseVideo,
     playbackTime,
     setPlaybackTime,
-    speechTranscription,
+    speechTranscriptions,
+    setSpeechTranscription,
     speechTranscriptionSegmentSelection,
     setSpeechTranscriptionSegmentSelection,
     bottomSafeAreaInset,
-    receiveSpeechTranscriptionSuccess,
     componentIsVisible,
     dismissScreen,
   }) => {
+    const speechTranscription = speechTranscriptions.get(video.assetID);
     const segments = speechTranscription
       ? interpolateSegments(speechTranscription.segments)
       : null;
@@ -222,7 +223,7 @@ export const TranscriptionReviewModal: ComponentType<
                       if (!segments || !speechTranscription) {
                         return;
                       }
-                      receiveSpeechTranscriptionSuccess(video.assetID, {
+                      setSpeechTranscription(video.assetID, {
                         ...speechTranscription,
                         segments,
                       });

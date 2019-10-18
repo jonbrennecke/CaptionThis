@@ -2,17 +2,17 @@
 import React, { Component } from 'react';
 import { View, SafeAreaView, Dimensions, ScrollView } from 'react-native';
 import { autobind } from 'core-decorators';
+import { getSupportedLocales } from '@jonbrennecke/react-native-speech';
 
 import * as Color from '../../utils/Color';
 import { UI_COLORS } from '../../constants';
 import ScreenGradients from '../../components/screen-gradients/ScreenGradients';
-import SpeechManager from '../../utils/SpeechManager';
 import FlagList from './FlagList';
 import Button from '../../components/button/Button';
 import BottomSheetModal from '../../components/bottom-sheet-modal/BottomSheetModal';
 import * as Fonts from '../../utils/Fonts';
 
-import type { LocaleObject } from '../../types/speech';
+import type { LocaleObject } from '@jonbrennecke/react-native-speech';
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -51,7 +51,8 @@ export default class LocaleMenu extends Component<Props, State> {
   };
 
   async componentDidMount() {
-    const locales = await SpeechManager.supportedLocales();
+    // TODO: could use supportedLocales that are already in state
+    const locales = await getSupportedLocales();
     this.setState({
       locales,
     });
