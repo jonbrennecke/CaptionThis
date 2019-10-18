@@ -74,8 +74,8 @@ export default class EditScreen extends PureComponent<
 
   componentDidUpdate(prevProps: EditScreenProps) {
     const assetID = this.props.video.assetID;
-    const hasError = this.props.speechTranscriptionErrors.has(assetID);
-    const hadErrorPreviously = prevProps.speechTranscriptionErrors.has(assetID);
+    const hasError = !!this.props.speechTranscriptionErrors.get(assetID);
+    const hadErrorPreviously = !!prevProps.speechTranscriptionErrors.get(assetID);
     if (hasError && !hadErrorPreviously) {
       const noSpeechDetected = this.props.speechTranscriptionIDsWithNoSpeechDetected.has(
         assetID
@@ -83,6 +83,7 @@ export default class EditScreen extends PureComponent<
       noSpeechDetected
         ? this.presentNoSpeechDetectedAlert()
         : this.presentTranscriptionFailureAlert();
+      this.props.setSpeechTranscriptionError(assetID, false);
     }
   }
 
