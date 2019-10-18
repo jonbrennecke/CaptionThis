@@ -138,12 +138,11 @@ export function wrapWithTranscriptionReviewState<
         endIndex: number,
       }
     ) {
-      this.setState({
-        speechTranscriptionSegmentSelection: selection || {
-          startIndex: 0,
-          endIndex: 0,
-        },
-      });
+      if (selection) {
+        this.setState({
+          speechTranscriptionSegmentSelection: selection,
+        });
+      }
     }
 
     /// MARK - playback controls
