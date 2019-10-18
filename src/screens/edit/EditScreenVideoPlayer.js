@@ -18,9 +18,9 @@ import type {
   MediaObject,
   PlaybackState,
 } from '@jonbrennecke/react-native-media';
+import type { SpeechTranscription } from '@jonbrennecke/react-native-speech';
 
 import type { Size, Orientation } from '../../types/media';
-import type { SpeechTranscription } from '../../types/speech';
 import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {
@@ -271,14 +271,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
   }
 
   render() {
-    const captionViewLayout = ({ height, width }) => {
-      return {
-        size: isLandscape(this.props.orientation)
-          ? { width, height }
-          : { width, height: height + 85 },
-        origin: { x: 0, y: 0 },
-      };
-    };
     const captionStyleForOrientation = (
       orientation: Orientation,
       { fontSize, ...captionStyle }: CaptionStyleObject

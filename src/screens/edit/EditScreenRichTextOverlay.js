@@ -6,9 +6,10 @@ import { autobind } from 'core-decorators';
 import RichTextEditor from '../../components/rich-text-editor/RichTextEditor';
 import BottomSheetModal from '../../components/bottom-sheet-modal/BottomSheetModal';
 
+import type { SpeechTranscription } from '@jonbrennecke/react-native-speech';
+
 import type { Style } from '../../types/react';
 import type { ColorRGBA } from '../../types/media';
-import type { SpeechTranscription } from '../../types/speech';
 import type { CaptionStyleObject } from '../../types/video';
 
 type EditScreenRichTextOverlayProps = {
@@ -63,7 +64,6 @@ export default class EditScreenRichTextOverlay extends PureComponent<
   }
 
   seekCaptionsToTime(time: number) {
-    console.log('seek to time', time);
     if (this.richTextEditor) {
       this.richTextEditor.seekCaptionsToTime(time);
     }
