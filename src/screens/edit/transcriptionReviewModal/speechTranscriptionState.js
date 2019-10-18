@@ -8,14 +8,10 @@ import {
 } from '../../../redux/speech/selectors';
 
 import type { MediaObject } from '@jonbrennecke/react-native-media';
+import type { SpeechTranscription } from '@jonbrennecke/react-native-speech';
 
 import type { ComponentType } from 'react';
-import type {
-  VideoAssetIdentifier,
-  Dispatch,
-  AppState,
-  SpeechTranscription,
-} from '../../../types';
+import type { VideoAssetIdentifier, Dispatch, AppState } from '../../../types';
 
 type OwnProps = {|
   video: MediaObject,

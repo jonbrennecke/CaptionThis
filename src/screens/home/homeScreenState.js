@@ -78,7 +78,9 @@ export function wrapWithHomeScreenState<
   const wrapWithMediaState = createMediaStateHOC(state => state.newMedia);
   const wrapWithSpeechState = createSpeechStateHOC(state => state.newSpeech);
   const ComponentWithSpeechState = wrapWithSpeechState(Component);
-  const ComponentWithCameraState = wrapWithCameraState(ComponentWithSpeechState);
+  const ComponentWithCameraState = wrapWithCameraState(
+    ComponentWithSpeechState
+  );
   const ComponentWithMediaState = wrapWithMediaState(ComponentWithCameraState);
   const fn = (props: HomeScreenStateReduxProps & PassThroughProps) => (
     <ComponentWithMediaState {...props} />

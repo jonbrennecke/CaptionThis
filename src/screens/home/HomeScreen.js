@@ -7,12 +7,16 @@ import { withSafeArea } from 'react-native-safe-area';
 import uuid from 'uuid';
 import { Navigation } from 'react-native-navigation';
 import { createAssetWithVideoFileAtURL } from '@jonbrennecke/react-native-media';
-import { beginSpeechTranscriptionOfAudioSession, endSpeechTranscriptionOfAudioSession } from '@jonbrennecke/react-native-speech';
+import {
+  beginSpeechTranscriptionOfAudioSession,
+  endSpeechTranscriptionOfAudioSession,
+  setSpeechLocale,
+  getLocaleID,
+} from '@jonbrennecke/react-native-speech';
 
 import { UI_COLORS } from '../../constants';
 import * as Screens from '../../utils/Screens';
 import * as Debug from '../../utils/Debug';
-import { getLocaleID } from '../../utils/Localization';
 import requireOnboardedUser from '../onboarding/requireOnboardedUser';
 import { MediaExplorer } from '../../components/media-explorer';
 import LocaleMenu from '../../components/localization/LocaleMenu';
@@ -20,10 +24,10 @@ import HomeScreenCameraPreview from './HomeScreenCameraPreview';
 import { wrapWithHomeScreenState } from './homeScreenState';
 
 import type { MediaObject } from '@jonbrennecke/react-native-media';
+import type { LocaleObject } from '@jonbrennecke/react-native-speech';
 
 import type { HomeScreenStateProps } from './homeScreenState';
 import type { VideoAssetIdentifier } from '../../types/media';
-import type { LocaleObject } from '../../types/speech';
 
 type State = {
   videoID: ?VideoAssetIdentifier,
@@ -81,8 +85,6 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
     if (this.navigationEventListener) {
       this.navigationEventListener.remove();
     }
-    this.removeSpeechListeners();
-    this.shutDownSpeechRecognizer();
   }
 
   async componentDidUpdate(prevProps: HomeScreenStateProps) {
@@ -144,17 +146,6 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
     });
   }
 
-  // TODO
-  // speechManagerDidChangeLocale(locale: LocaleObject) {
-  //   if (
-  //     this.props.locale &&
-  //     getLocaleID(locale) === getLocaleID(this.props.locale)
-  //   ) {
-  //     return;
-  //   }
-  //   this.props.receiveLocale(locale);
-  // }
-
   async pushEditScreen(video: MediaObject) {
     await Screens.pushEditScreen(this.props.componentId, video);
   }
@@ -179,8 +170,7 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
   }
 
   async onRequestChangeLocale(locale: LocaleObject) {
-    // await this.props.setLocale(locale);
-    // TODO
+    setSpeechLocale(getLocaleID(locale));
     this.setState({
       isLocaleMenuVisible: false,
     });
