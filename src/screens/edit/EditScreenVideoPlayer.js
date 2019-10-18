@@ -204,7 +204,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
   }
 
   videoPlayerDidPlayToEnd() {
-    console.log('video player played to end');
     this.restartPlayerAndCaptions();
   }
 
