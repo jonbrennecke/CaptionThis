@@ -195,6 +195,9 @@ export const TranscriptionReviewModal: ComponentType<
                     seekVideoToTime(playbackTime);
                     setSegmentSelection(playbackTime);
                   }}
+                  onDidBeginDrag={() => {
+                    pauseVideo();
+                  }}
                 />
               </View>
               <View style={styles.transcriptionContainer}>
