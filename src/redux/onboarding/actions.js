@@ -2,19 +2,18 @@
 import Promise from 'bluebird';
 import { authorizeMediaLibrary } from '@jonbrennecke/react-native-media';
 import {
+  requestSpeechPermissions,
+  hasSpeechPermissions,
+} from '@jonbrennecke/react-native-speech';
+import {
   requestCameraPermissions,
   hasCameraPermissions,
 } from '@jonbrennecke/react-native-camera';
 
-import {
-  requestSpeechPermissions,
-  hasSpeechPermissions,
-} from '../../utils/SpeechManager';
-
 export const arePermissionsGranted = async (): Promise<boolean> => {
   const areCameraPermissionsGranted = await hasCameraPermissions();
   const areSpeechPermissionsGranted = await hasSpeechPermissions();
-  const areMediaPermissionsGranted = await authorizeMediaLibrary(); // TODO
+  const areMediaPermissionsGranted = await authorizeMediaLibrary(); // TODO: rename to match the other functions
   return (
     areCameraPermissionsGranted &&
     areSpeechPermissionsGranted &&

@@ -16,9 +16,12 @@ import type {
   CameraPosition,
   CameraFormat,
 } from '@jonbrennecke/react-native-camera';
+import type {
+  LocaleObject,
+  SpeechTranscription,
+} from '@jonbrennecke/react-native-speech';
 
 import type { VideoAssetIdentifier } from '../../types/media';
-import type { LocaleObject, SpeechTranscription } from '../../types/speech';
 import type { Style } from '../../types/react';
 import type {
   CaptionStyleObject,

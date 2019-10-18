@@ -22,19 +22,6 @@
 
 @implementation AppDelegate
 
-static SpeechManager *_sharedSpeechManager;
-
-+ (SpeechManager *)sharedSpeechManager {
-  if (_sharedSpeechManager == nil) {
-    _sharedSpeechManager = [[SpeechManager alloc] init];
-  }
-  return _sharedSpeechManager;
-}
-
-+ (void)setSharedSpeechManager:(SpeechManager *)sharedSpeechManager {
-  _sharedSpeechManager = sharedSpeechManager;
-}
-
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   [Fabric with:@[ [Crashlytics class] ]];

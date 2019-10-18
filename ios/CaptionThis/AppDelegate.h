@@ -7,13 +7,8 @@
 
 #import <UIKit/UIKit.h>
 
-@class SpeechManager;
-@class VideoExportManager;
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property(nonatomic, strong) UIWindow *window;
-
-@property(class) SpeechManager *sharedSpeechManager;
 
 @end

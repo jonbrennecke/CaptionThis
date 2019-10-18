@@ -10,8 +10,9 @@ import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
 import FlagView from './FlagView';
 
+import type { LocaleObject } from '@jonbrennecke/react-native-speech';
+
 import type { Style } from '../../types/react';
-import type { LocaleObject } from '../../types/speech';
 
 type Props = {
   style?: ?Style,

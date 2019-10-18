@@ -109,14 +109,15 @@ export const TranscriptionReviewModal: ComponentType<
     pauseVideo,
     playbackTime,
     setPlaybackTime,
-    speechTranscription,
+    speechTranscriptions,
+    setSpeechTranscription,
     speechTranscriptionSegmentSelection,
     setSpeechTranscriptionSegmentSelection,
     bottomSafeAreaInset,
-    receiveSpeechTranscriptionSuccess,
     componentIsVisible,
     dismissScreen,
   }) => {
+    const speechTranscription = speechTranscriptions.get(video.assetID);
     const segments = speechTranscription
       ? interpolateSegments(speechTranscription.segments)
       : null;
@@ -194,6 +195,9 @@ export const TranscriptionReviewModal: ComponentType<
                     seekVideoToTime(playbackTime);
                     setSegmentSelection(playbackTime);
                   }}
+                  onDidBeginDrag={() => {
+                    pauseVideo();
+                  }}
                 />
               </View>
               <View style={styles.transcriptionContainer}>
@@ -222,7 +226,7 @@ export const TranscriptionReviewModal: ComponentType<
                       if (!segments || !speechTranscription) {
                         return;
                       }
-                      receiveSpeechTranscriptionSuccess(video.assetID, {
+                      setSpeechTranscription(video.assetID, {
                         ...speechTranscription,
                         segments,
                       });
@@ -251,7 +255,7 @@ export const TranscriptionReviewModal: ComponentType<
                           setSegmentSelection(playbackTime);
                         }}
                         onPlaybackStateChange={setPlaybackState}
-                        onVideoWillRestart={() => {
+                        onVideoDidPlayToEnd={() => {
                           setPlaybackTime(0);
                           setSegmentSelection(0);
                         }}

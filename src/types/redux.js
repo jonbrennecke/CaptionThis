@@ -1,9 +1,9 @@
 /* @flow */
 import type { IMediaState } from '@jonbrennecke/react-native-media';
+import type { ISpeechState } from '@jonbrennecke/react-native-speech';
 
-import typeof { LOADING_STATE, TRANSCRIPTION_STATE } from '../constants';
+import typeof { LOADING_STATE } from '../constants';
 import type { VideoAssetIdentifier, VideoObject } from './media';
-import type { SpeechTranscription, LocaleObject } from './speech';
 import type { ReactAppStateEnum } from './react';
 import type { DeviceInfoObject } from '../utils/Device';
 import type { CaptionStyleObject } from './video';
@@ -27,7 +27,7 @@ export type AppState = {
   media: MediaState,
   device: DeviceState,
   video: VideoState,
-  speech: SpeechState,
+  speech: ISpeechState,
   newMedia: IMediaState,
 };
 
@@ -57,22 +57,14 @@ export type VideoState = {|
   captionStyle: CaptionStyleObject,
 |};
 
-export type SpeechState = {|
-  locale: ?LocaleObject,
-  speechTranscriptions: Map<VideoAssetIdentifier, SpeechTranscription>,
-  speechTranscriptionState: $Keys<TRANSCRIPTION_STATE>,
-|};
-
 export type Payload =
   | ReceiveLoginPayload
   | ReceiveAuthPayload
   | ReceivePermissionsPayload
   | ReceiveVideoAssetsPayload
   | ReceiveVideoAssetPayload
-  | ReceiveSpeechTranscriptionPayload
   | ReceiveAppStateChangePayload
   | ReceiveDeviceInfoPayload
-  | ReceiveLocalePayload
   | ReceiveCaptionStylePayload;
 
 export type ReceiveLoginPayload = {|
@@ -97,21 +89,12 @@ export type ReceiveVideoAssetIdPayload = {|
   videoAssetIdentifier: VideoAssetIdentifier,
 |};
 
-export type ReceiveSpeechTranscriptionPayload = {|
-  videoAssetIdentifier: VideoAssetIdentifier,
-  transcription: SpeechTranscription,
-|};
-
 export type ReceiveAppStateChangePayload = {|
   appState: ReactAppStateEnum,
 |};
 
 export type ReceiveDeviceInfoPayload = {|
   deviceInfo: DeviceInfoObject,
-|};
-
-export type ReceiveLocalePayload = {|
-  locale: LocaleObject,
 |};
 
 export type ReceiveCaptionStylePayload = {|

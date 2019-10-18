@@ -4,10 +4,9 @@ import { TouchableOpacity } from 'react-native';
 
 import CaptionView from '../caption-view/CaptionView';
 
-import type { Style } from '../../types/react';
-import type { SpeechTranscription } from '../../types/speech';
-import type { Orientation } from '../../types/media';
-import type { CaptionStyleObject } from '../../types/video';
+import type { SpeechTranscription } from '@jonbrennecke/react-native-speech';
+
+import type { Style, Orientation, CaptionStyleObject } from '../../types';
 
 type Props = {
   style?: ?Style,

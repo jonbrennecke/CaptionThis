@@ -10,7 +10,8 @@ import {
   transformSegmentsByTextDiff,
 } from './transcriptionReviewUtils';
 
-import type { SFC, SpeechTranscriptionSegment, Style } from '../../../types';
+import type { SpeechTranscriptionSegment } from '@jonbrennecke/react-native-speech';
+import type { SFC, Style } from '../../../types';
 
 export type TranscriptionTextInputProps = {
   style?: ?Style,

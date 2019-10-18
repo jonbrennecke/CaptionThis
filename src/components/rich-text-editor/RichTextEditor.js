@@ -4,7 +4,6 @@ import { View, Animated, StyleSheet, Easing, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import throttle from 'lodash/throttle';
 
-import * as Debug from '../../utils/Debug';
 import * as Fonts from '../../utils/Fonts';
 import RichTextFontColorControl from './RichTextFontColorControl';
 import RichTextFontFamilyControl from './RichTextFontFamilyControl';
@@ -15,9 +14,9 @@ import VideoCaptionsView from '../../components/video-captions-view/VideoCaption
 import Button from '../button/Button';
 import { UI_COLORS } from '../../constants';
 
-import type { Style } from '../../types/react';
-import type { ColorRGBA } from '../../types/media';
-import type { SpeechTranscription } from '../../types/speech';
+import type { SpeechTranscription } from '@jonbrennecke/react-native-speech';
+
+import type { Style, ColorRGBA } from '../../types';
 import type { CaptionStyleObject } from '../../types/video';
 
 type Props = {
@@ -194,28 +193,24 @@ export default class RichTextEditor extends PureComponent<Props, State> {
   }
 
   playCaptions() {
-    Debug.log('Starting RTE captions');
     if (this.captionsView) {
       this.captionsView.play();
     }
   }
 
   restartCaptions() {
-    Debug.log('Restarting RTE captions');
     if (this.captionsView) {
       this.captionsView.restart();
     }
   }
 
   pauseCaptions() {
-    Debug.log('Pausing RTE captions');
     if (this.captionsView) {
       this.captionsView.pause();
     }
   }
 
   seekCaptionsToTime(time: number) {
-    Debug.log(`Seeking RTE captions to ${time.toFixed(2)}s`);
     if (this.captionsView) {
       this.captionsView.seekToTime(time);
     }

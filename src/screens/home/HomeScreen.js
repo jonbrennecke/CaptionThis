@@ -7,12 +7,16 @@ import { withSafeArea } from 'react-native-safe-area';
 import uuid from 'uuid';
 import { Navigation } from 'react-native-navigation';
 import { createAssetWithVideoFileAtURL } from '@jonbrennecke/react-native-media';
+import {
+  beginSpeechTranscriptionOfAudioSession,
+  endSpeechTranscriptionOfAudioSession,
+  setSpeechLocale,
+  getLocaleID,
+} from '@jonbrennecke/react-native-speech';
 
 import { UI_COLORS } from '../../constants';
 import * as Screens from '../../utils/Screens';
 import * as Debug from '../../utils/Debug';
-import { getLocaleID } from '../../utils/Localization';
-import SpeechManager from '../../utils/SpeechManager';
 import requireOnboardedUser from '../onboarding/requireOnboardedUser';
 import { MediaExplorer } from '../../components/media-explorer';
 import LocaleMenu from '../../components/localization/LocaleMenu';
@@ -20,11 +24,10 @@ import HomeScreenCameraPreview from './HomeScreenCameraPreview';
 import { wrapWithHomeScreenState } from './homeScreenState';
 
 import type { MediaObject } from '@jonbrennecke/react-native-media';
+import type { LocaleObject } from '@jonbrennecke/react-native-speech';
 
-import type { EmitterSubscription } from '../../types/react';
 import type { HomeScreenStateProps } from './homeScreenState';
 import type { VideoAssetIdentifier } from '../../types/media';
-import type { SpeechTranscription, LocaleObject } from '../../types/speech';
 
 type State = {
   videoID: ?VideoAssetIdentifier,
@@ -67,9 +70,6 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
   navigationEventListener: ?any;
   scrollView: ?ScrollView;
   scrollAnim = new Animated.Value(0);
-  speechManagerDidReceiveTranscriptionListener: EmitterSubscription;
-  speechManagerDidNotDetectSpeechListener: ?EmitterSubscription;
-  speechManagerDidChangeLocaleListener: ?EmitterSubscription;
 
   async componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
@@ -85,8 +85,6 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
     if (this.navigationEventListener) {
       this.navigationEventListener.remove();
     }
-    this.removeSpeechListeners();
-    this.shutDownSpeechRecognizer();
   }
 
   async componentDidUpdate(prevProps: HomeScreenStateProps) {
@@ -100,14 +98,6 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
     ) {
       await this.saveCapturedVideo(this.props.lastCapturedVideoURL);
     }
-  }
-
-  async componentDidAppear() {
-    await this.setUpSpeechRecognizer();
-  }
-
-  async componentDidDisappear() {
-    await this.shutDownSpeechRecognizer();
   }
 
   async setupAfterOnboarding() {
@@ -126,8 +116,6 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
       Debug.logErrorMessage(`Failed create asset. URL = ${videoURL}`);
       return;
     }
-    // TODO:
-    // this.props.appendAssets({ assets: [asset] }));
     this.props.receiveFinishedVideo(asset);
     await this.pushEditScreen(asset);
   }
@@ -141,10 +129,10 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
   }
 
   async startCapture() {
-    this.setState({ videoID: uuid.v4() });
+    const uniqueID = uuid.v4();
+    this.setState({ videoID: uniqueID });
     await this.props.startCapture({});
-    this.addSpeechListeners();
-    await this.props.beginSpeechTranscriptionWithAudioSession();
+    await beginSpeechTranscriptionOfAudioSession(uniqueID);
   }
 
   async stopCapture() {
@@ -152,71 +140,10 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
       Debug.logErrorMessage('Failed to stop capture, camera is not recording.');
       return;
     }
-    await this.props.endSpeechTranscriptionWithAudioSession();
-    this.removeSpeechListeners();
+    await endSpeechTranscriptionOfAudioSession();
     this.props.stopCapture({
       saveToCameraRoll: false,
     });
-  }
-
-  async setUpSpeechRecognizer() {
-    this.speechManagerDidChangeLocaleListener = SpeechManager.addDidChangeLocaleListener(
-      this.speechManagerDidChangeLocale
-    );
-    await this.props.loadCurrentLocale();
-  }
-
-  async shutDownSpeechRecognizer() {
-    this.speechManagerDidChangeLocaleListener &&
-      this.speechManagerDidChangeLocaleListener.remove();
-    this.speechManagerDidChangeLocaleListener = null;
-  }
-
-  addSpeechListeners() {
-    this.speechManagerDidReceiveTranscriptionListener = SpeechManager.addDidReceiveSpeechTranscriptionListener(
-      this.speechManagerDidReceiveSpeechTranscription
-    );
-    this.speechManagerDidNotDetectSpeechListener = SpeechManager.addDidNotDetectSpeechListener(
-      () => {
-        this.speechManagerDidNotDetectSpeech();
-      }
-    );
-  }
-
-  removeSpeechListeners() {
-    this.speechManagerDidReceiveTranscriptionListener &&
-      this.speechManagerDidReceiveTranscriptionListener.remove();
-    this.speechManagerDidReceiveTranscriptionListener = null;
-    this.speechManagerDidNotDetectSpeechListener &&
-      this.speechManagerDidNotDetectSpeechListener.remove();
-    this.speechManagerDidNotDetectSpeechListener = null;
-  }
-
-  speechManagerDidChangeLocale(locale: LocaleObject) {
-    if (
-      this.props.locale &&
-      // $FlowFixMe
-      getLocaleID(locale) === getLocaleID(this.props.locale)
-    ) {
-      return;
-    }
-    this.props.receiveLocale(locale);
-  }
-
-  speechManagerDidReceiveSpeechTranscription(
-    transcription: SpeechTranscription
-  ) {
-    if (!this.state.videoID) {
-      return;
-    }
-    this.props.receiveSpeechTranscriptionSuccess(
-      this.state.videoID,
-      transcription
-    );
-  }
-
-  async speechManagerDidNotDetectSpeech() {
-    await this.props.endSpeechTranscriptionWithAudioSession();
   }
 
   async pushEditScreen(video: MediaObject) {
@@ -243,7 +170,7 @@ export default class HomeScreen extends Component<HomeScreenStateProps, State> {
   }
 
   async onRequestChangeLocale(locale: LocaleObject) {
-    await this.props.setLocale(locale);
+    setSpeechLocale(getLocaleID(locale));
     this.setState({
       isLocaleMenuVisible: false,
     });

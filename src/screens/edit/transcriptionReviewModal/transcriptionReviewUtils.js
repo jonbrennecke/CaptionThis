@@ -8,7 +8,7 @@ import dropRight from 'lodash/dropRight';
 import sortBy from 'lodash/sortBy';
 import { List } from 'immutable';
 
-import type { SpeechTranscriptionSegment } from '../../../types';
+import type { SpeechTranscriptionSegment } from '@jonbrennecke/react-native-speech';
 
 export type IndexedSpeechTranscriptionSegment = {
   index: number,

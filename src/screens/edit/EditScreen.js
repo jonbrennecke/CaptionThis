@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { View, Alert, AppState as ReactAppState } from 'react-native';
 import { autobind } from 'core-decorators';
 import { Navigation } from 'react-native-navigation';
+import { beginSpeechTranscriptionOfAsset } from '@jonbrennecke/react-native-speech';
 
 import * as Screens from '../../utils/Screens';
 import * as Debug from '../../utils/Debug';
@@ -13,17 +14,17 @@ import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
 import EditScreenExportingOverlay from './EditScreenExportingOverlay';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenLoadingBackground from './EditScreenLoadingBackground';
-import SpeechManager from '../../utils/SpeechManager';
 import LocaleMenu from '../../components/localization/LocaleMenu';
-import Container from './Container';
+import { wrapWithEditScreenState } from './editScreenState';
 import * as actions from './actions';
 
-import type { Size, ColorRGBA, Orientation } from '../../types/media';
-import type { SpeechTranscription, LocaleObject } from '../../types/speech';
-import type { EmitterSubscription, ReactAppStateEnum } from '../../types/react';
-import type { Props } from './Container';
+import type { LocaleObject } from '@jonbrennecke/react-native-speech';
 
-type State = {
+import type { Size, ColorRGBA, Orientation } from '../../types/media';
+import type { ReactAppStateEnum } from '../../types/react';
+import type { EditScreenProps } from './editScreenState';
+
+type EditScreenState = {
   videoViewSize: Size,
   orientation: ?Orientation,
   exportProgress: number,
@@ -41,11 +42,14 @@ const styles = {
 };
 
 // $FlowFixMe
-@Container
+@wrapWithEditScreenState
 @autobind
-export default class EditScreen extends PureComponent<Props, State> {
+export default class EditScreen extends PureComponent<
+  EditScreenProps,
+  EditScreenState
+> {
   richTextOverlay: ?EditScreenRichTextOverlay;
-  state: State = {
+  state: EditScreenState = {
     videoViewSize: { width: 0, height: 0 },
     exportProgress: 0,
     orientation: null,
@@ -54,42 +58,35 @@ export default class EditScreen extends PureComponent<Props, State> {
     transcriptionReviewScreenIsVisible: false,
     isLocaleMenuVisible: false,
   };
-  speechManagerDidReceiveTranscriptionListener: ?EmitterSubscription;
-  speechManagerDidNotDetectSpeechListener: ?EmitterSubscription;
-  speechManagerDidEndListener: ?EmitterSubscription;
-  speechManagerDidFailListener: ?EmitterSubscription;
-  // speechManagerDidChangeLocaleListener: ?EmitterSubscription;
   transcriptionReviewScreenDidAppearEventListener: any;
   transcriptionReviewScreenDidDisappearEventListener: any;
 
   async componentDidMount() {
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
-    if (this.props.isSpeechTranscriptionFinal) {
-      this.speechManagerDidReceiveFinalSpeechTranscription();
-    } else {
-      await this.beginSpeechTranscription();
-    }
     this.addNavigationListeners();
+    await beginSpeechTranscriptionOfAsset(this.props.video.assetID);
+
   }
 
   componentWillUnmount() {
     ReactAppState.removeEventListener('change', this.handleAppStateWillChange);
-    this.removeSpeechListeners();
     this.removeNavigationListeners();
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (
-      this.props.speechTranscription?.isFinal &&
-      !prevProps.speechTranscription?.isFinal
-    ) {
-      this.speechManagerDidReceiveFinalSpeechTranscription();
-    }
-    if (
-      this.props.didSpeechRecognitionFail &&
-      !prevProps.didSpeechRecognitionFail
-    ) {
-      this.presentTranscriptionFailureAlert();
+  componentDidUpdate(prevProps: EditScreenProps) {
+    const assetID = this.props.video.assetID;
+    const hasError = !!this.props.speechTranscriptionErrors.get(assetID);
+    const hadErrorPreviously = !!prevProps.speechTranscriptionErrors.get(
+      assetID
+    );
+    if (hasError && !hadErrorPreviously) {
+      const noSpeechDetected = this.props.speechTranscriptionIDsWithNoSpeechDetected.has(
+        assetID
+      );
+      noSpeechDetected
+        ? this.presentNoSpeechDetectedAlert()
+        : this.presentTranscriptionFailureAlert();
+      this.props.setSpeechTranscriptionError(assetID, false);
     }
   }
 
@@ -133,44 +130,24 @@ export default class EditScreen extends PureComponent<Props, State> {
 
   /// MARK -- speech event listeners
 
-  async beginSpeechTranscription() {
-    this.addSpeechListeners();
-    await this.props.beginSpeechTranscriptionWithVideoAsset(
-      this.props.video.assetID
-    );
-  }
-
-  addSpeechListeners() {
-    this.speechManagerDidReceiveTranscriptionListener = SpeechManager.addDidReceiveSpeechTranscriptionListener(
-      this.speechManagerDidReceiveSpeechTranscription
-    );
-    this.speechManagerDidNotDetectSpeechListener = SpeechManager.addDidNotDetectSpeechListener(
-      this.speechManagerDidNotDetectSpeech
-    );
-    this.speechManagerDidEndListener = SpeechManager.addDidEndListener(
-      this.speechManagerDidEnd
-    );
-    this.speechManagerDidFailListener = SpeechManager.addDidFailListener(
-      this.speechManagerDidFail
-    );
-  }
-
-  removeSpeechListeners() {
-    this.speechManagerDidReceiveTranscriptionListener &&
-      this.speechManagerDidReceiveTranscriptionListener.remove();
-    this.speechManagerDidReceiveTranscriptionListener = null;
-    this.speechManagerDidNotDetectSpeechListener &&
-      this.speechManagerDidNotDetectSpeechListener.remove();
-    this.speechManagerDidNotDetectSpeechListener = null;
-    this.speechManagerDidEndListener &&
-      this.speechManagerDidEndListener.remove();
-    this.speechManagerDidEndListener = null;
-    this.speechManagerDidFailListener &&
-      this.speechManagerDidFailListener.remove();
-    this.speechManagerDidFailListener = null;
-  }
-
   presentTranscriptionFailureAlert() {
+    Alert.alert(
+      'Failed to generate captions',
+      'Unfortunately, something went wrong while processing your video. Try again and speak clearly into the microphone.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            await Navigation.dismissAllModals();
+            await Navigation.popToRoot(this.props.componentId);
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  }
+
+  presentNoSpeechDetectedAlert() {
     Alert.alert(
       'Failed to generate captions',
       "Unfortunately, We weren't able to detect any speech. Try again and speak clearly into the microphone.",
@@ -185,37 +162,6 @@ export default class EditScreen extends PureComponent<Props, State> {
       ],
       { cancelable: false }
     );
-  }
-
-  speechManagerDidEnd() {
-    // NOTE: noop
-  }
-
-  speechManagerDidFail() {
-    Debug.log('Speech transcription failed.');
-    this.removeSpeechListeners();
-    this.popToHomeScreen();
-  }
-
-  speechManagerDidReceiveSpeechTranscription(
-    transcription: SpeechTranscription
-  ) {
-    if (!transcription) {
-      this.props.receiveSpeechTranscriptionFailure(this.props.video.assetID);
-      return;
-    }
-    this.props.receiveSpeechTranscriptionSuccess(
-      this.props.video.assetID,
-      transcription
-    );
-  }
-
-  speechManagerDidReceiveFinalSpeechTranscription() {
-    this.removeSpeechListeners();
-  }
-
-  speechManagerDidNotDetectSpeech() {
-    this.props.receiveSpeechTranscriptionFailure(this.props.video.assetID);
   }
 
   async richTextEditorDidRequestSave({
@@ -250,8 +196,14 @@ export default class EditScreen extends PureComponent<Props, State> {
 
   async exportVideo() {
     this.props.willExportVideo();
+    const speechTranscription = this.props.speechTranscriptions.get(
+      this.props.video.assetID
+    );
+    if (!speechTranscription) {
+      return;
+    }
     await actions.exportVideo({
-      speechTranscription: this.props.speechTranscription,
+      speechTranscription,
       videoID: this.props.video.assetID,
       videoViewSize: this.state.videoViewSize,
       duration: this.props.video.duration,
@@ -281,10 +233,13 @@ export default class EditScreen extends PureComponent<Props, State> {
   }
 
   textOverlayParams() {
-    if (!this.props.speechTranscription) {
+    const speechTranscription = this.props.speechTranscriptions.get(
+      this.props.video.assetID
+    );
+    if (!speechTranscription) {
       return [];
     }
-    return this.props.speechTranscription.segments.map(segment => ({
+    return speechTranscription.segments.map(segment => ({
       duration: segment.duration,
       timestamp: segment.timestamp,
       text: segment.substring,
@@ -351,18 +306,21 @@ export default class EditScreen extends PureComponent<Props, State> {
 
   async onRequestChangeLocale(locale: LocaleObject) {
     await this.props.setLocale(locale);
-    await this.beginSpeechTranscription();
+    await beginSpeechTranscriptionOfAsset(this.props.video.assetID);
     this.setState({
       isLocaleMenuVisible: false,
     });
   }
 
   render() {
+    const speechTranscription = this.props.speechTranscriptions.get(
+      this.props.video.assetID
+    );
+    const speechTranscriptionIsFinal =
+      !!speechTranscription && speechTranscription.isFinal;
     return (
       <View style={styles.container}>
-        {!this.props.isSpeechTranscriptionFinal && (
-          <EditScreenLoadingBackground />
-        )}
+        {!speechTranscriptionIsFinal && <EditScreenLoadingBackground />}
         <EditScreenVideoPlayer
           videoPlayerParentViewSize={this.state.videoViewSize}
           countryCode={this.props.locale?.country.code}
@@ -373,10 +331,10 @@ export default class EditScreen extends PureComponent<Props, State> {
           }
           isExportingVideo={this.props.isExportingVideo}
           video={this.props.video}
-          isSpeechTranscriptionFinal={this.props.isSpeechTranscriptionFinal}
+          isSpeechTranscriptionFinal={speechTranscriptionIsFinal}
           orientation={this.state.orientation || 'up'}
           captionStyle={this.props.captionStyle}
-          speechTranscription={this.props.speechTranscription}
+          speechTranscription={speechTranscription}
           onRequestChangePlaybackTime={this.seekRichTextEditorCaptionsToTime}
           onRequestChangeOrientation={orientation =>
             this.setState({ orientation })
@@ -407,7 +365,7 @@ export default class EditScreen extends PureComponent<Props, State> {
           duration={this.props.video.duration}
           isVisible={this.state.isRichTextEditorVisible}
           captionStyle={this.props.captionStyle}
-          speechTranscription={this.props.speechTranscription}
+          speechTranscription={speechTranscription}
           onRequestSave={(...etc) => {
             this.richTextEditorDidRequestSave(...etc);
           }}
@@ -418,7 +376,7 @@ export default class EditScreen extends PureComponent<Props, State> {
           onDidDismiss={() => this.setState({ exportProgress: 0 })}
         />
         <EditScreenLoadingOverlay
-          isVisible={!this.props.isSpeechTranscriptionFinal}
+          isVisible={!speechTranscriptionIsFinal}
           duration={this.props.video.duration}
         />
         <LocaleMenu

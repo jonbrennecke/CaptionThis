@@ -2,6 +2,7 @@
 import React from 'react';
 import { Animated, View, Text, StyleSheet } from 'react-native';
 import ReactNativeHaptic from 'react-native-haptic';
+import noop from 'lodash/noop';
 
 import { Slider } from '../../../components';
 import { Colors, Units } from '../../../constants';
@@ -16,6 +17,8 @@ export type PlaybackSliderProps = {
   max: number,
   color: $Values<typeof Colors.solid>,
   onSelectValue: number => void,
+  onDidBeginDrag?: () => void,
+  onDidEndDrag?: () => void,
 };
 
 const CONTAINER_HEIGHT = 50;
@@ -91,6 +94,8 @@ export const PlaybackSlider: SFC<PlaybackSliderProps> = ({
   max,
   color,
   onSelectValue,
+  onDidBeginDrag = noop,
+  onDidEndDrag = noop,
 }: PlaybackSliderProps) => (
   <View style={[styles.container, style]}>
     <View style={styles.infoContainer}>
@@ -116,10 +121,14 @@ export const PlaybackSlider: SFC<PlaybackSliderProps> = ({
           </>
         )}
         onSeekToProgress={p => onSelectValue(p * (max - min) + min)}
-        onDidBeginDrag={hapticFeedback}
+        onDidBeginDrag={() => {
+          hapticFeedback();
+          onDidBeginDrag();
+        }}
         onDidEndDrag={p => {
           hapticFeedback();
           onSelectValue(p * (max - min) + min);
+          onDidEndDrag();
         }}
       />
     </View>

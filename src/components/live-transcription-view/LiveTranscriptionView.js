@@ -6,8 +6,9 @@ import { UI_COLORS } from '../../constants';
 import * as Fonts from '../../utils/Fonts';
 import * as Color from '../../utils/Color';
 
+import type { SpeechTranscription } from '@jonbrennecke/react-native-speech';
+
 import type { Style } from '../../types/react';
-import type { SpeechTranscription } from '../../types/speech';
 
 type Props = {
   style: ?Style,

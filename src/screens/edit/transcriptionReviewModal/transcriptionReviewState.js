@@ -8,13 +8,13 @@ import throttle from 'lodash/throttle';
 import { Navigation } from 'react-native-navigation';
 
 import * as Screens from '../../../utils/Screens';
-import { wrapWithSpeechTranscriptionState } from './speechTranscriptionState';
+import { createSpeechStateHOC } from '@jonbrennecke/react-native-speech';
 
 import type { ComponentType } from 'react';
 import typeof { VideoPlayer } from '@jonbrennecke/react-native-media';
 import type { PlaybackState } from '@jonbrennecke/react-native-camera';
+import type { SpeechStateHOCProps } from '@jonbrennecke/react-native-speech';
 
-import type { SpeechTranscriptionHOCProps } from './speechTranscriptionState';
 import type { Return } from '../../../types';
 
 export type TranscriptionReviewStateHOCProps = {};
@@ -50,7 +50,7 @@ export function wrapWithTranscriptionReviewState<
     TranscriptionReviewStateHOCProps &
       TranscriptionReviewStateHOCExtraProps &
       TranscriptionReviewStateHOCState &
-      SpeechTranscriptionHOCProps &
+      SpeechStateHOCProps &
       PassThroughProps
   >
 >(
@@ -138,12 +138,11 @@ export function wrapWithTranscriptionReviewState<
         endIndex: number,
       }
     ) {
-      this.setState({
-        speechTranscriptionSegmentSelection: selection || {
-          startIndex: 0,
-          endIndex: 0,
-        },
-      });
+      if (selection) {
+        this.setState({
+          speechTranscriptionSegmentSelection: selection,
+        });
+      }
     }
 
     /// MARK - playback controls
@@ -213,9 +212,8 @@ export function wrapWithTranscriptionReviewState<
     }
   }
 
-  const Component = wrapWithSpeechTranscriptionState(
-    TranscriptionReviewStateHOC
-  );
+  const wrapWithSpeechState = createSpeechStateHOC(state => state.speech);
+  const Component = wrapWithSpeechState(TranscriptionReviewStateHOC);
   const WrappedWithTranscriptionReviewStateHOC = props => (
     <Component {...props} />
   );
