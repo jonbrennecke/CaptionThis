@@ -163,11 +163,6 @@ export default class EditScreen extends PureComponent<
     );
   }
 
-  speechManagerDidFail() {
-    Debug.log('Speech transcription failed.');
-    this.popToHomeScreen();
-  }
-
   async richTextEditorDidRequestSave({
     fontSize,
     fontFamily,
