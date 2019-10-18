@@ -4,7 +4,6 @@ import { View, Animated, StyleSheet, Easing, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import throttle from 'lodash/throttle';
 
-import * as Debug from '../../utils/Debug';
 import * as Fonts from '../../utils/Fonts';
 import RichTextFontColorControl from './RichTextFontColorControl';
 import RichTextFontFamilyControl from './RichTextFontFamilyControl';
