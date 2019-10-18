@@ -194,28 +194,24 @@ export default class RichTextEditor extends PureComponent<Props, State> {
   }
 
   playCaptions() {
-    Debug.log('Starting RTE captions');
     if (this.captionsView) {
       this.captionsView.play();
     }
   }
 
   restartCaptions() {
-    Debug.log('Restarting RTE captions');
     if (this.captionsView) {
       this.captionsView.restart();
     }
   }
 
   pauseCaptions() {
-    Debug.log('Pausing RTE captions');
     if (this.captionsView) {
       this.captionsView.pause();
     }
   }
 
   seekCaptionsToTime(time: number) {
-    Debug.log(`Seeking RTE captions to ${time.toFixed(2)}s`);
     if (this.captionsView) {
       this.captionsView.seekToTime(time);
     }
