@@ -6,7 +6,6 @@ import { autobind } from 'core-decorators';
 import { VideoPlayer } from '@jonbrennecke/react-native-media';
 
 import { UI_COLORS } from '../../constants';
-import * as Debug from '../../utils/Debug';
 import { isLandscape } from '../../utils/Orientation';
 import { VideoCaptionsContainer } from '../../components/video-captions-view/VideoCaptionsContainer';
 import EditScreenTopControls from './EditScreenTopControls';
@@ -184,12 +183,10 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
   );
 
   videoPlayerDidFailToLoad() {
-    Debug.log('Video player failed to load');
     this.pausePlayerAndCaptions();
   }
 
   videoPlayerDidPause() {
-    Debug.log('Video player paused');
     this.pauseCaptions();
   }
 
@@ -206,8 +203,9 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
     this.props.onRequestChangePlaybackTime(playbackTime);
   }
 
-  videoPlayerDidRestart() {
-    this.restartCaptions();
+  videoPlayerDidPlayToEnd() {
+    console.log('video player played to end');
+    this.restartPlayerAndCaptions();
   }
 
   restartPlayerAndCaptions() {
@@ -244,14 +242,12 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
       return;
     }
     this.playerView.play();
-    Debug.log('Player started.');
   }
 
   startCaptions() {
     if (this.captionsView) {
       this.captionsView.play();
     }
-    Debug.log('Captions started.');
   }
 
   pausePlayer() {
@@ -259,7 +255,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
       return;
     }
     this.playerView.pause();
-    Debug.log('Player paused.');
   }
 
   pauseCaptions() {
@@ -267,7 +262,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
       this.captionsView.pause();
     }
     this.props.onDidPauseCaptions();
-    Debug.log('Captions paused.');
   }
 
   render() {
@@ -292,7 +286,7 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
               style={styles.absoluteFill}
               assetID={this.props.video.assetID}
               onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
-              onVideoWillRestart={this.videoPlayerDidRestart}
+              onVideoDidPlayToEnd={this.videoPlayerDidPlayToEnd}
               onViewDidResize={this.props.onVideoViewDidUpdateSize}
               onPlaybackStateDidChange={playbackState => {
                 this.setState({
