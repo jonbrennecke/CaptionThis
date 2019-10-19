@@ -187,6 +187,10 @@ class CaptionPresetView: UIView {
   private static let captionPresetFixedSize = CGSize(width: 75, height: 75)
 
   private func render() {
+    // sanity check to fix a bug in renderCaptions, but there's probably a better way of doing this
+    if frame == .zero {
+      return
+    }
     renderCaptions(
       layer: presetLayer,
       rowLayers: rowLayers,
@@ -207,6 +211,11 @@ class CaptionPresetView: UIView {
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
+    render()
   }
 
   override func layoutSubviews() {

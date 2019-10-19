@@ -226,6 +226,7 @@ class CaptionView: UIView {
 
   override func layoutSubviews() {
     super.layoutSubviews()
+    layer.frame = bounds
     render()
   }
 }

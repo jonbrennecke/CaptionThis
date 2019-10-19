@@ -62,24 +62,19 @@ const styles = {
     paddingHorizontal: 35,
     paddingBottom: 5,
   },
+  captions: {
+    width: '100%',
+    height: 85,
+  },
   cameraRollButton: {
     height: 37,
     width: 37,
-  },
-  buttonInside: {
-    flex: 1,
-    borderRadius: 3,
-    overflow: 'hidden',
   },
   switchCameraButton: {
     height: 37,
     width: 37,
   },
   flex: {
-    flex: 1,
-  },
-  preset: {
-    height: 50,
     flex: 1,
   },
   leftSideButtons: {
@@ -92,14 +87,8 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
-  captionPresetButton: {
-    height: 37,
-    width: 37,
-  },
   captionViewContainer: {
     flex: 1,
-    backgroundColor: 'red',
-    marginBottom: 75,
   },
 };
 
@@ -127,7 +116,7 @@ export default class HomeScreenBottomCameraControls extends Component<
       <View style={[styles.container, this.props.style]}>
         <View style={styles.captionViewContainer}>
           <CaptionView
-            style={styles.flex}
+            style={styles.captions}
             duration={FIXED_DURATION}
             textSegments={transformTextSegments(
               this.props.textSegments,
