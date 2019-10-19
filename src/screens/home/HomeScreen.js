@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Animated, View, ScrollView, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 // $FlowFixMe
@@ -61,7 +61,10 @@ const styles = {
 @requireOnboardedUser
 @wrapWithHomeScreenState
 @autobind
-export default class HomeScreen extends Component<HomeScreenStateProps, State> {
+export default class HomeScreen extends PureComponent<
+  HomeScreenStateProps,
+  State
+> {
   state = {
     videoID: null,
     hasCompletedSetupAfterOnboarding: false,

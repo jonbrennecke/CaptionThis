@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, StyleSheet, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
@@ -48,7 +48,7 @@ export default function requireOnboardedUser<P, S>(
 ): Class<Component<P, S>> {
   // $FlowFixMe
   @autobind
-  class RequireOnboardedUser extends Component<Props, State> {
+  class RequireOnboardedUser extends PureComponent<Props, State> {
     state = {
       isOnboardingVisible: true,
     };

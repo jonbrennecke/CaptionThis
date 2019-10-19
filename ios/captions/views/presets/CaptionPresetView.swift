@@ -212,7 +212,7 @@ class CaptionPresetView: UIView {
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     render()

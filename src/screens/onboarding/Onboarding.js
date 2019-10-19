@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   Text,
   View,
@@ -125,7 +125,7 @@ function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
 // $FlowFixMe
 @connect(mapStateToProps, mapDispatchToProps)
 @autobind
-export default class Onboarding extends Component<Props, State> {
+export default class Onboarding extends PureComponent<Props, State> {
   fadeAnim: Animated.Value;
   iconAnim: Animated.Value;
   activityIndicatorAnim: Animated.Value;

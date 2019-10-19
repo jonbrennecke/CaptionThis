@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Text, SafeAreaView, Animated, Easing, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 
@@ -72,7 +72,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class EditScreenExportingOverlay extends Component<
+export default class EditScreenExportingOverlay extends PureComponent<
   Props,
   State
 > {

@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { autobind } from 'core-decorators';
 
@@ -44,7 +44,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class ColorPicker extends Component<Props, State> {
+export default class ColorPicker extends PureComponent<Props, State> {
   view: ?View;
   state: State = {
     viewWidth: 0,

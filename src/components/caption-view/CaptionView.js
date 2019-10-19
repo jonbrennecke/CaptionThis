@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, requireNativeComponent, NativeModules } from 'react-native';
 
 import * as Color from '../../utils/Color';
@@ -28,7 +28,7 @@ const styles = {
   },
 };
 
-export default class CaptionView extends Component<Props> {
+export default class CaptionView extends PureComponent<Props> {
   nativeComponentRef: ?ReactNativeFiberHostComponent;
 
   restart() {

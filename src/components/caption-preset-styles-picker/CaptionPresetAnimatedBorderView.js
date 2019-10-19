@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Animated, Easing, View, TouchableOpacity } from 'react-native';
 import { autobind } from 'core-decorators';
 
@@ -66,7 +66,9 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class CaptionPresetAnimatedBorderView extends Component<Props> {
+export default class CaptionPresetAnimatedBorderView extends PureComponent<
+  Props
+> {
   anim = new Animated.Value(0);
 
   componentDidMount() {

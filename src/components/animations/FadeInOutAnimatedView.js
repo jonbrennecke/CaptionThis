@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Animated } from 'react-native';
 
 import FadeAnimation from '../../animations/FadeAnimation';
@@ -18,7 +18,7 @@ const styles = {
   fade: (anim: FadeAnimation) => anim.getAnimatedStyle(),
 };
 
-export default class FadeInOutAnimatedView extends Component<Props> {
+export default class FadeInOutAnimatedView extends PureComponent<Props> {
   anim: FadeAnimation;
 
   constructor(props: Props) {

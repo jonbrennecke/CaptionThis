@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, SafeAreaView, Dimensions, ScrollView } from 'react-native';
 import { autobind } from 'core-decorators';
 import { getSupportedLocales } from '@jonbrennecke/react-native-speech';
@@ -45,7 +45,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class LocaleMenu extends Component<Props, State> {
+export default class LocaleMenu extends PureComponent<Props, State> {
   state = {
     locales: [],
   };

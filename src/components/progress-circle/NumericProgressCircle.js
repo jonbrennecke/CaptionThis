@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Animated, Easing } from 'react-native';
 
 import AnimatedProgressCircle from './AnimatedProgressCircle';
@@ -12,7 +12,7 @@ type Props = {
   fillColor: string,
 };
 
-export default class NumericProgressCircle extends Component<Props> {
+export default class NumericProgressCircle extends PureComponent<Props> {
   progressAnim: Animated.Value;
 
   constructor(props: Props) {

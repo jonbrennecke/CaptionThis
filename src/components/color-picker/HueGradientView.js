@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { requireNativeComponent } from 'react-native';
 import { autobind } from 'core-decorators';
 
@@ -17,7 +17,7 @@ const NativeHueGradientView = requireNativeComponent('HueGradientView');
 
 // $FlowFixMe
 @autobind
-export default class HueGradientView extends Component<Props> {
+export default class HueGradientView extends PureComponent<Props> {
   didUpdateColorAtOffset({ nativeEvent }: any) {
     if (!nativeEvent) {
       return;

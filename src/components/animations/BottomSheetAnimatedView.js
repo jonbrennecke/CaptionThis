@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Animated } from 'react-native';
 
 import BottomSheetAnimation from '../../animations/BottomSheetAnimation';
@@ -19,7 +19,7 @@ const styles = {
   anim: (anim: BottomSheetAnimation) => anim.getAnimatedStyle(),
 };
 
-export default class BottomSheetAnimatedView extends Component<Props> {
+export default class BottomSheetAnimatedView extends PureComponent<Props> {
   anim: BottomSheetAnimation;
 
   constructor(props: Props) {

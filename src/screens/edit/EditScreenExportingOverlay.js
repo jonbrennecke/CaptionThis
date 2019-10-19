@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
 
 import { UI_COLORS } from '../../constants';
@@ -8,9 +8,9 @@ import EditScreenLoadingBackground from './EditScreenLoadingBackground';
 import NumericProgressCircle from '../../components/progress-circle/NumericProgressCircle';
 import ProgressCircleContainer from '../../components/progress-circle/ProgressCircleContainer';
 
-import type { Style } from '../../types/react';
+import type { Style, SFC } from '../../types';
 
-type Props = {
+export type EditScreenExportingOverlayProps = {
   style?: ?Style,
   isVisible: boolean,
   progress: number,
@@ -31,33 +31,36 @@ const styles = {
   },
 };
 
-export default class EditScreenExportingOverlay extends Component<Props> {
-  render() {
-    return (
-      <FadeInOutAnimatedView
-        style={[styles.container, this.props.style]}
-        isVisible={this.props.isVisible}
-        onFadeOutDidComplete={this.props.onDidDismiss}
-      >
-        <EditScreenLoadingBackground />
-        <SafeAreaView style={styles.flexCenter}>
-          <ProgressCircleContainer
-            radius={CIRCLE_RADIUS}
-            renderProgressElement={props => (
-              <NumericProgressCircle
-                progress={this.props.progress * 100}
-                fillColor={UI_COLORS.WHITE}
-                {...props}
-              />
-            )}
-            renderTextElement={props => (
-              <Text numberOfLines={1} {...props}>
-                {`${(this.props.progress * 100).toFixed(0)}%`}
-              </Text>
-            )}
+export const EditScreenExportingOverlay: SFC<
+  EditScreenExportingOverlayProps
+> = ({
+  isVisible,
+  style,
+  onDidDismiss,
+  progress,
+}: EditScreenExportingOverlayProps) => (
+  <FadeInOutAnimatedView
+    style={[styles.container, style]}
+    isVisible={isVisible}
+    onFadeOutDidComplete={onDidDismiss}
+  >
+    <EditScreenLoadingBackground />
+    <SafeAreaView style={styles.flexCenter}>
+      <ProgressCircleContainer
+        radius={CIRCLE_RADIUS}
+        renderProgressElement={props => (
+          <NumericProgressCircle
+            progress={progress * 100}
+            fillColor={UI_COLORS.WHITE}
+            {...props}
           />
-        </SafeAreaView>
-      </FadeInOutAnimatedView>
-    );
-  }
-}
+        )}
+        renderTextElement={props => (
+          <Text numberOfLines={1} {...props}>
+            {`${(progress * 100).toFixed(0)}%`}
+          </Text>
+        )}
+      />
+    </SafeAreaView>
+  </FadeInOutAnimatedView>
+);

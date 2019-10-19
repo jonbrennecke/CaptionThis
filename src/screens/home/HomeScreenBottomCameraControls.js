@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import uuid from 'uuid';
 import { autobind } from 'core-decorators';
@@ -94,7 +94,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class HomeScreenBottomCameraControls extends Component<
+export default class HomeScreenBottomCameraControls extends PureComponent<
   Props,
   State
 > {

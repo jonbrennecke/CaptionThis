@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, TouchableWithoutFeedback, Animated, Easing } from 'react-native';
 import { autobind } from 'core-decorators';
 
@@ -42,7 +42,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class CameraTapToFocusView extends Component<Props, State> {
+export default class CameraTapToFocusView extends PureComponent<Props, State> {
   state = {
     touchPosition: { x: 0, y: 0 },
   };

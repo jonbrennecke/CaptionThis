@@ -11,7 +11,7 @@ import { UI_COLORS, SCREENS } from '../../constants';
 
 import EditScreenVideoPlayer from './EditScreenVideoPlayer';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
-import EditScreenExportingOverlay from './EditScreenExportingOverlay';
+import { EditScreenExportingOverlay } from './EditScreenExportingOverlay';
 import EditScreenLoadingOverlay from './EditScreenLoadingOverlay';
 import EditScreenLoadingBackground from './EditScreenLoadingBackground';
 import LocaleMenu from '../../components/localization/LocaleMenu';
@@ -65,7 +65,6 @@ export default class EditScreen extends PureComponent<
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
     this.addNavigationListeners();
     await beginSpeechTranscriptionOfAsset(this.props.video.assetID);
-
   }
 
   componentWillUnmount() {

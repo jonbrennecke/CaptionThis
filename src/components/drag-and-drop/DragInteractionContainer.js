@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { PanResponder, Animated, View, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 import stubTrue from 'lodash/stubTrue';
@@ -33,7 +33,10 @@ type State = {
 
 // $FlowFixMe
 @autobind
-export default class DragInteractionContainer extends Component<Props, State> {
+export default class DragInteractionContainer extends PureComponent<
+  Props,
+  State
+> {
   props: Props;
   state: State;
   view: ?View;

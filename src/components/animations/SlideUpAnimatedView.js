@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Animated } from 'react-native';
 
 import TranslateVerticallyAnimation from '../../animations/TranslateVerticallyAnimation';
@@ -17,7 +17,7 @@ const styles = {
   view: (anim: TranslateVerticallyAnimation) => anim.getAnimatedStyle(),
 };
 
-export default class SlideUpAnimatedView extends Component<Props> {
+export default class SlideUpAnimatedView extends PureComponent<Props> {
   anim: TranslateVerticallyAnimation;
 
   constructor(props: Props) {

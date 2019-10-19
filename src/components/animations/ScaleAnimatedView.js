@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Animated } from 'react-native';
 
 import ScaleAnimation from '../../animations/ScaleAnimation';
@@ -18,7 +18,7 @@ const styles = {
   fade: (anim: ScaleAnimation) => anim.getAnimatedStyle(),
 };
 
-export default class ScaleAnimatedView extends Component<Props> {
+export default class ScaleAnimatedView extends PureComponent<Props> {
   anim: ScaleAnimation;
 
   constructor(props: Props) {

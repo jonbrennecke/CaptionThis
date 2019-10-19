@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { autobind } from 'core-decorators';
 
@@ -54,7 +54,7 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class SaturationAndBrightnessPicker extends Component<
+export default class SaturationAndBrightnessPicker extends PureComponent<
   Props,
   State
 > {

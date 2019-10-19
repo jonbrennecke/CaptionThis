@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
 import { UI_COLORS } from '../../constants';
@@ -41,7 +41,7 @@ const styles = {
   buttonText: buttonFontStyle,
 };
 
-export default class Button extends Component<Props, {}> {
+export default class Button extends PureComponent<Props, {}> {
   static defaultProps = {
     size: 'small',
     shadowStyle: 'thin',

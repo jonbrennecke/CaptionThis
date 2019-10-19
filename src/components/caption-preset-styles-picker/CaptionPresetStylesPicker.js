@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { ScrollView, View, Dimensions } from 'react-native';
 import { autobind } from 'core-decorators';
 import isEqual from 'lodash/isEqual';
@@ -66,7 +66,10 @@ const styles = {
 
 // $FlowFixMe
 @autobind
-export default class CaptionPresetStylesPicker extends Component<Props, State> {
+export default class CaptionPresetStylesPicker extends PureComponent<
+  Props,
+  State
+> {
   scrollView: ?ScrollView;
   state = {
     isDragging: false,
