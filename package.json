@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@jonbrennecke/react-native-animated-ui": "1.0.11",
-    "@jonbrennecke/react-native-camera": "1.0.77",
+    "@jonbrennecke/react-native-camera": "1.0.78",
     "@jonbrennecke/react-native-media": "1.0.37",
     "@jonbrennecke/react-native-speech": "1.0.2",
     "bluebird": "^3.5.3",
