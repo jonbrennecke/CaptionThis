@@ -58,9 +58,9 @@ fileprivate func createTextLayer(
   let textFrame = CGRect(origin: CGPoint(x: textXOffset, y: textYOffset), size: textSize)
   textLayer.frame = textFrame
   textLayer.shadowColor = UIColor.black.cgColor
-  textLayer.shadowRadius = 0.5
+  textLayer.shadowRadius = textSize.height / 25 * 0.5
   textLayer.shadowOpacity = 0.4
-  textLayer.shadowOffset = CGSize(width: 0.0, height: 1)
+  textLayer.shadowOffset = CGSize(width: 0.0, height: textSize.height / 25)
   textLayer.string = string
   textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
   textLayer.opacity = 0

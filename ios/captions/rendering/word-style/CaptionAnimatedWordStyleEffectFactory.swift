@@ -67,9 +67,9 @@ fileprivate func createTextLayer(
     textLayer.allowsFontSubpixelQuantization = true
     textLayer.allowsEdgeAntialiasing = true
     textLayer.shadowColor = UIColor.black.cgColor
-    textLayer.shadowRadius = 0.5
+    textLayer.shadowRadius = textSize.height / 25 * 0.5
     textLayer.shadowOpacity = 0.4
-    textLayer.shadowOffset = CGSize(width: 0.0, height: 1)
+    textLayer.shadowOffset = CGSize(width: 0.0, height: textSize.height / 25)
     textLayer.string = substring.attributedString
     textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
     textLayer.displayIfNeeded()
