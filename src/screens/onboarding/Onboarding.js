@@ -45,7 +45,7 @@ const INITIAL_DELAY = 500;
 const styles = {
   container: (anim: Animated.Value) => ({
     flex: 1,
-    backgroundColor: UI_COLORS.OFF_WHITE,
+    backgroundColor: UI_COLORS.BLACK,
     alignItems: 'center',
     justifyContent: 'center',
     opacity: anim,
@@ -134,10 +134,6 @@ export default class Onboarding extends PureComponent<Props, State> {
     animationInIsComplete: false,
   };
 
-  async requestPermissons() {
-    await this.props.requestAppPermissions();
-  }
-
   constructor(props: Props) {
     super(props);
     this.fadeAnim = new Animated.Value(1);
@@ -172,6 +168,10 @@ export default class Onboarding extends PureComponent<Props, State> {
     ) {
       this.animateOut();
     }
+  }
+
+  async requestPermissons() {
+    await this.props.requestAppPermissions();
   }
 
   animateIn() {

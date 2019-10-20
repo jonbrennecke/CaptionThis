@@ -41,6 +41,10 @@ function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
 
 const styles = {
   absoluteFill: StyleSheet.absoluteFillObject,
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#000',
+  },
 };
 
 export default function requireOnboardedUser<P, S>(
@@ -81,14 +85,14 @@ export default function requireOnboardedUser<P, S>(
 
     render() {
       return (
-        <View style={styles.absoluteFill}>
+        <View style={styles.container}>
           <StatusBar
             barStyle={
               this.state.isOnboardingVisible ? 'dark-content' : 'light-content'
             }
           />
           {/* $FlowFixMe */}
-          <WrappedComponent {...this.props} />
+          {!this.state.isOnboardingVisible && <WrappedComponent {...this.props} />}
           <FadeInOutAnimatedView
             style={styles.absoluteFill}
             isVisible={this.state.isOnboardingVisible}
