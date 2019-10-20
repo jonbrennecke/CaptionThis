@@ -1,6 +1,6 @@
 // @flow
 import Promise from 'bluebird';
-import { authorizeMediaLibrary } from '@jonbrennecke/react-native-media';
+import { authorizeMediaLibrary, isMediaLibraryAuthorized } from '@jonbrennecke/react-native-media';
 import {
   requestSpeechPermissions,
   hasSpeechPermissions,
@@ -13,7 +13,7 @@ import {
 export const arePermissionsGranted = async (): Promise<boolean> => {
   const areCameraPermissionsGranted = await hasCameraPermissions();
   const areSpeechPermissionsGranted = await hasSpeechPermissions();
-  const areMediaPermissionsGranted = await authorizeMediaLibrary(); // TODO: rename to match the other functions
+  const areMediaPermissionsGranted = await isMediaLibraryAuthorized();
   return (
     areCameraPermissionsGranted &&
     areSpeechPermissionsGranted &&
