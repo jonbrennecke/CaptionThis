@@ -44,8 +44,8 @@ const styles = {
 };
 
 export default function requireOnboardedUser<P, S>(
-  WrappedComponent: Class<Component<P & Props, S>>
-): Class<Component<P, S>> {
+  WrappedComponent: Class<PureComponent<P & Props, S>>
+): Class<PureComponent<P, S>> {
   // $FlowFixMe
   @autobind
   class RequireOnboardedUser extends PureComponent<Props, State> {
