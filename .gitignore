@@ -56,3 +56,4 @@ buck-out/
 *.jsbundle
 
 vendor/bundle
+GoogleService-Info.plist

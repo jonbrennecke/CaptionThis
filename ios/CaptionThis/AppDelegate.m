@@ -4,11 +4,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 #import "AppDelegate.h"
 
 #import "CaptionThis-Swift.h"
 #import "RNSplashScreen.h"
+#import <FirebaseCore/FirebaseCore.h>
 #import <Crashlytics/Crashlytics.h>
 #import <Fabric/Fabric.h>
 #import <React/RCTBundleURLProvider.h>
@@ -39,6 +39,7 @@
 
   [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
   [RNSplashScreen show];
+  [FIRApp configure];
   return YES;
 }
 
