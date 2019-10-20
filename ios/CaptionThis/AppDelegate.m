@@ -8,6 +8,7 @@
 
 #import "CaptionThis-Swift.h"
 #import "RNSplashScreen.h"
+#import <FirebaseCore/FirebaseCore.h>
 #import <Crashlytics/Crashlytics.h>
 #import <Fabric/Fabric.h>
 #import <React/RCTBundleURLProvider.h>
@@ -38,6 +39,7 @@
 
   [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
   [RNSplashScreen show];
+  [FIRApp configure];
   return YES;
 }
 
