@@ -76,6 +76,7 @@
 		FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0F6521D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift */; };
 		FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0FB421D8AB8B00751DBE /* HueGradientViewManager.m */; };
 		FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7A0FB721D8AB9E00751DBE /* HueGradientView.swift */; };
+		FC86EEFD235BE6D100D68EC6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FC86EEC3235BE6D100D68EC6 /* GoogleService-Info.plist */; };
 		FC8D50F821FE99FB009E114E /* IndieFlower.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50C721FE99FA009E114E /* IndieFlower.ttf */; };
 		FC8D50FA21FE9C82009E114E /* SpecialElite-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */; };
 		FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */; };
@@ -649,6 +650,7 @@
 		FC7A0FB421D8AB8B00751DBE /* HueGradientViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HueGradientViewManager.m; sourceTree = "<group>"; };
 		FC7A0FB621D8AB9300751DBE /* HueGradientViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HueGradientViewManager.h; sourceTree = "<group>"; };
 		FC7A0FB721D8AB9E00751DBE /* HueGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HueGradientView.swift; sourceTree = "<group>"; };
+		FC86EEC3235BE6D100D68EC6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FC8D50C721FE99FA009E114E /* IndieFlower.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = IndieFlower.ttf; path = ../assets/fonts/IndieFlower.ttf; sourceTree = "<group>"; };
 		FC8D50F921FE9C81009E114E /* SpecialElite-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpecialElite-Regular.ttf"; path = "../assets/fonts/SpecialElite-Regular.ttf"; sourceTree = "<group>"; };
 		FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredTextLayer.swift; sourceTree = "<group>"; };
@@ -957,6 +959,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				FC86EEC3235BE6D100D68EC6 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* CaptionThis */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* CaptionThisTests */,
@@ -2008,6 +2011,7 @@
 				FCB0E50922135EA7002F320B /* AmaticSC-Bold.ttf in Resources */,
 				FC8D50F821FE99FB009E114E /* IndieFlower.ttf in Resources */,
 				FCB0E55522136472002F320B /* IBMPlexMono-Medium.ttf in Resources */,
+				FC86EEFD235BE6D100D68EC6 /* GoogleService-Info.plist in Resources */,
 				FCB0E50B22136148002F320B /* Bangers-Regular.ttf in Resources */,
 				FC93753F21E0681800FD2700 /* SourceSerifPro-Semibold.ttf in Resources */,
 				FCB0E55322136343002F320B /* Righteous-Regular.ttf in Resources */,
