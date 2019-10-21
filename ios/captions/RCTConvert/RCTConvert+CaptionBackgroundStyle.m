@@ -4,7 +4,8 @@
 
 RCT_ENUM_CONVERTER(CaptionBackgroundStyle, (@{
                                               @"solid" : @(CaptionBackgroundStyleSolid),
-                                              @"gradient" : @(CaptionBackgroundStyleGradient)
+                                              @"gradient" : @(CaptionBackgroundStyleGradient),
+                                              @"textBoundingBox" : @(CaptionBackgroundStyleTextBoundingBox)
                                               }),
                    CaptionBackgroundStyleSolid, integerValue)
 

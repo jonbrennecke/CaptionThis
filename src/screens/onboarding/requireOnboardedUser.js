@@ -92,7 +92,9 @@ export default function requireOnboardedUser<P, S>(
             }
           />
           {/* $FlowFixMe */}
-          {!this.state.isOnboardingVisible && <WrappedComponent {...this.props} />}
+          {!this.state.isOnboardingVisible && (
+            <WrappedComponent {...this.props} />
+          )}
           <FadeInOutAnimatedView
             style={styles.absoluteFill}
             isVisible={this.state.isOnboardingVisible}

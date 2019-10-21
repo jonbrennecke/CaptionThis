@@ -26,7 +26,6 @@ func renderCaptions(
 ) {
   let lineStyleEffectFactory = getLineStyleEffectFactory(style: style.lineStyle)
   let wordStyleEffectFactory = getWordStyleEffectFactory(style: style.wordStyle)
-  let backgroundStyleEffectFactory = getBackgroundStyleEffectFactory(style: style.backgroundStyle)
   let rowFrames = getCaptionRowFrames(style: style, layer: layer, rowLayers: rowLayers)
   let effectedRows = lineStyleEffectFactory.allEffectedRows
   resizeCaptionRows(effectedRowKeys: effectedRows, rowLayers: rowLayers, rowFrames: rowFrames)
@@ -39,12 +38,20 @@ func renderCaptions(
     )
     effect.doEffect(layer: rowLayers.get(byKey: key))
   }
-  let effect = backgroundStyleEffectFactory.createEffect(
-    backgroundColor: style.backgroundColor,
-    backgroundHeight: backgroundHeight,
-    map: map
+//  let effect = backgroundStyleEffectFactory.createEffect(
+//    backgroundColor: style.backgroundColor,
+//    backgroundHeight: backgroundHeight,
+//    map: map
+//  )
+//  effect.doEffect(layer: layer)
+
+  let getSizeOfRow = { (rowKey: CaptionRowKey) -> CGSize in
+    captionRowSizes[rowKey]!
+  }
+
+  apply(backgroundStyle: style.backgroundStyle)(
+    layer, style, backgroundHeight, map, getSizeOfRow
   )
-  effect.doEffect(layer: layer)
 }
 
 fileprivate func getCaptionRowFrames(style: CaptionStyle, layer: CALayer, rowLayers: CaptionRowLayers) -> [CaptionRowKey: CGRect] {

@@ -1,20 +1,20 @@
 import Foundation
 
-protocol CaptionBackgroundStyleEffectFactory {
-  var backgroundStyle: CaptionBackgroundStyle { get }
+typealias BackgroundStyleEffectFunction = (
+  _ layer: CALayer,
+  _ captionStyle: CaptionStyle,
+  _ backgroundHeight: Float,
+  _ map: CaptionStringsMap,
+  _ getSizeOfRow: @escaping (CaptionRowKey) -> CGSize
+) -> Void
 
-  func createEffect(
-    backgroundColor: UIColor,
-    backgroundHeight: Float,
-    map: CaptionStringsMap
-  ) -> PresentationEffect
-}
-
-func getBackgroundStyleEffectFactory(style: CaptionBackgroundStyle) -> CaptionBackgroundStyleEffectFactory {
-  switch style {
+func apply(backgroundStyle: CaptionBackgroundStyle) -> BackgroundStyleEffectFunction {
+  switch backgroundStyle {
   case .gradient:
-    return CaptionGradientBackgroundStyleEffectFactory()
+    return applyGradientBackgroundStyle
   case .solid:
-    return CaptionSolidBackgroundStyleEffectFactory()
+    return applySolidBackgroundStyle
+  case .textBoundingBox:
+    return applyTextBoundingBoxBackgroundStyle
   }
 }

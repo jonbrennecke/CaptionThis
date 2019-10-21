@@ -193,10 +193,19 @@ class CaptionView: UIView {
     layer.sublayers = nil
     rowLayers = CaptionRowLayers()
     rowLayers.each { layer.addSublayer($1) }
+    let debugStyle = CaptionStyle(
+      wordStyle: style.wordStyle,
+      lineStyle: style.lineStyle,
+      textAlignment: style.textAlignment,
+      backgroundStyle: .textBoundingBox,
+      backgroundColor: style.backgroundColor,
+      font: style.font,
+      textColor: style.textColor
+    )
     renderCaptions(
       layer: layer,
       rowLayers: rowLayers,
-      style: style,
+      style: debugStyle,
       textSegments: textSegments,
       duration: duration,
       backgroundHeight: backgroundHeight

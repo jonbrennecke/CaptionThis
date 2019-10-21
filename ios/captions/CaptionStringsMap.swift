@@ -1,8 +1,6 @@
 import Foundation
 
 class CaptionStringsMap {
-  public typealias Value = [TaggedLine]
-
   public struct TaggedString {
     let attributedString: NSAttributedString
     let timestamp: CFTimeInterval
@@ -16,14 +14,15 @@ class CaptionStringsMap {
     let duration: CFTimeInterval
   }
 
-  private var data = [CaptionRowKey: Value]()
+  // TODO: should be immutable
+  var rowData = [CaptionRowKey: [TaggedLine]]()
 
-  public func getValues(byKey key: CaptionRowKey) -> Value? {
-    return data[key]
+  public func getValues(byKey key: CaptionRowKey) -> [TaggedLine]? {
+    return rowData[key]
   }
 
-  public func setValues(byKey key: CaptionRowKey, values: Value) {
-    data[key] = values
+  public func setValues(byKey key: CaptionRowKey, values: [TaggedLine]) {
+    rowData[key] = values
   }
 
   public func getLine(byKey key: CaptionRowKey, index: Int) -> TaggedLine? {
@@ -33,8 +32,8 @@ class CaptionStringsMap {
     return lines[index]
   }
 
-  public func each(_ callback: (_ key: CaptionRowKey, _ value: Value) -> Void) {
-    data.forEach { item in
+  public func each(_ callback: (_ key: CaptionRowKey, _ value: [TaggedLine]) -> Void) {
+    rowData.forEach { item in
       let (key, value) = item
       callback(key, value)
     }
