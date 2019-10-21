@@ -8,9 +8,9 @@
 
 #import "CaptionThis-Swift.h"
 #import "RNSplashScreen.h"
-#import <FirebaseCore/FirebaseCore.h>
 #import <Crashlytics/Crashlytics.h>
 #import <Fabric/Fabric.h>
+#import <FirebaseCore/FirebaseCore.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #if __has_include(<React/RNSentry.h>)

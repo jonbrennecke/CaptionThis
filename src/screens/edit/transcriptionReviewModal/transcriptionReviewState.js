@@ -5,6 +5,7 @@ import { autobind } from 'core-decorators';
 // $FlowFixMe
 import SafeArea from 'react-native-safe-area';
 import throttle from 'lodash/throttle';
+import isEqual from 'lodash/isEqual';
 import { Navigation } from 'react-native-navigation';
 
 import * as Screens from '../../../utils/Screens';
@@ -138,7 +139,11 @@ export function wrapWithTranscriptionReviewState<
         endIndex: number,
       }
     ) {
-      if (selection && selection.startIndex >= 0) {
+      if (
+        selection &&
+        selection.startIndex >= 0 &&
+        !isEqual(selection, this.state.speechTranscriptionSegmentSelection)
+      ) {
         this.setState({
           speechTranscriptionSegmentSelection: selection,
         });

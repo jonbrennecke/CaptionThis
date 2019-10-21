@@ -1,6 +1,9 @@
 // @flow
 import Promise from 'bluebird';
-import { authorizeMediaLibrary, isMediaLibraryAuthorized } from '@jonbrennecke/react-native-media';
+import {
+  authorizeMediaLibrary,
+  isMediaLibraryAuthorized,
+} from '@jonbrennecke/react-native-media';
 import {
   requestSpeechPermissions,
   hasSpeechPermissions,
