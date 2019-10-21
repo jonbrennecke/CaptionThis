@@ -123,10 +123,7 @@ export const TranscriptionReviewModal: ComponentType<
       : null;
     const setSegmentSelection = (playbackTime: number) => {
       if (segments) {
-        const index = Math.max(
-          findIndexOfSegmentAtPlaybackTime(segments, playbackTime),
-          0
-        );
+        const index = findIndexOfSegmentAtPlaybackTime(segments, playbackTime);
         setSpeechTranscriptionSegmentSelection({
           startIndex: index,
           endIndex: index,

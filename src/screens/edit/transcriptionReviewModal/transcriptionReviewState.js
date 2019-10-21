@@ -138,7 +138,7 @@ export function wrapWithTranscriptionReviewState<
         endIndex: number,
       }
     ) {
-      if (selection) {
+      if (selection && selection.startIndex >= 0) {
         this.setState({
           speechTranscriptionSegmentSelection: selection,
         });
