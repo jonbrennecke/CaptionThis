@@ -137,7 +137,9 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
   }
 
   appWillEnterForeground() {
-    this.restartPlayerAndCaptions();
+    if (!this.props.isCaptionsEditorVisible) {
+      this.restartPlayerAndCaptions();
+    }
   }
 
   onDidPresentCaptionsEditor() {
@@ -282,6 +284,7 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
               ref={ref => {
                 this.playerView = ref;
               }}
+              playbackEventThrottle={16}
               style={styles.absoluteFill}
               assetID={this.props.video.assetID}
               onVideoDidFailToLoad={this.videoPlayerDidFailToLoad}
