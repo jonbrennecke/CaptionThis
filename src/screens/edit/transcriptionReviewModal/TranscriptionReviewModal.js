@@ -1,6 +1,12 @@
 // @flow
 import React from 'react';
-import { StatusBar, View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import {
+  StatusBar,
+  View,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 import ReactNativeHaptic from 'react-native-haptic';
@@ -96,7 +102,7 @@ const styles = {
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
@@ -144,8 +150,7 @@ export const TranscriptionReviewModal: ComponentType<
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={Colors.solid.darkGray} />
         </View>
-        {componentIsVisible && 
-        (
+        {componentIsVisible && (
           <View style={StyleSheet.absoluteFill}>
             <KeyboardAvoidingView
               style={styles.flex}
@@ -182,7 +187,10 @@ export const TranscriptionReviewModal: ComponentType<
                         style={styles.fastForwardButton}
                         color={Colors.solid.heliotrope}
                         onPress={() => {
-                          const time = Math.min(playbackTime + 5, video.duration);
+                          const time = Math.min(
+                            playbackTime + 5,
+                            video.duration
+                          );
                           setPlaybackTime(time);
                           seekVideoToTime(time);
                           setSegmentSelection(time);
@@ -245,7 +253,10 @@ export const TranscriptionReviewModal: ComponentType<
                     renderChildren={size => {
                       const width = 100;
                       const height = 16 / 9 * width;
-                      const padding = { bottom: Units.small, left: Units.small };
+                      const padding = {
+                        bottom: Units.small,
+                        left: Units.small,
+                      };
                       const initialPosition = {
                         x: padding.left,
                         y: size.height - Units.small - height,

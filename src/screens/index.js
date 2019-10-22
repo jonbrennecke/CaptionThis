@@ -23,11 +23,14 @@ const AppNavigator = createStackNavigator(
   }
 );
 
-export function createScreens(reduxStore: any, ReduxProvider: ComponentType<*>) {
+export function createScreens(
+  reduxStore: any,
+  ReduxProvider: ComponentType<*>
+) {
   const AppContainer = createAppContainer(AppNavigator);
   const App = () => (
     <ReduxProvider store={reduxStore}>
-      <AppContainer/>
+      <AppContainer />
     </ReduxProvider>
   );
   return App;

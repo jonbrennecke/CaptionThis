@@ -28,7 +28,7 @@ import type { HomeScreenStateProps } from './homeScreenState';
 import type { VideoAssetIdentifier } from '../../types/media';
 
 type HomeScreenProps = {
-  navigation: any // TODO
+  navigation: any, // TODO
 };
 
 type HomeScreenState = {
@@ -64,8 +64,7 @@ const styles = {
 @wrapWithHomeScreenState
 @autobind
 export default class HomeScreen extends PureComponent<
-  HomeScreenProps &
-  HomeScreenStateProps,
+  HomeScreenProps & HomeScreenStateProps,
   HomeScreenState
 > {
   state = {

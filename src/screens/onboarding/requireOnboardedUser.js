@@ -49,12 +49,16 @@ const styles = {
   },
 };
 
-export default function requireOnboardedUser<ComponentOwnProps: Object, C: ComponentType<Props & ComponentOwnProps>>(
-  WrappedComponent: C,
-): ComponentType<ComponentOwnProps> {
+export default function requireOnboardedUser<
+  ComponentOwnProps: Object,
+  C: ComponentType<Props & ComponentOwnProps>
+>(WrappedComponent: C): ComponentType<ComponentOwnProps> {
   // $FlowFixMe
   @autobind
-  class RequireOnboardedUser extends PureComponent<ComponentOwnProps & Props, State> {
+  class RequireOnboardedUser extends PureComponent<
+    ComponentOwnProps & Props,
+    State
+  > {
     state = {
       isOnboardingVisible: true,
     };
