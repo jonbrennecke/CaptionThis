@@ -84,7 +84,7 @@ export function wrapWithTranscriptionReviewState<
     willBlurSubscription: ?NavigationEventSubscription;
     didFocusSubscription: ?NavigationEventSubscription;
 
-    componentDidMount() {
+    async componentDidMount() {
       this.didFocusSubscription = this.props.navigation.addListener(
         'didFocus',
         this.componentDidFocus
@@ -97,6 +97,12 @@ export function wrapWithTranscriptionReviewState<
         'safeAreaInsetsForRootViewDidChange',
         this.safeAreaInsetsForRootViewDidChange
       );
+      SafeArea.getSafeAreaInsetsForRootView()
+        .then(({ safeAreaInsets: insets }) => {
+          this.setState({
+            bottomSafeAreaInset: insets.bottom,
+          });
+        });
     }
 
     componentWillUnmount() {
