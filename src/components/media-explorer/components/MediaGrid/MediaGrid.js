@@ -13,6 +13,7 @@ import {
 } from '../MediaGridHeader';
 import { wrapWithMediaGridState } from './mediaGridState';
 
+import type { ComponentType } from 'react';
 import type {
   AlbumObject,
   MediaStateHOCProps,
@@ -20,7 +21,10 @@ import type {
 } from '@jonbrennecke/react-native-media';
 
 import type { SFC } from '../../../../types/react';
-import type { MediaGridStateExtraProps } from './mediaGridState';
+import type {
+  MediaGridStateExtraProps,
+  MediaGridStateInputProps,
+} from './mediaGridState';
 
 type MediaGridProps = {
   onSelectVideo: (video: MediaObject) => void,
@@ -78,4 +82,6 @@ const formatLabel = (albumID: ?string, albums: any): string => {
   return album?.title || 'Camera Roll';
 };
 
-export const MediaGrid = wrapWithMediaGridState(Component);
+export const MediaGrid: ComponentType<
+  MediaGridProps & MediaGridStateInputProps
+> = wrapWithMediaGridState(Component);

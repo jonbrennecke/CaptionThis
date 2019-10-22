@@ -124,6 +124,7 @@ function mapDispatchToProps(dispatch: Dispatch<*>): DispatchProps {
 
 // $FlowFixMe
 @connect(mapStateToProps, mapDispatchToProps)
+// $FlowFixMe
 @autobind
 export default class Onboarding extends PureComponent<Props, State> {
   fadeAnim: Animated.Value;

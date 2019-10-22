@@ -12,6 +12,8 @@ import {
 
 import { wrapWithAlbumGridState } from './albumGridState';
 
+import type { ComponentType } from 'react';
+
 import type { SFC } from '../../../../types/react';
 import type { AlbumGridStateExtraProps } from './albumGridState';
 import type { MediaStateHOCProps } from '@jonbrennecke/react-native-media';
@@ -78,4 +80,6 @@ const Component: SFC<
   );
 };
 
-export const AlbumGrid = wrapWithAlbumGridState(Component);
+export const AlbumGrid: ComponentType<AlbumGridProps> = wrapWithAlbumGridState(
+  Component
+);

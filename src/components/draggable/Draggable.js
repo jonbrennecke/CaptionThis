@@ -25,7 +25,7 @@ const styles = {
 };
 
 export class Draggable extends PureComponent<DraggableProps> {
-  panGestureHandlerRef = createRef();
+  panGestureHandlerRef: { current: PanGestureHandler | null } = createRef();
 
   returnToInitialPosition() {
     if (this.panGestureHandlerRef.current && this.props.initialPosition) {

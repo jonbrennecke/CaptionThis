@@ -61,7 +61,7 @@ export function trimSegments(
 
 export function findSegmentsInSelectedTextRange(
   segments: Array<SpeechTranscriptionSegment>,
-  selection: { start: number, end: number }
+  selection: { +start: number, +end: number }
 ) {
   let formattedStringCharLength = 0;
   const segmentPositions = segments.map((segment, index) => {

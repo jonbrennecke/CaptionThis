@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet, MaskedViewIOS } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import MaskedView from '@react-native-community/masked-view';
 
 import * as Color from '../../utils/Color';
 import { UI_COLORS } from '../../constants';
@@ -48,7 +49,7 @@ export default function HomeScreenPresetStyles({
   const colorHex = UI_COLORS.BLACK;
   return (
     <View style={[styles.container, style]}>
-      <MaskedViewIOS
+      <MaskedView
         pointerEvents="box-none"
         style={styles.flex}
         maskElement={
@@ -73,7 +74,7 @@ export default function HomeScreenPresetStyles({
           currentPreset={currentPreset}
           onRequestSelectPreset={onRequestSelectPreset}
         />
-      </MaskedViewIOS>
+      </MaskedView>
     </View>
   );
 }

@@ -5,7 +5,6 @@ import { autobind } from 'core-decorators';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 import uuid from 'uuid';
-import { Navigation } from 'react-native-navigation';
 import { createAssetWithVideoFileAtURL } from '@jonbrennecke/react-native-media';
 import {
   beginSpeechTranscriptionOfAudioSession,
@@ -14,8 +13,7 @@ import {
   getLocaleID,
 } from '@jonbrennecke/react-native-speech';
 
-import { UI_COLORS } from '../../constants';
-import * as Screens from '../../utils/Screens';
+import { UI_COLORS, SCREENS } from '../../constants';
 import * as Debug from '../../utils/Debug';
 import requireOnboardedUser from '../onboarding/requireOnboardedUser';
 import { MediaExplorer } from '../../components/media-explorer';
@@ -29,7 +27,11 @@ import type { LocaleObject } from '@jonbrennecke/react-native-speech';
 import type { HomeScreenStateProps } from './homeScreenState';
 import type { VideoAssetIdentifier } from '../../types/media';
 
-type State = {
+type HomeScreenProps = {
+  navigation: any, // TODO
+};
+
+type HomeScreenState = {
   videoID: ?VideoAssetIdentifier,
   hasCompletedSetupAfterOnboarding: boolean,
   isLocaleMenuVisible: boolean,
@@ -59,11 +61,13 @@ const styles = {
 
 // $FlowFixMe
 @requireOnboardedUser
+// $FlowFixMe
 @wrapWithHomeScreenState
+// $FlowFixMe
 @autobind
 export default class HomeScreen extends PureComponent<
-  HomeScreenStateProps,
-  State
+  HomeScreenProps & HomeScreenStateProps,
+  HomeScreenState
 > {
   state = {
     videoID: null,
@@ -75,7 +79,6 @@ export default class HomeScreen extends PureComponent<
   scrollAnim = new Animated.Value(0);
 
   async componentDidMount() {
-    this.navigationEventListener = Navigation.events().bindComponent(this);
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
     }
@@ -84,9 +87,6 @@ export default class HomeScreen extends PureComponent<
   async componentWillUnmount() {
     if (this.props.captureStatus === 'started') {
       await this.stopCapture();
-    }
-    if (this.navigationEventListener) {
-      this.navigationEventListener.remove();
     }
   }
 
@@ -150,7 +150,9 @@ export default class HomeScreen extends PureComponent<
   }
 
   async pushEditScreen(video: MediaObject) {
-    await Screens.pushEditScreen(this.props.componentId, video);
+    this.props.navigation.navigate(SCREENS.EDIT_SCREEN, {
+      video,
+    });
   }
 
   scrollToCameraRoll() {

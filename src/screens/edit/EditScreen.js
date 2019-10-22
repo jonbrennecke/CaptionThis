@@ -2,13 +2,10 @@
 import React, { PureComponent } from 'react';
 import { View, Alert, AppState as ReactAppState } from 'react-native';
 import { autobind } from 'core-decorators';
-import { Navigation } from 'react-native-navigation';
 import { beginSpeechTranscriptionOfAsset } from '@jonbrennecke/react-native-speech';
 
-import * as Screens from '../../utils/Screens';
 import * as Debug from '../../utils/Debug';
 import { UI_COLORS, SCREENS } from '../../constants';
-
 import EditScreenVideoPlayer from './EditScreenVideoPlayer';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
 import { EditScreenExportingOverlay } from './EditScreenExportingOverlay';
@@ -19,6 +16,8 @@ import { wrapWithEditScreenState } from './editScreenState';
 import * as actions from './actions';
 
 import type { LocaleObject } from '@jonbrennecke/react-native-speech';
+// eslint-disable-next-line import/named
+import type { NavigationEventSubscription } from 'react-navigation';
 
 import type { Size, ColorRGBA, Orientation } from '../../types/media';
 import type { ReactAppStateEnum } from '../../types/react';
@@ -30,7 +29,7 @@ type EditScreenState = {
   exportProgress: number,
   isDraggingSeekbar: boolean,
   isRichTextEditorVisible: boolean,
-  transcriptionReviewScreenIsVisible: boolean,
+  isComponentFocused: boolean,
   isLocaleMenuVisible: boolean,
 };
 
@@ -43,6 +42,7 @@ const styles = {
 
 // $FlowFixMe
 @wrapWithEditScreenState
+// $FlowFixMe
 @autobind
 export default class EditScreen extends PureComponent<
   EditScreenProps,
@@ -55,11 +55,11 @@ export default class EditScreen extends PureComponent<
     orientation: null,
     isDraggingSeekbar: false,
     isRichTextEditorVisible: false,
-    transcriptionReviewScreenIsVisible: false,
+    isComponentFocused: false,
     isLocaleMenuVisible: false,
   };
-  transcriptionReviewScreenDidAppearEventListener: any;
-  transcriptionReviewScreenDidDisappearEventListener: any;
+  willBlurSubscription: ?NavigationEventSubscription;
+  didFocusSubscription: ?NavigationEventSubscription;
 
   async componentDidMount() {
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
@@ -98,33 +98,37 @@ export default class EditScreen extends PureComponent<
   /// MARK -- navigation listeners
 
   addNavigationListeners() {
-    this.transcriptionReviewScreenDidAppearEventListener = Navigation.events().registerComponentDidAppearListener(
-      ({ componentId }) => {
-        if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
-          this.setState({
-            transcriptionReviewScreenIsVisible: true,
-          });
-        }
-      }
+    this.didFocusSubscription = this.props.navigation.addListener(
+      'didFocus',
+      this.componentDidFocus
     );
-    this.transcriptionReviewScreenDidDisappearEventListener = Navigation.events().registerComponentDidDisappearListener(
-      ({ componentId }) => {
-        if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
-          this.setState({
-            transcriptionReviewScreenIsVisible: false,
-          });
-        }
-      }
+    this.willBlurSubscription = this.props.navigation.addListener(
+      'willBlur',
+      this.componentWillBlur
     );
   }
 
   removeNavigationListeners() {
-    if (this.transcriptionReviewScreenDidAppearEventListener) {
-      this.transcriptionReviewScreenDidAppearEventListener.remove();
+    if (this.didFocusSubscription) {
+      this.didFocusSubscription.remove();
+      this.didFocusSubscription = null;
     }
-    if (this.transcriptionReviewScreenDidDisappearEventListener) {
-      this.transcriptionReviewScreenDidDisappearEventListener.remove();
+    if (this.willBlurSubscription) {
+      this.willBlurSubscription.remove();
+      this.willBlurSubscription = null;
     }
+  }
+
+  componentDidFocus() {
+    this.setState({
+      isComponentFocused: true,
+    });
+  }
+
+  componentWillBlur() {
+    this.setState({
+      isComponentFocused: false,
+    });
   }
 
   /// MARK -- speech event listeners
@@ -136,9 +140,8 @@ export default class EditScreen extends PureComponent<
       [
         {
           text: 'OK',
-          onPress: async () => {
-            await Navigation.dismissAllModals();
-            await Navigation.popToRoot(this.props.componentId);
+          onPress: () => {
+            this.props.navigation.goBack();
           },
         },
       ],
@@ -153,9 +156,8 @@ export default class EditScreen extends PureComponent<
       [
         {
           text: 'OK',
-          onPress: async () => {
-            await Navigation.dismissAllModals();
-            await Navigation.popToRoot(this.props.componentId);
+          onPress: () => {
+            this.props.navigation.goBack();
           },
         },
       ],
@@ -183,10 +185,6 @@ export default class EditScreen extends PureComponent<
     this.setState({
       isRichTextEditorVisible: false,
     });
-  }
-
-  async popToHomeScreen() {
-    await Navigation.popToRoot(this.props.componentId);
   }
 
   async onDidPressExportButton() {
@@ -231,30 +229,11 @@ export default class EditScreen extends PureComponent<
     Debug.log('Video export failed');
   }
 
-  textOverlayParams() {
-    const speechTranscription = this.props.speechTranscriptions.get(
-      this.props.video.assetID
-    );
-    if (!speechTranscription) {
-      return [];
-    }
-    return speechTranscription.segments.map(segment => ({
-      duration: segment.duration,
-      timestamp: segment.timestamp,
-      text: segment.substring,
-    }));
-  }
-
   async showCaptionsEditor() {
     this.pauseRichTextEditorCaptions();
-    await Screens.pushTranscriptionReviewScreen(
-      this.props.componentId,
-      this.props.video
-    );
-  }
-
-  async dismissCaptionsEditor() {
-    await Screens.dismissTranscriptionReviewScreen();
+    this.props.navigation.navigate(SCREENS.TRANSCRIPTION_REVIEW_SCREEN, {
+      video: this.props.video,
+    });
   }
 
   showRichTextEditor() {
@@ -325,9 +304,7 @@ export default class EditScreen extends PureComponent<
           countryCode={this.props.locale?.country.code}
           isAppInForeground={this.props.isAppInForeground}
           isDeviceLimitedByMemory={this.props.isDeviceLimitedByMemory}
-          isCaptionsEditorVisible={
-            this.state.transcriptionReviewScreenIsVisible
-          }
+          isCaptionsEditorVisible={!this.state.isComponentFocused}
           isExportingVideo={this.props.isExportingVideo}
           video={this.props.video}
           isSpeechTranscriptionFinal={speechTranscriptionIsFinal}
@@ -343,8 +320,7 @@ export default class EditScreen extends PureComponent<
             this.showCaptionsEditor();
           }}
           onRequestPopToHomeScreen={() => {
-            // TODO: handle awaiting this promise
-            this.popToHomeScreen();
+            this.props.navigation.goBack();
           }}
           onRequestExport={() => {
             // TODO: handle awaiting this promise

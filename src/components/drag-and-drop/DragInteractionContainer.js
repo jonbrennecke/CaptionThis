@@ -40,6 +40,7 @@ export default class DragInteractionContainer extends PureComponent<
   props: Props;
   state: State;
   view: ?View;
+  // $FlowFixMe
   panResponder: ?PanResponder = null;
   pan: Animated.ValueXY = new Animated.ValueXY();
   panOffset: { x: number, y: number } = { x: 0, y: 0 };
@@ -67,8 +68,11 @@ export default class DragInteractionContainer extends PureComponent<
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: stubTrue,
       onMoveShouldSetPanResponder: stubTrue,
+      // $FlowFixMe
       onPanResponderMove: this.handleMove,
+      // $FlowFixMe
       onPanResponderGrant: this.handleGrant,
+      // $FlowFixMe
       onPanResponderRelease: this.handleRelease, // TODO: check that handleRelease is NOT called twice
     });
   }

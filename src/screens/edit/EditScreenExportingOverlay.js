@@ -31,6 +31,7 @@ const styles = {
   },
 };
 
+// eslint-disable-next-line flowtype/generic-spacing
 export const EditScreenExportingOverlay: SFC<
   EditScreenExportingOverlayProps
 > = ({
@@ -40,6 +41,7 @@ export const EditScreenExportingOverlay: SFC<
   progress,
 }: EditScreenExportingOverlayProps) => (
   <FadeInOutAnimatedView
+    // $FlowFixMe
     style={[styles.container, style]}
     isVisible={isVisible}
     onFadeOutDidComplete={onDidDismiss}

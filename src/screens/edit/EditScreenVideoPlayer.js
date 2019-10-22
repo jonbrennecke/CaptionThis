@@ -1,16 +1,16 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { SafeAreaView, Dimensions, StyleSheet } from 'react-native';
+import { View, SafeAreaView, Dimensions, StyleSheet } from 'react-native';
 import throttle from 'lodash/throttle';
 import { autobind } from 'core-decorators';
 import { VideoPlayer } from '@jonbrennecke/react-native-media';
+import { FadeInOutAnimatedView } from '@jonbrennecke/react-native-animated-ui';
 
 import { UI_COLORS } from '../../constants';
 import { isLandscape } from '../../utils/Orientation';
 import { VideoCaptionsContainer } from '../../components/video-captions-view/VideoCaptionsContainer';
 import EditScreenTopControls from './EditScreenTopControls';
 import VideoCaptionsView from '../../components/video-captions-view/VideoCaptionsView';
-import ScaleAnimatedView from '../../components/animations/ScaleAnimatedView';
 import { PlaybackSeekbar } from '../../components';
 
 import type {
@@ -80,21 +80,22 @@ const styles = {
     right: 0,
     bottom: 0,
   },
-  editControls: {
+  editControls: (isVisible: boolean) => ({
     height: 70,
     width: SCREEN_WIDTH,
     paddingTop: 10,
     // TODO: The bottom padding is only necessary because of the seekbar handle being cut off in phones without a notch (i.e. iPhones older than the X series)
     paddingBottom: 3,
+    opacity: isVisible ? 1 : 0,
+  }),
+  editControlsInner: {
+    flex: 1,
   },
   editTopControls: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-  },
-  seekbarWrap: {
-    flexDirection: 'row',
   },
 };
 
@@ -276,7 +277,7 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
     return (
       <SafeAreaView style={styles.flex}>
         {this.props.isSpeechTranscriptionFinal && (
-          <ScaleAnimatedView
+          <FadeInOutAnimatedView
             style={styles.videoWrap}
             isVisible={this.state.playbackState !== 'waiting'}
           >
@@ -335,28 +336,29 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
               onEditTextButtonPress={this.props.onRequestShowCaptionsEditor}
               onLocaleButtonPress={this.props.onLocaleButtonPress}
             />
-          </ScaleAnimatedView>
+          </FadeInOutAnimatedView>
         )}
-        <ScaleAnimatedView
-          isVisible={this.state.playbackState !== 'waiting'}
-          style={styles.editControls}
+        <View
+          style={styles.editControls(this.state.playbackState !== 'waiting')}
         >
-          <PlaybackSeekbar
-            style={styles.flex}
-            assetID={this.props.video.assetID}
-            playbackProgress={
-              this.state.playbackTime / this.props.video.duration
-            }
-            playbackState={this.state.playbackState}
-            onSeekToProgress={progress =>
-              this.seekBarDidSeekToTimeThrottled(
-                this.props.video.duration * progress
-              )
-            }
-            onRequestPause={this.pausePlayerAndCaptions}
-            onRequestPlay={this.startPlayerAndCaptions}
-          />
-        </ScaleAnimatedView>
+          <View style={styles.editControlsInner}>
+            <PlaybackSeekbar
+              style={styles.absoluteFill}
+              assetID={this.props.video.assetID}
+              playbackProgress={
+                this.state.playbackTime / this.props.video.duration
+              }
+              playbackState={this.state.playbackState}
+              onSeekToProgress={progress =>
+                this.seekBarDidSeekToTimeThrottled(
+                  this.props.video.duration * progress
+                )
+              }
+              onRequestPause={this.pausePlayerAndCaptions}
+              onRequestPlay={this.startPlayerAndCaptions}
+            />
+          </View>
+        </View>
       </SafeAreaView>
     );
   }
