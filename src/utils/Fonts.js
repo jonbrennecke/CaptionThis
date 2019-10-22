@@ -12,8 +12,9 @@ import type {
 
 type FontParams = { contentStyle?: FontContentStyle, size?: FontSize };
 
-export function getFontStyle(role: FontRole, params?: FontParams): Style {
+export function getFontStyle(role: FontRole, params?: FontParams): any {
   const fontStyle = FONT_STYLES[role];
+  // $FlowFixMe
   return {
     ...fontStyle.style,
     ...getModifiers(fontStyle, params),

@@ -165,6 +165,7 @@ export default class EditScreenExportingOverlay extends PureComponent<
   render() {
     return (
       <FadeInOutAnimatedView
+        // $FlowFixMe
         style={[styles.container, this.props.style]}
         isVisible={this.props.isVisible}
       >

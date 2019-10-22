@@ -11,9 +11,16 @@ import isEqual from 'lodash/isEqual';
 import { createSpeechStateHOC } from '@jonbrennecke/react-native-speech';
 
 import type { ComponentType } from 'react';
-// eslint-disable-next-line import/named
-import type { NavigationScreenProp, NavigationEventSubscription } from 'react-navigation';
-import type { VideoPlayer, MediaObject } from '@jonbrennecke/react-native-media';
+import type {
+  // eslint-disable-next-line import/named
+  NavigationScreenProp,
+  // eslint-disable-next-line import/named
+  NavigationEventSubscription,
+} from 'react-navigation';
+import type {
+  VideoPlayer,
+  MediaObject,
+} from '@jonbrennecke/react-native-media';
 import type { PlaybackState } from '@jonbrennecke/react-native-camera';
 import type { SpeechStateHOCProps } from '@jonbrennecke/react-native-speech';
 
@@ -22,8 +29,8 @@ type TranscriptionReviewStateHOCOwnProps = {
     params: {
       video: MediaObject,
     },
-  }>
-}
+  }>,
+};
 
 type TranscriptionReviewStateHOCExtraProps = {
   videoPlayerRef: { current: VideoPlayer | null },
@@ -50,21 +57,15 @@ export type TranscriptionReviewStateHOCState = {
   componentIsVisible: boolean,
 };
 
-export type TranscriptionReviewStateHOCProps =
-      TranscriptionReviewStateHOCOwnProps &
-      TranscriptionReviewStateHOCExtraProps &
-      TranscriptionReviewStateHOCState &
-      SpeechStateHOCProps;
+export type TranscriptionReviewStateHOCProps = TranscriptionReviewStateHOCOwnProps &
+  TranscriptionReviewStateHOCExtraProps &
+  TranscriptionReviewStateHOCState &
+  SpeechStateHOCProps;
 
 export function wrapWithTranscriptionReviewState<
   PassThroughProps: Object,
-  C: ComponentType<
-    TranscriptionReviewStateHOCProps &
-      PassThroughProps
-  >
->(
-  WrappedComponent: C
-): ComponentType<PassThroughProps> {
+  C: ComponentType<TranscriptionReviewStateHOCProps & PassThroughProps>
+>(WrappedComponent: C): ComponentType<PassThroughProps> {
   // $FlowFixMe
   @autobind
   class TranscriptionReviewStateHOC extends PureComponent<
@@ -84,8 +85,14 @@ export function wrapWithTranscriptionReviewState<
     didFocusSubscription: ?NavigationEventSubscription;
 
     componentDidMount() {
-      this.didFocusSubscription = this.props.navigation.addListener('didFocus', this.componentDidFocus);
-      this.willBlurSubscription = this.props.navigation.addListener('willBlur', this.componentWillBlur);
+      this.didFocusSubscription = this.props.navigation.addListener(
+        'didFocus',
+        this.componentDidFocus
+      );
+      this.willBlurSubscription = this.props.navigation.addListener(
+        'willBlur',
+        this.componentWillBlur
+      );
       SafeArea.addEventListener(
         'safeAreaInsetsForRootViewDidChange',
         this.safeAreaInsetsForRootViewDidChange

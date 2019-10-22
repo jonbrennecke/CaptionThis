@@ -177,6 +177,7 @@ export const FONTS = [
   },
 ];
 
+// $FlowFixMe
 export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   default: {
     style: {

@@ -150,12 +150,9 @@ export default class HomeScreen extends PureComponent<
   }
 
   async pushEditScreen(video: MediaObject) {
-    this.props.navigation.navigate(
-      SCREENS.EDIT_SCREEN,
-      {
-        video,
-      }
-    );
+    this.props.navigation.navigate(SCREENS.EDIT_SCREEN, {
+      video,
+    });
   }
 
   scrollToCameraRoll() {

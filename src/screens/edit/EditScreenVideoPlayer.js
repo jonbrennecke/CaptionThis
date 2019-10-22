@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { SafeAreaView, Dimensions, StyleSheet } from 'react-native';
+import { View, SafeAreaView, Dimensions, StyleSheet } from 'react-native';
 import throttle from 'lodash/throttle';
 import { autobind } from 'core-decorators';
 import { VideoPlayer } from '@jonbrennecke/react-native-media';
@@ -92,9 +92,6 @@ const styles = {
     top: 0,
     left: 0,
     right: 0,
-  },
-  seekbarWrap: {
-    flexDirection: 'row',
   },
 };
 
@@ -337,10 +334,7 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
             />
           </ScaleAnimatedView>
         )}
-        <ScaleAnimatedView
-          isVisible={this.state.playbackState !== 'waiting'}
-          style={styles.editControls}
-        >
+        <View style={styles.editControls}>
           <PlaybackSeekbar
             style={styles.flex}
             assetID={this.props.video.assetID}
@@ -356,7 +350,7 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
             onRequestPause={this.pausePlayerAndCaptions}
             onRequestPlay={this.startPlayerAndCaptions}
           />
-        </ScaleAnimatedView>
+        </View>
       </SafeAreaView>
     );
   }

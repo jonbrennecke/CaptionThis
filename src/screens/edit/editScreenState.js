@@ -31,7 +31,7 @@ type OwnProps = {|
     params: {
       video: MediaObject,
     },
-  }>
+  }>,
 |};
 
 type StateProps = {|
@@ -54,7 +54,9 @@ type EditScreenExtraProps = {
   video: MediaObject,
 };
 
-export type EditScreenProps = EditScreenReduxProps & SpeechStateHOCProps & EditScreenExtraProps;
+export type EditScreenProps = EditScreenReduxProps &
+  SpeechStateHOCProps &
+  EditScreenExtraProps;
 
 function mapStateToProps(state: AppState): StateProps {
   return {
@@ -83,7 +85,12 @@ export function wrapWithEditScreenState<
   const wrapWithSpeechState = createSpeechStateHOC(state => state.speech);
   const ComponentWithSpeechState = wrapWithSpeechState(Component);
   const fn = (props: EditScreenProps & PassThroughProps) => {
-    return <ComponentWithSpeechState {...props} video={props.navigation.getParam('video')} />;
+    return (
+      <ComponentWithSpeechState
+        {...props}
+        video={props.navigation.getParam('video')}
+      />
+    );
   };
   return connect(mapStateToProps, mapDispatchToProps)(fn);
 }

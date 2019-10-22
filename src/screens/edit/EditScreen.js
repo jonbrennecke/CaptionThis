@@ -315,7 +315,9 @@ export default class EditScreen extends PureComponent<
           onRequestShowCaptionsEditor={() => {
             this.showCaptionsEditor();
           }}
-          onRequestPopToHomeScreen={() => { this.props.navigation.goBack(); }}
+          onRequestPopToHomeScreen={() => {
+            this.props.navigation.goBack();
+          }}
           onRequestExport={() => {
             // TODO: handle awaiting this promise
             this.onDidPressExportButton();

@@ -110,7 +110,7 @@ export class FloatingVideoPlayer extends PureComponent<
     isMinimized: false,
   };
   resizeAnim = new Animated.Value(1);
-  draggableRef = createRef();
+  draggableRef: { current: Draggable | null } = createRef();
 
   minimize() {
     if (this.draggableRef.current) {

@@ -97,12 +97,12 @@ export const PlaybackSlider: SFC<PlaybackSliderProps> = ({
   onDidBeginDrag = noop,
   onDidEndDrag = noop,
 }: PlaybackSliderProps) => (
-  <View style={[styles.container, style]}>
+  <View style={[styles.container, style]} pointerEvents="box-none">
     <View style={styles.infoContainer}>
       <Text style={styles.durationText}>{formatTime(value)}</Text>
       <Text style={styles.durationText}>{formatTime(max - value)}</Text>
     </View>
-    <View style={styles.sliderContainer}>
+    <View style={styles.sliderContainer} pointerEvents="box-none">
       <View style={styles.background} pointerEvents="none" />
       <Slider
         style={styles.absoluteFill}

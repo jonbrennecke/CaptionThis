@@ -58,8 +58,8 @@ export class PanGestureHandler extends PureComponent<
   panResponder: ?Return<typeof PanResponder.create>;
   pan: Animated.ValueXY = new Animated.ValueXY();
   panOffset: { x: number, y: number } = { x: 0, y: 0 };
-  containerRef: { current: View | null  } = createRef();
-  panResponderRef: { current: View | null  } = createRef();
+  containerRef: { current: View | null } = createRef();
+  panResponderRef: { current: View | null } = createRef();
 
   static defaultProps = {
     clampToBounds: true,
@@ -172,7 +172,6 @@ export class PanGestureHandler extends PureComponent<
     if (this.props.disabled) {
       return;
     }
-    console.log('move', event.nativeEvent);
     Animated.event([
       null,
       {
