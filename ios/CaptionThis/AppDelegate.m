@@ -13,6 +13,7 @@
 #import <FirebaseCore/FirebaseCore.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <React/RCTBridge.h>
 #if __has_include(<React/RNSentry.h>)
 #import <React/RNSentry.h> // This is used for versions of react >= 0.40
 #else
@@ -24,23 +25,31 @@
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+                                                   moduleName:@"CaptionThis"
+                                            initialProperties:nil];
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  UIViewController *rootViewController = [UIViewController new];
+  rootViewController.view = rootView;
+  self.window.rootViewController = rootViewController;
+  [self.window makeKeyAndVisible];
+  
+  
   [Fabric with:@[ [Crashlytics class] ]];
-
-  NSURL *jsCodeLocation;
-
-#ifdef DEBUG
-  jsCodeLocation =
-      [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"
-                                                     fallbackResource:nil];
-#else
-  jsCodeLocation =
-      [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#endif
-
-  [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
-  [RNSplashScreen show];
   [FIRApp configure];
+  [RNSplashScreen show];
   return YES;
+}
+
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+{
+#if DEBUG
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+#else
+  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#endif
 }
 
 @end

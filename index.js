@@ -1,13 +1,12 @@
 // @flow
-import { YellowBox } from 'react-native';
+import { AppRegistry, YellowBox } from 'react-native';
 import { Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 import { Sentry } from 'react-native-sentry';
 import Bluebird from 'bluebird';
+import { name as appName } from './app.json';
 
 import createStore from './src/redux/store';
-import { registerScreens } from './src/screens';
-import * as Screens from './src/utils/Screens';
+import { createScreens } from './src/screens';
 
 YellowBox.ignoreWarnings([
   'Require cycle:', // NOTE: this hides a warning from the 'core-decorators' package
@@ -21,8 +20,5 @@ Bluebird.config({
 Sentry.config('https://d80580c400724fd3bf4a1feece1bbcf5@sentry.io/1400787').install();
 
 const store = createStore();
-registerScreens(store, Provider);
 
-Navigation.events().registerAppLaunchedListener(() => {
-  Screens.setRoot();
-});
+AppRegistry.registerComponent(appName, () => createScreens(store, Provider));

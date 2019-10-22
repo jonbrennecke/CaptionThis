@@ -7,7 +7,6 @@ import { autobind } from 'core-decorators';
 import SafeArea from 'react-native-safe-area';
 import throttle from 'lodash/throttle';
 import isEqual from 'lodash/isEqual';
-import { Navigation } from 'react-native-navigation';
 
 import * as Screens from '../../../utils/Screens';
 import { createSpeechStateHOC } from '@jonbrennecke/react-native-speech';
@@ -77,7 +76,8 @@ export function wrapWithTranscriptionReviewState<
 
     componentDidMount() {
       console.log('componentDidMount');
-      this.navigationEventListener = Navigation.events().bindComponent(this);
+      // TODO
+      // this.navigationEventListener = Navigation.events().bindComponent(this);
       SafeArea.addEventListener(
         'safeAreaInsetsForRootViewDidChange',
         this.safeAreaInsetsForRootViewDidChange

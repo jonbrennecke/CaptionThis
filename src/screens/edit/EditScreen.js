@@ -2,13 +2,11 @@
 import React, { PureComponent } from 'react';
 import { View, Alert, AppState as ReactAppState } from 'react-native';
 import { autobind } from 'core-decorators';
-import { Navigation } from 'react-native-navigation';
 import { beginSpeechTranscriptionOfAsset } from '@jonbrennecke/react-native-speech';
 
 import * as Screens from '../../utils/Screens';
 import * as Debug from '../../utils/Debug';
 import { UI_COLORS, SCREENS } from '../../constants';
-
 import EditScreenVideoPlayer from './EditScreenVideoPlayer';
 import EditScreenRichTextOverlay from './EditScreenRichTextOverlay';
 import { EditScreenExportingOverlay } from './EditScreenExportingOverlay';
@@ -98,24 +96,24 @@ export default class EditScreen extends PureComponent<
   /// MARK -- navigation listeners
 
   addNavigationListeners() {
-    this.transcriptionReviewScreenDidAppearEventListener = Navigation.events().registerComponentDidAppearListener(
-      ({ componentId }) => {
-        if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
-          this.setState({
-            transcriptionReviewScreenIsVisible: true,
-          });
-        }
-      }
-    );
-    this.transcriptionReviewScreenDidDisappearEventListener = Navigation.events().registerComponentDidDisappearListener(
-      ({ componentId }) => {
-        if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
-          this.setState({
-            transcriptionReviewScreenIsVisible: false,
-          });
-        }
-      }
-    );
+    // this.transcriptionReviewScreenDidAppearEventListener = Navigation.events().registerComponentDidAppearListener(
+    //   ({ componentId }) => {
+    //     if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
+    //       this.setState({
+    //         transcriptionReviewScreenIsVisible: true,
+    //       });
+    //     }
+    //   }
+    // );
+    // this.transcriptionReviewScreenDidDisappearEventListener = Navigation.events().registerComponentDidDisappearListener(
+    //   ({ componentId }) => {
+    //     if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
+    //       this.setState({
+    //         transcriptionReviewScreenIsVisible: false,
+    //       });
+    //     }
+    //   }
+    // );
   }
 
   removeNavigationListeners() {
@@ -137,8 +135,8 @@ export default class EditScreen extends PureComponent<
         {
           text: 'OK',
           onPress: async () => {
-            await Navigation.dismissAllModals();
-            await Navigation.popToRoot(this.props.componentId);
+            // await Navigation.dismissAllModals();
+            // await Navigation.popToRoot(this.props.componentId);
           },
         },
       ],
@@ -154,8 +152,8 @@ export default class EditScreen extends PureComponent<
         {
           text: 'OK',
           onPress: async () => {
-            await Navigation.dismissAllModals();
-            await Navigation.popToRoot(this.props.componentId);
+            // await Navigation.dismissAllModals();
+            // await Navigation.popToRoot(this.props.componentId);
           },
         },
       ],
@@ -186,7 +184,7 @@ export default class EditScreen extends PureComponent<
   }
 
   async popToHomeScreen() {
-    await Navigation.popToRoot(this.props.componentId);
+    // await Navigation.popToRoot(this.props.componentId);
   }
 
   async onDidPressExportButton() {

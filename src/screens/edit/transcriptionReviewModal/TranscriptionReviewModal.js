@@ -4,7 +4,6 @@ import { StatusBar, View, StyleSheet, ScrollView, ActivityIndicator } from 'reac
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 import ReactNativeHaptic from 'react-native-haptic';
-import { FadeInOutAnimatedView } from '@jonbrennecke/react-native-animated-ui';
 
 import KeyboardAvoidingView from '../../../components/keyboard-avoiding-view/KeyboardAvoidingView';
 import { wrapWithTranscriptionReviewState } from './transcriptionReviewState';

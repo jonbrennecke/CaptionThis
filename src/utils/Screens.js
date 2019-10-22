@@ -1,5 +1,5 @@
 // @flow
-import { Navigation } from 'react-native-navigation';
+
 import merge from 'lodash/merge';
 
 import { SCREEN_PARAMS, SCREENS, APP_BUNDLE_ID } from '../constants';
@@ -20,17 +20,6 @@ export const pushEditScreen = async (
     )
   );
 };
-
-export function setRoot() {
-  Navigation.setRoot({
-    root: {
-      stack: {
-        id: ROOT_NAVIGATION_STACK_ID,
-        children: [SCREEN_PARAMS[SCREENS.HOME_SCREEN]],
-      },
-    },
-  });
-}
 
 function passPropsComponentMergeParams(props: { [key: string]: any }) {
   return {
@@ -56,3 +45,11 @@ export const pushTranscriptionReviewScreen = async (
 export const dismissTranscriptionReviewScreen = async () => {
   await Navigation.pop(SCREENS.TRANSCRIPTION_REVIEW_SCREEN);
 };
+
+// const AppNavigator = createStackNavigator({
+//   Home: {
+//     screen: HomeScreen,
+//   },
+// });
+
+// export default createAppContainer(AppNavigator);
