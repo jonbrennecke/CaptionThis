@@ -16,6 +16,8 @@ import { wrapWithEditScreenState } from './editScreenState';
 import * as actions from './actions';
 
 import type { LocaleObject } from '@jonbrennecke/react-native-speech';
+// eslint-disable-next-line import/named
+import type { NavigationEventSubscription } from 'react-navigation';
 
 import type { Size, ColorRGBA, Orientation } from '../../types/media';
 import type { ReactAppStateEnum } from '../../types/react';
@@ -27,7 +29,7 @@ type EditScreenState = {
   exportProgress: number,
   isDraggingSeekbar: boolean,
   isRichTextEditorVisible: boolean,
-  transcriptionReviewScreenIsVisible: boolean,
+  isComponentFocused: boolean,
   isLocaleMenuVisible: boolean,
 };
 
@@ -53,11 +55,11 @@ export default class EditScreen extends PureComponent<
     orientation: null,
     isDraggingSeekbar: false,
     isRichTextEditorVisible: false,
-    transcriptionReviewScreenIsVisible: false,
+    isComponentFocused: false,
     isLocaleMenuVisible: false,
   };
-  transcriptionReviewScreenDidAppearEventListener: any;
-  transcriptionReviewScreenDidDisappearEventListener: any;
+  willBlurSubscription: ?NavigationEventSubscription;
+  didFocusSubscription: ?NavigationEventSubscription;
 
   async componentDidMount() {
     ReactAppState.addEventListener('change', this.handleAppStateWillChange);
@@ -96,33 +98,37 @@ export default class EditScreen extends PureComponent<
   /// MARK -- navigation listeners
 
   addNavigationListeners() {
-    // this.transcriptionReviewScreenDidAppearEventListener = Navigation.events().registerComponentDidAppearListener(
-    //   ({ componentId }) => {
-    //     if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
-    //       this.setState({
-    //         transcriptionReviewScreenIsVisible: true,
-    //       });
-    //     }
-    //   }
-    // );
-    // this.transcriptionReviewScreenDidDisappearEventListener = Navigation.events().registerComponentDidDisappearListener(
-    //   ({ componentId }) => {
-    //     if (componentId === SCREENS.TRANSCRIPTION_REVIEW_SCREEN) {
-    //       this.setState({
-    //         transcriptionReviewScreenIsVisible: false,
-    //       });
-    //     }
-    //   }
-    // );
+    this.didFocusSubscription = this.props.navigation.addListener(
+      'didFocus',
+      this.componentDidFocus
+    );
+    this.willBlurSubscription = this.props.navigation.addListener(
+      'willBlur',
+      this.componentWillBlur
+    );
   }
 
   removeNavigationListeners() {
-    if (this.transcriptionReviewScreenDidAppearEventListener) {
-      this.transcriptionReviewScreenDidAppearEventListener.remove();
+    if (this.didFocusSubscription) {
+      this.didFocusSubscription.remove();
+      this.didFocusSubscription = null;
     }
-    if (this.transcriptionReviewScreenDidDisappearEventListener) {
-      this.transcriptionReviewScreenDidDisappearEventListener.remove();
+    if (this.willBlurSubscription) {
+      this.willBlurSubscription.remove();
+      this.willBlurSubscription = null;
     }
+  }
+
+  componentDidFocus() {
+    this.setState({
+      isComponentFocused: true,
+    });
+  }
+
+  componentWillBlur() {
+    this.setState({
+      isComponentFocused: false,
+    });
   }
 
   /// MARK -- speech event listeners
@@ -298,9 +304,7 @@ export default class EditScreen extends PureComponent<
           countryCode={this.props.locale?.country.code}
           isAppInForeground={this.props.isAppInForeground}
           isDeviceLimitedByMemory={this.props.isDeviceLimitedByMemory}
-          isCaptionsEditorVisible={
-            this.state.transcriptionReviewScreenIsVisible
-          }
+          isCaptionsEditorVisible={!this.state.isComponentFocused}
           isExportingVideo={this.props.isExportingVideo}
           video={this.props.video}
           isSpeechTranscriptionFinal={speechTranscriptionIsFinal}

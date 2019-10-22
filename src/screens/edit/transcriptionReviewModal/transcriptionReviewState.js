@@ -97,12 +97,13 @@ export function wrapWithTranscriptionReviewState<
         'safeAreaInsetsForRootViewDidChange',
         this.safeAreaInsetsForRootViewDidChange
       );
-      SafeArea.getSafeAreaInsetsForRootView()
-        .then(({ safeAreaInsets: insets }) => {
+      SafeArea.getSafeAreaInsetsForRootView().then(
+        ({ safeAreaInsets: insets }) => {
           this.setState({
             bottomSafeAreaInset: insets.bottom,
           });
-        });
+        }
+      );
     }
 
     componentWillUnmount() {
