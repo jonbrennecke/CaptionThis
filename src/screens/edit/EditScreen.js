@@ -4,7 +4,6 @@ import { View, Alert, AppState as ReactAppState } from 'react-native';
 import { autobind } from 'core-decorators';
 import { beginSpeechTranscriptionOfAsset } from '@jonbrennecke/react-native-speech';
 
-import * as Screens from '../../utils/Screens';
 import * as Debug from '../../utils/Debug';
 import { UI_COLORS, SCREENS } from '../../constants';
 import EditScreenVideoPlayer from './EditScreenVideoPlayer';
@@ -41,6 +40,7 @@ const styles = {
 
 // $FlowFixMe
 @wrapWithEditScreenState
+// $FlowFixMe
 @autobind
 export default class EditScreen extends PureComponent<
   EditScreenProps,

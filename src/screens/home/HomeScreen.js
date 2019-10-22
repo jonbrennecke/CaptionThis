@@ -61,7 +61,9 @@ const styles = {
 
 // $FlowFixMe
 @requireOnboardedUser
+// $FlowFixMe
 @wrapWithHomeScreenState
+// $FlowFixMe
 @autobind
 export default class HomeScreen extends PureComponent<
   HomeScreenProps & HomeScreenStateProps,
@@ -77,7 +79,6 @@ export default class HomeScreen extends PureComponent<
   scrollAnim = new Animated.Value(0);
 
   async componentDidMount() {
-    // this.navigationEventListener = Navigation.events().bindComponent(this);
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
     }
@@ -86,11 +87,6 @@ export default class HomeScreen extends PureComponent<
   async componentWillUnmount() {
     if (this.props.captureStatus === 'started') {
       await this.stopCapture();
-    }
-
-    // TODO
-    if (this.navigationEventListener) {
-      this.navigationEventListener.remove();
     }
   }
 
@@ -154,12 +150,12 @@ export default class HomeScreen extends PureComponent<
   }
 
   async pushEditScreen(video: MediaObject) {
-    this.props.navigation.navigate({
-      routeName: SCREENS.EDIT_SCREEN,
-      params: {
+    this.props.navigation.navigate(
+      SCREENS.EDIT_SCREEN,
+      {
         video,
-      },
-    });
+      }
+    );
   }
 
   scrollToCameraRoll() {

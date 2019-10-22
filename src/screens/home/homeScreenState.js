@@ -27,9 +27,7 @@ import type { Dispatch, AppState } from '../../types/redux';
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { CaptionStyleObject } from '../../types/video';
 
-type OwnProps = {
-  componentId: string,
-};
+type OwnProps = {};
 
 type StateProps = {
   thumbnailVideoID: ?string,
