@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { StatusBar, View, StyleSheet, ScrollView } from 'react-native';
+import { StatusBar, View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 // $FlowFixMe
 import { withSafeArea } from 'react-native-safe-area';
 import ReactNativeHaptic from 'react-native-haptic';
@@ -93,6 +93,11 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  loadingContainer: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 };
 
 // eslint-disable-next-line flowtype/generic-spacing
@@ -133,137 +138,144 @@ export const TranscriptionReviewModal: ComponentType<
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
-        <FadeInOutAnimatedView
+        {/* <FadeInOutAnimatedView
           isVisible={componentIsVisible}
           style={StyleSheet.absoluteFill}
-        >
-          <KeyboardAvoidingView
-            style={styles.flex}
-            keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
-          >
-            <SafeAreaView style={styles.flex}>
-              <View style={styles.playbackControlsContainer}>
-                <View style={styles.playbackControls}>
-                  <DoneButton
-                    style={styles.flex}
-                    onPress={dismissScreen}
-                    color={Colors.solid.heliotrope}
-                  />
-                  <View style={styles.playButtonContainer}>
-                    <RewindButton
-                      style={styles.rewindButton}
+        > */}
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={Colors.solid.darkGray} />
+        </View>
+        {componentIsVisible && 
+        (
+          <View style={StyleSheet.absoluteFill}>
+            <KeyboardAvoidingView
+              style={styles.flex}
+              keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
+            >
+              <SafeAreaView style={styles.flex}>
+                <View style={styles.playbackControlsContainer}>
+                  <View style={styles.playbackControls}>
+                    <DoneButton
+                      style={styles.flex}
+                      onPress={dismissScreen}
                       color={Colors.solid.heliotrope}
-                      onPress={() => {
-                        const time = Math.max(playbackTime - 5, 0);
-                        setPlaybackTime(time);
-                        seekVideoToTime(time);
-                        setSegmentSelection(time);
-                        hapticFeedback();
-                      }}
                     />
-                    <PlayButton
-                      style={styles.playButton}
-                      playbackState={playbackState}
-                      color={Colors.solid.heliotrope}
-                      onPressPlay={playVideo}
-                      onPressPause={pauseVideo}
-                    />
-                    <FastForwardButton
-                      style={styles.fastForwardButton}
-                      color={Colors.solid.heliotrope}
-                      onPress={() => {
-                        const time = Math.min(playbackTime + 5, video.duration);
-                        setPlaybackTime(time);
-                        seekVideoToTime(time);
-                        setSegmentSelection(time);
-                        hapticFeedback();
-                      }}
-                    />
-                  </View>
-                  <View style={styles.flex} />
-                </View>
-                <PlaybackSlider
-                  value={playbackTime}
-                  min={0}
-                  max={video.duration}
-                  color={Colors.solid.heliotrope}
-                  onSelectValue={playbackTime => {
-                    setPlaybackTime(playbackTime);
-                    seekVideoToTime(playbackTime);
-                    setSegmentSelection(playbackTime);
-                  }}
-                  onDidBeginDrag={() => {
-                    pauseVideo();
-                  }}
-                />
-              </View>
-              <View style={styles.transcriptionContainer}>
-                <ScrollView contentContainerStyle={styles.scrollViewContents}>
-                  <TranscriptionTextInput
-                    textHighlightColor={Colors.solid.heliotrope}
-                    speechTranscriptionSegments={segments}
-                    speechTranscriptionSegmentSelection={
-                      speechTranscriptionSegmentSelection
-                    }
-                    onSelectionChange={selection => {
-                      setSpeechTranscriptionSegmentSelection(selection);
-                      if (selection && segments) {
-                        const firstSelectedSegment = findSegmentsInSelectedSegmentRange(
-                          segments,
-                          selection
-                        )[0];
-                        if (firstSelectedSegment) {
-                          const time = firstSelectedSegment.timestamp;
+                    <View style={styles.playButtonContainer}>
+                      <RewindButton
+                        style={styles.rewindButton}
+                        color={Colors.solid.heliotrope}
+                        onPress={() => {
+                          const time = Math.max(playbackTime - 5, 0);
                           setPlaybackTime(time);
                           seekVideoToTime(time);
-                        }
-                      }
-                    }}
-                    onSpeechTranscriptionSegmentsChange={segments => {
-                      if (!segments || !speechTranscription) {
-                        return;
-                      }
-                      setSpeechTranscription(video.assetID, {
-                        ...speechTranscription,
-                        segments,
-                      });
-                    }}
-                  />
-                </ScrollView>
-                <MeasureContentsView
-                  style={styles.floatingVideoPlayerContainer}
-                  renderChildren={size => {
-                    const width = 100;
-                    const height = 16 / 9 * width;
-                    const padding = { bottom: Units.small, left: Units.small };
-                    const initialPosition = {
-                      x: padding.left,
-                      y: size.height - Units.small - height,
-                    };
-                    return (
-                      <FloatingVideoPlayer
-                        style={styles.floatingVideoPlayer}
-                        iconAccentColor={Colors.solid.heliotrope}
-                        initialPosition={initialPosition}
-                        videoID={video.assetID}
-                        videoPlayerRef={videoPlayerRef}
-                        onVideoDidUpdatePlaybackTime={playbackTime => {
-                          setPlaybackTime(playbackTime);
-                          setSegmentSelection(playbackTime);
-                        }}
-                        onPlaybackStateChange={setPlaybackState}
-                        onVideoDidPlayToEnd={() => {
-                          setPlaybackTime(0);
-                          setSegmentSelection(0);
+                          setSegmentSelection(time);
+                          hapticFeedback();
                         }}
                       />
-                    );
-                  }}
-                />
-              </View>
-            </SafeAreaView>
-          </KeyboardAvoidingView>
-        </FadeInOutAnimatedView>
+                      <PlayButton
+                        style={styles.playButton}
+                        playbackState={playbackState}
+                        color={Colors.solid.heliotrope}
+                        onPressPlay={playVideo}
+                        onPressPause={pauseVideo}
+                      />
+                      <FastForwardButton
+                        style={styles.fastForwardButton}
+                        color={Colors.solid.heliotrope}
+                        onPress={() => {
+                          const time = Math.min(playbackTime + 5, video.duration);
+                          setPlaybackTime(time);
+                          seekVideoToTime(time);
+                          setSegmentSelection(time);
+                          hapticFeedback();
+                        }}
+                      />
+                    </View>
+                    <View style={styles.flex} />
+                  </View>
+                  <PlaybackSlider
+                    value={playbackTime}
+                    min={0}
+                    max={video.duration}
+                    color={Colors.solid.heliotrope}
+                    onSelectValue={playbackTime => {
+                      setPlaybackTime(playbackTime);
+                      seekVideoToTime(playbackTime);
+                      setSegmentSelection(playbackTime);
+                    }}
+                    onDidBeginDrag={() => {
+                      pauseVideo();
+                    }}
+                  />
+                </View>
+                <View style={styles.transcriptionContainer}>
+                  <ScrollView contentContainerStyle={styles.scrollViewContents}>
+                    <TranscriptionTextInput
+                      textHighlightColor={Colors.solid.heliotrope}
+                      speechTranscriptionSegments={segments}
+                      speechTranscriptionSegmentSelection={
+                        speechTranscriptionSegmentSelection
+                      }
+                      onSelectionChange={selection => {
+                        setSpeechTranscriptionSegmentSelection(selection);
+                        if (selection && segments) {
+                          const firstSelectedSegment = findSegmentsInSelectedSegmentRange(
+                            segments,
+                            selection
+                          )[0];
+                          if (firstSelectedSegment) {
+                            const time = firstSelectedSegment.timestamp;
+                            setPlaybackTime(time);
+                            seekVideoToTime(time);
+                          }
+                        }
+                      }}
+                      onSpeechTranscriptionSegmentsChange={segments => {
+                        if (!segments || !speechTranscription) {
+                          return;
+                        }
+                        setSpeechTranscription(video.assetID, {
+                          ...speechTranscription,
+                          segments,
+                        });
+                      }}
+                    />
+                  </ScrollView>
+                  <MeasureContentsView
+                    style={styles.floatingVideoPlayerContainer}
+                    renderChildren={size => {
+                      const width = 100;
+                      const height = 16 / 9 * width;
+                      const padding = { bottom: Units.small, left: Units.small };
+                      const initialPosition = {
+                        x: padding.left,
+                        y: size.height - Units.small - height,
+                      };
+                      return (
+                        <FloatingVideoPlayer
+                          style={styles.floatingVideoPlayer}
+                          iconAccentColor={Colors.solid.heliotrope}
+                          initialPosition={initialPosition}
+                          videoID={video.assetID}
+                          videoPlayerRef={videoPlayerRef}
+                          onVideoDidUpdatePlaybackTime={playbackTime => {
+                            setPlaybackTime(playbackTime);
+                            setSegmentSelection(playbackTime);
+                          }}
+                          onPlaybackStateChange={setPlaybackState}
+                          onVideoDidPlayToEnd={() => {
+                            setPlaybackTime(0);
+                            setSegmentSelection(0);
+                          }}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+              </SafeAreaView>
+            </KeyboardAvoidingView>
+          </View>
+        )}
       </View>
     );
   }

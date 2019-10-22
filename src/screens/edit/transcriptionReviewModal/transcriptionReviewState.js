@@ -1,6 +1,7 @@
 // @flow
 /* eslint flowtype/generic-spacing: 0 */
 import React, { PureComponent, createRef } from 'react';
+import BluebirdPromise from 'bluebird';
 import { autobind } from 'core-decorators';
 // $FlowFixMe
 import SafeArea from 'react-native-safe-area';
@@ -72,50 +73,65 @@ export function wrapWithTranscriptionReviewState<
       componentIsVisible: false,
     };
     navigationEventListener: any;
+    dismissScreenPromise: ?BluebirdPromise;
 
     componentDidMount() {
+      console.log('componentDidMount');
+      this.navigationEventListener = Navigation.events().bindComponent(this);
       SafeArea.addEventListener(
         'safeAreaInsetsForRootViewDidChange',
         this.safeAreaInsetsForRootViewDidChange
       );
-      this.navigationEventListener = Navigation.events().bindComponent(this);
     }
 
     componentWillUnmount() {
+      console.log('componentWillUnmount');
       SafeArea.removeEventListener(
         'safeAreaInsetsForRootViewDidChange',
         this.safeAreaInsetsForRootViewDidChange
       );
-      if (this.navigationEventListener) {
-        this.navigationEventListener.remove();
+      // if (this.navigationEventListener) {
+      //   this.navigationEventListener.remove();
+      // }
+      if (this.dismissScreenPromise) {
+        this.dismissScreenPromise.cancel();
       }
     }
 
     /// MARK - navigation events
 
     componentDidAppear() {
+      console.log('componentDidAppear');
       this.setState({
         componentIsVisible: true,
       });
     }
 
     componentDidDisappear() {
+      console.log('componentDidDisappear');
       this.setState({
         componentIsVisible: false,
       });
     }
 
     async dismissScreen() {
-      this.setState(
-        {
-          componentIsVisible: false,
-        },
-        () => {
-          setTimeout(async () => {
+      this.dismissScreenPromise = new BluebirdPromise(resolve => {
+        this.setState(
+          {
+            componentIsVisible: false,
+          },
+          async () => {
             await Screens.dismissTranscriptionReviewScreen();
-          }, 300);
-        }
-      );
+            // if (this.navigationEventListener) {
+            //   this.navigationEventListener.remove();
+            // }
+            resolve();
+            // setTimeout(async () => {
+            //   await Screens.dismissTranscriptionReviewScreen();
+            // }, 150);
+          }
+        );
+      });
     }
 
     /// MARK - safe area events
@@ -197,6 +213,7 @@ export function wrapWithTranscriptionReviewState<
     }
 
     render() {
+      console.log('componentIsVisible', this.state.componentIsVisible);
       return (
         <WrappedComponent
           {...this.props}
