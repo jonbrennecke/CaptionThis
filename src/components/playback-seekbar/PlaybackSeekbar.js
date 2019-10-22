@@ -74,7 +74,6 @@ export class PlaybackSeekbar extends PureComponent<
           style={styles.absoluteFill}
           handleStyle={styles.handle}
           progress={playbackProgress}
-          initialProgress={playbackProgress}
           onSeekToProgress={onSeekToProgress}
           onDidBeginDrag={() => {
             this.setState({
