@@ -8,20 +8,25 @@ import SafeArea from 'react-native-safe-area';
 import throttle from 'lodash/throttle';
 import isEqual from 'lodash/isEqual';
 
-import * as Screens from '../../../utils/Screens';
 import { createSpeechStateHOC } from '@jonbrennecke/react-native-speech';
 
 import type { ComponentType } from 'react';
-import typeof { VideoPlayer } from '@jonbrennecke/react-native-media';
+// eslint-disable-next-line import/named
+import type { NavigationScreenProp, NavigationEventSubscription } from 'react-navigation';
+import type { VideoPlayer, MediaObject } from '@jonbrennecke/react-native-media';
 import type { PlaybackState } from '@jonbrennecke/react-native-camera';
 import type { SpeechStateHOCProps } from '@jonbrennecke/react-native-speech';
 
-import type { Return } from '../../../types';
+type TranscriptionReviewStateHOCOwnProps = {
+  navigation: NavigationScreenProp<{
+    params: {
+      video: MediaObject,
+    },
+  }>
+}
 
-export type TranscriptionReviewStateHOCProps = {};
-
-export type TranscriptionReviewStateHOCExtraProps = {
-  videoPlayerRef: Return<createRef<VideoPlayer>>,
+type TranscriptionReviewStateHOCExtraProps = {
+  videoPlayerRef: { current: VideoPlayer | null },
   playVideo: () => void,
   pauseVideo: () => void,
   restartVideo: () => void,
@@ -45,18 +50,21 @@ export type TranscriptionReviewStateHOCState = {
   componentIsVisible: boolean,
 };
 
+export type TranscriptionReviewStateHOCProps =
+      TranscriptionReviewStateHOCOwnProps &
+      TranscriptionReviewStateHOCExtraProps &
+      TranscriptionReviewStateHOCState &
+      SpeechStateHOCProps;
+
 export function wrapWithTranscriptionReviewState<
   PassThroughProps: Object,
   C: ComponentType<
     TranscriptionReviewStateHOCProps &
-      TranscriptionReviewStateHOCExtraProps &
-      TranscriptionReviewStateHOCState &
-      SpeechStateHOCProps &
       PassThroughProps
   >
 >(
   WrappedComponent: C
-): ComponentType<TranscriptionReviewStateHOCProps & PassThroughProps> {
+): ComponentType<PassThroughProps> {
   // $FlowFixMe
   @autobind
   class TranscriptionReviewStateHOC extends PureComponent<
@@ -71,13 +79,13 @@ export function wrapWithTranscriptionReviewState<
       speechTranscriptionSegmentSelection: null,
       componentIsVisible: false,
     };
-    navigationEventListener: any;
     dismissScreenPromise: ?BluebirdPromise;
+    willBlurSubscription: ?NavigationEventSubscription;
+    didFocusSubscription: ?NavigationEventSubscription;
 
     componentDidMount() {
-      console.log('componentDidMount');
-      // TODO
-      // this.navigationEventListener = Navigation.events().bindComponent(this);
+      this.didFocusSubscription = this.props.navigation.addListener('didFocus', this.componentDidFocus);
+      this.willBlurSubscription = this.props.navigation.addListener('willBlur', this.componentWillBlur);
       SafeArea.addEventListener(
         'safeAreaInsetsForRootViewDidChange',
         this.safeAreaInsetsForRootViewDidChange
@@ -85,30 +93,33 @@ export function wrapWithTranscriptionReviewState<
     }
 
     componentWillUnmount() {
-      console.log('componentWillUnmount');
       SafeArea.removeEventListener(
         'safeAreaInsetsForRootViewDidChange',
         this.safeAreaInsetsForRootViewDidChange
       );
-      // if (this.navigationEventListener) {
-      //   this.navigationEventListener.remove();
-      // }
+      if (this.didFocusSubscription) {
+        this.didFocusSubscription.remove();
+        this.didFocusSubscription = null;
+      }
+      if (this.willBlurSubscription) {
+        this.willBlurSubscription.remove();
+        this.willBlurSubscription = null;
+      }
       if (this.dismissScreenPromise) {
         this.dismissScreenPromise.cancel();
+        this.dismissScreenPromise = null;
       }
     }
 
     /// MARK - navigation events
 
-    componentDidAppear() {
-      console.log('componentDidAppear');
+    componentDidFocus() {
       this.setState({
         componentIsVisible: true,
       });
     }
 
-    componentDidDisappear() {
-      console.log('componentDidDisappear');
+    componentWillBlur() {
       this.setState({
         componentIsVisible: false,
       });
@@ -121,14 +132,8 @@ export function wrapWithTranscriptionReviewState<
             componentIsVisible: false,
           },
           async () => {
-            await Screens.dismissTranscriptionReviewScreen();
-            // if (this.navigationEventListener) {
-            //   this.navigationEventListener.remove();
-            // }
+            this.props.navigation.goBack();
             resolve();
-            // setTimeout(async () => {
-            //   await Screens.dismissTranscriptionReviewScreen();
-            // }, 150);
           }
         );
       });
@@ -213,7 +218,6 @@ export function wrapWithTranscriptionReviewState<
     }
 
     render() {
-      console.log('componentIsVisible', this.state.componentIsVisible);
       return (
         <WrappedComponent
           {...this.props}

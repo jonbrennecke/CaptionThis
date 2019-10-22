@@ -13,9 +13,24 @@ import type { ComponentType } from 'react';
 
 const AppNavigator = createStackNavigator(
   {
-    [SCREENS.HOME_SCREEN]: HomeScreen,
-    [SCREENS.EDIT_SCREEN]: EditScreen,
-    [SCREENS.TRANSCRIPTION_REVIEW_SCREEN]: TranscriptionReviewModal,
+    [SCREENS.HOME_SCREEN]: {
+      screen: HomeScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    [SCREENS.EDIT_SCREEN]: {
+      screen: EditScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    [SCREENS.TRANSCRIPTION_REVIEW_SCREEN]: {
+      screen: TranscriptionReviewModal,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
   },
   {
     initialRouteName: SCREENS.HOME_SCREEN,

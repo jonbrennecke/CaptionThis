@@ -134,9 +134,8 @@ export default class EditScreen extends PureComponent<
       [
         {
           text: 'OK',
-          onPress: async () => {
-            // await Navigation.dismissAllModals();
-            // await Navigation.popToRoot(this.props.componentId);
+          onPress: () => {
+            this.props.navigation.goBack();
           },
         },
       ],
@@ -151,9 +150,8 @@ export default class EditScreen extends PureComponent<
       [
         {
           text: 'OK',
-          onPress: async () => {
-            // await Navigation.dismissAllModals();
-            // await Navigation.popToRoot(this.props.componentId);
+          onPress: () => {
+            this.props.navigation.goBack();
           },
         },
       ],
@@ -181,10 +179,6 @@ export default class EditScreen extends PureComponent<
     this.setState({
       isRichTextEditorVisible: false,
     });
-  }
-
-  async popToHomeScreen() {
-    // await Navigation.popToRoot(this.props.componentId);
   }
 
   async onDidPressExportButton() {
@@ -229,30 +223,11 @@ export default class EditScreen extends PureComponent<
     Debug.log('Video export failed');
   }
 
-  textOverlayParams() {
-    const speechTranscription = this.props.speechTranscriptions.get(
-      this.props.video.assetID
-    );
-    if (!speechTranscription) {
-      return [];
-    }
-    return speechTranscription.segments.map(segment => ({
-      duration: segment.duration,
-      timestamp: segment.timestamp,
-      text: segment.substring,
-    }));
-  }
-
   async showCaptionsEditor() {
     this.pauseRichTextEditorCaptions();
-    await Screens.pushTranscriptionReviewScreen(
-      this.props.componentId,
-      this.props.video
-    );
-  }
-
-  async dismissCaptionsEditor() {
-    await Screens.dismissTranscriptionReviewScreen();
+    this.props.navigation.navigate(SCREENS.TRANSCRIPTION_REVIEW_SCREEN, {
+      video: this.props.video,
+    });
   }
 
   showRichTextEditor() {
@@ -340,10 +315,7 @@ export default class EditScreen extends PureComponent<
           onRequestShowCaptionsEditor={() => {
             this.showCaptionsEditor();
           }}
-          onRequestPopToHomeScreen={() => {
-            // TODO: handle awaiting this promise
-            this.popToHomeScreen();
-          }}
+          onRequestPopToHomeScreen={() => { this.props.navigation.goBack(); }}
           onRequestExport={() => {
             // TODO: handle awaiting this promise
             this.onDidPressExportButton();

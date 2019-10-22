@@ -28,12 +28,10 @@ import {
 import { PlayButton } from './PlayButton';
 
 import type { ComponentType } from 'react';
-import type { MediaObject } from '@jonbrennecke/react-native-media';
 
-export type TranscriptionReviewModalProps = {
-  componentId: string,
-  video: MediaObject,
-};
+import type { TranscriptionReviewStateHOCProps } from './transcriptionReviewState';
+
+export type TranscriptionReviewModalProps = {};
 
 function hapticFeedback() {
   ReactNativeHaptic.generate('selection');
@@ -110,7 +108,6 @@ export const TranscriptionReviewModal: ComponentType<
   TranscriptionReviewModalProps
 > = wrapWithTranscriptionReviewState(
   ({
-    video,
     videoPlayerRef,
     playVideo,
     seekVideoToTime,
@@ -126,7 +123,9 @@ export const TranscriptionReviewModal: ComponentType<
     bottomSafeAreaInset,
     componentIsVisible,
     dismissScreen,
-  }) => {
+    navigation,
+  }: TranscriptionReviewModalProps & TranscriptionReviewStateHOCProps) => {
+    const video = navigation.getParam('video');
     const speechTranscription = speechTranscriptions.get(video.assetID);
     const segments = speechTranscription
       ? interpolateSegments(speechTranscription.segments)
@@ -142,7 +141,6 @@ export const TranscriptionReviewModal: ComponentType<
     };
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
         {/* <FadeInOutAnimatedView
           isVisible={componentIsVisible}
           style={StyleSheet.absoluteFill}
@@ -152,6 +150,7 @@ export const TranscriptionReviewModal: ComponentType<
         </View>
         {componentIsVisible && (
           <View style={StyleSheet.absoluteFill}>
+            <StatusBar barStyle="dark-content" />
             <KeyboardAvoidingView
               style={styles.flex}
               keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
