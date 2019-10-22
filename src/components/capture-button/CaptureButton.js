@@ -1,11 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import {
-  View,
-  Animated,
-  TouchableWithoutFeedback,
-  Easing,
-} from 'react-native';
+import { View, Animated, TouchableWithoutFeedback, Easing } from 'react-native';
 import { autobind } from 'core-decorators';
 import { BlurView } from '@jonbrennecke/react-native-animated-ui';
 import MaskedView from '@react-native-community/masked-view';
