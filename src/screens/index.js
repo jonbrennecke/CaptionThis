@@ -35,6 +35,7 @@ const AppNavigator = createStackNavigator(
   {
     initialRouteName: SCREENS.HOME_SCREEN,
     headerMode: 'none',
+    mode: 'modal',
   }
 );
 
