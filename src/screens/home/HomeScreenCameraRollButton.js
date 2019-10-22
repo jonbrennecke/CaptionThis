@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
-import { View, MaskedViewIOS, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { Thumbnail } from '@jonbrennecke/react-native-media';
+import MaskedView from '@react-native-community/masked-view';
 
 import { UI_COLORS } from '../../constants';
 
@@ -64,12 +65,12 @@ export default function HomeScreenCameraRollButton({
       <View style={styles.buttonInside}>
         {id && <Thumbnail style={styles.flex} assetID={id} />}
       </View>
-      <MaskedViewIOS
+      <MaskedView
         style={styles.absoluteFill}
         maskElement={<View style={styles.border} />}
       >
         <View style={styles.border} />
-      </MaskedViewIOS>
+      </MaskedView>
     </TouchableOpacity>
   );
 }

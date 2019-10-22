@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import { Animated, MaskedViewIOS, View, StyleSheet } from 'react-native';
+import { Animated, View, StyleSheet } from 'react-native';
+import MaskedView from '@react-native-community/masked-view';
 
 import * as Fonts from '../../utils/Fonts';
 import * as Color from '../../utils/Color';
@@ -70,12 +71,12 @@ const styles = {
 export default function ProgressCircleContainer(props: Props) {
   return (
     <Animated.View style={[styles.outerView(props.radius), props.style]}>
-      <MaskedViewIOS
+      <MaskedView
         style={styles.borderMask(props.radius)}
         maskElement={<View style={styles.border(props.radius)} />}
       >
         <View style={styles.inner} />
-      </MaskedViewIOS>
+      </MaskedView>
       {props.renderProgressElement({ style: styles.progress(props.radius) })}
       {props.renderTextElement({ style: styles.text })}
     </Animated.View>

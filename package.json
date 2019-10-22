@@ -26,6 +26,7 @@
     "@jonbrennecke/react-native-camera": "1.0.78",
     "@jonbrennecke/react-native-media": "1.0.40",
     "@jonbrennecke/react-native-speech": "1.0.2",
+    "@react-native-community/masked-view": "github:react-native-community/react-native-masked-view",
     "bluebird": "^3.5.3",
     "core-decorators": "0.20.0",
     "hex2rgb": "2.2.0",

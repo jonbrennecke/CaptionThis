@@ -4,11 +4,11 @@ import {
   View,
   Animated,
   TouchableWithoutFeedback,
-  MaskedViewIOS,
   Easing,
 } from 'react-native';
 import { autobind } from 'core-decorators';
 import { BlurView } from '@jonbrennecke/react-native-animated-ui';
+import MaskedView from '@react-native-community/masked-view';
 
 import { UI_COLORS } from '../../constants';
 
@@ -119,12 +119,12 @@ export default class CaptureButton extends PureComponent<Props> {
               style={[styles.blurView, this.props.style]}
             />
           </View>
-          <MaskedViewIOS
+          <MaskedView
             style={styles.borderMask}
             maskElement={<View style={styles.border} />}
           >
             <View style={styles.inner} />
-          </MaskedViewIOS>
+          </MaskedView>
         </Animated.View>
       </TouchableWithoutFeedback>
     );
