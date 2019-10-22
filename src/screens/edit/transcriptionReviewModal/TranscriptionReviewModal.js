@@ -141,19 +141,15 @@ export const TranscriptionReviewModal: ComponentType<
     };
     return (
       <View style={styles.container}>
-        {/* <FadeInOutAnimatedView
-          isVisible={componentIsVisible}
-          style={StyleSheet.absoluteFill}
-        > */}
+        <StatusBar barStyle="dark-content" />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={Colors.solid.darkGray} />
         </View>
         {componentIsVisible && (
           <View style={StyleSheet.absoluteFill}>
-            <StatusBar barStyle="dark-content" />
             <KeyboardAvoidingView
               style={styles.flex}
-              keyboardVerticalOffset={-(bottomSafeAreaInset || 0) + 7}
+              keyboardVerticalOffset={-(bottomSafeAreaInset || 0)}
             >
               <SafeAreaView style={styles.flex}>
                 <View style={styles.playbackControlsContainer}>

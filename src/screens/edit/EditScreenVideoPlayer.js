@@ -338,7 +338,9 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
             />
           </FadeInOutAnimatedView>
         )}
-        <View style={styles.editControls(this.state.playbackState !== 'waiting')}>
+        <View
+          style={styles.editControls(this.state.playbackState !== 'waiting')}
+        >
           <View style={styles.editControlsInner}>
             <PlaybackSeekbar
               style={styles.absoluteFill}

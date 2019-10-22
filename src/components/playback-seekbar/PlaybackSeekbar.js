@@ -91,8 +91,7 @@ export class PlaybackSeekbar extends PureComponent<
               });
             }
           }}
-        >
-        </Slider>
+        />
       </View>
     );
   }
