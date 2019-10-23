@@ -19,7 +19,6 @@
 #else
 #import "RNSentry.h" // This is used for versions of react < 0.40
 #endif
-#import <ReactNativeNavigation/ReactNativeNavigation.h>
 
 @implementation AppDelegate
 
