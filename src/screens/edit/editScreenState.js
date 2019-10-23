@@ -18,6 +18,8 @@ import {
 
 import type { MediaObject } from '@jonbrennecke/react-native-media';
 import type { SpeechStateHOCProps } from '@jonbrennecke/react-native-speech';
+// eslint-disable-next-line import/named
+import type { NavigationScreenProp } from 'react-navigation';
 
 import type { ComponentType } from 'react';
 import type { Dispatch, AppState } from '../../types/redux';
@@ -25,8 +27,11 @@ import type { CaptionStyleObject } from '../../types/video';
 import type { ReactAppStateEnum } from '../../types/react';
 
 type OwnProps = {|
-  componentId: string,
-  video: MediaObject,
+  navigation: NavigationScreenProp<{
+    params: {
+      video: MediaObject,
+    },
+  }>,
 |};
 
 type StateProps = {|
@@ -45,7 +50,13 @@ type DispatchProps = {|
 
 type EditScreenReduxProps = {| ...OwnProps, ...StateProps, ...DispatchProps |};
 
-export type EditScreenProps = EditScreenReduxProps & SpeechStateHOCProps;
+type EditScreenExtraProps = {
+  video: MediaObject,
+};
+
+export type EditScreenProps = EditScreenReduxProps &
+  SpeechStateHOCProps &
+  EditScreenExtraProps;
 
 function mapStateToProps(state: AppState): StateProps {
   return {
@@ -73,8 +84,13 @@ export function wrapWithEditScreenState<
 >(Component: C): ComponentType<PassThroughProps> {
   const wrapWithSpeechState = createSpeechStateHOC(state => state.speech);
   const ComponentWithSpeechState = wrapWithSpeechState(Component);
-  const fn = (props: EditScreenProps & PassThroughProps) => (
-    <ComponentWithSpeechState {...props} />
-  );
+  const fn = (props: EditScreenProps & PassThroughProps) => {
+    return (
+      <ComponentWithSpeechState
+        {...props}
+        video={props.navigation.getParam('video')}
+      />
+    );
+  };
   return connect(mapStateToProps, mapDispatchToProps)(fn);
 }

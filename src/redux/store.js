@@ -24,5 +24,6 @@ const middleware = isProduction
 const composeEnhancers = composeWithDevTools({});
 
 export default () => {
+  // $FlowFixMe
   return createStore(rootReducer, composeEnhancers(middleware));
 };

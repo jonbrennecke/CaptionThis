@@ -8,7 +8,7 @@ import { PanGestureHandler } from '../gesture-handlers';
 
 import type { Element } from 'react';
 
-import type { Style, Children } from '../../types/react';
+import type { Style, Children } from '../../types';
 
 export type SliderProps = {
   style?: ?(Style | Array<Style>),
@@ -45,7 +45,7 @@ export class Slider extends PureComponent<SliderProps, SliderState> {
     viewWidth: 0,
     isDragging: false,
   };
-  dragRef = createRef();
+  dragRef: { current: PanGestureHandler | null } = createRef();
 
   componentDidUpdate(prevProps: SliderProps) {
     if (this.props.progress != prevProps.progress) {

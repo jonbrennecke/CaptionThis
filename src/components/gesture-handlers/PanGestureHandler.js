@@ -9,8 +9,9 @@ import clamp from 'lodash/clamp';
 import throttle from 'lodash/throttle';
 import isEqual from 'lodash/isEqual';
 
-import type { Gesture, Style } from '../../types/react';
 import type { Element } from 'react';
+
+import type { Gesture, Style, Return } from '../../types';
 
 type RenderChildrenProps = {
   isDragging: boolean,
@@ -54,11 +55,11 @@ export class PanGestureHandler extends PureComponent<
 > {
   props: PanGestureHandlerProps;
   state: PanGestureHandlerState;
-  panResponder: ?PanResponder = null;
+  panResponder: ?Return<typeof PanResponder.create>;
   pan: Animated.ValueXY = new Animated.ValueXY();
   panOffset: { x: number, y: number } = { x: 0, y: 0 };
-  containerRef = createRef();
-  panResponderRef = createRef();
+  containerRef: { current: View | null } = createRef();
+  panResponderRef: { current: View | null } = createRef();
 
   static defaultProps = {
     clampToBounds: true,
@@ -167,7 +168,7 @@ export class PanGestureHandler extends PureComponent<
     this.panOffset = panOffset;
   }
 
-  handleMove(event: Event, gesture: Gesture) {
+  handleMove(event: any, gesture: Gesture) {
     if (this.props.disabled) {
       return;
     }

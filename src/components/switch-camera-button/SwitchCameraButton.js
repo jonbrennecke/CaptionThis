@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import { View, TouchableOpacity, MaskedViewIOS } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
+import MaskedView from '@react-native-community/masked-view';
 
 import SwitchCameraIcon from './SwitchCameraIcon';
 import { UI_COLORS } from '../../constants';
@@ -36,12 +37,12 @@ export default function SwitchCameraButton({
       onPress={onRequestSwitchCamera}
       style={[styles.container, style]}
     >
-      <MaskedViewIOS
+      <MaskedView
         style={styles.absoluteFill}
         maskElement={<SwitchCameraIcon style={styles.flex} />}
       >
         <View style={styles.absoluteFill} />
-      </MaskedViewIOS>
+      </MaskedView>
     </TouchableOpacity>
   );
 }

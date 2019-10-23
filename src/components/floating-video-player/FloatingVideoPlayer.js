@@ -110,7 +110,7 @@ export class FloatingVideoPlayer extends PureComponent<
     isMinimized: false,
   };
   resizeAnim = new Animated.Value(1);
-  draggableRef = createRef();
+  draggableRef: { current: Draggable | null } = createRef();
 
   minimize() {
     if (this.draggableRef.current) {
@@ -182,6 +182,7 @@ export class FloatingVideoPlayer extends PureComponent<
                   style={styles.flex}
                   assetID={videoID}
                   ref={videoPlayerRef}
+                  playbackEventThrottle={1000 / 24}
                   onPlaybackStateDidChange={onPlaybackStateChange}
                   onPlaybackTimeDidUpdate={onVideoDidUpdatePlaybackTime}
                   onVideoDidPlayToEnd={onVideoDidPlayToEnd}

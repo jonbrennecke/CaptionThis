@@ -177,6 +177,7 @@ export const FONTS = [
   },
 ];
 
+// $FlowFixMe
 export const FONT_STYLES: { [key: FontRole]: FontStyle } = {
   default: {
     style: {
@@ -311,71 +312,4 @@ export const SCREENS = {
   HOME_SCREEN: `${APP_BUNDLE_ID}.HomeScreen`,
   EDIT_SCREEN: `${APP_BUNDLE_ID}.EditScreen`,
   TRANSCRIPTION_REVIEW_SCREEN: `${APP_BUNDLE_ID}.TranscriptionReviewScreen`,
-};
-
-export const APP_ORIENTATIONS = ['portrait'];
-
-export const SCREEN_PARAMS = {
-  [SCREENS.HOME_SCREEN]: {
-    component: {
-      name: SCREENS.HOME_SCREEN,
-      id: SCREENS.HOME_SCREEN,
-      passProps: {},
-      options: {
-        popGesture: false,
-        statusBar: {
-          style: 'light',
-        },
-        topBar: {
-          visible: false,
-          animate: false,
-        },
-        layout: {
-          orientation: APP_ORIENTATIONS,
-        },
-      },
-    },
-  },
-  [SCREENS.EDIT_SCREEN]: {
-    component: {
-      name: SCREENS.EDIT_SCREEN,
-      id: SCREENS.EDIT_SCREEN,
-      passProps: {},
-      options: {
-        popGesture: false,
-        statusBar: {
-          style: 'light',
-        },
-        topBar: {
-          visible: false,
-          animate: false,
-        },
-        layout: {
-          backgroundColor: UI_COLORS.BLACK,
-          orientation: APP_ORIENTATIONS,
-        },
-      },
-    },
-  },
-  [SCREENS.TRANSCRIPTION_REVIEW_SCREEN]: {
-    component: {
-      name: SCREENS.TRANSCRIPTION_REVIEW_SCREEN,
-      id: SCREENS.TRANSCRIPTION_REVIEW_SCREEN,
-      passProps: {},
-      options: {
-        popGesture: true,
-        statusBar: {
-          style: 'dark',
-        },
-        topBar: {
-          visible: false,
-          animate: false,
-        },
-        layout: {
-          backgroundColor: UI_COLORS.BLACK,
-          orientation: APP_ORIENTATIONS,
-        },
-      },
-    },
-  },
 };

@@ -46,4 +46,5 @@ const Component: SFC<MediaStateExtraProps & MediaExplorerProps> = ({
   </SafeAreaView>
 );
 
+// $FlowFixMe
 export const MediaExplorer = wrapWithMediaExplorerState(Component);

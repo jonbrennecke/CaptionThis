@@ -9,6 +9,8 @@ import { loadAppPermissions } from '../../redux/onboarding/actionCreators';
 import FadeInOutAnimatedView from '../../components/animations/FadeInOutAnimatedView';
 import Onboarding from './Onboarding';
 
+import type { ComponentType } from 'react';
+
 import type { Dispatch, AppState } from '../../types/redux';
 
 type OwnProps = {};
@@ -47,12 +49,16 @@ const styles = {
   },
 };
 
-export default function requireOnboardedUser<P, S>(
-  WrappedComponent: Class<PureComponent<P & Props, S>>
-): Class<PureComponent<P, S>> {
+export default function requireOnboardedUser<
+  ComponentOwnProps: Object,
+  C: ComponentType<Props & ComponentOwnProps>
+>(WrappedComponent: C): ComponentType<ComponentOwnProps> {
   // $FlowFixMe
   @autobind
-  class RequireOnboardedUser extends PureComponent<Props, State> {
+  class RequireOnboardedUser extends PureComponent<
+    ComponentOwnProps & Props,
+    State
+  > {
     state = {
       isOnboardingVisible: true,
     };
@@ -84,17 +90,14 @@ export default function requireOnboardedUser<P, S>(
     }
 
     render() {
+      const wrappedElement = !this.state.isOnboardingVisible && (
+        // $FlowFixMe
+        <WrappedComponent {...this.props} {...this.state} />
+      );
       return (
         <View style={styles.container}>
-          <StatusBar
-            barStyle={
-              this.state.isOnboardingVisible ? 'dark-content' : 'light-content'
-            }
-          />
-          {/* $FlowFixMe */}
-          {!this.state.isOnboardingVisible && (
-            <WrappedComponent {...this.props} />
-          )}
+          <StatusBar barStyle="light-content"/>
+          {wrappedElement}
           <FadeInOutAnimatedView
             style={styles.absoluteFill}
             isVisible={this.state.isOnboardingVisible}

@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SeekbarBackground } from '@jonbrennecke/react-native-media';
 
 import { Colors, Units } from '../../constants';
@@ -28,16 +28,13 @@ const styles = {
   container: {
     height: 50,
   },
-  scrollView: {
-    flexDirection: 'row',
-  },
-  scrollViewContent: {},
+  absoluteFill: StyleSheet.absoluteFill,
   handle: {
     position: 'absolute',
     width: 5,
     top: -3,
     bottom: -3,
-    left: -2.5,
+    // left: -2.5,
     borderRadius: Units.extraSmall,
     backgroundColor: Colors.solid.white,
   },
@@ -66,35 +63,36 @@ export class PlaybackSeekbar extends PureComponent<
       onRequestPause,
     } = this.props;
     return (
-      <Slider
-        style={[styles.container, style]}
-        handleStyle={styles.handle}
-        progress={playbackProgress}
-        onSeekToProgress={onSeekToProgress}
-        onDidBeginDrag={() => {
-          this.setState({
-            playbackStateOnDragStart: playbackState,
-          });
-          if (playbackState === 'playing') {
-            onRequestPause();
-          }
-        }}
-        onDidEndDrag={() => {
-          if (this.state.playbackStateOnDragStart === 'playing') {
-            onRequestPlay();
-            this.setState({
-              playbackStateOnDragStart: null,
-            });
-          }
-        }}
-      >
+      <View style={[styles.container, style]} pointerEvents="box-none">
         {assetID && (
           <SeekbarBackground
             assetID={assetID}
             style={styles.seekbarBackground}
           />
         )}
-      </Slider>
+        <Slider
+          style={styles.absoluteFill}
+          handleStyle={styles.handle}
+          progress={playbackProgress}
+          onSeekToProgress={onSeekToProgress}
+          onDidBeginDrag={() => {
+            this.setState({
+              playbackStateOnDragStart: playbackState,
+            });
+            if (playbackState === 'playing') {
+              onRequestPause();
+            }
+          }}
+          onDidEndDrag={() => {
+            if (this.state.playbackStateOnDragStart === 'playing') {
+              onRequestPlay();
+              this.setState({
+                playbackStateOnDragStart: null,
+              });
+            }
+          }}
+        />
+      </View>
     );
   }
 }
