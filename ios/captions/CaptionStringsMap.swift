@@ -1,5 +1,40 @@
 import Foundation
 
+struct Timed<T> {
+  let timestamp: CFTimeInterval
+  let duration: CFTimeInterval
+  let data: T
+  
+  static func from(array: Array<Timed<T>>) -> Timed<Array<Timed<T>>>? {
+    let sortedByStartTimestamp = array.sorted(by: { $0.timestamp < $1.timestamp })
+    let sortedByEndTimestamp = array.sorted(by: { ($0.timestamp + $0.duration) < ($1.timestamp + $1.duration) })
+    guard
+      let first = sortedByStartTimestamp.first,
+      let last = sortedByEndTimestamp.last
+    else {
+      return nil
+    }
+    let timestamp = first.timestamp
+    let duration = (last.timestamp + last.duration) - timestamp
+    return Timed<Array<Timed<T>>>(
+      timestamp: timestamp,
+      duration: duration,
+      data: array
+    )
+  }
+}
+
+typealias CaptionStringSegment = Timed<NSAttributedString>
+
+typealias CaptionRowSegments = (CaptionRowKey, Array<CaptionStringSegment>)
+
+// get all the string segments for a row
+typealias CaptionRowSegmentsAccessor = (CaptionRowKey) -> Array<CaptionRowSegments>
+
+// a group of CaptionStringSegments that are presented together
+typealias CaptionPresentationRowSegments = (CaptionRowKey, Array<Timed<Array<CaptionStringSegment>>>)
+
+
 class CaptionStringsMap {
   public struct TaggedString {
     let attributedString: NSAttributedString
@@ -120,7 +155,7 @@ class CaptionStringsMap {
     return (line: line, remainingSegments: textSegmentsMutableCopy)
   }
 
-  private static func getStringAttributes(style: CaptionPresetStyle) -> [NSAttributedString.Key: Any] {
+  private static func getStringAttributes(style: CaptionStyle) -> [NSAttributedString.Key: Any] {
     return [
       .foregroundColor: style.textColor.cgColor,
       .font: style.font,

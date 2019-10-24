@@ -24,32 +24,33 @@ func renderCaptions(
   duration: CFTimeInterval,
   backgroundHeight: Float
 ) {
-  let lineStyleEffectFactory = getLineStyleEffectFactory(style: style.lineStyle)
   let wordStyleEffectFactory = getWordStyleEffectFactory(style: style.wordStyle)
   let rowFrames = getCaptionRowFrames(style: style, layer: layer, rowLayers: rowLayers)
-  let effectedRows = lineStyleEffectFactory.allEffectedRows
-  resizeCaptionRows(effectedRowKeys: effectedRows, rowLayers: rowLayers, rowFrames: rowFrames)
+  let affectedRowKeys: [CaptionRowKey] = [.a, .b]
+  resizeCaptionRows(effectedRowKeys: affectedRowKeys, rowLayers: rowLayers, rowFrames: rowFrames)
   let captionRowSizes = getCaptionRowSizes(frames: rowFrames)
-  let map = CaptionStringsMap.byFitting(textSegments: textSegments, rowSizes: captionRowSizes, style: style, keys: effectedRows)
+  let map = CaptionStringsMap.byFitting(
+    textSegments: textSegments,
+    rowSizes: captionRowSizes,
+    style: style,
+    keys: affectedRowKeys
+  )
   map.each { key, _ in
-    let effect = composeEffect(
-      lineStyleEffectFactory.createEffect(key: key, map: map, duration: duration),
-      wordStyleEffectFactory.createEffect(key: key, map: map, duration: duration, textAlignment: style.textAlignment)
+    render(lineStyle: style.lineStyle)(
+      rowLayers.get(byKey: key),
+      key,
+      map,
+      duration
+    )
+    let effect = wordStyleEffectFactory.createEffect(
+      key: key, map: map, duration: duration, textAlignment: style.textAlignment
     )
     effect.doEffect(layer: rowLayers.get(byKey: key))
   }
-//  let effect = backgroundStyleEffectFactory.createEffect(
-//    backgroundColor: style.backgroundColor,
-//    backgroundHeight: backgroundHeight,
-//    map: map
-//  )
-//  effect.doEffect(layer: layer)
-
   let getSizeOfRow = { (rowKey: CaptionRowKey) -> CGSize in
     captionRowSizes[rowKey]!
   }
-
-  apply(backgroundStyle: style.backgroundStyle)(
+  render(backgroundStyle: style.backgroundStyle)(
     layer, style, backgroundHeight, map, getSizeOfRow
   )
 }

@@ -1,6 +1,13 @@
 import UIKit
 
-fileprivate let padding = CGSize(width: 10, height: 10)
+struct Padding {
+  let top: Float
+  let bottom: Float
+  let left: Float
+  let right: Float
+}
+
+fileprivate let padding = Padding(top: 7, bottom: 7, left: 12, right: 12)
 
 func applyTextBoundingBoxBackgroundStyle(
   layer: CALayer,
@@ -15,11 +22,17 @@ func applyTextBoundingBoxBackgroundStyle(
     let rowSize = getSizeOfRow(key)
     return taggedLines.map { $0.string.attributedString.boundingRect(with: rowSize, options: [], context: nil) }
   })
-  let widestRect = rowBoundingRects.max(by: { $0.width < $1.width })
-  let tallestRect = rowBoundingRects.max(by: { $0.height < $1.height })
+  guard
+    let widestRect = rowBoundingRects.max(by: { $0.width < $1.width }),
+    let tallestRect = rowBoundingRects.max(by: { $0.height < $1.height })
+    else {
+      return
+  }
+  let horizontalPadding = padding.left + padding.right
+  let verticalPadding = padding.top + padding.bottom
   let size = CGSize(
-    width: (widestRect?.width ?? CGFloat(layer.frame.width)) + padding.width,
-    height: (((tallestRect?.height) != nil) ? tallestRect!.height * 2 : CGFloat(layer.frame.height)) + padding.height
+    width: widestRect.width + CGFloat(horizontalPadding),
+    height: tallestRect.height * 2 + CGFloat(verticalPadding)
   )
   let origin = CGPoint(
     x: abs(layer.frame.width - size.width) / 2,

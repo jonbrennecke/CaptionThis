@@ -1,6 +1,6 @@
 import Foundation
 
-typealias BackgroundStyleEffectFunction = (
+typealias BackgroundStyleRenderFunction = (
   _ layer: CALayer,
   _ captionStyle: CaptionStyle,
   _ backgroundHeight: Float,
@@ -8,7 +8,7 @@ typealias BackgroundStyleEffectFunction = (
   _ getSizeOfRow: @escaping (CaptionRowKey) -> CGSize
 ) -> Void
 
-func apply(backgroundStyle: CaptionBackgroundStyle) -> BackgroundStyleEffectFunction {
+func render(backgroundStyle: CaptionBackgroundStyle) -> BackgroundStyleRenderFunction {
   switch backgroundStyle {
   case .gradient:
     return applyGradientBackgroundStyle

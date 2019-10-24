@@ -11,6 +11,15 @@ import type { CaptionPresetStyleObject } from '../../types/video';
 
 export const PRESET_STYLES: CaptionPresetStyleObject[] = [
   {
+    textAlignment: 'center',
+    lineStyle: 'fadeInOut',
+    wordStyle: 'none',
+    backgroundStyle: 'textBoundingBox',
+    backgroundColor: Color.hexToRgbaObject(UI_COLORS.BLACK),
+    fontFamily: FONT_FAMILIES.RIGHTEOUS,
+    textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
+  },
+  {
     textAlignment: 'left',
     lineStyle: 'translateY',
     wordStyle: 'none',
@@ -64,32 +73,4 @@ export const PRESET_STYLES: CaptionPresetStyleObject[] = [
     fontFamily: FONT_FAMILIES.CRETE_ROUND,
     textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
   },
-  // TODO
-  // {
-  //   textAlignment: 'center',
-  //   lineStyle: 'fadeInOut',
-  //   wordStyle: 'none',
-  //   backgroundStyle: 'solid',
-  //   backgroundColor: Color.hexToRgbaObject(USER_BACKGROUND_COLOR_CHOICES[1]),
-  //   fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
-  //   textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
-  // },
-  // {
-  //   textAlignment: 'left',
-  //   lineStyle: 'fadeInOut',
-  //   wordStyle: 'none',
-  //   backgroundStyle: 'solid',
-  //   backgroundColor: Color.Constants.transparent,
-  //   fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
-  //   textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
-  // },
-  // {
-  //   textAlignment: 'center',
-  //   lineStyle: 'fadeInOut',
-  //   wordStyle: 'none',
-  //   backgroundStyle: 'solid',
-  //   backgroundColor: Color.Constants.transparent,
-  //   fontFamily: FONT_FAMILIES.SOURCE_SANS_PRO,
-  //   textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
-  // },
 ];
