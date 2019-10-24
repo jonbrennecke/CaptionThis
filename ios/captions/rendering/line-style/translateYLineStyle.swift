@@ -4,7 +4,8 @@ func renderTranslateYLineStyle(
   layer: CALayer,
   key: CaptionRowKey,
   map: CaptionStringsMap,
-  duration: CFTimeInterval
+  duration: CFTimeInterval,
+  orderedSegments: OrderedCaptionStringSegmentRows
 ) {
   guard let parentLayer = layer.superlayer else {
     return

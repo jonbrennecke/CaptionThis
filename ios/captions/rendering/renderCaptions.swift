@@ -24,22 +24,33 @@ func renderCaptions(
   duration: CFTimeInterval,
   backgroundHeight: Float
 ) {
+  let rowKeys: [CaptionRowKey] = [.a, .b]
   let rowFrames = getCaptionRowFrames(style: style, layer: layer, rowLayers: rowLayers)
-  let affectedRowKeys: [CaptionRowKey] = [.a, .b]
-  resizeCaptionRows(effectedRowKeys: affectedRowKeys, rowLayers: rowLayers, rowFrames: rowFrames)
-  let captionRowSizes = getCaptionRowSizes(frames: rowFrames)
+  resizeCaptionRows(effectedRowKeys: rowKeys, rowLayers: rowLayers, rowFrames: rowFrames)
+  let rowSizes = getCaptionRowSizes(frames: rowFrames)
+  let stringSegmentRows = makeCaptionStringSegmentRows(
+    textSegments: textSegments,
+    rowSizes: rowSizes,
+    style: style,
+    keys: rowKeys
+  )
+  let orderedSegments = makeOrderedCaptionStringSegmentRows(
+    rows: stringSegmentRows,
+    numberOfRowsToDisplay: rowKeys.count
+  )
   let map = CaptionStringsMap.byFitting(
     textSegments: textSegments,
-    rowSizes: captionRowSizes,
+    rowSizes: rowSizes,
     style: style,
-    keys: affectedRowKeys
+    keys: rowKeys
   )
   map.segmentsByRow.forEach { key, _ in
     render(lineStyle: style.lineStyle)(
       rowLayers.get(byKey: key),
       key,
       map,
-      duration
+      duration,
+      orderedSegments
     )
     render(wordStyle: style.wordStyle)(
       rowLayers.get(byKey: key),
@@ -50,7 +61,7 @@ func renderCaptions(
     )
   }
   let getSizeOfRow = { (rowKey: CaptionRowKey) -> CGSize in
-    captionRowSizes[rowKey]!
+    rowSizes[rowKey]!
   }
   render(backgroundStyle: style.backgroundStyle)(
     layer, style, backgroundHeight, map, getSizeOfRow

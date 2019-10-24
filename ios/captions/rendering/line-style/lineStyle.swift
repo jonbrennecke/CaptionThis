@@ -10,7 +10,8 @@ typealias LineStyleRenderFunction = (
   _ layer: CALayer,
   _ key: CaptionRowKey,
   _ map: CaptionStringsMap,
-  _ duration: CFTimeInterval
+  _ duration: CFTimeInterval,
+  _ orderedSegments: OrderedCaptionStringSegmentRows
 ) -> Void
 
 func render(lineStyle: CaptionLineStyle) -> LineStyleRenderFunction {
