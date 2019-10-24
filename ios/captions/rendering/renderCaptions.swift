@@ -24,7 +24,6 @@ func renderCaptions(
   duration: CFTimeInterval,
   backgroundHeight: Float
 ) {
-  let wordStyleEffectFactory = getWordStyleEffectFactory(style: style.wordStyle)
   let rowFrames = getCaptionRowFrames(style: style, layer: layer, rowLayers: rowLayers)
   let affectedRowKeys: [CaptionRowKey] = [.a, .b]
   resizeCaptionRows(effectedRowKeys: affectedRowKeys, rowLayers: rowLayers, rowFrames: rowFrames)
@@ -35,17 +34,20 @@ func renderCaptions(
     style: style,
     keys: affectedRowKeys
   )
-  map.each { key, _ in
+  map.segmentsByRow.forEach { key, _ in
     render(lineStyle: style.lineStyle)(
       rowLayers.get(byKey: key),
       key,
       map,
       duration
     )
-    let effect = wordStyleEffectFactory.createEffect(
-      key: key, map: map, duration: duration, textAlignment: style.textAlignment
+    render(wordStyle: style.wordStyle)(
+      rowLayers.get(byKey: key),
+      key,
+      map,
+      duration,
+      style
     )
-    effect.doEffect(layer: rowLayers.get(byKey: key))
   }
   let getSizeOfRow = { (rowKey: CaptionRowKey) -> CGSize in
     captionRowSizes[rowKey]!

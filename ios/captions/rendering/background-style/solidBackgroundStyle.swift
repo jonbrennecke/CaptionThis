@@ -1,14 +1,17 @@
 import AVFoundation
 import UIKit
 
-func applySolidBackgroundStyle(
+func renderSolidBackgroundStyle(
   layer: CALayer,
   captionStyle: CaptionStyle,
   backgroundHeight _: Float,
   map: CaptionStringsMap,
   getSizeOfRow _: @escaping (CaptionRowKey) -> CGSize
 ) {
-  guard let beginTime = map.getLine(byKey: .a, index: 0)?.timestamp else {
+  guard
+    let rowSegments = map.segmentsByRow[.a],
+    let beginTime = rowSegments.first?.first?.timestamp
+  else {
     return
   }
   let backgroundLayer = CALayer()

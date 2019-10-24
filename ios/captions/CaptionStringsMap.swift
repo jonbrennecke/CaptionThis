@@ -1,9 +1,15 @@
 import Foundation
 
+typealias CaptionStringSegment = Timed<NSAttributedString>
+
 struct Timed<T> {
   let timestamp: CFTimeInterval
   let duration: CFTimeInterval
   let data: T
+
+  var endTimestamp: CFTimeInterval {
+    return timestamp + duration
+  }
 
   static func from(array: Array<Timed<T>>) -> Timed<Array<Timed<T>>>? {
     let sortedByStartTimestamp = array.sorted(by: { $0.timestamp < $1.timestamp })
@@ -26,48 +32,21 @@ struct Timed<T> {
   }
 }
 
-typealias CaptionStringSegment = Timed<NSAttributedString>
-
-typealias CaptionRowSegments = (CaptionRowKey, Array<CaptionStringSegment>)
-
-// get all the string segments for a row
-typealias CaptionRowSegmentsAccessor = (CaptionRowKey) -> Array<CaptionRowSegments>
-
-// a group of CaptionStringSegments that are presented together
-typealias CaptionPresentationRowSegments = (CaptionRowKey, Array<Timed<Array<CaptionStringSegment>>>)
-
-class CaptionStringsMap {
-  public struct TaggedLine {
-    let string: CaptionStringSegment
-    let substrings: [CaptionStringSegment]
-    let timestamp: CFTimeInterval
-    let duration: CFTimeInterval
+func string(from segments: [CaptionStringSegment]) -> String {
+  return segments.reduce("") { str, segment in
+    "\(str) \(segment.data.string)".trimmingCharacters(in: .whitespacesAndNewlines)
   }
+}
 
-  // TODO: should be immutable
-  var rowData = [CaptionRowKey: [TaggedLine]]()
+func stringAttributes(for style: CaptionStyle) -> [NSAttributedString.Key: Any] {
+  return [
+    .foregroundColor: style.textColor.cgColor,
+    .font: style.font,
+  ]
+}
 
-  public func getValues(byKey key: CaptionRowKey) -> [TaggedLine]? {
-    return rowData[key]
-  }
-
-  public func setValues(byKey key: CaptionRowKey, values: [TaggedLine]) {
-    rowData[key] = values
-  }
-
-  public func getLine(byKey key: CaptionRowKey, index: Int) -> TaggedLine? {
-    guard let lines = getValues(byKey: key), index < lines.count else {
-      return nil
-    }
-    return lines[index]
-  }
-
-  public func each(_ callback: (_ key: CaptionRowKey, _ value: [TaggedLine]) -> Void) {
-    rowData.forEach { item in
-      let (key, value) = item
-      callback(key, value)
-    }
-  }
+struct CaptionStringsMap {
+  let segmentsByRow: [CaptionRowKey: Array<Array<CaptionStringSegment>>]
 
   public static func byFitting(
     textSegments: [CaptionTextSegment],
@@ -75,28 +54,28 @@ class CaptionStringsMap {
     style: CaptionStyle,
     keys: [CaptionRowKey]
   ) -> CaptionStringsMap {
-    let attributes = getStringAttributes(style: style)
+    let attributes = stringAttributes(for: style)
     var segments = textSegments
-    let map = CaptionStringsMap()
+    var segmentsByRow = [CaptionRowKey: Array<Array<CaptionStringSegment>>]()
     while segments.count > 0 {
       for key in keys {
         guard let size = rowSizes[key] else {
           continue
         }
         let width = CaptionSizingUtil.textWidth(forLayerSize: size)
-        guard case let (line?, remainingSegments) = fitNextLine(textSegments: segments, width: width, attributes: attributes) else {
+        guard case let (lineSegments?, remainingSegments) = fitNextLine(textSegments: segments, width: width, attributes: attributes) else {
           continue
         }
         segments = remainingSegments
-        if var values = map.getValues(byKey: key) {
-          values.append(line)
-          map.setValues(byKey: key, values: values)
+        if var values = segmentsByRow[key] {
+          values.append(lineSegments)
+          segmentsByRow[key] = values
           continue
         }
-        map.setValues(byKey: key, values: [line])
+        segmentsByRow[key] = [lineSegments]
       }
     }
-    return map
+    return CaptionStringsMap(segmentsByRow: segmentsByRow)
   }
 
   private static func interpolate(segments: [CaptionTextSegment]) -> [CaptionTextSegment] {
@@ -117,12 +96,11 @@ class CaptionStringsMap {
     textSegments: [CaptionTextSegment],
     width: CGFloat,
     attributes: [NSAttributedString.Key: Any]
-  ) -> (line: TaggedLine?, remainingSegments: [CaptionTextSegment]) {
+  ) -> (lineSegments: [CaptionStringSegment]?, remainingSegments: [CaptionTextSegment]) {
     let interpolatedSegments = interpolate(segments: textSegments)
     var textSegmentsMutableCopy = interpolatedSegments
     var attributedString = NSAttributedString(string: "", attributes: attributes)
     var stringSegments = [CaptionStringSegment]()
-    var endTimestamp = CFTimeInterval(0)
     while let segment = textSegmentsMutableCopy.first {
       let newString = "\(attributedString.string) \(segment.text)".trimmingCharacters(in: .whitespacesAndNewlines)
       let newAttributedString = NSAttributedString(string: newString, attributes: attributes)
@@ -131,8 +109,11 @@ class CaptionStringsMap {
         let segmentAttributedString = NSAttributedString(string: segment.text, attributes: attributes)
         let timestamp = CFTimeInterval(segment.timestamp)
         let duration = CFTimeInterval(segment.duration)
-        let stringSegment = CaptionStringSegment(timestamp: timestamp, duration: duration, data: segmentAttributedString)
-        endTimestamp = timestamp + duration
+        let stringSegment = CaptionStringSegment(
+          timestamp: timestamp,
+          duration: duration,
+          data: segmentAttributedString
+        )
         stringSegments.append(stringSegment)
         textSegmentsMutableCopy.removeFirst()
         attributedString = newAttributedString
@@ -140,29 +121,6 @@ class CaptionStringsMap {
       }
       break
     }
-    if attributedString.length == 0 {
-      return (line: nil, remainingSegments: textSegmentsMutableCopy)
-    }
-    let timestamp = CFTimeInterval(textSegments.first?.timestamp ?? 0)
-    let duration = endTimestamp - timestamp
-    let stringSegment = CaptionStringSegment(
-      timestamp: timestamp,
-      duration: duration,
-      data: attributedString
-    )
-    let line = TaggedLine(
-      string: stringSegment,
-      substrings: stringSegments,
-      timestamp: timestamp,
-      duration: duration
-    )
-    return (line: line, remainingSegments: textSegmentsMutableCopy)
-  }
-
-  private static func getStringAttributes(style: CaptionStyle) -> [NSAttributedString.Key: Any] {
-    return [
-      .foregroundColor: style.textColor.cgColor,
-      .font: style.font,
-    ]
+    return (lineSegments: stringSegments, remainingSegments: textSegmentsMutableCopy)
   }
 }

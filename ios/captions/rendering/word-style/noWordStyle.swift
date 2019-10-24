@@ -1,49 +1,50 @@
 import AVFoundation
 import UIKit
 
-class CaptionNoWordStyleEffectFactory: CaptionWordStyleEffectFactory {
-  public var wordStyle: CaptionWordStyle = .none
-
-  func createEffect(
-    key: CaptionRowKey,
-    map: CaptionStringsMap,
-    duration: CFTimeInterval,
-    textAlignment: CaptionTextAlignment
-  ) -> PresentationEffect {
-    let layerName = "noWordStyleLayer"
-    return PresentationEffect(doEffect: { layer in
-      let sublayer = CALayer()
-      sublayer.name = layerName
-      let bounds = CaptionSizingUtil.layoutForText(originalBounds: layer.bounds, textAlignment: textAlignment)
-      sublayer.anchorPoint = bounds.anchorPoint
-      sublayer.position = bounds.position
-      sublayer.bounds = bounds.toBounds
-      let lines = map.getValues(byKey: key)!
-      for (index, line) in lines.enumerated() {
-        let textLayer = createTextLayer(
-          map: map,
-          key: key,
-          string: line.string.data,
-          index: index,
-          parentLayer: sublayer,
-          textAlignment: textAlignment,
-          duration: duration
-        )
-        textLayer.displayIfNeeded()
-        textLayer.layoutIfNeeded()
-        sublayer.addSublayer(textLayer)
-      }
-      layer.addSublayer(sublayer)
-    }, undoEffect: createSublayerRemover(byName: layerName))
+func renderNoWordStyle(
+  layer: CALayer,
+  key: CaptionRowKey,
+  map: CaptionStringsMap,
+  duration: CFTimeInterval,
+  style: CaptionStyle
+) {
+  let sublayer = CALayer()
+  let bounds = CaptionSizingUtil.layoutForText(
+    originalBounds: layer.bounds,
+    textAlignment: style.textAlignment
+  )
+  sublayer.anchorPoint = bounds.anchorPoint
+  sublayer.position = bounds.position
+  sublayer.bounds = bounds.toBounds
+  guard let rowSegments = map.segmentsByRow[key] else {
+    return
   }
+  for (index, segments) in rowSegments.enumerated() {
+    let segmentString = string(from: segments)
+    let attributes = stringAttributes(for: style)
+    let attributedString = NSAttributedString(string: segmentString, attributes: attributes)
+    let textLayer = createTextLayer(
+      map: map,
+      key: key,
+      attributedString: attributedString,
+      index: index,
+      layer: sublayer,
+      textAlignment: style.textAlignment,
+      duration: duration
+    )
+    textLayer.displayIfNeeded()
+    textLayer.layoutIfNeeded()
+    sublayer.addSublayer(textLayer)
+  }
+  layer.addSublayer(sublayer)
 }
 
 fileprivate func createTextLayer(
   map: CaptionStringsMap,
   key: CaptionRowKey,
-  string: NSAttributedString,
+  attributedString: NSAttributedString,
   index: Int,
-  parentLayer: CALayer,
+  layer: CALayer,
   textAlignment: CaptionTextAlignment,
   duration: CFTimeInterval
 ) -> CATextLayer {
@@ -51,21 +52,25 @@ fileprivate func createTextLayer(
   textLayer.contentsScale = UIScreen.main.scale
   textLayer.allowsFontSubpixelQuantization = true
   textLayer.allowsEdgeAntialiasing = true
-  let textNaturalSize = string.size()
+  let textNaturalSize = attributedString.size()
   let textSize = CGSize(width: textNaturalSize.width + 5, height: textNaturalSize.height)
-  let textYOffset = (parentLayer.frame.height - textSize.height) / 2
-  let textXOffset = textHorizontalOffset(textWidth: textSize.width, parentLayerWidth: parentLayer.frame.width, textAlignment: textAlignment)
+  let textYOffset = (layer.frame.height - textSize.height) / 2
+  let textXOffset = textHorizontalOffset(
+    textWidth: textSize.width,
+    parentLayerWidth: layer.frame.width,
+    textAlignment: textAlignment
+  )
   let textFrame = CGRect(origin: CGPoint(x: textXOffset, y: textYOffset), size: textSize)
   textLayer.frame = textFrame
   textLayer.shadowColor = UIColor.black.cgColor
   textLayer.shadowRadius = textSize.height / 25 * 0.5
   textLayer.shadowOpacity = 0.4
   textLayer.shadowOffset = CGSize(width: 0.0, height: textSize.height / 25)
-  textLayer.string = string
+  textLayer.string = attributedString
   textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
   textLayer.opacity = 0
   let textAnimation = createTextAnimations(map: map, key: key, index: index, duration: duration)
-  textLayer.add(textAnimation, forKey: "textLayerAnimation")
+  textLayer.add(textAnimation, forKey: nil)
   return textLayer
 }
 

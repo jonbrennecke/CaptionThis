@@ -1,6 +1,6 @@
 import UIKit
 
-func applyGradientBackgroundStyle(
+func renderGradientBackgroundStyle(
   layer: CALayer,
   captionStyle: CaptionStyle,
   backgroundHeight: Float,

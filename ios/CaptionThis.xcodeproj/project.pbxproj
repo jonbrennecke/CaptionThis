@@ -44,17 +44,16 @@
 		FC1FE6ED21E5B8DE005F657A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */; };
 		FC234C53234E901D00DB2EE2 /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC234C48234E900000DB2EE2 /* libRNBlur.a */; };
 		FC388F4C22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FC388F4B22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m */; };
-		FC388F4F22309A11001CE3A3 /* CaptionBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F4E22309A11001CE3A3 /* CaptionBackgroundStyle.swift */; };
 		FC388F522230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = FC388F512230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m */; };
 		FC388F542230EBF1001CE3A3 /* CaptionTextSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F532230EBF1001CE3A3 /* CaptionTextSegment.swift */; };
 		FC388F8E2231B41C001CE3A3 /* CaptionStringsMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F8D2231B41C001CE3A3 /* CaptionStringsMap.swift */; };
 		FC3A07D02256957800057426 /* clamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3A07CF2256957800057426 /* clamp.swift */; };
-		FC4607D62252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D52252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift */; };
-		FC4607D82252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D72252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift */; };
+		FC4607D62252CA4A00E34AD4 /* animatedWordStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D52252CA4A00E34AD4 /* animatedWordStyle.swift */; };
+		FC4607D82252CAEF00E34AD4 /* noWordStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D72252CAEF00E34AD4 /* noWordStyle.swift */; };
 		FC4607DA2252E1F800E34AD4 /* Pair.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D92252E1F800E34AD4 /* Pair.swift */; };
 		FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58D07521FA795F00E7956D /* AudioUtil.swift */; };
 		FC691AFA225124C900A30AA6 /* CaptionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC691AF9225124C900A30AA6 /* CaptionLayer.swift */; };
-		FC6E63FE235C3E0B000944D3 /* applyTextBoundingBoxBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6E63FD235C3E0B000944D3 /* applyTextBoundingBoxBackgroundStyle.swift */; };
+		FC6E63FE235C3E0B000944D3 /* textBoundingBoxBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6E63FD235C3E0B000944D3 /* textBoundingBoxBackgroundStyle.swift */; };
 		FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */; };
 		FC6EA41F221230A6009F3D7D /* DeviceBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA41E221230A6009F3D7D /* DeviceBridgeModule.m */; };
 		FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */; };
@@ -125,18 +124,16 @@
 		FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCE83952223A1795002C85CA /* CaptionViewManager.m */; };
 		FCF51EC6222651220066D81B /* AnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51EC5222651220066D81B /* AnimationUtil.swift */; };
 		FCF51F87222B4D550066D81B /* CaptionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51F86222B4D550066D81B /* CaptionStyle.swift */; };
-		FCF51FBC222B55480066D81B /* CaptionLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */; };
+		FCF51FBC222B55480066D81B /* lineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBB222B55480066D81B /* lineStyle.swift */; };
 		FCF51FC0222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBF222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m */; };
 		FCF51FC8222B62C60066D81B /* RCTConvert+CaptionLineStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FC7222B62C60066D81B /* RCTConvert+CaptionLineStyle.m */; };
 		FCFBDFA322A6D03F0059D452 /* effectUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFA222A6D03F0059D452 /* effectUtils.swift */; };
-		FCFBDFA522A715BA0059D452 /* CaptionWordStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFA422A715BA0059D452 /* CaptionWordStyle.swift */; };
-		FCFBDFAB22A719EB0059D452 /* renderLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFAA22A719EB0059D452 /* renderLineStyle.swift */; };
-		FCFBDFAD22A72DD10059D452 /* renderTranslateYLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFAC22A72DD10059D452 /* renderTranslateYLineStyle.swift */; };
-		FCFBDFAF22A72DF70059D452 /* renderFadeInOutLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFAE22A72DF70059D452 /* renderFadeInOutLineStyle.swift */; };
-		FCFBDFB122A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB022A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift */; };
-		FCFBDFB422A7749F0059D452 /* renderBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB322A7749F0059D452 /* renderBackgroundStyle.swift */; };
-		FCFBDFB622A775870059D452 /* applyGradientBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB522A775870059D452 /* applyGradientBackgroundStyle.swift */; };
-		FCFBDFB822A775B50059D452 /* applySolidBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB722A775B50059D452 /* applySolidBackgroundStyle.swift */; };
+		FCFBDFA522A715BA0059D452 /* wordStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFA422A715BA0059D452 /* wordStyle.swift */; };
+		FCFBDFAD22A72DD10059D452 /* translateYLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFAC22A72DD10059D452 /* translateYLineStyle.swift */; };
+		FCFBDFAF22A72DF70059D452 /* fadeInOutLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFAE22A72DF70059D452 /* fadeInOutLineStyle.swift */; };
+		FCFBDFB422A7749F0059D452 /* backgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB322A7749F0059D452 /* backgroundStyle.swift */; };
+		FCFBDFB622A775870059D452 /* gradientBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB522A775870059D452 /* gradientBackgroundStyle.swift */; };
+		FCFBDFB822A775B50059D452 /* solidBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB722A775B50059D452 /* solidBackgroundStyle.swift */; };
 		FCFBDFBA22A7768A0059D452 /* layerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB922A7768A0059D452 /* layerUtils.swift */; };
 		FCFBDFBC22A78C5D0059D452 /* CaptionTextAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFBB22A78C5D0059D452 /* CaptionTextAlignment.swift */; };
 		FCFBE02022A82A400059D452 /* renderCaptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE01F22A82A400059D452 /* renderCaptions.swift */; };
@@ -676,18 +673,17 @@
 		FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FC388F4B22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionBackgroundStyle.m"; sourceTree = "<group>"; };
 		FC388F4D22309863001CE3A3 /* RCTConvert+CaptionBackgroundStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionBackgroundStyle.h"; sourceTree = "<group>"; };
-		FC388F4E22309A11001CE3A3 /* CaptionBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionBackgroundStyle.swift; sourceTree = "<group>"; };
 		FC388F512230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionTextSegment.m"; sourceTree = "<group>"; };
 		FC388F532230EBF1001CE3A3 /* CaptionTextSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTextSegment.swift; sourceTree = "<group>"; };
 		FC388F552230EC4B001CE3A3 /* RCTConvert+CaptionTextSegment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionTextSegment.h"; sourceTree = "<group>"; };
 		FC388F8D2231B41C001CE3A3 /* CaptionStringsMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionStringsMap.swift; sourceTree = "<group>"; };
 		FC3A07CF2256957800057426 /* clamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = clamp.swift; sourceTree = "<group>"; };
-		FC4607D52252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionAnimatedWordStyleEffectFactory.swift; sourceTree = "<group>"; };
-		FC4607D72252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionNoWordStyleEffectFactory.swift; sourceTree = "<group>"; };
+		FC4607D52252CA4A00E34AD4 /* animatedWordStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = animatedWordStyle.swift; sourceTree = "<group>"; };
+		FC4607D72252CAEF00E34AD4 /* noWordStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = noWordStyle.swift; sourceTree = "<group>"; };
 		FC4607D92252E1F800E34AD4 /* Pair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pair.swift; sourceTree = "<group>"; };
 		FC58D07521FA795F00E7956D /* AudioUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUtil.swift; sourceTree = "<group>"; };
 		FC691AF9225124C900A30AA6 /* CaptionLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLayer.swift; sourceTree = "<group>"; };
-		FC6E63FD235C3E0B000944D3 /* applyTextBoundingBoxBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = applyTextBoundingBoxBackgroundStyle.swift; sourceTree = "<group>"; };
+		FC6E63FD235C3E0B000944D3 /* textBoundingBoxBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textBoundingBoxBackgroundStyle.swift; sourceTree = "<group>"; };
 		FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUtil.swift; sourceTree = "<group>"; };
 		FC6EA41E221230A6009F3D7D /* DeviceBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceBridgeModule.m; sourceTree = "<group>"; };
 		FC6EA420221230AF009F3D7D /* DeviceBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceBridgeModule.h; sourceTree = "<group>"; };
@@ -767,20 +763,18 @@
 		FCE83952223A1795002C85CA /* CaptionViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptionViewManager.m; sourceTree = "<group>"; };
 		FCF51EC5222651220066D81B /* AnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtil.swift; sourceTree = "<group>"; };
 		FCF51F86222B4D550066D81B /* CaptionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionStyle.swift; sourceTree = "<group>"; };
-		FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLineStyle.swift; sourceTree = "<group>"; };
+		FCF51FBB222B55480066D81B /* lineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = lineStyle.swift; sourceTree = "<group>"; };
 		FCF51FBF222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionTextAlignment.m"; sourceTree = "<group>"; };
 		FCF51FC1222B5AA30066D81B /* RCTConvert+CaptionTextAlignment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionTextAlignment.h"; sourceTree = "<group>"; };
 		FCF51FC6222B62B90066D81B /* RCTConvert+CaptionLineStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionLineStyle.h"; sourceTree = "<group>"; };
 		FCF51FC7222B62C60066D81B /* RCTConvert+CaptionLineStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionLineStyle.m"; sourceTree = "<group>"; };
 		FCFBDFA222A6D03F0059D452 /* effectUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = effectUtils.swift; sourceTree = "<group>"; };
-		FCFBDFA422A715BA0059D452 /* CaptionWordStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionWordStyle.swift; sourceTree = "<group>"; };
-		FCFBDFAA22A719EB0059D452 /* renderLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = renderLineStyle.swift; sourceTree = "<group>"; };
-		FCFBDFAC22A72DD10059D452 /* renderTranslateYLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = renderTranslateYLineStyle.swift; sourceTree = "<group>"; };
-		FCFBDFAE22A72DF70059D452 /* renderFadeInOutLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = renderFadeInOutLineStyle.swift; sourceTree = "<group>"; };
-		FCFBDFB022A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionWordStyleEffectFactory.swift; sourceTree = "<group>"; };
-		FCFBDFB322A7749F0059D452 /* renderBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = renderBackgroundStyle.swift; sourceTree = "<group>"; };
-		FCFBDFB522A775870059D452 /* applyGradientBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = applyGradientBackgroundStyle.swift; sourceTree = "<group>"; };
-		FCFBDFB722A775B50059D452 /* applySolidBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = applySolidBackgroundStyle.swift; sourceTree = "<group>"; };
+		FCFBDFA422A715BA0059D452 /* wordStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wordStyle.swift; sourceTree = "<group>"; };
+		FCFBDFAC22A72DD10059D452 /* translateYLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = translateYLineStyle.swift; sourceTree = "<group>"; };
+		FCFBDFAE22A72DF70059D452 /* fadeInOutLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fadeInOutLineStyle.swift; sourceTree = "<group>"; };
+		FCFBDFB322A7749F0059D452 /* backgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = backgroundStyle.swift; sourceTree = "<group>"; };
+		FCFBDFB522A775870059D452 /* gradientBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gradientBackgroundStyle.swift; sourceTree = "<group>"; };
+		FCFBDFB722A775B50059D452 /* solidBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = solidBackgroundStyle.swift; sourceTree = "<group>"; };
 		FCFBDFB922A7768A0059D452 /* layerUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = layerUtils.swift; sourceTree = "<group>"; };
 		FCFBDFBB22A78C5D0059D452 /* CaptionTextAlignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTextAlignment.swift; sourceTree = "<group>"; };
 		FCFBE01F22A82A400059D452 /* renderCaptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = renderCaptions.swift; sourceTree = "<group>"; };
@@ -1177,10 +1171,9 @@
 		FC4607D42252CA0A00E34AD4 /* word-style */ = {
 			isa = PBXGroup;
 			children = (
-				FC4607D52252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift */,
-				FC4607D72252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift */,
-				FCFBDFA422A715BA0059D452 /* CaptionWordStyle.swift */,
-				FCFBDFB022A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift */,
+				FC4607D52252CA4A00E34AD4 /* animatedWordStyle.swift */,
+				FC4607D72252CAEF00E34AD4 /* noWordStyle.swift */,
+				FCFBDFA422A715BA0059D452 /* wordStyle.swift */,
 			);
 			path = "word-style";
 			sourceTree = "<group>";
@@ -1188,10 +1181,9 @@
 		FC4608052253CCA300E34AD4 /* line-style */ = {
 			isa = PBXGroup;
 			children = (
-				FCF51FBB222B55480066D81B /* CaptionLineStyle.swift */,
-				FCFBDFAA22A719EB0059D452 /* renderLineStyle.swift */,
-				FCFBDFAC22A72DD10059D452 /* renderTranslateYLineStyle.swift */,
-				FCFBDFAE22A72DF70059D452 /* renderFadeInOutLineStyle.swift */,
+				FCF51FBB222B55480066D81B /* lineStyle.swift */,
+				FCFBDFAC22A72DD10059D452 /* translateYLineStyle.swift */,
+				FCFBDFAE22A72DF70059D452 /* fadeInOutLineStyle.swift */,
 			);
 			path = "line-style";
 			sourceTree = "<group>";
@@ -1199,11 +1191,10 @@
 		FC4608392253CCB700E34AD4 /* background-style */ = {
 			isa = PBXGroup;
 			children = (
-				FC388F4E22309A11001CE3A3 /* CaptionBackgroundStyle.swift */,
-				FCFBDFB322A7749F0059D452 /* renderBackgroundStyle.swift */,
-				FCFBDFB522A775870059D452 /* applyGradientBackgroundStyle.swift */,
-				FCFBDFB722A775B50059D452 /* applySolidBackgroundStyle.swift */,
-				FC6E63FD235C3E0B000944D3 /* applyTextBoundingBoxBackgroundStyle.swift */,
+				FCFBDFB322A7749F0059D452 /* backgroundStyle.swift */,
+				FCFBDFB522A775870059D452 /* gradientBackgroundStyle.swift */,
+				FCFBDFB722A775B50059D452 /* solidBackgroundStyle.swift */,
+				FC6E63FD235C3E0B000944D3 /* textBoundingBoxBackgroundStyle.swift */,
 			);
 			path = "background-style";
 			sourceTree = "<group>";
@@ -2254,23 +2245,21 @@
 			files = (
 				FCB8AF24222F1773002F30D8 /* CaptionAnimation.swift in Sources */,
 				FC6FCF9C22249B65004772B9 /* CaptionPresetLayer.swift in Sources */,
-				FCFBDFAF22A72DF70059D452 /* renderFadeInOutLineStyle.swift in Sources */,
-				FCFBDFAD22A72DD10059D452 /* renderTranslateYLineStyle.swift in Sources */,
+				FCFBDFAF22A72DF70059D452 /* fadeInOutLineStyle.swift in Sources */,
+				FCFBDFAD22A72DD10059D452 /* translateYLineStyle.swift in Sources */,
 				FCF51F87222B4D550066D81B /* CaptionStyle.swift in Sources */,
 				FCB0E5C322149C03002F320B /* PhotosAlbumUtil.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				FC6EA81221D45123007C3B3E /* Debug.swift in Sources */,
 				FC6FCF9722249874004772B9 /* CaptionPresetView.swift in Sources */,
 				FC388F4C22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m in Sources */,
-				FC4607D62252CA4A00E34AD4 /* CaptionAnimatedWordStyleEffectFactory.swift in Sources */,
-				FC388F4F22309A11001CE3A3 /* CaptionBackgroundStyle.swift in Sources */,
-				FCFBDFB622A775870059D452 /* applyGradientBackgroundStyle.swift in Sources */,
-				FC4607D82252CAEF00E34AD4 /* CaptionNoWordStyleEffectFactory.swift in Sources */,
+				FC4607D62252CA4A00E34AD4 /* animatedWordStyle.swift in Sources */,
+				FCFBDFB622A775870059D452 /* gradientBackgroundStyle.swift in Sources */,
+				FC4607D82252CAEF00E34AD4 /* noWordStyle.swift in Sources */,
 				FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */,
 				FC6EA41F221230A6009F3D7D /* DeviceBridgeModule.m in Sources */,
-				FCFBDFB822A775B50059D452 /* applySolidBackgroundStyle.swift in Sources */,
+				FCFBDFB822A775B50059D452 /* solidBackgroundStyle.swift in Sources */,
 				FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */,
-				FCFBDFB122A72E5F0059D452 /* CaptionWordStyleEffectFactory.swift in Sources */,
 				FC19138E226290F2008C8BA0 /* VideoDimensions.swift in Sources */,
 				FC6FCF9922249899004772B9 /* CaptionPresetViewManager.m in Sources */,
 				FC388F542230EBF1001CE3A3 /* CaptionTextSegment.swift in Sources */,
@@ -2280,11 +2269,10 @@
 				FC388F522230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m in Sources */,
 				FCFBE02422A832AD0059D452 /* CaptionRowLayers.swift in Sources */,
 				FCF51FC8222B62C60066D81B /* RCTConvert+CaptionLineStyle.m in Sources */,
-				FCF51FBC222B55480066D81B /* CaptionLineStyle.swift in Sources */,
+				FCF51FBC222B55480066D81B /* lineStyle.swift in Sources */,
 				FCFBDFA322A6D03F0059D452 /* effectUtils.swift in Sources */,
 				FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */,
 				FC3A07D02256957800057426 /* clamp.swift in Sources */,
-				FCFBDFAB22A719EB0059D452 /* renderLineStyle.swift in Sources */,
 				FC388F8E2231B41C001CE3A3 /* CaptionStringsMap.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				FC1492F922331A4600A753DD /* CaptionSizingUtil.swift in Sources */,
@@ -2300,12 +2288,12 @@
 				FC19138C2262908D008C8BA0 /* VideoAnimationLayerLayout.swift in Sources */,
 				FCFBDFBC22A78C5D0059D452 /* CaptionTextAlignment.swift in Sources */,
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,
-				FCFBDFB422A7749F0059D452 /* renderBackgroundStyle.swift in Sources */,
+				FCFBDFB422A7749F0059D452 /* backgroundStyle.swift in Sources */,
 				FCFBE02622A890A70059D452 /* PlaybackControllerState.swift in Sources */,
 				FCF51EC6222651220066D81B /* AnimationUtil.swift in Sources */,
 				FCF51FC0222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m in Sources */,
 				FC691AFA225124C900A30AA6 /* CaptionLayer.swift in Sources */,
-				FCFBDFA522A715BA0059D452 /* CaptionWordStyle.swift in Sources */,
+				FCFBDFA522A715BA0059D452 /* wordStyle.swift in Sources */,
 				FC7A0F6621D89D6F00751DBE /* SaturationAndBrightnessGradientView.swift in Sources */,
 				FC9374DE21DE0EE900FD2700 /* CenteredTextLayer.swift in Sources */,
 				FC7A0FB521D8AB8B00751DBE /* HueGradientViewManager.m in Sources */,
@@ -2313,7 +2301,7 @@
 				FC4607DA2252E1F800E34AD4 /* Pair.swift in Sources */,
 				FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */,
 				FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */,
-				FC6E63FE235C3E0B000944D3 /* applyTextBoundingBoxBackgroundStyle.swift in Sources */,
+				FC6E63FE235C3E0B000944D3 /* textBoundingBoxBackgroundStyle.swift in Sources */,
 				FCB8AE72222DBE26002F30D8 /* CaptionPresetLinePositions.swift in Sources */,
 				FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */,
 				FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */,

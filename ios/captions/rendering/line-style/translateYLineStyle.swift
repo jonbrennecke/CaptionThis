@@ -9,17 +9,17 @@ func renderTranslateYLineStyle(
   guard let parentLayer = layer.superlayer else {
     return
   }
-
-  // create builder (TODO: abstract this in another function)
   let positions = CaptionPresetLinePositions(layer: layer, parentLayer: parentLayer)
-  let builder = CaptionAnimation.Builder()
-  let lines = map.getValues(byKey: key)!
-  for (index, _) in lines.enumerated() {
+  let animationBuilder = CaptionAnimation.Builder()
+  guard let rowSegments = map.segmentsByRow[key] else {
+    return
+  }
+  for (index, _) in rowSegments.enumerated() {
     let outOfFrameBottom = positions.getPosition(forKey: .outOfFrameBottom)
     let inFrameTop = positions.getPosition(forKey: .inFrameTop)
     let outOfFrameTop = positions.getPosition(forKey: .outOfFrameTop)
     let inFrameBottomOrMiddle = positions.getPosition(forKey: index == 0 && key == .a ? .inFrameMiddle : .inFrameBottom)
-    builder.insert(
+    animationBuilder.insert(
       in: [
         FadeInAnimationStep(),
         PositionAnimationStep(from: outOfFrameBottom, to: inFrameBottomOrMiddle),
@@ -38,7 +38,7 @@ func renderTranslateYLineStyle(
 
   let group = CAAnimationGroup()
   group.repeatCount = .greatestFiniteMagnitude
-  group.animations = builder.build(withMap: map)
+  group.animations = animationBuilder.build(withMap: map)
   group.duration = duration
   group.isRemovedOnCompletion = false
   group.fillMode = .forwards

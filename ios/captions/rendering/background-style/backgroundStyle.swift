@@ -1,5 +1,12 @@
 import Foundation
 
+@objc
+enum CaptionBackgroundStyle: Int {
+  case solid
+  case gradient
+  case textBoundingBox
+}
+
 typealias BackgroundStyleRenderFunction = (
   _ layer: CALayer,
   _ captionStyle: CaptionStyle,
@@ -11,10 +18,10 @@ typealias BackgroundStyleRenderFunction = (
 func render(backgroundStyle: CaptionBackgroundStyle) -> BackgroundStyleRenderFunction {
   switch backgroundStyle {
   case .gradient:
-    return applyGradientBackgroundStyle
+    return renderGradientBackgroundStyle
   case .solid:
-    return applySolidBackgroundStyle
+    return renderSolidBackgroundStyle
   case .textBoundingBox:
-    return applyTextBoundingBoxBackgroundStyle
+    return textBoundingBoxBackgroundStyle
   }
 }

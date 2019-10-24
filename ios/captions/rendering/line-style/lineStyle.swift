@@ -1,5 +1,11 @@
 import Foundation
 
+@objc
+enum CaptionLineStyle: Int {
+  case fadeInOut
+  case translateY
+}
+
 typealias LineStyleRenderFunction = (
   _ layer: CALayer,
   _ key: CaptionRowKey,

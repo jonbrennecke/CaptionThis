@@ -3,65 +3,66 @@ import UIKit
 
 fileprivate let ANIM_FADE_IN_OUT_DURATION = CFTimeInterval(0.25)
 
-class CaptionAnimatedWordStyleEffectFactory: CaptionWordStyleEffectFactory {
-  public var wordStyle: CaptionWordStyle = .animated
-
-  func createEffect(
-    key: CaptionRowKey,
-    map: CaptionStringsMap,
-    duration: CFTimeInterval,
-    textAlignment: CaptionTextAlignment
-  ) -> PresentationEffect {
-    let layerName = "animatedWordStyleEffectLayer"
-    return PresentationEffect(doEffect: { layer in
-      let sublayer = CALayer()
-      sublayer.name = layerName
-      let bounds = CaptionSizingUtil.layoutForText(originalBounds: layer.bounds, textAlignment: textAlignment)
-      sublayer.anchorPoint = bounds.anchorPoint
-      sublayer.position = bounds.position
-      sublayer.bounds = bounds.toBounds
-      let lines = map.getValues(byKey: key)!
-      for (index, line) in lines.enumerated() {
-        let textLayer = createTextLayer(
-          key: key,
-          taggedLine: line,
-          map: map,
-          index: index,
-          parentLayer: sublayer,
-          textAlignment: textAlignment,
-          duration: duration
-        )
-        sublayer.addSublayer(textLayer)
-      }
-      layer.addSublayer(sublayer)
-    }, undoEffect: createSublayerRemover(byName: layerName))
+func renderAnimatedWordStyle(
+  layer: CALayer,
+  key: CaptionRowKey,
+  map: CaptionStringsMap,
+  duration: CFTimeInterval,
+  style: CaptionStyle
+) {
+  let layerName = "animatedWordStyleEffectLayer"
+  let sublayer = CALayer()
+  sublayer.name = layerName
+  let bounds = CaptionSizingUtil.layoutForText(
+    originalBounds: layer.bounds,
+    textAlignment: style.textAlignment
+  )
+  sublayer.anchorPoint = bounds.anchorPoint
+  sublayer.position = bounds.position
+  sublayer.bounds = bounds.toBounds
+  guard let rowSegments = map.segmentsByRow[key] else {
+    return
   }
+  for (index, segments) in rowSegments.enumerated() {
+    let textLayer = createTextLayer(
+      key: key,
+      segments: segments,
+      map: map,
+      index: index,
+      parentLayer: sublayer,
+      style: style,
+      duration: duration
+    )
+    sublayer.addSublayer(textLayer)
+  }
+  layer.addSublayer(sublayer)
 }
 
 fileprivate func createTextLayer(
   key: CaptionRowKey,
-  taggedLine: CaptionStringsMap.TaggedLine,
+  segments: [CaptionStringSegment],
   map: CaptionStringsMap,
   index: Int,
   parentLayer: CALayer,
-  textAlignment: CaptionTextAlignment,
+  style: CaptionStyle,
   duration: CFTimeInterval
 ) -> CALayer {
-  let attributedString = taggedLine.string.data
+  let str = string(from: segments)
+  let attributedString = NSAttributedString(string: str, attributes: stringAttributes(for: style))
   let whitespaceCharacterSize = stringSize(matchingAttributesOf: attributedString, string: " ")
   let textSize = attributedString.size()
   let textYOffset = (parentLayer.frame.height - textSize.height) / 2
-  let textXOffset = textHorizontalOffset(textWidth: textSize.width, parentLayerWidth: parentLayer.frame.width, textAlignment: textAlignment)
+  let textXOffset = textHorizontalOffset(textWidth: textSize.width, parentLayerWidth: parentLayer.frame.width, textAlignment: style.textAlignment)
   let textFrame = CGRect(origin: CGPoint(x: textXOffset, y: textYOffset), size: textSize)
   let parentLayer = CenteredTextLayer()
   parentLayer.contentsScale = UIScreen.main.scale
   parentLayer.frame = textFrame
   var xOffsetAcc = CGFloat(0)
-  for substring in taggedLine.substrings {
-    let substringNaturalSize = substring.data.size()
+  for segment in segments {
+    let substringNaturalSize = segment.data.size()
     let substringSize = CGSize(width: substringNaturalSize.width + 5, height: substringNaturalSize.height)
     let textLayer = CATextLayer()
-    textLayer.frame = CGRect(origin: CGPoint(x: textAlignment == .center ? xOffsetAcc - 2.5 : xOffsetAcc, y: 0), size: substringSize)
+    textLayer.frame = CGRect(origin: CGPoint(x: style.textAlignment == .center ? xOffsetAcc - 2.5 : xOffsetAcc, y: 0), size: substringSize)
     xOffsetAcc += substringNaturalSize.width + whitespaceCharacterSize.width
     textLayer.contentsScale = UIScreen.main.scale
     textLayer.allowsFontSubpixelQuantization = true
@@ -70,13 +71,18 @@ fileprivate func createTextLayer(
     textLayer.shadowRadius = textSize.height / 25 * 0.5
     textLayer.shadowOpacity = 0.4
     textLayer.shadowOffset = CGSize(width: 0.0, height: textSize.height / 25)
-    textLayer.string = substring.data
-    textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
+    textLayer.string = segment.data
+    textLayer.alignmentMode = style.textAlignment.textLayerAlignmentMode()
     textLayer.displayIfNeeded()
     textLayer.layoutIfNeeded()
     parentLayer.addSublayer(textLayer)
     textLayer.opacity = 0
-    let wordAnimations = createWordAnimations(key: key, index: index, timestamp: substring.timestamp, duration: duration)
+    let wordAnimations = createWordAnimations(
+      key: key,
+      index: index,
+      timestamp: segment.timestamp,
+      duration: duration
+    )
     textLayer.add(wordAnimations, forKey: "textLayerWordAnimation")
   }
   parentLayer.opacity = 0

@@ -57,38 +57,42 @@ struct CaptionAnimation {
 
     public func build(withMap map: CaptionStringsMap) -> [CAAnimation] {
       let nestedAnimations = animations.map { animation -> [CAAnimation] in
-        guard let lines = map.getValues(byKey: animation.key) else {
+        guard let lines = map.segmentsByRow[animation.key] else {
           return []
         }
         let line = lines[animation.index]
+        guard let timedLine = Timed.from(array: line) else {
+          return []
+        }
         let (key: nextKey, index: nextIndex) = next(key: animation.key, index: animation.index)
         let (key: lastKey, index: lastIndex) = next(key: nextKey, index: nextIndex)
 
-        let nextLineTimestamp: CFTimeInterval = { key, index, line in
-          if let lines = map.getValues(byKey: key), index < lines.count {
-            let line = lines[index]
-            return line.timestamp
+        guard let nextLineTimestamp: CFTimeInterval = { key, index in
+          if let lines = map.segmentsByRow[key], index < lines.count {
+            return Timed.from(array: lines[index])?.timestamp
           }
-          return line.timestamp + line.duration
-        }(nextKey, nextIndex, line)
+          return timedLine.endTimestamp
+        }(nextKey, nextIndex) else {
+          return []
+        }
 
-        let lastLineTimestamp: CFTimeInterval = { key, index, previousKey, previousIndex, line in
-          if let lines = map.getValues(byKey: key), index < lines.count {
-            let line = lines[index]
-            return line.timestamp
+        guard let lastLineTimestamp: CFTimeInterval = { key, index, previousKey, previousIndex in
+          if let lines = map.segmentsByRow[key], index < lines.count {
+            return Timed.from(array: lines[index])?.timestamp
           }
-          if let lines = map.getValues(byKey: previousKey), previousIndex < lines.count {
-            let line = lines[previousIndex]
-            return line.timestamp + line.duration
+          if let lines = map.segmentsByRow[previousKey], previousIndex < lines.count {
+            return Timed.from(array: lines[previousIndex])?.endTimestamp
           }
-          return line.timestamp + line.duration + ANIM_FINAL_LINE_DURATION
-        }(lastKey, lastIndex, nextKey, nextIndex, line)
+          return timedLine.endTimestamp + ANIM_FINAL_LINE_DURATION
+        }(lastKey, lastIndex, nextKey, nextIndex) else {
+          return []
+        }
 
         let clampFn = { timestamp in
           clamp(timestamp - ANIM_IN_OUT_DURATION, from: 0, to: timestamp)
         }
 
-        let animationsIn = animation.animationsIn.map { $0.animate(at: clampFn(line.timestamp), duration: ANIM_IN_OUT_DURATION) }
+        let animationsIn = animation.animationsIn.map { $0.animate(at: clampFn(timedLine.timestamp), duration: ANIM_IN_OUT_DURATION) }
         let animationsCenter = animation.animationsCenter.map { $0.animate(at: clampFn(nextLineTimestamp), duration: ANIM_IN_OUT_DURATION) }
         let animationsOut = animation.animationsOut.map { $0.animate(at: clampFn(lastLineTimestamp), duration: ANIM_IN_OUT_DURATION) }
         return Array([

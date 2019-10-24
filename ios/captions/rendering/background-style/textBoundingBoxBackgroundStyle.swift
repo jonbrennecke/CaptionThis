@@ -9,18 +9,23 @@ struct Padding {
 
 fileprivate let padding = Padding(top: 7, bottom: 7, left: 12, right: 12)
 
-func applyTextBoundingBoxBackgroundStyle(
+func textBoundingBoxBackgroundStyle(
   layer: CALayer,
   captionStyle: CaptionStyle,
   backgroundHeight _: Float,
   map: CaptionStringsMap,
   getSizeOfRow: @escaping (CaptionRowKey) -> CGSize
 ) {
+  let attributes = stringAttributes(for: captionStyle)
   let backgroundLayer = CALayer()
   backgroundLayer.backgroundColor = captionStyle.backgroundColor.cgColor
-  let rowBoundingRects = map.rowData.flatMap({ key, taggedLines -> [CGRect] in
+  let rowBoundingRects = map.segmentsByRow.flatMap({ key, rowSegments -> [CGRect] in
     let rowSize = getSizeOfRow(key)
-    return taggedLines.map { $0.string.data.boundingRect(with: rowSize, options: [], context: nil) }
+    return rowSegments.map {
+      let str = string(from: $0)
+      let attributedString = NSAttributedString(string: str, attributes: attributes)
+      return attributedString.boundingRect(with: rowSize, options: [], context: nil)
+    }
   })
   guard
     let widestRect = rowBoundingRects.max(by: { $0.width < $1.width }),
