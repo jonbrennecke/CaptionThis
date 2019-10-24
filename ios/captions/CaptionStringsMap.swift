@@ -7,7 +7,9 @@ struct Timed<T> {
 
   static func from(array: Array<Timed<T>>) -> Timed<Array<Timed<T>>>? {
     let sortedByStartTimestamp = array.sorted(by: { $0.timestamp < $1.timestamp })
-    let sortedByEndTimestamp = array.sorted(by: { ($0.timestamp + $0.duration) < ($1.timestamp + $1.duration) })
+    let sortedByEndTimestamp = array.sorted(by: {
+      ($0.timestamp + $0.duration) < ($1.timestamp + $1.duration)
+    })
     guard
       let first = sortedByStartTimestamp.first,
       let last = sortedByEndTimestamp.last
@@ -35,15 +37,9 @@ typealias CaptionRowSegmentsAccessor = (CaptionRowKey) -> Array<CaptionRowSegmen
 typealias CaptionPresentationRowSegments = (CaptionRowKey, Array<Timed<Array<CaptionStringSegment>>>)
 
 class CaptionStringsMap {
-  public struct TaggedString {
-    let attributedString: NSAttributedString
-    let timestamp: CFTimeInterval
-    let duration: CFTimeInterval
-  }
-
   public struct TaggedLine {
-    let string: TaggedString
-    let substrings: [TaggedString]
+    let string: CaptionStringSegment
+    let substrings: [CaptionStringSegment]
     let timestamp: CFTimeInterval
     let duration: CFTimeInterval
   }
@@ -125,8 +121,8 @@ class CaptionStringsMap {
     let interpolatedSegments = interpolate(segments: textSegments)
     var textSegmentsMutableCopy = interpolatedSegments
     var attributedString = NSAttributedString(string: "", attributes: attributes)
-    var substrings = [TaggedString]()
-    var endTime = CFTimeInterval(0)
+    var stringSegments = [CaptionStringSegment]()
+    var endTimestamp = CFTimeInterval(0)
     while let segment = textSegmentsMutableCopy.first {
       let newString = "\(attributedString.string) \(segment.text)".trimmingCharacters(in: .whitespacesAndNewlines)
       let newAttributedString = NSAttributedString(string: newString, attributes: attributes)
@@ -135,9 +131,9 @@ class CaptionStringsMap {
         let segmentAttributedString = NSAttributedString(string: segment.text, attributes: attributes)
         let timestamp = CFTimeInterval(segment.timestamp)
         let duration = CFTimeInterval(segment.duration)
-        let taggedString = TaggedString(attributedString: segmentAttributedString, timestamp: timestamp, duration: duration)
-        endTime = timestamp + duration
-        substrings.append(taggedString)
+        let stringSegment = CaptionStringSegment(timestamp: timestamp, duration: duration, data: segmentAttributedString)
+        endTimestamp = timestamp + duration
+        stringSegments.append(stringSegment)
         textSegmentsMutableCopy.removeFirst()
         attributedString = newAttributedString
         continue
@@ -147,10 +143,19 @@ class CaptionStringsMap {
     if attributedString.length == 0 {
       return (line: nil, remainingSegments: textSegmentsMutableCopy)
     }
-    let beginTime = CFTimeInterval(textSegments.first?.timestamp ?? 0)
-    let duration = endTime - beginTime
-    let string = TaggedString(attributedString: attributedString, timestamp: beginTime, duration: duration)
-    let line = TaggedLine(string: string, substrings: substrings, timestamp: beginTime, duration: duration)
+    let timestamp = CFTimeInterval(textSegments.first?.timestamp ?? 0)
+    let duration = endTimestamp - timestamp
+    let stringSegment = CaptionStringSegment(
+      timestamp: timestamp,
+      duration: duration,
+      data: attributedString
+    )
+    let line = TaggedLine(
+      string: stringSegment,
+      substrings: stringSegments,
+      timestamp: timestamp,
+      duration: duration
+    )
     return (line: line, remainingSegments: textSegmentsMutableCopy)
   }
 

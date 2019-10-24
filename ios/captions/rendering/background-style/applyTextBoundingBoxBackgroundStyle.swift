@@ -20,7 +20,7 @@ func applyTextBoundingBoxBackgroundStyle(
   backgroundLayer.backgroundColor = captionStyle.backgroundColor.cgColor
   let rowBoundingRects = map.rowData.flatMap({ key, taggedLines -> [CGRect] in
     let rowSize = getSizeOfRow(key)
-    return taggedLines.map { $0.string.attributedString.boundingRect(with: rowSize, options: [], context: nil) }
+    return taggedLines.map { $0.string.data.boundingRect(with: rowSize, options: [], context: nil) }
   })
   guard
     let widestRect = rowBoundingRects.max(by: { $0.width < $1.width }),

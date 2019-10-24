@@ -23,7 +23,7 @@ class CaptionNoWordStyleEffectFactory: CaptionWordStyleEffectFactory {
         let textLayer = createTextLayer(
           map: map,
           key: key,
-          string: line.string.attributedString,
+          string: line.string.data,
           index: index,
           parentLayer: sublayer,
           textAlignment: textAlignment,

@@ -47,7 +47,7 @@ fileprivate func createTextLayer(
   textAlignment: CaptionTextAlignment,
   duration: CFTimeInterval
 ) -> CALayer {
-  let attributedString = taggedLine.string.attributedString
+  let attributedString = taggedLine.string.data
   let whitespaceCharacterSize = stringSize(matchingAttributesOf: attributedString, string: " ")
   let textSize = attributedString.size()
   let textYOffset = (parentLayer.frame.height - textSize.height) / 2
@@ -58,7 +58,7 @@ fileprivate func createTextLayer(
   parentLayer.frame = textFrame
   var xOffsetAcc = CGFloat(0)
   for substring in taggedLine.substrings {
-    let substringNaturalSize = substring.attributedString.size()
+    let substringNaturalSize = substring.data.size()
     let substringSize = CGSize(width: substringNaturalSize.width + 5, height: substringNaturalSize.height)
     let textLayer = CATextLayer()
     textLayer.frame = CGRect(origin: CGPoint(x: textAlignment == .center ? xOffsetAcc - 2.5 : xOffsetAcc, y: 0), size: substringSize)
@@ -70,7 +70,7 @@ fileprivate func createTextLayer(
     textLayer.shadowRadius = textSize.height / 25 * 0.5
     textLayer.shadowOpacity = 0.4
     textLayer.shadowOffset = CGSize(width: 0.0, height: textSize.height / 25)
-    textLayer.string = substring.attributedString
+    textLayer.string = substring.data
     textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
     textLayer.displayIfNeeded()
     textLayer.layoutIfNeeded()
