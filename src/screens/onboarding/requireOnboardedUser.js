@@ -96,7 +96,7 @@ export default function requireOnboardedUser<
       );
       return (
         <View style={styles.container}>
-          <StatusBar barStyle="light-content"/>
+          <StatusBar barStyle="light-content" />
           {wrappedElement}
           <FadeInOutAnimatedView
             style={styles.absoluteFill}

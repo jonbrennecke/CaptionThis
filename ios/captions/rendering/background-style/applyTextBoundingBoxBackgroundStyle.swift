@@ -25,8 +25,8 @@ func applyTextBoundingBoxBackgroundStyle(
   guard
     let widestRect = rowBoundingRects.max(by: { $0.width < $1.width }),
     let tallestRect = rowBoundingRects.max(by: { $0.height < $1.height })
-    else {
-      return
+  else {
+    return
   }
   let horizontalPadding = padding.left + padding.right
   let verticalPadding = padding.top + padding.bottom

@@ -2,9 +2,9 @@ import AVFoundation
 
 func renderFadeInOutLineStyle(
   layer: CALayer,
-  key: CaptionRowKey,
-  map: CaptionStringsMap,
-  duration: CFTimeInterval
+  key _: CaptionRowKey,
+  map _: CaptionStringsMap,
+  duration _: CFTimeInterval
 ) {
 //  let builder = CaptionAnimation.Builder()
 //  let lines = map.getValues(byKey: key)!
@@ -27,11 +27,11 @@ func renderFadeInOutLineStyle(
 //  group.beginTime = AVCoreAnimationBeginTimeAtZero
 //  layer.removeAnimation(forKey: animationKey)
 //  layer.add(group, forKey: animationKey)
-  
+
   guard let parentLayer = layer.superlayer else {
     return
   }
-  
+
 //  let positions = CaptionPresetLinePositions(layer: layer, parentLayer: parentLayer)
 //  let animationBuilder = CaptionAnimation.Builder()
 //  let lines = map.getValues(byKey: key)!
@@ -46,13 +46,13 @@ func renderFadeInOutLineStyle(
 //    animationBuilder.insert(
 //      in: [
 //        FadeInAnimationStep(),
-////        PositionAnimationStep(from: outOfFrameBottom, to: inFrameBottomOrMiddle),
+  ////        PositionAnimationStep(from: outOfFrameBottom, to: inFrameBottomOrMiddle),
 //      ],
 //      center: [
-////        PositionAnimationStep(from: inFrameBottomOrMiddle, to: inFrameTop),
+  ////        PositionAnimationStep(from: inFrameBottomOrMiddle, to: inFrameTop),
 //      ],
 //      out: [
-////        PositionAnimationStep(from: inFrameTop, to: outOfFrameTop),
+  ////        PositionAnimationStep(from: inFrameTop, to: outOfFrameTop),
 //        FadeOutAnimationStep(),
 //      ],
 //      index: isOdd ? index : index - 1,

@@ -4,7 +4,7 @@ struct Timed<T> {
   let timestamp: CFTimeInterval
   let duration: CFTimeInterval
   let data: T
-  
+
   static func from(array: Array<Timed<T>>) -> Timed<Array<Timed<T>>>? {
     let sortedByStartTimestamp = array.sorted(by: { $0.timestamp < $1.timestamp })
     let sortedByEndTimestamp = array.sorted(by: { ($0.timestamp + $0.duration) < ($1.timestamp + $1.duration) })
@@ -33,7 +33,6 @@ typealias CaptionRowSegmentsAccessor = (CaptionRowKey) -> Array<CaptionRowSegmen
 
 // a group of CaptionStringSegments that are presented together
 typealias CaptionPresentationRowSegments = (CaptionRowKey, Array<Timed<Array<CaptionStringSegment>>>)
-
 
 class CaptionStringsMap {
   public struct TaggedString {
