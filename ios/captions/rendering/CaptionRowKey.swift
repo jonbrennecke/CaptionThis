@@ -24,4 +24,17 @@ enum CaptionRowKey {
       return .a
     }
   }
+
+  public static func from(index: Int) -> CaptionRowKey {
+    switch index % 4 {
+    case 0:
+      return .a
+    case 1:
+      return .b
+    case 2:
+      return .c
+    default:
+      return .a
+    }
+  }
 }

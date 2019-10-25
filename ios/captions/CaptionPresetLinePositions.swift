@@ -3,12 +3,16 @@ import Foundation
 fileprivate let BAR_SPACE_HEIGHT_FACTOR = CGFloat(1.25)
 
 struct CaptionPresetLinePositions {
-  public enum Key {
+  enum Key {
     case inFrameMiddle
     case inFrameTop
     case inFrameBottom
     case outOfFrameTop
     case outOfFrameBottom
+
+    func next() -> Key {
+      return Key.getNextKey(forKey: self)
+    }
 
     fileprivate static func getNextKey(forKey key: Key) -> Key {
       switch key {
@@ -26,7 +30,7 @@ struct CaptionPresetLinePositions {
     }
   }
 
-  public class Iterator {
+  class Iterator {
     public var key: Key
 
     public init(key: Key) {

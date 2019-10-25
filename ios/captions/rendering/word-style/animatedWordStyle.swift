@@ -3,47 +3,46 @@ import UIKit
 
 fileprivate let ANIM_FADE_IN_OUT_DURATION = CFTimeInterval(0.25)
 
-func renderAnimatedWordStyle(
-  layer: CALayer,
-  key: CaptionRowKey,
-  map: CaptionStringsMap,
-  duration: CFTimeInterval,
-  style: CaptionStyle
-) {
-  let layerName = "animatedWordStyleEffectLayer"
-  let sublayer = CALayer()
-  sublayer.name = layerName
-  let bounds = CaptionSizingUtil.layoutForText(
-    originalBounds: layer.bounds,
-    textAlignment: style.textAlignment
-  )
-  sublayer.anchorPoint = bounds.anchorPoint
-  sublayer.position = bounds.position
-  sublayer.bounds = bounds.toBounds
-  guard let rowSegments = map.segmentsByRow[key] else {
-    return
-  }
-  for (index, segments) in rowSegments.enumerated() {
-    let textLayer = createTextLayer(
-      key: key,
-      segments: segments,
-      map: map,
-      index: index,
-      parentLayer: sublayer,
-      style: style,
-      duration: duration
-    )
-    sublayer.addSublayer(textLayer)
-  }
-  layer.addSublayer(sublayer)
-}
+// func renderAnimatedWordStyle(
+//  layer: CALayer,
+//  key: CaptionRowKey,
+//  map: CaptionStringsMap,
+//  duration: CFTimeInterval,
+//  style: CaptionStyle
+// ) {
+//  let layerName = "animatedWordStyleEffectLayer"
+//  let sublayer = CALayer()
+//  sublayer.name = layerName
+//  let bounds = CaptionSizingUtil.layoutForText(
+//    originalBounds: layer.bounds,
+//    textAlignment: style.textAlignment
+//  )
+//  sublayer.anchorPoint = bounds.anchorPoint
+//  sublayer.position = bounds.position
+//  sublayer.bounds = bounds.toBounds
+//  guard let rowSegments = map.segmentsByRow[key] else {
+//    return
+//  }
+//  for (index, segments) in rowSegments.enumerated() {
+//    let textLayer = createTextLayer(
+//      key: key,
+//      segments: segments,
+//      map: map,
+//      index: index,
+//      parentLayer: sublayer,
+//      style: style,
+//      duration: duration
+//    )
+//    sublayer.addSublayer(textLayer)
+//  }
+//  layer.addSublayer(sublayer)
+// }
 
-fileprivate func createTextLayer(
+func makeAnimatedWordTextStyleLayer(
   key: CaptionRowKey,
   segments: [CaptionStringSegment],
   map: CaptionStringsMap,
-  index: Int,
-  parentLayer: CALayer,
+  layer: CALayer,
   style: CaptionStyle,
   duration: CFTimeInterval
 ) -> CALayer {
@@ -51,8 +50,8 @@ fileprivate func createTextLayer(
   let attributedString = NSAttributedString(string: str, attributes: stringAttributes(for: style))
   let whitespaceCharacterSize = stringSize(matchingAttributesOf: attributedString, string: " ")
   let textSize = attributedString.size()
-  let textYOffset = (parentLayer.frame.height - textSize.height) / 2
-  let textXOffset = textHorizontalOffset(textWidth: textSize.width, parentLayerWidth: parentLayer.frame.width, textAlignment: style.textAlignment)
+  let textYOffset = (layer.frame.height - textSize.height) / 2
+  let textXOffset = textHorizontalOffset(textWidth: textSize.width, parentLayerWidth: layer.frame.width, textAlignment: style.textAlignment)
   let textFrame = CGRect(origin: CGPoint(x: textXOffset, y: textYOffset), size: textSize)
   let parentLayer = CenteredTextLayer()
   parentLayer.contentsScale = UIScreen.main.scale
@@ -78,15 +77,13 @@ fileprivate func createTextLayer(
     parentLayer.addSublayer(textLayer)
     textLayer.opacity = 0
     let wordAnimations = createWordAnimations(
-      key: key,
-      index: index,
       timestamp: segment.timestamp,
       duration: duration
     )
     textLayer.add(wordAnimations, forKey: "textLayerWordAnimation")
   }
   parentLayer.opacity = 0
-  let textAnimation = createTextAnimations(map: map, key: key, index: index, duration: duration)
+  let textAnimation = createTextAnimations(map: map, key: key, duration: duration)
   parentLayer.removeAnimation(forKey: "textLayerLineAnimation")
   parentLayer.add(textAnimation, forKey: "textLayerLineAnimation")
   return parentLayer
@@ -117,13 +114,13 @@ fileprivate func textHorizontalOffset(
   }
 }
 
-fileprivate func createTextAnimations(map: CaptionStringsMap, key: CaptionRowKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
+fileprivate func createTextAnimations(map: CaptionStringsMap, key: CaptionRowKey, duration: CFTimeInterval) -> CAAnimationGroup {
   let builder = CaptionAnimation.Builder()
   builder.insert(
     in: [FadeInAnimationStep()],
     center: [],
     out: [FadeOutAnimationStep()],
-    index: index,
+    index: key.index,
     key: key
   )
   let group = CAAnimationGroup()
@@ -136,7 +133,7 @@ fileprivate func createTextAnimations(map: CaptionStringsMap, key: CaptionRowKey
   return group
 }
 
-fileprivate func createWordAnimations(key _: CaptionRowKey, index _: Int, timestamp: CFTimeInterval, duration: CFTimeInterval) -> CAAnimationGroup {
+fileprivate func createWordAnimations(timestamp: CFTimeInterval, duration: CFTimeInterval) -> CAAnimationGroup {
   let beginTime = clamp(timestamp - ANIM_FADE_IN_OUT_DURATION, from: 0, to: timestamp)
   let group = CAAnimationGroup()
   group.repeatCount = .greatestFiniteMagnitude

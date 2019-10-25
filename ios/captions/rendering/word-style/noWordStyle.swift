@@ -1,52 +1,25 @@
 import AVFoundation
 import UIKit
 
-func renderNoWordStyle(
-  layer: CALayer,
-  key: CaptionRowKey,
-  map: CaptionStringsMap,
-  duration: CFTimeInterval,
-  style: CaptionStyle
-) {
-  let sublayer = CALayer()
-  let bounds = CaptionSizingUtil.layoutForText(
-    originalBounds: layer.bounds,
+func makeNoWordStyleTextStyleLayer(style: CaptionStyle, layer: CALayer, stringSegments: [CaptionStringSegment]) -> CALayer {
+  let segmentString = string(from: stringSegments)
+  let attributes = stringAttributes(for: style)
+  let attributedString = NSAttributedString(string: segmentString, attributes: attributes)
+  let textLayer = createTextLayer(
+    attributedString: attributedString,
+    layer: layer,
     textAlignment: style.textAlignment
   )
-  sublayer.anchorPoint = bounds.anchorPoint
-  sublayer.position = bounds.position
-  sublayer.bounds = bounds.toBounds
-  guard let rowSegments = map.segmentsByRow[key] else {
-    return
-  }
-  for (index, segments) in rowSegments.enumerated() {
-    let segmentString = string(from: segments)
-    let attributes = stringAttributes(for: style)
-    let attributedString = NSAttributedString(string: segmentString, attributes: attributes)
-    let textLayer = createTextLayer(
-      map: map,
-      key: key,
-      attributedString: attributedString,
-      index: index,
-      layer: sublayer,
-      textAlignment: style.textAlignment,
-      duration: duration
-    )
-    textLayer.displayIfNeeded()
-    textLayer.layoutIfNeeded()
-    sublayer.addSublayer(textLayer)
-  }
-  layer.addSublayer(sublayer)
+  textLayer.displayIfNeeded()
+  textLayer.layoutIfNeeded()
+  layer.addSublayer(textLayer)
+  return textLayer
 }
 
 fileprivate func createTextLayer(
-  map: CaptionStringsMap,
-  key: CaptionRowKey,
   attributedString: NSAttributedString,
-  index: Int,
   layer: CALayer,
-  textAlignment: CaptionTextAlignment,
-  duration: CFTimeInterval
+  textAlignment: CaptionTextAlignment
 ) -> CATextLayer {
   let textLayer = CATextLayer()
   textLayer.contentsScale = UIScreen.main.scale
@@ -68,9 +41,6 @@ fileprivate func createTextLayer(
   textLayer.shadowOffset = CGSize(width: 0.0, height: textSize.height / 25)
   textLayer.string = attributedString
   textLayer.alignmentMode = textAlignment.textLayerAlignmentMode()
-  textLayer.opacity = 0
-  let textAnimation = createTextAnimations(map: map, key: key, index: index, duration: duration)
-  textLayer.add(textAnimation, forKey: nil)
   return textLayer
 }
 
@@ -83,23 +53,4 @@ fileprivate func textHorizontalOffset(textWidth: CGFloat, parentLayerWidth paren
   case .right:
     return parentWidth - textWidth
   }
-}
-
-fileprivate func createTextAnimations(map: CaptionStringsMap, key: CaptionRowKey, index: Int, duration: CFTimeInterval) -> CAAnimationGroup {
-  let group = CAAnimationGroup()
-  group.repeatCount = .greatestFiniteMagnitude
-  let builder = CaptionAnimation.Builder()
-  builder.insert(
-    in: [FadeInAnimationStep()],
-    center: [],
-    out: [FadeOutAnimationStep()],
-    index: index,
-    key: key
-  )
-  group.animations = builder.build(withMap: map)
-  group.duration = duration
-  group.isRemovedOnCompletion = false
-  group.fillMode = .forwards
-  group.beginTime = AVCoreAnimationBeginTimeAtZero
-  return group
 }

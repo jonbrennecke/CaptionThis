@@ -14,11 +14,11 @@ typealias LineStyleRenderFunction = (
   _ orderedSegments: OrderedCaptionStringSegmentRows
 ) -> Void
 
-func render(lineStyle: CaptionLineStyle) -> LineStyleRenderFunction {
-  switch lineStyle {
-  case .fadeInOut:
-    return renderFadeInOutLineStyle
-  case .translateY:
-    return renderTranslateYLineStyle
-  }
-}
+// func render(lineStyle: CaptionLineStyle) -> LineStyleRenderFunction {
+//  switch lineStyle {
+//  case .fadeInOut:
+//    return renderFadeInOutLineStyle
+//  case .translateY:
+//    return renderTranslateYLineStyle
+//  }
+// }

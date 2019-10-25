@@ -2,7 +2,7 @@ import Foundation
 
 typealias CaptionStringSegment = Timed<NSAttributedString>
 
-typealias CaptionStringSegmentRow = Array<CaptionStringSegment>
+typealias CaptionStringSegmentRow = [CaptionStringSegment]
 
 typealias OrderedCaptionStringSegmentRows = Array<Timed<Array<CaptionStringSegmentRow>>>
 
@@ -65,7 +65,7 @@ func makeOrderedCaptionStringSegmentRows(
   var orderedCaptionStringSegments = OrderedCaptionStringSegmentRows()
   for i in stride(from: 0, to: rows.count, by: numberOfRowsToDisplay) {
     var rowsAtIndex = Array<CaptionStringSegmentRow>()
-    for j in i..<i+numberOfRowsToDisplay {
+    for j in i ..< i + numberOfRowsToDisplay {
       let row = rows[j]
       rowsAtIndex.append(row)
     }

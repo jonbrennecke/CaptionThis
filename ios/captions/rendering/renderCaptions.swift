@@ -44,22 +44,17 @@ func renderCaptions(
     style: style,
     keys: rowKeys
   )
-  map.segmentsByRow.forEach { key, _ in
-    render(lineStyle: style.lineStyle)(
-      rowLayers.get(byKey: key),
-      key,
-      map,
-      duration,
-      orderedSegments
-    )
-    render(wordStyle: style.wordStyle)(
-      rowLayers.get(byKey: key),
-      key,
-      map,
-      duration,
-      style
-    )
+  let getLayerByRow = { (rowKey: CaptionRowKey) -> CALayer in
+    rowLayers.get(byKey: rowKey)
   }
+  renderFadeInOutLineStyle(
+    style: style,
+    duration: duration,
+    getLayerByRow: getLayerByRow,
+    orderedSegments: orderedSegments,
+    map: map
+  )
+
   let getSizeOfRow = { (rowKey: CaptionRowKey) -> CGSize in
     rowSizes[rowKey]!
   }
