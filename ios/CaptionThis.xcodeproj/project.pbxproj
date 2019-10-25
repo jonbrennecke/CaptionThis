@@ -127,14 +127,12 @@
 		FCF51FBC222B55480066D81B /* lineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBB222B55480066D81B /* lineStyle.swift */; };
 		FCF51FC0222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FBF222B5A1F0066D81B /* RCTConvert+CaptionTextAlignment.m */; };
 		FCF51FC8222B62C60066D81B /* RCTConvert+CaptionLineStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF51FC7222B62C60066D81B /* RCTConvert+CaptionLineStyle.m */; };
-		FCFBDFA322A6D03F0059D452 /* effectUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFA222A6D03F0059D452 /* effectUtils.swift */; };
 		FCFBDFA522A715BA0059D452 /* wordStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFA422A715BA0059D452 /* wordStyle.swift */; };
 		FCFBDFAD22A72DD10059D452 /* translateYLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFAC22A72DD10059D452 /* translateYLineStyle.swift */; };
 		FCFBDFAF22A72DF70059D452 /* fadeInOutLineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFAE22A72DF70059D452 /* fadeInOutLineStyle.swift */; };
 		FCFBDFB422A7749F0059D452 /* backgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB322A7749F0059D452 /* backgroundStyle.swift */; };
 		FCFBDFB622A775870059D452 /* gradientBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB522A775870059D452 /* gradientBackgroundStyle.swift */; };
 		FCFBDFB822A775B50059D452 /* solidBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB722A775B50059D452 /* solidBackgroundStyle.swift */; };
-		FCFBDFBA22A7768A0059D452 /* layerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFB922A7768A0059D452 /* layerUtils.swift */; };
 		FCFBDFBC22A78C5D0059D452 /* CaptionTextAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBDFBB22A78C5D0059D452 /* CaptionTextAlignment.swift */; };
 		FCFBE02022A82A400059D452 /* renderCaptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE01F22A82A400059D452 /* renderCaptions.swift */; };
 		FCFBE02222A8324B0059D452 /* CaptionRowKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */; };
@@ -768,14 +766,12 @@
 		FCF51FC1222B5AA30066D81B /* RCTConvert+CaptionTextAlignment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionTextAlignment.h"; sourceTree = "<group>"; };
 		FCF51FC6222B62B90066D81B /* RCTConvert+CaptionLineStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionLineStyle.h"; sourceTree = "<group>"; };
 		FCF51FC7222B62C60066D81B /* RCTConvert+CaptionLineStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionLineStyle.m"; sourceTree = "<group>"; };
-		FCFBDFA222A6D03F0059D452 /* effectUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = effectUtils.swift; sourceTree = "<group>"; };
 		FCFBDFA422A715BA0059D452 /* wordStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wordStyle.swift; sourceTree = "<group>"; };
 		FCFBDFAC22A72DD10059D452 /* translateYLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = translateYLineStyle.swift; sourceTree = "<group>"; };
 		FCFBDFAE22A72DF70059D452 /* fadeInOutLineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fadeInOutLineStyle.swift; sourceTree = "<group>"; };
 		FCFBDFB322A7749F0059D452 /* backgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = backgroundStyle.swift; sourceTree = "<group>"; };
 		FCFBDFB522A775870059D452 /* gradientBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gradientBackgroundStyle.swift; sourceTree = "<group>"; };
 		FCFBDFB722A775B50059D452 /* solidBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = solidBackgroundStyle.swift; sourceTree = "<group>"; };
-		FCFBDFB922A7768A0059D452 /* layerUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = layerUtils.swift; sourceTree = "<group>"; };
 		FCFBDFBB22A78C5D0059D452 /* CaptionTextAlignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionTextAlignment.swift; sourceTree = "<group>"; };
 		FCFBE01F22A82A400059D452 /* renderCaptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = renderCaptions.swift; sourceTree = "<group>"; };
 		FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionRowKey.swift; sourceTree = "<group>"; };
@@ -1146,8 +1142,6 @@
 				FC4608392253CCB700E34AD4 /* background-style */,
 				FC4608052253CCA300E34AD4 /* line-style */,
 				FC4607D42252CA0A00E34AD4 /* word-style */,
-				FCFBDFA222A6D03F0059D452 /* effectUtils.swift */,
-				FCFBDFB922A7768A0059D452 /* layerUtils.swift */,
 				FCFBE01F22A82A400059D452 /* renderCaptions.swift */,
 				FCFBDFBB22A78C5D0059D452 /* CaptionTextAlignment.swift */,
 				FCFBE02122A8324B0059D452 /* CaptionRowKey.swift */,
@@ -2270,7 +2264,6 @@
 				FCFBE02422A832AD0059D452 /* CaptionRowLayers.swift in Sources */,
 				FCF51FC8222B62C60066D81B /* RCTConvert+CaptionLineStyle.m in Sources */,
 				FCF51FBC222B55480066D81B /* lineStyle.swift in Sources */,
-				FCFBDFA322A6D03F0059D452 /* effectUtils.swift in Sources */,
 				FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */,
 				FC3A07D02256957800057426 /* clamp.swift in Sources */,
 				FC388F8E2231B41C001CE3A3 /* CaptionStringsMap.swift in Sources */,
@@ -2284,7 +2277,6 @@
 				FCA3971821DC93AF00347CAB /* constants.swift in Sources */,
 				FCC486602269048200719F69 /* PlaybackController.swift in Sources */,
 				FCB392F2220CCD0900403154 /* Result.swift in Sources */,
-				FCFBDFBA22A7768A0059D452 /* layerUtils.swift in Sources */,
 				FC19138C2262908D008C8BA0 /* VideoAnimationLayerLayout.swift in Sources */,
 				FCFBDFBC22A78C5D0059D452 /* CaptionTextAlignment.swift in Sources */,
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,
