@@ -1,24 +1,27 @@
 import AVFoundation
 import UIKit
 
-func makeNoWordStyleTextStyleLayer(style: CaptionStyle, layer: CALayer, stringSegments: [CaptionStringSegment]) -> CALayer {
+func makeDefaultTextStyleLayer(
+  within bounds: CGRect,
+  style: CaptionStyle,
+  stringSegments: [CaptionStringSegment]
+) -> CALayer {
   let segmentString = string(from: stringSegments)
   let attributes = stringAttributes(for: style)
   let attributedString = NSAttributedString(string: segmentString, attributes: attributes)
   let textLayer = createTextLayer(
+    within: bounds,
     attributedString: attributedString,
-    layer: layer,
     textAlignment: style.textAlignment
   )
   textLayer.displayIfNeeded()
   textLayer.layoutIfNeeded()
-  layer.addSublayer(textLayer)
   return textLayer
 }
 
 fileprivate func createTextLayer(
+  within bounds: CGRect,
   attributedString: NSAttributedString,
-  layer: CALayer,
   textAlignment: CaptionTextAlignment
 ) -> CATextLayer {
   let textLayer = CATextLayer()
@@ -27,10 +30,10 @@ fileprivate func createTextLayer(
   textLayer.allowsEdgeAntialiasing = true
   let textNaturalSize = attributedString.size()
   let textSize = CGSize(width: textNaturalSize.width + 5, height: textNaturalSize.height)
-  let textYOffset = (layer.frame.height - textSize.height) / 2
+  let textYOffset = (bounds.height - textSize.height) / 2
   let textXOffset = textHorizontalOffset(
     textWidth: textSize.width,
-    parentLayerWidth: layer.frame.width,
+    parentLayerWidth: bounds.width,
     textAlignment: textAlignment
   )
   let textFrame = CGRect(origin: CGPoint(x: textXOffset, y: textYOffset), size: textSize)

@@ -5,7 +5,6 @@ struct CaptionRowLayers {
 
   private static func createLayer() -> CALayer {
     let layer = CALayer()
-    layer.opacity = 0
     layer.contentsScale = UIScreen.main.scale
     return layer
   }

@@ -44,17 +44,24 @@ func renderCaptions(
     style: style,
     keys: rowKeys
   )
-  let getLayerByRow = { (rowKey: CaptionRowKey) -> CALayer in
-    rowLayers.get(byKey: rowKey)
+  for timedRows in orderedSegments {
+    for (index, stringSegments) in timedRows.data.enumerated() {
+      let rowKey = CaptionRowKey.from(index: index)
+      let rowLayer = rowLayers.get(byKey: rowKey)
+      let positions = CaptionPresetLinePositions(layer: rowLayer, parentLayer: layer)
+      let lineStyleLayer = makeFadeInOutLineStyleLayer(
+        within: rowLayer.frame,
+        positions: positions,
+        style: style,
+        duration: duration,
+        rowKey: rowKey,
+        stringSegments: stringSegments,
+        map: map,
+        timedRows: timedRows
+      )
+      rowLayer.addSublayer(lineStyleLayer)
+    }
   }
-  renderFadeInOutLineStyle(
-    style: style,
-    duration: duration,
-    getLayerByRow: getLayerByRow,
-    orderedSegments: orderedSegments,
-    map: map
-  )
-
   let getSizeOfRow = { (rowKey: CaptionRowKey) -> CGSize in
     rowSizes[rowKey]!
   }

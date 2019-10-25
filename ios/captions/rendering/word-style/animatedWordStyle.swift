@@ -3,46 +3,11 @@ import UIKit
 
 fileprivate let ANIM_FADE_IN_OUT_DURATION = CFTimeInterval(0.25)
 
-// func renderAnimatedWordStyle(
-//  layer: CALayer,
-//  key: CaptionRowKey,
-//  map: CaptionStringsMap,
-//  duration: CFTimeInterval,
-//  style: CaptionStyle
-// ) {
-//  let layerName = "animatedWordStyleEffectLayer"
-//  let sublayer = CALayer()
-//  sublayer.name = layerName
-//  let bounds = CaptionSizingUtil.layoutForText(
-//    originalBounds: layer.bounds,
-//    textAlignment: style.textAlignment
-//  )
-//  sublayer.anchorPoint = bounds.anchorPoint
-//  sublayer.position = bounds.position
-//  sublayer.bounds = bounds.toBounds
-//  guard let rowSegments = map.segmentsByRow[key] else {
-//    return
-//  }
-//  for (index, segments) in rowSegments.enumerated() {
-//    let textLayer = createTextLayer(
-//      key: key,
-//      segments: segments,
-//      map: map,
-//      index: index,
-//      parentLayer: sublayer,
-//      style: style,
-//      duration: duration
-//    )
-//    sublayer.addSublayer(textLayer)
-//  }
-//  layer.addSublayer(sublayer)
-// }
-
-func makeAnimatedWordTextStyleLayer(
+func makeAnimatedWordStyleLayer(
+  within bounds: CGRect,
   key: CaptionRowKey,
   segments: [CaptionStringSegment],
   map: CaptionStringsMap,
-  layer: CALayer,
   style: CaptionStyle,
   duration: CFTimeInterval
 ) -> CALayer {
@@ -50,8 +15,8 @@ func makeAnimatedWordTextStyleLayer(
   let attributedString = NSAttributedString(string: str, attributes: stringAttributes(for: style))
   let whitespaceCharacterSize = stringSize(matchingAttributesOf: attributedString, string: " ")
   let textSize = attributedString.size()
-  let textYOffset = (layer.frame.height - textSize.height) / 2
-  let textXOffset = textHorizontalOffset(textWidth: textSize.width, parentLayerWidth: layer.frame.width, textAlignment: style.textAlignment)
+  let textYOffset = (bounds.height - textSize.height) / 2
+  let textXOffset = textHorizontalOffset(textWidth: textSize.width, parentLayerWidth: bounds.width, textAlignment: style.textAlignment)
   let textFrame = CGRect(origin: CGPoint(x: textXOffset, y: textYOffset), size: textSize)
   let parentLayer = CenteredTextLayer()
   parentLayer.contentsScale = UIScreen.main.scale

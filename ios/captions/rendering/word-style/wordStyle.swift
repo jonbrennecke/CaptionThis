@@ -6,19 +6,29 @@ enum CaptionWordStyle: Int {
   case none
 }
 
-//typealias WordStyleRenderFunction = (
-//  _ layer: CALayer,
-//  _ key: CaptionRowKey,
-//  _ map: CaptionStringsMap,
-//  _ duration: CFTimeInterval,
-//  _ style: CaptionStyle
-// ) -> Void
-//
-// func render(wordStyle: CaptionWordStyle) -> WordStyleRenderFunction {
-//  switch wordStyle {
-//  case .animated:
-//    return renderAnimatedWordStyle
-//  case .none:
-//    return renderNoWordStyle
-//  }
-// }
+func makeWordStyleLayer(
+  within bounds: CGRect,
+  rowKey: CaptionRowKey,
+  stringSegments: [CaptionStringSegment],
+  style: CaptionStyle,
+  map: CaptionStringsMap,
+  duration: CFTimeInterval
+) -> CALayer {
+  switch style.wordStyle {
+  case .animated:
+    return makeAnimatedWordStyleLayer(
+      within: bounds,
+      key: rowKey,
+      segments: stringSegments,
+      map: map,
+      style: style,
+      duration: duration
+    )
+  default:
+    return makeDefaultTextStyleLayer(
+      within: bounds,
+      style: style,
+      stringSegments: stringSegments
+    )
+  }
+}
