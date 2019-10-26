@@ -13,7 +13,7 @@ func renderLineStyle(
   layer: CALayer,
   duration: CFTimeInterval,
   rowSize: CGSize,
-  rowKeys: [CaptionRowKey],
+  numberOfRows: Int,
   stringSegmentRows: [CaptionStringSegmentRow],
   map: CaptionStringsMap
 ) {
@@ -37,7 +37,7 @@ func renderLineStyle(
     // TODO: rename "orderedSegments" to "groupedSegments" or similar
     let orderedSegments = makeOrderedCaptionStringSegmentRows(
       rows: stringSegmentRows,
-      numberOfRowsToDisplay: rowKeys.count
+      numberOfRowsToDisplay: numberOfRows
     )
     for timedRows in orderedSegments {
       for (index, stringSegments) in timedRows.data.enumerated() {

@@ -28,7 +28,7 @@ func renderCaptions(
     layer: layer,
     duration: duration,
     rowSize: rowSize,
-    rowKeys: rowKeys,
+    numberOfRows: rowKeys.count,
     stringSegmentRows: stringSegmentRows,
     map: map
   )
