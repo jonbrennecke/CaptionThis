@@ -4,106 +4,11 @@ fileprivate let ANIM_IN_OUT_DURATION = CFTimeInterval(0.5)
 fileprivate let ANIM_FINAL_LINE_DURATION = CFTimeInterval(2)
 
 struct CaptionAnimation {
-  private let animationsIn: [AnimationBuilderStep]
-  private let animationsCenter: [AnimationBuilderStep]
-  private let animationsOut: [AnimationBuilderStep]
-  private let index: Int
-  private let key: CaptionRowKey
-
-  init(
-    in animationsIn: [AnimationBuilderStep],
-    center animationsCenter: [AnimationBuilderStep],
-    out animationsOut: [AnimationBuilderStep],
-    index: Int,
-    key: CaptionRowKey
-  ) {
-    self.animationsIn = animationsIn
-    self.animationsCenter = animationsCenter
-    self.animationsOut = animationsOut
-    self.index = index
-    self.key = key
-  }
-
-  public class Builder {
-    private var animations = [CaptionAnimation]()
-
-    public func insert(
-      in animationsIn: [AnimationBuilderStep],
-      center animationsCenter: [AnimationBuilderStep],
-      out animationsOut: [AnimationBuilderStep],
-      index: Int,
-      key: CaptionRowKey
-    ) {
-      let animation = CaptionAnimation(
-        in: animationsIn,
-        center: animationsCenter,
-        out: animationsOut,
-        index: index,
-        key: key
-      )
-      animations.append(animation)
-    }
-
-    public func next(key: CaptionRowKey, index: Int) -> (key: CaptionRowKey, index: Int) {
-      switch key.nextKey {
-      case .a:
-        return (key: .a, index: index + 1)
-      case .b:
-        return (key: .b, index: index)
-      case .c:
-        return (key: .c, index: index)
-      }
-    }
-
-    public func build(withMap map: CaptionStringsMap) -> [CAAnimation] {
-      let nestedAnimations = animations.map { animation -> [CAAnimation] in
-        guard let lines = map.segmentsByRow[animation.key] else {
-          return []
-        }
-        let line = lines[animation.index]
-        guard let timedLine = Timed.from(array: line) else {
-          return []
-        }
-        let (key: nextKey, index: nextIndex) = next(key: animation.key, index: animation.index)
-        let (key: lastKey, index: lastIndex) = next(key: nextKey, index: nextIndex)
-
-        guard let nextLineTimestamp: CFTimeInterval = { key, index in
-          if let lines = map.segmentsByRow[key], index < lines.count {
-            return Timed.from(array: lines[index])?.timestamp
-          }
-          return timedLine.endTimestamp
-        }(nextKey, nextIndex) else {
-          return []
-        }
-
-        guard let lastLineTimestamp: CFTimeInterval = { key, index, previousKey, previousIndex in
-          if let lines = map.segmentsByRow[key], index < lines.count {
-            return Timed.from(array: lines[index])?.timestamp
-          }
-          if let lines = map.segmentsByRow[previousKey], previousIndex < lines.count {
-            return Timed.from(array: lines[previousIndex])?.endTimestamp
-          }
-          return timedLine.endTimestamp + ANIM_FINAL_LINE_DURATION
-        }(lastKey, lastIndex, nextKey, nextIndex) else {
-          return []
-        }
-
-        let clampFn = { timestamp in
-          clamp(timestamp - ANIM_IN_OUT_DURATION, from: 0, to: timestamp)
-        }
-
-        let animationsIn = animation.animationsIn.map { $0.animate(at: clampFn(timedLine.timestamp), duration: ANIM_IN_OUT_DURATION) }
-        let animationsCenter = animation.animationsCenter.map { $0.animate(at: clampFn(nextLineTimestamp), duration: ANIM_IN_OUT_DURATION) }
-        let animationsOut = animation.animationsOut.map { $0.animate(at: clampFn(lastLineTimestamp), duration: ANIM_IN_OUT_DURATION) }
-        return Array([
-          animationsIn,
-          animationsCenter,
-          animationsOut,
-        ].joined())
-      }
-      return Array(nestedAnimations.joined())
-    }
-  }
+  let animationsIn: [AnimationBuilderStep]
+  let animationsCenter: [AnimationBuilderStep]
+  let animationsOut: [AnimationBuilderStep]
+  let index: Int
+  let key: CaptionRowKey
 }
 
 protocol AnimationBuilderStep {
@@ -149,5 +54,71 @@ class PositionAnimationStep: AnimationBuilderStep {
 
   func animate(at beginTime: CFTimeInterval, duration: CFTimeInterval) -> CAAnimation {
     return AnimationUtil.animatePosition(from: fromPosition, to: toPosition, at: beginTime, duration: duration)
+  }
+}
+
+func build(animations: [CaptionAnimation], withMap map: CaptionStringsMap) -> [CAAnimation] {
+  let nestedAnimations = animations.map { animation -> [CAAnimation] in
+    guard let lines = map.segmentsByRow[animation.key] else {
+      return []
+    }
+    let line = lines[animation.index]
+    guard let timedLine = Timed.from(array: line) else {
+      return []
+    }
+    let (key: nextKey, index: nextIndex) = next(key: animation.key, index: animation.index)
+    let (key: lastKey, index: lastIndex) = next(key: nextKey, index: nextIndex)
+
+    guard let nextLineTimestamp: CFTimeInterval = { key, index in
+      if let lines = map.segmentsByRow[key], index < lines.count {
+        return Timed.from(array: lines[index])?.timestamp
+      }
+      return timedLine.endTimestamp
+    }(nextKey, nextIndex) else {
+      return []
+    }
+
+    guard let lastLineTimestamp: CFTimeInterval = { key, index, previousKey, previousIndex in
+      if let lines = map.segmentsByRow[key], index < lines.count {
+        return Timed.from(array: lines[index])?.timestamp
+      }
+      if let lines = map.segmentsByRow[previousKey], previousIndex < lines.count {
+        return Timed.from(array: lines[previousIndex])?.endTimestamp
+      }
+      return timedLine.endTimestamp + ANIM_FINAL_LINE_DURATION
+    }(lastKey, lastIndex, nextKey, nextIndex) else {
+      return []
+    }
+
+    let clampFn = { timestamp in
+      clamp(timestamp - ANIM_IN_OUT_DURATION, from: 0, to: timestamp)
+    }
+
+    let animationsIn = animation.animationsIn.map {
+      $0.animate(at: clampFn(timedLine.timestamp), duration: ANIM_IN_OUT_DURATION)
+    }
+    let animationsCenter = animation.animationsCenter.map {
+      $0.animate(at: clampFn(nextLineTimestamp), duration: ANIM_IN_OUT_DURATION)
+    }
+    let animationsOut = animation.animationsOut.map {
+      $0.animate(at: clampFn(lastLineTimestamp), duration: ANIM_IN_OUT_DURATION)
+    }
+    return Array([
+      animationsIn,
+      animationsCenter,
+      animationsOut,
+    ].joined())
+  }
+  return Array(nestedAnimations.joined())
+}
+
+fileprivate func next(key: CaptionRowKey, index: Int) -> (key: CaptionRowKey, index: Int) {
+  switch key.nextKey {
+  case .a:
+    return (key: .a, index: index + 1)
+  case .b:
+    return (key: .b, index: index)
+  case .c:
+    return (key: .c, index: index)
   }
 }

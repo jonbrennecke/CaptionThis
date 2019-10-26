@@ -110,13 +110,10 @@ class VideoExportTask {
     )
     let frame = createCaptionLayerFrame(videoSize: composition.videoSize, heightRatio: heightRatio)
     let captionLayer = CaptionLayer()
-    let rowLayers = CaptionRowLayers()
-    rowLayers.each { captionLayer.addSublayer($1) }
     captionLayer.frame = frame
     let backgroundHeight = Float((CAPTION_VIEW_HEIGHT_PORTRAIT + CAPTION_VIEW_OFFSET_FROM_BOTTOM) * heightRatio)
     renderCaptions(
       layer: captionLayer,
-      rowLayers: rowLayers,
       style: exportStyle,
       textSegments: textSegments,
       duration: duration,

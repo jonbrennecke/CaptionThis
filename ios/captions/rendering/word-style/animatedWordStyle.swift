@@ -80,17 +80,18 @@ fileprivate func textHorizontalOffset(
 }
 
 fileprivate func createTextAnimations(map: CaptionStringsMap, key: CaptionRowKey, duration: CFTimeInterval) -> CAAnimationGroup {
-  let builder = CaptionAnimation.Builder()
-  builder.insert(
-    in: [FadeInAnimationStep()],
-    center: [],
-    out: [FadeOutAnimationStep()],
-    index: key.index,
-    key: key
-  )
+  let animations = [
+    CaptionAnimation(
+      animationsIn: [FadeInAnimationStep()],
+      animationsCenter: [],
+      animationsOut: [FadeOutAnimationStep()],
+      index: key.index,
+      key: key
+    ),
+  ]
   let group = CAAnimationGroup()
   group.repeatCount = .greatestFiniteMagnitude
-  group.animations = builder.build(withMap: map)
+  group.animations = build(animations: animations, withMap: map)
   group.duration = duration
   group.isRemovedOnCompletion = false
   group.fillMode = .forwards

@@ -3,7 +3,6 @@ import UIKit
 @objc
 class CaptionPresetView: UIView {
   private var presetLayer: CaptionPresetLayer!
-  private let rowLayers = CaptionRowLayers()
 
   private var style = CaptionPresetStyle(
     wordStyle: .none,
@@ -181,7 +180,6 @@ class CaptionPresetView: UIView {
     presetLayer.frame = bounds
     layer.sublayers = nil
     layer.addSublayer(presetLayer)
-    rowLayers.each { presetLayer.addSublayer($1) }
   }
 
   private static let captionPresetFixedSize = CGSize(width: 75, height: 75)
@@ -193,7 +191,6 @@ class CaptionPresetView: UIView {
     }
     renderCaptions(
       layer: presetLayer,
-      rowLayers: rowLayers,
       style: style,
       textSegments: textSegments,
       duration: duration,

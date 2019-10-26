@@ -80,18 +80,15 @@ func makeOrderedCaptionStringSegmentRows(
 
 func makeCaptionStringSegmentRows(
   textSegments: [CaptionTextSegment],
-  rowSizes: [CaptionRowKey: CGSize],
+  size: CGSize,
   style: CaptionStyle,
-  keys: [CaptionRowKey]
+  numberOfRows: Int
 ) -> Array<CaptionStringSegmentRow> {
   let attributes = stringAttributes(for: style)
   var mutableTextSegments = textSegments
   var captionStringSegments = Array<Array<CaptionStringSegment>>()
   while mutableTextSegments.count > 0 {
-    for key in keys {
-      guard let size = rowSizes[key] else {
-        continue
-      }
+    for _ in 0 ..< numberOfRows {
       let width = CaptionSizingUtil.textWidth(forLayerSize: size)
       guard case let (stringSegments?, remainingSegments) = fitNextLine(
         textSegments: mutableTextSegments,
@@ -109,36 +106,35 @@ func makeCaptionStringSegmentRows(
 
 struct CaptionStringsMap {
   let segmentsByRow: [CaptionRowKey: Array<CaptionStringSegmentRow>]
+}
 
-  public static func byFitting(
-    textSegments: [CaptionTextSegment],
-    rowSizes: [CaptionRowKey: CGSize],
-    style: CaptionStyle,
-    keys: [CaptionRowKey]
-  ) -> CaptionStringsMap {
-    let attributes = stringAttributes(for: style)
-    var segments = textSegments
-    var segmentsByRow = [CaptionRowKey: Array<Array<CaptionStringSegment>>]()
-    while segments.count > 0 {
-      for key in keys {
-        guard let size = rowSizes[key] else {
-          continue
-        }
-        let width = CaptionSizingUtil.textWidth(forLayerSize: size)
-        guard case let (lineSegments?, remainingSegments) = fitNextLine(textSegments: segments, width: width, attributes: attributes) else {
-          continue
-        }
-        segments = remainingSegments
-        if var values = segmentsByRow[key] {
-          values.append(lineSegments)
-          segmentsByRow[key] = values
-          continue
-        }
-        segmentsByRow[key] = [lineSegments]
+func makeCaptionStringsMap(
+  textSegments: [CaptionTextSegment],
+  size: CGSize,
+  style: CaptionStyle,
+  keys: [CaptionRowKey]
+) -> CaptionStringsMap {
+  let attributes = stringAttributes(for: style)
+  var segments = textSegments
+  var segmentsByRow = [CaptionRowKey: Array<Array<CaptionStringSegment>>]()
+  while segments.count > 0 {
+    for key in keys {
+      let width = CaptionSizingUtil.textWidth(forLayerSize: size)
+      guard case let (lineSegments?, remainingSegments) = fitNextLine(
+        textSegments: segments, width: width, attributes: attributes
+      ) else {
+        continue
       }
+      segments = remainingSegments
+      if var values = segmentsByRow[key] {
+        values.append(lineSegments)
+        segmentsByRow[key] = values
+        continue
+      }
+      segmentsByRow[key] = [lineSegments]
     }
-    return CaptionStringsMap(segmentsByRow: segmentsByRow)
   }
+  return CaptionStringsMap(segmentsByRow: segmentsByRow)
 }
 
 fileprivate func interpolate(segments: [CaptionTextSegment]) -> [CaptionTextSegment] {

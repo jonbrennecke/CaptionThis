@@ -2,8 +2,6 @@ import UIKit
 
 @objc(CaptionView)
 class CaptionView: UIView {
-  private var rowLayers = CaptionRowLayers()
-
   internal var state: PlaybackControllerState = .paused
 
   private var style = CaptionStyle(
@@ -191,11 +189,8 @@ class CaptionView: UIView {
       return
     }
     layer.sublayers = nil
-    rowLayers = CaptionRowLayers()
-    rowLayers.each { layer.addSublayer($1) }
     renderCaptions(
       layer: layer,
-      rowLayers: rowLayers,
       style: style,
       textSegments: textSegments,
       duration: duration,

@@ -49,13 +49,13 @@ struct CaptionPresetLinePositions {
   private let outOfFrameTopPosition: CGPoint
   private let outOfFrameBottomPosition: CGPoint
 
-  public init(layer: CALayer, parentLayer: CALayer) {
-    let inFrameMiddleY = parentLayer.frame.height / 2
-    let inFrameTopY = (parentLayer.frame.height - (layer.frame.height * BAR_SPACE_HEIGHT_FACTOR)) / 2
-    let inFrameBottomY = (parentLayer.frame.height + (layer.frame.height * BAR_SPACE_HEIGHT_FACTOR)) / 2
-    let outOfFrameTopY = -layer.frame.height
-    let outOfFrameBottomY = parentLayer.frame.height
-    let x = layer.position.x
+  public init(for layerFrame: CGSize, in parentFrame: CGSize) {
+    let inFrameMiddleY = parentFrame.height / 2
+    let inFrameTopY = (parentFrame.height - (layerFrame.height * BAR_SPACE_HEIGHT_FACTOR)) / 2
+    let inFrameBottomY = (parentFrame.height + (layerFrame.height * BAR_SPACE_HEIGHT_FACTOR)) / 2
+    let outOfFrameTopY = -parentFrame.height + layerFrame.height
+    let outOfFrameBottomY = parentFrame.height - layerFrame.height
+    let x = parentFrame.width / 2
     inFrameMiddlePosition = CGPoint(x: x, y: inFrameMiddleY)
     inFrameTopPosition = CGPoint(x: x, y: inFrameTopY)
     inFrameBottomPosition = CGPoint(x: x, y: inFrameBottomY)
