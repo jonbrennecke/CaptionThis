@@ -34,12 +34,11 @@ func renderLineStyle(
       }
     }
   case .fadeInOut:
-    // TODO: rename "orderedSegments" to "groupedSegments" or similar
-    let orderedSegments = makeOrderedCaptionStringSegmentRows(
+    let groupedSegments = makeGroupedCaptionStringSegmentRows(
       rows: stringSegmentRows,
       numberOfRowsToDisplay: numberOfRows
     )
-    for timedRows in orderedSegments {
+    for timedRows in groupedSegments {
       for (index, stringSegments) in timedRows.data.enumerated() {
         let rowKey = CaptionRowKey.from(index: index)
         let positions = CaptionPresetLinePositions(for: rowSize, in: layer.frame.size)

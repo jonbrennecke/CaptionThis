@@ -4,7 +4,7 @@ typealias CaptionStringSegment = Timed<NSAttributedString>
 
 typealias CaptionStringSegmentRow = [CaptionStringSegment]
 
-typealias OrderedCaptionStringSegmentRows = Array<Timed<Array<CaptionStringSegmentRow>>>
+typealias GroupedCaptionStringSegmentRows = Array<Timed<Array<CaptionStringSegmentRow>>>
 
 struct Timed<T> {
   let timestamp: CFTimeInterval
@@ -58,11 +58,11 @@ func stringAttributes(for style: CaptionStyle) -> [NSAttributedString.Key: Any] 
   ]
 }
 
-func makeOrderedCaptionStringSegmentRows(
+func makeGroupedCaptionStringSegmentRows(
   rows: Array<CaptionStringSegmentRow>,
   numberOfRowsToDisplay: Int
-) -> OrderedCaptionStringSegmentRows {
-  var orderedCaptionStringSegments = OrderedCaptionStringSegmentRows()
+) -> GroupedCaptionStringSegmentRows {
+  var groupedCaptionStringSegments = GroupedCaptionStringSegmentRows()
   for i in stride(from: 0, to: rows.count, by: numberOfRowsToDisplay) {
     var rowsAtIndex = Array<CaptionStringSegmentRow>()
     for j in i ..< i + numberOfRowsToDisplay {
@@ -72,10 +72,10 @@ func makeOrderedCaptionStringSegmentRows(
     let flattenedRows = rowsAtIndex.flatMap({ $0 })
     if let (timestamp, duration) = getTimestampAndTotalDuration(of: flattenedRows) {
       let timed = Timed(timestamp: timestamp, duration: duration, data: rowsAtIndex)
-      orderedCaptionStringSegments.append(timed)
+      groupedCaptionStringSegments.append(timed)
     }
   }
-  return orderedCaptionStringSegments
+  return groupedCaptionStringSegments
 }
 
 func makeCaptionStringSegmentRows(
