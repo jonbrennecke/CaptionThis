@@ -8,45 +8,55 @@ enum CaptionLineStyle: Int {
   case translateY
 }
 
-func makeLineStyleLayer(
-  within bounds: CGRect,
-  positions: CaptionPresetLinePositions,
+func renderLineStyle(
   style: CaptionStyle,
+  layer: CALayer,
   duration: CFTimeInterval,
-  rowKey: CaptionRowKey,
-  stringSegments: [CaptionStringSegment],
-  map: CaptionStringsMap,
-  timedRows: Timed<Array<CaptionStringSegmentRow>>
-) -> CALayer {
+  rowSize: CGSize,
+  rowKeys: [CaptionRowKey],
+  stringSegmentRows: [CaptionStringSegmentRow],
+  map: CaptionStringsMap
+) {
   switch style.lineStyle {
-  case .fadeInOut:
-    return makeFadeInOutLineStyleLayer(
-      within: bounds,
-      positions: positions,
-      style: style,
-      duration: duration,
-      rowKey: rowKey,
-      stringSegments: stringSegments,
-      map: map,
-      timedRows: timedRows
-    )
   case .translateY:
-    return CALayer()
-//    return makeTranslateUpLineStyleLayer(
-//      within: bounds,
-//      positions: positions,
-//      style: style,
-//      duration: duration,
-//      rowKey: rowKey,
-//      stringSegments: stringSegments,
-//      map: map,
-//      timedRows: timedRows
-//    )
+    let timedStringSegmentRows = stringSegmentRows.map({ Timed.from(array: $0) }).compactMap({ $0 })
+    for (index, _) in timedStringSegmentRows.enumerated() {
+      if let lineStyleLayer = makeTranslateUpLineStyleLayer(
+        rowSize: rowSize,
+        parentSize: layer.frame.size,
+        style: style,
+        duration: duration,
+        timedStringSegmentRows: timedStringSegmentRows,
+        index: index,
+        map: map
+      ) {
+        layer.addSublayer(lineStyleLayer)
+      }
+    }
+  case .fadeInOut:
+    // TODO: rename "orderedSegments" to "groupedSegments" or similar
+    let orderedSegments = makeOrderedCaptionStringSegmentRows(
+      rows: stringSegmentRows,
+      numberOfRowsToDisplay: rowKeys.count
+    )
+    for timedRows in orderedSegments {
+      for (index, stringSegments) in timedRows.data.enumerated() {
+        let rowKey = CaptionRowKey.from(index: index)
+        let positions = CaptionPresetLinePositions(for: rowSize, in: layer.frame.size)
+        let lineStyleLayer = makeFadeInOutLineStyleLayer(
+          within: layer.frame,
+          positions: positions,
+          style: style,
+          duration: duration,
+          rowKey: rowKey,
+          stringSegments: stringSegments,
+          map: map,
+          timedRows: timedRows
+        )
+        layer.addSublayer(lineStyleLayer)
+      }
+    }
   }
-}
-
-fileprivate func clamp(timestamp: CFTimeInterval) -> CFTimeInterval {
-  clamp(timestamp - ANIM_IN_OUT_DURATION, from: 0, to: timestamp)
 }
 
 func makeFadeInOutLineStyleLayer(
@@ -191,4 +201,8 @@ fileprivate func buildAnimations(
     )
   }
   return animations
+}
+
+fileprivate func clamp(timestamp: CFTimeInterval) -> CFTimeInterval {
+  clamp(timestamp - ANIM_IN_OUT_DURATION, from: 0, to: timestamp)
 }
