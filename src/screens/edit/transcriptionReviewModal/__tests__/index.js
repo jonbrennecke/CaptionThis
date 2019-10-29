@@ -187,7 +187,7 @@ describe('transformSegmentsByTextDiff', () => {
       changedText,
       segments
     );
-    console.log(transformedSegments)
+    console.log(transformedSegments);
     expect(first(transformedSegments).substring).toBe('the');
     expect(last(transformedSegments).substring).toBe('x');
     console.log(renderTextFromSegments(transformedSegments));
