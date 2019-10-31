@@ -86,7 +86,7 @@ class AudioUtil {
   }
 
   private static func createSampleBuffers(withAsset asset: AVAsset, _ sampleCallback: (CMSampleBuffer) -> Void) -> AudioUtilError? {
-    guard case let .ok(result) = createAssetReaderAndOutput(withAsset: asset) else {
+    guard case let .success(result) = createAssetReaderAndOutput(withAsset: asset) else {
       Debug.log(message: "Failed to create asset reader.")
       return .invalidAsset
     }
@@ -125,7 +125,7 @@ class AudioUtil {
     let audioAssetTracks = asset.tracks(withMediaType: .audio)
     guard let audioAssetTrack = audioAssetTracks.last else {
       Debug.log(message: "No audio track provided.")
-      return .err(.invalidAsset)
+      return .failure(.invalidAsset)
     }
     let assetReaderOutput = AVAssetReaderTrackOutput(track: audioAssetTrack, outputSettings: nil)
     assetReaderOutput.alwaysCopiesSampleData = false
@@ -134,13 +134,13 @@ class AudioUtil {
       let assetReader = try AVAssetReader(asset: asset)
       if !assetReader.canAdd(assetReaderOutput) {
         Debug.log(message: "Asset reader cannot add output.")
-        return .err(.invalidAssetReaderState)
+        return .failure(.invalidAssetReaderState)
       }
       assetReader.add(assetReaderOutput)
-      return .ok((assetReader, assetReaderOutput))
+      return .success((assetReader, assetReaderOutput))
     } catch {
       Debug.log(error: error)
-      return .err(.invalidAsset)
+      return .failure(.invalidAsset)
     }
   }
 

@@ -142,11 +142,11 @@ class VideoExportTask {
   private func createVideoAsset(forURL url: URL) {
     PhotosAlbumUtil.withAlbum { result in
       switch result {
-      case let .err(error):
+      case let .failure(error):
         Debug.log(message: "Failed to find/create album")
         self.delegate?.videoExportTask(didEncounterError: .failedToFindOrCreateAlbumWithError(error))
         break
-      case let .ok(album):
+      case let .success(album):
         var assetPlaceholder: PHObjectPlaceholder?
         PHPhotoLibrary.shared().performChanges({
           if #available(iOS 9.0, *) {

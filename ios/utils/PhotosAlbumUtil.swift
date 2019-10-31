@@ -15,7 +15,7 @@ class PhotosAlbumUtil {
     fetchOptions.predicate = NSPredicate(format: "title = %@", albumTitle)
     let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: fetchOptions)
     if let album = collection.firstObject {
-      completionHandler(.ok(album))
+      completionHandler(.success(album))
       return
     }
     var albumPlaceholder: PHObjectPlaceholder?
@@ -24,19 +24,19 @@ class PhotosAlbumUtil {
       albumPlaceholder = assetCollectionRequest.placeholderForCreatedAssetCollection
     }) { success, error in
       if let error = error {
-        completionHandler(.err(.unableToFindAlbumWithError(error)))
+        completionHandler(.failure(.unableToFindAlbumWithError(error)))
         return
       }
       guard success, let albumPlaceholder = albumPlaceholder else {
-        completionHandler(.err(.unableToFindAlbum))
+        completionHandler(.failure(.unableToFindAlbum))
         return
       }
       let albumFetchResult = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [albumPlaceholder.localIdentifier], options: nil)
       guard let album = albumFetchResult.firstObject else {
-        completionHandler(.err(.unableToFindAlbum))
+        completionHandler(.failure(.unableToFindAlbum))
         return
       }
-      completionHandler(.ok(album))
+      completionHandler(.success(album))
     }
   }
 }

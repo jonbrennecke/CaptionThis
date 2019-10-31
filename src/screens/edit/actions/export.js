@@ -1,6 +1,7 @@
 // @flow
 import VideoExportManager from '../../../utils/VideoExportManager';
 import * as Debug from '../../../utils/Debug';
+import { createAudioFile } from './audioFileExport';
 
 import type { SpeechTranscription } from '@jonbrennecke/react-native-speech';
 
@@ -54,6 +55,11 @@ export const exportVideo = async ({
       },
       onExportDidUpdateProgress,
     });
+
+    // Save audio file
+    const audioFileURL = await createAudioFile(videoID);
+    console.log('TODO: audioFileURL', audioFileURL);
+
     await VideoExportManager.exportVideo({
       video: videoID,
       viewSize: videoViewSize,
