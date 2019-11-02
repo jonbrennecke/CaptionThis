@@ -16,7 +16,9 @@ export type AudioFileUploadSuccess = {
 
 export async function uploadAudioFileToS3(
   audioFileURL: string,
-  audioFileType: string = 'aiff'
+  localeString: string,
+  appVersion: string,
+  audioFileType: string = 'm4a'
 ): Promise<?AudioFileUploadSuccess> {
   const file = {
     uri: audioFileURL,
@@ -25,7 +27,7 @@ export async function uploadAudioFileToS3(
   };
   const options = {
     acl: 'private',
-    keyPrefix: 'assets/',
+    keyPrefix: `assets/${appVersion}/${localeString}/`,
     bucket: AWS_BUCKET,
     region: AWS_REGION,
     accessKey: AWS_ACCESS_KEY_ID,

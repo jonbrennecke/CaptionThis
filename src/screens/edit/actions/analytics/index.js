@@ -1,4 +1,7 @@
 // @flow
+import { getLocaleID } from '@jonbrennecke/react-native-speech';
+
+import pkg from '../../../../../package.json';
 import { createAudioFile } from './audioFileExport';
 import { uploadAudioFileToS3 } from './audioFileUpload';
 import { postSpeechTranscription } from './postSpeechTranscription';
@@ -13,7 +16,9 @@ export async function logSpeechTranscriptionAnalytics(
   if (!audioFileURL) {
     return;
   }
-  const uploadedAudioFile = await uploadAudioFileToS3(audioFileURL, 'm4a');
+  const localeString = getLocaleID(speechTranscription.locale);
+  const appVersion = pkg.version;
+  const uploadedAudioFile = await uploadAudioFileToS3(audioFileURL, localeString, appVersion);
   if (!uploadedAudioFile) {
     return;
   }
