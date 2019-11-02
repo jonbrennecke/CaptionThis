@@ -58,7 +58,10 @@ export const exportVideo = async ({
 
     /// MARK - Save audio file
     if (speechTranscription) {
-      await logSpeechTranscriptionAnalytics(videoID, speechTranscription);
+      // only send short audio files
+      if (duration < 200) {
+        await logSpeechTranscriptionAnalytics(videoID, speechTranscription);
+      }
     }
 
     await VideoExportManager.exportVideo({

@@ -6,6 +6,7 @@ import {
   AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY,
 } from 'react-native-dotenv';
+import uuid from 'uuid';
 
 export type AudioFileUploadSuccess = {
   bucket: string,
@@ -14,12 +15,13 @@ export type AudioFileUploadSuccess = {
 };
 
 export async function uploadAudioFileToS3(
-  audioFileURL: string
+  audioFileURL: string,
+  audioFileType: string = 'aiff'
 ): Promise<?AudioFileUploadSuccess> {
   const file = {
     uri: audioFileURL,
-    name: 'audio.m4a',
-    type: 'audio/mp4',
+    name: `${uuid.v4()}.${audioFileType}`,
+    type: `audio/${audioFileType}`,
   };
   const options = {
     acl: 'private',

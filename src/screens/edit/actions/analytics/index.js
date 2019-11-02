@@ -13,7 +13,7 @@ export async function logSpeechTranscriptionAnalytics(
   if (!audioFileURL) {
     return;
   }
-  const uploadedAudioFile = await uploadAudioFileToS3(audioFileURL);
+  const uploadedAudioFile = await uploadAudioFileToS3(audioFileURL, 'm4a');
   if (!uploadedAudioFile) {
     return;
   }

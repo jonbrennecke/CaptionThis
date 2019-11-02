@@ -18,7 +18,7 @@ class AudioExportManager: NSObject {
     let requestID = loadAVAsset(fromAssetID: assetID) { result in
       switch result {
       case let .success(asset):
-        createTemporaryAudioFile(fromAsset: asset) { result in
+        createDownSampledAudio(asset: asset) { result in
           switch result {
           case let .success(url):
             completionHandler(nil, url)
@@ -48,7 +48,9 @@ class AudioExportManager: NSObject {
         completionHandler(.failure(.failedToFindAsset))
         return
       }
-      completionHandler(.success(asset))
+      asset.loadValuesAsynchronously(forKeys: ["tracks"]) {
+        completionHandler(.success(asset))
+      }
     }
     return requestID
   }
