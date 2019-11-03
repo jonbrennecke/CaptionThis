@@ -27,7 +27,6 @@ type Props = {
   video: MediaObject,
   countryCode: ?string,
   isAppInForeground: boolean,
-  isDeviceLimitedByMemory: boolean,
   isCaptionsEditorVisible: boolean,
   isSpeechTranscriptionFinal: boolean,
   isExportingVideo: boolean,
@@ -304,28 +303,30 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
               }
               onOrientationDidLoad={this.props.onRequestChangeOrientation}
             />
-            <VideoCaptionsContainer
-              videoDimensions={this.props.video.size}
-              videoPlayerParentViewSize={this.props.videoPlayerParentViewSize}
-              orientation={this.props.orientation}
-              renderChildren={(captionViewSize, backgroundHeight) => (
-                <VideoCaptionsView
-                  ref={ref => {
-                    this.captionsView = ref;
-                  }}
-                  style={styles.flex}
-                  backgroundHeight={backgroundHeight}
-                  orientation={this.props.orientation}
-                  duration={this.props.video.duration}
-                  captionStyle={captionStyleForOrientation(
-                    this.props.orientation,
-                    this.props.captionStyle
-                  )}
-                  speechTranscription={this.props.speechTranscription}
-                  onPress={this.props.onRequestShowRichTextEditor}
-                />
-              )}
-            />
+            {this.state.playbackState !== 'waiting' && (
+              <VideoCaptionsContainer
+                videoDimensions={this.props.video.size}
+                videoPlayerParentViewSize={this.props.videoPlayerParentViewSize}
+                orientation={this.props.orientation}
+                renderChildren={(captionViewSize, backgroundHeight) => (
+                  <VideoCaptionsView
+                    ref={ref => {
+                      this.captionsView = ref;
+                    }}
+                    style={styles.flex}
+                    backgroundHeight={backgroundHeight}
+                    orientation={this.props.orientation}
+                    duration={this.props.video.duration}
+                    captionStyle={captionStyleForOrientation(
+                      this.props.orientation,
+                      this.props.captionStyle
+                    )}
+                    speechTranscription={this.props.speechTranscription}
+                    onPress={this.props.onRequestShowRichTextEditor}
+                  />
+                )}
+              />
+            )}
             <EditScreenTopControls
               style={styles.editTopControls}
               countryCode={this.props.countryCode}

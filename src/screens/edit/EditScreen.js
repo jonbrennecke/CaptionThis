@@ -303,7 +303,6 @@ export default class EditScreen extends PureComponent<
           videoPlayerParentViewSize={this.state.videoViewSize}
           countryCode={this.props.locale?.country.code}
           isAppInForeground={this.props.isAppInForeground}
-          isDeviceLimitedByMemory={this.props.isDeviceLimitedByMemory}
           isCaptionsEditorVisible={!this.state.isComponentFocused}
           isExportingVideo={this.props.isExportingVideo}
           video={this.props.video}

@@ -11,10 +11,7 @@ import { updateCaptionStyle } from '../../redux/video/actionCreators';
 import { isExportingVideo } from '../../redux/media/selectors';
 import { getCaptionStyle } from '../../redux/video/selectors';
 import { receiveAppStateChange } from '../../redux/device/actionCreators';
-import {
-  isAppInForeground,
-  isDeviceLimitedByMemory,
-} from '../../redux/device/selectors';
+import { isAppInForeground } from '../../redux/device/selectors';
 
 import type { MediaObject } from '@jonbrennecke/react-native-media';
 import type { SpeechStateHOCProps } from '@jonbrennecke/react-native-speech';
@@ -38,7 +35,6 @@ type StateProps = {|
   captionStyle: CaptionStyleObject,
   isExportingVideo: boolean,
   isAppInForeground: boolean,
-  isDeviceLimitedByMemory: boolean,
 |};
 
 type DispatchProps = {|
@@ -62,7 +58,6 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     isExportingVideo: isExportingVideo(state),
     isAppInForeground: isAppInForeground(state),
-    isDeviceLimitedByMemory: isDeviceLimitedByMemory(state),
     captionStyle: getCaptionStyle(state),
   };
 }

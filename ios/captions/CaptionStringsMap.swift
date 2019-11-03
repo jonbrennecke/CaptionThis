@@ -141,7 +141,7 @@ fileprivate func interpolate(segments: [CaptionTextSegment]) -> [CaptionTextSegm
   var outputSegments = [CaptionTextSegment]()
   for segment in segments {
     let words = segment.text.components(separatedBy: .whitespacesAndNewlines).filter { !$0.isEmpty }
-    let durationPerWord = segment.duration / Float(words.count)
+    let durationPerWord = words.count > 0 ? segment.duration / Float(words.count) : Float(0)
     for (index, word) in words.enumerated() {
       let timestamp = segment.timestamp + Float(index) * durationPerWord
       let outputSegment = CaptionTextSegment(text: word, duration: durationPerWord, timestamp: timestamp)
