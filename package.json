@@ -1,6 +1,6 @@
 {
   "name": "CaptionThis",
-  "version": "1.0.43",
+  "version": "1.0.45",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -25,7 +25,7 @@
     "@jonbrennecke/react-native-animated-ui": "1.0.11",
     "@jonbrennecke/react-native-camera": "1.0.78",
     "@jonbrennecke/react-native-media": "1.0.40",
-    "@jonbrennecke/react-native-speech": "1.0.3",
+    "@jonbrennecke/react-native-speech": "1.0.5",
     "@react-native-community/masked-view": "github:react-native-community/react-native-masked-view",
     "bluebird": "^3.5.3",
     "core-decorators": "0.20.0",
@@ -35,8 +35,10 @@
     "querystring": "0.2.0",
     "react": "16.6.3",
     "react-native": "0.59.9",
+    "react-native-aws3": "0.0.9",
     "react-native-blur": "3.2.2",
     "react-native-device-info": "0.24.3",
+    "react-native-dotenv": "0.2.0",
     "react-native-gesture-handler": "1.4.1",
     "react-native-haptic": "1.0.1",
     "react-native-linear-gradient": "2.5.3",

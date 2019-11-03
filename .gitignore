@@ -57,3 +57,6 @@ buck-out/
 
 vendor/bundle
 GoogleService-Info.plist
+
+.env
+.env.*

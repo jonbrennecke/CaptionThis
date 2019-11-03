@@ -10,6 +10,38 @@ import { List } from 'immutable';
 
 import type { SpeechTranscriptionSegment } from '@jonbrennecke/react-native-speech';
 
+class SpeechTranscriptionSegmentDiff {
+  segments: List<SpeechTranscriptionSegment>;
+
+  constructor(segments: Iterable<SpeechTranscriptionSegment>) {
+    this.segments = List(segments);
+  }
+
+  insert(index: number, segment: SpeechTranscriptionSegment) {
+    this.segments = this.segments.insert(index, segment);
+  }
+
+  set(index: number, segment: SpeechTranscriptionSegment) {
+    this.segments = this.segments.set(index, segment);
+  }
+
+  get(index: number): ?SpeechTranscriptionSegment {
+    return this.segments.get(index);
+  }
+
+  get size(): number {
+    return this.segments.size;
+  }
+
+  get first(): ?SpeechTranscriptionSegment {
+    return this.segments.first();
+  }
+
+  get last(): ?SpeechTranscriptionSegment {
+    return this.segments.last();
+  }
+}
+
 export type IndexedSpeechTranscriptionSegment = {
   index: number,
   segment: SpeechTranscriptionSegment,
@@ -32,7 +64,7 @@ export function interpolateSegments(
   let outputSegments: Array<SpeechTranscriptionSegment> = [];
   segments.forEach(segment => {
     const words = segment.substring.split(/\s+/).filter(s => !!s);
-    const durationPerWord = segment.duration / words.length;
+    const durationPerWord = Math.abs(segment.duration / words.length);
     words.forEach((word, index) => {
       outputSegments.push({
         duration: durationPerWord,
@@ -242,38 +274,6 @@ export function transformSegmentsByTextDiff(
     newSegment,
     ...unchangedSegmentsRight,
   ]);
-}
-
-class SpeechTranscriptionSegmentDiff {
-  segments: List<SpeechTranscriptionSegment>;
-
-  constructor(segments: Iterable<SpeechTranscriptionSegment>) {
-    this.segments = List(segments);
-  }
-
-  insert(index: number, segment: SpeechTranscriptionSegment) {
-    this.segments = this.segments.insert(index, segment);
-  }
-
-  set(index: number, segment: SpeechTranscriptionSegment) {
-    this.segments = this.segments.set(index, segment);
-  }
-
-  get(index: number): ?SpeechTranscriptionSegment {
-    return this.segments.get(index);
-  }
-
-  get size(): number {
-    return this.segments.size;
-  }
-
-  get first(): ?SpeechTranscriptionSegment {
-    return this.segments.first();
-  }
-
-  get last(): ?SpeechTranscriptionSegment {
-    return this.segments.last();
-  }
 }
 
 export function renderTextFromSegments(

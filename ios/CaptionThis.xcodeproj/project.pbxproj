@@ -42,11 +42,14 @@
 		FC1FE6C621E57C96005F657A /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1FE6C421E57C96005F657A /* Fabric.framework */; };
 		FC1FE6C721E57C96005F657A /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1FE6C521E57C96005F657A /* Crashlytics.framework */; };
 		FC1FE6ED21E5B8DE005F657A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */; };
+		FC22A995236B69CE007651F9 /* HSAudioExportBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = FC22A994236B69CE007651F9 /* HSAudioExportBridgeModule.m */; };
 		FC234C53234E901D00DB2EE2 /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC234C48234E900000DB2EE2 /* libRNBlur.a */; };
+		FC234CEF236B53520071BEC6 /* AudioExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC234CEE236B53520071BEC6 /* AudioExportManager.swift */; };
 		FC388F4C22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FC388F4B22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m */; };
 		FC388F522230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = FC388F512230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m */; };
 		FC388F542230EBF1001CE3A3 /* CaptionTextSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F532230EBF1001CE3A3 /* CaptionTextSegment.swift */; };
 		FC388F8E2231B41C001CE3A3 /* CaptionStringsMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC388F8D2231B41C001CE3A3 /* CaptionStringsMap.swift */; };
+		FC3972EC2368BA1100B2EE04 /* libHSReactNativeMedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC728B2922B361F9005A15DA /* libHSReactNativeMedia.a */; };
 		FC3A07D02256957800057426 /* clamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3A07CF2256957800057426 /* clamp.swift */; };
 		FC4607D62252CA4A00E34AD4 /* animatedWordStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D52252CA4A00E34AD4 /* animatedWordStyle.swift */; };
 		FC4607D82252CAEF00E34AD4 /* noWordStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4607D72252CAEF00E34AD4 /* noWordStyle.swift */; };
@@ -107,7 +110,6 @@
 		FCB0E55522136472002F320B /* IBMPlexMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCB0E55422136472002F320B /* IBMPlexMono-Medium.ttf */; };
 		FCB0E5C12213F076002F320B /* VideoExportTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB0E5C02213F076002F320B /* VideoExportTask.swift */; };
 		FCB0E5C322149C03002F320B /* PhotosAlbumUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB0E5C222149C03002F320B /* PhotosAlbumUtil.swift */; };
-		FCB392F2220CCD0900403154 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB392F1220CCD0900403154 /* Result.swift */; };
 		FCB3D2BF68D740C581A23323 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE8CC438D64424A892651EF /* libRNDeviceInfo.a */; };
 		FCB8AE72222DBE26002F30D8 /* CaptionPresetLinePositions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB8AE71222DBE26002F30D8 /* CaptionPresetLinePositions.swift */; };
 		FCB8AEBC222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB8AEBB222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m */; };
@@ -666,6 +668,9 @@
 		FC1FE6C421E57C96005F657A /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FC1FE6C521E57C96005F657A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC1FE6EC21E5B8DE005F657A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FC22A994236B69CE007651F9 /* HSAudioExportBridgeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HSAudioExportBridgeModule.m; sourceTree = "<group>"; };
+		FC22A996236B69D7007651F9 /* HSAudioExportBridgeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HSAudioExportBridgeModule.h; sourceTree = "<group>"; };
+		FC234CEE236B53520071BEC6 /* AudioExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioExportManager.swift; sourceTree = "<group>"; };
 		FC388F4B22309855001CE3A3 /* RCTConvert+CaptionBackgroundStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionBackgroundStyle.m"; sourceTree = "<group>"; };
 		FC388F4D22309863001CE3A3 /* RCTConvert+CaptionBackgroundStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionBackgroundStyle.h"; sourceTree = "<group>"; };
 		FC388F512230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionTextSegment.m"; sourceTree = "<group>"; };
@@ -738,7 +743,6 @@
 		FCB0E55422136472002F320B /* IBMPlexMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "IBMPlexMono-Medium.ttf"; path = "../assets/fonts/IBMPlexMono-Medium.ttf"; sourceTree = "<group>"; };
 		FCB0E5C02213F076002F320B /* VideoExportTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoExportTask.swift; sourceTree = "<group>"; };
 		FCB0E5C222149C03002F320B /* PhotosAlbumUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosAlbumUtil.swift; sourceTree = "<group>"; };
-		FCB392F1220CCD0900403154 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		FCB8AE71222DBE26002F30D8 /* CaptionPresetLinePositions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionPresetLinePositions.swift; sourceTree = "<group>"; };
 		FCB8AEBB222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+CaptionWordStyle.m"; sourceTree = "<group>"; };
 		FCB8AEF0222DDD77002F30D8 /* RCTConvert+CaptionWordStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+CaptionWordStyle.h"; sourceTree = "<group>"; };
@@ -801,6 +805,7 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				FC86EF0B235BE9DF00D68EC6 /* FIRAnalyticsConnector.framework in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				FC3972EC2368BA1100B2EE04 /* libHSReactNativeMedia.a in Frameworks */,
 				FCB3D2BF68D740C581A23323 /* libRNDeviceInfo.a in Frameworks */,
 				FCB9EFC3235E62350077F666 /* JavaScriptCore.framework in Frameworks */,
 				6987EEC99C074A288E5666D1 /* libBVLinearGradient.a in Frameworks */,
@@ -924,6 +929,7 @@
 				FC6EA7E721D4508D007C3B3E /* CaptionThis-Bridging-Header.h */,
 				FCA3971721DC93AF00347CAB /* constants.swift */,
 				FC9374DD21DE0EE900FD2700 /* CenteredTextLayer.swift */,
+				FC22A997236B6AE6007651F9 /* audioFileExport */,
 				FC6FCF6222249860004772B9 /* captions */,
 				FC58D11321FAED1A00E7956D /* utils */,
 				FCDA6F1521FD07E100FA8345 /* RCTConvert */,
@@ -1094,6 +1100,24 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FC22A993236B69B7007651F9 /* AudioExportBridgeModule */ = {
+			isa = PBXGroup;
+			children = (
+				FC22A994236B69CE007651F9 /* HSAudioExportBridgeModule.m */,
+				FC22A996236B69D7007651F9 /* HSAudioExportBridgeModule.h */,
+			);
+			path = AudioExportBridgeModule;
+			sourceTree = "<group>";
+		};
+		FC22A997236B6AE6007651F9 /* audioFileExport */ = {
+			isa = PBXGroup;
+			children = (
+				FC22A993236B69B7007651F9 /* AudioExportBridgeModule */,
+				FC234CEE236B53520071BEC6 /* AudioExportManager.swift */,
+			);
+			path = audioFileExport;
+			sourceTree = "<group>";
+		};
 		FC234BB8234E8BFD00DB2EE2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1229,7 +1253,6 @@
 				FCF51EC5222651220066D81B /* AnimationUtil.swift */,
 				FC58D07521FA795F00E7956D /* AudioUtil.swift */,
 				FCE8024921F84A640092B5E5 /* OrientationUtil.swift */,
-				FCB392F1220CCD0900403154 /* Result.swift */,
 				FCD5F75621D73C97001F2068 /* Debug */,
 				FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */,
 				FCB0E5C222149C03002F320B /* PhotosAlbumUtil.swift */,
@@ -2250,6 +2273,7 @@
 				FCB0E5C12213F076002F320B /* VideoExportTask.swift in Sources */,
 				FCE83950223A172E002C85CA /* CaptionView.swift in Sources */,
 				FC388F522230EBA9001CE3A3 /* RCTConvert+CaptionTextSegment.m in Sources */,
+				FC22A995236B69CE007651F9 /* HSAudioExportBridgeModule.m in Sources */,
 				FCF51FC8222B62C60066D81B /* RCTConvert+CaptionLineStyle.m in Sources */,
 				FCF51FBC222B55480066D81B /* lineStyle.swift in Sources */,
 				FC7A0FB821D8AB9E00751DBE /* HueGradientView.swift in Sources */,
@@ -2260,11 +2284,12 @@
 				FCFBE02022A82A400059D452 /* renderCaptions.swift in Sources */,
 				FCBB1936221524F00014D41C /* CaptionAnimationExportSession.swift in Sources */,
 				FCB8AEBC222DDD65002F30D8 /* RCTConvert+CaptionWordStyle.m in Sources */,
+				FC234CEF236B53520071BEC6 /* AudioExportManager.swift in Sources */,
 				FCFBE02222A8324B0059D452 /* CaptionRowKey.swift in Sources */,
 				FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */,
 				FCA3971821DC93AF00347CAB /* constants.swift in Sources */,
 				FCC486602269048200719F69 /* PlaybackController.swift in Sources */,
-				FCB392F2220CCD0900403154 /* Result.swift in Sources */,
+				FCFBDFBA22A7768A0059D452 /* layerUtils.swift in Sources */,
 				FC19138C2262908D008C8BA0 /* VideoAnimationLayerLayout.swift in Sources */,
 				FCFBDFBC22A78C5D0059D452 /* CaptionTextAlignment.swift in Sources */,
 				FCD5F75821D73CA3001F2068 /* Debug.m in Sources */,
@@ -2297,7 +2322,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1.0.43;
+				CURRENT_PROJECT_VERSION = 1.0.45;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 6DUV3UU8M8;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2358,7 +2383,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1.0.43;
+				CURRENT_PROJECT_VERSION = 1.0.45;
 				DEVELOPMENT_TEAM = 6DUV3UU8M8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

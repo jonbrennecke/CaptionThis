@@ -180,4 +180,15 @@ describe('transformSegmentsByTextDiff', () => {
     expect(last(transformedSegments).substring).toBe('fox');
     expect(renderTextFromSegments(transformedSegments)).toBe(changedText);
   });
+
+  it('produces the expected result when a word is split into two words', () => {
+    const changedText = 'the strange brown fo x';
+    const transformedSegments = transformSegmentsByTextDiff(
+      changedText,
+      segments
+    );
+    expect(first(transformedSegments).substring).toBe('the');
+    expect(last(transformedSegments).substring).toBe('x');
+    expect(renderTextFromSegments(transformedSegments)).toBe(changedText);
+  });
 });

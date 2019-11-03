@@ -1,6 +1,7 @@
 // @flow
 import VideoExportManager from '../../../utils/VideoExportManager';
 import * as Debug from '../../../utils/Debug';
+import { logSpeechTranscriptionAnalytics } from './analytics';
 
 import type { SpeechTranscription } from '@jonbrennecke/react-native-speech';
 
@@ -54,6 +55,15 @@ export const exportVideo = async ({
       },
       onExportDidUpdateProgress,
     });
+
+    /// MARK - Save audio file
+    if (speechTranscription) {
+      // only send short audio files
+      if (duration < 200) {
+        await logSpeechTranscriptionAnalytics(videoID, speechTranscription);
+      }
+    }
+
     await VideoExportManager.exportVideo({
       video: videoID,
       viewSize: videoViewSize,
