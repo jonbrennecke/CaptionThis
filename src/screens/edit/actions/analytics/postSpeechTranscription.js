@@ -27,16 +27,29 @@ export async function postSpeechTranscription(
     duration: s.duration,
   }));
   try {
-    const result = await postRequest({
+    const body = {
+      audioFileURL,
+      locale: getLocaleID(speechTranscription.locale),
+      substrings,
+    };
+    const response = await postRequest({
       url: `${brevityURL}/speechTranscriptions`,
-      body: {
-        audioFileURL,
-        locale: getLocaleID(speechTranscription.locale),
-        substrings,
-      },
+      body,
     });
-    return result.status >= 200 && result.status < 300;
-  } catch {
+    if (response.status >= 200 && response.status < 300) {
+      return true;
+    } else {
+      // eslint-disable-next-line no-console
+      console.log(
+        `POST to "${brevityURL}/speechTranscriptions" failed with status ${
+          response.status
+        }`
+      );
+      return false;
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn(error.message);
     return false;
   }
 }

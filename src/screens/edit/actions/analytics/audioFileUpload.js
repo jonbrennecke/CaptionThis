@@ -39,7 +39,11 @@ export async function uploadAudioFileToS3(
     if (response.status !== 201) {
       return null;
     }
-    const { location, key } = response.body;
+    const {
+      body: {
+        postResponse: { location, key },
+      },
+    } = response;
     return {
       bucket: AWS_BUCKET,
       location,

@@ -25,5 +25,5 @@ export async function logSpeechTranscriptionAnalytics(
   if (!uploadedAudioFile) {
     return;
   }
-  await postSpeechTranscription(audioFileURL, speechTranscription);
+  await postSpeechTranscription(uploadedAudioFile.key, speechTranscription);
 }
