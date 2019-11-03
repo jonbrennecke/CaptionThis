@@ -107,7 +107,6 @@ export default class HomeScreen extends PureComponent<
     if (this.state.hasCompletedSetupAfterOnboarding) {
       return;
     }
-    await this.props.loadDeviceInfo();
     this.setState({
       hasCompletedSetupAfterOnboarding: true,
     });

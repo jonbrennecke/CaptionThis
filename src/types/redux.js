@@ -5,7 +5,6 @@ import type { ISpeechState } from '@jonbrennecke/react-native-speech';
 import typeof { LOADING_STATE } from '../constants';
 import type { VideoAssetIdentifier, VideoObject } from './media';
 import type { ReactAppStateEnum } from './react';
-import type { DeviceInfoObject } from '../utils/Device';
 import type { CaptionStyleObject } from './video';
 
 export type Action<T> = {
@@ -50,7 +49,6 @@ export type MediaState = {|
 
 export type DeviceState = {|
   appState: ReactAppStateEnum,
-  deviceInfo: ?DeviceInfoObject,
 |};
 
 export type VideoState = {|
@@ -64,7 +62,6 @@ export type Payload =
   | ReceiveVideoAssetsPayload
   | ReceiveVideoAssetPayload
   | ReceiveAppStateChangePayload
-  | ReceiveDeviceInfoPayload
   | ReceiveCaptionStylePayload;
 
 export type ReceiveLoginPayload = {|
@@ -91,10 +88,6 @@ export type ReceiveVideoAssetIdPayload = {|
 
 export type ReceiveAppStateChangePayload = {|
   appState: ReactAppStateEnum,
-|};
-
-export type ReceiveDeviceInfoPayload = {|
-  deviceInfo: DeviceInfoObject,
 |};
 
 export type ReceiveCaptionStylePayload = {|
