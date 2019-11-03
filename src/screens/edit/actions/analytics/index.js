@@ -17,8 +17,11 @@ export async function logSpeechTranscriptionAnalytics(
     return;
   }
   const localeString = getLocaleID(speechTranscription.locale);
-  const appVersion = pkg.version;
-  const uploadedAudioFile = await uploadAudioFileToS3(audioFileURL, localeString, appVersion);
+  const uploadedAudioFile = await uploadAudioFileToS3(
+    audioFileURL,
+    localeString,
+    pkg.version
+  );
   if (!uploadedAudioFile) {
     return;
   }

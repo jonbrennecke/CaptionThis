@@ -59,3 +59,4 @@ vendor/bundle
 GoogleService-Info.plist
 
 .env
+.env.*
