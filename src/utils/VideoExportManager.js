@@ -2,7 +2,6 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
 import Promise from 'bluebird';
 
-import * as Debug from './Debug';
 import * as Color from './Color';
 import { isLandscape } from './Orientation';
 
@@ -88,9 +87,6 @@ export default class VideoExportManager {
         ),
       },
     };
-    Debug.log(
-      `Exporting video. Params = ${JSON.stringify(exportParams, null, 2)}`
-    );
     await NativeVideoExportModule.exportVideoAsync(exportParams);
   }
 }
