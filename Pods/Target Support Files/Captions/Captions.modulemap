@@ -1,0 +1,6 @@
+framework module Captions {
+  umbrella header "Captions-umbrella.h"
+
+  export *
+  module * { export * }
+}

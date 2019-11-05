@@ -1,0 +1,22 @@
+PODS:
+  - Captions (0.0.13)
+
+DEPENDENCIES:
+  - Captions (from `https://github.com/jonbrennecke/captions.git`, tag `v0.0.13`)
+
+EXTERNAL SOURCES:
+  Captions:
+    :git: https://github.com/jonbrennecke/captions.git
+    :tag: v0.0.13
+
+CHECKOUT OPTIONS:
+  Captions:
+    :git: https://github.com/jonbrennecke/captions.git
+    :tag: v0.0.13
+
+SPEC CHECKSUMS:
+  Captions: 99d89a03667d19616a3c8572c0a6c09d71c8b9d6
+
+PODFILE CHECKSUM: b9ba1ee33e7d48ae23eb216e3059b5293373a842
+
+COCOAPODS: 1.8.4
