@@ -57,7 +57,6 @@
 		FC58D07621FA795F00E7956D /* AudioUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58D07521FA795F00E7956D /* AudioUtil.swift */; };
 		FC691AFA225124C900A30AA6 /* CaptionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC691AF9225124C900A30AA6 /* CaptionLayer.swift */; };
 		FC6E63FE235C3E0B000944D3 /* textBoundingBoxBackgroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6E63FD235C3E0B000944D3 /* textBoundingBoxBackgroundStyle.swift */; };
-		FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */; };
 		FC6EA7D621CEA44D007C3B3E /* PassionOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */; };
 		FC6EA7D721CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */; };
 		FC6EA7D821CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */; };
@@ -690,7 +689,6 @@
 		FC58D07521FA795F00E7956D /* AudioUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUtil.swift; sourceTree = "<group>"; };
 		FC691AF9225124C900A30AA6 /* CaptionLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionLayer.swift; sourceTree = "<group>"; };
 		FC6E63FD235C3E0B000944D3 /* textBoundingBoxBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textBoundingBoxBackgroundStyle.swift; sourceTree = "<group>"; };
-		FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUtil.swift; sourceTree = "<group>"; };
 		FC6EA7AC21CEA44D007C3B3E /* PassionOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PassionOne-Regular.ttf"; path = "../assets/fonts/PassionOne-Regular.ttf"; sourceTree = "<group>"; };
 		FC6EA7D421CEA44D007C3B3E /* PT_Sans-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Bold.ttf"; path = "../assets/fonts/PT_Sans-Web-Bold.ttf"; sourceTree = "<group>"; };
 		FC6EA7D521CEA44D007C3B3E /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PT_Sans-Web-Regular.ttf"; path = "../assets/fonts/PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
@@ -1257,7 +1255,6 @@
 				FC58D07521FA795F00E7956D /* AudioUtil.swift */,
 				FCE8024921F84A640092B5E5 /* OrientationUtil.swift */,
 				FCD5F75621D73C97001F2068 /* Debug */,
-				FC6EA3E9221216D2009F3D7D /* DeviceUtil.swift */,
 				FCB0E5C222149C03002F320B /* PhotosAlbumUtil.swift */,
 				FC4607D92252E1F800E34AD4 /* Pair.swift */,
 				FC3A07CF2256957800057426 /* clamp.swift */,
@@ -2264,7 +2261,6 @@
 				FC4607D62252CA4A00E34AD4 /* animatedWordStyle.swift in Sources */,
 				FCFBDFB622A775870059D452 /* gradientBackgroundStyle.swift in Sources */,
 				FC4607D82252CAEF00E34AD4 /* noWordStyle.swift in Sources */,
-				FC6EA3EA221216D2009F3D7D /* DeviceUtil.swift in Sources */,
 				FCFBDFB822A775B50059D452 /* solidBackgroundStyle.swift in Sources */,
 				FCA3971A21DC968E00347CAB /* VideoExportBridgeModule.m in Sources */,
 				FC19138E226290F2008C8BA0 /* VideoDimensions.swift in Sources */,
