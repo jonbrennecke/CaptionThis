@@ -1,10 +1,10 @@
 import Foundation
+import Captions
 
 fileprivate let MAXIMUM_FONT_SIZE = Float(24)
 fileprivate let CAPTION_VIEW_HEIGHT = Float(85)
 
-// TODO: rename to CaptionLayerLayout
-struct VideoAnimationLayerLayout {
+struct CaptionLayerLayout {
   public let containerPaddingHorizontal: Float
   public let containerPaddingVertical: Float
   public let textPaddingVertical: Float
@@ -16,7 +16,7 @@ struct VideoAnimationLayerLayout {
   public let animationMultipler: Float
   public let animationOffsetMultiplier: Float
 
-  public static func layoutForView(orientation: UIImage.Orientation, style: CaptionPresetStyle) -> VideoAnimationLayerLayout {
+  public static func layoutForView(orientation: UIImage.Orientation, style: CaptiontStyle) -> VideoAnimationLayerLayout {
     let orientationMultiplier = OrientationUtil.isLandscape(orientation: orientation) ? Float(9.0 / 16.0) : 1
     let containerPaddingHorizontal = 10 * orientationMultiplier
     let containerPaddingVertical = 5 * orientationMultiplier
@@ -39,7 +39,7 @@ struct VideoAnimationLayerLayout {
     )
   }
 
-  public static func layoutForExport(dimensions: VideoDimensions, style: CaptionExportStyle) -> VideoAnimationLayerLayout {
+  public static func layoutForExport(dimensions: VideoDimensions, style: CaptionStyle) -> VideoAnimationLayerLayout {
     let heightRatio = Float(dimensions.size.height) / Float(style.viewSize.height)
     let frameHeight = CAPTION_VIEW_HEIGHT * heightRatio
     let fontSize = heightRatio * Float(style.font.pointSize)
@@ -66,5 +66,3 @@ struct VideoAnimationLayerLayout {
     )
   }
 }
-
-typealias CaptionLayerLayout = VideoAnimationLayerLayout

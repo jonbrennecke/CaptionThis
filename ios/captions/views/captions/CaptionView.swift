@@ -1,18 +1,11 @@
 import UIKit
+import Captions
 
 @objc(CaptionView)
 class CaptionView: UIView {
   internal var state: PlaybackControllerState = .paused
-
-  private var style = CaptionStyle(
-    wordStyle: .none,
-    lineStyle: .fadeInOut,
-    textAlignment: .left,
-    backgroundStyle: .solid,
-    backgroundColor: .white,
-    font: UIFont.systemFont(ofSize: 7),
-    textColor: UIColor.white
-  ) {
+  
+  private var style: CaptionStyle? {
     didSet {
       render()
     }
