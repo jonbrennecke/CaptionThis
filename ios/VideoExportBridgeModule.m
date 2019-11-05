@@ -1,7 +1,5 @@
 #import "VideoExportBridgeModule.h"
 #import "CaptionThis-Swift.h"
-#import "RCTConvert+CaptionExportStyle.h"
-#import "RCTConvert+CaptionTextSegment.h"
 #import "RCTConvert+UIImageOrientation.h"
 #import <React/RCTConvert.h>
 #import <Speech/Speech.h>
@@ -32,7 +30,7 @@
 - (instancetype)init {
   self = [super init];
   if (self) {
-    VideoExportManager.sharedInstance.delegate = self;
+    HSVideoExportManager.sharedInstance.delegate = self;
   }
   return self;
 }
@@ -51,11 +49,12 @@ RCT_EXPORT_METHOD(exportVideo
     ]);
     return;
   }
-  CaptionExportStyle *captionStyle =
-      [RCTConvert CaptionExportStyle:captionStyleJson];
+  HSCaptionStyleJSON *captionStyle =
+      [HSCaptionStyleJSON fromJSON:captionStyleJson];
   if (!captionStyle) {
     callback(@[
-      RCTMakeError(@"Unable to convert caption style.", nil, nil), @(NO)
+      RCTMakeError(@"Unable to convert caption style from JSON.", nil, nil),
+      @(NO)
     ]);
     return;
   }
@@ -90,11 +89,11 @@ RCT_EXPORT_METHOD(exportVideo
     callback(@[ RCTMakeError(message, nil, nil), @(NO) ]);
     return;
   }
-  NSMutableArray<CaptionTextSegment *> *textSegments =
+  NSMutableArray<HSCaptionTextSegmentJSON *> *textSegments =
       [[NSMutableArray alloc] initWithCapacity:jsonArray.count];
   for (id jsonTextSegment in jsonArray) {
-    CaptionTextSegment *textSegment =
-        [RCTConvert CaptionTextSegment:jsonTextSegment];
+    HSCaptionTextSegmentJSON *textSegment =
+        [HSCaptionTextSegmentJSON fromJSON:jsonTextSegment];
     if (!textSegment) {
       RCTLogWarn(@"Invalid text segment: %@",
                  [RCTConvert NSString:jsonTextSegment]);
@@ -112,12 +111,18 @@ RCT_EXPORT_METHOD(exportVideo
     ]);
     return;
   }
-  NSString *localIdentifier = [RCTConvert NSString:videoIdJson];
-  [VideoExportManager.sharedInstance
-      exportVideoWithLocalIdentifier:localIdentifier
-                               style:captionStyle
-                        textSegments:textSegments
-                            duration:(CFTimeInterval)[duration doubleValue]];
+  CGSize viewSize = [RCTConvert CGSize:[json objectForKey:@"viewSize"]];
+  NSString *assetID = [RCTConvert NSString:videoIdJson];
+  HSExportVideoResult result = [HSVideoExportManager.sharedInstance
+      exportVideoWithAssetID:assetID
+                       style:captionStyle
+                textSegments:textSegments
+                    duration:(CFTimeInterval)[duration doubleValue]
+                    viewSize:viewSize];
+  if (result != HSExportVideoResultSuccess) {
+    callback(@[ [NSNull null], @(NO) ]);
+    return;
+  }
   callback(@[ [NSNull null], @(YES) ]);
 }
 

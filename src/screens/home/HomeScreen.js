@@ -269,7 +269,9 @@ export default class HomeScreen extends PureComponent<
                 captionStyle={this.props.captionStyle}
                 animatedScrollValue={this.scrollAnim}
                 isCameraRecording={this.props.captureStatus === 'started'}
-                isCameraPaused={this.props.isCameraPaused || !this.state.isComponentFocused}
+                isCameraPaused={
+                  this.props.isCameraPaused || !this.state.isComponentFocused
+                }
                 thumbnailVideoID={this.props.thumbnailVideoID}
                 hasCompletedSetupAfterOnboarding={
                   this.state.hasCompletedSetupAfterOnboarding
