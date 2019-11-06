@@ -32,7 +32,7 @@ type EditScreenState = {
   isLocaleMenuVisible: boolean,
   captionStyleEditorState: ?{
     playbackTime: number,
-  }
+  },
 };
 
 const styles = {
@@ -239,7 +239,7 @@ export default class EditScreen extends PureComponent<
   showRichTextEditor(playbackTime: number) {
     this.setState({
       captionStyleEditorState: {
-        playbackTime
+        playbackTime,
       },
     });
   }

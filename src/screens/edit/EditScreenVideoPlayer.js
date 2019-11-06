@@ -174,7 +174,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
     }
   }
 
-  
   videoPlayerDidFailToLoad() {
     this.pausePlayerAndCaptions();
   }
@@ -289,7 +288,9 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
                 }
               }}
               onOrientationDidLoad={this.props.onRequestChangeOrientation}
-              onPlaybackTimeDidUpdate={this.videoPlayerDidUpdatePlaybackTimeThrottled}
+              onPlaybackTimeDidUpdate={
+                this.videoPlayerDidUpdatePlaybackTimeThrottled
+              }
             />
             <VideoCaptionsContainer
               videoDimensions={this.props.video.size}
@@ -309,7 +310,11 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
                     this.props.captionStyle
                   )}
                   speechTranscription={this.props.speechTranscription}
-                  onPress={() => this.props.onRequestShowRichTextEditor(this.state.playbackTime)}
+                  onPress={() =>
+                    this.props.onRequestShowRichTextEditor(
+                      this.state.playbackTime
+                    )
+                  }
                 />
               )}
             />
@@ -319,7 +324,9 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
               isReadyToExport={this.props.isSpeechTranscriptionFinal}
               onBackButtonPress={this.props.onRequestPopToHomeScreen}
               onExportButtonPress={this.props.onRequestExport}
-              onStylizeButtonPress={() => this.props.onRequestShowRichTextEditor(this.state.playbackTime)}
+              onStylizeButtonPress={() =>
+                this.props.onRequestShowRichTextEditor(this.state.playbackTime)
+              }
               onEditTextButtonPress={this.props.onRequestShowCaptionsEditor}
               onLocaleButtonPress={this.props.onLocaleButtonPress}
             />
