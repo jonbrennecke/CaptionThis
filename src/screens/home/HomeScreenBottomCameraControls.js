@@ -14,14 +14,10 @@ import { PRESET_STYLES } from './presets';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
-import type {
-  CaptionStyleObject,
-  CaptionPresetStyleObject,
-  CaptionTextSegment,
-} from '../../types/video';
+import type { CaptionStyleObject, CaptionTextSegment } from '../../types/video';
 
 type CaptionPresetStyleObjectWithId = {|
-  ...CaptionPresetStyleObject,
+  ...CaptionStyleObject,
   id: string,
 |};
 
@@ -35,7 +31,7 @@ type Props = {
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
   onRequestSwitchCamera: () => void,
-  onRequestSetCaptionStyle: CaptionPresetStyleObject => void,
+  onRequestSetCaptionStyle: CaptionStyleObject => void,
 };
 
 type State = {

@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { View, requireNativeComponent, NativeModules } from 'react-native';
+import { promisifyAll } from 'bluebird';
 
 import * as Color from '../../utils/Color';
 
@@ -11,7 +12,9 @@ import type { TextSegmentObject } from '../../types/media';
 type ReactNativeFiberHostComponent = any;
 
 const NativeCaptionView = requireNativeComponent('HSCaptionView');
-const { HSCaptionViewManager: CaptionViewManager } = NativeModules;
+const { HSCaptionViewManager: HSCaptionViewManager } = NativeModules;
+
+const CaptionViewManager = promisifyAll(HSCaptionViewManager);
 
 type Props = {
   style?: ?Style,

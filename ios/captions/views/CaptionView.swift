@@ -49,11 +49,13 @@ class CaptionView: UIView {
   init() {
     super.init(frame: .zero)
     render()
+    layer.speed = 0
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
     render()
+    
   }
 
   required init?(coder _: NSCoder) {

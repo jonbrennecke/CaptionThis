@@ -4,7 +4,11 @@ import type { ColorRGBA } from './media';
 export type CaptionLineStyle = 'fadeInOut' | 'translateUp';
 export type CaptionTextAlignment = 'center' | 'left' | 'right';
 export type CaptionWordStyle = 'animated' | 'none';
-export type CaptionBackgroundStyle = 'none' | 'gradient' | 'solid' | 'textBoundingBox';
+export type CaptionBackgroundStyle =
+  | 'none'
+  | 'gradient'
+  | 'solid'
+  | 'textBoundingBox';
 
 export type CaptionStyleObject = {|
   textAlignment: CaptionTextAlignment,

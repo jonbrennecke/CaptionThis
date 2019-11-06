@@ -23,10 +23,7 @@ import type {
 
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { Style } from '../../types/react';
-import type {
-  CaptionStyleObject,
-  CaptionPresetStyleObject,
-} from '../../types/video';
+import type { CaptionStyleObject } from '../../types/video';
 import type { InitializationStatus } from './cameraState';
 
 type Props = {
@@ -48,7 +45,7 @@ type Props = {
   onRequestBeginCapture: () => void,
   onRequestEndCapture: () => void,
   onRequestSwitchToOppositeCamera: () => void,
-  onRequestSetCaptionStyle: CaptionPresetStyleObject => void,
+  onRequestSetCaptionStyle: CaptionStyleObject => void,
 };
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');

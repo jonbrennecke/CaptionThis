@@ -81,16 +81,15 @@ final class CaptionStyleJSON: NSObject, Codable {
 
   @objc(HSCaptionLineStyleJSON)
   final class LineStyle: NSObject, Codable {
-    
     @objc(HSCaptionLineStyleTypeJSON)
     enum StyleType: Int, Codable {
       case fadeInOut
       case translateUp
-      
+
       private struct Constants {
         static let types: [String: StyleType] = [
           "fadeInOut": .fadeInOut,
-          "translateUp": .translateUp
+          "translateUp": .translateUp,
         ]
       }
 

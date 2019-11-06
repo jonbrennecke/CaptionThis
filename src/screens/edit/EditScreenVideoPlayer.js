@@ -33,9 +33,8 @@ type Props = {
   captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
   orientation: Orientation,
-  onRequestChangePlaybackTime: number => void,
   onRequestChangeOrientation: Orientation => void,
-  onRequestShowRichTextEditor: () => void,
+  onRequestShowRichTextEditor: (playbackTime: number) => void,
   onRequestShowCaptionsEditor: () => void,
   onRequestPopToHomeScreen: () => void,
   onRequestExport: () => void,
@@ -164,7 +163,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
 
   seekBarDidSeekToTime(time: number) {
     this.seekToTime(time);
-    this.onRequestChangePlaybackTimeThrottled(time);
   }
 
   async seekToTime(time: number) {
@@ -176,14 +174,7 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
     }
   }
 
-  onRequestChangePlaybackTimeThrottled = throttle(
-    this.props.onRequestChangePlaybackTime,
-    50,
-    {
-      leading: true,
-    }
-  );
-
+  
   videoPlayerDidFailToLoad() {
     this.pausePlayerAndCaptions();
   }
@@ -202,7 +193,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
 
   videoPlayerDidUpdatePlaybackTime(playbackTime: number) {
     this.setState({ playbackTime });
-    this.props.onRequestChangePlaybackTime(playbackTime);
   }
 
   videoPlayerDidPlayToEnd() {
@@ -298,42 +288,38 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
                   this.startPlayerAndCaptions();
                 }
               }}
-              onPlaybackTimeDidUpdate={
-                this.videoPlayerDidUpdatePlaybackTimeThrottled
-              }
               onOrientationDidLoad={this.props.onRequestChangeOrientation}
+              onPlaybackTimeDidUpdate={this.videoPlayerDidUpdatePlaybackTimeThrottled}
             />
-            {this.state.playbackState !== 'waiting' && (
-              <VideoCaptionsContainer
-                videoDimensions={this.props.video.size}
-                videoPlayerParentViewSize={this.props.videoPlayerParentViewSize}
-                orientation={this.props.orientation}
-                renderChildren={(captionViewSize, backgroundHeight) => (
-                  <VideoCaptionsView
-                    ref={ref => {
-                      this.captionsView = ref;
-                    }}
-                    style={styles.flex}
-                    backgroundHeight={backgroundHeight}
-                    orientation={this.props.orientation}
-                    duration={this.props.video.duration}
-                    captionStyle={captionStyleForOrientation(
-                      this.props.orientation,
-                      this.props.captionStyle
-                    )}
-                    speechTranscription={this.props.speechTranscription}
-                    onPress={this.props.onRequestShowRichTextEditor}
-                  />
-                )}
-              />
-            )}
+            <VideoCaptionsContainer
+              videoDimensions={this.props.video.size}
+              videoPlayerParentViewSize={this.props.videoPlayerParentViewSize}
+              orientation={this.props.orientation}
+              renderChildren={(captionViewSize, backgroundHeight) => (
+                <VideoCaptionsView
+                  ref={ref => {
+                    this.captionsView = ref;
+                  }}
+                  style={styles.flex}
+                  backgroundHeight={backgroundHeight}
+                  orientation={this.props.orientation}
+                  duration={this.props.video.duration}
+                  captionStyle={captionStyleForOrientation(
+                    this.props.orientation,
+                    this.props.captionStyle
+                  )}
+                  speechTranscription={this.props.speechTranscription}
+                  onPress={() => this.props.onRequestShowRichTextEditor(this.state.playbackTime)}
+                />
+              )}
+            />
             <EditScreenTopControls
               style={styles.editTopControls}
               countryCode={this.props.countryCode}
               isReadyToExport={this.props.isSpeechTranscriptionFinal}
               onBackButtonPress={this.props.onRequestPopToHomeScreen}
               onExportButtonPress={this.props.onRequestExport}
-              onStylizeButtonPress={this.props.onRequestShowRichTextEditor}
+              onStylizeButtonPress={() => this.props.onRequestShowRichTextEditor(this.state.playbackTime)}
               onEditTextButtonPress={this.props.onRequestShowCaptionsEditor}
               onLocaleButtonPress={this.props.onLocaleButtonPress}
             />
