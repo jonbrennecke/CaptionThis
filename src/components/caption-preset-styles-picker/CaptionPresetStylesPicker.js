@@ -9,7 +9,7 @@ import omit from 'lodash/omit';
 import debounce from 'lodash/debounce';
 import ReactNativeHaptic from 'react-native-haptic';
 
-import CaptionView from '../caption-view/CaptionView';
+import { PresetCaptionView } from './PresetCaptionView';
 import CaptionPresetAnimatedBorderView from './CaptionPresetAnimatedBorderView';
 
 import type { Style } from '../../types/react';
@@ -174,7 +174,7 @@ export default class CaptionPresetStylesPicker extends PureComponent<
               size={{ width: PRESET_WIDTH, height: PRESET_HEIGHT }}
               onPress={() => this.scrollToPresetAtIndex(index)}
             >
-              <CaptionView
+              <PresetCaptionView
                 style={styles.captionPreset}
                 captionStyle={preset}
                 duration={PRESET_TEXT_SEGMENTS_DURATION}

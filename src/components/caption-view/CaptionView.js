@@ -16,7 +16,7 @@ const { HSCaptionViewManager: HSCaptionViewManager } = NativeModules;
 
 const CaptionViewManager = promisifyAll(HSCaptionViewManager);
 
-type Props = {
+export type CaptionViewProps = {
   style?: ?Style,
   duration: number,
   backgroundHeight: number,
@@ -31,7 +31,7 @@ const styles = {
   },
 };
 
-export default class CaptionView extends PureComponent<Props> {
+export default class CaptionView extends PureComponent<CaptionViewProps> {
   nativeComponentRef: ?ReactNativeFiberHostComponent;
 
   restart() {
