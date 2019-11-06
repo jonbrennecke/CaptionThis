@@ -35,10 +35,11 @@ class CaptionView: UIView {
     guard let captionStyle = captionStyle?.captionStyle else {
       return
     }
+    let segments = textSegments.map({ $0.textSegment })
     renderCaptions(
       layer: layer,
       style: captionStyle,
-      textSegments: textSegments.map({ $0.textSegment }),
+      textSegments: segments,
       duration: duration
     )
   }

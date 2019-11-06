@@ -10,6 +10,5 @@ target 'CaptionThis' do
   use_frameworks!
 
   # Pods for CaptionThis
-  # pod 'Captions', '~> 0.0.13'
-  pod 'Captions', :git => 'https://github.com/jonbrennecke/captions.git', :tag => 'v0.0.13'
+  pod 'Captions', :git => 'https://github.com/jonbrennecke/captions.git', :tag => 'v0.0.14'
 end

@@ -1,18 +1,29 @@
-#import "CaptionViewManager.h"
+#import "HSCaptionViewManager.h"
 #import "CaptionThis-Swift.h"
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 
-@implementation CaptionViewManager
+@implementation HSCaptionViewManager
 
-RCT_EXPORT_MODULE(CaptionViewManager)
+RCT_EXPORT_MODULE(HSCaptionViewManager)
 
-RCT_CUSTOM_VIEW_PROPERTY(captionStyle, NSData, HSCaptionView) {
+RCT_CUSTOM_VIEW_PROPERTY(captionStyle, NSDictionary *, HSCaptionView) {
   if (![view isKindOfClass:[HSCaptionView class]]) {
     return;
   }
-  view.captionStyle = [HSCaptionStyleJSON fromJSON:json];
+  NSError *error;
+  NSData* data = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingFragmentsAllowed error:&error];
+  if (error) {
+    RCTLogError(@"%@", error.localizedDescription);
+    return;
+  }
+  HSCaptionStyleJSON *captionStyle = [HSCaptionStyleJSON fromJSON:data];
+  if (!captionStyle) {
+    RCTLogWarn(@"Failed to convert JSON %@", json);
+    return;
+  }
+  view.captionStyle = captionStyle;
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(duration, NSNumber *, HSCaptionView) {
@@ -23,15 +34,22 @@ RCT_CUSTOM_VIEW_PROPERTY(duration, NSNumber *, HSCaptionView) {
   view.duration = [duration doubleValue];
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSDictionary *, HSCaptionView) {
+RCT_CUSTOM_VIEW_PROPERTY(textSegments, NSArray *, HSCaptionView) {
   if (![view isKindOfClass:[HSCaptionView class]]) {
     return;
   }
   NSArray<id> *jsonArray = [RCTConvert NSArray:json];
   NSMutableArray<HSCaptionTextSegmentJSON*> *textSegments = [[NSMutableArray alloc] initWithCapacity:jsonArray.count];
   for (id jsonTextSegment in jsonArray) {
-    HSCaptionTextSegmentJSON *textSegment = [HSCaptionTextSegmentJSON fromJSON:jsonTextSegment];
+    NSError *error;
+    NSData* data = [NSJSONSerialization dataWithJSONObject:jsonTextSegment options:NSJSONWritingFragmentsAllowed error:&error];
+    if (error) {
+      RCTLogError(@"%@", error.localizedDescription);
+      return;
+    }
+    HSCaptionTextSegmentJSON *textSegment = [HSCaptionTextSegmentJSON fromJSON:data];
     if (!textSegment) {
+      RCTLogWarn(@"Failed to convert JSON %@", jsonTextSegment);
       continue;
     }
     [textSegments addObject:textSegment];

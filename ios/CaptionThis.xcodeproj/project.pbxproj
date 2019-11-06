@@ -105,7 +105,7 @@
 		FCDB29F123714B410004D122 /* CaptionStyleJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDB29F023714B410004D122 /* CaptionStyleJSON.swift */; };
 		FCE8024A21F84A640092B5E5 /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8024921F84A640092B5E5 /* OrientationUtil.swift */; };
 		FCE83950223A172E002C85CA /* CaptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE8394F223A172E002C85CA /* CaptionView.swift */; };
-		FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCE83952223A1795002C85CA /* CaptionViewManager.m */; };
+		FCE83953223A1795002C85CA /* HSCaptionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCE83952223A1795002C85CA /* HSCaptionViewManager.m */; };
 		FCFBE02622A890A70059D452 /* PlaybackControllerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */; };
 		FF81AC8B89144FB9AFCA8928 /* libHSReactNativeCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4BF1A0F40D94988BDBDA2E6 /* libHSReactNativeCamera.a */; };
 /* End PBXBuildFile section */
@@ -713,8 +713,8 @@
 		FCDB29F023714B410004D122 /* CaptionStyleJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionStyleJSON.swift; sourceTree = "<group>"; };
 		FCE8024921F84A640092B5E5 /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
 		FCE8394F223A172E002C85CA /* CaptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionView.swift; sourceTree = "<group>"; };
-		FCE83951223A1786002C85CA /* CaptionViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptionViewManager.h; sourceTree = "<group>"; };
-		FCE83952223A1795002C85CA /* CaptionViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptionViewManager.m; sourceTree = "<group>"; };
+		FCE83951223A1786002C85CA /* HSCaptionViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HSCaptionViewManager.h; sourceTree = "<group>"; };
+		FCE83952223A1795002C85CA /* HSCaptionViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HSCaptionViewManager.m; sourceTree = "<group>"; };
 		FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControllerState.swift; sourceTree = "<group>"; };
 		FE3F542488AE4D8AB5B43279 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1346,8 +1346,8 @@
 		FCE8391B223A11D6002C85CA /* views */ = {
 			isa = PBXGroup;
 			children = (
-				FCE83951223A1786002C85CA /* CaptionViewManager.h */,
-				FCE83952223A1795002C85CA /* CaptionViewManager.m */,
+				FCE83951223A1786002C85CA /* HSCaptionViewManager.h */,
+				FCE83952223A1795002C85CA /* HSCaptionViewManager.m */,
 				FCE8394F223A172E002C85CA /* CaptionView.swift */,
 				FCC4865F2269048200719F69 /* PlaybackController.swift */,
 				FCFBE02522A890A70059D452 /* PlaybackControllerState.swift */,
@@ -2177,7 +2177,7 @@
 				FC4607DA2252E1F800E34AD4 /* Pair.swift in Sources */,
 				FCDA6F1421FD07D800FA8345 /* RCTConvert+UIImageOrientation.m in Sources */,
 				FCDB29F123714B410004D122 /* CaptionStyleJSON.swift in Sources */,
-				FCE83953223A1795002C85CA /* CaptionViewManager.m in Sources */,
+				FCE83953223A1795002C85CA /* HSCaptionViewManager.m in Sources */,
 				FCA3971421DC933D00347CAB /* VideoExportManager.swift in Sources */,
 				FC9374E821DEF02C00FD2700 /* VideoAnimationComposition.swift in Sources */,
 			);

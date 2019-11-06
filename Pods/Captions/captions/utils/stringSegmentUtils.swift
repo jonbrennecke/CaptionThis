@@ -97,6 +97,9 @@ func makeCaptionStringSegmentLines(
       ) else {
         continue
       }
+      if stringSegments.count == 0 {
+        return captionStringSegments
+      }
       mutableTextSegments = remainingSegments
       captionStringSegments.append(stringSegments)
     }
@@ -120,6 +123,9 @@ func groupCaptionStringSegmentLinesByRowKey(
         textSegments: segments, width: width, attributes: attributes
       ) else {
         continue
+      }
+      if lineSegments.count == 0 {
+        return segmentsByRow
       }
       segments = remainingSegments
       if var values = segmentsByRow[key] {

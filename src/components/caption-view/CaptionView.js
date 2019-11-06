@@ -10,8 +10,8 @@ import type { TextSegmentObject } from '../../types/media';
 
 type ReactNativeFiberHostComponent = any;
 
-const NativeCaptionView = requireNativeComponent('CaptionView');
-const { CaptionViewManager } = NativeModules;
+const NativeCaptionView = requireNativeComponent('HSCaptionView');
+const { HSCaptionViewManager: CaptionViewManager } = NativeModules;
 
 type Props = {
   style?: ?Style,
@@ -60,6 +60,7 @@ export default class CaptionView extends PureComponent<Props> {
   }
 
   render() {
+    const { captionStyle, backgroundHeight } = this.props;
     return (
       <View style={[styles.container, this.props.style]}>
         <NativeCaptionView
@@ -69,21 +70,54 @@ export default class CaptionView extends PureComponent<Props> {
           style={styles.nativeView}
           duration={this.props.duration}
           textSegments={this.props.textSegments}
-          textAlignment={this.props.captionStyle.textAlignment}
-          lineStyle={this.props.captionStyle.lineStyle}
-          wordStyle={this.props.captionStyle.wordStyle}
-          backgroundStyle={this.props.captionStyle.backgroundStyle}
-          fontSize={this.props.captionStyle.fontSize}
-          fontFamily={this.props.captionStyle.fontFamily}
-          backgroundColor={Color.transformRgbaObjectForNativeBridge(
-            this.props.captionStyle.backgroundColor
+          captionStyle={makeCaptionStyleForNativeBridge(
+            captionStyle,
+            backgroundHeight
           )}
-          textColor={Color.transformRgbaObjectForNativeBridge(
-            this.props.captionStyle.textColor
-          )}
-          backgroundHeight={this.props.backgroundHeight}
         />
       </View>
     );
   }
+}
+
+function makeCaptionStyleForNativeBridge(
+  captionStyle: CaptionStyleObject,
+  backgroundHeight: number
+) {
+  return {
+    wordStyle: captionStyle.wordStyle,
+    backgroundStyle: {
+      styleType: captionStyle.backgroundStyle,
+      backgroundColor: Color.transformRgbaObjectForNativeBridge(
+        captionStyle.backgroundColor
+      ),
+      backgroundHeight,
+    },
+    lineStyle: {
+      styleType: captionStyle.lineStyle,
+      fadeInOutProperties: {
+        numberOfLines: 2,
+        padding: {
+          vertical: 1.3,
+        },
+      },
+    },
+    textStyle: {
+      font: {
+        fontFamily: captionStyle.fontFamily,
+        pointSize: captionStyle.fontSize,
+      },
+      color: Color.transformRgbaObjectForNativeBridge(captionStyle.textColor),
+      shadow: {
+        opacity: 0.5,
+        color: Color.transformRgbaObjectForNativeBridge({
+          red: 0,
+          green: 0,
+          blue: 0,
+          alpha: 0,
+        }),
+      },
+      alignment: captionStyle.textAlignment,
+    },
+  };
 }

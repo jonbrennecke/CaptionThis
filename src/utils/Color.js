@@ -29,6 +29,11 @@ export function transformRgbaObjectForNativeBridge({
   green,
   blue,
   alpha,
-}: ColorRGBA): [number, number, number, number] {
-  return [red / 255, green / 255, blue / 255, alpha];
+}: ColorRGBA): ColorRGBA {
+  return {
+    red: red / 255,
+    green: green / 255,
+    blue: blue / 255,
+    alpha,
+  };
 }

@@ -9,22 +9,22 @@ import omit from 'lodash/omit';
 import debounce from 'lodash/debounce';
 import ReactNativeHaptic from 'react-native-haptic';
 
-import CaptionPresetView from './CaptionPresetView';
+import CaptionView from '../caption-view/CaptionView';
 import CaptionPresetAnimatedBorderView from './CaptionPresetAnimatedBorderView';
 
 import type { Style } from '../../types/react';
-import type { CaptionPresetStyleObject } from '../../types/video';
+import type { CaptionStyleObject } from '../../types/video';
 
-type CaptionPresetStyleObjectWithId = {|
-  ...CaptionPresetStyleObject,
+type CaptionStyleObjectWithId = {|
+  ...CaptionStyleObject,
   id: string,
 |};
 
 type Props = {
   style?: ?Style,
-  presets: CaptionPresetStyleObjectWithId[],
-  currentPreset: CaptionPresetStyleObjectWithId,
-  onRequestSelectPreset: CaptionPresetStyleObjectWithId => void,
+  presets: CaptionStyleObjectWithId[],
+  currentPreset: CaptionStyleObjectWithId,
+  onRequestSelectPreset: CaptionStyleObjectWithId => void,
 };
 
 type State = {
@@ -171,11 +171,12 @@ export default class CaptionPresetStylesPicker extends PureComponent<
               size={{ width: PRESET_WIDTH, height: PRESET_HEIGHT }}
               onPress={() => this.scrollToPresetAtIndex(index)}
             >
-              <CaptionPresetView
+              <CaptionView
                 style={styles.captionPreset}
-                presetStyle={preset}
+                captionStyle={preset}
                 duration={PRESET_TEXT_SEGMENTS_DURATION}
                 textSegments={PRESET_TEXT_SEGMENTS}
+                backgroundHeight={PRESET_HEIGHT}
               />
             </CaptionPresetAnimatedBorderView>
           );

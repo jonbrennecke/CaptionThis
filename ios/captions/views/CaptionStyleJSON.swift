@@ -2,9 +2,9 @@ import Captions
 import Foundation
 
 @objc(HSCaptionStyleJSON)
-final class CaptionStyleJSON: NSObject {
+final class CaptionStyleJSON: NSObject, Codable {
   @objc(HSCaptionStyleColorJSON)
-  final class Color: NSObject {
+  final class Color: NSObject, Codable {
     let red: Float
     let green: Float
     let blue: Float
@@ -28,13 +28,31 @@ final class CaptionStyleJSON: NSObject {
   }
 
   @objc(HSCaptionBackgroundStyleJSON)
-  final class BackgroundStyle: NSObject {
+  final class BackgroundStyle: NSObject, Codable {
     @objc(HSCaptionBackgroundStyleTypeJSON)
-    enum StyleType: Int {
+    enum StyleType: Int, CodingKey, Codable {
       case none
       case solid
       case gradient
       case textBoundingBox
+
+      private struct Constants {
+        static let types: [String: StyleType] = [
+          "none": .none,
+          "solid": .solid,
+          "gradient": .gradient,
+          "textBoundingBox": .textBoundingBox,
+        ]
+      }
+
+      init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let string = try container.decode(String.self)
+        guard let styleType = Constants.types[string] else {
+          fatalError("missing constant definition")
+        }
+        self = styleType
+      }
     }
 
     let styleType: StyleType
@@ -62,17 +80,34 @@ final class CaptionStyleJSON: NSObject {
   }
 
   @objc(HSCaptionLineStyleJSON)
-  final class LineStyle: NSObject {
+  final class LineStyle: NSObject, Codable {
+    
     @objc(HSCaptionLineStyleTypeJSON)
-    enum StyleType: Int {
+    enum StyleType: Int, Codable {
       case fadeInOut
       case translateUp
+      
+      private struct Constants {
+        static let types: [String: StyleType] = [
+          "fadeInOut": .fadeInOut,
+          "translateUp": .translateUp
+        ]
+      }
+
+      init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let string = try container.decode(String.self)
+        guard let styleType = Constants.types[string] else {
+          fatalError("missing constant definition")
+        }
+        self = styleType
+      }
     }
 
     @objc(HSCaptionLineStyleFadeInOutPropertiesJSON)
-    final class FadeInOutProperties: NSObject {
+    final class FadeInOutProperties: NSObject, Codable {
       @objc(HSCaptionLineStyleFadeInOutPropertiesPaddingJSON)
-      final class Padding: NSObject {
+      final class Padding: NSObject, Codable {
         let vertical: Float
 
         init(vertical: Float) {
@@ -117,7 +152,7 @@ final class CaptionStyleJSON: NSObject {
   }
 
   @objc(HSCaptionWordStyleJSON)
-  enum WordStyle: Int {
+  enum WordStyle: Int, Codable {
     case animated
     case none
 
@@ -129,17 +164,33 @@ final class CaptionStyleJSON: NSObject {
         return .none
       }
     }
+
+    private struct Constants {
+      static let types: [String: WordStyle] = [
+        "none": .none,
+        "animated": .animated,
+      ]
+    }
+
+    init(from decoder: Decoder) throws {
+      let container = try decoder.singleValueContainer()
+      let string = try container.decode(String.self)
+      guard let styleType = Constants.types[string] else {
+        fatalError("missing constant definition")
+      }
+      self = styleType
+    }
   }
 
   @objc(HSCaptionTextStyleJSON)
-  final class TextStyle: NSObject {
+  final class TextStyle: NSObject, Codable {
     let font: Font
     let color: Color
     let shadow: Shadow
     let alignment: Alignment
 
     @objc(HSFontJSON)
-    final class Font: NSObject {
+    final class Font: NSObject, Codable {
       let fontFamily: String
       let pointSize: Float
 
@@ -154,7 +205,7 @@ final class CaptionStyleJSON: NSObject {
     }
 
     @objc(HSCaptionTextStyleShadowJSON)
-    final class Shadow: NSObject {
+    final class Shadow: NSObject, Codable {
       let opacity: Float
       let color: Color
 
@@ -169,7 +220,7 @@ final class CaptionStyleJSON: NSObject {
     }
 
     @objc(HSCapionTextStyleAlignmentJSON)
-    enum Alignment: Int {
+    enum Alignment: Int, Codable {
       case left
       case right
       case center
@@ -183,6 +234,23 @@ final class CaptionStyleJSON: NSObject {
         case .center:
           return .center
         }
+      }
+
+      private struct Constants {
+        static let types: [String: Alignment] = [
+          "left": .left,
+          "right": .right,
+          "center": .center,
+        ]
+      }
+
+      init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let string = try container.decode(String.self)
+        guard let styleType = Constants.types[string] else {
+          fatalError("missing constant definition")
+        }
+        self = styleType
       }
     }
 
@@ -239,31 +307,3 @@ final class CaptionStyleJSON: NSObject {
     try? JSONDecoder().decode(CaptionStyleJSON.self, from: json)
   }
 }
-
-extension CaptionStyleJSON.Color: Encodable {}
-extension CaptionStyleJSON.TextStyle.Font: Encodable {}
-extension CaptionStyleJSON.TextStyle.Shadow: Encodable {}
-extension CaptionStyleJSON.TextStyle.Alignment: Encodable {}
-extension CaptionStyleJSON.TextStyle: Encodable {}
-extension CaptionStyleJSON.LineStyle.StyleType: Encodable {}
-extension CaptionStyleJSON.LineStyle.FadeInOutProperties: Encodable {}
-extension CaptionStyleJSON.LineStyle.FadeInOutProperties.Padding: Encodable {}
-extension CaptionStyleJSON.LineStyle: Encodable {}
-extension CaptionStyleJSON.BackgroundStyle.StyleType: Encodable {}
-extension CaptionStyleJSON.BackgroundStyle: Encodable {}
-extension CaptionStyleJSON.WordStyle: Encodable {}
-extension CaptionStyleJSON: Encodable {}
-
-extension CaptionStyleJSON.Color: Decodable {}
-extension CaptionStyleJSON.TextStyle.Font: Decodable {}
-extension CaptionStyleJSON.TextStyle.Shadow: Decodable {}
-extension CaptionStyleJSON.TextStyle.Alignment: Decodable {}
-extension CaptionStyleJSON.TextStyle: Decodable {}
-extension CaptionStyleJSON.LineStyle.StyleType: Decodable {}
-extension CaptionStyleJSON.LineStyle.FadeInOutProperties: Decodable {}
-extension CaptionStyleJSON.LineStyle.FadeInOutProperties.Padding: Decodable {}
-extension CaptionStyleJSON.LineStyle: Decodable {}
-extension CaptionStyleJSON.BackgroundStyle.StyleType: Decodable {}
-extension CaptionStyleJSON.BackgroundStyle: Decodable {}
-extension CaptionStyleJSON.WordStyle: Decodable {}
-extension CaptionStyleJSON: Decodable {}
