@@ -80,6 +80,7 @@ func renderSolidBackgroundStyle(
   backgroundLayer.opacity = 0
   backgroundLayer.backgroundColor = backgroundColor.withAlphaComponent(0.9).cgColor
   backgroundLayer.masksToBounds = true
+  layer.masksToBounds = true
   layer.insertSublayer(backgroundLayer, at: 0)
   let animation = AnimationUtil.fadeIn(at: timestampOfFirstSegment - 0.25)
   backgroundLayer.add(animation, forKey: nil)

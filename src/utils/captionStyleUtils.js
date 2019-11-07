@@ -19,9 +19,9 @@ export function makeCaptionStyleForNativeBridge(
     lineStyle: {
       styleType: captionStyle.lineStyle,
       fadeInOutProperties: {
-        numberOfLines: 1,
+        numberOfLines: 2,
         padding: {
-          vertical: 0.33,
+          vertical: 0.75,
         },
       },
     },
