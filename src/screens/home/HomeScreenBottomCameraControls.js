@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, createRef } from 'react';
 import { View } from 'react-native';
 import uuid from 'uuid';
 import { autobind } from 'core-decorators';
@@ -99,10 +99,15 @@ export default class HomeScreenBottomCameraControls extends PureComponent<
     isPresetSheetVisible: true,
     preset: PRESET_STYLES_WITH_ID[0],
   };
+  captionViewRef: { current: CaptionView | null } = createRef();
 
   componentDidMount() {
     const preset = omit(this.state.preset, ['id']);
     this.props.onRequestSetCaptionStyle(preset);
+
+    if (this.captionViewRef.current) {
+      this.captionViewRef.current.play();
+    }
   }
 
   presetPickerDidSelectPreset({ id, ...preset }: CaptionStyleObjectWithId) {
@@ -123,6 +128,7 @@ export default class HomeScreenBottomCameraControls extends PureComponent<
             )}
             captionStyle={this.props.captionStyle}
             backgroundHeight={275}
+            ref={this.captionViewRef}
           />
         </View>
         <SlideUpAnimatedView
