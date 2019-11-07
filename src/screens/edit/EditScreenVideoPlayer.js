@@ -33,7 +33,7 @@ type Props = {
   captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
   orientation: Orientation,
-  onRequestChangeOrientation: Orientation => void,
+  onOrientationLoaded: (Orientation, Size) => void,
   onRequestShowRichTextEditor: (playbackTime: number) => void,
   onRequestShowCaptionsEditor: () => void,
   onRequestPopToHomeScreen: () => void,
@@ -287,7 +287,7 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
                   this.startPlayerAndCaptions();
                 }
               }}
-              onOrientationDidLoad={this.props.onRequestChangeOrientation}
+              onOrientationDidLoad={this.props.onOrientationLoaded}
               onPlaybackTimeDidUpdate={
                 this.videoPlayerDidUpdatePlaybackTimeThrottled
               }

@@ -115,6 +115,7 @@ RCT_EXPORT_MODULE(VideoExport)
 RCT_EXPORT_METHOD(exportVideo
                   : (NSDictionary<NSString *, id> *)json withCallback
                   : (RCTResponseSenderBlock)callback) {
+  // MARK - captionStyle
   NSDictionary<NSString *, id> *jsError;
   HSCaptionStyleJSON *captionStyle =
       [self decodeCaptionStyleFromJSON:json withJSError:&jsError];
@@ -123,6 +124,7 @@ RCT_EXPORT_METHOD(exportVideo
     return;
   }
 
+  // MARK - duration
   id durationJson = [json objectForKey:@"duration"];
   if (!durationJson) {
     callback(@[
@@ -142,6 +144,7 @@ RCT_EXPORT_METHOD(exportVideo
     return;
   }
 
+  // MARK - video
   id videoIdJson = [json objectForKey:@"video"];
   if (!videoIdJson) {
     callback(@[
@@ -151,6 +154,8 @@ RCT_EXPORT_METHOD(exportVideo
     ]);
     return;
   }
+
+  // MARK - viewSize
   CGSize viewSize = [RCTConvert CGSize:[json objectForKey:@"viewSize"]];
   NSString *assetID = [RCTConvert NSString:videoIdJson];
   HSExportVideoResult result = [HSVideoExportManager.sharedInstance

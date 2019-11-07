@@ -19,6 +19,7 @@ type ExportVideoParams = {
   videoViewSize: Size,
   duration: number,
   orientation: ?Orientation,
+  dimensions: ?Size,
   captionStyle: CaptionStyleObject,
   onExportDidFail: () => void,
   onExportDidFinish: () => void,
@@ -29,6 +30,7 @@ export const exportVideo = async ({
   speechTranscription,
   videoID,
   videoViewSize,
+  dimensions,
   duration,
   orientation,
   captionStyle,
@@ -71,6 +73,7 @@ export const exportVideo = async ({
       orientation: orientation || 'up',
       captionStyle: captionStyle,
       textSegments,
+      dimensions: dimensions || { width: 1920, height: 1080 },
     });
   } catch (error) {
     Debug.logError(error);

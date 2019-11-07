@@ -104,20 +104,9 @@ class VideoExportTask {
     let orientation = OrientationUtil.orientation(forAsset: asset)
     let dimensions = VideoDimensions(size: size, orientation: orientation)
     let heightRatio = dimensions.size.height / viewSize.height
-//    let fontSize = heightRatio * style.textStyle.font.pointSize
-//    let exportStyle = CaptionStyle(
-//      wordStyle: style.wordStyle,
-//      lineStyle: style.lineStyle,
-//      textAlignment: style.textAlignment,
-//      backgroundStyle: style.backgroundStyle,
-//      backgroundColor: style.backgroundColor,
-//      font: style.textStyle.font.withSize(fontSize),
-//      textColor: style.textColor
-//    )
     let frame = createCaptionLayerFrame(videoSize: composition.videoSize, heightRatio: heightRatio)
     let captionLayer = CALayer()
     captionLayer.frame = frame
-//    let backgroundHeight = Float((CAPTION_VIEW_HEIGHT_PORTRAIT + CAPTION_VIEW_OFFSET_FROM_BOTTOM) * heightRatio)
     renderCaptions(
       layer: captionLayer,
       style: style,

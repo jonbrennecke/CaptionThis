@@ -2,7 +2,6 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
 import Promise from 'bluebird';
 
-import * as Color from './Color';
 import { isLandscape } from './Orientation';
 import { makeCaptionStyleForNativeBridge } from './captionStyleUtils';
 
@@ -32,6 +31,9 @@ const EVENTS = {
   DID_UPDATE_PROGRESS: 'videoExportManagerDidDidUpdateProgress',
 };
 
+const captionViewHeight = 85;
+const captionViewOffsetFromBottom = 75;
+
 export type ExportParams = {
   viewSize: Size,
   video: VideoAssetIdentifier,
@@ -39,6 +41,7 @@ export type ExportParams = {
   captionStyle: CaptionStyleObject,
   textSegments: TextSegmentObject[],
   orientation: Orientation,
+  dimensions: Size,
 };
 
 export default class VideoExportManager {
@@ -68,12 +71,12 @@ export default class VideoExportManager {
   }
 
   static async exportVideo({
+    dimensions,
     captionStyle,
     viewSize,
     orientation,
     ...etc
   }: ExportParams) {
-    const backgroundHeight = 85;
     const exportParams = {
       ...etc,
       orientation,
@@ -84,16 +87,13 @@ export default class VideoExportManager {
           fontSize: exportFontSize(
             captionStyle.fontSize,
             viewSize,
+            dimensions,
             orientation
           ),
-          textColor: Color.transformRgbaObjectForNativeBridge(
-            captionStyle.textColor
-          ),
-          backgroundColor: Color.transformRgbaObjectForNativeBridge(
-            captionStyle.backgroundColor
-          ),
+          textColor: captionStyle.textColor,
+          backgroundColor: captionStyle.backgroundColor,
         },
-        backgroundHeight
+        exportBackgroundHeight(dimensions, viewSize, orientation)
       ),
     };
     await NativeVideoExportModule.exportVideoAsync(exportParams);
@@ -103,8 +103,22 @@ export default class VideoExportManager {
 const exportFontSize = (
   fontSize: number,
   viewSize: Size,
+  dimensions: Size,
   orientation: Orientation
-): number =>
-  isLandscape(orientation)
-    ? fontSize * (viewSize.height / viewSize.width)
-    : fontSize;
+): number => {
+  const heightRatio = isLandscape(orientation)
+    ? dimensions.height / viewSize.height
+    : dimensions.width / viewSize.height;
+  return fontSize * heightRatio;
+};
+
+const exportBackgroundHeight = (
+  dimensions: Size,
+  viewSize: Size,
+  orientation: Orientation
+): number => {
+  const heightRatio = isLandscape(orientation)
+    ? dimensions.height / viewSize.height
+    : dimensions.width / viewSize.height;
+  return (captionViewHeight + captionViewOffsetFromBottom) * heightRatio;
+};
