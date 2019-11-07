@@ -63,7 +63,7 @@ export default function HomeScreenPresetStyles({
               Color.hexToRgbaString(colorHex, 1),
               Color.hexToRgbaString(colorHex, 0),
             ]}
-            locations={[0, 0.1, 0.9, 1]}
+            locations={[0, 0.2, 0.8, 1]}
             style={styles.leftGradient}
           />
         }

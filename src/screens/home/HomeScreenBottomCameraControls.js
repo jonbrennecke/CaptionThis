@@ -16,7 +16,7 @@ import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
 import type { CaptionStyleObject, CaptionTextSegment } from '../../types/video';
 
-type CaptionPresetStyleObjectWithId = {|
+type CaptionStyleObjectWithId = {|
   ...CaptionStyleObject,
   id: string,
 |};
@@ -36,12 +36,12 @@ type Props = {
 
 type State = {
   isPresetSheetVisible: boolean,
-  preset: CaptionPresetStyleObjectWithId,
+  preset: CaptionStyleObjectWithId,
 };
 
 const FIXED_DURATION = 1000;
 
-const PRESET_STYLES_WITH_ID: CaptionPresetStyleObjectWithId[] = PRESET_STYLES.map(
+const PRESET_STYLES_WITH_ID: CaptionStyleObjectWithId[] = PRESET_STYLES.map(
   p => ({
     id: uuid.v4(),
     ...p,
@@ -102,7 +102,7 @@ export default class HomeScreenBottomCameraControls extends PureComponent<
   presetPickerDidSelectPreset({
     id,
     ...preset
-  }: CaptionPresetStyleObjectWithId) {
+  }: CaptionStyleObjectWithId) {
     this.setState({ preset: { id, ...preset } });
     this.props.onRequestSetCaptionStyle(preset);
   }

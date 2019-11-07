@@ -97,10 +97,7 @@ export default class CaptionPresetStylesPicker extends PureComponent<
     if (!preset) {
       return;
     }
-    this.props.onRequestSelectPreset({
-      ...preset,
-      fontSize: 20,
-    });
+    this.props.onRequestSelectPreset(preset);
   }
 
   onScrollViewDidEndMomentumScroll(event: any) {

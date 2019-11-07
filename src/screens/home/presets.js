@@ -9,7 +9,7 @@ import * as Color from '../../utils/Color';
 
 import type { CaptionStyleObject } from '../../types/video';
 
-export const presetDefaultFontSize = 8;
+export const presetDefaultFontSize = 20;
 
 export const PRESET_STYLES: CaptionStyleObject[] = [
   {
@@ -19,7 +19,6 @@ export const PRESET_STYLES: CaptionStyleObject[] = [
     backgroundStyle: 'textBoundingBox',
     backgroundColor: Color.hexToRgbaObject(UI_COLORS.WHITE),
     fontFamily: FONT_FAMILIES.RIGHTEOUS,
-    // textColor: Color.hexToRgbaObject(USER_TEXT_COLOR_CHOICES[0]),
     textColor: Color.hexToRgbaObject(UI_COLORS.BLACK),
     fontSize: presetDefaultFontSize,
   },
