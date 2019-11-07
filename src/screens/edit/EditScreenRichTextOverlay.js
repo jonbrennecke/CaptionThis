@@ -17,6 +17,7 @@ type EditScreenRichTextOverlayProps = {
   isVisible: boolean,
   duration: number,
   captionStyle: CaptionStyleObject,
+  playbackTime: number,
   speechTranscription: ?SpeechTranscription,
   onRequestSave: ({
     fontSize: number,
@@ -41,7 +42,12 @@ export default class EditScreenRichTextOverlay extends PureComponent<
 
   componentDidUpdate(prevProps: EditScreenRichTextOverlayProps) {
     if (this.props.isVisible !== prevProps.isVisible) {
-      this.props.isVisible ? this.playCaptions() : this.pauseCaptions();
+      if (this.props.isVisible) {
+        this.seekCaptionsToTime(this.props.playbackTime);
+        this.playCaptions();
+        return;
+      }
+      this.pauseCaptions();
     }
   }
 

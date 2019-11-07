@@ -26,11 +26,14 @@ import type { EditScreenProps } from './editScreenState';
 type EditScreenState = {
   videoViewSize: Size,
   orientation: ?Orientation,
+  dimensions: ?Size,
   exportProgress: number,
   isDraggingSeekbar: boolean,
-  isRichTextEditorVisible: boolean,
   isComponentFocused: boolean,
   isLocaleMenuVisible: boolean,
+  captionStyleEditorState: ?{
+    playbackTime: number,
+  },
 };
 
 const styles = {
@@ -53,10 +56,11 @@ export default class EditScreen extends PureComponent<
     videoViewSize: { width: 0, height: 0 },
     exportProgress: 0,
     orientation: null,
+    dimensions: null,
     isDraggingSeekbar: false,
-    isRichTextEditorVisible: false,
     isComponentFocused: false,
     isLocaleMenuVisible: false,
+    captionStyleEditorState: null,
   };
   willBlurSubscription: ?NavigationEventSubscription;
   didFocusSubscription: ?NavigationEventSubscription;
@@ -182,9 +186,7 @@ export default class EditScreen extends PureComponent<
       textColor,
       backgroundColor,
     });
-    this.setState({
-      isRichTextEditorVisible: false,
-    });
+    this.dismissRichTextEditor();
   }
 
   async onDidPressExportButton() {
@@ -236,15 +238,17 @@ export default class EditScreen extends PureComponent<
     });
   }
 
-  showRichTextEditor() {
+  showRichTextEditor(playbackTime: number) {
     this.setState({
-      isRichTextEditorVisible: true,
+      captionStyleEditorState: {
+        playbackTime,
+      },
     });
   }
 
   dismissRichTextEditor() {
     this.setState({
-      isRichTextEditorVisible: false,
+      captionStyleEditorState: null,
     });
   }
 
@@ -303,7 +307,6 @@ export default class EditScreen extends PureComponent<
           videoPlayerParentViewSize={this.state.videoViewSize}
           countryCode={this.props.locale?.country.code}
           isAppInForeground={this.props.isAppInForeground}
-          isDeviceLimitedByMemory={this.props.isDeviceLimitedByMemory}
           isCaptionsEditorVisible={!this.state.isComponentFocused}
           isExportingVideo={this.props.isExportingVideo}
           video={this.props.video}
@@ -311,9 +314,11 @@ export default class EditScreen extends PureComponent<
           orientation={this.state.orientation || 'up'}
           captionStyle={this.props.captionStyle}
           speechTranscription={speechTranscription}
-          onRequestChangePlaybackTime={this.seekRichTextEditorCaptionsToTime}
-          onRequestChangeOrientation={orientation =>
-            this.setState({ orientation })
+          onOrientationLoaded={(orientation, dimensions) =>
+            this.setState({
+              orientation,
+              dimensions,
+            })
           }
           onRequestShowRichTextEditor={this.showRichTextEditor}
           onRequestShowCaptionsEditor={() => {
@@ -338,12 +343,13 @@ export default class EditScreen extends PureComponent<
             this.richTextOverlay = ref;
           }}
           duration={this.props.video.duration}
-          isVisible={this.state.isRichTextEditorVisible}
           captionStyle={this.props.captionStyle}
           speechTranscription={speechTranscription}
           onRequestSave={(...etc) => {
             this.richTextEditorDidRequestSave(...etc);
           }}
+          isVisible={!!this.state.captionStyleEditorState}
+          {...this.state.captionStyleEditorState}
         />
         <EditScreenExportingOverlay
           isVisible={this.props.isExportingVideo}

@@ -17,7 +17,7 @@ const initialState: VideoState = {
     backgroundColor: Color.transparent,
     textColor: Color.hexToRgbaObject(TEXT_COLORS.WHITE),
     textAlignment: 'left',
-    lineStyle: 'translateY',
+    lineStyle: 'translateUp',
     wordStyle: 'none',
     backgroundStyle: 'gradient',
   },

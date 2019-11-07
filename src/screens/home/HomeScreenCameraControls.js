@@ -7,11 +7,7 @@ import HomeScreenTopCameraControls from './HomeScreenTopCameraControls';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
-import type {
-  CaptionStyleObject,
-  CaptionPresetStyleObject,
-  CaptionTextSegment,
-} from '../../types/video';
+import type { CaptionStyleObject, CaptionTextSegment } from '../../types/video';
 
 type Props = {
   style?: ?Style,
@@ -25,7 +21,7 @@ type Props = {
   onRequestOpenCameraRoll: () => void,
   onRequestSwitchCamera: () => void,
   onRequestOpenLocaleMenu: () => void,
-  onRequestSetCaptionStyle: CaptionPresetStyleObject => void,
+  onRequestSetCaptionStyle: CaptionStyleObject => void,
 };
 
 const styles = {

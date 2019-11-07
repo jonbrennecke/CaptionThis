@@ -1,8 +1,9 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, createRef } from 'react';
 import { View } from 'react-native';
 import uuid from 'uuid';
 import { autobind } from 'core-decorators';
+import omit from 'lodash/omit';
 
 import CaptureButton from '../../components/capture-button/CaptureButton';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
@@ -14,14 +15,10 @@ import { PRESET_STYLES } from './presets';
 
 import type { Style } from '../../types/react';
 import type { VideoAssetIdentifier } from '../../types/media';
-import type {
-  CaptionStyleObject,
-  CaptionPresetStyleObject,
-  CaptionTextSegment,
-} from '../../types/video';
+import type { CaptionStyleObject, CaptionTextSegment } from '../../types/video';
 
-type CaptionPresetStyleObjectWithId = {|
-  ...CaptionPresetStyleObject,
+type CaptionStyleObjectWithId = {|
+  ...CaptionStyleObject,
   id: string,
 |};
 
@@ -35,17 +32,17 @@ type Props = {
   onRequestEndCapture: () => void,
   onRequestOpenCameraRoll: () => void,
   onRequestSwitchCamera: () => void,
-  onRequestSetCaptionStyle: CaptionPresetStyleObject => void,
+  onRequestSetCaptionStyle: CaptionStyleObject => void,
 };
 
 type State = {
   isPresetSheetVisible: boolean,
-  preset: CaptionPresetStyleObjectWithId,
+  preset: CaptionStyleObjectWithId,
 };
 
 const FIXED_DURATION = 1000;
 
-const PRESET_STYLES_WITH_ID: CaptionPresetStyleObjectWithId[] = PRESET_STYLES.map(
+const PRESET_STYLES_WITH_ID: CaptionStyleObjectWithId[] = PRESET_STYLES.map(
   p => ({
     id: uuid.v4(),
     ...p,
@@ -102,11 +99,18 @@ export default class HomeScreenBottomCameraControls extends PureComponent<
     isPresetSheetVisible: true,
     preset: PRESET_STYLES_WITH_ID[0],
   };
+  captionViewRef: { current: CaptionView | null } = createRef();
 
-  presetPickerDidSelectPreset({
-    id,
-    ...preset
-  }: CaptionPresetStyleObjectWithId) {
+  componentDidMount() {
+    const preset = omit(this.state.preset, ['id']);
+    this.props.onRequestSetCaptionStyle(preset);
+
+    if (this.captionViewRef.current) {
+      this.captionViewRef.current.play();
+    }
+  }
+
+  presetPickerDidSelectPreset({ id, ...preset }: CaptionStyleObjectWithId) {
     this.setState({ preset: { id, ...preset } });
     this.props.onRequestSetCaptionStyle(preset);
   }
@@ -124,6 +128,7 @@ export default class HomeScreenBottomCameraControls extends PureComponent<
             )}
             captionStyle={this.props.captionStyle}
             backgroundHeight={275}
+            ref={this.captionViewRef}
           />
         </View>
         <SlideUpAnimatedView

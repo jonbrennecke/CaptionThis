@@ -1,4 +1,5 @@
 import AVFoundation
+import Captions
 import Photos
 
 @objc
@@ -11,7 +12,7 @@ protocol VideoExportManagerDelegate {
   func videoExportManager(didUpdateProgress _: Float)
 }
 
-@objc
+@objc(HSVideoExportManager)
 class VideoExportManager: NSObject {
   private enum State {
     case ready
@@ -26,12 +27,35 @@ class VideoExportManager: NSObject {
   @objc(sharedInstance)
   public static let shared = VideoExportManager()
 
-  @objc
-  public func exportVideo(withLocalIdentifier localIdentifier: String, style: CaptionExportStyle, textSegments: [CaptionTextSegment], duration: CFTimeInterval) {
-    let task = VideoExportTask(localIdentifier: localIdentifier, style: style, textSegments: textSegments, duration: duration)
+  @objc(HSExportVideoResult)
+  enum ExportVideoResult: Int {
+    case failedToParseCaptionStyleJSON
+    case success
+  }
+
+  @objc(exportVideoWithAssetID:style:textSegments:duration:viewSize:)
+  public func exportVideo(
+    assetID: String,
+    captionStyleJSON: CaptionStyleJSON,
+    textSegmentsJSON: [CaptionTextSegmentJSON],
+    duration: CFTimeInterval,
+    viewSize: CGSize
+  ) -> ExportVideoResult {
+    guard let captionStyle = captionStyleJSON.captionStyle else {
+      return .failedToParseCaptionStyleJSON
+    }
+    let textSegments = textSegmentsJSON.map({ $0.textSegment })
+    let task = VideoExportTask(
+      assetID: assetID,
+      style: captionStyle,
+      textSegments: textSegments,
+      duration: duration,
+      viewSize: viewSize
+    )
     task.delegate = self
     task.startTask()
     state = .pending(task)
+    return .success
   }
 }
 

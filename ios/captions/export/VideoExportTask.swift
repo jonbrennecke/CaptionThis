@@ -1,3 +1,4 @@
+import Captions
 import Photos
 
 fileprivate let CAPTION_VIEW_HEIGHT_PORTRAIT = CGFloat(85)
@@ -36,18 +37,26 @@ class VideoExportTask {
   }
 
   private var state: State = .unstarted
-  private let style: CaptionExportStyle
+  private let style: CaptionStyle
   private let textSegments: [CaptionTextSegment]
   private let duration: CFTimeInterval
-  private let localIdentifier: String
+  private let viewSize: CGSize
+  private let assetID: String
   private var requestID: PHImageRequestID?
   public var delegate: VideoExportTaskDelegate?
 
-  public init(localIdentifier: String, style: CaptionExportStyle, textSegments: [CaptionTextSegment], duration: CFTimeInterval) {
-    self.localIdentifier = localIdentifier
+  public init(
+    assetID: String,
+    style: CaptionStyle,
+    textSegments: [CaptionTextSegment],
+    duration: CFTimeInterval,
+    viewSize: CGSize
+  ) {
+    self.assetID = assetID
     self.textSegments = textSegments
     self.style = style
     self.duration = duration
+    self.viewSize = viewSize
   }
 
   deinit {
@@ -60,15 +69,13 @@ class VideoExportTask {
     let startTime = CFAbsoluteTimeGetCurrent()
     state = .pending(.fetchingAVAsset, startTime)
     let options = PHFetchOptions()
-    let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: options)
+    let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [assetID], options: options)
     guard let photosAsset = fetchResult.firstObject else {
-      Debug.log(format: "Could not find PHAsset. Local identifier = %@", localIdentifier)
       delegate?.videoExportTask(didEncounterError: .failedToFindAsset)
       return
     }
     requestID = PHImageManager.default().requestAVAsset(forVideo: photosAsset, options: nil) { asset, _, _ in
       guard let asset = asset else {
-        Debug.log(format: "Request for AVAsset failed. Local identifier = %@", self.localIdentifier)
         self.delegate?.videoExportTask(didEncounterError: .failedToFindAsset)
         return
       }
@@ -96,31 +103,15 @@ class VideoExportTask {
     let size = CGSize(width: abs(rotatedSize.width), height: abs(rotatedSize.height))
     let orientation = OrientationUtil.orientation(forAsset: asset)
     let dimensions = VideoDimensions(size: size, orientation: orientation)
-    let heightRatio = dimensions.size.height / style.viewSize.height
-    let fontSize = heightRatio * style.font.pointSize
-    let exportStyle = CaptionExportStyle(
-      wordStyle: style.wordStyle,
-      lineStyle: style.lineStyle,
-      textAlignment: style.textAlignment,
-      backgroundStyle: style.backgroundStyle,
-      backgroundColor: style.backgroundColor,
-      font: style.font.withSize(fontSize),
-      textColor: style.textColor,
-      viewSize: style.viewSize
-    )
+    let heightRatio = dimensions.size.height / viewSize.height
     let frame = createCaptionLayerFrame(videoSize: composition.videoSize, heightRatio: heightRatio)
-    let captionLayer = CaptionLayer()
-    let rowLayers = CaptionRowLayers()
-    rowLayers.each { captionLayer.addSublayer($1) }
+    let captionLayer = CALayer()
     captionLayer.frame = frame
-    let backgroundHeight = Float((CAPTION_VIEW_HEIGHT_PORTRAIT + CAPTION_VIEW_OFFSET_FROM_BOTTOM) * heightRatio)
     renderCaptions(
       layer: captionLayer,
-      rowLayers: rowLayers,
-      style: exportStyle,
+      style: style,
       textSegments: textSegments,
-      duration: duration,
-      backgroundHeight: backgroundHeight
+      duration: duration
     )
     captionLayer.timeOffset = 0
     captionLayer.speed = 1

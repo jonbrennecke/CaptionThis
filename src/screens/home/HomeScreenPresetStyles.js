@@ -9,19 +9,19 @@ import { UI_COLORS } from '../../constants';
 import CaptionPresetStylesPicker from '../../components/caption-preset-styles-picker/CaptionPresetStylesPicker';
 
 import type { Style } from '../../types/react';
-import type { CaptionPresetStyleObject } from '../../types/video';
+import type { CaptionStyleObject } from '../../types/video';
 
-type CaptionPresetStyleObjectWithId = {|
-  ...CaptionPresetStyleObject,
+type CaptionStyleObjectWithId = {|
+  ...CaptionStyleObject,
   id: string,
 |};
 
 type Props = {
   style?: ?Style,
   isVisible: boolean,
-  currentPreset: CaptionPresetStyleObjectWithId,
-  presets: CaptionPresetStyleObjectWithId[],
-  onRequestSelectPreset: CaptionPresetStyleObjectWithId => void,
+  currentPreset: CaptionStyleObjectWithId,
+  presets: CaptionStyleObjectWithId[],
+  onRequestSelectPreset: CaptionStyleObjectWithId => void,
 };
 
 const styles = {
@@ -63,7 +63,7 @@ export default function HomeScreenPresetStyles({
               Color.hexToRgbaString(colorHex, 1),
               Color.hexToRgbaString(colorHex, 0),
             ]}
-            locations={[0, 0.1, 0.9, 1]}
+            locations={[0, 0.2, 0.8, 1]}
             style={styles.leftGradient}
           />
         }

@@ -1,8 +1,9 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { View, requireNativeComponent, NativeModules } from 'react-native';
+import { promisifyAll } from 'bluebird';
 
-import * as Color from '../../utils/Color';
+import { makeCaptionStyleForNativeBridge } from '../../utils';
 
 import type { Style } from '../../types/react';
 import type { CaptionStyleObject } from '../../types/video';
@@ -10,13 +11,16 @@ import type { TextSegmentObject } from '../../types/media';
 
 type ReactNativeFiberHostComponent = any;
 
-const NativeCaptionView = requireNativeComponent('CaptionView');
-const { CaptionViewManager } = NativeModules;
+const NativeCaptionView = requireNativeComponent('HSCaptionView');
+const { HSCaptionViewManager: HSCaptionViewManager } = NativeModules;
 
-type Props = {
+const CaptionViewManager = promisifyAll(HSCaptionViewManager);
+
+export type CaptionViewProps = {
   style?: ?Style,
   duration: number,
   backgroundHeight: number,
+  lineStyleVerticalPadding?: number,
   textSegments: TextSegmentObject[],
   captionStyle: CaptionStyleObject,
 };
@@ -28,7 +32,7 @@ const styles = {
   },
 };
 
-export default class CaptionView extends PureComponent<Props> {
+export default class CaptionView extends PureComponent<CaptionViewProps> {
   nativeComponentRef: ?ReactNativeFiberHostComponent;
 
   restart() {
@@ -60,6 +64,11 @@ export default class CaptionView extends PureComponent<Props> {
   }
 
   render() {
+    const {
+      captionStyle,
+      backgroundHeight,
+      lineStyleVerticalPadding,
+    } = this.props;
     return (
       <View style={[styles.container, this.props.style]}>
         <NativeCaptionView
@@ -69,19 +78,11 @@ export default class CaptionView extends PureComponent<Props> {
           style={styles.nativeView}
           duration={this.props.duration}
           textSegments={this.props.textSegments}
-          textAlignment={this.props.captionStyle.textAlignment}
-          lineStyle={this.props.captionStyle.lineStyle}
-          wordStyle={this.props.captionStyle.wordStyle}
-          backgroundStyle={this.props.captionStyle.backgroundStyle}
-          fontSize={this.props.captionStyle.fontSize}
-          fontFamily={this.props.captionStyle.fontFamily}
-          backgroundColor={Color.transformRgbaObjectForNativeBridge(
-            this.props.captionStyle.backgroundColor
+          captionStyle={makeCaptionStyleForNativeBridge(
+            captionStyle,
+            backgroundHeight,
+            lineStyleVerticalPadding
           )}
-          textColor={Color.transformRgbaObjectForNativeBridge(
-            this.props.captionStyle.textColor
-          )}
-          backgroundHeight={this.props.backgroundHeight}
         />
       </View>
     );

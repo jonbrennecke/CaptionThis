@@ -25,8 +25,6 @@ type Props = {
   captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
   duration: number,
-  onRequestLockScroll?: () => void,
-  onRequestUnlockScroll?: () => void,
   onRequestSave: ({
     fontSize: number,
     fontFamily: string,
@@ -219,26 +217,28 @@ export default class RichTextEditor extends PureComponent<Props, State> {
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        <VideoCaptionsView
-          ref={ref => {
-            this.captionsView = ref;
-          }}
-          orientation="up"
-          duration={this.props.duration}
-          captionStyle={{
-            ...this.props.captionStyle,
-            textColor: this.state.textColor,
-            backgroundColor: this.state.backgroundColor,
-            fontFamily: this.state.fontFamily,
-            fontSize: this.state.fontSize,
-          }}
-          speechTranscription={this.props.speechTranscription}
-          viewLayout={{
-            size: { height: 85, width: SCREEN_WIDTH },
-            origin: { x: 0, y: 0 },
-          }}
-          backgroundHeight={85}
-        />
+        {this.props.isVisible && (
+          <VideoCaptionsView
+            ref={ref => {
+              this.captionsView = ref;
+            }}
+            orientation="up"
+            duration={this.props.duration}
+            captionStyle={{
+              ...this.props.captionStyle,
+              textColor: this.state.textColor,
+              backgroundColor: this.state.backgroundColor,
+              fontFamily: this.state.fontFamily,
+              fontSize: this.state.fontSize,
+            }}
+            speechTranscription={this.props.speechTranscription}
+            viewLayout={{
+              size: { height: 85, width: SCREEN_WIDTH },
+              origin: { x: 0, y: 0 },
+            }}
+            backgroundHeight={85}
+          />
+        )}
         <View style={styles.mainContents}>
           <View style={styles.mainContentsBackground} />
           <RichTextFontFamilyControl

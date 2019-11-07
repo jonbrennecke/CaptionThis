@@ -9,7 +9,6 @@ import { createSpeechStateHOC } from '@jonbrennecke/react-native-speech';
 
 import { arePermissionsGranted } from '../../redux/onboarding/selectors';
 import { receiveFinishedVideo } from '../../redux/media/actionCreators';
-import { loadDeviceInfo } from '../../redux/device/actionCreators';
 import { getCurrentVideo } from '../../redux/media/selectors';
 import { updateCaptionStyle } from '../../redux/video/actionCreators';
 import { getCaptionStyle } from '../../redux/video/selectors';
@@ -37,7 +36,6 @@ type StateProps = {
 };
 
 type DispatchProps = {
-  loadDeviceInfo: () => Promise<void>,
   receiveFinishedVideo: MediaObject => void,
   updateCaptionStyle: typeof updateCaptionStyle,
 };
@@ -62,7 +60,6 @@ function mapStateToProps(state: AppState): StateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
   return {
-    loadDeviceInfo: () => dispatch(loadDeviceInfo()),
     receiveFinishedVideo: () => dispatch(receiveFinishedVideo()),
     updateCaptionStyle: partialCaptionStyle =>
       dispatch(updateCaptionStyle(partialCaptionStyle)),

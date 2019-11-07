@@ -21,6 +21,8 @@ import LocaleMenu from '../../components/localization/LocaleMenu';
 import HomeScreenCameraPreview from './HomeScreenCameraPreview';
 import { wrapWithHomeScreenState } from './homeScreenState';
 
+// eslint-disable-next-line import/named
+import type { NavigationEventSubscription } from 'react-navigation';
 import type { MediaObject } from '@jonbrennecke/react-native-media';
 import type { LocaleObject } from '@jonbrennecke/react-native-speech';
 
@@ -35,6 +37,7 @@ type HomeScreenState = {
   videoID: ?VideoAssetIdentifier,
   hasCompletedSetupAfterOnboarding: boolean,
   isLocaleMenuVisible: boolean,
+  isComponentFocused: boolean,
 };
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -73,18 +76,22 @@ export default class HomeScreen extends PureComponent<
     videoID: null,
     hasCompletedSetupAfterOnboarding: false,
     isLocaleMenuVisible: false,
+    isComponentFocused: false,
   };
-  navigationEventListener: ?any;
   scrollView: ?ScrollView;
   scrollAnim = new Animated.Value(0);
+  willBlurSubscription: ?NavigationEventSubscription;
+  didFocusSubscription: ?NavigationEventSubscription;
 
   async componentDidMount() {
+    this.addNavigationListeners();
     if (this.props.arePermissionsGranted) {
       this.setupAfterOnboarding();
     }
   }
 
   async componentWillUnmount() {
+    this.removeNavigationListeners();
     if (this.props.captureStatus === 'started') {
       await this.stopCapture();
     }
@@ -103,11 +110,48 @@ export default class HomeScreen extends PureComponent<
     }
   }
 
+  /// MARK -- navigation listeners
+
+  addNavigationListeners() {
+    this.didFocusSubscription = this.props.navigation.addListener(
+      'didFocus',
+      this.componentDidFocus
+    );
+    this.willBlurSubscription = this.props.navigation.addListener(
+      'willBlur',
+      this.componentWillBlur
+    );
+  }
+
+  removeNavigationListeners() {
+    if (this.didFocusSubscription) {
+      this.didFocusSubscription.remove();
+      this.didFocusSubscription = null;
+    }
+    if (this.willBlurSubscription) {
+      this.willBlurSubscription.remove();
+      this.willBlurSubscription = null;
+    }
+  }
+
+  componentDidFocus() {
+    this.setState({
+      isComponentFocused: true,
+    });
+  }
+
+  componentWillBlur() {
+    this.setState({
+      isComponentFocused: false,
+    });
+  }
+
+  /// MARK -- misc. methods
+
   async setupAfterOnboarding() {
     if (this.state.hasCompletedSetupAfterOnboarding) {
       return;
     }
-    await this.props.loadDeviceInfo();
     this.setState({
       hasCompletedSetupAfterOnboarding: true,
     });
@@ -225,7 +269,9 @@ export default class HomeScreen extends PureComponent<
                 captionStyle={this.props.captionStyle}
                 animatedScrollValue={this.scrollAnim}
                 isCameraRecording={this.props.captureStatus === 'started'}
-                isCameraPaused={this.props.isCameraPaused}
+                isCameraPaused={
+                  this.props.isCameraPaused || !this.state.isComponentFocused
+                }
                 thumbnailVideoID={this.props.thumbnailVideoID}
                 hasCompletedSetupAfterOnboarding={
                   this.state.hasCompletedSetupAfterOnboarding

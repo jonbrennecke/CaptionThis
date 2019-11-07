@@ -27,16 +27,14 @@ type Props = {
   video: MediaObject,
   countryCode: ?string,
   isAppInForeground: boolean,
-  isDeviceLimitedByMemory: boolean,
   isCaptionsEditorVisible: boolean,
   isSpeechTranscriptionFinal: boolean,
   isExportingVideo: boolean,
   captionStyle: CaptionStyleObject,
   speechTranscription: ?SpeechTranscription,
   orientation: Orientation,
-  onRequestChangePlaybackTime: number => void,
-  onRequestChangeOrientation: Orientation => void,
-  onRequestShowRichTextEditor: () => void,
+  onOrientationLoaded: (Orientation, Size) => void,
+  onRequestShowRichTextEditor: (playbackTime: number) => void,
   onRequestShowCaptionsEditor: () => void,
   onRequestPopToHomeScreen: () => void,
   onRequestExport: () => void,
@@ -165,7 +163,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
 
   seekBarDidSeekToTime(time: number) {
     this.seekToTime(time);
-    this.onRequestChangePlaybackTimeThrottled(time);
   }
 
   async seekToTime(time: number) {
@@ -176,14 +173,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
       this.captionsView.seekToTime(time);
     }
   }
-
-  onRequestChangePlaybackTimeThrottled = throttle(
-    this.props.onRequestChangePlaybackTime,
-    50,
-    {
-      leading: true,
-    }
-  );
 
   videoPlayerDidFailToLoad() {
     this.pausePlayerAndCaptions();
@@ -203,7 +192,6 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
 
   videoPlayerDidUpdatePlaybackTime(playbackTime: number) {
     this.setState({ playbackTime });
-    this.props.onRequestChangePlaybackTime(playbackTime);
   }
 
   videoPlayerDidPlayToEnd() {
@@ -299,10 +287,10 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
                   this.startPlayerAndCaptions();
                 }
               }}
+              onOrientationDidLoad={this.props.onOrientationLoaded}
               onPlaybackTimeDidUpdate={
                 this.videoPlayerDidUpdatePlaybackTimeThrottled
               }
-              onOrientationDidLoad={this.props.onRequestChangeOrientation}
             />
             <VideoCaptionsContainer
               videoDimensions={this.props.video.size}
@@ -322,7 +310,11 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
                     this.props.captionStyle
                   )}
                   speechTranscription={this.props.speechTranscription}
-                  onPress={this.props.onRequestShowRichTextEditor}
+                  onPress={() =>
+                    this.props.onRequestShowRichTextEditor(
+                      this.state.playbackTime
+                    )
+                  }
                 />
               )}
             />
@@ -332,7 +324,9 @@ export default class EditScreenVideoPlayer extends PureComponent<Props, State> {
               isReadyToExport={this.props.isSpeechTranscriptionFinal}
               onBackButtonPress={this.props.onRequestPopToHomeScreen}
               onExportButtonPress={this.props.onRequestExport}
-              onStylizeButtonPress={this.props.onRequestShowRichTextEditor}
+              onStylizeButtonPress={() =>
+                this.props.onRequestShowRichTextEditor(this.state.playbackTime)
+              }
               onEditTextButtonPress={this.props.onRequestShowCaptionsEditor}
               onLocaleButtonPress={this.props.onLocaleButtonPress}
             />

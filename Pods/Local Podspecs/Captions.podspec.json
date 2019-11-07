@@ -1,0 +1,20 @@
+{
+  "name": "Captions",
+  "version": "0.0.17",
+  "homepage": "https://github.com/jonbrennecke/captions",
+  "authors": "Jon Brennecke",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/jonbrennecke/captions.git",
+    "commit": "c803177fb7888eb0b5e739f11ffe21daab3519b6",
+    "tag": "v0.0.17"
+  },
+  "cocoapods_version": ">= 1.2.0",
+  "license": "MIT",
+  "summary": "Swift library for rendering animated captions/subtitles",
+  "source_files": "captions/**/*.swift",
+  "swift_versions": "5",
+  "swift_version": "5"
+}
