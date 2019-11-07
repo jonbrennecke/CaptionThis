@@ -1,22 +1,22 @@
 PODS:
-  - Captions (0.0.15)
+  - Captions (0.0.17)
 
 DEPENDENCIES:
-  - Captions (from `https://github.com/jonbrennecke/captions.git`, tag `v0.0.15`)
+  - Captions (from `https://github.com/jonbrennecke/captions.git`, tag `v0.0.17`)
 
 EXTERNAL SOURCES:
   Captions:
     :git: https://github.com/jonbrennecke/captions.git
-    :tag: v0.0.15
+    :tag: v0.0.17
 
 CHECKOUT OPTIONS:
   Captions:
     :git: https://github.com/jonbrennecke/captions.git
-    :tag: v0.0.15
+    :tag: v0.0.17
 
 SPEC CHECKSUMS:
-  Captions: e2007927646117a727d72fc1d6e70d2f60b7c64d
+  Captions: e2a5ae9c50bea4ad0a591e90cf2db3bc359f4b82
 
-PODFILE CHECKSUM: 94e7547257b53cc5c7b3170fec3385e8cb2b4928
+PODFILE CHECKSUM: 7a236f462d81efcb17799484f8758626db6c726d
 
 COCOAPODS: 1.8.4
