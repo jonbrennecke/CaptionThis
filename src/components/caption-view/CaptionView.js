@@ -64,7 +64,11 @@ export default class CaptionView extends PureComponent<CaptionViewProps> {
   }
 
   render() {
-    const { captionStyle, backgroundHeight, lineStyleVerticalPadding } = this.props;
+    const {
+      captionStyle,
+      backgroundHeight,
+      lineStyleVerticalPadding,
+    } = this.props;
     return (
       <View style={[styles.container, this.props.style]}>
         <NativeCaptionView
