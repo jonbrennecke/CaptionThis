@@ -99,10 +99,7 @@ export default class HomeScreenBottomCameraControls extends PureComponent<
     preset: PRESET_STYLES_WITH_ID[0],
   };
 
-  presetPickerDidSelectPreset({
-    id,
-    ...preset
-  }: CaptionStyleObjectWithId) {
+  presetPickerDidSelectPreset({ id, ...preset }: CaptionStyleObjectWithId) {
     this.setState({ preset: { id, ...preset } });
     this.props.onRequestSetCaptionStyle(preset);
   }

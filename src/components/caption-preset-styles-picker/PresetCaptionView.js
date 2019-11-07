@@ -24,9 +24,10 @@ export class PresetCaptionView extends PureComponent<PresetCaptionViewProps> {
         {...this.props}
         captionStyle={{
           ...this.props.captionStyle,
-          fontSize: presetDefaultFontSize
+          fontSize: presetDefaultFontSize,
         }}
-        ref={this.captionViewRef} />
+        ref={this.captionViewRef}
+      />
     );
   }
 }
