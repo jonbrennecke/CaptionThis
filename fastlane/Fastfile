@@ -18,7 +18,7 @@ platform :ios do |options|
       app_identifier: app_identifier
     )
     gym(
-      project: './ios/CaptionThis.xcodeproj',
+      workspace: './CaptionThis.xcworkspace',
       scheme: 'CaptionThis',
       export_method: options[:export_method] || 'ad-hoc'
     )
@@ -57,10 +57,10 @@ platform :ios do |options|
 
   lane :deploy_appstore do |options|
     increment_build_number(
-      xcodeproj: './ios/CaptionThis.xcodeproj',
+      workspace: './CaptionThis.xcworkspace',
     )
     increment_version_number(
-      xcodeproj: './ios/CaptionThis.xcodeproj',
+      workspace: './CaptionThis.xcworkspace',
     )
     app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
     itc_team_id = CredentialsManager::AppfileConfig.try_fetch_value(:itc_team_id)
