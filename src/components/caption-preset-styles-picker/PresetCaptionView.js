@@ -17,11 +17,6 @@ export class PresetCaptionView extends PureComponent<PresetCaptionViewProps> {
   }
 
   render() {
-    return (
-      <CaptionView
-        {...this.props}
-        ref={this.captionViewRef}
-      />
-    );
+    return <CaptionView {...this.props} ref={this.captionViewRef} />;
   }
 }

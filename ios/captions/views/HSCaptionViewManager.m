@@ -111,21 +111,6 @@ RCT_EXPORT_METHOD(seekToTime
    }];
 }
 
-//RCT_EXPORT_METHOD(getCurrentPlaybackTime : (nonnull NSNumber *)reactTag callback:(RCTResponseSenderBlock)callback) {
-//  [self.bridge.uiManager
-//   addUIBlock:^(RCTUIManager *uiManager,
-//                NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-//      HSCaptionView *view = (HSCaptionView *)viewRegistry[reactTag];
-//      if (!view || ![view isKindOfClass:[HSCaptionView class]]) {
-//        id error = RCTMakeError(@"Cannot find HSCaptionView with tag #%@", nil, nil);
-//        callback(@[ error, [NSNull null] ]);
-//        return;
-//      }
-//      CFTimeInterval playbackTime = [view currentPlaybackTime];
-//      callback(@[ [NSNull null], @(playbackTime) ]);
-//   }];
-//}
-
 - (UIView *)view {
   HSCaptionView *view = [[HSCaptionView alloc] init];
   return (UIView *)view;

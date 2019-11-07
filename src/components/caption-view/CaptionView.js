@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { View, requireNativeComponent, NativeModules } from 'react-native';
 import { promisifyAll } from 'bluebird';
 
-import * as Color from '../../utils/Color';
+import { makeCaptionStyleForNativeBridge } from '../../utils';
 
 import type { Style } from '../../types/react';
 import type { CaptionStyleObject } from '../../types/video';
@@ -81,46 +81,4 @@ export default class CaptionView extends PureComponent<CaptionViewProps> {
       </View>
     );
   }
-}
-
-function makeCaptionStyleForNativeBridge(
-  captionStyle: CaptionStyleObject,
-  backgroundHeight: number
-) {
-  return {
-    wordStyle: captionStyle.wordStyle,
-    backgroundStyle: {
-      styleType: captionStyle.backgroundStyle,
-      backgroundColor: Color.transformRgbaObjectForNativeBridge(
-        captionStyle.backgroundColor
-      ),
-      backgroundHeight,
-    },
-    lineStyle: {
-      styleType: captionStyle.lineStyle,
-      fadeInOutProperties: {
-        numberOfLines: 2,
-        padding: {
-          vertical: 1.3,
-        },
-      },
-    },
-    textStyle: {
-      font: {
-        fontFamily: captionStyle.fontFamily,
-        pointSize: captionStyle.fontSize,
-      },
-      color: Color.transformRgbaObjectForNativeBridge(captionStyle.textColor),
-      shadow: {
-        opacity: 0.5,
-        color: Color.transformRgbaObjectForNativeBridge({
-          red: 0,
-          green: 0,
-          blue: 0,
-          alpha: 0,
-        }),
-      },
-      alignment: captionStyle.textAlignment,
-    },
-  };
 }
