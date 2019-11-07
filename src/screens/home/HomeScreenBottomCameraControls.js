@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import uuid from 'uuid';
 import { autobind } from 'core-decorators';
+import omit from 'lodash/omit';
 
 import CaptureButton from '../../components/capture-button/CaptureButton';
 import SwitchCameraButton from '../../components/switch-camera-button/SwitchCameraButton';
@@ -98,6 +99,11 @@ export default class HomeScreenBottomCameraControls extends PureComponent<
     isPresetSheetVisible: true,
     preset: PRESET_STYLES_WITH_ID[0],
   };
+
+  componentDidMount() {
+    const preset = omit(this.state.preset, ['id']);
+    this.props.onRequestSetCaptionStyle(preset);
+  }
 
   presetPickerDidSelectPreset({ id, ...preset }: CaptionStyleObjectWithId) {
     this.setState({ preset: { id, ...preset } });
