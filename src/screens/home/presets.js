@@ -18,7 +18,7 @@ export const PRESET_STYLES: CaptionStyleObject[] = [
     wordStyle: 'none',
     backgroundStyle: 'textBoundingBox',
     backgroundColor: Color.hexToRgbaObject(UI_COLORS.WHITE),
-    fontFamily: FONT_FAMILIES.RIGHTEOUS,
+    fontFamily: FONT_FAMILIES.SOURCE_SERIF_PRO,
     textColor: Color.hexToRgbaObject(UI_COLORS.BLACK),
     fontSize: presetDefaultFontSize,
   },

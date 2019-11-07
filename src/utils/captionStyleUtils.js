@@ -5,7 +5,8 @@ import type { CaptionStyleObject } from '../types';
 
 export function makeCaptionStyleForNativeBridge(
   captionStyle: CaptionStyleObject,
-  backgroundHeight: number
+  backgroundHeight: number,
+  lineStyleVerticalPadding?: number = 0.66
 ) {
   return {
     wordStyle: captionStyle.wordStyle,
@@ -21,7 +22,7 @@ export function makeCaptionStyleForNativeBridge(
       fadeInOutProperties: {
         numberOfLines: 2,
         padding: {
-          vertical: 0.75,
+          vertical: lineStyleVerticalPadding,
         },
       },
     },

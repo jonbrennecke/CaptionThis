@@ -177,6 +177,7 @@ export default class CaptionPresetStylesPicker extends PureComponent<
                 duration={PRESET_TEXT_SEGMENTS_DURATION}
                 textSegments={PRESET_TEXT_SEGMENTS}
                 backgroundHeight={PRESET_HEIGHT}
+                lineStyleVerticalPadding={1.25}
               />
             </CaptionPresetAnimatedBorderView>
           );

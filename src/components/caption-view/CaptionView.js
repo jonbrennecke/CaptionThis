@@ -20,6 +20,7 @@ export type CaptionViewProps = {
   style?: ?Style,
   duration: number,
   backgroundHeight: number,
+  lineStyleVerticalPadding?: number,
   textSegments: TextSegmentObject[],
   captionStyle: CaptionStyleObject,
 };
@@ -63,7 +64,7 @@ export default class CaptionView extends PureComponent<CaptionViewProps> {
   }
 
   render() {
-    const { captionStyle, backgroundHeight } = this.props;
+    const { captionStyle, backgroundHeight, lineStyleVerticalPadding } = this.props;
     return (
       <View style={[styles.container, this.props.style]}>
         <NativeCaptionView
@@ -75,7 +76,8 @@ export default class CaptionView extends PureComponent<CaptionViewProps> {
           textSegments={this.props.textSegments}
           captionStyle={makeCaptionStyleForNativeBridge(
             captionStyle,
-            backgroundHeight
+            backgroundHeight,
+            lineStyleVerticalPadding
           )}
         />
       </View>
