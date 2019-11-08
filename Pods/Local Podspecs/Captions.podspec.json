@@ -1,6 +1,6 @@
 {
   "name": "Captions",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "homepage": "https://github.com/jonbrennecke/captions",
   "authors": "Jon Brennecke",
   "platforms": {
@@ -8,8 +8,8 @@
   },
   "source": {
     "git": "https://github.com/jonbrennecke/captions.git",
-    "commit": "c803177fb7888eb0b5e739f11ffe21daab3519b6",
-    "tag": "v0.0.17"
+    "commit": "c473a9aef75891a6afc2b23b4f70171f1167011c",
+    "tag": "v0.0.18"
   },
   "cocoapods_version": ">= 1.2.0",
   "license": "MIT",

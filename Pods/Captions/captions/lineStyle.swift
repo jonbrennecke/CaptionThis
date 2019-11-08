@@ -60,7 +60,8 @@ func makeLineStylePaddingLayer(
   parentLayerSize size: CGSize
 ) -> CALayer {
   let layer = CALayer()
-  let paddingTop = em.height * CGFloat(padding.vertical)
+  let aspectRatio = size.height / size.width
+  let paddingTop = em.height * CGFloat(padding.vertical) * aspectRatio
   layer.bounds = CGRect(
     origin: .zero,
     size: CGSize(width: size.width, height: size.height - paddingTop * 2)

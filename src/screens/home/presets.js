@@ -16,10 +16,10 @@ export const PRESET_STYLES: CaptionStyleObject[] = [
     textAlignment: 'center',
     lineStyle: 'fadeInOut',
     wordStyle: 'none',
-    backgroundStyle: 'textBoundingBox',
+    backgroundStyle: 'none',
     backgroundColor: Color.hexToRgbaObject(UI_COLORS.WHITE),
     fontFamily: FONT_FAMILIES.SOURCE_SERIF_PRO,
-    textColor: Color.hexToRgbaObject(UI_COLORS.BLACK),
+    textColor: Color.hexToRgbaObject(UI_COLORS.WHITE),
     fontSize: presetDefaultFontSize,
   },
   {

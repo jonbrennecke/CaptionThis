@@ -106,9 +106,12 @@ const exportFontSize = (
   dimensions: Size,
   orientation: Orientation
 ): number => {
+  const aspectRatio = isLandscape(orientation)
+    ? dimensions.width / dimensions.height
+    : dimensions.height / dimensions.width;
   const heightRatio = isLandscape(orientation)
-    ? (dimensions.height / viewSize.height) * 16 / 9
-    : dimensions.width / viewSize.height;
+    ? (dimensions.height / viewSize.height) * aspectRatio * 0.90
+    : dimensions.width / viewSize.height * aspectRatio * 1.15;
   return fontSize * heightRatio;
 };
 
