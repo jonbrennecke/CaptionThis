@@ -6,7 +6,7 @@ import type { CaptionStyleObject } from '../types';
 export function makeCaptionStyleForNativeBridge(
   captionStyle: CaptionStyleObject,
   backgroundHeight: number,
-  lineStyleVerticalPadding?: number = 0.66
+  lineStyleVerticalPadding?: number = 0.75
 ) {
   return {
     wordStyle: captionStyle.wordStyle,
