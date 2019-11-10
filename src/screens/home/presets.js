@@ -12,16 +12,17 @@ import type { CaptionStyleObject } from '../../types/video';
 export const presetDefaultFontSize = 20;
 
 export const PRESET_STYLES: CaptionStyleObject[] = [
-  {
-    textAlignment: 'center',
-    lineStyle: 'fadeInOut',
-    wordStyle: 'none',
-    backgroundStyle: 'none',
-    backgroundColor: Color.hexToRgbaObject(UI_COLORS.WHITE),
-    fontFamily: FONT_FAMILIES.SOURCE_SERIF_PRO,
-    textColor: Color.hexToRgbaObject(UI_COLORS.WHITE),
-    fontSize: presetDefaultFontSize,
-  },
+  // TODO: enable after fixing issue with live captions
+  // {
+  //   textAlignment: 'center',
+  //   lineStyle: 'fadeInOut',
+  //   wordStyle: 'none',
+  //   backgroundStyle: 'none',
+  //   backgroundColor: Color.hexToRgbaObject(UI_COLORS.WHITE),
+  //   fontFamily: FONT_FAMILIES.SOURCE_SERIF_PRO,
+  //   textColor: Color.hexToRgbaObject(UI_COLORS.WHITE),
+  //   fontSize: presetDefaultFontSize,
+  // },
   {
     textAlignment: 'left',
     lineStyle: 'translateUp',
