@@ -1,10 +1,7 @@
 // @flow
 import { isLandscape } from './Orientation';
 
-import type {
-  Size,
-  Orientation,
-} from '../types/media';
+import type { Size, Orientation } from '../types/media';
 
 export const captionViewHeight = 85;
 export const captionViewOffsetFromBottom = 75;
@@ -27,9 +24,13 @@ export const normalizeVideoDimensions = (
 ): Size => {
   const { height, width } = dimensions;
   return isLandscape(orientation)
-    ? height > width ? { height: width, width: height } : { height, width }
-    : height > width ? { height, width } : { height: width, width: height }
-}
+    ? height > width
+      ? { height: width, width: height }
+      : { height, width }
+    : height > width
+      ? { height, width }
+      : { height: width, width: height };
+};
 
 export const exportBackgroundHeight = (
   dimensions: Size,

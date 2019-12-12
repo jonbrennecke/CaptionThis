@@ -3,7 +3,11 @@ import { NativeModules, NativeEventEmitter } from 'react-native';
 import Promise from 'bluebird';
 
 import { makeCaptionStyleForNativeBridge } from './captionStyleUtils';
-import { normalizeVideoDimensions, exportFontSize, exportBackgroundHeight} from './exportUtils';
+import {
+  normalizeVideoDimensions,
+  exportFontSize,
+  exportBackgroundHeight,
+} from './exportUtils';
 
 import type {
   Size,
