@@ -205,6 +205,7 @@ export default class EditScreen extends PureComponent<
       speechTranscription,
       videoID: this.props.video.assetID,
       videoViewSize: this.state.videoViewSize,
+      dimensions: this.state.dimensions,
       duration: this.props.video.duration,
       orientation: this.state.orientation,
       captionStyle: this.props.captionStyle,

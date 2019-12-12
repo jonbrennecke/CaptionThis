@@ -2,8 +2,8 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
 import Promise from 'bluebird';
 
-import { isLandscape } from './Orientation';
 import { makeCaptionStyleForNativeBridge } from './captionStyleUtils';
+import { normalizeVideoDimensions, exportFontSize, exportBackgroundHeight} from './exportUtils';
 
 import type {
   Size,
@@ -30,9 +30,6 @@ const EVENTS = {
   DID_FAIL: 'videoExportManagerDidFail',
   DID_UPDATE_PROGRESS: 'videoExportManagerDidDidUpdateProgress',
 };
-
-const captionViewHeight = 85;
-const captionViewOffsetFromBottom = 75;
 
 export type ExportParams = {
   viewSize: Size,
@@ -71,12 +68,13 @@ export default class VideoExportManager {
   }
 
   static async exportVideo({
-    dimensions,
+    dimensions: inputDimensions,
     captionStyle,
     viewSize,
     orientation,
     ...etc
   }: ExportParams) {
+    const dimensions = normalizeVideoDimensions(inputDimensions, orientation);
     const exportParams = {
       ...etc,
       orientation,
@@ -93,35 +91,9 @@ export default class VideoExportManager {
           textColor: captionStyle.textColor,
           backgroundColor: captionStyle.backgroundColor,
         },
-        exportBackgroundHeight(dimensions, viewSize, orientation)
+        exportBackgroundHeight(dimensions, viewSize)
       ),
     };
     await NativeVideoExportModule.exportVideoAsync(exportParams);
   }
 }
-
-const exportFontSize = (
-  fontSize: number,
-  viewSize: Size,
-  dimensions: Size,
-  orientation: Orientation
-): number => {
-  const aspectRatio = isLandscape(orientation)
-    ? dimensions.width / dimensions.height
-    : dimensions.height / dimensions.width;
-  const heightRatio = isLandscape(orientation)
-    ? (dimensions.height / viewSize.height) * aspectRatio * 0.90
-    : dimensions.width / viewSize.height * aspectRatio * 1.15;
-  return fontSize * heightRatio;
-};
-
-const exportBackgroundHeight = (
-  dimensions: Size,
-  viewSize: Size,
-  orientation: Orientation
-): number => {
-  const heightRatio = isLandscape(orientation)
-    ? dimensions.height / viewSize.height
-    : dimensions.width / viewSize.height;
-  return (captionViewHeight + captionViewOffsetFromBottom) * heightRatio;
-};
