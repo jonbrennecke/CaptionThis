@@ -160,7 +160,10 @@ export default class HomeScreen extends PureComponent<
   async saveCapturedVideo(videoURL: string) {
     const asset = await createAssetWithVideoFileAtURL(videoURL);
     if (!asset) {
-      Debug.logErrorMessage(`Failed create asset. URL = ${videoURL}`);
+      Debug.logErrorMessage(`Failed to create asset. URL = ${videoURL}`);
+      return;
+    }
+    if (asset.duration < 1) {
       return;
     }
     this.props.receiveFinishedVideo(asset);
@@ -179,12 +182,12 @@ export default class HomeScreen extends PureComponent<
     const uniqueID = uuid.v4();
     this.setState({ videoID: uniqueID });
     await this.props.startCapture({});
+    await endSpeechTranscriptionOfAudioSession();
     await beginSpeechTranscriptionOfAudioSession(uniqueID);
   }
 
   async stopCapture() {
     if (this.props.captureStatus !== 'started') {
-      Debug.logErrorMessage('Failed to stop capture, camera is not recording.');
       return;
     }
     await endSpeechTranscriptionOfAudioSession();
