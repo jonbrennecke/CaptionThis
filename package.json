@@ -1,6 +1,6 @@
 {
   "name": "CaptionThis",
-  "version": "1.0.52",
+  "version": "1.0.53",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
