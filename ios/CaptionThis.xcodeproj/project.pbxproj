@@ -949,6 +949,10 @@
 			isa = PBXGroup;
 			children = (
 				FCD998D02332BBE7008B82B2 /* HSCameraUtils.xcodeproj */,
+				41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */,
+				2A48C2E922F841C9992B86EA /* HSReactNativeMedia.xcodeproj */,
+				324BC612AE2D4F2D9554E7A4 /* HSAnimatedUI.xcodeproj */,
+				818AC33F1A714CE6B77CA623 /* HSReactNativeSpeech.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -970,11 +974,7 @@
 				C9409A38306F4AA3B407FD5C /* RNSentry.xcodeproj */,
 				2B3DAC112CB341E9B830EC32 /* RNReactNativeHapticFeedback.xcodeproj */,
 				20A5BBF73DFE404FBD9508A6 /* ReactNativeHaptic.xcodeproj */,
-				2A48C2E922F841C9992B86EA /* HSReactNativeMedia.xcodeproj */,
-				41F143F623244EA6B2E74A69 /* HSReactNativeCamera.xcodeproj */,
-				324BC612AE2D4F2D9554E7A4 /* HSAnimatedUI.xcodeproj */,
 				FE3F542488AE4D8AB5B43279 /* RNBlur.xcodeproj */,
-				818AC33F1A714CE6B77CA623 /* HSReactNativeSpeech.xcodeproj */,
 				4609B34E1E374BF58EF44512 /* RNReanimated.xcodeproj */,
 				B3FA509A29F74C43A395D90C /* RNGestureHandler.xcodeproj */,
 				2068621417244E09A52D0CD9 /* RNScreens.xcodeproj */,
